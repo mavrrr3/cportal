@@ -9,8 +9,8 @@ const appBarTheme = AppBarTheme(
 
 ThemeData lightTheme(BuildContext context) => ThemeData.light().copyWith(
       primaryColor: kPrimary,
-      backgroundColor: AppColors.mainBg,
-      scaffoldBackgroundColor: AppColors.mainBg,
+      backgroundColor: AppColors.blueWhiteColor,
+      scaffoldBackgroundColor: AppColors.cardColor,
       appBarTheme: appBarTheme.copyWith(backgroundColor: kAppBarDark),
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme:

@@ -25,6 +25,7 @@ class AppColors {
 const kPrimary = Color(0xFFEF1B48);
 // const kBubleLight = Color(0xFFE8E8E8);
 // const kBubleDark = Color(0xFF262629);
+const kAppBarLight = Color.fromARGB(255, 101, 82, 82);
 const kAppBarDark = Color(0xFF111111);
 // const kActiveUsersDark = Color(0xFF3B3B3B);
 // const kIndicatorBuble = Color(0xFF39B54A);
