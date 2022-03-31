@@ -2,8 +2,12 @@ import 'dart:developer';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
+import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'presentation/bloc/user_bloc/get_single_user_bloc/get_single_user_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,17 +22,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: lightTheme(context),
-      dark: darkTheme(context),
-      initial: AdaptiveThemeMode.light,
-      builder: (theme, darkTheme) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        theme: theme,
-        darkTheme: darkTheme,
-        home: const MyHomePage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<GetSingleUserBloc>(
+          create: (ctx) => sl<GetSingleUserBloc>(),
+        ),
+      ],
+      child: AdaptiveTheme(
+        light: lightTheme(context),
+        dark: darkTheme(context),
+        initial: AdaptiveThemeMode.light,
+        builder: (theme, darkTheme) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: theme,
+          darkTheme: darkTheme,
+          home: const MyHomePage(),
+        ),
       ),
     );
   }
