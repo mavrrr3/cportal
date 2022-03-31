@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,18 +16,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // onGenerateTitle: (context) {
-      //   return AppLocalizations.of(context)!.appTitle;
-      // },
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return AdaptiveTheme(
+      light: lightTheme(context),
+      dark: darkTheme(context),
+      initial: AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: theme,
+        darkTheme: darkTheme,
+        home: const MyHomePage(),
       ),
-      home: MyHomePage(),
     );
   }
 }
@@ -63,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),

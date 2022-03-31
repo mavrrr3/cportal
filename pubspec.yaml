@@ -43,6 +43,8 @@ dependencies:
   firebase_core: ^1.13.1
   firebase_messaging: ^11.2.11
   intl: ^0.17.0
+  adaptive_theme: ^2.3.0
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   dart_code_metrics: ^4.13.0
