@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   // await Firebase.initializeApp();
   runApp(const MyApp());
 }
