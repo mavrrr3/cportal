@@ -1,7 +1,7 @@
-import 'package:cportal_flutter/domain/entities/user_entity.dart';
-import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_user_bloc/get_single_user_bloc.dart';
-import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_user_bloc/get_single_user_event.dart';
-import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_user_bloc/get_single_user_state.dart';
+import 'package:cportal_flutter/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,24 +13,24 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late UserEntity user;
+  late ProfileEntity profile;
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<GetSingleUserBloc>(
+    BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleUserEventImpl('983636252'));
+    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
 
-    return BlocBuilder<GetSingleUserBloc, GetSingleUserState>(
+    return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
-        if (state is GetSingleUserLoadingState) {
-          return const CircularProgressIndicator();
+        if (state is GetSingleProfileLoadingState) {
+          return const Center(child: CircularProgressIndicator());
         }
-        if (state is GetSingleUserLoadedState) {
-          user = state.user;
+        if (state is GetSingleProfileLoadedState) {
+          profile = state.profile;
 
           return Center(
-            child: Text(user.userName),
+            child: Text(profile.firstName),
           );
         }
 

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'presentation/bloc/user_bloc/get_single_user_bloc/get_single_user_bloc.dart';
+import 'presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'presentation/ui/pages/main_page.dart';
 
 void main() async {
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<GetSingleUserBloc>(
-          create: (ctx) => sl<GetSingleUserBloc>(),
+        BlocProvider<GetSingleProfileBloc>(
+          create: (ctx) => sl<GetSingleProfileBloc>(),
         ),
       ],
       child: AdaptiveTheme(

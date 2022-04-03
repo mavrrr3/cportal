@@ -82,11 +82,11 @@ class ProfileModel extends ProfileEntity {
 class PhoneModel extends PhoneEntity {
   const PhoneModel({
     required String number,
-    required String suffix,
+    required String? suffix,
     required bool primary,
   }) : super(
           number: number,
-          suffix: suffix,
+          suffix: suffix ?? '',
           primary: primary,
         );
 
