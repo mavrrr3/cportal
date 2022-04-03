@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cportal_flutter/data/models/user_model.dart';
 
 abstract class UserRemoteDataSource {
@@ -15,17 +17,26 @@ abstract class UserRemoteDataSource {
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<UserModel> getSingleUser(String id) async {
-    return const UserModel(
-      id: 'id',
-      username: 'Василий Алибабаевич Мирошниченко',
-      position: 'Главный бухгалтер',
-      image:
-          'https://demotivation.ru/wp-content/uploads/2021/01/scale_1200-1-768x403.jpg',
-      department: 'Бухгалтерия',
-      email: 'email@mail.ru',
-      internalPhone: '45678',
-      externalPhone: '+79094450353',
-    );
+    String stringUser = '''
+                          {
+                            "id": "983636252",
+                            "user_name": "login",
+                            "profile_id": "2828287272",
+                            "last_login": "2022-03-21T14:59:58.884Z",
+                            "blocked": false,
+                            "date_created": "2022-03-21T14:59:58.884Z",
+                            "user_created": "838383",
+                            "date_updaetd": null,
+                            "user_updated": "",
+                            "user_type": {
+                              "id": "01",
+                              "code": "A",
+                              "description": "Администратор"
+                            }}''';
+    var jsonUser = json.decode(stringUser);
+    UserModel localeUser = UserModel.fromJson(jsonUser);
+
+    return localeUser;
   }
 
   @override
