@@ -19,7 +19,7 @@ class _MainPageState extends State<MainPage> {
     BlocProvider.of<GetSingleUserBloc>(
       context,
       listen: false,
-    ).add(const GetSingleUserEventImpl('id'));
+    ).add(const GetSingleUserEventImpl('983636252'));
 
     return BlocBuilder<GetSingleUserBloc, GetSingleUserState>(
       builder: (context, state) {
@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
           user = state.user;
 
           return Center(
-            child: Text(user.username),
+            child: Text(user.userName),
           );
         }
 
