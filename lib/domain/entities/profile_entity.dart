@@ -2,14 +2,7 @@
 //
 //     final profile = profileFromJson(jsonString);
 
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
-
-ProfileEntity profileFromJson(String str) =>
-    ProfileEntity.fromJson(json.decode(str));
-
-String profileToJson(ProfileEntity data) => json.encode(data.toJson());
 
 class ProfileEntity extends Equatable {
   const ProfileEntity({
@@ -37,46 +30,12 @@ class ProfileEntity extends Equatable {
   final String email;
   final String photoLink;
   final bool active;
-  final Position position;
-  final List<Phone> phone;
+  final PositionEntity position;
+  final List<PhoneEntity> phone;
   final String userCreated;
   final DateTime dateCreated;
   final String userUpdate;
   final DateTime dateUpdated;
-
-  factory ProfileEntity.fromJson(Map<String, dynamic> json) => ProfileEntity(
-        id: json['id'],
-        externalId: json['external_id'],
-        firstName: json['first_name'],
-        lastName: json['last_name'],
-        middleName: json['middle_name'],
-        email: json['email'],
-        photoLink: json['photo_link'],
-        active: json['active'],
-        position: Position.fromJson(json['position']),
-        phone: List<Phone>.from(json['phone'].map((x) => Phone.fromJson(x))),
-        userCreated: json['user_created'],
-        dateCreated: DateTime.parse(json['date_created']),
-        userUpdate: json['user_update'],
-        dateUpdated: DateTime.parse(json['date_updated']),
-      );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'external_id': externalId,
-        'first_name': firstName,
-        'last_name': lastName,
-        'middle_name': middleName,
-        'email': email,
-        'photo_link': photoLink,
-        'active': active,
-        'position': position.toJson(),
-        'phone': List<Phone>.from(phone.map((x) => x.toJson())),
-        'user_created': userCreated,
-        'date_created': dateCreated.toIso8601String(),
-        'user_update': userUpdate,
-        'date_updated': dateUpdated.toIso8601String(),
-      };
 
   @override
   List<Object?> get props => [
@@ -97,8 +56,8 @@ class ProfileEntity extends Equatable {
       ];
 }
 
-class Phone {
-  Phone({
+class PhoneEntity extends Equatable {
+  const PhoneEntity({
     required this.number,
     required this.suffix,
     required this.primary,
@@ -108,21 +67,12 @@ class Phone {
   final String suffix;
   final bool primary;
 
-  factory Phone.fromJson(Map<String, dynamic> json) => Phone(
-        number: json['number'],
-        suffix: json['suffix'],
-        primary: json['primary'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'number': number,
-        'suffix': suffix,
-        'primary': primary,
-      };
+  @override
+  List<Object?> get props => [number, suffix, primary];
 }
 
-class Position {
-  Position({
+class PositionEntity extends Equatable {
+  const PositionEntity({
     required this.id,
     required this.description,
   });
@@ -130,13 +80,6 @@ class Position {
   final String id;
   final String description;
 
-  factory Position.fromJson(Map<String, dynamic> json) => Position(
-        id: json['id'],
-        description: json['description'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'description': description,
-      };
+  @override
+  List<Object?> get props => [id, description];
 }
