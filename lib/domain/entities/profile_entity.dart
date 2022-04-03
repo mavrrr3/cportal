@@ -4,13 +4,15 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 ProfileEntity profileFromJson(String str) =>
     ProfileEntity.fromJson(json.decode(str));
 
 String profileToJson(ProfileEntity data) => json.encode(data.toJson());
 
-class ProfileEntity {
-  ProfileEntity({
+class ProfileEntity extends Equatable {
+  const ProfileEntity({
     required this.id,
     required this.externalId,
     required this.firstName,
@@ -75,6 +77,24 @@ class ProfileEntity {
         'user_update': userUpdate,
         'date_updated': dateUpdated.toIso8601String(),
       };
+
+  @override
+  List<Object?> get props => [
+        id,
+        externalId,
+        firstName,
+        lastName,
+        middleName,
+        email,
+        photoLink,
+        active,
+        position,
+        phone,
+        userCreated,
+        dateCreated,
+        userUpdate,
+        dateUpdated,
+      ];
 }
 
 class Phone {
