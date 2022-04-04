@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/data/datasources/profile_local_datasource.dart';
 import 'package:cportal_flutter/data/models/profile_model.dart';
@@ -46,7 +44,6 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 },
 {
 "number": "987-65-06",
-
 "primary": false
 }
 ],
@@ -58,8 +55,10 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     try {
       //TODO реализовать получение данных от API
-      var jsonUser = json.decode(stringUser);
-      ProfileModel localeUser = ProfileModel.fromJson(jsonUser);
+
+      ProfileModel localeUser = profileModelFromJson(stringUser);
+      log('$localeUser');
+
       await localDataSource.singleProfileToCache(localeUser);
 
       return localeUser;

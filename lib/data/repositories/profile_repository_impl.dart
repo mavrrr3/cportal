@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/core/platform/network_info.dart';
 import 'package:cportal_flutter/data/datasources/profile_remote_datasource.dart';
@@ -61,8 +59,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
 "user_update": "id_user_updated",
 "date_updated": "2022-03-21T14:37:12.068Z"
 }''';
-        var jsonUser = json.decode(stringUser);
-        ProfileModel localeUser = ProfileModel.fromJson(jsonUser);
+
+        ProfileModel localeUser = profileModelFromJson(stringUser);
 
         return Right(localeUser);
       } on CacheException {

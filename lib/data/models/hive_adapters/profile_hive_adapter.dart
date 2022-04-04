@@ -1,9 +1,10 @@
 import 'package:cportal_flutter/domain/entities/profile_entity.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
 
 class ProfileHiveAdapter extends TypeAdapter<ProfileEntity> {
   @override
-  final typeId = 2;
+  final typeId = 1;
 
   @override
   ProfileEntity read(BinaryReader reader) {
@@ -16,7 +17,7 @@ class ProfileHiveAdapter extends TypeAdapter<ProfileEntity> {
     final String photoLink = reader.readString();
     final bool active = reader.readBool();
     final PositionEntity position = reader.read();
-    final List<PhoneEntity> phone = reader.read() as List<PhoneEntity>;
+    final List<PhoneEntity> phone = reader.read();
     final String userCreated = reader.readString();
     final DateTime dateCreated = reader.read();
     final String userUpdate = reader.readString();
@@ -61,7 +62,7 @@ class ProfileHiveAdapter extends TypeAdapter<ProfileEntity> {
 
 class PositionHiveAdapter extends TypeAdapter<PositionEntity> {
   @override
-  final typeId = 3;
+  final typeId = 2;
 
   @override
   PositionEntity read(BinaryReader reader) {
@@ -83,17 +84,17 @@ class PositionHiveAdapter extends TypeAdapter<PositionEntity> {
 
 class PhoneHiveAdapter extends TypeAdapter<PhoneEntity> {
   @override
-  final typeId = 4;
+  final typeId = 3;
 
   @override
   PhoneEntity read(BinaryReader reader) {
     final String number = reader.readString();
-    final String? suffix = reader.readString();
+    final String? suffix = reader.read();
     final bool primary = reader.readBool();
 
     return PhoneEntity(
       number: number,
-      suffix: suffix,
+      suffix: suffix ?? '',
       primary: primary,
     );
   }

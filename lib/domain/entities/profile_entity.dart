@@ -64,7 +64,7 @@ class PhoneEntity extends Equatable {
   });
 
   final String number;
-  final String? suffix;
+  final String suffix;
   final bool primary;
 
   @override

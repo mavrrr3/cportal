@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'dart:convert';
 
 class UserEntity extends Equatable {
   const UserEntity({

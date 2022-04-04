@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class UserHiveAdapter extends TypeAdapter<UserEntity> {
   @override
-  final typeId = 1;
+  final typeId = 0;
 
   @override
   UserEntity read(BinaryReader reader) {

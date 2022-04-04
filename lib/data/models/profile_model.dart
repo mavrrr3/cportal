@@ -1,28 +1,35 @@
+// To parse this JSON data, do
+//
+//     final profileModel = profileModelFromJson(jsonString);
+
 import 'dart:convert';
 
 import 'package:cportal_flutter/domain/entities/profile_entity.dart';
 
-ProfileModel profileFromJson(String str) =>
+ProfileModel profileModelFromJson(String str) =>
     ProfileModel.fromJson(json.decode(str));
 
-String profileToJson(ProfileModel data) => json.encode(data.toJson());
+String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
+
+PhoneModel phoneModelFromJson(String str) =>
+    PhoneModel.fromJson(json.decode(str));
 
 class ProfileModel extends ProfileEntity {
   const ProfileModel({
-    required final String id,
-    required final String externalId,
-    required final String firstName,
-    required final String lastName,
-    required final String middleName,
-    required final String email,
-    required final String photoLink,
-    required final bool active,
-    required final PositionEntity position,
-    required final List<PhoneEntity> phone,
-    required final String userCreated,
-    required final DateTime dateCreated,
-    required final String userUpdate,
-    required final DateTime dateUpdated,
+    required String id,
+    required String firstName,
+    required String externalId,
+    required String lastName,
+    required String middleName,
+    required String email,
+    required String photoLink,
+    required bool active,
+    required PositionModel position,
+    required List<PhoneModel> phone,
+    required String userCreated,
+    required DateTime dateCreated,
+    required String userUpdate,
+    required DateTime dateUpdated,
   }) : super(
           id: id,
           externalId: externalId,
@@ -70,7 +77,7 @@ class ProfileModel extends ProfileEntity {
         'active': active,
         'position': (position as PositionModel).toJson(),
         'phone': List<PhoneModel>.from(
-          (phone as List<PhoneModel>).map((x) => x.toJson()),
+          phone.map((x) => (x as PhoneModel).toJson()),
         ),
         'user_created': userCreated,
         'date_created': dateCreated.toIso8601String(),
@@ -81,9 +88,9 @@ class ProfileModel extends ProfileEntity {
 
 class PhoneModel extends PhoneEntity {
   const PhoneModel({
-    required String number,
-    required String? suffix,
-    required bool primary,
+    required number,
+    required suffix,
+    required primary,
   }) : super(
           number: number,
           suffix: suffix ?? '',
@@ -105,8 +112,8 @@ class PhoneModel extends PhoneEntity {
 
 class PositionModel extends PositionEntity {
   const PositionModel({
-    required String id,
-    required String description,
+    required final id,
+    required final description,
   }) : super(
           id: id,
           description: description,
