@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
+import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/data/datasources/profile_local_datasource.dart';
 import 'package:cportal_flutter/data/models/profile_model.dart';
 
 abstract class ProfileRemoteDataSource {
@@ -15,6 +19,9 @@ abstract class ProfileRemoteDataSource {
 }
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
+  final ProfileLocalDataSource localDataSource;
+
+  ProfileRemoteDataSourceImpl(this.localDataSource);
   @override
   Future<ProfileModel> getSingleProfile(String id) async {
     String stringUser = '''
@@ -48,10 +55,20 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 "user_update": "id_user_updated",
 "date_updated": "2022-03-21T14:37:12.068Z"
 }''';
-    var jsonUser = json.decode(stringUser);
-    ProfileModel localeUser = ProfileModel.fromJson(jsonUser);
 
-    return localeUser;
+    try {
+      //TODO реализовать получение данных от API
+      var jsonUser = json.decode(stringUser);
+      ProfileModel localeUser = ProfileModel.fromJson(jsonUser);
+      await localDataSource.singleProfileToCache(localeUser);
+
+      return localeUser;
+    } on SocketException {
+      throw ServerException();
+    } catch (e) {
+      log('Ошибка в методе ProfileRemoteDataSource: $e');
+      rethrow;
+    }
   }
 
   @override

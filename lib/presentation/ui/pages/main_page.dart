@@ -30,7 +30,15 @@ class _MainPageState extends State<MainPage> {
           profile = state.profile;
 
           return Center(
-            child: Text(profile.firstName),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(profile.firstName),
+                Text(profile.middleName),
+                Text(profile.lastName),
+                Text(profile.photoLink),
+              ],
+            ),
           );
         }
 

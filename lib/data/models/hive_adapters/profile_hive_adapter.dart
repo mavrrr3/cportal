@@ -16,7 +16,7 @@ class ProfileHiveAdapter extends TypeAdapter<ProfileEntity> {
     final String photoLink = reader.readString();
     final bool active = reader.readBool();
     final PositionEntity position = reader.read();
-    final List<PhoneEntity> phone = reader.read();
+    final List<PhoneEntity> phone = reader.read() as List<PhoneEntity>;
     final String userCreated = reader.readString();
     final DateTime dateCreated = reader.read();
     final String userUpdate = reader.readString();
@@ -56,5 +56,52 @@ class ProfileHiveAdapter extends TypeAdapter<ProfileEntity> {
     writer.writeString(obj.userUpdate);
     writer.write(obj.dateCreated);
     writer.write(obj.dateUpdated);
+  }
+}
+
+class PositionHiveAdapter extends TypeAdapter<PositionEntity> {
+  @override
+  final typeId = 3;
+
+  @override
+  PositionEntity read(BinaryReader reader) {
+    final String id = reader.readString();
+    final String description = reader.readString();
+
+    return PositionEntity(
+      id: id,
+      description: description,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, PositionEntity obj) {
+    writer.writeString(obj.id);
+    writer.writeString(obj.description);
+  }
+}
+
+class PhoneHiveAdapter extends TypeAdapter<PhoneEntity> {
+  @override
+  final typeId = 4;
+
+  @override
+  PhoneEntity read(BinaryReader reader) {
+    final String number = reader.readString();
+    final String? suffix = reader.readString();
+    final bool primary = reader.readBool();
+
+    return PhoneEntity(
+      number: number,
+      suffix: suffix,
+      primary: primary,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, PhoneEntity obj) {
+    writer.writeString(obj.number);
+    writer.write(obj.suffix);
+    writer.writeBool(obj.primary);
   }
 }

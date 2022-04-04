@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/core/platform/network_info.dart';
+import 'package:cportal_flutter/data/datasources/profile_local_datasource.dart';
 import 'package:cportal_flutter/data/datasources/profile_remote_datasource.dart';
 import 'package:cportal_flutter/data/repositories/profile_repository_impl.dart';
 import 'package:cportal_flutter/domain/repositories/profile_repository.dart';
@@ -27,7 +28,11 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<ProfileRemoteDataSource>(
-    () => ProfileRemoteDataSourceImpl(),
+    () => ProfileRemoteDataSourceImpl(sl()),
+  );
+
+  sl.registerLazySingleton<ProfileLocalDataSource>(
+    () => ProfileLocalDataSourceImpl(),
   );
 
   // CORE
