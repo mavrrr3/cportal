@@ -41,22 +41,24 @@ dependencies:
   # Localization
   intl: ^0.17.0
 
-  # Dark/Light theme switcher
+  # Theme
   adaptive_theme: ^2.3.0
+  flutter_svg: ^1.0.3
+  google_fonts: ^2.3.1
+  pinput: ^2.2.7
 
   # State management for realisation bisness logic
   flutter_bloc: ^8.0.1
-  appwrite: ^4.0.1
+
+  # Other
   device_info_plus_web: ^2.1.0
-  flutter_svg: ^1.0.3
   # flutter_web_auth: ^0.4.1
 
 dev_dependencies:
   dart_code_metrics: ^4.13.0
+  flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^1.0.0
 
 flutter:
   generate: true

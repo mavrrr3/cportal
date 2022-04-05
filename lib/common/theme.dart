@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const appBarTheme = AppBarTheme(
   centerTitle: true,
@@ -29,3 +30,19 @@ ThemeData darkTheme(BuildContext context) => ThemeData.dark().copyWith(
       textTheme: Theme.of(context).textTheme.apply(displayColor: Colors.white),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
+
+final kMainTextRusso = GoogleFonts.russoOne(
+  textStyle: const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textMain,
+  ),
+);
+
+final kMainTextRoboto = GoogleFonts.roboto(
+  textStyle: const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textMain,
+  ),
+);

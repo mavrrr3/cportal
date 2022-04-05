@@ -19,7 +19,7 @@ class AppColors {
   static const Color cardColor = Color(0xFF37314D);
   static const Color orange = Color(0xFFDB5342);
   static const Color textHeader = Color(0xFFEAEAEA);
-  static const Color textMain = Color(0xFF9894AA);
+  static const Color textMain = Color(0xFF282A2D);
   static const Color textBlue = Color(0xFF41BDFC);
   static const Color golden = Color(0xFFb8860b);
 }

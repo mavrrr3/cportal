@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'presentation/ui/pages/connecting_code_page.dart';
 import 'presentation/ui/pages/main_page.dart';
 
 void main() async {
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
           supportedLocales: AppLocalizations.supportedLocales,
           theme: theme,
           darkTheme: darkTheme,
-          home: const MyHomePage(),
+          home: const ConnectingCodePage(),
         ),
       ),
     );
