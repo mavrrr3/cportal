@@ -71,7 +71,7 @@ class ArticleModel extends ArticleEntity {
 }
 
 class ArticleTypeModel extends ArticleTypeEntity {
-  ArticleTypeModel({
+  const ArticleTypeModel({
     required id,
     required code,
     required description,

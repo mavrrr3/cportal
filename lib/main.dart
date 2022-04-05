@@ -7,6 +7,7 @@ import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'presentation/ui/pages/connecting_code_page.dart';
@@ -36,13 +37,16 @@ class MyApp extends StatelessWidget {
         light: lightTheme(context),
         dark: darkTheme(context),
         initial: AdaptiveThemeMode.light,
-        builder: (theme, darkTheme) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: theme,
-          darkTheme: darkTheme,
-          home: const ConnectingCodePage(),
+        builder: (theme, darkTheme) => ScreenUtilInit(
+          builder: (() => MaterialApp(
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                theme: theme,
+                darkTheme: darkTheme,
+                home: const ConnectingCodePage(),
+              )),
+          designSize: const Size(360, 640),
         ),
       ),
     );

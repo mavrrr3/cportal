@@ -1,152 +1,111 @@
+import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pinput/pinput.dart';
 
 final controller = TextEditingController();
+final textEdited = controller.text;
 final focusNode = FocusNode();
+bool _isRightCode = true;
+
+const mockupHeight = 640;
+const mockupWidth = 360;
 
 class ConnectingCodePage extends StatelessWidget {
   const ConnectingCodePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    // var width = MediaQuery.of(context).size.width;
+    // var scale = mockupWidth / width;
+
+    return ScreenUtilInit(
+      builder: (() => Scaffold(
+            body: Container(
+              decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(height: 48),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      svgIcon('logo_grey.svg', 24.0),
-                      svgIcon('qr_code.svg', 24.0),
-                    ],
-                  ),
-                  const SizedBox(height: 31.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            'Введите \nкод связывания',
-                            style: kMainTextRusso.copyWith(
-                              fontSize: 28,
-                              height: 1.286,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20.0.w,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 48.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            svgIcon('logo_grey.svg', 24.0.w),
+                            svgIcon('qr_code.svg', 24.0.w),
+                          ],
+                        ),
+                        SizedBox(height: 31.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  'Введите \nкод связывания',
+                                  style: kMainTextRusso.copyWith(
+                                    fontSize: 28.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Как получить код связывания?',
+                              style: kMainTextRoboto.copyWith(
+                                color: const Color(0xFF355A99),
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 27.h),
+                        const CellCodeInput(),
+                        SizedBox(height: 8.h),
+                        if (!_isRightCode) ...[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Opacity(
+                              opacity: 0.6,
+                              child: Text(
+                                'Введенный вами код не верен',
+                                style: kMainTextRoboto.copyWith(
+                                  color: AppColors.red,
+                                ),
+                              ),
                             ),
                           ),
                         ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  Column(
                     children: [
-                      Text(
-                        'Как получить код связывания?',
-                        style: kMainTextRoboto.copyWith(
-                          color: const Color(0xFF355A99),
-                          fontSize: 14,
-                          height: 1.428,
-                        ),
+                      CustomKeyboard(
+                        controller: controller,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 132),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      CellCodeInput(),
+                      SizedBox(height: 52.h),
                     ],
                   ),
                 ],
               ),
             ),
-            Column(
-              children: const [
-                CustomKeyboard(),
-                SizedBox(height: 52),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomKeyboard extends StatelessWidget {
-  const CustomKeyboard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            KeyboardNumber(number: 1),
-            KeyboardNumber(number: 2),
-            KeyboardNumber(number: 3),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            KeyboardNumber(number: 4),
-            KeyboardNumber(number: 5),
-            KeyboardNumber(number: 6),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            KeyboardNumber(number: 7),
-            KeyboardNumber(number: 8),
-            KeyboardNumber(number: 9),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const SizedBox(
-              width: 90,
-              child: MaterialButton(
-                onPressed: null,
-                child: SizedBox(),
-              ),
-            ),
-            const KeyboardNumber(number: 0),
-            SizedBox(
-              width: 90,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 60),
-                child: MaterialButton(
-                  height: 60,
-                  onPressed: () {
-                    if (controller.text != null && controller.text.length > 0) {
-                      controller.text = controller.text
-                          .substring(0, controller.text.length - 1);
-                    }
-                  },
-                  child: SvgPicture.asset(
-                    'assets/icons/backspace.svg',
-                    width: 48,
-                    height: 60,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+          )),
     );
   }
 }
@@ -175,13 +134,14 @@ class _CellCodeInputState extends State<CellCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
     final defaultPinTheme = PinTheme(
-      width: 44,
-      height: 52,
-      textStyle: kMainTextRoboto,
+      width: 44.w,
+      height: 52.h,
+      textStyle: _isRightCode
+          ? kMainTextRoboto
+          : kMainTextRoboto.copyWith(color: AppColors.red),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: _isRightCode ? Colors.white : AppColors.lightRed,
         borderRadius: BorderRadius.circular(8),
       ),
     );
@@ -202,16 +162,17 @@ class _CellCodeInputState extends State<CellCodeInput> {
     // );
 
     return Pinput(
+      useNativeKeyboard: false,
       length: 6,
       controller: controller,
       focusNode: focusNode,
       defaultPinTheme: defaultPinTheme,
-      separator: SizedBox(width: width / 30),
-      focusedPinTheme: defaultPinTheme.copyWith(
-        width: 52,
-        height: 62,
+      separator: SizedBox(width: 11.w),
+      focusedPinTheme: PinTheme(
+        width: 52.w,
+        height: 62.h,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: _isRightCode ? Colors.white : AppColors.lightRed,
           borderRadius: BorderRadius.circular(8),
           boxShadow: const [
             BoxShadow(
@@ -225,39 +186,6 @@ class _CellCodeInputState extends State<CellCodeInput> {
       ),
       showCursor: false,
       // cursor: cursor,
-    );
-  }
-}
-
-class KeyboardNumber extends StatelessWidget {
-  final int number;
-
-  const KeyboardNumber({
-    Key? key,
-    required this.number,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 60,
-      height: 60,
-      alignment: Alignment.center,
-      child: MaterialButton(
-        padding: const EdgeInsets.all(8.0),
-        onPressed: () {
-          controller.text += '$number';
-        },
-        height: 60,
-        child: Text(
-          '$number',
-          textAlign: TextAlign.center,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 32,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
     );
   }
 }

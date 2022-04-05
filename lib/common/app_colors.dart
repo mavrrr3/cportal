@@ -4,6 +4,8 @@ class AppColors {
   static const Color mainBgDark = Color(0xFF111315);
   static const Color mainBgLight = Color(0xFFDCDCEA);
   static const Color kLightTextColor = Color(0xFF111315);
+  static const Color lightRed = Color(0xFFEEDCDD);
+  static const Color red = Color(0xFFDF292F);
 
   static const Color mainBackground = Color(0xFF2A2E39);
   static const Color cellBackground = Color(0xFF313540);
@@ -13,10 +15,8 @@ class AppColors {
   static const Color navBarColor = Color(0xFF1C1E2A);
   static const Color fullWhiteColor = Color(0xFFFFFFFF);
   static const Color green = Color(0xFF2ACF5C);
-  static const Color redColor = Color(0xFFEB3140);
   static const Color blueWhiteColor = Color(0xFFF6F5FB);
 
-  static const Color cardColor = Color(0xFF37314D);
   static const Color orange = Color(0xFFDB5342);
   static const Color textHeader = Color(0xFFEAEAEA);
   static const Color textMain = Color(0xFF282A2D);
