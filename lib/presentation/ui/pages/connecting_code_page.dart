@@ -1,10 +1,10 @@
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
+
+final controller = TextEditingController();
+final focusNode = FocusNode();
 
 class ConnectingCodePage extends StatelessWidget {
   const ConnectingCodePage({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class ConnectingCodePage extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -58,23 +59,94 @@ class ConnectingCodePage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 132),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      CellCodeInput(),
+                    ],
+                  ),
                 ],
               ),
             ),
             Column(
-              children: [
-                const SizedBox(height: 32),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    CellCodeInput(),
-                  ],
-                ),
+              children: const [
+                CustomKeyboard(),
+                SizedBox(height: 52),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomKeyboard extends StatelessWidget {
+  const CustomKeyboard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            KeyboardNumber(number: 1),
+            KeyboardNumber(number: 2),
+            KeyboardNumber(number: 3),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            KeyboardNumber(number: 4),
+            KeyboardNumber(number: 5),
+            KeyboardNumber(number: 6),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            KeyboardNumber(number: 7),
+            KeyboardNumber(number: 8),
+            KeyboardNumber(number: 9),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const SizedBox(
+              width: 90,
+              child: MaterialButton(
+                onPressed: null,
+                child: SizedBox(),
+              ),
+            ),
+            const KeyboardNumber(number: 0),
+            SizedBox(
+              width: 90,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 60),
+                child: MaterialButton(
+                  height: 60,
+                  onPressed: () {
+                    if (controller.text != null && controller.text.length > 0) {
+                      controller.text = controller.text
+                          .substring(0, controller.text.length - 1);
+                    }
+                  },
+                  child: SvgPicture.asset(
+                    'assets/icons/backspace.svg',
+                    width: 48,
+                    height: 60,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -91,15 +163,9 @@ class CellCodeInput extends StatefulWidget {
 
   @override
   _CellCodeInputState createState() => _CellCodeInputState();
-
-  @override
-  String toStringShort() => 'Rounded With Shadow';
 }
 
 class _CellCodeInputState extends State<CellCodeInput> {
-  final controller = TextEditingController();
-  final focusNode = FocusNode();
-
   @override
   void dispose() {
     controller.dispose();
@@ -113,10 +179,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
     final defaultPinTheme = PinTheme(
       width: 44,
       height: 52,
-      textStyle: GoogleFonts.poppins(
-        fontSize: 20,
-        color: const Color.fromRGBO(70, 69, 66, 1),
-      ),
+      textStyle: kMainTextRoboto,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -143,7 +206,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
       controller: controller,
       focusNode: focusNode,
       defaultPinTheme: defaultPinTheme,
-      separator: SizedBox(width: width / 26),
+      separator: SizedBox(width: width / 30),
       focusedPinTheme: defaultPinTheme.copyWith(
         width: 52,
         height: 62,
@@ -160,8 +223,41 @@ class _CellCodeInputState extends State<CellCodeInput> {
           ],
         ),
       ),
-      // showCursor: false,
+      showCursor: false,
       // cursor: cursor,
+    );
+  }
+}
+
+class KeyboardNumber extends StatelessWidget {
+  final int number;
+
+  const KeyboardNumber({
+    Key? key,
+    required this.number,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 60,
+      height: 60,
+      alignment: Alignment.center,
+      child: MaterialButton(
+        padding: const EdgeInsets.all(8.0),
+        onPressed: () {
+          controller.text += '$number';
+        },
+        height: 60,
+        child: Text(
+          '$number',
+          textAlign: TextAlign.center,
+          style: kMainTextRoboto.copyWith(
+            fontSize: 32,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
     );
   }
 }
