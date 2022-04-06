@@ -28,7 +28,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
       }
     } else {
       try {
-        //TODO Реализовать обращение к локальным данным в случае отсутствия интернет соединения
         var stringUser = '''
                           {
 "id": "A1B2C3D4E5",

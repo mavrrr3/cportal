@@ -1,7 +1,7 @@
+import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -23,23 +23,10 @@ class SplashScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Logo(width: 120.w),
+            child: SvgIcon(null, path: 'logo.svg', width: 120.w),
           ),
         ],
       ),
-    );
-  }
-}
-
-class Logo extends StatelessWidget {
-  final double width;
-  const Logo({Key? key, required this.width}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      'assets/icons/logo.svg',
-      width: width,
     );
   }
 }
