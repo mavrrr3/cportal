@@ -7,22 +7,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-final _codeController = TextEditingController();
-
-final _codeFocusNode = FocusNode();
+final _pinController = TextEditingController();
+final _pinFocusNode = FocusNode();
 bool _isRightCode = true;
 
-const mockupHeight = 640;
-const mockupWidth = 360;
+// const mockupHeight = 640;
+// const mockupWidth = 360;
 
-class ConnectingCodePage extends StatelessWidget {
-  const ConnectingCodePage({Key? key}) : super(key: key);
+class PinCodePage extends StatelessWidget {
+  const PinCodePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // var width = MediaQuery.of(context).size.width;
-    // var scale = mockupWidth / width;
-
     return ScreenUtilInit(
       builder: (() => Scaffold(
             body: Container(
@@ -41,7 +37,6 @@ class ConnectingCodePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             svgIcon('logo_grey.svg', 24.0.w),
-                            svgIcon('qr_code.svg', 24.0.w),
                           ],
                         ),
                         SizedBox(height: 31.h),
@@ -51,8 +46,7 @@ class ConnectingCodePage extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  AppLocalizations.of(context)!
-                                      .inputConnectingCode,
+                                  AppLocalizations.of(context)!.inputPinCode,
                                   style: kMainTextRusso.copyWith(
                                     fontSize: 28.sp,
                                   ),
@@ -67,54 +61,43 @@ class ConnectingCodePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              onTap: () => _showHowToGetCOnnectingCode(context),
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .howToGetConnectingCode,
-                                style: kMainTextRoboto.copyWith(
-                                  color: const Color(0xFF355A99),
-                                  fontSize: 14.sp,
-                                ),
+                            Text(
+                              _isRightCode
+                                  ? AppLocalizations.of(context)!
+                                      .itWillBeNeedToEnter
+                                  : '',
+                              style: kMainTextRoboto.copyWith(
+                                fontSize: 14.sp,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 27.h),
-                        const CellCodeInput(),
-                        SizedBox(height: 8.h),
-                        if (!_isRightCode) ...[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Opacity(
-                              opacity: 0.6,
-                              child: colorText(
-                                AppLocalizations.of(context)!
-                                    .wrongConnectingCode,
-                                'red',
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              AppLocalizations.of(context)!
-                                  .tryToRepeatAfter30sec,
+                        SizedBox(height: 66.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              _isRightCode
+                                  ? ''
+                                  : AppLocalizations.of(context)!.pinNotCorrect,
                               style: kMainTextRoboto.copyWith(
                                 fontSize: 14.sp,
-                                color: AppColors.kLightTextColor,
+                                color: AppColors.red.withOpacity(0.6),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        const PinCodeInput(),
+                        SizedBox(height: 8.h),
                       ],
                     ),
                   ),
                   Column(
                     children: [
                       CustomKeyboard(
-                        controller: _codeController,
-                        simbolQuantity: 6,
+                        controller: _pinController,
+                        simbolQuantity: 4,
                       ),
                       SizedBox(height: 52.h),
                     ],
@@ -127,39 +110,37 @@ class ConnectingCodePage extends StatelessWidget {
   }
 }
 
-Widget svgIcon(path, width) {
+Widget svgIcon(path, width, [color]) {
   return SvgPicture.asset(
     'assets/icons/$path',
     width: width,
+    color: color,
   );
 }
 
-class CellCodeInput extends StatefulWidget {
-  const CellCodeInput({Key? key}) : super(key: key);
+class PinCodeInput extends StatefulWidget {
+  const PinCodeInput({Key? key}) : super(key: key);
 
   @override
-  _CellCodeInputState createState() => _CellCodeInputState();
+  _PinCodeInputState createState() => _PinCodeInputState();
 }
 
-class _CellCodeInputState extends State<CellCodeInput> {
+class _PinCodeInputState extends State<PinCodeInput> {
   @override
   void dispose() {
-    _codeController.dispose();
-    _codeFocusNode.dispose();
+    _pinController.dispose();
+    _pinFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 44.w,
-      height: 52.h,
-      textStyle: _isRightCode
-          ? kMainTextRoboto
-          : kMainTextRoboto.copyWith(color: AppColors.red),
+      width: 16.w,
+      height: 14.h,
       decoration: BoxDecoration(
-        color: _isRightCode ? Colors.white : AppColors.lightRed,
-        borderRadius: BorderRadius.circular(8),
+        color: AppColors.kLightTextColor.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(15),
       ),
     );
 
@@ -179,28 +160,19 @@ class _CellCodeInputState extends State<CellCodeInput> {
     // );
 
     return Pinput(
-      useNativeKeyboard: false,
-      length: 6,
-      controller: _codeController,
-      focusNode: _codeFocusNode,
-      defaultPinTheme: defaultPinTheme,
-      separator: SizedBox(width: 11.w),
-      focusedPinTheme: PinTheme(
-        width: 52.w,
-        height: 62.h,
-        decoration: BoxDecoration(
-          color: _isRightCode ? Colors.white : AppColors.lightRed,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(40, 42, 45, 0.08),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
+      obscureText: true,
+      obscuringWidget: svgIcon(
+        'obscure_symbol.svg',
+        16.w,
+        _isRightCode ? AppColors.blue : AppColors.red,
       ),
+      useNativeKeyboard: false,
+      length: 4,
+      controller: _pinController,
+      focusNode: _pinFocusNode,
+      defaultPinTheme: defaultPinTheme,
+      separator: SizedBox(width: 32.w),
+      focusedPinTheme: defaultPinTheme,
       showCursor: false,
       // cursor: cursor,
     );

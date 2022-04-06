@@ -1,15 +1,27 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/theme.dart';
-import 'package:cportal_flutter/presentation/ui/pages/connecting_code_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+late int _simbolQuantity;
+TextEditingController _codeController = TextEditingController();
+
 class CustomKeyboard extends StatelessWidget {
+  final int simbolQuantity;
   final TextEditingController controller;
-  const CustomKeyboard({Key? key, required this.controller}) : super(key: key);
+  const CustomKeyboard({
+    Key? key,
+    required this.controller,
+    required this.simbolQuantity,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _simbolQuantity = simbolQuantity;
+    _codeController = controller;
+
     return Column(
       children: [
         Row(
@@ -57,6 +69,7 @@ class CustomKeyboard extends StatelessWidget {
                     if (controller.text.isNotEmpty) {
                       controller.text = controller.text
                           .substring(0, controller.text.length - 1);
+                      log(controller.text);
                     }
                   },
                   child: SvgPicture.asset(
@@ -91,7 +104,8 @@ class KeyboardNumber extends StatelessWidget {
       child: MaterialButton(
         padding: const EdgeInsets.all(8.0),
         onPressed: () {
-          concatTextFieled(number, controller);
+          concatTextFieled(number, _codeController);
+          log(_codeController.text);
         },
         height: 60.h,
         child: Text(
@@ -109,7 +123,7 @@ class KeyboardNumber extends StatelessWidget {
 
 String concatTextFieled(number, controller) {
   String text = '';
-  if (controller.text.length < 7) {
+  if (controller.text.length < _simbolQuantity) {
     controller.text += '$number';
     text = controller.text;
   }

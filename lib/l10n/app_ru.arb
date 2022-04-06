@@ -26,5 +26,8 @@
     "callAfter": "Позвоните через",
     "hours": "часов",
     "hours2": "часа",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "inputPinCode": "Придумайте ПИН",
+    "itWillBeNeedToEnter": "Он будет использоваться для входа",
+    "pinNotCorrect": "ПИН не совпадает"
 }
