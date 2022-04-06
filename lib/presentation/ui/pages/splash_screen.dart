@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -20,9 +21,9 @@ class SplashScreen extends StatelessWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Center(
-            child: Logo(width: 150),
+            child: Logo(width: 120.w),
           ),
         ],
       ),
