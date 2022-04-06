@@ -28,6 +28,7 @@
     "hours2": "часа",
     "close": "Закрыть",
     "inputPinCode": "Придумайте ПИН",
+    "repeatPinCode": "Подтвердите ПИН",
     "itWillBeNeedToEnter": "Он будет использоваться для входа",
     "pinNotCorrect": "ПИН не совпадает"
 }
