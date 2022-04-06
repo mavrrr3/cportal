@@ -11,9 +11,6 @@ final _pinController = TextEditingController();
 final _pinFocusNode = FocusNode();
 bool _isRightCode = true;
 
-// const mockupHeight = 640;
-// const mockupWidth = 360;
-
 class PinCodePage extends StatelessWidget {
   const PinCodePage({Key? key}) : super(key: key);
 
