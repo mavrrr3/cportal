@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/data/models/hive_adapters/profile_hive_adapter.dart';
 import 'package:cportal_flutter/data/models/hive_adapters/user_hive_adapter.dart';
+import 'package:cportal_flutter/presentation/ui/pages/connecting_code_page.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
                 supportedLocales: AppLocalizations.supportedLocales,
                 theme: theme,
                 darkTheme: darkTheme,
-                home: const PinCodePage(),
+                home: const ConnectingCodePage(),
               )),
           designSize: const Size(360, 640),
         ),

@@ -2,10 +2,10 @@ import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
+import 'package:cportal_flutter/presentation/ui/widgets/what_get_with_you.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/work_mode_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -218,18 +218,24 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            title: Text(
-              AppLocalizations.of(context)!.howToGetCodeTitle,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      AppLocalizations.of(context)!.howToGetCodeTitle,
+                      style: kMainTextRoboto.copyWith(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8.sp,
+                  ),
                   Text(
                     AppLocalizations.of(context)!.howToGetCodeText,
                     style: kMainTextRoboto.copyWith(
@@ -295,14 +301,14 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      whatGetWithYou(
-                        'assets/icons/what_get_icon.svg',
-                        AppLocalizations.of(context)!.passport,
+                      WhatGetWithYou(
+                        iconPath: 'assets/icons/what_get_icon.svg',
+                        text: AppLocalizations.of(context)!.passport,
                       ),
-                      whatGetWithYou(
-                        'assets/icons/what_get_icon.svg',
-                        AppLocalizations.of(context)!.pass,
-                        AppColors.blue,
+                      WhatGetWithYou(
+                        iconPath: 'assets/icons/what_get_icon.svg',
+                        text: AppLocalizations.of(context)!.pass,
+                        color: AppColors.blue,
                       ),
                     ],
                   ),
@@ -383,26 +389,6 @@ Widget phoneButton() {
         ),
       ],
     ),
-  );
-}
-
-Column whatGetWithYou(String iconPath, String text, [Color? color]) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      SvgPicture.asset(
-        iconPath,
-        width: 24.w,
-        color: color,
-      ),
-      SizedBox(
-        height: 14.67.h,
-      ),
-      Text(
-        text,
-        style: kMainTextRoboto,
-      ),
-    ],
   );
 }
 
