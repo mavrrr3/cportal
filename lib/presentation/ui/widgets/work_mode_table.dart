@@ -8,60 +8,62 @@ class WorkModeTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> _daysOfWeek = [
-      AppLocalizations.of(context)!.monday,
-      AppLocalizations.of(context)!.tuesday,
-      AppLocalizations.of(context)!.wednesday,
-      AppLocalizations.of(context)!.thursday,
-      AppLocalizations.of(context)!.friday,
-      AppLocalizations.of(context)!.saturday,
-      AppLocalizations.of(context)!.sunday,
+    var locale = AppLocalizations.of(context)!;
+
+    var workModeMap = [
+      {
+        'day': locale.monday,
+        'time': locale.workTime,
+      },
+      {
+        'day': locale.tuesday,
+        'time': locale.workTime,
+      },
+      {
+        'day': locale.wednesday,
+        'time': locale.workTime,
+      },
+      {
+        'day': locale.thursday,
+        'time': locale.workTime,
+      },
+      {
+        'day': locale.friday,
+        'time': locale.workTime,
+      },
+      {
+        'day': locale.saturday,
+        'time': locale.weekEnd,
+      },
+      {
+        'day': locale.sunday,
+        'time': locale.weekEnd,
+      },
     ];
 
     return Column(
       children: [
-        ..._daysOfWeek
+        ...workModeMap
             .map(
-              (day) => TextWorkModeTable(
-                dayText: day,
-                timeText: day == AppLocalizations.of(context)!.saturday ||
-                        day == AppLocalizations.of(context)!.sunday
-                    ? AppLocalizations.of(context)!.weekEnd
-                    : AppLocalizations.of(context)!.workTime,
+              (row) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    row['day']!,
+                    style: kMainTextRoboto.copyWith(
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                  Text(
+                    row['time']!,
+                    style: kMainTextRoboto.copyWith(
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ],
               ),
             )
             .toList(),
-      ],
-    );
-  }
-}
-
-class TextWorkModeTable extends StatelessWidget {
-  final String dayText;
-  final String timeText;
-  const TextWorkModeTable({
-    Key? key,
-    required this.dayText,
-    required this.timeText,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          dayText,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 14.sp,
-          ),
-        ),
-        Text(
-          timeText,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 14.sp,
-          ),
-        ),
       ],
     );
   }

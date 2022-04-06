@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
                 theme: theme,
                 darkTheme: darkTheme,
                 routes: navigation.routes,
-                initialRoute: NavigationRouteNames.inputPin,
+                initialRoute: NavigationRouteNames.connectingCode,
                 onGenerateRoute: navigation.onGenerateRoute,
               )),
           designSize: const Size(360, 640),
