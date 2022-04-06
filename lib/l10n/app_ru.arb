@@ -1,4 +1,7 @@
 {
     "language": "Русский",
-    "appTitle": "Заголовок"
+    "appTitle": "Заголовок",
+    "inputConnectingCode": "Введите \nкод связывания",
+    "howToGetConnectingCode": "Как получить код связывания?",
+    "wrongConnectingCode": "Введенный вами код не верен"
 }

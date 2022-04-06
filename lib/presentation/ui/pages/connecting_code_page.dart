@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pinput/pinput.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final controller = TextEditingController();
 final textEdited = controller.text;
@@ -50,7 +51,8 @@ class ConnectingCodePage extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  'Введите \nкод связывания',
+                                  AppLocalizations.of(context)!
+                                      .inputConnectingCode,
                                   style: kMainTextRusso.copyWith(
                                     fontSize: 28.sp,
                                   ),
@@ -66,7 +68,8 @@ class ConnectingCodePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              'Как получить код связывания?',
+                              AppLocalizations.of(context)!
+                                  .howToGetConnectingCode,
                               style: kMainTextRoboto.copyWith(
                                 color: const Color(0xFF355A99),
                                 fontSize: 14.sp,
@@ -83,7 +86,8 @@ class ConnectingCodePage extends StatelessWidget {
                             child: Opacity(
                               opacity: 0.6,
                               child: Text(
-                                'Введенный вами код не верен',
+                                AppLocalizations.of(context)!
+                                    .wrongConnectingCode,
                                 style: kMainTextRoboto.copyWith(
                                   color: AppColors.red,
                                 ),
