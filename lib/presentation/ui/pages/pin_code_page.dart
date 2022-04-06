@@ -1,9 +1,9 @@
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
+import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -36,7 +36,7 @@ class PinCodePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            svgIcon('logo_grey.svg', 24.0.w),
+                            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
                           ],
                         ),
                         SizedBox(height: 31.h),
@@ -110,14 +110,6 @@ class PinCodePage extends StatelessWidget {
   }
 }
 
-Widget svgIcon(path, width, [color]) {
-  return SvgPicture.asset(
-    'assets/icons/$path',
-    width: width,
-    color: color,
-  );
-}
-
 class PinCodeInput extends StatefulWidget {
   const PinCodeInput({Key? key}) : super(key: key);
 
@@ -146,10 +138,10 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
     return Pinput(
       obscureText: true,
-      obscuringWidget: svgIcon(
-        'obscure_symbol.svg',
-        16.w,
+      obscuringWidget: SvgIcon(
         _isRightCode ? AppColors.blue : AppColors.red,
+        path: 'obscure_symbol.svg',
+        width: 16.w,
       ),
       useNativeKeyboard: false,
       length: 4,

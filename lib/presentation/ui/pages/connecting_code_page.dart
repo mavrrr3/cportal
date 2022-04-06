@@ -1,6 +1,8 @@
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
+import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
+import 'package:cportal_flutter/presentation/ui/widgets/work_mode_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,8 +42,8 @@ class ConnectingCodePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            svgIcon('logo_grey.svg', 24.0.w),
-                            svgIcon('qr_code.svg', 24.0.w),
+                            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+                            SvgIcon(null, path: 'qr_code.svg', width: 24.0.w),
                           ],
                         ),
                         SizedBox(height: 31.h),
@@ -125,13 +127,6 @@ class ConnectingCodePage extends StatelessWidget {
           )),
     );
   }
-}
-
-Widget svgIcon(path, width) {
-  return SvgPicture.asset(
-    'assets/icons/$path',
-    width: width,
-  );
 }
 
 class CellCodeInput extends StatefulWidget {
@@ -286,7 +281,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                   ),
                   Visibility(
                     visible: _isShow,
-                    child: workModeTable(context),
+                    child: const WorkModeTable(),
                   ),
                   SizedBox(height: 10.w),
                   Align(
@@ -406,61 +401,6 @@ Column whatGetWithYou(String iconPath, String text, [Color? color]) {
       Text(
         text,
         style: kMainTextRoboto,
-      ),
-    ],
-  );
-}
-
-Row textForWorkMode(String dayText, String timeText) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        dayText,
-        style: kMainTextRoboto.copyWith(
-          fontSize: 14.sp,
-        ),
-      ),
-      Text(
-        timeText,
-        style: kMainTextRoboto.copyWith(
-          fontSize: 14.sp,
-        ),
-      ),
-    ],
-  );
-}
-
-Column workModeTable(BuildContext context) {
-  return Column(
-    children: [
-      textForWorkMode(
-        AppLocalizations.of(context)!.monday,
-        AppLocalizations.of(context)!.workTime,
-      ),
-      textForWorkMode(
-        AppLocalizations.of(context)!.tuesday,
-        AppLocalizations.of(context)!.workTime,
-      ),
-      textForWorkMode(
-        AppLocalizations.of(context)!.wednesday,
-        AppLocalizations.of(context)!.workTime,
-      ),
-      textForWorkMode(
-        AppLocalizations.of(context)!.thursday,
-        AppLocalizations.of(context)!.workTime,
-      ),
-      textForWorkMode(
-        AppLocalizations.of(context)!.friday,
-        AppLocalizations.of(context)!.workTime,
-      ),
-      textForWorkMode(
-        AppLocalizations.of(context)!.saturday,
-        AppLocalizations.of(context)!.weekEnd,
-      ),
-      textForWorkMode(
-        AppLocalizations.of(context)!.sunday,
-        AppLocalizations.of(context)!.weekEnd,
       ),
     ],
   );
