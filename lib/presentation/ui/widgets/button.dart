@@ -10,6 +10,7 @@ enum ButtonEnum {
 }
 
 class Button {
+  static final Size size = Size(142.w, 48.h);
   static ButtonStyleButton factory(
     ButtonEnum type,
     String text,
@@ -19,20 +20,14 @@ class Button {
       case ButtonEnum.blue:
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(142.w, 48.h),
+            minimumSize: size,
             primary: AppColors.blue,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           onPressed: () => function(),
-          child: Text(
-            text,
-            style: kMainTextRoboto.copyWith(
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
+          child: _TextForButton(text, Colors.white),
         );
       case ButtonEnum.outlined:
         return OutlinedButton(
@@ -41,38 +36,46 @@ class Button {
               color: AppColors.blue,
               width: 2,
             ),
-            minimumSize: Size(142.w, 48.h),
-            primary: const Color(0xFFE5E5E5),
+            minimumSize: size,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           onPressed: () => function(),
-          child: Text(
-            text,
-            style: kMainTextRoboto.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.blue,
-            ),
-          ),
+          child: _TextForButton(text, null),
         );
       case ButtonEnum.text:
         return TextButton(
           style: TextButton.styleFrom(
-            minimumSize: Size(142.w, 48.h),
+            minimumSize: size,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           onPressed: () => function(),
-          child: Text(
-            text,
-            style: kMainTextRoboto.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.blue,
-            ),
-          ),
+          child: _TextForButton(text, null),
         );
     }
+  }
+}
+
+class _TextForButton extends StatelessWidget {
+  final String? text;
+  final Color? color;
+  const _TextForButton(
+    this.text,
+    this.color, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text!,
+      style: kMainTextRoboto.copyWith(
+        fontWeight: FontWeight.w700,
+        color: color ?? AppColors.blue,
+      ),
+    );
   }
 }

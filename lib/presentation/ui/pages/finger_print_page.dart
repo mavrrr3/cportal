@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/presentation/ui/widgets/button.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -69,47 +72,24 @@ class FingerPrintPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        left: 16.0.w, right: 16.0.w, top: 62.87.h),
+                      left: 16.0.w,
+                      right: 16.0.w,
+                      top: 62.87.h,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(142.w, 48.h),
-                            primary: AppColors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            AppLocalizations.of(context)!.yes,
-                            style: kMainTextRoboto.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
+                        Button.factory(
+                          ButtonEnum.blue,
+                          AppLocalizations.of(context)!.yes,
+                          () {},
                         ),
-                        OutlinedButton(
-                          style: ElevatedButton.styleFrom(
-                            side: const BorderSide(
-                              color: AppColors.blue,
-                              width: 2,
-                            ),
-                            minimumSize: Size(142.w, 48.h),
-                            primary: const Color(0xFFE5E5E5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            AppLocalizations.of(context)!.noThanks,
-                            style: kMainTextRoboto.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.blue,
-                            ),
-                          ),
+                        Button.factory(
+                          ButtonEnum.outlined,
+                          AppLocalizations.of(context)!.noThanks,
+                          () {
+                            log('message');
+                          },
                         ),
                       ],
                     ),
