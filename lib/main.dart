@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/data/models/hive_adapters/profile_hive_adapter.dart';
 import 'package:cportal_flutter/data/models/hive_adapters/user_hive_adapter.dart';
@@ -12,15 +16,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'presentation/ui/pages/main_page.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await di.init();
-  // await Firebase.initializeApp();
-  await Hive.initFlutter();
-  _hiveAdaptersInit();
-  runApp(const MyApp());
-}
+void main() => runZonedGuarded<void>(
+      () async {
+        WidgetsFlutterBinding.ensureInitialized();
+        await di.init();
+        // await Firebase.initializeApp();
+        await Hive.initFlutter();
+        _hiveAdaptersInit();
+        BlocOverrides.runZoned(
+          () => runApp(const MyApp()),
+          blocObserver: AppBlocObserver.instance(),
+          eventTransformer: bloc_concurrency.sequential<Object?>(),
+        );
+      },
+      (error, stackTrace) {
+        log('Error main: $error');
+      },
+    );
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
