@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/theme.dart';
@@ -9,6 +7,7 @@ import 'package:cportal_flutter/data/models/hive_adapters/user_hive_adapter.dart
 import 'package:cportal_flutter/presentation/navigation.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,7 +31,9 @@ void main() => runZonedGuarded<void>(
         );
       },
       (error, stackTrace) {
-        log('Error main: $error');
+        if (kDebugMode) {
+          print('Error main: $error');
+        }
       },
     );
 
