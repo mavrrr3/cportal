@@ -34,5 +34,8 @@
     "useFingerPrint": "Использовать \nсканер отпечатков?",
     "doFingerPrintNotInputPin": "Подключите, чтобы каждый раз не \nвводить ПИН при входе",
     "yes": "Да",
-    "noThanks": "Нет, спасибо"
+    "noThanks": "Нет, спасибо",
+    "useScanerFingerPrint": "Использовать сканер отпечатков для “KoApp”",
+    "authToContinue": "Авторизуйтесь для продолжения",
+    "cancel": "ОТМЕНА"
 }

@@ -47,7 +47,6 @@ class Button {
       case ButtonEnum.text:
         return TextButton(
           style: TextButton.styleFrom(
-            minimumSize: size,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),

@@ -82,14 +82,14 @@ class FingerPrintPage extends StatelessWidget {
                         Button.factory(
                           ButtonEnum.blue,
                           AppLocalizations.of(context)!.yes,
-                          () {},
+                          () {
+                            _showUseScanFingerPrint(context);
+                          },
                         ),
                         Button.factory(
                           ButtonEnum.outlined,
                           AppLocalizations.of(context)!.noThanks,
-                          () {
-                            log('message');
-                          },
+                          () {},
                         ),
                       ],
                     ),
@@ -102,4 +102,64 @@ class FingerPrintPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _showUseScanFingerPrint(BuildContext context) {
+  return showDialog(
+    context: context,
+    useRootNavigator: true,
+    barrierDismissible: true, // user must tap button for close dialog!
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.fromLTRB(16.0.w, 8.0.h, 16.0.w, 28.0.h),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.useScanerFingerPrint,
+                    style: kMainTextRoboto.copyWith(
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  SvgIcon(
+                    AppColors.green,
+                    path: 'finger_print.svg',
+                    width: 37.3.w,
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    AppLocalizations.of(context)!.authToContinue,
+                    style: kMainTextRoboto.copyWith(
+                      fontSize: 14.sp,
+                      color: AppColors.kLightTextColor,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              Button.factory(
+                ButtonEnum.text,
+                AppLocalizations.of(context)!.cancel,
+                () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
 }
