@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
                 theme: theme,
                 darkTheme: darkTheme,
                 routes: navigation.routes,
-                initialRoute: NavigationRouteNames.connectingCode,
+                initialRoute: NavigationRouteNames.fingerPrintPage,
                 onGenerateRoute: navigation.onGenerateRoute,
               )),
           designSize: const Size(360, 640),
