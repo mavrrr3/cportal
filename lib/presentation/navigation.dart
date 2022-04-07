@@ -9,6 +9,8 @@ abstract class NavigationRouteNames {
   static const splashScreen = '/';
   static const mainPage = '/main_page';
   static const connectingCode = '/connecting_code';
+  static const createPin = '/create_pin';
+  static const repeatPin = '/repeat_pin';
   static const inputPin = '/input_pin';
   static const fingerPrintPage = '/finger_print_page';
 }
@@ -33,10 +35,26 @@ class Navigation {
           settings: const RouteSettings(name: '/connecting_code'),
           builder: (_) => const ConnectingCodePage(),
         );
+      case NavigationRouteNames.createPin:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: '/create_pin'),
+          builder: (_) => const PinCodePage(
+            route: 'create',
+          ),
+        );
+      case NavigationRouteNames.repeatPin:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: '/repeat_pin'),
+          builder: (_) => const PinCodePage(
+            route: 'repeat',
+          ),
+        );
       case NavigationRouteNames.inputPin:
         return MaterialPageRoute(
           settings: const RouteSettings(name: '/input_pin'),
-          builder: (_) => const PinCodePage(),
+          builder: (_) => const PinCodePage(
+            route: 'input',
+          ),
         );
       case NavigationRouteNames.fingerPrintPage:
         return MaterialPageRoute(

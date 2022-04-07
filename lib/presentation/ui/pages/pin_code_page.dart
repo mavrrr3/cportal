@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
@@ -12,7 +14,8 @@ final _pinFocusNode = FocusNode();
 bool _isRightCode = true;
 
 class PinCodePage extends StatelessWidget {
-  const PinCodePage({Key? key}) : super(key: key);
+  final String route;
+  const PinCodePage({Key? key, required this.route}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,60 +33,7 @@ class PinCodePage extends StatelessWidget {
                     child: Column(
                       children: [
                         SizedBox(height: 48.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
-                          ],
-                        ),
-                        SizedBox(height: 31.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)!.inputPinCode,
-                                  style: kMainTextRusso.copyWith(
-                                    fontSize: 28.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              _isRightCode
-                                  ? AppLocalizations.of(context)!
-                                      .itWillBeNeedToEnter
-                                  : '',
-                              style: kMainTextRoboto.copyWith(
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 66.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              _isRightCode
-                                  ? ''
-                                  : AppLocalizations.of(context)!.pinNotCorrect,
-                              style: kMainTextRoboto.copyWith(
-                                fontSize: 14.sp,
-                                color: AppColors.red.withOpacity(0.6),
-                              ),
-                            ),
-                          ],
-                        ),
+                        HeaderText.factory(route, context),
                         SizedBox(height: 16.h),
                         const PinCodeInput(),
                         SizedBox(height: 8.h),
@@ -148,6 +98,104 @@ class _PinCodeInputState extends State<PinCodeInput> {
       separator: SizedBox(width: 32.w),
       focusedPinTheme: defaultPinTheme,
       showCursor: false,
+    );
+  }
+}
+
+class HeaderText {
+  static HeaderTextWidget factory(
+    String route,
+    BuildContext context,
+  ) {
+    switch (route) {
+      case 'create':
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.createPinCode,
+          secondText: AppLocalizations.of(context)!.itWillBeNeedToEnter,
+          error: AppLocalizations.of(context)!.pinNotCorrect,
+        );
+      case 'repeat':
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.repeatPinCode,
+          secondText: ' ',
+          error: AppLocalizations.of(context)!.pinNotCorrect,
+        );
+      default:
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.inputPinCode,
+          secondText: 'Забыли ПИН?',
+          error: AppLocalizations.of(context)!.pinNotCorrect,
+        );
+    }
+  }
+}
+
+class HeaderTextWidget extends StatelessWidget {
+  final String title;
+  final String secondText;
+  final String? error;
+
+  const HeaderTextWidget({
+    Key? key,
+    required this.title,
+    required this.secondText,
+    this.error,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+          ],
+        ),
+        SizedBox(height: 31.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(
+              children: [
+                Text(
+                  title,
+                  style: kMainTextRusso.copyWith(
+                    fontSize: 28.sp,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8.h,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              _isRightCode ? secondText : '',
+              style: kMainTextRoboto.copyWith(
+                fontSize: 14.sp,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 66.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              _isRightCode ? '' : error ?? '',
+              style: kMainTextRoboto.copyWith(
+                fontSize: 14.sp,
+                color: AppColors.red.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
