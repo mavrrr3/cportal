@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'presentation/ui/pages/main_page.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<GetSingleProfileBloc>(
           create: (ctx) => sl<GetSingleProfileBloc>(),
         ),
+        BlocProvider<AuthBloc>(
+          create: (ctx) => sl<AuthBloc>(),
+        ),
       ],
       child: AdaptiveTheme(
         light: lightTheme(context),
@@ -64,7 +68,7 @@ class MyApp extends StatelessWidget {
                 theme: theme,
                 darkTheme: darkTheme,
                 routes: navigation.routes,
-                initialRoute: NavigationRouteNames.repeatPin,
+                initialRoute: NavigationRouteNames.connectingCode,
                 onGenerateRoute: navigation.onGenerateRoute,
               )),
           designSize: const Size(360, 640),
@@ -83,6 +87,7 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(localization!.appTitle),
       ),
       body: const MainPage(),

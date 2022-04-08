@@ -1,6 +1,6 @@
+import 'package:cportal_flutter/main.dart';
 import 'package:cportal_flutter/presentation/ui/pages/connecting_code_page.dart';
 import 'package:cportal_flutter/presentation/ui/pages/finger_print_page.dart';
-import 'package:cportal_flutter/presentation/ui/pages/main_page.dart';
 import 'package:cportal_flutter/presentation/ui/pages/pin_code_page.dart';
 import 'package:cportal_flutter/presentation/ui/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class Navigation {
       case NavigationRouteNames.mainPage:
         return MaterialPageRoute(
           settings: const RouteSettings(name: '/main_page'),
-          builder: (_) => const MainPage(),
+          builder: (_) => const MyHomePage(),
         );
       case NavigationRouteNames.connectingCode:
         return MaterialPageRoute(

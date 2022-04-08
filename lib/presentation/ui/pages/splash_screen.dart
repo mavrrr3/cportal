@@ -1,4 +1,5 @@
-import 'package:cportal_flutter/presentation/bloc/auth_cubit/auth_cubit.dart';
+import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +11,8 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is Authinticated) {
-          Navigator.of(context).pushNamed('/main_page');
-        } else if (state is UnAuthinticated) {
-          Navigator.of(context).pushNamed('/connecting_code');
-        }
-      },
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {},
       child: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
