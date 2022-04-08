@@ -51,6 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(state.copyWith(submissionStatus: SubmissionSuccess()));
         },
       );
+      if (kDebugMode) log('AuthState: ' + state.toString());
     });
   }
 }

@@ -12,7 +12,9 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        //TODO Реализовать логику проверки авторизации
+      },
       child: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

@@ -19,4 +19,9 @@ class AuthState {
       submissionStatus: submissionStatus ?? this.submissionStatus,
     );
   }
+
+  @override
+  String toString() {
+    return '$submissionStatus';
+  }
 }
