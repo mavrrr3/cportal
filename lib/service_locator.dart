@@ -5,6 +5,7 @@ import 'package:cportal_flutter/data/repositories/profile_repository_impl.dart';
 import 'package:cportal_flutter/domain/repositories/profile_repository.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/search_profile_usecase.dart';
+import 'package:cportal_flutter/presentation/bloc/auth_cubit/auth_cubit.dart';
 import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -12,8 +13,9 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  // BLOC
+  // BLOC/CUBIT
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
+  sl.registerFactory(() => AuthCubit(sl()));
 
   // USECASE
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
