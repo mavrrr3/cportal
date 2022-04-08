@@ -69,7 +69,6 @@ class CustomKeyboard extends StatelessWidget {
                     if (controller.text.isNotEmpty) {
                       controller.text = controller.text
                           .substring(0, controller.text.length - 1);
-                      log(controller.text);
                     }
                   },
                   child: SvgPicture.asset(
@@ -105,7 +104,6 @@ class KeyboardNumber extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         onPressed: () {
           concatTextFieled(number, _codeController);
-          log(_codeController.text);
         },
         height: 60.h,
         child: Text(

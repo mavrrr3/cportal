@@ -1,10 +1,14 @@
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_event.dart';
+import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/what_get_with_you.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/work_mode_table.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,17 +18,11 @@ final _codeController = TextEditingController();
 final _codeFocusNode = FocusNode();
 bool _isRightCode = true;
 
-const mockupHeight = 640;
-const mockupWidth = 360;
-
 class ConnectingCodePage extends StatelessWidget {
   const ConnectingCodePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // var width = MediaQuery.of(context).size.width;
-    // var scale = mockupWidth / width;
-
     return ScreenUtilInit(
       builder: (() => Scaffold(
             body: Container(
@@ -173,32 +171,40 @@ class _CellCodeInputState extends State<CellCodeInput> {
     //   ),
     // );
 
-    return Pinput(
-      useNativeKeyboard: false,
-      length: 6,
-      controller: _codeController,
-      focusNode: _codeFocusNode,
-      defaultPinTheme: defaultPinTheme,
-      separator: SizedBox(width: 11.w),
-      focusedPinTheme: PinTheme(
-        width: 52.w,
-        height: 62.h,
-        decoration: BoxDecoration(
-          color: _isRightCode ? Colors.white : AppColors.lightRed,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(40, 42, 45, 0.08),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      return Pinput(
+        useNativeKeyboard: false,
+        length: 6,
+        controller: _codeController,
+        focusNode: _codeFocusNode,
+        defaultPinTheme: defaultPinTheme,
+        separator: SizedBox(width: 11.w),
+        focusedPinTheme: PinTheme(
+          width: 52.w,
+          height: 62.h,
+          decoration: BoxDecoration(
+            color: _isRightCode ? Colors.white : AppColors.lightRed,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromRGBO(40, 42, 45, 0.08),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
         ),
-      ),
-      showCursor: false,
-      // cursor: cursor,
-    );
+        showCursor: false,
+        // cursor: cursor,
+        onChanged: (value) {
+          context.read<AuthBloc>().add(ConnectingCodeChanged(value));
+        },
+        onCompleted: (value) {
+          context.read<AuthBloc>().add(LoginUserSubmitted());
+        },
+      );
+    });
   }
 }
 
@@ -208,7 +214,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
   return showDialog(
     context: context,
     useRootNavigator: true,
-    barrierDismissible: true, // user must tap button for close dialog!
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return StatefulBuilder(
         builder: (context, setState) {
