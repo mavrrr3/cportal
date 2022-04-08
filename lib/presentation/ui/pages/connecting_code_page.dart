@@ -34,7 +34,6 @@ class ConnectingCodePage extends StatelessWidget {
               .pushReplacementNamed(NavigationRouteNames.createPin);
         });
       }
-      log(state.toString());
 
       return ScreenUtilInit(
         builder: (() => Scaffold(

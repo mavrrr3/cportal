@@ -35,8 +35,8 @@ dependencies:
   shared_preferences: ^2.0.13
 
   # Firebase services
-  firebase_core: ^1.13.1
-  firebase_messaging: ^11.2.11
+  # firebase_core: ^1.13.1
+  # firebase_messaging: ^11.2.11
 
   # Localization
   intl: ^0.17.0
@@ -63,7 +63,8 @@ dev_dependencies:
   dart_code_metrics: ^4.13.0
   flutter_lints: ^1.0.0
   l: ^3.2.0
-
+  hive_generator: ^1.1.2
+  build_runner: ^2.1.8
   flutter_test:
     sdk: flutter
 

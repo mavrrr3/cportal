@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/theme.dart';
-import 'package:cportal_flutter/data/models/hive_adapters/profile_hive_adapter.dart';
-import 'package:cportal_flutter/data/models/hive_adapters/user_hive_adapter.dart';
+import 'package:cportal_flutter/data/models/profile_model.dart';
+import 'package:cportal_flutter/data/models/user_model.dart';
 import 'package:cportal_flutter/presentation/navigation.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
                 theme: theme,
                 darkTheme: darkTheme,
                 routes: navigation.routes,
-                initialRoute: NavigationRouteNames.connectingCode,
+                initialRoute: NavigationRouteNames.mainPage,
                 onGenerateRoute: navigation.onGenerateRoute,
               )),
           designSize: const Size(360, 640),
@@ -96,8 +96,8 @@ class MyHomePage extends StatelessWidget {
 }
 
 void _hiveAdaptersInit() {
-  Hive.registerAdapter(UserHiveAdapter());
-  Hive.registerAdapter(ProfileHiveAdapter());
-  Hive.registerAdapter(PositionHiveAdapter());
-  Hive.registerAdapter(PhoneHiveAdapter());
+  Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(ProfileModelAdapter());
+  Hive.registerAdapter(PositionModelAdapter());
+  Hive.registerAdapter(PhoneModelAdapter());
 }

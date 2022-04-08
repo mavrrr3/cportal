@@ -31,10 +31,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final failureOrUser = await loginUser(
         LoginUserParams(connectingCode: event.connectingCode),
       );
-      log(event.connectingCode);
+
       failureOrUser.fold(
         (failure) {
-          log(failure.toString());
           emit(
             ErrorAuthState(error: _mapFailureToMessage(failure)),
           );

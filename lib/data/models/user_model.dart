@@ -2,25 +2,61 @@
 //
 // final userEntity = userEntityFromJson(jsonString);
 
+// ignore_for_file: annotate_overrides, overridden_fields
+
 import 'dart:convert';
 import 'package:cportal_flutter/domain/entities/user_entity.dart';
+import 'package:hive/hive.dart';
+
+part 'user_model.g.dart';
 
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
+@HiveType(typeId: 0)
 class UserModel extends UserEntity {
+  @HiveField(0)
+  final String id;
+
+  @HiveField(1)
+  final String userName;
+
+  @HiveField(2)
+  final String profileId;
+
+  @HiveField(3)
+  final DateTime lastLogin;
+
+  @HiveField(4)
+  final bool blocked;
+
+  @HiveField(5)
+  final DateTime dateCreated;
+
+  @HiveField(6)
+  final String userCreated;
+
+  @HiveField(7)
+  final DateTime? dateUpdated;
+
+  @HiveField(8)
+  final String userUpdated;
+
+  @HiveField(9)
+  final UserTypeModel userType;
+
   const UserModel({
-    required final String id,
-    required final String userName,
-    required final String profileId,
-    required final DateTime lastLogin,
-    required final bool blocked,
-    required final DateTime dateCreated,
-    required final String userCreated,
-    required final DateTime? dateUpdated,
-    required final String userUpdated,
-    required final UserTypeModel userType,
+    required this.id,
+    required this.userName,
+    required this.profileId,
+    required this.lastLogin,
+    required this.blocked,
+    required this.dateCreated,
+    required this.userCreated,
+    required this.dateUpdated,
+    required this.userUpdated,
+    required this.userType,
   }) : super(
           id: id,
           userName: userName,
@@ -57,7 +93,7 @@ class UserModel extends UserEntity {
         'user_created': userCreated,
         'date_updated': dateUpdated,
         'user_updated': userUpdated,
-        'user_type': (userType as UserTypeModel).toRawJson(),
+        'user_type': userType.toRawJson(),
       };
 }
 

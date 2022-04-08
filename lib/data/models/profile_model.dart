@@ -1,10 +1,11 @@
-// To parse this JSON data, do
-//
-//     final profileModel = profileModelFromJson(jsonString);
+// ignore_for_file: overridden_fields, annotate_overrides
 
 import 'dart:convert';
 
 import 'package:cportal_flutter/domain/entities/profile_entity.dart';
+import 'package:hive/hive.dart';
+
+part 'profile_model.g.dart';
 
 ProfileModel profileModelFromJson(String str) =>
     ProfileModel.fromJson(json.decode(str));
@@ -14,22 +15,65 @@ String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 PhoneModel phoneModelFromJson(String str) =>
     PhoneModel.fromJson(json.decode(str));
 
+@HiveType(typeId: 1)
 class ProfileModel extends ProfileEntity {
+  @HiveField(0)
+  final String id;
+
+  @HiveField(1)
+  final String firstName;
+
+  @HiveField(2)
+  final String externalId;
+
+  @HiveField(3)
+  final String lastName;
+
+  @HiveField(4)
+  final String middleName;
+
+  @HiveField(5)
+  final String email;
+
+  @HiveField(6)
+  final String photoLink;
+
+  @HiveField(7)
+  final bool active;
+
+  @HiveField(8)
+  final PositionModel position;
+
+  @HiveField(9)
+  final List<PhoneModel> phone;
+
+  @HiveField(10)
+  final String userCreated;
+
+  @HiveField(11)
+  final DateTime dateCreated;
+
+  @HiveField(12)
+  final String userUpdate;
+
+  @HiveField(13)
+  final DateTime dateUpdated;
+
   const ProfileModel({
-    required String id,
-    required String firstName,
-    required String externalId,
-    required String lastName,
-    required String middleName,
-    required String email,
-    required String photoLink,
-    required bool active,
-    required PositionModel position,
-    required List<PhoneModel> phone,
-    required String userCreated,
-    required DateTime dateCreated,
-    required String userUpdate,
-    required DateTime dateUpdated,
+    required this.id,
+    required this.firstName,
+    required this.externalId,
+    required this.lastName,
+    required this.middleName,
+    required this.email,
+    required this.photoLink,
+    required this.active,
+    required this.position,
+    required this.phone,
+    required this.userCreated,
+    required this.dateCreated,
+    required this.userUpdate,
+    required this.dateUpdated,
   }) : super(
           id: id,
           externalId: externalId,
@@ -75,9 +119,9 @@ class ProfileModel extends ProfileEntity {
         'email': email,
         'photo_link': photoLink,
         'active': active,
-        'position': (position as PositionModel).toJson(),
+        'position': position.toJson(),
         'phone': List<PhoneModel>.from(
-          phone.map((x) => (x as PhoneModel).toJson()),
+          phone.map((x) => x.toJson()),
         ),
         'user_created': userCreated,
         'date_created': dateCreated.toIso8601String(),
@@ -86,14 +130,45 @@ class ProfileModel extends ProfileEntity {
       };
 }
 
+@HiveType(typeId: 2)
+class PositionModel extends PositionEntity {
+  @HiveField(0)
+  final String id;
+  @HiveField(1)
+  final String description;
+
+  const PositionModel({
+    required this.id,
+    required this.description,
+  }) : super(id: id, description: description);
+
+  factory PositionModel.fromJson(Map<String, dynamic> json) => PositionModel(
+        id: json['id'],
+        description: json['description'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'description': description,
+      };
+}
+
+@HiveType(typeId: 3)
 class PhoneModel extends PhoneEntity {
+  @HiveField(0)
+  final String number;
+  @HiveField(1)
+  final String? suffix;
+  @HiveField(2)
+  final bool primary;
+
   const PhoneModel({
-    required number,
-    required suffix,
-    required primary,
+    required this.number,
+    required this.suffix,
+    required this.primary,
   }) : super(
           number: number,
-          suffix: suffix ?? '',
+          suffix: suffix,
           primary: primary,
         );
 
@@ -107,25 +182,5 @@ class PhoneModel extends PhoneEntity {
         'number': number,
         'suffix': suffix,
         'primary': primary,
-      };
-}
-
-class PositionModel extends PositionEntity {
-  const PositionModel({
-    required final id,
-    required final description,
-  }) : super(
-          id: id,
-          description: description,
-        );
-
-  factory PositionModel.fromJson(Map<String, dynamic> json) => PositionModel(
-        id: json['id'],
-        description: json['description'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'description': description,
       };
 }
