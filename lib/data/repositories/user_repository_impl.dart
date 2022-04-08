@@ -2,6 +2,7 @@ import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/core/platform/network_info.dart';
 import 'package:cportal_flutter/data/datasources/user_remote_datasource.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/data/models/user_model.dart';
 import 'package:cportal_flutter/domain/repositories/user_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -15,7 +16,7 @@ class UserRepositoryImpl implements UserRepository {
   });
 
   @override
-  Future<Either<Failure, bool>> logIn(String connectingCode) async {
+  Future<Either<Failure, UserModel>> logIn(String connectingCode) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteUser = await remoteDataSource.logIn(connectingCode);

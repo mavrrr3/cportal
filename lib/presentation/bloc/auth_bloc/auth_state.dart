@@ -1,27 +1,38 @@
-import 'package:cportal_flutter/presentation/bloc/submission_status.dart';
+import 'package:cportal_flutter/domain/entities/user_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class AuthState {
-  final String connectingCode;
+abstract class AuthState extends Equatable {
+  const AuthState();
+  @override
+  List<Object?> get props => [];
+}
 
-  final SubmissionStatus submissionStatus;
+class AuthInitial extends AuthState {
+  const AuthInitial();
+  @override
+  List<Object?> get props => [];
+}
 
-  AuthState({
-    this.connectingCode = '',
-    this.submissionStatus = const InitialStatus(),
-  });
+class InProgress extends AuthState {
+  const InProgress();
+  @override
+  List<Object?> get props => [];
+}
 
-  AuthState copyWith({
-    String? connectingCode,
-    SubmissionStatus? submissionStatus,
-  }) {
-    return AuthState(
-      connectingCode: connectingCode ?? this.connectingCode,
-      submissionStatus: submissionStatus ?? this.submissionStatus,
-    );
-  }
+class Authenticated extends AuthState {
+  final UserEntity user;
+
+  const Authenticated({required this.user});
 
   @override
-  String toString() {
-    return '$submissionStatus';
-  }
+  List<Object?> get props => [user];
+}
+
+class ErrorAuthState extends AuthState {
+  final String error;
+
+  const ErrorAuthState({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }

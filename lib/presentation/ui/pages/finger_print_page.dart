@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/button.dart';
@@ -89,7 +87,9 @@ class FingerPrintPage extends StatelessWidget {
                         Button.factory(
                           ButtonEnum.outlined,
                           AppLocalizations.of(context)!.noThanks,
-                          () {},
+                          () {
+                            debugPrint('');
+                          },
                         ),
                       ],
                     ),

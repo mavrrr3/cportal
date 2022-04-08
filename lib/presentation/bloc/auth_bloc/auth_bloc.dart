@@ -1,29 +1,21 @@
 import 'dart:developer';
-
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/login_user_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/presentation/bloc/submission_status.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   LoginUserUseCase loginUser;
 
-  AuthBloc(this.loginUser) : super(AuthState()) {
-    late String _connectingCode;
-
-    on<ConnectingCodeChanged>((event, emit) async {
-      _connectingCode = event.connectingCode;
-
-      if (kDebugMode) log('AuthBloc _connectingCode $_connectingCode');
-
-      emit(state.copyWith(connectingCode: _connectingCode));
+  AuthBloc(this.loginUser) : super(const AuthInitial()) {
+    on<ChangeAuthCode>((event, emit) async {
+      if (event.connectingCode.length != 6) emit(const InProgress());
     });
 
-    on<LoginUserSubmitted>((event, emit) async {
-      emit(state.copyWith(submissionStatus: Submitting()));
+    on<AuthEventImpl>((event, emit) async {
+      emit(const InProgress());
 
       String _mapFailureToMessage(Failure failure) {
         switch (failure.runtimeType) {
@@ -36,19 +28,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       }
 
-      final failureOrUser =
-          await loginUser(LoginUserParams(connectingCode: _connectingCode));
-
+      final failureOrUser = await loginUser(
+        LoginUserParams(connectingCode: event.connectingCode),
+      );
+      log(event.connectingCode);
       failureOrUser.fold(
         (failure) {
+          log(failure.toString());
           emit(
-            state.copyWith(
-              submissionStatus: SubmissionFailed(_mapFailureToMessage(failure)),
-            ),
+            ErrorAuthState(error: _mapFailureToMessage(failure)),
           );
         },
         (user) {
-          emit(state.copyWith(submissionStatus: SubmissionSuccess()));
+          emit(Authenticated(user: user));
         },
       );
       if (kDebugMode) log('AuthState: ' + state.toString());

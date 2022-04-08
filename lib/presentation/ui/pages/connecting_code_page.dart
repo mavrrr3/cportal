@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/presentation/bloc/submission_status.dart';
 import 'package:cportal_flutter/presentation/navigation.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
@@ -18,7 +19,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 final _codeController = TextEditingController();
 
 final _codeFocusNode = FocusNode();
-bool _isRightCode = true;
+
+final _formKey = GlobalKey<FormState>();
 
 class ConnectingCodePage extends StatelessWidget {
   const ConnectingCodePage({Key? key}) : super(key: key);
@@ -26,12 +28,13 @@ class ConnectingCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      if (state.submissionStatus is SubmissionSuccess) {
+      if (state is Authenticated) {
         Future.delayed(const Duration(milliseconds: 10), () {
           Navigator.of(context)
-              .pushReplacementNamed(NavigationRouteNames.mainPage);
+              .pushReplacementNamed(NavigationRouteNames.createPin);
         });
       }
+      log(state.toString());
 
       return ScreenUtilInit(
         builder: (() => Scaffold(
@@ -98,7 +101,7 @@ class ConnectingCodePage extends StatelessWidget {
                           SizedBox(height: 27.h),
                           const CellCodeInput(),
                           SizedBox(height: 8.h),
-                          if (!_isRightCode) ...[
+                          if (isWrongCode(state)) ...[
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Opacity(
@@ -110,17 +113,18 @@ class ConnectingCodePage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .tryToRepeatAfter30sec,
-                                style: kMainTextRoboto.copyWith(
-                                  fontSize: 14.sp,
-                                  color: AppColors.kLightTextColor,
-                                ),
-                              ),
-                            ),
+                            // Вывод текста Повторите попытку через 30 секунд
+                            // Align(
+                            //   alignment: Alignment.centerLeft,
+                            //   child: Text(
+                            //     AppLocalizations.of(context)!
+                            //         .tryToRepeatAfter30sec,
+                            //     style: kMainTextRoboto.copyWith(
+                            //       fontSize: 14.sp,
+                            //       color: AppColors.kLightTextColor,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ],
                       ),
@@ -160,18 +164,6 @@ class _CellCodeInputState extends State<CellCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultPinTheme = PinTheme(
-      width: 44.w,
-      height: 52.h,
-      textStyle: _isRightCode
-          ? kMainTextRoboto
-          : kMainTextRoboto.copyWith(color: AppColors.red),
-      decoration: BoxDecoration(
-        color: _isRightCode ? Colors.white : AppColors.lightRed,
-        borderRadius: BorderRadius.circular(8),
-      ),
-    );
-
     // Курсор, оставил код на случай если дизайнеры решат его всё таки сделать
     //
     // final cursor = Align(
@@ -188,18 +180,35 @@ class _CellCodeInputState extends State<CellCodeInput> {
     // );
 
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      final defaultPinTheme = PinTheme(
+        width: 44.w,
+        height: 52.h,
+        textStyle: isWrongCode(state)
+            ? kMainTextRoboto.copyWith(color: AppColors.red)
+            : kMainTextRoboto,
+        decoration: BoxDecoration(
+          color: isWrongCode(state) ? AppColors.lightRed : Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+      );
+
       return Pinput(
+        key: _formKey,
         useNativeKeyboard: false,
         length: 6,
         controller: _codeController,
         focusNode: _codeFocusNode,
         defaultPinTheme: defaultPinTheme,
         separator: SizedBox(width: 11.w),
+        errorPinTheme: defaultPinTheme.copyWith(
+          decoration: const BoxDecoration(color: AppColors.lightRed),
+        ),
+        // errorBuilder: ,
         focusedPinTheme: PinTheme(
           width: 52.w,
           height: 62.h,
           decoration: BoxDecoration(
-            color: _isRightCode ? Colors.white : AppColors.lightRed,
+            color: isWrongCode(state) ? AppColors.lightRed : Colors.white,
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
               BoxShadow(
@@ -213,15 +222,21 @@ class _CellCodeInputState extends State<CellCodeInput> {
         ),
         showCursor: false,
         // cursor: cursor,
-        onChanged: (value) {
-          context.read<AuthBloc>().add(ConnectingCodeChanged(value));
-        },
-        onCompleted: (value) {
-          context.read<AuthBloc>().add(LoginUserSubmitted());
-        },
+        onChanged: (value) =>
+            context.read<AuthBloc>().add(ChangeAuthCode(value)),
+        onCompleted: (value) =>
+            context.read<AuthBloc>().add(AuthEventImpl(value)),
       );
     });
   }
+}
+
+bool isWrongCode(AuthState state) {
+  if (state is ErrorAuthState) {
+    return true;
+  }
+
+  return false;
 }
 
 Future<void> _showHowToGetCOnnectingCode(BuildContext context) {

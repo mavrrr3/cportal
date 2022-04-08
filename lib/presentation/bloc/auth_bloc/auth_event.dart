@@ -1,19 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {
+  const AuthEvent();
+
   @override
   List<Object> get props => [];
 }
 
-class ConnectingCodeChanged extends AuthEvent {
+class AuthEventImpl extends AuthEvent {
   final String connectingCode;
 
-  ConnectingCodeChanged(this.connectingCode);
-
-  @override
-  List<Object> get props => [connectingCode];
+  const AuthEventImpl(this.connectingCode);
 }
 
-class LoginUserSubmitted extends AuthEvent {
-  LoginUserSubmitted();
+class ChangeAuthCode extends AuthEvent {
+  final String connectingCode;
+
+  const ChangeAuthCode(this.connectingCode);
 }
