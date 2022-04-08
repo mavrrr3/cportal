@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
@@ -124,7 +122,7 @@ class HeaderText {
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.inputPinCode,
           secondText: 'Забыли ПИН?',
-          error: AppLocalizations.of(context)!.pinNotCorrect,
+          error: AppLocalizations.of(context)!.errorPinCode,
         );
     }
   }

@@ -32,6 +32,7 @@
     "repeatPinCode": "Подтвердите ПИН",
     "itWillBeNeedToEnter": "Он будет использоваться для входа",
     "pinNotCorrect": "ПИН не совпадает",
+    "errorPinCode": "Введенный вами ПИН неверен",
     "useFingerPrint": "Использовать \nсканер отпечатков?",
     "doFingerPrintNotInputPin": "Подключите, чтобы каждый раз не \nвводить ПИН при входе",
     "yes": "Да",
