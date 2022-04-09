@@ -11,6 +11,10 @@ class GetSingleProfileBloc
 
   GetSingleProfileBloc({required this.getSingleProfile})
       : super(GetSingleProfileEmptyState()) {
+    _setupEvents();
+  }
+
+  void _setupEvents() {
     on<GetSingleProfileEventImpl>(
       (event, emit) async {
         emit(GetSingleProfileLoadingState());
