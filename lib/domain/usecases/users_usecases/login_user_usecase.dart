@@ -14,7 +14,7 @@ class LoginUserUseCase extends UseCase<UserEntity, LoginUserParams> {
   Future<Either<Failure, UserEntity>> call(
     LoginUserParams params,
   ) async {
-    return await userRepository.logIn(params.connectingCode);
+    return await userRepository.login(params.connectingCode);
   }
 }
 

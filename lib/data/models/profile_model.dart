@@ -15,7 +15,7 @@ String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 PhoneModel phoneModelFromJson(String str) =>
     PhoneModel.fromJson(json.decode(str));
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class ProfileModel extends ProfileEntity {
   @HiveField(0)
   final String id;
@@ -130,7 +130,7 @@ class ProfileModel extends ProfileEntity {
       };
 }
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 3)
 class PositionModel extends PositionEntity {
   @HiveField(0)
   final String id;
@@ -153,7 +153,7 @@ class PositionModel extends PositionEntity {
       };
 }
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 4)
 class PhoneModel extends PhoneEntity {
   @HiveField(0)
   final String number;
@@ -168,7 +168,7 @@ class PhoneModel extends PhoneEntity {
     required this.primary,
   }) : super(
           number: number,
-          suffix: suffix,
+          suffix: suffix ?? '',
           primary: primary,
         );
 

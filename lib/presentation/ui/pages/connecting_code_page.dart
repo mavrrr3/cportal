@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -21,21 +19,24 @@ final _codeController = TextEditingController();
 final _codeFocusNode = FocusNode();
 
 final _formKey = GlobalKey<FormState>();
+bool _isWrongCode = false;
 
 class ConnectingCodePage extends StatelessWidget {
   const ConnectingCodePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      if (state is Authenticated) {
-        Future.delayed(const Duration(milliseconds: 10), () {
-          Navigator.of(context)
-              .pushReplacementNamed(NavigationRouteNames.createPin);
-        });
-      }
-
-      return ScreenUtilInit(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthUser) {
+          Future.delayed(const Duration(milliseconds: 10), () {
+            Navigator.of(context)
+                .pushReplacementNamed(NavigationRouteNames.createPin);
+          });
+        }
+        if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
+      },
+      child: ScreenUtilInit(
         builder: (() => Scaffold(
               body: Container(
                 decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
@@ -100,7 +101,7 @@ class ConnectingCodePage extends StatelessWidget {
                           SizedBox(height: 27.h),
                           const CellCodeInput(),
                           SizedBox(height: 8.h),
-                          if (isWrongCode(state)) ...[
+                          if (_isWrongCode) ...[
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Opacity(
@@ -141,8 +142,8 @@ class ConnectingCodePage extends StatelessWidget {
                 ),
               ),
             )),
-      );
-    });
+      ),
+    );
   }
 }
 

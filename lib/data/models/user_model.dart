@@ -47,16 +47,16 @@ class UserModel extends UserEntity {
   final UserTypeModel userType;
 
   const UserModel({
-    required this.id,
-    required this.userName,
-    required this.profileId,
-    required this.lastLogin,
-    required this.blocked,
-    required this.dateCreated,
-    required this.userCreated,
-    required this.dateUpdated,
-    required this.userUpdated,
-    required this.userType,
+    required final this.id,
+    required final this.userName,
+    required final this.profileId,
+    required final this.lastLogin,
+    required final this.blocked,
+    required final this.dateCreated,
+    required final this.userCreated,
+    required final this.dateUpdated,
+    required final this.userUpdated,
+    required final this.userType,
   }) : super(
           id: id,
           userName: userName,
@@ -97,11 +97,19 @@ class UserModel extends UserEntity {
       };
 }
 
+@HiveType(typeId: 1)
 class UserTypeModel extends UserTypeEntity {
+  @HiveField(0)
+  final String id;
+  @HiveField(1)
+  final String code;
+  @HiveField(2)
+  final String description;
+
   UserTypeModel({
-    required final String id,
-    required final String code,
-    required final String description,
+    required final this.id,
+    required final this.code,
+    required final this.description,
   }) : super(
           id: id,
           code: code,

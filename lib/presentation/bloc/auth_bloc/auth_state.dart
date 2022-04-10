@@ -19,13 +19,21 @@ class InProgress extends AuthState {
   List<Object?> get props => [];
 }
 
-class Authenticated extends AuthState {
+class AuthUser extends AuthState {
   final UserEntity user;
 
-  const Authenticated({required this.user});
+  const AuthUser({required this.user});
 
   @override
   List<Object?> get props => [user];
+}
+
+class Authenticated extends AuthState {
+  final bool isAuth;
+  const Authenticated(this.isAuth);
+
+  @override
+  List<Object?> get props => [isAuth];
 }
 
 class ErrorAuthState extends AuthState {

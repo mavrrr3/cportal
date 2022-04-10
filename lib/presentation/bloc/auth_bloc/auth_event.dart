@@ -18,3 +18,7 @@ class ChangeAuthCode extends AuthEvent {
 
   const ChangeAuthCode(this.connectingCode);
 }
+
+class CheckAuth extends AuthEvent {
+  const CheckAuth();
+}

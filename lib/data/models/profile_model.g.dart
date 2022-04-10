@@ -8,7 +8,7 @@ part of 'profile_model.dart';
 
 class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
   ProfileModel read(BinaryReader reader) {
@@ -81,7 +81,7 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
 
 class PositionModelAdapter extends TypeAdapter<PositionModel> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
   PositionModel read(BinaryReader reader) {
@@ -118,7 +118,7 @@ class PositionModelAdapter extends TypeAdapter<PositionModel> {
 
 class PhoneModelAdapter extends TypeAdapter<PhoneModel> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
   PhoneModel read(BinaryReader reader) {

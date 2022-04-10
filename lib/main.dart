@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
                 theme: theme,
                 darkTheme: darkTheme,
                 routes: navigation.routes,
-                initialRoute: NavigationRouteNames.mainPage,
+                initialRoute: NavigationRouteNames.splashScreen,
                 onGenerateRoute: navigation.onGenerateRoute,
               )),
           designSize: const Size(360, 640),
@@ -97,6 +97,7 @@ class MyHomePage extends StatelessWidget {
 
 void _hiveAdaptersInit() {
   Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(UserTypeModelAdapter());
   Hive.registerAdapter(ProfileModelAdapter());
   Hive.registerAdapter(PositionModelAdapter());
   Hive.registerAdapter(PhoneModelAdapter());

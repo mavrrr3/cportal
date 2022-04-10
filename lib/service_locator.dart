@@ -1,11 +1,13 @@
 import 'package:cportal_flutter/core/platform/network_info.dart';
 import 'package:cportal_flutter/data/datasources/profile_local_datasource.dart';
 import 'package:cportal_flutter/data/datasources/profile_remote_datasource.dart';
+import 'package:cportal_flutter/data/datasources/user_local_datasource.dart';
 import 'package:cportal_flutter/data/datasources/user_remote_datasource.dart';
 import 'package:cportal_flutter/data/repositories/profile_repository_impl.dart';
 import 'package:cportal_flutter/data/repositories/user_repository_impl.dart';
 import 'package:cportal_flutter/domain/repositories/profile_repository.dart';
 import 'package:cportal_flutter/domain/repositories/user_repository.dart';
+import 'package:cportal_flutter/domain/usecases/users_usecases/check_auth.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/search_profile_usecase.dart';
@@ -20,12 +22,13 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // BLOC/CUBIT
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
-  sl.registerFactory(() => AuthBloc(sl()));
+  sl.registerFactory(() => AuthBloc(sl(), sl()));
 
   // USECASE
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
   sl.registerLazySingleton(() => SearchProfileUseCase(sl()));
   sl.registerLazySingleton(() => LoginUserUseCase(sl()));
+  sl.registerLazySingleton(() => CheckAuthUseCase(sl()));
 
   // REPOSITORY
   sl.registerLazySingleton<ProfileRepository>(
@@ -47,12 +50,17 @@ Future<void> init() async {
   sl.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(
       remoteDataSource: sl(),
+      localDataSource: sl(),
       networkInfo: sl(),
     ),
   );
 
   sl.registerLazySingleton<UserRemoteDataSource>(
-    () => UserRemoteDataSourceImpl(),
+    () => UserRemoteDataSourceImpl(sl()),
+  );
+
+  sl.registerLazySingleton<UserLocalDataSource>(
+    () => UserLocalDataSourceImpl(),
   );
 
   // CORE

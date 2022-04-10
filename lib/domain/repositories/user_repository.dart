@@ -3,5 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 
 abstract class UserRepository {
-  Future<Either<Failure, UserEntity>> logIn(String connectingCode);
+  Future<Either<Failure, UserEntity>> login(String connectingCode);
+  Future<Either<Failure, bool>> checkAuth();
 }

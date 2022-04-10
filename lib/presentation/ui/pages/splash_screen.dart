@@ -1,5 +1,7 @@
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/presentation/navigation.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +13,17 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<AuthBloc>(context, listen: false).add(const CheckAuth());
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        //TODO Реализовать логику проверки авторизации
+        if (state is Authenticated) {
+          final nextScreen = state.isAuth
+              ? NavigationRouteNames.mainPage
+              : NavigationRouteNames.connectingCode;
+
+          Navigator.of(context).pushReplacementNamed(nextScreen);
+        }
       },
       child: Container(
         decoration: const BoxDecoration(
