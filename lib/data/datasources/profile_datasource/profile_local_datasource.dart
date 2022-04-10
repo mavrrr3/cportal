@@ -4,7 +4,7 @@ import 'package:cportal_flutter/data/models/profile_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-abstract class ProfileLocalDataSource {
+abstract class IProfileLocalDataSource {
   /// Сохраняем [ProfileModel] в кэш
   ///
   /// Пробрасываем все ошибки через [CacheException]
@@ -16,7 +16,7 @@ abstract class ProfileLocalDataSource {
   Future<ProfileModel?> getSingleProfileFromCache(String id);
 }
 
-class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
+class ProfileLocalDataSource implements IProfileLocalDataSource {
   @override
   Future<void> singleProfileToCache(ProfileModel profile) async {
     // await Hive.deleteBoxFromDisk('single_profile');

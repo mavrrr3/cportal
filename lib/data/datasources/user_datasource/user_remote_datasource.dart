@@ -1,21 +1,19 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/data/datasources/user_local_datasource.dart';
+import 'package:cportal_flutter/data/datasources/user_datasource/user_local_datasource.dart';
 import 'package:cportal_flutter/data/models/user_model.dart';
 
-abstract class UserRemoteDataSource {
+abstract class IUserRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем все ошибки через [ServerException]
   Future<UserModel> login(String connectongCode);
 }
 
-class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  final UserLocalDataSource localDatasource;
+class UserRemoteDataSource implements IUserRemoteDataSource {
+  final IUserLocalDataSource localDatasource;
 
-  UserRemoteDataSourceImpl(this.localDatasource);
+  UserRemoteDataSource(this.localDatasource);
 
   @override
   Future<UserModel> login(String connectongCode) async {

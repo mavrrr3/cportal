@@ -1,12 +1,12 @@
 import 'package:cportal_flutter/domain/entities/user_entity.dart';
-import 'package:cportal_flutter/domain/repositories/user_repository.dart';
+import 'package:cportal_flutter/domain/repositories/i_user_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/core/usecases/usecase.dart';
+import 'package:cportal_flutter/core/usecases/i_usecase.dart';
 
-class LoginUserUseCase extends UseCase<UserEntity, LoginUserParams> {
-  final UserRepository userRepository;
+class LoginUserUseCase extends IUseCase<UserEntity, LoginUserParams> {
+  final IUserRepository userRepository;
 
   LoginUserUseCase(this.userRepository);
 

@@ -1,10 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:cportal_flutter/core/error/exception.dart';
-import 'package:cportal_flutter/data/datasources/profile_local_datasource.dart';
+import 'package:cportal_flutter/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/data/models/profile_model.dart';
 
-abstract class ProfileRemoteDataSource {
+abstract class IProfileRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем все ошибки через [ServerException]
@@ -16,10 +16,10 @@ abstract class ProfileRemoteDataSource {
   Future<List<ProfileModel>> searchProfiles(String query);
 }
 
-class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
-  final ProfileLocalDataSource localDataSource;
+class ProfileRemoteDataSource implements IProfileRemoteDataSource {
+  final IProfileLocalDataSource localDataSource;
 
-  ProfileRemoteDataSourceImpl(this.localDataSource);
+  ProfileRemoteDataSource(this.localDataSource);
   @override
   Future<ProfileModel> getSingleProfile(String id) async {
     String stringUser = '''

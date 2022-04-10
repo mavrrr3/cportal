@@ -1,12 +1,12 @@
 import 'package:cportal_flutter/core/platform/network_info.dart';
-import 'package:cportal_flutter/data/datasources/profile_local_datasource.dart';
-import 'package:cportal_flutter/data/datasources/profile_remote_datasource.dart';
-import 'package:cportal_flutter/data/datasources/user_local_datasource.dart';
-import 'package:cportal_flutter/data/datasources/user_remote_datasource.dart';
-import 'package:cportal_flutter/data/repositories/profile_repository_impl.dart';
-import 'package:cportal_flutter/data/repositories/user_repository_impl.dart';
-import 'package:cportal_flutter/domain/repositories/profile_repository.dart';
-import 'package:cportal_flutter/domain/repositories/user_repository.dart';
+import 'package:cportal_flutter/data/datasources/profile_datasource/profile_local_datasource.dart';
+import 'package:cportal_flutter/data/datasources/profile_datasource/profile_remote_datasource.dart';
+import 'package:cportal_flutter/data/datasources/user_datasource/user_local_datasource.dart';
+import 'package:cportal_flutter/data/datasources/user_datasource/user_remote_datasource.dart';
+import 'package:cportal_flutter/data/repositories/profile_repository.dart';
+import 'package:cportal_flutter/data/repositories/user_repository.dart';
+import 'package:cportal_flutter/domain/repositories/i_profile_repository.dart';
+import 'package:cportal_flutter/domain/repositories/i_user_repository.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/check_auth.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/login_user_usecase.dart';
@@ -31,7 +31,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CheckAuthUseCase(sl()));
 
   // REPOSITORY
-  sl.registerLazySingleton<ProfileRepository>(
+  sl.registerLazySingleton<IProfileRepository>(
     () => ProfileRepositoryImpl(
       remoteDataSource: sl(),
       localDataSource: sl(),
@@ -39,32 +39,32 @@ Future<void> init() async {
     ),
   );
 
-  sl.registerLazySingleton<ProfileRemoteDataSource>(
-    () => ProfileRemoteDataSourceImpl(sl()),
+  sl.registerLazySingleton<IProfileRemoteDataSource>(
+    () => ProfileRemoteDataSource(sl()),
   );
 
-  sl.registerLazySingleton<ProfileLocalDataSource>(
-    () => ProfileLocalDataSourceImpl(),
+  sl.registerLazySingleton<IProfileLocalDataSource>(
+    () => ProfileLocalDataSource(),
   );
 
-  sl.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(
+  sl.registerLazySingleton<IUserRepository>(
+    () => UserRepository(
       remoteDataSource: sl(),
       localDataSource: sl(),
       networkInfo: sl(),
     ),
   );
 
-  sl.registerLazySingleton<UserRemoteDataSource>(
-    () => UserRemoteDataSourceImpl(sl()),
+  sl.registerLazySingleton<IUserRemoteDataSource>(
+    () => UserRemoteDataSource(sl()),
   );
 
-  sl.registerLazySingleton<UserLocalDataSource>(
-    () => UserLocalDataSourceImpl(),
+  sl.registerLazySingleton<IUserLocalDataSource>(
+    () => UserLocalDataSource(),
   );
 
   // CORE
-  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+  sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
 
   // EXTERNAL
   sl.registerLazySingleton(() => InternetConnectionChecker());

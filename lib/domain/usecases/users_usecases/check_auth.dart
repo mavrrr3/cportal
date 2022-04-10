@@ -1,9 +1,9 @@
-import 'package:cportal_flutter/domain/repositories/user_repository.dart';
+import 'package:cportal_flutter/domain/repositories/i_user_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 
 class CheckAuthUseCase {
-  final UserRepository userRepository;
+  final IUserRepository userRepository;
 
   CheckAuthUseCase(this.userRepository);
 

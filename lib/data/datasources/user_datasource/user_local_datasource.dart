@@ -3,7 +3,7 @@ import 'package:cportal_flutter/data/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-abstract class UserLocalDataSource {
+abstract class IUserLocalDataSource {
   /// Сохраняем [UserModel] в кэш
   ///
   /// Пробрасываем все ошибки через [CacheException]
@@ -15,7 +15,7 @@ abstract class UserLocalDataSource {
   Future<UserModel?> getSingleUserFromCache();
 }
 
-class UserLocalDataSourceImpl implements UserLocalDataSource {
+class UserLocalDataSource implements IUserLocalDataSource {
   @override
   Future<void> singleUserToCache(UserModel user) async {
     // await Hive.deleteBoxFromDisk('single_user');

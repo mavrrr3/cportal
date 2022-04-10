@@ -1,16 +1,16 @@
 import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/core/platform/network_info.dart';
-import 'package:cportal_flutter/data/datasources/profile_local_datasource.dart';
-import 'package:cportal_flutter/data/datasources/profile_remote_datasource.dart';
-import 'package:cportal_flutter/data/models/profile_model.dart';
+import 'package:cportal_flutter/data/datasources/profile_datasource/profile_local_datasource.dart';
+import 'package:cportal_flutter/data/datasources/profile_datasource/profile_remote_datasource.dart';
+
 import 'package:cportal_flutter/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/domain/repositories/profile_repository.dart';
+import 'package:cportal_flutter/domain/repositories/i_profile_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class ProfileRepositoryImpl implements ProfileRepository {
-  final ProfileRemoteDataSource remoteDataSource;
-  final ProfileLocalDataSource localDataSource;
+class ProfileRepositoryImpl implements IProfileRepository {
+  final IProfileRemoteDataSource remoteDataSource;
+  final IProfileLocalDataSource localDataSource;
   final NetworkInfo networkInfo;
 
   ProfileRepositoryImpl({
