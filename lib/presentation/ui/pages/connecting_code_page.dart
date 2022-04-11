@@ -3,7 +3,7 @@ import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/presentation/navigation.dart';
+import 'package:cportal_flutter/presentation/go_navigation.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/what_get_with_you.dart';
@@ -11,6 +11,7 @@ import 'package:cportal_flutter/presentation/ui/widgets/work_mode_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,10 +30,7 @@ class ConnectingCodePage extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUser) {
-          Future.delayed(const Duration(milliseconds: 10), () {
-            Navigator.of(context)
-                .pushReplacementNamed(NavigationRouteNames.createPin);
-          });
+          context.goNamed(NavigationRouteNames.createPin);
         }
         if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
       },

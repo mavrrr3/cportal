@@ -4,11 +4,12 @@ import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/data/models/profile_model.dart';
 import 'package:cportal_flutter/data/models/user_model.dart';
-import 'package:cportal_flutter/presentation/navigation.dart';
+import 'package:cportal_flutter/presentation/go_navigation.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,6 +26,10 @@ void main() => runZonedGuarded<void>(
         // await Firebase.initializeApp();
         await Hive.initFlutter();
         _hiveAdaptersInit();
+
+        await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp],
+        );
         BlocOverrides.runZoned(
           () => runApp(const MyApp()),
           blocObserver: AppBlocObserver.instance(),
@@ -33,7 +38,13 @@ void main() => runZonedGuarded<void>(
       },
       (error, stackTrace) {
         if (kDebugMode) {
-          print('Error main: $error');
+          print('Caught Framework error');
+          // В debug режиме выводим ошибки в консоль
+          FlutterError.dumpErrorToConsole(
+            FlutterErrorDetails(exception: error),
+          );
+        } else {
+          Zone.current.handleUncaughtError(error, stackTrace);
         }
       },
     );
@@ -43,9 +54,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _navigatorKey = GlobalKey<NavigatorState>();
-    var navigation = Navigation();
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<GetSingleProfileBloc>(
@@ -60,17 +68,27 @@ class MyApp extends StatelessWidget {
         dark: darkTheme(context),
         initial: AdaptiveThemeMode.light,
         builder: (theme, darkTheme) => ScreenUtilInit(
-          builder: (() => MaterialApp(
-                navigatorKey: _navigatorKey,
+          builder: (() => MaterialApp.router(
+                routerDelegate: router.routerDelegate,
+                routeInformationParser: router.routeInformationParser,
                 debugShowCheckedModeBanner: false,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
                 theme: theme,
                 darkTheme: darkTheme,
-                routes: navigation.routes,
-                initialRoute: NavigationRouteNames.splashScreen,
-                onGenerateRoute: navigation.onGenerateRoute,
               )),
+
+          // MaterialApp(
+          //       navigatorKey: _navigatorKey,
+          //       debugShowCheckedModeBanner: false,
+          //       localizationsDelegates: AppLocalizations.localizationsDelegates,
+          //       supportedLocales: AppLocalizations.supportedLocales,
+          //       theme: theme,
+          //       darkTheme: darkTheme,
+          //       routes: navigation.routes,
+          //       initialRoute: NavigationRouteNames.splashScreen,
+          //       onGenerateRoute: navigation.onGenerateRoute,
+          //     )),
           designSize: const Size(360, 640),
         ),
       ),

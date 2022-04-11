@@ -1,15 +1,22 @@
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/presentation/navigation.dart';
+import 'package:cportal_flutter/presentation/go_navigation.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
+  static const String routeName = 'splashScreen';
+  static Route<SplashScreen> route() {
+    return MaterialPageRoute<SplashScreen>(
+      settings: const RouteSettings(name: routeName),
+      builder: (BuildContext context) => const SplashScreen(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +25,11 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          final nextScreen = !state.isAuth
+          final nextScreen = state.isAuth
               ? NavigationRouteNames.mainPage
               : NavigationRouteNames.connectingCode;
 
-          Navigator.of(context).pushReplacementNamed(nextScreen);
+          context.goNamed(nextScreen);
         }
       },
       child: const LoaderWidget(),

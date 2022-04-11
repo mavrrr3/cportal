@@ -101,11 +101,11 @@ class ProfileModel extends ProfileEntity {
         photoLink: json['photo_link'] as String,
         active: json['active'] as bool,
         position:
-            PositionModel.fromJson(json['position'] as Map<String, String>),
+            PositionModel.fromJson(json['position'] as Map<String, dynamic>),
         phone: List<PhoneModel>.from(
           json['phone'].map(
             (dynamic x) => PhoneModel.fromJson(x as Map<String, dynamic>),
-          ) as Iterable<PhoneModel>,
+          ) as Iterable<dynamic>,
         ),
         userCreated: json['user_created'] as String,
         dateCreated: DateTime.parse(json['date_created'] as String),
