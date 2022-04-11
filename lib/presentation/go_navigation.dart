@@ -17,8 +17,8 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  // initialLocation: '/main_page',
-  debugLogDiagnostics: true,
+  initialLocation: '/create_pin',
+  // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,

@@ -9,12 +9,11 @@ import 'package:cportal_flutter/data/repositories/user_repository_mobile.dart';
 import 'package:cportal_flutter/data/repositories/user_repository_web.dart';
 import 'package:cportal_flutter/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/domain/repositories/i_user_repository.dart';
-import 'package:cportal_flutter/domain/usecases/users_usecases/check_auth.dart';
+import 'package:cportal_flutter/domain/usecases/users_usecases/check_auth_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/search_profile_usecase.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_bloc.dart';
-
 import 'package:cportal_flutter/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';

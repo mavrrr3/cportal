@@ -13,12 +13,6 @@ class AuthInitial extends AuthState {
   List<Object?> get props => [];
 }
 
-class InProgress extends AuthState {
-  const InProgress();
-  @override
-  List<Object?> get props => [];
-}
-
 class AuthUser extends AuthState {
   final UserEntity user;
 

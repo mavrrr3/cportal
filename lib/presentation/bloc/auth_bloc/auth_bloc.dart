@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/domain/usecases/users_usecases/check_auth.dart';
+import 'package:cportal_flutter/domain/usecases/users_usecases/check_auth_usecase.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/presentation/bloc/auth_bloc/auth_state.dart';
@@ -30,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ChangeAuthCode event,
     Emitter<AuthState> emit,
   ) {
-    if (event.connectingCode.length != 6) emit(const InProgress());
+    if (event.connectingCode.length != 6) emit(const AuthInitial());
   }
 
   FutureOr<void> _onCheckAuth(
@@ -38,7 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     log(event.toString());
-    emit(const InProgress());
+    emit(const AuthInitial());
 
     final notAuth = await checkAuth();
     log(notAuth.toString());
@@ -52,7 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEventImpl event,
     Emitter<AuthState> emit,
   ) async {
-    emit(const InProgress());
+    emit(const AuthInitial());
 
     final failureOrUser = await loginUser(
       LoginUserParams(connectingCode: event.connectingCode),

@@ -77,18 +77,6 @@ class MyApp extends StatelessWidget {
                 theme: theme,
                 darkTheme: darkTheme,
               )),
-
-          // MaterialApp(
-          //       navigatorKey: _navigatorKey,
-          //       debugShowCheckedModeBanner: false,
-          //       localizationsDelegates: AppLocalizations.localizationsDelegates,
-          //       supportedLocales: AppLocalizations.supportedLocales,
-          //       theme: theme,
-          //       darkTheme: darkTheme,
-          //       routes: navigation.routes,
-          //       initialRoute: NavigationRouteNames.splashScreen,
-          //       onGenerateRoute: navigation.onGenerateRoute,
-          //     )),
           designSize: const Size(360, 640),
         ),
       ),

@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/core/error/exception.dart';
-import 'package:cportal_flutter/core/platform/network_info.dart';
 import 'package:cportal_flutter/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/data/datasources/profile_datasource/profile_remote_datasource.dart';
 

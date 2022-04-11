@@ -11,7 +11,7 @@ import 'package:dartz/dartz.dart';
 class ProfileRepositoryMobile implements IProfileRepository {
   final IProfileRemoteDataSource remoteDataSource;
   final IProfileLocalDataSource localDataSource;
-  final NetworkInfo networkInfo;
+  final INetworkInfo networkInfo;
 
   ProfileRepositoryMobile({
     required this.remoteDataSource,
