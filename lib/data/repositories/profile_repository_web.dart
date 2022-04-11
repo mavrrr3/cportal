@@ -8,35 +8,23 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/domain/repositories/i_profile_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class ProfileRepositoryImpl implements IProfileRepository {
+class ProfileRepositoryWeb implements IProfileRepository {
   final IProfileRemoteDataSource remoteDataSource;
   final IProfileLocalDataSource localDataSource;
-  final INetworkInfo networkInfo;
 
-  ProfileRepositoryImpl({
+  ProfileRepositoryWeb({
     required this.remoteDataSource,
     required this.localDataSource,
-    required this.networkInfo,
   });
 
   @override
   Future<Either<Failure, ProfileEntity>> getSingleProfile(String id) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteUser = await remoteDataSource.getSingleProfile(id);
+    try {
+      final remoteUser = await remoteDataSource.getSingleProfile(id);
 
-        return Right(remoteUser);
-      } on ServerException {
-        return Left(ServerFailure());
-      }
-    } else {
-      try {
-        final localeUser = await localDataSource.getSingleProfileFromCache(id);
-
-        return Right(localeUser!);
-      } on CacheException {
-        return Left(CacheFailure());
-      }
+      return Right(remoteUser);
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 
