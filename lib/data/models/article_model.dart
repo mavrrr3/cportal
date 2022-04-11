@@ -6,24 +6,24 @@ import 'package:cportal_flutter/domain/entities/article_entity.dart';
 import 'dart:convert';
 
 ArticleModel articleModelFromJson(String str) =>
-    ArticleModel.fromJson(json.decode(str));
+    ArticleModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 String articleModelToJson(ArticleModel data) => json.encode(data.toJson());
 
 class ArticleModel extends ArticleEntity {
   const ArticleModel({
-    required id,
-    required articleType,
-    required header,
-    required description,
-    required image,
-    required dateShow,
-    required externalLink,
-    required show,
-    required userCreated,
-    required dateCreated,
-    required userUpdate,
-    required dateUpdated,
+    required String id,
+    required ArticleTypeEntity articleType,
+    required String header,
+    required String description,
+    required String image,
+    required DateTime dateShow,
+    required String externalLink,
+    required bool show,
+    required String userCreated,
+    required DateTime dateCreated,
+    required String userUpdate,
+    required DateTime dateUpdated,
   }) : super(
           id: id,
           articleType: articleType,
@@ -40,21 +40,23 @@ class ArticleModel extends ArticleEntity {
         );
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) => ArticleModel(
-        id: json['id'],
-        articleType: ArticleTypeModel.fromJson(json['article_type']),
-        header: json['header'],
-        description: json['description'],
-        image: json['image'],
-        dateShow: DateTime.parse(json['date_show']),
-        externalLink: json['external_link'],
-        show: json['show'],
-        userCreated: json['user_created'],
-        dateCreated: DateTime.parse(json['date_created']),
-        userUpdate: json['user_update'],
-        dateUpdated: DateTime.parse(json['date_updated']),
+        id: json['id'] as String,
+        articleType: ArticleTypeModel.fromJson(
+          json['article_type'] as Map<String, dynamic>,
+        ),
+        header: json['header'] as String,
+        description: json['description'] as String,
+        image: json['image'] as String,
+        dateShow: DateTime.parse(json['date_show'] as String),
+        externalLink: json['external_link'] as String,
+        show: json['show'] as bool,
+        userCreated: json['user_created'] as String,
+        dateCreated: DateTime.parse(json['date_created'] as String),
+        userUpdate: json['user_update'] as String,
+        dateUpdated: DateTime.parse(json['date_updated'] as String),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'article_type': (articleType as ArticleTypeModel).toJson(),
         'header': header,
@@ -72,9 +74,9 @@ class ArticleModel extends ArticleEntity {
 
 class ArticleTypeModel extends ArticleTypeEntity {
   const ArticleTypeModel({
-    required id,
-    required code,
-    required description,
+    required String id,
+    required String code,
+    required String description,
   }) : super(
           id: id,
           code: code,
@@ -83,12 +85,12 @@ class ArticleTypeModel extends ArticleTypeEntity {
 
   factory ArticleTypeModel.fromJson(Map<String, dynamic> json) =>
       ArticleTypeModel(
-        id: json['id'],
-        code: json['code'],
-        description: json['description'],
+        id: json['id'] as String,
+        code: json['code'] as String,
+        description: json['description'] as String,
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'code': code,
         'description': description,

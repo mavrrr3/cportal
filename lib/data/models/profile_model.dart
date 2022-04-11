@@ -8,12 +8,12 @@ import 'package:hive/hive.dart';
 part 'profile_model.g.dart';
 
 ProfileModel profileModelFromJson(String str) =>
-    ProfileModel.fromJson(json.decode(str));
+    ProfileModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 
 PhoneModel phoneModelFromJson(String str) =>
-    PhoneModel.fromJson(json.decode(str));
+    PhoneModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 @HiveType(typeId: 2)
 class ProfileModel extends ProfileEntity {
@@ -92,25 +92,28 @@ class ProfileModel extends ProfileEntity {
         );
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-        id: json['id'],
-        externalId: json['external_id'],
-        firstName: json['first_name'],
-        lastName: json['last_name'],
-        middleName: json['middle_name'],
-        email: json['email'],
-        photoLink: json['photo_link'],
-        active: json['active'],
-        position: PositionModel.fromJson(json['position']),
+        id: json['id'] as String,
+        externalId: json['external_id'] as String,
+        firstName: json['first_name'] as String,
+        lastName: json['last_name'] as String,
+        middleName: json['middle_name'] as String,
+        email: json['email'] as String,
+        photoLink: json['photo_link'] as String,
+        active: json['active'] as bool,
+        position:
+            PositionModel.fromJson(json['position'] as Map<String, String>),
         phone: List<PhoneModel>.from(
-          json['phone'].map((x) => PhoneModel.fromJson(x)),
+          json['phone'].map(
+            (dynamic x) => PhoneModel.fromJson(x as Map<String, dynamic>),
+          ) as Iterable<PhoneModel>,
         ),
-        userCreated: json['user_created'],
-        dateCreated: DateTime.parse(json['date_created']),
-        userUpdate: json['user_update'],
-        dateUpdated: DateTime.parse(json['date_updated']),
+        userCreated: json['user_created'] as String,
+        dateCreated: DateTime.parse(json['date_created'] as String),
+        userUpdate: json['user_update'] as String,
+        dateUpdated: DateTime.parse(json['date_updated'] as String),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'external_id': externalId,
         'first_name': firstName,
@@ -121,7 +124,7 @@ class ProfileModel extends ProfileEntity {
         'active': active,
         'position': position.toJson(),
         'phone': List<PhoneModel>.from(
-          phone.map((x) => x.toJson()),
+          phone.map((x) => x.toJson()) as Iterable<PhoneModel>,
         ),
         'user_created': userCreated,
         'date_created': dateCreated.toIso8601String(),
@@ -143,11 +146,11 @@ class PositionModel extends PositionEntity {
   }) : super(id: id, description: description);
 
   factory PositionModel.fromJson(Map<String, dynamic> json) => PositionModel(
-        id: json['id'],
-        description: json['description'],
+        id: json['id'] as String,
+        description: json['description'] as String,
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'description': description,
       };
@@ -173,12 +176,12 @@ class PhoneModel extends PhoneEntity {
         );
 
   factory PhoneModel.fromJson(Map<String, dynamic> json) => PhoneModel(
-        number: json['number'],
-        suffix: json['suffix'],
-        primary: json['primary'],
+        number: json['number'] as String,
+        suffix: json['suffix'] as String?,
+        primary: json['primary'] as bool,
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'number': number,
         'suffix': suffix,
         'primary': primary,

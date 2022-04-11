@@ -10,7 +10,8 @@ import 'package:hive/hive.dart';
 
 part 'user_model.g.dart';
 
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+UserModel userModelFromJson(String str) =>
+    UserModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
@@ -71,19 +72,20 @@ class UserModel extends UserEntity {
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json['id'],
-        userName: json['user_name'],
-        profileId: json['profile_id'],
-        lastLogin: DateTime.parse(json['last_login']),
-        blocked: json['blocked'],
-        dateCreated: DateTime.parse(json['date_created']),
-        userCreated: json['user_created'],
-        dateUpdated: json['date_updated'],
-        userUpdated: json['user_updated'],
-        userType: UserTypeModel.fromJson(json['user_type']),
+        id: json['id'] as String,
+        userName: json['user_name'] as String,
+        profileId: json['profile_id'] as String,
+        lastLogin: DateTime.parse(json['last_login'] as String),
+        blocked: json['blocked'] as bool,
+        dateCreated: DateTime.parse(json['date_created'] as String),
+        userCreated: json['user_created'] as String,
+        dateUpdated: DateTime.parse(json['date_updated'] as String),
+        userUpdated: json['user_updated'] as String,
+        userType:
+            UserTypeModel.fromJson(json['user_type'] as Map<String, dynamic>),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'user_name': userName,
         'profile_id': profileId,
@@ -117,17 +119,17 @@ class UserTypeModel extends UserTypeEntity {
         );
 
   factory UserTypeModel.fromRawJson(String str) =>
-      UserTypeModel.fromJson(json.decode(str));
+      UserTypeModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
   String toRawJson() => json.encode(toJson());
 
   factory UserTypeModel.fromJson(Map<String, dynamic> json) => UserTypeModel(
-        id: json['id'],
-        code: json['code'],
-        description: json['description'],
+        id: json['id'] as String,
+        code: json['code'] as String,
+        description: json['description'] as String,
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'code': code,
         'description': description,

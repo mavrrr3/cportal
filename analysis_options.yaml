@@ -1,6 +1,9 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
   plugins:
     - dart_code_metrics
 
@@ -16,9 +19,9 @@ dart_code_metrics:
   metrics-exclude:
     - test/**
   rules:
-    - avoid-dynamic
+    # - avoid-dynamic
     - avoid-global-state
-    - avoid-unnecessary-type-casts
+    # - avoid-unnecessary-type-casts
     - newline-before-return
     - no-boolean-literal-compare
     - no-empty-block

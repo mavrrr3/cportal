@@ -117,7 +117,7 @@ class KeyboardNumber extends StatelessWidget {
   }
 }
 
-String concatTextFieled(number, controller) {
+String concatTextFieled(int number, TextEditingController controller) {
   String text = '';
   if (controller.text.length < _simbolQuantity) {
     controller.text += '$number';
