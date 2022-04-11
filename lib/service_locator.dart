@@ -59,6 +59,9 @@ Future<void> init() async {
     () => ProfileLocalDataSource(),
   );
 
+  // Произвел адаптацию под web
+  // internet_connection_checker не работает с Flutter Web
+  // Если Web то инжектируется имплементация без networkInfo
   if (kIsWeb) {
     sl.registerLazySingleton<IUserRepository>(
       () => UserRepositoryWeb(
