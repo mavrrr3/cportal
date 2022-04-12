@@ -1,30 +1,38 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:cportal_flutter/domain/usecases/users_usecases/pin_code_enter_usecase.dart';
 import 'package:flutter/foundation.dart';
 
-part 'pin_code_event.dart';
-part 'pin_code_state.dart';
+enum PinCodeInputEnum {
+  create,
+  repeat,
+  input,
+  error,
+  done,
+  wrong,
+  wrongRepeat,
+  writingCreate,
+  writingRepeat,
+  wrongInput,
+  writingInput,
+}
 
-class PinCodeBloc extends Bloc<PinCodeBlocEvent, PinCodeState> {
+class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   PinCodeEnterUseCase pinCodeEnter;
   PinCodeBloc(
     this.pinCodeEnter,
-  ) : super(PinCodeInitialState()) {
+  ) : super(PinCodeState()) {
     _setupEvents();
   }
 
   void _setupEvents() {
     on<PinCodeCheckEvent>(_hasPinCode);
-    on<PicCodeEnteredEvent>(_onEntered);
-    on<PinCodeEnteringEvent>((event, emit) {
-      emit(const PinCodeEnterState());
-    });
+
+    on<PinCodeChange>(_onChange);
+
+    on<PinCodeSubmit>(_onSubmit);
   }
 
   FutureOr<void> _hasPinCode(
@@ -36,66 +44,124 @@ class PinCodeBloc extends Bloc<PinCodeBlocEvent, PinCodeState> {
     final pinCodeOrNull = await pinCodeEnter.getPin();
 
     if (pinCodeOrNull == null) {
-      emit(const PinCodeCreateState());
+      emit(state.copyWith(status: PinCodeInputEnum.create));
     } else {
-      emit(const PinCodeEnterState());
+      emit(state.copyWith(
+        pinCode: pinCodeOrNull,
+        status: PinCodeInputEnum.input,
+      ));
     }
   }
 
-  FutureOr<void> _onEntered(
-    PicCodeEnteredEvent event,
+  FutureOr<void> _onChange(
+    PinCodeChange event,
     Emitter<PinCodeState> emit,
   ) async {
+    if (kDebugMode) log(event.pinCode.toString());
+
+    emit(state.copyWith(
+      status: getStatus(event.status),
+      pinCode: event.pinCode,
+    ));
+  }
+
+  PinCodeInputEnum getStatus(PinCodeInputEnum status) {
+    if (status == PinCodeInputEnum.create ||
+        status == PinCodeInputEnum.writingCreate) {
+      return PinCodeInputEnum.writingCreate;
+    } else if (status == PinCodeInputEnum.repeat ||
+        status == PinCodeInputEnum.writingRepeat ||
+        status == PinCodeInputEnum.wrongRepeat) {
+      return PinCodeInputEnum.writingRepeat;
+    } else {
+      return PinCodeInputEnum.writingInput;
+    }
+  }
+
+  FutureOr<void> _onSubmit(
+    PinCodeSubmit event,
+    Emitter<PinCodeState> emit,
+  ) async {
+    emit(state.copyWith(status: PinCodeInputEnum.create));
+
     final pinCodeOrNull = await pinCodeEnter.getPin();
 
     if (pinCodeOrNull == null) {
-      log('В кеше пин равен нулу отправляю на сохранение в кеш' +
-          event.pinCode);
-
       final failureOrPinCode =
           await pinCodeEnter(PinCodeParams(pinCode: event.pinCode));
 
       failureOrPinCode.fold(
         (failure) {
           emit(
-            PinCodeErrorState(message: _mapFailureToMessage(failure)),
+            state.copyWith(status: PinCodeInputEnum.error),
           );
         },
         (pinCode) {
-          emit(const PinCodeRepeatState());
+          emit(state.copyWith(status: PinCodeInputEnum.repeat));
         },
       );
     } else {
-      if (pinCodeOrNull == event.pinCode) {
-        final failureOrPinCode =
-            await pinCodeEnter(PinCodeParams(pinCode: event.pinCode));
-
-        failureOrPinCode.fold(
-          (failure) {
-            emit(
-              PinCodeErrorState(message: _mapFailureToMessage(failure)),
-            );
-          },
-          (pinCode) {
-            emit(PinCodeEnteredState(pinCode: pinCode));
-          },
-        );
+      if (event.pinCode == pinCodeOrNull) {
+        emit(state.copyWith(status: PinCodeInputEnum.done));
       } else {
-        emit(const PinCodeErrorState(message: 'Не совпадает ПИН'));
+        event.status == PinCodeInputEnum.writingInput
+            ? emit(state.copyWith(status: PinCodeInputEnum.wrongInput))
+            : emit(state.copyWith(status: PinCodeInputEnum.wrongRepeat));
       }
     }
-
-    if (kDebugMode) log('PinCodeState: ' + state.toString());
   }
+}
 
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'Ошибка на сервере';
-      case CacheFailure:
-        return 'Ошибка обработки кэша';
-      default:
-        return 'Unexpected Error';
-    }
+class PinCodeState {
+  final String pinCode;
+  final PinCodeInputEnum status;
+
+  bool get isWrongPin =>
+      status == PinCodeInputEnum.error ||
+      status == PinCodeInputEnum.wrong ||
+      status == PinCodeInputEnum.wrongRepeat ||
+      status == PinCodeInputEnum.wrongInput;
+
+  bool get doesItNeedToClean =>
+      status == PinCodeInputEnum.repeat ||
+      status == PinCodeInputEnum.create ||
+      status == PinCodeInputEnum.writingCreate ||
+      status == PinCodeInputEnum.wrong ||
+      status == PinCodeInputEnum.wrongRepeat;
+
+  PinCodeState({
+    this.pinCode = '',
+    this.status = PinCodeInputEnum.create,
+  });
+
+  PinCodeState copyWith({
+    String? pinCode,
+    PinCodeInputEnum? status,
+  }) {
+    return PinCodeState(
+      pinCode: pinCode ?? this.pinCode,
+      status: status ?? this.status,
+    );
   }
+}
+
+abstract class PinCodeEvent extends Equatable {
+  const PinCodeEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class PinCodeCheckEvent extends PinCodeEvent {}
+
+class PinCodeChange extends PinCodeEvent {
+  final String pinCode;
+  final PinCodeInputEnum status;
+  const PinCodeChange({required this.pinCode, required this.status});
+}
+
+class PinCodeSubmit extends PinCodeEvent {
+  final String pinCode;
+  final PinCodeInputEnum status;
+  const PinCodeSubmit({required this.pinCode, required this.status});
 }

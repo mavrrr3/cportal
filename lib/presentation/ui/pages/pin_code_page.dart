@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/presentation/go_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
-
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -15,14 +16,12 @@ import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 final _pinController = TextEditingController();
 final _pinFocusNode = FocusNode();
 
-enum PinCodeInputEnum { create, repeat, input, error }
-
 class PinCodePage extends StatelessWidget {
   const PinCodePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
-        .add(const PinCodeCheckEvent());
+        .add(PinCodeCheckEvent());
 
     return Container(
       decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
@@ -35,22 +34,31 @@ class PinCodePage extends StatelessWidget {
             ),
             child: BlocConsumer<PinCodeBloc, PinCodeState>(
               listener: ((context, state) {
-                if (state is PinCodeEnteredState) {
+                if (state.status == PinCodeInputEnum.done) {
                   // Если ПИН код из базе Hive совпадает с
                   // введеным ПИНом, то редирект на страницу [/main_page]
                   context.goNamed(NavigationRouteNames.mainPage);
                 }
               }),
               builder: ((context, state) {
-                switch (state.runtimeType) {
-                  case PinCodeRepeatState:
-                    return const BodyWidget(input: PinCodeInputEnum.repeat);
-                  case PinCodeCreateState:
+                switch (state.status) {
+                  case PinCodeInputEnum.create:
+                  case PinCodeInputEnum.writingCreate:
                     return const BodyWidget(input: PinCodeInputEnum.create);
-                  case PinCodeEnterState:
+                  case PinCodeInputEnum.repeat:
+                  case PinCodeInputEnum.writingRepeat:
+                    return const BodyWidget(input: PinCodeInputEnum.repeat);
+                  case PinCodeInputEnum.input:
+                  case PinCodeInputEnum.writingInput:
                     return const BodyWidget(input: PinCodeInputEnum.input);
-                  case PinCodeErrorState:
+                  case PinCodeInputEnum.wrongRepeat:
+                    return const BodyWidget(
+                      input: PinCodeInputEnum.wrongRepeat,
+                    );
+                  case PinCodeInputEnum.error:
                     return const BodyWidget(input: PinCodeInputEnum.error);
+                  case PinCodeInputEnum.wrongInput:
+                    return const BodyWidget(input: PinCodeInputEnum.wrongInput);
                   default:
                     return const Center(child: CircularProgressIndicator());
                 }
@@ -89,7 +97,7 @@ class BodyWidget extends StatelessWidget {
           context,
         ),
         SizedBox(height: 16.h),
-        PinCodeInput(error: input == PinCodeInputEnum.error ? true : false),
+        const PinCodeInput(),
         SizedBox(height: 8.h),
       ],
     );
@@ -97,10 +105,8 @@ class BodyWidget extends StatelessWidget {
 }
 
 class PinCodeInput extends StatefulWidget {
-  final bool error;
   const PinCodeInput({
     Key? key,
-    required this.error,
   }) : super(key: key);
 
   @override
@@ -126,28 +132,38 @@ class _PinCodeInputState extends State<PinCodeInput> {
       ),
     );
 
-    return Pinput(
-      obscureText: true,
-      obscuringWidget: SvgIcon(
-        widget.error ? AppColors.red : AppColors.blue,
-        path: 'obscure_symbol.svg',
-        width: 16.w,
-      ),
-      useNativeKeyboard: false,
-      length: 4,
-      controller: _pinController,
-      focusNode: _pinFocusNode,
-      defaultPinTheme: defaultPinTheme,
-      separator: SizedBox(width: 32.w),
-      focusedPinTheme: defaultPinTheme,
-      showCursor: false,
-      onChanged: (value) {
-        BlocProvider.of<PinCodeBloc>(context, listen: false)
-            .add(PinCodeEnteringEvent(pinCodeEntering: value));
-      },
-      onCompleted: (value) {
-        BlocProvider.of<PinCodeBloc>(context, listen: false)
-            .add(PicCodeEnteredEvent(pinCode: value));
+    return BlocBuilder<PinCodeBloc, PinCodeState>(
+      builder: (context, state) {
+        return Pinput(
+          obscureText: true,
+          obscuringWidget: SvgIcon(
+            state.isWrongPin ? AppColors.red : AppColors.blue,
+            path: 'obscure_symbol.svg',
+            width: 16.w,
+          ),
+          useNativeKeyboard: false,
+          length: 4,
+          controller: _pinController,
+          focusNode: _pinFocusNode,
+          defaultPinTheme: defaultPinTheme,
+          separator: SizedBox(width: 32.w),
+          focusedPinTheme: defaultPinTheme,
+          showCursor: false,
+          onChanged: (value) {
+            BlocProvider.of<PinCodeBloc>(context, listen: false)
+                .add(PinCodeChange(status: state.status, pinCode: value));
+          },
+          onCompleted: (value) {
+            BlocProvider.of<PinCodeBloc>(context, listen: false)
+                .add(PinCodeSubmit(pinCode: value, status: state.status));
+            if (state.doesItNeedToClean) {
+              Future.delayed(
+                const Duration(milliseconds: 100),
+                () => _pinController.text = '',
+              );
+            }
+          },
+        );
       },
     );
   }
@@ -168,7 +184,6 @@ class HeaderText {
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: ' ',
-          // error: AppLocalizations.of(context)!.pinNotCorrect,
         );
       case PinCodeInputEnum.error:
         return HeaderTextWidget(
@@ -176,7 +191,26 @@ class HeaderText {
           secondText: AppLocalizations.of(context)!.forgetPin,
           error: AppLocalizations.of(context)!.errorPinCode,
         );
+      case PinCodeInputEnum.wrongRepeat:
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.repeatPinCode,
+          secondText: '',
+          error: _pinController.text.length == 4
+              ? AppLocalizations.of(context)!.pinNotCorrect
+              : '',
+        );
       case PinCodeInputEnum.input:
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.inputPinCode,
+          secondText: AppLocalizations.of(context)!.forgetPin,
+        );
+      case PinCodeInputEnum.wrongInput:
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.inputPinCode,
+          secondText: AppLocalizations.of(context)!.forgetPin,
+          error: AppLocalizations.of(context)!.errorPinCode,
+        );
+      default:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.inputPinCode,
           secondText: AppLocalizations.of(context)!.forgetPin,
@@ -233,7 +267,10 @@ class HeaderTextWidget extends StatelessWidget {
               secondText,
               style: kMainTextRoboto.copyWith(
                 fontSize: 14.sp,
-                color: AppColors.blue,
+                color: secondText ==
+                        AppLocalizations.of(context)!.itWillBeNeedToEnter
+                    ? AppColors.kLightTextColor
+                    : AppColors.blue,
               ),
             ),
           ],
@@ -246,7 +283,7 @@ class HeaderTextWidget extends StatelessWidget {
               error ?? '',
               style: kMainTextRoboto.copyWith(
                 fontSize: 14.sp,
-                color: AppColors.red.withOpacity(0.6),
+                color: AppColors.red,
               ),
             ),
           ],

@@ -1,51 +1,63 @@
-part of 'pin_code_bloc.dart';
+// part of 'pin_code_bloc.dart';
 
-abstract class PinCodeState extends Equatable {
-  const PinCodeState();
+// abstract class PinCodeState extends Equatable {
+//   const PinCodeState();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class PinCodeInitialState extends PinCodeState {
-  @override
-  List<Object> get props => [];
-}
+// class PinCodeInitialState extends PinCodeState {
+//   @override
+//   List<Object> get props => [];
+// }
 
-class PinCodeRepeatState extends PinCodeState {
-  const PinCodeRepeatState();
-  @override
-  List<Object> get props => [];
-}
+// class PinCodeRepeatState extends PinCodeState {
+//   const PinCodeRepeatState();
+//   @override
+//   List<Object> get props => [];
+// }
 
-class PinCodeEnterState extends PinCodeState {
-  const PinCodeEnterState();
-  @override
-  List<Object> get props => [];
-}
+// class PinCodeCreateEnteringState extends PinCodeState {
+//   const PinCodeCreateEnteringState();
+//   @override
+//   List<Object> get props => [];
+// }
 
-class PinCodeCreateState extends PinCodeState {
-  const PinCodeCreateState();
-  @override
-  List<Object> get props => [];
-}
+// class PinCodeRepeatEnteringState extends PinCodeState {
+//   const PinCodeRepeatEnteringState();
+//   @override
+//   List<Object> get props => [];
+// }
 
-class PinCodeEnteredState extends PinCodeState {
-  final String pinCode;
+// class PinCodeEnterState extends PinCodeState {
+//   const PinCodeEnterState();
+//   @override
+//   List<Object> get props => [];
+// }
 
-  bool get isGoToRepeat => pinCode == 'repeat';
+// class PinCodeCreateState extends PinCodeState {
+//   const PinCodeCreateState();
+//   @override
+//   List<Object> get props => [];
+// }
 
-  const PinCodeEnteredState({required this.pinCode});
+// class PinCodeEnteredState extends PinCodeState {
+//   final String pinCode;
 
-  @override
-  List<Object> get props => [pinCode];
-}
+//   bool get isGoToRepeat => pinCode == 'repeat';
 
-class PinCodeErrorState extends PinCodeState {
-  final String message;
+//   const PinCodeEnteredState({required this.pinCode});
 
-  const PinCodeErrorState({required this.message});
+//   @override
+//   List<Object> get props => [pinCode];
+// }
 
-  @override
-  List<Object> get props => [message];
-}
+// class PinCodeErrorState extends PinCodeState {
+//   final String message;
+
+//   const PinCodeErrorState({required this.message});
+
+//   @override
+//   List<Object> get props => [message];
+// }

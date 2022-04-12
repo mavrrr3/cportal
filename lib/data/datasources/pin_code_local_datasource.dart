@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:cportal_flutter/data/models/user_model.dart';
+// import 'package:cportal_flutter/data/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -40,7 +40,7 @@ class PinCodeDataSource implements IPinCodeDataSource {
 
   @override
   Future<String?> getPin() async {
-    await Hive.deleteBoxFromDisk('pin_code');
+    // await Hive.deleteBoxFromDisk('pin_code');
 
     // Открывает Box
     var box = await Hive.openBox<String>('pin_code');
