@@ -49,7 +49,7 @@ final GoRouter router = GoRouter(
       path: '/create_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const PinCodePage(route: 'create'),
+        child: const Scaffold(body: PinCodePage()),
       ),
     ),
     GoRoute(
@@ -57,7 +57,7 @@ final GoRouter router = GoRouter(
       path: '/repeat_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const PinCodePage(route: 'repeat'),
+        child: const PinCodePage(),
       ),
     ),
     GoRoute(
@@ -65,7 +65,7 @@ final GoRouter router = GoRouter(
       path: '/input_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const PinCodePage(route: 'input'),
+        child: const PinCodePage(),
       ),
     ),
   ],

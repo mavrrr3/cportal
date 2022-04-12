@@ -4,6 +4,7 @@ import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/data/models/profile_model.dart';
 import 'package:cportal_flutter/data/models/user_model.dart';
+import 'package:cportal_flutter/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/presentation/go_navigation.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -61,6 +62,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<AuthBloc>(
           create: (ctx) => sl<AuthBloc>(),
+        ),
+        BlocProvider<PinCodeBloc>(
+          create: (ctx) => sl<PinCodeBloc>(),
         ),
       ],
       child: AdaptiveTheme(

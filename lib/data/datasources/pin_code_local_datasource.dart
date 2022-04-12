@@ -8,31 +8,53 @@ abstract class IPinCodeDataSource {
   ///
   /// Пробрасываем все ошибки через [CacheException]
   Future<String> writePin(String pinCode);
+
+  /// Запрашивает есть ли ПИН в кэше
+  ///
+  /// Пробрасываем все ошибки через [CacheException]
+  Future<String?> getPin();
 }
 
-class PinCodeLocalDataSource implements IPinCodeDataSource {
+class PinCodeDataSource implements IPinCodeDataSource {
   @override
   Future<String> writePin(String pinCode) async {
-    // await Hive.deleteBoxFromDisk('single_user');
-    if (kDebugMode) log('pinCode проверяю в кэше ' + pinCode.toString());
+    // await Hive.deleteBoxFromDisk('pin_code');
+
+    // Открывает Box
+    var box = await Hive.openBox<String>('pin_code');
+
+    // Проверяет если такой строки в базе нет
+    // то записывает пришедший ПИН и
+    // возвращает строку 'repeat'
+
+    await box.put('pin_code', pinCode);
+
+    if (kDebugMode) log('pinCode записал в кэш ' + pinCode.toString());
+
+    // Закрывает Box
+    await Hive.box<String>('pin_code').close();
+
+    // Возвращает записаный ПИН
+    return pinCode;
+  }
+
+  @override
+  Future<String?> getPin() async {
+    await Hive.deleteBoxFromDisk('pin_code');
 
     // Открывает Box
     var box = await Hive.openBox<String>('pin_code');
 
     // Запрашивает из локальной базы есть ли строка с ключём 'pin_code'
     String? localPin = box.get('pin_code');
+    if (kDebugMode) log('pinCode в кэше ' + localPin.toString());
 
     // Проверяет если такой строки в базе нет
     // то записывает пришедший ПИН и
     // возвращает строку 'repeat'
-    if (localPin == null) {
-      await box.put('pin_code', pinCode);
-
-      return 'repeat';
-    }
 
     // Закрывает Box
-    await Hive.box<UserModel>('single_user').close();
+    await Hive.box<String>('pin_code').close();
 
     // Возвращает записаный ПИН
     return localPin;

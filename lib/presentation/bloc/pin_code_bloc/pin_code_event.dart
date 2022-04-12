@@ -1,8 +1,14 @@
-part of 'pin_code_bloc_bloc.dart';
+part of 'pin_code_bloc.dart';
 
 abstract class PinCodeBlocEvent extends Equatable {
   const PinCodeBlocEvent();
 
+  @override
+  List<Object> get props => [];
+}
+
+class PinCodeCheckEvent extends PinCodeBlocEvent {
+  const PinCodeCheckEvent();
   @override
   List<Object> get props => [];
 }

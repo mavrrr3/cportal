@@ -13,6 +13,10 @@ class PinCodeEnterUseCase extends IUseCase<String, PinCodeParams> {
   Future<Either<Failure, String>> call(PinCodeParams params) async {
     return await pinCodeRepository.writePin(params.pinCode);
   }
+
+  Future<String?> getPin() async {
+    return await pinCodeRepository.getPin();
+  }
 }
 
 class PinCodeParams extends Equatable {

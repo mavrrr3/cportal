@@ -6,10 +6,10 @@ import 'package:cportal_flutter/domain/repositories/i_pin_code_repository.dart';
 
 import 'package:dartz/dartz.dart';
 
-class IPinCodeRepositoryWeb implements IPinCodeRepository {
+class PinCodeRepository implements IPinCodeRepository {
   final IPinCodeDataSource localDataSource;
 
-  IPinCodeRepositoryWeb({
+  PinCodeRepository({
     required this.localDataSource,
   });
 
@@ -22,5 +22,12 @@ class IPinCodeRepositoryWeb implements IPinCodeRepository {
     } on ServerException {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<String?> getPin() async {
+    final cacheHasPinCode = await localDataSource.getPin();
+
+    return cacheHasPinCode;
   }
 }

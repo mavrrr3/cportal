@@ -1,62 +1,107 @@
+import 'package:cportal_flutter/presentation/go_navigation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pinput/pinput.dart';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pinput/pinput.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final _pinController = TextEditingController();
 final _pinFocusNode = FocusNode();
-bool _isRightCode = true;
+
+enum PinCodeInputEnum { create, repeat, input, error }
 
 class PinCodePage extends StatelessWidget {
-  final String route;
-  const PinCodePage({Key? key, required this.route}) : super(key: key);
+  const PinCodePage({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    BlocProvider.of<PinCodeBloc>(context, listen: false)
+        .add(const PinCodeCheckEvent());
+
+    return Container(
+      decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.0.w,
+            ),
+            child: BlocConsumer<PinCodeBloc, PinCodeState>(
+              listener: ((context, state) {
+                if (state is PinCodeEnteredState) {
+                  // Если ПИН код из базе Hive совпадает с
+                  // введеным ПИНом, то редирект на страницу [/main_page]
+                  context.goNamed(NavigationRouteNames.mainPage);
+                }
+              }),
+              builder: ((context, state) {
+                switch (state.runtimeType) {
+                  case PinCodeRepeatState:
+                    return const BodyWidget(input: PinCodeInputEnum.repeat);
+                  case PinCodeCreateState:
+                    return const BodyWidget(input: PinCodeInputEnum.create);
+                  case PinCodeEnterState:
+                    return const BodyWidget(input: PinCodeInputEnum.input);
+                  case PinCodeErrorState:
+                    return const BodyWidget(input: PinCodeInputEnum.error);
+                  default:
+                    return const Center(child: CircularProgressIndicator());
+                }
+              }),
+            ),
+          ),
+          Column(
+            children: [
+              CustomKeyboard(
+                controller: _pinController,
+                simbolQuantity: 4,
+              ),
+              SizedBox(height: 52.h),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BodyWidget extends StatelessWidget {
+  final PinCodeInputEnum input;
+  const BodyWidget({
+    Key? key,
+    required this.input,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      builder: (() => Scaffold(
-            body: Container(
-              decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.0.w,
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 48.h),
-                        HeaderText.factory(route, context),
-                        SizedBox(height: 16.h),
-                        const PinCodeInput(),
-                        SizedBox(height: 8.h),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      CustomKeyboard(
-                        controller: _pinController,
-                        simbolQuantity: 4,
-                      ),
-                      SizedBox(height: 52.h),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )),
+    return Column(
+      children: [
+        SizedBox(height: 48.h),
+        HeaderText.factory(
+          input,
+          context,
+        ),
+        SizedBox(height: 16.h),
+        PinCodeInput(error: input == PinCodeInputEnum.error ? true : false),
+        SizedBox(height: 8.h),
+      ],
     );
   }
 }
 
 class PinCodeInput extends StatefulWidget {
-  const PinCodeInput({Key? key}) : super(key: key);
+  final bool error;
+  const PinCodeInput({
+    Key? key,
+    required this.error,
+  }) : super(key: key);
 
   @override
   _PinCodeInputState createState() => _PinCodeInputState();
@@ -84,7 +129,7 @@ class _PinCodeInputState extends State<PinCodeInput> {
     return Pinput(
       obscureText: true,
       obscuringWidget: SvgIcon(
-        _isRightCode ? AppColors.blue : AppColors.red,
+        widget.error ? AppColors.red : AppColors.blue,
         path: 'obscure_symbol.svg',
         width: 16.w,
       ),
@@ -96,33 +141,45 @@ class _PinCodeInputState extends State<PinCodeInput> {
       separator: SizedBox(width: 32.w),
       focusedPinTheme: defaultPinTheme,
       showCursor: false,
+      onChanged: (value) {
+        BlocProvider.of<PinCodeBloc>(context, listen: false)
+            .add(PinCodeEnteringEvent(pinCodeEntering: value));
+      },
+      onCompleted: (value) {
+        BlocProvider.of<PinCodeBloc>(context, listen: false)
+            .add(PicCodeEnteredEvent(pinCode: value));
+      },
     );
   }
 }
 
 class HeaderText {
   static HeaderTextWidget factory(
-    String route,
+    PinCodeInputEnum input,
     BuildContext context,
   ) {
-    switch (route) {
-      case 'create':
+    switch (input) {
+      case PinCodeInputEnum.create:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.createPinCode,
           secondText: AppLocalizations.of(context)!.itWillBeNeedToEnter,
-          error: AppLocalizations.of(context)!.pinNotCorrect,
         );
-      case 'repeat':
+      case PinCodeInputEnum.repeat:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: ' ',
-          error: AppLocalizations.of(context)!.pinNotCorrect,
+          // error: AppLocalizations.of(context)!.pinNotCorrect,
         );
-      default:
+      case PinCodeInputEnum.error:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.inputPinCode,
-          secondText: 'Забыли ПИН?',
+          secondText: AppLocalizations.of(context)!.forgetPin,
           error: AppLocalizations.of(context)!.errorPinCode,
+        );
+      case PinCodeInputEnum.input:
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.inputPinCode,
+          secondText: AppLocalizations.of(context)!.forgetPin,
         );
     }
   }
@@ -173,9 +230,10 @@ class HeaderTextWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              _isRightCode ? secondText : '',
+              secondText,
               style: kMainTextRoboto.copyWith(
                 fontSize: 14.sp,
+                color: AppColors.blue,
               ),
             ),
           ],
@@ -185,7 +243,7 @@ class HeaderTextWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              _isRightCode ? '' : error ?? '',
+              error ?? '',
               style: kMainTextRoboto.copyWith(
                 fontSize: 14.sp,
                 color: AppColors.red.withOpacity(0.6),
