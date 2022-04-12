@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:cportal_flutter/domain/usecases/users_usecases/pin_code_enter_usecase.dart';
 import 'package:flutter/foundation.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 enum PinCodeInputEnum {
   create,
@@ -28,11 +29,14 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   }
 
   void _setupEvents() {
-    on<PinCodeCheckEvent>(_hasPinCode);
+    on<PinCodeCheckEvent>(
+      _hasPinCode,
+      transformer: bloc_concurrency.sequential(),
+    );
 
-    on<PinCodeChange>(_onChange);
+    on<PinCodeChange>(_onChange, transformer: bloc_concurrency.sequential());
 
-    on<PinCodeSubmit>(_onSubmit);
+    on<PinCodeSubmit>(_onSubmit, transformer: bloc_concurrency.sequential());
   }
 
   FutureOr<void> _hasPinCode(

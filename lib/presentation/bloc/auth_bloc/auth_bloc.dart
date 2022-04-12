@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
@@ -21,9 +21,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _setupEvents() {
-    on<ChangeAuthCode>(_onChange);
-    on<CheckAuth>(_onCheckAuth);
-    on<AuthEventImpl>(_onAuthorize);
+    on<ChangeAuthCode>(_onChange, transformer: bloc_concurrency.sequential());
+    on<CheckAuth>(_onCheckAuth, transformer: bloc_concurrency.sequential());
+    on<AuthEventImpl>(_onAuthorize, transformer: bloc_concurrency.sequential());
   }
 
   FutureOr<void> _onChange(
