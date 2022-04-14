@@ -1,11 +1,9 @@
 import 'dart:developer';
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
-import 'package:cportal_flutter/core/platform/biometric_info.dart';
 import 'package:cportal_flutter/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/button.dart';
 import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
-import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

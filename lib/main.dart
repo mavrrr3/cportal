@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/data/models/profile_model.dart';
@@ -24,6 +25,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 void main() => runZonedGuarded<void>(
       () async {
         WidgetsFlutterBinding.ensureInitialized();
+        await AppConfig.load();
         await di.init();
         // await Firebase.initializeApp();
         await Hive.initFlutter();
