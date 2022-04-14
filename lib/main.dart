@@ -2,12 +2,15 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
+import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/data/models/profile_model.dart';
 import 'package:cportal_flutter/data/models/user_model.dart';
 import 'package:cportal_flutter/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
 import 'package:cportal_flutter/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/presentation/go_navigation.dart';
+import 'package:cportal_flutter/presentation/ui/pages/news_page.dart';
+import 'package:cportal_flutter/presentation/ui/widgets/svg_icon.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +22,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'presentation/ui/pages/main_page.dart';
+import 'presentation/ui/pages/profile_page.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 void main() => runZonedGuarded<void>(
@@ -94,19 +97,117 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+int _selectedItemIndex = 0;
+
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
   Widget build(BuildContext context) {
-    var localization = AppLocalizations.of(context);
+    var width = MediaQuery.of(context).size.width;
+    List<Widget> listPages = <Widget>[
+      const NewsPage(),
+    ];
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(localization!.appTitle),
+      body: listPages[_selectedItemIndex],
+      bottomNavigationBar: Container(
+        color: AppColors.blue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            NavBarItem(
+              index: 0,
+              width: width,
+              iconWidget: SvgIcon(null, path: 'navbar/main.svg', width: 24.0.w),
+              text: 'Главная',
+            ),
+            NavBarItem(
+              index: 1,
+              width: width,
+              iconWidget: SvgIcon(null, path: 'navbar/news.svg', width: 20.0.w),
+              text: 'Новости',
+            ),
+            NavBarItem(
+              index: 2,
+              width: width,
+              iconWidget:
+                  SvgIcon(null, path: 'navbar/questions.svg', width: 22.0.w),
+              text: 'Вопросы',
+            ),
+            NavBarItem(
+              index: 3,
+              width: width,
+              iconWidget:
+                  SvgIcon(null, path: 'navbar/declaration.svg', width: 22.0.w),
+              text: 'Заявки',
+            ),
+            NavBarItem(
+              index: 4,
+              width: width,
+              iconWidget:
+                  SvgIcon(null, path: 'navbar/contacts.svg', width: 20.0.w),
+              text: 'Контакты',
+            ),
+          ],
+        ),
       ),
-      body: const MainPage(),
+    );
+  }
+}
+
+class NavBarItem extends StatefulWidget {
+  final int index;
+  final Widget iconWidget;
+  final double width;
+
+  final String text;
+  const NavBarItem({
+    Key? key,
+    required this.index,
+    required this.width,
+    required this.iconWidget,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  State<NavBarItem> createState() => _NavBarItemState();
+}
+
+class _NavBarItemState extends State<NavBarItem> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedItemIndex = widget.index;
+        });
+      },
+      child: Container(
+        height: 56.h,
+        width: widget.width / 5,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 5.h),
+            widget.iconWidget,
+            SizedBox(height: 5.h),
+            Text(
+              widget.text,
+              style: kMainTextInter.copyWith(fontSize: 9.sp),
+            ),
+            SizedBox(height: 5.h),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -47,3 +47,11 @@ final kMainTextRoboto = GoogleFonts.roboto(
     color: AppColors.textMain,
   ),
 );
+
+final kMainTextInter = GoogleFonts.inter(
+  textStyle: TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textMain,
+  ),
+);
