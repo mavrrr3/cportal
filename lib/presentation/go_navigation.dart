@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/main.dart';
 import 'package:cportal_flutter/presentation/ui/pages/connecting_code_page.dart';
+import 'package:cportal_flutter/presentation/ui/pages/finger_print_page.dart';
 import 'package:cportal_flutter/presentation/ui/pages/pin_code_page.dart';
 import 'package:cportal_flutter/presentation/ui/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,12 @@ abstract class NavigationRouteNames {
   static const createPin = 'create_pin';
   static const repeatPin = 'repeat_pin';
   static const inputPin = 'input_pin';
-  static const fingerPrintPage = 'finger_print_page';
+  static const fingerPrintPage = 'fingerprint';
 }
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/create_pin',
+  initialLocation: '/fingerprint',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -66,6 +67,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const PinCodePage(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.fingerPrintPage,
+      path: '/fingerprint',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const FingerPrintPage(),
       ),
     ),
   ],
