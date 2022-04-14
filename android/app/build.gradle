@@ -57,6 +57,21 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "cportal_app"
+
+    productFlavors {
+        dev {
+            dimension "cportal_app"
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "Cportal(Dev)"
+            versionNameSuffix ".dev"
+        }
+        prod {
+            dimension "starter_app"
+            resValue "string", "app_name", "Cportal"
+        }
+    }
 }
 
 flutter {
