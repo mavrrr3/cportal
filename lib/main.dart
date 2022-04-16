@@ -4,6 +4,8 @@ import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/feature/data/models/article_model.dart';
+import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
@@ -217,4 +219,7 @@ void _hiveAdaptersInit() {
   Hive.registerAdapter(ProfileModelAdapter());
   Hive.registerAdapter(PositionModelAdapter());
   Hive.registerAdapter(PhoneModelAdapter());
+  Hive.registerAdapter(ArticleModelAdapter());
+  Hive.registerAdapter(ArticleTypeModelAdapter());
+  Hive.registerAdapter(NewsModelAdapter());
 }
