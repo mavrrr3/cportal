@@ -4,26 +4,56 @@
 
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'dart:convert';
+import 'package:hive/hive.dart';
+
+part 'article_model.g.dart';
 
 ArticleModel articleModelFromJson(String str) =>
     ArticleModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 String articleModelToJson(ArticleModel data) => json.encode(data.toJson());
+// ignore_for_file: annotate_overrides, overridden_fields
 
+@HiveType(typeId: 5)
 class ArticleModel extends ArticleEntity {
+  @HiveField(0)
+  final String id;
+  @HiveField(1)
+  final ArticleTypeEntity articleType;
+  @HiveField(2)
+  final String header;
+  @HiveField(3)
+  final String description;
+  @HiveField(4)
+  final String image;
+  @HiveField(5)
+  final DateTime dateShow;
+  @HiveField(6)
+  final String externalLink;
+  @HiveField(7)
+  final bool show;
+  @HiveField(8)
+  final String userCreated;
+  @HiveField(9)
+  final DateTime dateCreated;
+  @HiveField(10)
+  final String userUpdate;
+  @HiveField(11)
+  final DateTime dateUpdated;
+
   const ArticleModel({
-    required String id,
-    required ArticleTypeEntity articleType,
-    required String header,
-    required String description,
-    required String image,
-    required DateTime dateShow,
-    required String externalLink,
-    required bool show,
-    required String userCreated,
-    required DateTime dateCreated,
-    required String userUpdate,
-    required DateTime dateUpdated,
+    required final this.id,
+    required final this.articleType,
+    required final this.header,
+    required final this.description,
+    required final this.image,
+    required final this.dateShow,
+    required final this.externalLink,
+    required final this.show,
+    required final this.userCreated,
+    required final this.dateCreated,
+    required final this.userUpdate,
+    required final this.dateUpdated,
   }) : super(
           id: id,
           articleType: articleType,
@@ -72,11 +102,19 @@ class ArticleModel extends ArticleEntity {
       };
 }
 
+@HiveType(typeId: 6)
 class ArticleTypeModel extends ArticleTypeEntity {
+  @HiveField(0)
+  final String id;
+  @HiveField(1)
+  final String code;
+  @HiveField(2)
+  final String description;
+
   const ArticleTypeModel({
-    required String id,
-    required String code,
-    required String description,
+    required final this.id,
+    required final this.code,
+    required final this.description,
   }) : super(
           id: id,
           code: code,

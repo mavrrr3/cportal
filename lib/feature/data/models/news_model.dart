@@ -1,15 +1,31 @@
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'dart:convert';
+import 'package:hive/hive.dart';
+
+part 'news_model.g.dart';
+
+// ignore_for_file: annotate_overrides, overridden_fields
 
 NewsModel newsFromJson(String str) =>
     NewsModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 String newsToJson(NewsModel data) => json.encode(data.toJson());
 
+@HiveType(typeId: 7)
 class NewsModel extends NewsEntity {
-  NewsModel({required bool show, required List<ArticleModel> article})
-      : super(show: show, article: article);
+  @HiveField(0)
+  final bool show;
+
+  @HiveField(1)
+  final List<ArticleModel> article;
+  NewsModel({
+    required final this.show,
+    required final this.article,
+  }) : super(
+          show: show,
+          article: article,
+        );
 
   factory NewsModel.fromJson(Map<String, dynamic> json) => NewsModel(
         show: json['show'] as bool,
@@ -23,8 +39,7 @@ class NewsModel extends NewsEntity {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'show': show,
         'article': List<ArticleModel>.from(
-          (article as List<ArticleModel>).map((x) => x.toJson())
-              as Iterable<ArticleModel>,
+          (article).map((x) => x.toJson()) as Iterable<ArticleModel>,
         ),
       };
 }
