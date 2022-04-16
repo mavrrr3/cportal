@@ -5,4 +5,9 @@ abstract class INewsLocalDataSource {
   ///
   /// Пробрасываем все ошибки через [CacheException]
   Future<NewsModel> fetchNewsFromCache();
+
+  /// Сохраняем [NewsModel] в кэш
+  ///
+  /// Пробрасываем все ошибки через [CacheException]
+  Future<void> newsToCache(NewsModel news);
 }
