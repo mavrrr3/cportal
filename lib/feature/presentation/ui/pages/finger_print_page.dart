@@ -98,7 +98,9 @@ class FingerPrintPage extends StatelessWidget {
                             Button.factory(
                               ButtonEnum.outlined,
                               AppLocalizations.of(context)!.noThanks,
-                              () async {},
+                              () async {
+                                // TODO Реализовать функционал кнопки Нет, спасибо
+                              },
                             ),
                           ],
                         ),
