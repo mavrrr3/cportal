@@ -7,11 +7,10 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_e
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-class GetSingleProfileBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
+class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
 
-  GetSingleProfileBloc({required this.fetchNews})
-      : super(FetchNewsEmptyState()) {
+  FetchNewsBloc({required this.fetchNews}) : super(FetchNewsEmptyState()) {
     _setupEvents();
   }
 
