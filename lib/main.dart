@@ -9,6 +9,7 @@ import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pages/news_page.dart';
@@ -63,20 +64,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<GetSingleProfileBloc>(
-          create: (ctx) => sl<GetSingleProfileBloc>(),
-        ),
-        BlocProvider<AuthBloc>(
-          create: (ctx) => sl<AuthBloc>(),
-        ),
-        BlocProvider<PinCodeBloc>(
-          create: (ctx) => sl<PinCodeBloc>(),
-        ),
-        BlocProvider<BiometricBloc>(
-          create: (ctx) => sl<BiometricBloc>(),
-        ),
-      ],
+      providers: listOfBlocs(),
       child: AdaptiveTheme(
         light: lightTheme(context),
         dark: darkTheme(context),
@@ -96,6 +84,26 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+List<BlocProvider> listOfBlocs() {
+  return [
+    BlocProvider<GetSingleProfileBloc>(
+      create: (ctx) => sl<GetSingleProfileBloc>(),
+    ),
+    BlocProvider<AuthBloc>(
+      create: (ctx) => sl<AuthBloc>(),
+    ),
+    BlocProvider<PinCodeBloc>(
+      create: (ctx) => sl<PinCodeBloc>(),
+    ),
+    BlocProvider<BiometricBloc>(
+      create: (ctx) => sl<BiometricBloc>(),
+    ),
+    BlocProvider<FetchNewsBloc>(
+      create: (ctx) => sl<FetchNewsBloc>(),
+    ),
+  ];
 }
 
 int _selectedItemIndex = 0;
