@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_right_search_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,6 +29,8 @@ class _MainPageState extends State<MainPage> {
               const AvatarRightSearchBox(),
             ],
           ),
+          SizedBox(height: 16.h),
+          const HorizontalListViewMain(),
         ],
       ),
     );
