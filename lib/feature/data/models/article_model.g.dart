@@ -20,6 +20,7 @@ class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
       id: fields[0] as String,
       articleType: fields[1] as ArticleTypeEntity,
       header: fields[2] as String,
+      category: fields[12] as String,
       description: fields[3] as String,
       image: fields[4] as String,
       dateShow: fields[5] as DateTime,
@@ -35,7 +36,7 @@ class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
   @override
   void write(BinaryWriter writer, ArticleModel obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -59,7 +60,9 @@ class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
       ..writeByte(10)
       ..write(obj.userUpdate)
       ..writeByte(11)
-      ..write(obj.dateUpdated);
+      ..write(obj.dateUpdated)
+      ..writeByte(12)
+      ..write(obj.category);
   }
 
   @override

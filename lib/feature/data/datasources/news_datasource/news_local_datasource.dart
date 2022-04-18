@@ -30,7 +30,7 @@ class NewsLocalDataSource implements INewsLocalDataSource {
 
     if (kDebugMode) log('NewsModel из кэша ' + news.toString());
 
-    await Hive.box<NewsModel>('newa').close();
+    await Hive.box<NewsModel>('news').close();
 
     return news!;
   }

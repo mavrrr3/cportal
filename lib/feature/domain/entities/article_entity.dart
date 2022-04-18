@@ -5,6 +5,7 @@ class ArticleEntity extends Equatable {
     required this.articleType,
     required this.id,
     required this.header,
+    required this.category,
     required this.description,
     required this.image,
     required this.dateShow,
@@ -19,6 +20,7 @@ class ArticleEntity extends Equatable {
   final String id;
   final ArticleTypeEntity articleType;
   final String header;
+  final String category;
   final String description;
   final String image;
   final DateTime dateShow;
@@ -34,6 +36,7 @@ class ArticleEntity extends Equatable {
         articleType,
         id,
         header,
+        category,
         description,
         image,
         dateShow,

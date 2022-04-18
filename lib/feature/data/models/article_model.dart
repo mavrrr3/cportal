@@ -40,11 +40,14 @@ class ArticleModel extends ArticleEntity {
   final String userUpdate;
   @HiveField(11)
   final DateTime dateUpdated;
+  @HiveField(12)
+  final String category;
 
   const ArticleModel({
     required final this.id,
     required final this.articleType,
     required final this.header,
+    required final this.category,
     required final this.description,
     required final this.image,
     required final this.dateShow,
@@ -58,6 +61,7 @@ class ArticleModel extends ArticleEntity {
           id: id,
           articleType: articleType,
           header: header,
+          category: category,
           description: description,
           image: image,
           dateShow: dateShow,
@@ -75,6 +79,7 @@ class ArticleModel extends ArticleEntity {
           json['article_type'] as Map<String, dynamic>,
         ),
         header: json['header'] as String,
+        category: json['category'] as String,
         description: json['description'] as String,
         image: json['image'] as String,
         dateShow: DateTime.parse(json['date_show'] as String),
@@ -90,6 +95,7 @@ class ArticleModel extends ArticleEntity {
         'id': id,
         'article_type': (articleType as ArticleTypeModel).toJson(),
         'header': header,
+        'category': category,
         'description': description,
         'image': image,
         'date_show': dateShow.toIso8601String(),

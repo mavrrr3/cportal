@@ -16,7 +16,7 @@ class NewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Во время билда запускается эвент и подгружаются новости
     BlocProvider.of<FetchNewsBloc>(context, listen: false)
-        .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.quastion));
+        .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
 
     return Scaffold(
       body: BlocBuilder<FetchNewsBloc, FetchNewsState>(
@@ -47,21 +47,19 @@ class NewsPage extends StatelessWidget {
                                 ),
                               ),
                               if (state is FetchNewsLoadingState) ...[
-                                Text(
-                                  'Грузится',
-                                  style: kMainTextRusso.copyWith(
-                                    fontSize: 28.sp,
-                                  ),
-                                ),
+                                const CircularProgressIndicator(),
                               ],
-                              if (state is FetchNewsLoadedState) ...[
-                                Text(
-                                  state.news.article[0].header.toString(),
-                                  style: kMainTextRusso.copyWith(
-                                    fontSize: 28.sp,
-                                  ),
-                                ),
-                              ],
+                              if (state is FetchNewsLoadedState)
+                                // Это просто вывод чтобы понять, что
+                                // бизнес логика работает
+                                ...state.news.article
+                                    .map((article) => Text(
+                                          article.header,
+                                          style: kMainTextRusso.copyWith(
+                                            fontSize: 28.sp,
+                                          ),
+                                        ))
+                                    .toList(),
                             ],
                           ),
                         ],
