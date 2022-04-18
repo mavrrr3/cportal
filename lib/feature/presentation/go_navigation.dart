@@ -1,9 +1,10 @@
+import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/main.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pages/connecting_code_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pages/finger_print_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pages/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pages/pin_code_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pages/splash_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,7 +21,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/news',
+  initialLocation: '/main_page',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -36,7 +37,7 @@ final GoRouter router = GoRouter(
       path: '/main_page',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const MyHomePage(),
+        child: const HomePage(),
       ),
     ),
     GoRoute(

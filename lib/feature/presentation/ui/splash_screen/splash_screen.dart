@@ -2,7 +2,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.da
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/svg_icon.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

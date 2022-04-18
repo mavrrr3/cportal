@@ -8,8 +8,8 @@ import 'package:pinput/pinput.dart';
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/custom_keyboard.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/svg_icon.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 
 final _pinController = TextEditingController();
 final _pinFocusNode = FocusNode();
