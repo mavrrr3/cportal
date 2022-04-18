@@ -20,7 +20,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/main_page',
+  initialLocation: '/news',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -44,7 +44,7 @@ final GoRouter router = GoRouter(
       path: '/connecting_code',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const ConnectingCodePage(),
+        child: const Scaffold(body: ConnectingCodePage()),
       ),
     ),
     GoRoute(
@@ -60,7 +60,7 @@ final GoRouter router = GoRouter(
       path: '/repeat_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const PinCodePage(),
+        child: const Scaffold(body: PinCodePage()),
       ),
     ),
     GoRoute(
@@ -68,7 +68,7 @@ final GoRouter router = GoRouter(
       path: '/input_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const PinCodePage(),
+        child: const Scaffold(body: PinCodePage()),
       ),
     ),
     GoRoute(
@@ -76,7 +76,7 @@ final GoRouter router = GoRouter(
       path: '/fingerprint',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const FingerPrintPage(),
+        child: const Scaffold(body: FingerPrintPage()),
       ),
     ),
     GoRoute(
@@ -84,7 +84,7 @@ final GoRouter router = GoRouter(
       path: '/news',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const NewsPage(),
+        child: const Scaffold(body: NewsPage()),
       ),
     ),
   ],

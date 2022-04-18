@@ -12,7 +12,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/bi
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pages/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pages/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/svg_icon.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     List<Widget> listPages = <Widget>[
-      const NewsPage(),
+      const MainPage(),
     ];
 
     return Scaffold(

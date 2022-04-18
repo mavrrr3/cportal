@@ -34,112 +34,101 @@ class ConnectingCodePage extends StatelessWidget {
         }
         if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
       },
-      child: ScreenUtilInit(
-        builder: (() => Scaffold(
-              body: Container(
-                decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
-                child: Column(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.0.w,
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 48.h),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20.0.w,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 48.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SvgIcon(
-                                null,
-                                path: 'logo_grey.svg',
-                                width: 24.0.w,
-                              ),
-                              SvgIcon(null, path: 'qr_code.svg', width: 24.0.w),
-                            ],
-                          ),
-                          SizedBox(height: 31.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .inputConnectingCode,
-                                    style: kMainTextRusso.copyWith(
-                                      fontSize: 28.sp,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () =>
-                                    _showHowToGetCOnnectingCode(context),
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .howToGetConnectingCode,
-                                  style: kMainTextRoboto.copyWith(
-                                    color: const Color(0xFF355A99),
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 27.h),
-                          const CellCodeInput(),
-                          SizedBox(height: 8.h),
-                          if (_isWrongCode) ...[
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Opacity(
-                                opacity: 0.6,
-                                child: colorText(
-                                  AppLocalizations.of(context)!
-                                      .wrongConnectingCode,
-                                  'red',
-                                ),
-                              ),
-                            ),
-                            // Вывод текста Повторите попытку через 30 секунд
-                            // Align(
-                            //   alignment: Alignment.centerLeft,
-                            //   child: Text(
-                            //     AppLocalizations.of(context)!
-                            //         .tryToRepeatAfter30sec,
-                            //     style: kMainTextRoboto.copyWith(
-                            //       fontSize: 14.sp,
-                            //       color: AppColors.kLightTextColor,
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
-                        ],
-                      ),
+                    SvgIcon(
+                      null,
+                      path: 'logo_grey.svg',
+                      width: 24.0.w,
                     ),
+                    SvgIcon(null, path: 'qr_code.svg', width: 24.0.w),
+                  ],
+                ),
+                SizedBox(height: 31.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
                     Column(
                       children: [
-                        CustomKeyboard(
-                          controller: _codeController,
-                          simbolQuantity: 6,
+                        Text(
+                          AppLocalizations.of(context)!.inputConnectingCode,
+                          style: kMainTextRusso.copyWith(
+                            fontSize: 28.sp,
+                          ),
                         ),
-                        SizedBox(height: 52.h),
                       ],
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 8.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () => _showHowToGetCOnnectingCode(context),
+                      child: Text(
+                        AppLocalizations.of(context)!.howToGetConnectingCode,
+                        style: kMainTextRoboto.copyWith(
+                          color: const Color(0xFF355A99),
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 27.h),
+                const CellCodeInput(),
+                SizedBox(height: 8.h),
+                if (_isWrongCode) ...[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Opacity(
+                      opacity: 0.6,
+                      child: colorText(
+                        AppLocalizations.of(context)!.wrongConnectingCode,
+                        'red',
+                      ),
+                    ),
+                  ),
+                  // Вывод текста Повторите попытку через 30 секунд
+                  // Align(
+                  //   alignment: Alignment.centerLeft,
+                  //   child: Text(
+                  //     AppLocalizations.of(context)!
+                  //         .tryToRepeatAfter30sec,
+                  //     style: kMainTextRoboto.copyWith(
+                  //       fontSize: 14.sp,
+                  //       color: AppColors.kLightTextColor,
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              CustomKeyboard(
+                controller: _codeController,
+                simbolQuantity: 6,
               ),
-            )),
+              SizedBox(height: 52.h),
+            ],
+          ),
+        ],
       ),
     );
   }

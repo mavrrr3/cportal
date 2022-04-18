@@ -18,64 +18,59 @@ class NewsPage extends StatelessWidget {
     BlocProvider.of<FetchNewsBloc>(context, listen: false)
         .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
 
-    return Scaffold(
-      body: BlocBuilder<FetchNewsBloc, FetchNewsState>(
-        builder: (context, state) {
-          log(state.toString());
+    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
+      builder: (context, state) {
+        log(state.toString());
 
-          return Container(
-            decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.0.w,
-                  ),
-                  child: Column(
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.0.w,
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 37.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: 37.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      Column(
                         children: [
-                          Column(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.news,
-                                style: kMainTextRusso.copyWith(
-                                  fontSize: 28.sp,
-                                ),
-                              ),
-                              if (state is FetchNewsLoadingState) ...[
-                                const CircularProgressIndicator(),
-                              ],
-                              if (state is FetchNewsLoadedState)
-                                // Это просто вывод чтобы понять, что
-                                // бизнес логика работает
-                                ...state.news.article
-                                    .map((article) => Text(
-                                          article.header,
-                                          style: kMainTextRusso.copyWith(
-                                            fontSize: 28.sp,
-                                          ),
-                                        ))
-                                    .toList(),
-                            ],
+                          Text(
+                            AppLocalizations.of(context)!.news,
+                            style: kMainTextRusso.copyWith(
+                              fontSize: 28.sp,
+                            ),
                           ),
+                          if (state is FetchNewsLoadingState) ...[
+                            const CircularProgressIndicator(),
+                          ],
+                          if (state is FetchNewsLoadedState)
+                            // Это просто вывод чтобы понять, что
+                            // бизнес логика работает
+                            ...state.news.article
+                                .map((article) => Text(
+                                      article.header,
+                                      style: kMainTextRusso.copyWith(
+                                        fontSize: 28.sp,
+                                      ),
+                                    ))
+                                .toList(),
                         ],
                       ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      SizedBox(height: 27.h),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  SizedBox(height: 27.h),
+                ],
+              ),
             ),
-          );
-        },
-      ),
+          ],
+        );
+      },
     );
   }
 }

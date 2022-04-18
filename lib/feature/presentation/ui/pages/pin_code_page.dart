@@ -21,59 +21,56 @@ class PinCodePage extends StatelessWidget {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
         .add(PinCodeCheckEvent());
 
-    return Container(
-      decoration: const BoxDecoration(color: Color(0xFFE5E5E5)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.0.w,
-            ),
-            child: BlocConsumer<PinCodeBloc, PinCodeState>(
-              listener: ((context, state) {
-                if (state.status == PinCodeInputEnum.done) {
-                  // Если ПИН код из базе Hive совпадает с
-                  // введеным ПИНом, то редирект на страницу [/main_page]
-                  context.goNamed(NavigationRouteNames.mainPage);
-                }
-              }),
-              builder: ((context, state) {
-                switch (state.status) {
-                  case PinCodeInputEnum.create:
-                  case PinCodeInputEnum.writingCreate:
-                    return const BodyWidget(input: PinCodeInputEnum.create);
-                  case PinCodeInputEnum.repeat:
-                  case PinCodeInputEnum.writingRepeat:
-                    return const BodyWidget(input: PinCodeInputEnum.repeat);
-                  case PinCodeInputEnum.input:
-                  case PinCodeInputEnum.writingInput:
-                    return const BodyWidget(input: PinCodeInputEnum.input);
-                  case PinCodeInputEnum.wrongRepeat:
-                    return const BodyWidget(
-                      input: PinCodeInputEnum.wrongRepeat,
-                    );
-                  case PinCodeInputEnum.error:
-                    return const BodyWidget(input: PinCodeInputEnum.error);
-                  case PinCodeInputEnum.wrongInput:
-                    return const BodyWidget(input: PinCodeInputEnum.wrongInput);
-                  default:
-                    return const Center(child: CircularProgressIndicator());
-                }
-              }),
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.0.w,
           ),
-          Column(
-            children: [
-              CustomKeyboard(
-                controller: _pinController,
-                simbolQuantity: 4,
-              ),
-              SizedBox(height: 52.h),
-            ],
+          child: BlocConsumer<PinCodeBloc, PinCodeState>(
+            listener: ((context, state) {
+              if (state.status == PinCodeInputEnum.done) {
+                // Если ПИН код из базе Hive совпадает с
+                // введеным ПИНом, то редирект на страницу [/main_page]
+                context.goNamed(NavigationRouteNames.mainPage);
+              }
+            }),
+            builder: ((context, state) {
+              switch (state.status) {
+                case PinCodeInputEnum.create:
+                case PinCodeInputEnum.writingCreate:
+                  return const BodyWidget(input: PinCodeInputEnum.create);
+                case PinCodeInputEnum.repeat:
+                case PinCodeInputEnum.writingRepeat:
+                  return const BodyWidget(input: PinCodeInputEnum.repeat);
+                case PinCodeInputEnum.input:
+                case PinCodeInputEnum.writingInput:
+                  return const BodyWidget(input: PinCodeInputEnum.input);
+                case PinCodeInputEnum.wrongRepeat:
+                  return const BodyWidget(
+                    input: PinCodeInputEnum.wrongRepeat,
+                  );
+                case PinCodeInputEnum.error:
+                  return const BodyWidget(input: PinCodeInputEnum.error);
+                case PinCodeInputEnum.wrongInput:
+                  return const BodyWidget(input: PinCodeInputEnum.wrongInput);
+                default:
+                  return const Center(child: CircularProgressIndicator());
+              }
+            }),
           ),
-        ],
-      ),
+        ),
+        Column(
+          children: [
+            CustomKeyboard(
+              controller: _pinController,
+              simbolQuantity: 4,
+            ),
+            SizedBox(height: 52.h),
+          ],
+        ),
+      ],
     );
   }
 }
