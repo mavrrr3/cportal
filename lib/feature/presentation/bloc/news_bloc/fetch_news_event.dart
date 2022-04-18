@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class FetchNewsEvent extends Equatable {
@@ -8,5 +9,6 @@ abstract class FetchNewsEvent extends Equatable {
 }
 
 class FetchNewsEventImpl extends FetchNewsEvent {
-  const FetchNewsEventImpl();
+  final NewsCodeEnum newsCodeEnum;
+  const FetchNewsEventImpl({required this.newsCodeEnum});
 }

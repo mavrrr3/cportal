@@ -7,6 +7,9 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_e
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
+// Инам для выдачи NewsEntity Новости, Вопросы, Справочник
+enum NewsCodeEnum { news, quastion, catalog }
+
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
 
@@ -39,7 +42,8 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       }
     }
 
-    final failureOrNews = await fetchNews();
+    final failureOrNews =
+        await fetchNews(FetchNewsParams(code: newsCode(event.newsCodeEnum)));
 
     failureOrNews.fold(
       (failure) {
@@ -51,5 +55,16 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(FetchNewsLoadedState(news: news));
       },
     );
+  }
+}
+
+String newsCode(NewsCodeEnum codeEnum) {
+  switch (codeEnum) {
+    case NewsCodeEnum.news:
+      return 'NEWS';
+    case NewsCodeEnum.quastion:
+      return 'QUASTION';
+    default:
+      return 'CATALOG';
   }
 }

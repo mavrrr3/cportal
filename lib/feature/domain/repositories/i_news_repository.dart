@@ -3,5 +3,5 @@ import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class INewsRepository {
-  Future<Either<Failure, NewsEntity>> fetchNews();
+  Future<Either<Failure, NewsEntity>> fetchNews(String code);
 }

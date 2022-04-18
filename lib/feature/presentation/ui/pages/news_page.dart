@@ -16,7 +16,7 @@ class NewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Во время билда запускается эвент и подгружаются новости
     BlocProvider.of<FetchNewsBloc>(context, listen: false)
-        .add(const FetchNewsEventImpl());
+        .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.quastion));
 
     return Scaffold(
       body: BlocBuilder<FetchNewsBloc, FetchNewsState>(

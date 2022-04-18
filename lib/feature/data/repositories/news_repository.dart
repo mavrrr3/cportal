@@ -2,6 +2,7 @@ import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/core/platform/network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
@@ -18,10 +19,10 @@ class NewsRepository implements INewsRepository {
     required this.networkInfo,
   });
   @override
-  Future<Either<Failure, NewsModel>> fetchNews() async {
+  Future<Either<Failure, NewsModel>> fetchNews(String code) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteNews = await remoteDataSource.fetchNews();
+        final remoteNews = await remoteDataSource.fetchNews(code);
 
         return Right(remoteNews);
       } on ServerException {
@@ -30,8 +31,13 @@ class NewsRepository implements INewsRepository {
     } else {
       try {
         final localNews = await localDataSource.fetchNewsFromCache();
+        List<ArticleModel> articles = localNews.article
+            .where((article) => article.articleType.code == code)
+            .toList();
 
-        return Right(localNews);
+        NewsModel news = NewsModel(show: true, article: [...articles]);
+
+        return Right(news);
       } on CacheFailure {
         return Left(CacheFailure());
       }
