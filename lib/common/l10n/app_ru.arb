@@ -41,5 +41,8 @@
     "useScanerFingerPrint": "Использовать сканер отпечатков для “KoApp”",
     "authToContinue": "Авторизуйтесь для продолжения",
     "cancel": "ОТМЕНА",
-    "news": "Новости"
+    "news": "Новости",
+    "enterRequest": "Введите запрос",
+    "today": "Сегодня",
+    "birthDay": "День рождения"
 }
