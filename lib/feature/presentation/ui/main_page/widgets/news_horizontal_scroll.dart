@@ -22,7 +22,7 @@ class NewsHorizontalScroll extends StatelessWidget {
           width: double.infinity,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            physics: const ScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: listViewMap.length,
             itemBuilder: (context, i) {
