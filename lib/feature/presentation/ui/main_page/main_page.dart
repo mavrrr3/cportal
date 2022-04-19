@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_right_search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,11 +25,13 @@ class _MainPageState extends State<MainPage> {
             children: [
               const SearchBoxMain(),
               SizedBox(width: 12.w),
-              const AvatarRightSearchBox(),
+              const AvatarBox(size: 40),
             ],
           ),
           SizedBox(height: 16.h),
           const HorizontalListViewMain(),
+          SizedBox(height: 24.h),
+          const TodayWidget(),
         ],
       ),
     );

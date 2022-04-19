@@ -3,6 +3,7 @@ import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchBoxMain extends StatelessWidget {
   const SearchBoxMain({
@@ -29,7 +30,7 @@ class SearchBoxMain extends StatelessWidget {
             child: TextField(
               showCursor: false,
               decoration: InputDecoration(
-                labelText: 'Введите запрос',
+                labelText: AppLocalizations.of(context)!.enterRequest,
                 labelStyle: kMainTextRoboto.copyWith(
                   fontSize: 14,
                   color: AppColors.kLightTextColor.withOpacity(0.68),
