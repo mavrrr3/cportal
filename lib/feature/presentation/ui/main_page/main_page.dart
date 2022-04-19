@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_right_search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box_main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,8 @@ class _MainPageState extends State<MainPage> {
           const HorizontalListViewMain(),
           SizedBox(height: 24.h),
           const TodayWidget(),
+          SizedBox(height: 24.h),
+          const NewsHorizontalScroll(),
         ],
       ),
     );

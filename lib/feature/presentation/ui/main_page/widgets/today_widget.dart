@@ -14,7 +14,7 @@ class TodayWidget extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.today,
-          style: kMainTextRoboto.copyWith(fontSize: 22),
+          style: kMainTextRoboto.copyWith(fontSize: 22.sp),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 14.0),
@@ -30,7 +30,7 @@ class TodayWidget extends StatelessWidget {
                     children: [
                       Text(
                         AppLocalizations.of(context)!.birthDay,
-                        style: kMainTextRoboto.copyWith(fontSize: 14),
+                        style: kMainTextRoboto.copyWith(fontSize: 14.sp),
                       ),
                       Text(
                         'Романова Алексея Игоревича',
@@ -45,7 +45,7 @@ class TodayWidget extends StatelessWidget {
                         children: [
                           Text(
                             'Охранник',
-                            style: kMainTextRoboto.copyWith(fontSize: 12),
+                            style: kMainTextRoboto.copyWith(fontSize: 12.sp),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 7),
@@ -59,7 +59,8 @@ class TodayWidget extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 6.0),
                                 child: Text(
                                   'Новосталь-М',
-                                  style: kMainTextRoboto.copyWith(fontSize: 12),
+                                  style:
+                                      kMainTextRoboto.copyWith(fontSize: 12.sp),
                                 ),
                               ),
                             ),
