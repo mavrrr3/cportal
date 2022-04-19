@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
-import 'package:cportal_flutter/main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';

@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/core/error/exception.dart';
-
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/platform/biometric_info.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
