@@ -18,24 +18,26 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: 36.h),
-          Row(
-            children: [
-              const SearchBoxMain(),
-              SizedBox(width: 12.w),
-              const AvatarBox(size: 40),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          const HorizontalListViewMain(),
-          SizedBox(height: 24.h),
-          const TodayWidget(),
-          SizedBox(height: 24.h),
-          const NewsHorizontalScroll(),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: 36.h),
+            Row(
+              children: [
+                const SearchBoxMain(),
+                SizedBox(width: 12.w),
+                const AvatarBox(size: 40),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            const HorizontalListViewMain(),
+            SizedBox(height: 24.h),
+            const TodayWidget(),
+            SizedBox(height: 24.h),
+            const NewsHorizontalScroll(),
+          ],
+        ),
       ),
     );
   }
