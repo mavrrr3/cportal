@@ -40,16 +40,28 @@ class TodayWidget extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
                           Text(
                             'Охранник',
-                            style: kMainTextRoboto.copyWith(fontSize: 14),
+                            style: kMainTextRoboto.copyWith(fontSize: 12),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 7),
                             child: Container(
-                              child: Text('Новосталь-М'),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.06),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 6.0),
+                                child: Text(
+                                  'Новосталь-М',
+                                  style: kMainTextRoboto.copyWith(fontSize: 12),
+                                ),
+                              ),
                             ),
                           ),
                         ],
