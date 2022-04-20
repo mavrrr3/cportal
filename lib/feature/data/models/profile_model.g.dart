@@ -92,17 +92,20 @@ class PositionModelAdapter extends TypeAdapter<PositionModel> {
     return PositionModel(
       id: fields[0] as String,
       description: fields[1] as String,
+      department: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PositionModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.description);
+      ..write(obj.description)
+      ..writeByte(2)
+      ..write(obj.department);
   }
 
   @override

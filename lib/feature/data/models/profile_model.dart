@@ -139,20 +139,25 @@ class PositionModel extends PositionEntity {
   final String id;
   @HiveField(1)
   final String description;
+  @HiveField(2)
+  final String department;
 
   const PositionModel({
     required this.id,
     required this.description,
-  }) : super(id: id, description: description);
+    required this.department,
+  }) : super(id: id, description: description, department: department);
 
   factory PositionModel.fromJson(Map<String, dynamic> json) => PositionModel(
         id: json['id'] as String,
         description: json['description'] as String,
+        department: json['department'] as String,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'description': description,
+        'department': department,
       };
 }
 

@@ -75,11 +75,13 @@ class PositionEntity extends Equatable {
   const PositionEntity({
     required this.id,
     required this.description,
+    required this.department,
   });
 
   final String id;
   final String description;
+  final String department;
 
   @override
-  List<Object?> get props => [id, description];
+  List<Object?> get props => [id, description, department];
 }
