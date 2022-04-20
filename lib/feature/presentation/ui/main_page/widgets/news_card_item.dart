@@ -6,20 +6,28 @@ class NewsCardItem extends StatelessWidget {
   final String imgPath;
   final String title;
   final String dateTime;
+  final double? width;
+  final double? height;
+  final double? fontSize;
+
   const NewsCardItem({
     Key? key,
     required this.imgPath,
     required this.title,
     required this.dateTime,
+    this.width,
+    this.height,
+    this.fontSize,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 220.w,
-          height: 106.h,
+          width: width ?? 220.w,
+          height: height ?? 106.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             image: DecorationImage(
@@ -31,6 +39,7 @@ class NewsCardItem extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(height: 12.h),
         SizedBox(
           width: 220.w,
           child: Column(
@@ -40,7 +49,7 @@ class NewsCardItem extends StatelessWidget {
                 title,
                 softWrap: true,
                 style: kMainTextRoboto.copyWith(
-                  fontSize: 14.w,
+                  fontSize: fontSize ?? 14.sp,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -49,7 +58,7 @@ class NewsCardItem extends StatelessWidget {
                 children: [
                   Text(
                     dateTime,
-                    style: kMainTextRoboto.copyWith(fontSize: 12.w),
+                    style: kMainTextRoboto.copyWith(fontSize: 12.sp),
                   ),
                 ],
               ),

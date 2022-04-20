@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
@@ -29,9 +28,9 @@ class _HomePageState extends State<HomePage> {
     // строго соответствовать количеству элемнтов навбара
     List<Widget> _listPages = <Widget>[
       const MainPage(),
-      const NewsPage(),
+      const NewsPage(pageType: NewsCodeEnum.news),
       const MainPage(),
-      const NewsPage(),
+      const NewsPage(pageType: NewsCodeEnum.news),
       const MainPage(),
     ];
 

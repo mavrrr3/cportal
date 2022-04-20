@@ -14,7 +14,11 @@ class FetchNewsLoadingState extends FetchNewsState {}
 
 class FetchNewsLoadedState extends FetchNewsState {
   final NewsEntity news;
-  const FetchNewsLoadedState({required this.news});
+  final List<String> tabs;
+  const FetchNewsLoadedState({
+    required this.news,
+    required this.tabs,
+  });
 
   @override
   List<Object?> get props => [news];
