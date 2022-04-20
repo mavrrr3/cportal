@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
@@ -84,7 +85,7 @@ final GoRouter router = GoRouter(
       path: '/news',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: NewsPage()),
+        child: const Scaffold(body: NewsPage(pageType: NewsCodeEnum.news)),
       ),
     ),
   ],

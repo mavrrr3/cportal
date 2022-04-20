@@ -20,6 +20,11 @@ ThemeData lightTheme(BuildContext context) => ThemeData.light().copyWith(
       iconTheme: const IconThemeData(color: Colors.black),
       textTheme: Theme.of(context).textTheme.apply(displayColor: Colors.black),
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      dividerColor: AppColors.dividerColor.withOpacity(0.08),
+      colorScheme: const ColorScheme.light().copyWith(
+        /// Blue color
+        secondary: AppColors.blueIcon,
+      ),
     );
 
 ThemeData darkTheme(BuildContext context) => ThemeData.dark().copyWith(

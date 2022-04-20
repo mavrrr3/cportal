@@ -52,7 +52,16 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         ));
       },
       (news) {
-        emit(FetchNewsLoadedState(news: news));
+        /// Создание листа со всеми вкладками
+        List<String> tabs = [];
+        tabs.add('Все');
+        for (var item in news.article) {
+          if (!tabs.contains(item.category)) {
+            tabs.add(item.category);
+          }
+        }
+
+        emit(FetchNewsLoadedState(news: news, tabs: tabs));
       },
     );
   }
