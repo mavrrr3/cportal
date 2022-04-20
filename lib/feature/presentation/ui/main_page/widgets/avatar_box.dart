@@ -16,7 +16,7 @@ class AvatarBox extends StatelessWidget {
       width: size.w,
       height: size.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(24),
         image: DecorationImage(
           fit: BoxFit.cover,
           alignment: FractionalOffset.topCenter,
