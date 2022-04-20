@@ -4,6 +4,8 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecti
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/user_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,11 +19,13 @@ abstract class NavigationRouteNames {
   static const inputPin = 'input_pin';
   static const fingerPrintPage = 'fingerprint';
   static const news = 'news';
+  static const profile = 'profile';
+  static const userData = 'user_data';
 }
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/main_page',
+  initialLocation: '/profile',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -86,6 +90,22 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: NewsPage(pageType: NewsCodeEnum.news)),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.profile,
+      path: '/profile',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(body: ProfilePage()),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.userData,
+      path: '/user_data',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(body: UserData()),
       ),
     ),
   ],
