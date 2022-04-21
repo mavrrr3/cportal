@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_p
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,7 +43,8 @@ class UserData extends StatelessWidget {
             final ProfileEntity profile = state.profile;
 
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding:
+                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -67,6 +69,15 @@ class UserData extends StatelessWidget {
                   UserDataRow(
                     normalText: AppLocalizations.of(context)!.email,
                     boldText: profile.email,
+                  ),
+                  const Expanded(child: SizedBox.shrink()),
+                  Button.factory(
+                    ButtonEnum.blue,
+                    'Сохранить',
+                    () {
+                      // TODO раелизовать сохранение номера
+                    },
+                    Size(double.infinity, 48.h),
                   ),
                 ],
               ),
