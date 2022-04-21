@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,22 +29,26 @@ class NewsPage extends StatefulWidget {
 class _NewsPageState extends State<NewsPage> {
   late int _currentIndex;
   late PageController _pageController;
+  late NewsCodeEnum _currentPage;
   @override
   void initState() {
     super.initState();
     _currentIndex = 0;
     _pageController = PageController();
+    _currentPage = widget.pageType;
     _contentInit();
   }
 
   void _contentInit() {
-    // Во время билда запускается эвент и подгружается контент
+    // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы
     switch (widget.pageType) {
       case NewsCodeEnum.news:
         BlocProvider.of<FetchNewsBloc>(context, listen: false)
             .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
         break;
       case NewsCodeEnum.quastion:
+        BlocProvider.of<FetchNewsBloc>(context, listen: false)
+            .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.quastion));
         break;
       default:
         BlocProvider.of<FetchNewsBloc>(context, listen: false)
@@ -53,6 +58,15 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
+    log(_currentPage.toString());
+
+    /// Для обновления стейта при смене страницы в BottomBar
+    if (widget.pageType != _currentPage) {
+      _contentInit();
+      _currentPage = widget.pageType;
+      _currentIndex = 0;
+    }
+    log(_currentPage.toString());
     double width = MediaQuery.of(context).size.width;
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
@@ -67,7 +81,7 @@ class _NewsPageState extends State<NewsPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                 child: Text(
-                  AppLocalizations.of(context)!.news,
+                  _getPageTitle,
                   style: kMainTextRusso.copyWith(
                     fontSize: 28.sp,
                   ),
@@ -108,7 +122,7 @@ class _NewsPageState extends State<NewsPage> {
                       },
                       child: SizedBox(
                         width: width,
-                        height: MediaQuery.of(context).size.height - 177.h,
+                        height: MediaQuery.of(context).size.height - 181.h,
                         child: PageView(
                           controller: _pageController,
                           physics: const NeverScrollableScrollPhysics(),
@@ -143,21 +157,23 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
+  /// Отрисовка контента по типу страницы
   Widget _content(FetchNewsLoadedState state, double width) {
-    return Expanded(
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: state.news.article.length,
-        itemBuilder: (context, index) {
-          /// Распределение по категориям
-          if (_currentIndex == 0) {
-            return _newsCard(
-              width,
-              item: state.news.article[index],
-              onTap: () => _onArticleSelected(state.news.article[index]),
-            );
-          } else {
-            if (state.news.article[index].category ==
+    /// [Новости]
+    if (widget.pageType == NewsCodeEnum.news) {
+      return Expanded(
+        child: ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: state.news.article.length,
+          itemBuilder: (context, index) {
+            /// Распределение по категориям
+            if (_currentIndex == 0) {
+              return _newsCard(
+                width,
+                item: state.news.article[index],
+                onTap: () => _onArticleSelected(state.news.article[index]),
+              );
+            } else if (state.news.article[index].category ==
                 state.tabs[_currentIndex]) {
               return _newsCard(
                 width,
@@ -165,12 +181,39 @@ class _NewsPageState extends State<NewsPage> {
                 onTap: () => _onArticleSelected(state.news.article[index]),
               );
             }
-          }
-          // ignore: newline-before-return
-          return const SizedBox();
-        },
-      ),
-    );
+            // ignore: newline-before-return
+            return const SizedBox();
+          },
+        ),
+      );
+
+      /// [Вопросы]
+    } else if (widget.pageType == NewsCodeEnum.quastion) {
+      return Expanded(
+        child: ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: state.news.article.length,
+          itemBuilder: (context, index) {
+            /// Распределение по категориям
+            if (state.news.article[index].category ==
+                state.tabs[_currentIndex]) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 30.0.h),
+                child: QuestionWidget(
+                  text: state.news.article[index].header,
+                  onTap: () {},
+                ),
+              );
+            }
+
+            // ignore: newline-before-return
+            return const SizedBox();
+          },
+        ),
+      );
+    }
+
+    return const SizedBox();
   }
 
   Widget _newsCard(
@@ -209,5 +252,16 @@ class _NewsPageState extends State<NewsPage> {
       NavigationRouteNames.newsArticlePage,
       extra: item,
     );
+  }
+
+  String get _getPageTitle {
+    switch (widget.pageType) {
+      case NewsCodeEnum.news:
+        return AppLocalizations.of(context)!.news;
+      case NewsCodeEnum.quastion:
+        return AppLocalizations.of(context)!.questions;
+      default:
+        return AppLocalizations.of(context)!.news;
+    }
   }
 }
