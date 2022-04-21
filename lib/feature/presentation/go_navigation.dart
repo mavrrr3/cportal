@@ -5,8 +5,8 @@ import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_prin
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/user_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +25,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/profile',
+  initialLocation: '/main_page',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(

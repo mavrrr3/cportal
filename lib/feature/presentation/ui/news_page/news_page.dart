@@ -110,7 +110,6 @@ class _NewsPageState extends State<NewsPage> {
                         child: PageView(
                           controller: _pageController,
                           physics: const NeverScrollableScrollPhysics(),
-                          // onPageChanged: (index) => _onPageChanged(index),
                           children: [
                             ///Генерация страниц под все категории
                             ...List.generate(state.tabs.length, (index) {
@@ -142,7 +141,7 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  Expanded _content(FetchNewsLoadedState state, double width) {
+  Widget _content(FetchNewsLoadedState state, double width) {
     return Expanded(
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
