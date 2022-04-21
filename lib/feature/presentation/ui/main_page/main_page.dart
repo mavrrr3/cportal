@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_right_search_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
@@ -28,7 +28,11 @@ class _MainPageState extends State<MainPage> {
               children: [
                 const SearchBoxMain(),
                 SizedBox(width: 12.w),
-                const AvatarBox(size: 40),
+                const AvatarBox(
+                  size: 40,
+                  imgPath:
+                      'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+                ),
               ],
             ),
             SizedBox(height: 16.h),

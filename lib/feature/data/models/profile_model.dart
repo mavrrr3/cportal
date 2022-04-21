@@ -59,12 +59,16 @@ class ProfileModel extends ProfileEntity {
   @HiveField(13)
   final DateTime dateUpdated;
 
+  @HiveField(14)
+  final String birthday;
+
   const ProfileModel({
     required this.id,
     required this.firstName,
     required this.externalId,
     required this.lastName,
     required this.middleName,
+    required this.birthday,
     required this.email,
     required this.photoLink,
     required this.active,
@@ -80,6 +84,7 @@ class ProfileModel extends ProfileEntity {
           firstName: firstName,
           lastName: lastName,
           middleName: middleName,
+          birthday: birthday,
           email: email,
           photoLink: photoLink,
           active: active,
@@ -97,6 +102,7 @@ class ProfileModel extends ProfileEntity {
         firstName: json['first_name'] as String,
         lastName: json['last_name'] as String,
         middleName: json['middle_name'] as String,
+        birthday: json['birthday'] as String,
         email: json['email'] as String,
         photoLink: json['photo_link'] as String,
         active: json['active'] as bool,
@@ -119,6 +125,7 @@ class ProfileModel extends ProfileEntity {
         'first_name': firstName,
         'last_name': lastName,
         'middle_name': middleName,
+        'birthday': birthday,
         'email': email,
         'photo_link': photoLink,
         'active': active,
@@ -139,20 +146,25 @@ class PositionModel extends PositionEntity {
   final String id;
   @HiveField(1)
   final String description;
+  @HiveField(2)
+  final String department;
 
   const PositionModel({
     required this.id,
     required this.description,
-  }) : super(id: id, description: description);
+    required this.department,
+  }) : super(id: id, description: description, department: department);
 
   factory PositionModel.fromJson(Map<String, dynamic> json) => PositionModel(
         id: json['id'] as String,
         description: json['description'] as String,
+        department: json['department'] as String,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'description': description,
+        'department': department,
       };
 }
 

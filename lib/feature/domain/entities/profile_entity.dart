@@ -11,6 +11,7 @@ class ProfileEntity extends Equatable {
     required this.firstName,
     required this.lastName,
     required this.middleName,
+    required this.birthday,
     required this.email,
     required this.photoLink,
     required this.active,
@@ -27,6 +28,7 @@ class ProfileEntity extends Equatable {
   final String firstName;
   final String lastName;
   final String middleName;
+  final String birthday;
   final String email;
   final String photoLink;
   final bool active;
@@ -44,6 +46,7 @@ class ProfileEntity extends Equatable {
         firstName,
         lastName,
         middleName,
+        birthday,
         email,
         photoLink,
         active,
@@ -75,11 +78,13 @@ class PositionEntity extends Equatable {
   const PositionEntity({
     required this.id,
     required this.description,
+    required this.department,
   });
 
   final String id;
   final String description;
+  final String department;
 
   @override
-  List<Object?> get props => [id, description];
+  List<Object?> get props => [id, description, department];
 }

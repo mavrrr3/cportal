@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Color _nonActiveColor = AppColors.kLightTextColor.withOpacity(0.48);
-    const Color _activeColor = AppColors.blueIcon;
+    const Color _activeColor = AppColors.blue;
 
     final double _width = MediaQuery.of(context).size.width;
 

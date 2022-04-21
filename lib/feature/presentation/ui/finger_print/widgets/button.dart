@@ -1,7 +1,6 @@
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum ButtonEnum {
   blue,
@@ -10,11 +9,11 @@ enum ButtonEnum {
 }
 
 class Button {
-  static final Size size = Size(142.w, 48.h);
   static ButtonStyleButton factory(
     ButtonEnum type,
     String text,
     Function function,
+    Size size,
   ) {
     switch (type) {
       case ButtonEnum.blue:

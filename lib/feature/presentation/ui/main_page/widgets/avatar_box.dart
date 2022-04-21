@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AvatarBox extends StatelessWidget {
   final double size;
+  final String imgPath;
   const AvatarBox({
     Key? key,
     required this.size,
+    required this.imgPath,
   }) : super(key: key);
 
   @override
@@ -14,12 +16,12 @@ class AvatarBox extends StatelessWidget {
       width: size.w,
       height: size.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: const DecorationImage(
+        borderRadius: BorderRadius.circular(24),
+        image: DecorationImage(
           fit: BoxFit.cover,
           alignment: FractionalOffset.topCenter,
           image: NetworkImage(
-            'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+            imgPath,
           ),
         ),
       ),

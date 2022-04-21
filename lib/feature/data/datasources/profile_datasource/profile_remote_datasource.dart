@@ -26,19 +26,21 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
                           {
 "id": "A1B2C3D4E5",
 "external_id": "8877",
-"first_name": "Ivan",
-"last_name": "Ivanov",
-"middle_name": "Ivanovich",
+"first_name": "Александр",
+"last_name": "Дымченко",
+"middle_name": "Валерьевич",
+"birthday": "20.11.1984",
 "email": "aaa@novostal.ru",
-"photo_link": "http://www.bbb.ru/photo.png",
+"photo_link": "https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg",
 "active": true,
 "position": {
 "id": "a1b2c3d4",
-"description": "Начальник отдела"
+"description": "Начальник отдела",
+"department": "Информационные технологии"
 },
 "phone": [
 {
-"number": "123-45-67",
+"number": "25-425-655",
 "suffix": "033",
 "primary": true
 },

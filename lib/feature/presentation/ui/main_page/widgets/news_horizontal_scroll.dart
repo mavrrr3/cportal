@@ -17,7 +17,7 @@ class NewsHorizontalScroll extends StatelessWidget {
           style: kMainTextRoboto.copyWith(fontSize: 22.sp),
         ),
         SizedBox(
-          height: 190.h,
+          height: 200.h,
           width: double.infinity,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

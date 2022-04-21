@@ -45,5 +45,12 @@
     "enterRequest": "Введите запрос",
     "today": "Сегодня",
     "birthDay": "День рождения",
+    "watchData": "Смотреть данные",
+    "profile": "Профиль",
+    "yourData": "Ваши данные",
+    "yourPhoneNumber": "Личный номер телефона",
+    "position": "Должность",
+    "department": "Отдел",
+    "email": "Эл. почта",
     "faq": "Частые вопросы"
 }
