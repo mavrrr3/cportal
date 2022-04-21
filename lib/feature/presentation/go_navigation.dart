@@ -1,7 +1,9 @@
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
@@ -19,6 +21,7 @@ abstract class NavigationRouteNames {
   static const inputPin = 'input_pin';
   static const fingerPrintPage = 'fingerprint';
   static const news = 'news';
+  static const newsArticlePage = 'news_article_page';
   static const profile = 'profile';
   static const userData = 'user_data';
 }
@@ -90,6 +93,17 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: NewsPage(pageType: NewsCodeEnum.news)),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.newsArticlePage,
+      path: '/news_article_page',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        child: NewsArticlePage(article: state.extra! as ArticleEntity),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
       ),
     ),
     GoRoute(

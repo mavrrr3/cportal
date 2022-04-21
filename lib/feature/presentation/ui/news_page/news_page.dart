@@ -6,10 +6,12 @@ import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:swipe/swipe.dart';
 
@@ -149,11 +151,19 @@ class _NewsPageState extends State<NewsPage> {
         itemBuilder: (context, index) {
           /// Распределение по категориям
           if (_currentIndex == 0) {
-            return _newsCard(width, item: state.news.article[index]);
+            return _newsCard(
+              width,
+              item: state.news.article[index],
+              onTap: () => _onArticleSelected(state.news.article[index]),
+            );
           } else {
             if (state.news.article[index].category ==
                 state.tabs[_currentIndex]) {
-              return _newsCard(width, item: state.news.article[index]);
+              return _newsCard(
+                width,
+                item: state.news.article[index],
+                onTap: () => _onArticleSelected(state.news.article[index]),
+              );
             }
           }
           // ignore: newline-before-return
@@ -163,18 +173,26 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  Widget _newsCard(double width, {required ArticleEntity item}) {
-    var outputFormat = DateFormat('d MMMM y, H:m', 'ru');
+  Widget _newsCard(
+    double width, {
+    required ArticleEntity item,
+    required Function() onTap,
+  }) {
+    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
     return Padding(
       padding: EdgeInsets.only(bottom: 20.0.h),
-      child: NewsCardItem(
-        width: width,
-        height: 160.h,
-        fontSize: 17.sp,
-        imgPath: item.image,
-        title: item.header,
-        dateTime: outputFormat.format(item.dateShow),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: onTap,
+        child: NewsCardItem(
+          width: width,
+          height: 160.h,
+          fontSize: 17.sp,
+          imgPath: item.image,
+          title: item.header,
+          dateTime: outputFormat.format(item.dateShow),
+        ),
       ),
     );
   }
@@ -184,5 +202,12 @@ class _NewsPageState extends State<NewsPage> {
       _currentIndex = index;
     });
     _pageController.jumpToPage(_currentIndex);
+  }
+
+  void _onArticleSelected(ArticleEntity item) {
+    GoRouter.of(context).pushNamed(
+      NavigationRouteNames.newsArticlePage,
+      extra: item,
+    );
   }
 }
