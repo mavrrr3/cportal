@@ -90,6 +90,7 @@ class FingerPrintPage extends StatelessWidget {
                             log('isAuthenticated ${state.authStatus}');
                             log('Biometric list ${state.listBiometric}');
                           },
+                          Size(142.w, 48.h),
                         ),
                         Button.factory(
                           ButtonEnum.outlined,
@@ -97,6 +98,7 @@ class FingerPrintPage extends StatelessWidget {
                           () async {
                             // TODO Реализовать функционал кнопки Нет, спасибо
                           },
+                          Size(142.w, 48.h),
                         ),
                       ],
                     ),

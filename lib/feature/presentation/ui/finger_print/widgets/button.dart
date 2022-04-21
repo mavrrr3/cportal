@@ -10,11 +10,11 @@ enum ButtonEnum {
 }
 
 class Button {
-  static final Size size = Size(142.w, 48.h);
   static ButtonStyleButton factory(
     ButtonEnum type,
     String text,
     Function function,
+    Size size,
   ) {
     switch (type) {
       case ButtonEnum.blue:
