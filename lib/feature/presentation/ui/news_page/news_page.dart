@@ -63,6 +63,7 @@ class _NewsPageState extends State<NewsPage> {
     if (widget.pageType != _currentPage) {
       _contentInit();
       _currentPage = widget.pageType;
+      _currentIndex = 0;
     }
     log(_currentPage.toString());
     double width = MediaQuery.of(context).size.width;
