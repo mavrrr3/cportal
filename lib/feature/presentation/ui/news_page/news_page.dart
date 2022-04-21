@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -196,7 +197,13 @@ class _NewsPageState extends State<NewsPage> {
             /// Распределение по категориям
             if (state.news.article[index].category ==
                 state.tabs[_currentIndex]) {
-              return Text(state.news.article[index].header);
+              return Padding(
+                padding: EdgeInsets.only(bottom: 30.0.h),
+                child: QuestionWidget(
+                  text: state.news.article[index].header,
+                  onTap: () {},
+                ),
+              );
             }
 
             // ignore: newline-before-return
