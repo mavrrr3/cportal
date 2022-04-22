@@ -76,6 +76,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
             border: isCurrent
                 ? Border(
                     bottom: BorderSide(
+                      width: 2.5,
                       color: widget.activeColor ?? theme.colorScheme.secondary,
                     ),
                   )
