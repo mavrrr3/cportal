@@ -54,7 +54,9 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       (news) {
         /// Создание листа со всеми вкладками
         List<String> tabs = [];
-        tabs.add('Все');
+        if (event.newsCodeEnum == NewsCodeEnum.news) {
+          tabs.add('Все');
+        }
         for (var item in news.article) {
           if (!tabs.contains(item.category)) {
             tabs.add(item.category);

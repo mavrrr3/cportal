@@ -3,7 +3,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/news_article_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
@@ -22,6 +23,7 @@ abstract class NavigationRouteNames {
   static const fingerPrintPage = 'fingerprint';
   static const news = 'news';
   static const newsArticlePage = 'news_article_page';
+  static const questionArticlePage = 'question_article_page';
   static const profile = 'profile';
   static const userData = 'user_data';
 }
@@ -102,6 +104,17 @@ final GoRouter router = GoRouter(
           CustomTransitionPage<void>(
         key: state.pageKey,
         child: NewsArticlePage(article: state.extra! as ArticleEntity),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.questionArticlePage,
+      path: '/question_article_page',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        child: QuestionArticlePage(currentIndex: state.extra! as int),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
       ),

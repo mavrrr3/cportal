@@ -52,5 +52,19 @@
     "position": "Должность",
     "department": "Отдел",
     "email": "Эл. почта",
-    "faq": "Частые вопросы"
+    "faq": "Частые вопросы",
+    "newEmpoyee": "Новому сотруднику",
+    "notofications": "Уведомления",
+    "fingerPrint": "Сканер отпечатков",
+    "changePin": "Сменить ПИН",
+    "appTheme": "Тема приложения",
+    "lightTheme": "Светлая",
+    "darkTheme": "Тёмная",
+    "standartTheme": "Стандартная",
+    "turnOffNotify": "Отключить уведомления",
+    "forHour": "На час",
+    "forFourHour": "4 часа",
+    "forTwentyFourHour": "24 часа",
+    "forever": "Навсегда",
+    "questions": "Вопросы"
 }
