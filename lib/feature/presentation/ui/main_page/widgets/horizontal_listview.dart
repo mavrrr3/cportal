@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class HorizontalListViewMain extends StatelessWidget {
   const HorizontalListViewMain({
     Key? key,
+    required this.color,
   }) : super(key: key);
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class HorizontalListViewMain extends StatelessWidget {
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        physics: const ScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         itemCount: gridViewMap.length,
         itemBuilder: (context, i) {
@@ -23,6 +25,7 @@ class HorizontalListViewMain extends StatelessWidget {
               CardHorizontalScroll(
                 icon: gridViewMap[i]['icon'] as IconData,
                 text: gridViewMap[i]['text'] as String,
+                color: color,
               ),
               SizedBox(width: 8.w),
             ],

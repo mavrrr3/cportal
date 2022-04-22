@@ -8,13 +8,29 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SearchBoxMain extends StatelessWidget {
   const SearchBoxMain({
     Key? key,
+    required this.controller,
+    required this.onChanged,
+    required this.focusNode,
+    required this.animationDuration,
+    this.isAnimation = false,
   }) : super(key: key);
+  final Function(String) onChanged;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final Duration animationDuration;
+  final bool isAnimation;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 276.w,
+    final double width = MediaQuery.of(context).size.width;
+
+    return AnimatedContainer(
+      duration:
+          isAnimation ? animationDuration : const Duration(milliseconds: 100),
+      // width: 276.w,
+      width: isAnimation ? width - 32.w : 276.w,
       height: 40.h,
+      curve: Curves.easeIn,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -28,9 +44,15 @@ class SearchBoxMain extends StatelessWidget {
           SizedBox(
             width: 200.w,
             child: TextField(
-              showCursor: false,
+              showCursor: true,
+              controller: controller,
+              focusNode: focusNode,
+              textInputAction: TextInputAction.search,
+              onChanged: (text) {
+                onChanged(text);
+              },
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.enterRequest,
+                hintText: AppLocalizations.of(context)!.enterRequest,
                 labelStyle: kMainTextRoboto.copyWith(
                   fontSize: 14,
                   color: AppColors.kLightTextColor.withOpacity(0.68),
