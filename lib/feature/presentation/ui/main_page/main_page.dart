@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview.dart';
@@ -12,7 +11,6 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);

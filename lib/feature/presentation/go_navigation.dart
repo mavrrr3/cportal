@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';

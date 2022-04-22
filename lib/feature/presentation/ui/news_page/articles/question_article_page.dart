@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
