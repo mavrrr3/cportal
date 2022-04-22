@@ -5,7 +5,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/question_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -192,7 +192,7 @@ class _NewsPageState extends State<NewsPage> {
                 state.tabs[_currentIndex]) {
               return Padding(
                 padding: EdgeInsets.only(bottom: 30.0.h),
-                child: QuestionWidget(
+                child: FaqRow(
                   text: state.news.article[index].header,
                   onTap: () {
                     GoRouter.of(context).pushNamed(

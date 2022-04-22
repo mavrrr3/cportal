@@ -2,7 +2,7 @@ import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/question_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -68,7 +68,7 @@ class QuestionArticlePage extends StatelessWidget {
                             if (state.news.article.length - 1 != currentIndex)
                               Column(
                                 children: [
-                                  QuestionWidget(
+                                  FaqRow(
                                     text: state
                                         .news.article[currentIndex + 1].header,
                                     onTap: () {

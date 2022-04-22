@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box_main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -147,17 +147,14 @@ class _MainPageState extends State<MainPage> {
                       _searchBoxItem(
                         text: 'Как запросить 2НДФЛ',
                         category: 'Вопросы',
-                        onTap: () {},
                       ),
                       _searchBoxItem(
                         text: 'Сменить ПИН',
                         category: 'Профиль',
-                        onTap: () {},
                       ),
                       _searchBoxItem(
                         text: 'Сменить ПИН',
                         category: 'Вопросы',
-                        onTap: () {},
                       ),
                     ],
                   ),
@@ -173,7 +170,7 @@ class _MainPageState extends State<MainPage> {
   Widget _searchBoxItem({
     required String category,
     required String text,
-    required Function() onTap,
+    Function()? onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -188,7 +185,7 @@ class _MainPageState extends State<MainPage> {
               style: kMainTextRoboto.copyWith(fontSize: 12.sp),
             ),
             SizedBox(height: 4.h),
-            QuestionWidget(text: text),
+            FaqRow(text: text),
           ],
         ),
       ),
