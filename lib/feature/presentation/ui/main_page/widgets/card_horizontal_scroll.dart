@@ -9,15 +9,16 @@ class CardHorizontalScroll extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.text,
+    this.color = Colors.white,
   }) : super(key: key);
-
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 148.w,
       height: 92.h,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: color,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
