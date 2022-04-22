@@ -6,6 +6,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_p
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/phone_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/user_data_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -86,84 +88,6 @@ class UserData extends StatelessWidget {
 
           return const Center(child: CircularProgressIndicator());
         },
-      ),
-    );
-  }
-}
-
-class UserDataRow extends StatelessWidget {
-  final String normalText;
-  final String boldText;
-
-  const UserDataRow({
-    Key? key,
-    required this.normalText,
-    required this.boldText,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          normalText,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 14.sp,
-            color: AppColors.kLightTextColor.withOpacity(0.68),
-          ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          boldText,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class PhoneBox extends StatelessWidget {
-  const PhoneBox({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 48.h,
-      decoration: BoxDecoration(
-        color: AppColors.kLightTextColor.withOpacity(0.04),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(4.sp),
-          topRight: Radius.circular(4.sp),
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.yourPhoneNumber,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.kLightTextColor.withOpacity(0.68),
-              ),
-            ),
-            Text(
-              '+7 923 456 78 91',
-              style: kMainTextRoboto.copyWith(
-                fontSize: 16.sp,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
