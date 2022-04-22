@@ -58,7 +58,6 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    log(_currentPage.toString());
 
     /// Для обновления стейта при смене страницы в BottomBar
     if (widget.pageType != _currentPage) {
@@ -66,12 +65,10 @@ class _NewsPageState extends State<NewsPage> {
       _currentPage = widget.pageType;
       _currentIndex = 0;
     }
-    log(_currentPage.toString());
     double width = MediaQuery.of(context).size.width;
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
-        log(state.toString());
 
         return SafeArea(
           child: Column(

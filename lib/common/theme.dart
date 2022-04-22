@@ -23,7 +23,7 @@ ThemeData lightTheme(BuildContext context) => ThemeData.light().copyWith(
       dividerColor: AppColors.dividerColor.withOpacity(0.08),
       colorScheme: const ColorScheme.light().copyWith(
         /// Blue color
-        secondary: AppColors.blueIcon,
+        secondary: AppColors.blue,
       ),
     );
 
