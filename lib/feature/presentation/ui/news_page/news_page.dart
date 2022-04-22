@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/common/util/keep_alive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
@@ -7,7 +5,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/question_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -58,7 +56,6 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     /// Для обновления стейта при смене страницы в BottomBar
     if (widget.pageType != _currentPage) {
       _contentInit();
@@ -69,7 +66,6 @@ class _NewsPageState extends State<NewsPage> {
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
-
         return SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,14 +164,14 @@ class _NewsPageState extends State<NewsPage> {
               return _newsCard(
                 width,
                 item: state.news.article[index],
-                onTap: () => _onArticleSelected(state.news.article[index]),
+                onTap: () => _onArticleSelected(index),
               );
             } else if (state.news.article[index].category ==
                 state.tabs[_currentIndex]) {
               return _newsCard(
                 width,
                 item: state.news.article[index],
-                onTap: () => _onArticleSelected(state.news.article[index]),
+                onTap: () => _onArticleSelected(index),
               );
             }
             // ignore: newline-before-return
@@ -196,9 +192,14 @@ class _NewsPageState extends State<NewsPage> {
                 state.tabs[_currentIndex]) {
               return Padding(
                 padding: EdgeInsets.only(bottom: 30.0.h),
-                child: QuestionWidget(
+                child: FaqRow(
                   text: state.news.article[index].header,
-                  onTap: () {},
+                  onTap: () {
+                    GoRouter.of(context).pushNamed(
+                      NavigationRouteNames.questionArticlePage,
+                      extra: index,
+                    );
+                  },
                 ),
               );
             }
@@ -244,10 +245,10 @@ class _NewsPageState extends State<NewsPage> {
     _pageController.jumpToPage(_currentIndex);
   }
 
-  void _onArticleSelected(ArticleEntity item) {
+  void _onArticleSelected(int index) {
     GoRouter.of(context).pushNamed(
       NavigationRouteNames.newsArticlePage,
-      extra: item,
+      extra: index,
     );
   }
 

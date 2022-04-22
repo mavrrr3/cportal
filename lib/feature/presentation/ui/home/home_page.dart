@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -31,7 +30,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   void _loadPinRequest() async {
-    if (mounted) context.goNamed(NavigationRouteNames.profile);
+    if (mounted) context.goNamed(NavigationRouteNames.inputPin);
   }
 
   @override

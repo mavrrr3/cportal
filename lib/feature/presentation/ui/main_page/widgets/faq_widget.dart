@@ -16,12 +16,19 @@ class FaqWidget extends StatelessWidget {
           AppLocalizations.of(context)!.faq,
           style: kMainTextRoboto.copyWith(fontSize: 22.sp),
         ),
+        SizedBox(height: 16.h),
         ListView.builder(
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           itemCount: faqList.length,
           itemBuilder: (context, i) {
-            return FaqRow(title: faqList[i]);
+            return Padding(
+              padding: EdgeInsets.only(bottom: 24.0.h),
+              child: FaqRow(
+                text: faqList[i],
+                // onTap: () {},
+              ),
+            );
           },
         ),
       ],

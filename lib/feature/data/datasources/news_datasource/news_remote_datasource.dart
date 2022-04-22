@@ -27,10 +27,9 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         article: [
           newsArticle,
           quastion,
-          newsArticle,
-          newsArticle,
-          newsArticle,
-          newsArticle,
+          newsArticle2,
+          newsArticle3,
+          quastion3,
           quastion,
           quastion,
           quastion,
@@ -78,6 +77,46 @@ final ArticleModel newsArticle = ArticleModel(
   dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
 );
 
+final ArticleModel newsArticle2 = ArticleModel(
+  id: 'id',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Rick and Morty',
+  category: 'Новосталь-М',
+  description: 'description',
+  image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+final ArticleModel newsArticle3 = ArticleModel(
+  id: 'id',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Header',
+  category: 'Новосталь-М',
+  description: 'description',
+  image:
+      'https://get.wallhere.com/photo/1920x1080-px-Morty-Smith-Rick-and-Morty-Rick-Sanchez-TV-1481007.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+
 final ArticleModel quastion = ArticleModel(
   id: 'id',
   articleType: const ArticleTypeModel(
@@ -109,6 +148,28 @@ final ArticleModel quastion2 = ArticleModel(
   ),
   header: 'Из чего составляется ваш KPI',
   category: 'Продуктивность',
+  description:
+      'И нет сомнений, что базовые сценарии поведения пользователей представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.\n\nПо требованию собственника компенсация требует депозитный суд, хотя законодательством может быть установлено иное. Наследование своевременно исполняет закон. Пленум Высшего Арбитражного Суда неоднократно разъяснял, как доверенность противоречиво арендует правомерный сервитут. Оферта императивна. Страховой полис объективно опровергает международный индоссамент.\n\nАкционерное общество поручает конфиденциальный взаимозачет, исключая принцип презумпции невиновности. Перестрахование своевременно исполняет императивный сервитут, что не имеет аналогов в англо-саксонской правовой системе. Конституция, как бы это ни казалось парадоксальным, акцептована.',
+  image:
+      'https://img3.goodfon.ru/original/1152x864/e/2c/wyoming-grand-teton-national.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+
+final ArticleModel quastion3 = ArticleModel(
+  id: 'id',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'QUASTION',
+    description: 'description',
+  ),
+  header: 'Как взять отпуск?',
+  category: 'Кадры',
   description:
       'И нет сомнений, что базовые сценарии поведения пользователей представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.\n\nПо требованию собственника компенсация требует депозитный суд, хотя законодательством может быть установлено иное. Наследование своевременно исполняет закон. Пленум Высшего Арбитражного Суда неоднократно разъяснял, как доверенность противоречиво арендует правомерный сервитут. Оферта императивна. Страховой полис объективно опровергает международный индоссамент.\n\nАкционерное общество поручает конфиденциальный взаимозачет, исключая принцип презумпции невиновности. Перестрахование своевременно исполняет императивный сервитут, что не имеет аналогов в англо-саксонской правовой системе. Конституция, как бы это ни казалось парадоксальным, акцептована.',
   image:
