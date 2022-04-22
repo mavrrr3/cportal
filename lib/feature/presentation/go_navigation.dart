@@ -5,7 +5,8 @@ import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_prin
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
@@ -17,8 +18,8 @@ abstract class NavigationRouteNames {
   static const mainPage = 'main_page';
   static const connectingCode = 'connecting_code';
   static const createPin = 'create_pin';
-  static const repeatPin = 'repeat_pin';
   static const inputPin = 'input_pin';
+  static const editPin = 'edit_pin';
   static const fingerPrintPage = 'fingerprint';
   static const news = 'news';
   static const newsArticlePage = 'news_article_page';
@@ -61,25 +62,31 @@ final GoRouter router = GoRouter(
       path: '/create_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: PinCodePage()),
+        child: const Scaffold(
+          body: CreatePinPage(),
+        ),
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.repeatPin,
-      path: '/repeat_pin',
+      name: NavigationRouteNames.editPin,
+      path: '/edit_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: PinCodePage()),
+        child: const Scaffold(
+          body: EditPinPage(),
+        ),
       ),
     ),
-    GoRoute(
-      name: NavigationRouteNames.inputPin,
-      path: '/input_pin',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
-        key: state.pageKey,
-        child: const Scaffold(body: PinCodePage()),
-      ),
-    ),
+    // GoRoute(
+    //   name: NavigationRouteNames.editPin,
+    //   path: '/repeat_pin',
+    //   pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+    //     key: state.pageKey,
+    //     child: const Scaffold(
+    //       body: RepeatPinPage(),
+    //     ),
+    //   ),
+    // ),
     GoRoute(
       name: NavigationRouteNames.fingerPrintPage,
       path: '/fingerprint',

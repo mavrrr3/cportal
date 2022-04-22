@@ -4,6 +4,7 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -228,6 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       text: AppLocalizations.of(context)!.changePin,
                       secondWidget: blueArrow,
+                      call: () => context.goNamed(NavigationRouteNames.editPin),
                     ),
                     SizedBox(height: 28.h),
                     const ChangeTheme(),

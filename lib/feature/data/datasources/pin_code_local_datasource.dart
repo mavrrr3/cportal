@@ -23,10 +23,6 @@ class PinCodeDataSource implements IPinCodeDataSource {
     // Открывает Box
     var box = await Hive.openBox<String>('pin_code');
 
-    // Проверяет если такой строки в базе нет
-    // то записывает пришедший ПИН и
-    // возвращает строку 'repeat'
-
     await box.put('pin_code', pinCode);
 
     if (kDebugMode) log('pinCode записал в кэш ' + pinCode.toString());

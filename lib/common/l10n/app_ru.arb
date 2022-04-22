@@ -30,6 +30,7 @@
     "createPinCode": "Придумайте ПИН",
     "inputPinCode": "Введите ПИН",
     "repeatPinCode": "Подтвердите ПИН",
+    "enterNewPinCode": "Введите новый ПИН",
     "itWillBeNeedToEnter": "Он будет использоваться для входа",
     "pinNotCorrect": "ПИН не совпадает",
     "forgetPin": "Забыли ПИН?",

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:async/async.dart';
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
