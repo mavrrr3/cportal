@@ -103,7 +103,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
-        child: NewsArticlePage(article: state.extra! as ArticleEntity),
+        child: NewsArticlePage(currentIndex: state.extra! as int),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
       ),

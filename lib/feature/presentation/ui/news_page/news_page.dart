@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/common/util/keep_alive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
@@ -164,14 +166,14 @@ class _NewsPageState extends State<NewsPage> {
               return _newsCard(
                 width,
                 item: state.news.article[index],
-                onTap: () => _onArticleSelected(state.news.article[index]),
+                onTap: () => _onArticleSelected(index),
               );
             } else if (state.news.article[index].category ==
                 state.tabs[_currentIndex]) {
               return _newsCard(
                 width,
                 item: state.news.article[index],
-                onTap: () => _onArticleSelected(state.news.article[index]),
+                onTap: () => _onArticleSelected(index),
               );
             }
             // ignore: newline-before-return
@@ -245,10 +247,10 @@ class _NewsPageState extends State<NewsPage> {
     _pageController.jumpToPage(_currentIndex);
   }
 
-  void _onArticleSelected(ArticleEntity item) {
+  void _onArticleSelected(int index) {
     GoRouter.of(context).pushNamed(
       NavigationRouteNames.newsArticlePage,
-      extra: item,
+      extra: index,
     );
   }
 
