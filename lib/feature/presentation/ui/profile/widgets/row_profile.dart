@@ -32,7 +32,7 @@ class RowProfile extends StatelessWidget {
         ),
         const Expanded(child: SizedBox.shrink()),
         GestureDetector(
-          onTap: () => call,
+          onTap: () => call != null ? call!() : debugPrint('call = null'),
           child: secondWidget,
         ),
       ],

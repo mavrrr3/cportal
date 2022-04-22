@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 int _selectedItemIndex = 0;
 
@@ -16,7 +20,33 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  Timer? timer;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addObserver(this);
+
+    super.initState();
+  }
+
+  void _loadPinRequest() async {
+    if (mounted) context.goNamed(NavigationRouteNames.profile);
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused) {
+      // TODO выставить нужный delay
+      timer = Timer(
+        const Duration(seconds: 10000000000000),
+        () => _loadPinRequest(),
+      );
+    } else if (state == AppLifecycleState.resumed) {
+      timer?.cancel();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color _nonActiveColor = AppColors.kLightTextColor.withOpacity(0.48);

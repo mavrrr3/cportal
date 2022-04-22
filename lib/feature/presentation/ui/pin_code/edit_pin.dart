@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,15 +13,15 @@ import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 
-final _pinController = TextEditingController();
-final _pinFocusNode = FocusNode();
+final pinController = TextEditingController();
+final pinFocusNode = FocusNode();
 
-class PinCodePage extends StatelessWidget {
-  const PinCodePage({Key? key}) : super(key: key);
+class EditPinPage extends StatelessWidget {
+  const EditPinPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
-        .add(PinCodeCheckEvent());
+        .add(EditPinCodeCheckEvent());
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,31 +32,32 @@ class PinCodePage extends StatelessWidget {
           ),
           child: BlocConsumer<PinCodeBloc, PinCodeState>(
             listener: ((context, state) {
-              if (state.status == PinCodeInputEnum.done) {
+              if (state.status == PinCodeInputEnum.repeatDone) {
                 // Если ПИН код из базе Hive совпадает с
                 // введеным ПИНом, то редирект на страницу [/main_page]
                 context.goNamed(NavigationRouteNames.mainPage);
               }
             }),
             builder: ((context, state) {
+              log(state.toString());
+
               switch (state.status) {
                 case PinCodeInputEnum.create:
-                case PinCodeInputEnum.writingCreate:
-                  return const BodyWidget(input: PinCodeInputEnum.create);
+                case PinCodeInputEnum.creating:
+                case PinCodeInputEnum.repeatDone:
+                  return const BodyWidget(input: PinCodeInputEnum.edit);
                 case PinCodeInputEnum.repeat:
-                case PinCodeInputEnum.writingRepeat:
+                case PinCodeInputEnum.repeating:
                   return const BodyWidget(input: PinCodeInputEnum.repeat);
-                case PinCodeInputEnum.input:
-                case PinCodeInputEnum.writingInput:
-                  return const BodyWidget(input: PinCodeInputEnum.input);
                 case PinCodeInputEnum.wrongRepeat:
+                case PinCodeInputEnum.wrongCreate:
                   return const BodyWidget(
                     input: PinCodeInputEnum.wrongRepeat,
                   );
                 case PinCodeInputEnum.error:
-                  return const BodyWidget(input: PinCodeInputEnum.error);
-                case PinCodeInputEnum.wrongInput:
-                  return const BodyWidget(input: PinCodeInputEnum.wrongInput);
+                  return const BodyWidget(
+                    input: PinCodeInputEnum.error,
+                  );
                 default:
                   return const Center(child: CircularProgressIndicator());
               }
@@ -64,7 +67,7 @@ class PinCodePage extends StatelessWidget {
         Column(
           children: [
             CustomKeyboard(
-              controller: _pinController,
+              controller: pinController,
               simbolQuantity: 4,
             ),
             SizedBox(height: 52.h),
@@ -109,12 +112,12 @@ class PinCodeInput extends StatefulWidget {
 }
 
 class _PinCodeInputState extends State<PinCodeInput> {
-  @override
-  void dispose() {
-    _pinController.dispose();
-    _pinFocusNode.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   pinController.dispose();
+  //   pinFocusNode.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -138,23 +141,41 @@ class _PinCodeInputState extends State<PinCodeInput> {
           ),
           useNativeKeyboard: false,
           length: 4,
-          controller: _pinController,
-          focusNode: _pinFocusNode,
+          controller: pinController,
+          focusNode: pinFocusNode,
           defaultPinTheme: defaultPinTheme,
           separator: SizedBox(width: 32.w),
           focusedPinTheme: defaultPinTheme,
           showCursor: false,
           onChanged: (value) {
-            BlocProvider.of<PinCodeBloc>(context, listen: false)
-                .add(PinCodeChange(status: state.status, pinCode: value));
+            BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+              ChangedPinCode(
+                status: state.status,
+                pinCode: value,
+              ),
+            );
           },
           onCompleted: (value) {
-            BlocProvider.of<PinCodeBloc>(context, listen: false)
-                .add(PinCodeSubmit(pinCode: value, status: state.status));
             if (state.doesItNeedToClean) {
               Future.delayed(
                 const Duration(milliseconds: 100),
-                () => _pinController.text = '',
+                () => pinController.text = '',
+              );
+            }
+
+            if (state.status != PinCodeInputEnum.repeating) {
+              BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+                EditPinCodeSubmit(
+                  pinCode: value,
+                  status: state.status,
+                ),
+              );
+            } else {
+              BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+                RepeatPinCodeSubmit(
+                  pinCode: value,
+                  status: state.status,
+                ),
               );
             }
           },
@@ -175,10 +196,16 @@ class HeaderText {
           title: AppLocalizations.of(context)!.createPinCode,
           secondText: AppLocalizations.of(context)!.itWillBeNeedToEnter,
         );
+
       case PinCodeInputEnum.repeat:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: ' ',
+        );
+      case PinCodeInputEnum.edit:
+        return HeaderTextWidget(
+          title: AppLocalizations.of(context)!.enterNewPinCode,
+          secondText: AppLocalizations.of(context)!.itWillBeNeedToEnter,
         );
       case PinCodeInputEnum.error:
         return HeaderTextWidget(
@@ -190,7 +217,7 @@ class HeaderText {
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: '',
-          error: _pinController.text.length == 4
+          error: pinController.text.length == 4
               ? AppLocalizations.of(context)!.pinNotCorrect
               : '',
         );
