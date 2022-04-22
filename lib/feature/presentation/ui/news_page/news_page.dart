@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/common/util/keep_alive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
@@ -58,7 +56,6 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     /// Для обновления стейта при смене страницы в BottomBar
     if (widget.pageType != _currentPage) {
       _contentInit();
@@ -69,7 +66,6 @@ class _NewsPageState extends State<NewsPage> {
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
-
         return SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +194,12 @@ class _NewsPageState extends State<NewsPage> {
                 padding: EdgeInsets.only(bottom: 30.0.h),
                 child: QuestionWidget(
                   text: state.news.article[index].header,
-                  onTap: () {},
+                  onTap: () {
+                    GoRouter.of(context).pushNamed(
+                      NavigationRouteNames.questionArticlePage,
+                      extra: index,
+                    );
+                  },
                 ),
               );
             }

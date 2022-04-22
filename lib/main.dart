@@ -24,36 +24,43 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.da
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-void main() => runZonedGuarded<void>(
-      () async {
-        WidgetsFlutterBinding.ensureInitialized();
-        await AppConfig.load();
-        await di.init();
-        // await Firebase.initializeApp();
-        await Hive.initFlutter();
-        _hiveAdaptersInit();
+void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  ));
+ 
+  runZonedGuarded<void>(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AppConfig.load();
+      await di.init();
+      // await Firebase.initializeApp();
+      await Hive.initFlutter();
+      _hiveAdaptersInit();
 
-        await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp],
+      await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp],
+      );
+      BlocOverrides.runZoned(
+        () => runApp(const MyApp()),
+        blocObserver: AppBlocObserver.instance(),
+        eventTransformer: bloc_concurrency.sequential<Object?>(),
+      );
+    },
+    (error, stackTrace) {
+      if (kDebugMode) {
+        print('Caught Framework error');
+        // В debug режиме выводим ошибки в консоль
+        FlutterError.dumpErrorToConsole(
+          FlutterErrorDetails(exception: error),
         );
-        BlocOverrides.runZoned(
-          () => runApp(const MyApp()),
-          blocObserver: AppBlocObserver.instance(),
-          eventTransformer: bloc_concurrency.sequential<Object?>(),
-        );
-      },
-      (error, stackTrace) {
-        if (kDebugMode) {
-          print('Caught Framework error');
-          // В debug режиме выводим ошибки в консоль
-          FlutterError.dumpErrorToConsole(
-            FlutterErrorDetails(exception: error),
-          );
-        } else {
-          Zone.current.handleUncaughtError(error, stackTrace);
-        }
-      },
-    );
+      } else {
+        Zone.current.handleUncaughtError(error, stackTrace);
+      }
+    },
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
