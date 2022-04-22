@@ -6,11 +6,13 @@ class RowProfile extends StatelessWidget {
   final Widget firstWidget;
   final String text;
   final Widget secondWidget;
+  final Function? call;
   const RowProfile({
     Key? key,
     required this.firstWidget,
     required this.text,
     required this.secondWidget,
+    this.call,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,10 @@ class RowProfile extends StatelessWidget {
           ),
         ),
         const Expanded(child: SizedBox.shrink()),
-        secondWidget,
+        GestureDetector(
+          onTap: () => call,
+          child: secondWidget,
+        ),
       ],
     );
   }

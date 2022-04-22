@@ -6,6 +6,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_p
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,14 +78,17 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Отключить уведомления', style: kMainTextRoboto),
+                Text(
+                  AppLocalizations.of(context)!.turnOffNotify,
+                  style: kMainTextRoboto,
+                ),
                 SizedBox(height: 18.h),
                 GestureDetector(
                   onTap: (() => setState(() => showToasterAboutNotify(
                         'Оповещения выключены на 1 час',
                       ))),
                   child: Text(
-                    'На час',
+                    AppLocalizations.of(context)!.forHour,
                     style: kMainTextRoboto.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -92,21 +96,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 24.h),
                 Text(
-                  '4 часа',
+                  AppLocalizations.of(context)!.forFourHour,
                   style: kMainTextRoboto.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 SizedBox(height: 24.h),
                 Text(
-                  '24 часа',
+                  AppLocalizations.of(context)!.forTwentyFourHour,
                   style: kMainTextRoboto.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 SizedBox(height: 24.h),
                 Text(
-                  'Навсегда',
+                  AppLocalizations.of(context)!.forever,
                   style: kMainTextRoboto.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -186,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             path: 'profile/add_person.svg',
                             width: 22.w,
                           ),
-                          text: 'Новому сотруднику',
+                          text: AppLocalizations.of(context)!.newEmpoyee,
                           secondWidget: blueArrow,
                         ),
                       ),
@@ -198,7 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         path: 'profile/bell.svg',
                         width: 21.w,
                       ),
-                      text: 'Уведомления',
+                      text: AppLocalizations.of(context)!.notofications,
                       secondWidget:
                           customSwitch(isNotificationTurnedOn, turnOnOffNotify),
                     ),
@@ -209,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         path: 'finger_print.svg',
                         width: 20.w,
                       ),
-                      text: 'Сканер отпечатков',
+                      text: AppLocalizations.of(context)!.fingerPrint,
                       secondWidget: customSwitch(
                         isFingerPrintAuth,
                         turnOnOffFingerPrintAuth,
@@ -222,93 +226,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         path: 'profile/lock.svg',
                         width: 20.w,
                       ),
-                      text: 'Сменить ПИН',
+                      text: AppLocalizations.of(context)!.changePin,
                       secondWidget: blueArrow,
                     ),
                     SizedBox(height: 28.h),
-                    Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Тема приложения',
-                            style: kMainTextRoboto.copyWith(
-                              fontSize: 12,
-                              color:
-                                  AppColors.kLightTextColor.withOpacity(0.68),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Container(
-                          width: double.infinity,
-                          height: 36.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                              color:
-                                  AppColors.kLightTextColor.withOpacity(0.08),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(100.w, 36.h),
-                                  primary: AppColors.blue,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                ),
-                                onPressed: () {},
-                                child: Text(
-                                  'Светлая',
-                                  style: kMainTextRoboto.copyWith(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  minimumSize: Size(100.w, 36.h),
-                                  primary: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                ),
-                                onPressed: () {},
-                                child: Text(
-                                  'Темная',
-                                  style: kMainTextRoboto.copyWith(
-                                    fontSize: 12,
-                                    color: AppColors.kLightTextColor,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  primary: Colors.black,
-                                  minimumSize: Size(100.w, 36.h),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                ),
-                                onPressed: () {},
-                                child: Text(
-                                  'Стандартная',
-                                  style: kMainTextRoboto.copyWith(
-                                    fontSize: 12,
-                                    color: AppColors.kLightTextColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    const ChangeTheme(),
                   ],
                 ),
               ),
