@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
@@ -11,6 +12,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -87,11 +89,15 @@ class _MainPageState extends State<MainPage> {
                         AnimatedOpacity(
                           duration: const Duration(milliseconds: 150),
                           opacity: _isAnimation ? 0 : 1,
-                          child: AvatarBox(
-                            isAnimation: _isAnimation,
-                            size: 40,
-                            imgPath:
-                                'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+                          child: GestureDetector(
+                            onTap: (() =>
+                                context.goNamed(NavigationRouteNames.profile)),
+                            child: AvatarBox(
+                              isAnimation: _isAnimation,
+                              size: 40,
+                              imgPath:
+                                  'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+                            ),
                           ),
                         ),
                       ],

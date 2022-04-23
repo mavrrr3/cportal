@@ -16,8 +16,8 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_ic
 final pinController = TextEditingController();
 final pinFocusNode = FocusNode();
 
-class EditPinPage extends StatelessWidget {
-  const EditPinPage({Key? key}) : super(key: key);
+class InputPinPage extends StatelessWidget {
+  const InputPinPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
@@ -32,7 +32,7 @@ class EditPinPage extends StatelessWidget {
           ),
           child: BlocConsumer<PinCodeBloc, PinCodeState>(
             listener: ((context, state) {
-              if (state.status == PinCodeInputEnum.repeatDone) {
+              if (state.status == PinCodeInputEnum.done) {
                 // Если ПИН код из базе Hive совпадает с
                 // введеным ПИНом, то редирект на страницу [/main_page]
                 context.goNamed(NavigationRouteNames.mainPage);
@@ -45,14 +45,11 @@ class EditPinPage extends StatelessWidget {
                 case PinCodeInputEnum.create:
                 case PinCodeInputEnum.creating:
                 case PinCodeInputEnum.repeatDone:
-                  return const BodyWidget(input: PinCodeInputEnum.edit);
-                case PinCodeInputEnum.repeat:
-                case PinCodeInputEnum.repeating:
-                  return const BodyWidget(input: PinCodeInputEnum.repeat);
-                case PinCodeInputEnum.wrongRepeat:
-                case PinCodeInputEnum.wrongCreate:
+                  return const BodyWidget(input: PinCodeInputEnum.input);
+
+                case PinCodeInputEnum.wrongInput:
                   return const BodyWidget(
-                    input: PinCodeInputEnum.wrongRepeat,
+                    input: PinCodeInputEnum.wrongInput,
                   );
                 case PinCodeInputEnum.error:
                   return const BodyWidget(
@@ -163,21 +160,12 @@ class _PinCodeInputState extends State<PinCodeInput> {
               );
             }
 
-            if (state.status != PinCodeInputEnum.repeating) {
-              BlocProvider.of<PinCodeBloc>(context, listen: false).add(
-                EditPinCodeSubmit(
-                  pinCode: value,
-                  status: state.status,
-                ),
-              );
-            } else {
-              BlocProvider.of<PinCodeBloc>(context, listen: false).add(
-                RepeatPinCodeSubmit(
-                  pinCode: value,
-                  status: state.status,
-                ),
-              );
-            }
+            BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+              InputPinCodeSubmit(
+                pinCode: value,
+                status: state.status,
+              ),
+            );
           },
         );
       },
