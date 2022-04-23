@@ -50,6 +50,10 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       _onEditSubmit,
       transformer: bloc_concurrency.sequential(),
     );
+    on<InputPinCodeSubmit>(
+      _onInputSubmit,
+      transformer: bloc_concurrency.sequential(),
+    );
     on<RepeatPinCodeSubmit>(
       _onRepeatSubmit,
       transformer: bloc_concurrency.sequential(),
@@ -104,7 +108,25 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     return status == PinCodeInputEnum.create ||
             status == PinCodeInputEnum.creating
         ? PinCodeInputEnum.creating
-        : PinCodeInputEnum.repeating;
+        : status == PinCodeInputEnum.wrongInput
+            ? PinCodeInputEnum.create
+            : PinCodeInputEnum.repeating;
+  }
+
+  FutureOr<void> _onInputSubmit(
+    InputPinCodeSubmit event,
+    Emitter<PinCodeState> emit,
+  ) async {
+    log('=========Такой эвент $event');
+
+    final pinCodeFromHive = await pinCodeEnter.getPin();
+    log('=========Такой новый пин ${event.pinCode} Такой из базы пин $pinCodeFromHive');
+
+    if (pinCodeFromHive == event.pinCode) {
+      emit(state.copyWith(status: PinCodeInputEnum.done));
+    } else {
+      emit(state.copyWith(status: PinCodeInputEnum.wrongInput));
+    }
   }
 
   FutureOr<void> _onEditSubmit(
@@ -187,6 +209,7 @@ class PinCodeState {
   bool get isWrongPin =>
       status == PinCodeInputEnum.error ||
       status == PinCodeInputEnum.wrongCreate ||
+      status == PinCodeInputEnum.wrongInput ||
       status == PinCodeInputEnum.wrongRepeat;
 
   bool get doesItNeedToClean =>
@@ -244,6 +267,12 @@ class RepeatPinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
   const RepeatPinCodeSubmit({required this.pinCode, required this.status});
+}
+
+class InputPinCodeSubmit extends PinCodeEvent {
+  final String pinCode;
+  final PinCodeInputEnum status;
+  const InputPinCodeSubmit({required this.pinCode, required this.status});
 }
 
 class CreatePinCodeSubmit extends PinCodeEvent {
