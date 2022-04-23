@@ -104,9 +104,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     return status == PinCodeInputEnum.create ||
             status == PinCodeInputEnum.creating
         ? PinCodeInputEnum.creating
-        : status == PinCodeInputEnum.wrongRepeat
-            ? PinCodeInputEnum.wrongRepeat
-            : PinCodeInputEnum.repeating;
+        : PinCodeInputEnum.repeating;
   }
 
   FutureOr<void> _onEditSubmit(
@@ -196,7 +194,6 @@ class PinCodeState {
       status == PinCodeInputEnum.repeating ||
       status == PinCodeInputEnum.create ||
       status == PinCodeInputEnum.creating ||
-      status == PinCodeInputEnum.wrongCreate ||
       status == PinCodeInputEnum.wrongRepeat;
 
   PinCodeState({
