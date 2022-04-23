@@ -158,7 +158,7 @@ class _PinCodeInputState extends State<PinCodeInput> {
           onCompleted: (value) {
             if (state.doesItNeedToClean) {
               Future.delayed(
-                const Duration(milliseconds: 100),
+                const Duration(milliseconds: 600),
                 () => pinController.text = '',
               );
             }
