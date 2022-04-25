@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
@@ -14,6 +12,8 @@ class FingerPrintPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return BlocBuilder<BiometricBloc, BiometricState>(
       builder: (context, state) {
         return Column(
@@ -40,10 +40,8 @@ class FingerPrintPage extends StatelessWidget {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.useFingerPrint,
-                            style: kMainTextRusso.copyWith(
-                              fontSize: 28.sp,
-                              height: 1.286,
-                            ),
+                            style: theme.textTheme.headline2!
+                                .copyWith(height: 1.286),
                           ),
                         ],
                       ),
@@ -57,16 +55,14 @@ class FingerPrintPage extends StatelessWidget {
                     children: [
                       Text(
                         AppLocalizations.of(context)!.doFingerPrintNotInputPin,
-                        style: kMainTextRoboto.copyWith(
-                          fontSize: 14.sp,
-                          height: 1.714,
-                        ),
+                        style:
+                            theme.textTheme.headline6!.copyWith(height: 1.714),
                       ),
                     ],
                   ),
                   SizedBox(height: 48.h),
                   SvgIcon(
-                    AppColors.kLightTextColor.withOpacity(0.1),
+                    theme.hoverColor.withOpacity(0.1),
                     path: 'finger_print.svg',
                     width: 149.21.w,
                   ),
@@ -80,6 +76,7 @@ class FingerPrintPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Button.factory(
+                          context,
                           ButtonEnum.blue,
                           AppLocalizations.of(context)!.yes,
                           () {
@@ -93,6 +90,7 @@ class FingerPrintPage extends StatelessWidget {
                           Size(142.w, 48.h),
                         ),
                         Button.factory(
+                          context,
                           ButtonEnum.outlined,
                           AppLocalizations.of(context)!.noThanks,
                           () async {

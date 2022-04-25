@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonEnum {
@@ -9,30 +7,34 @@ enum ButtonEnum {
 }
 
 class Button {
+  // ignore: long-parameter-list
   static ButtonStyleButton factory(
+    BuildContext context,
     ButtonEnum type,
     String text,
     Function function,
     Size size,
   ) {
+    final ThemeData theme = Theme.of(context);
+
     switch (type) {
       case ButtonEnum.blue:
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: size,
-            primary: AppColors.blue,
+            primary: theme.primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           onPressed: () => function(),
-          child: _TextForButton(text, Colors.white),
+          child: _TextForButton(text, theme.splashColor),
         );
       case ButtonEnum.outlined:
         return OutlinedButton(
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(
-              color: AppColors.blue,
+            side: BorderSide(
+              color: theme.primaryColor,
               width: 2,
             ),
             minimumSize: size,
@@ -68,11 +70,13 @@ class _TextForButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Text(
       text!,
-      style: kMainTextRoboto.copyWith(
+      style: theme.textTheme.headline5!.copyWith(
         fontWeight: FontWeight.w700,
-        color: color ?? AppColors.blue,
+        color: color ?? theme.primaryColor,
       ),
     );
   }

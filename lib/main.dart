@@ -29,7 +29,7 @@ void main() {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
- 
+
   runZonedGuarded<void>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
@@ -69,12 +69,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: listOfBlocs(),
-      child: AdaptiveTheme(
-        light: lightTheme(context),
-        dark: darkTheme(context),
-        initial: AdaptiveThemeMode.light,
-        builder: (theme, darkTheme) => ScreenUtilInit(
-          builder: (() => MaterialApp.router(
+      child: ScreenUtilInit(
+        designSize: const Size(360, 640),
+        builder: (() => AdaptiveTheme(
+              light: lightTheme(),
+              dark: darkTheme(context),
+              initial: AdaptiveThemeMode.light,
+              builder: (theme, darkTheme) => MaterialApp.router(
                 routerDelegate: router.routerDelegate,
                 routeInformationParser: router.routeInformationParser,
                 debugShowCheckedModeBanner: false,
@@ -82,9 +83,8 @@ class MyApp extends StatelessWidget {
                 supportedLocales: AppLocalizations.supportedLocales,
                 theme: theme,
                 darkTheme: darkTheme,
-              )),
-          designSize: const Size(360, 640),
-        ),
+              ),
+            )),
       ),
     );
   }

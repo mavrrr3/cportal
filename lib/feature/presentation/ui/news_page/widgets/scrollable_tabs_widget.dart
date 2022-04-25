@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -77,7 +76,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
                 ? Border(
                     bottom: BorderSide(
                       width: 2.5,
-                      color: widget.activeColor ?? theme.colorScheme.secondary,
+                      color: widget.activeColor ?? theme.primaryColor,
                     ),
                   )
                 : null,
@@ -87,11 +86,13 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
             child: Text(
               text,
               style: isCurrent
-                  ? kMainTextRoboto.copyWith(
+                  ? theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: widget.activeColor ?? theme.colorScheme.secondary,
+                      color: widget.activeColor ?? theme.primaryColor,
                     )
-                  : kMainTextRoboto.copyWith(fontWeight: FontWeight.w700),
+                  : theme.textTheme.headline5!.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
             ),
           ),
         ),

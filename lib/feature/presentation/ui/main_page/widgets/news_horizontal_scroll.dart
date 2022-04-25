@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +21,15 @@ class NewsHorizontalScroll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (isTextVisible)
           Text(
             AppLocalizations.of(context)!.news,
-            style: kMainTextRoboto.copyWith(fontSize: 22.sp),
+            style: theme.textTheme.headline3,
           ),
         SizedBox(
           height: 200.h,

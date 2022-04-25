@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
@@ -48,8 +46,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final Color _nonActiveColor = AppColors.kLightTextColor.withOpacity(0.48);
-    const Color _activeColor = AppColors.blue;
+    final ThemeData theme = Theme.of(context);
+
+    final Color _nonActiveColor = theme.hoverColor.withOpacity(0.48);
+    final Color _activeColor = theme.primaryColor;
 
     final double _width = MediaQuery.of(context).size.width;
 
@@ -80,8 +80,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: Container(
           height: 56.h,
           width: width / 5,
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration:  BoxDecoration(
+            color: theme.splashColor,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -91,8 +91,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               SizedBox(height: 5.h),
               Text(
                 text,
-                style: kMainTextInter.copyWith(
-                  fontSize: 9.sp,
+                style: theme.textTheme.bodyText2!.copyWith(
                   color: _iconColor(index),
                 ),
               ),

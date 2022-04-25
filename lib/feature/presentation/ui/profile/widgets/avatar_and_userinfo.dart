@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
@@ -18,6 +16,8 @@ class AvatarAndUserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Center(
       child: Column(
         children: [
@@ -31,8 +31,7 @@ class AvatarAndUserInfo extends StatelessWidget {
             width: 250.w,
             child: Text(
               '${profile.firstName} ${profile.middleName} ${profile.lastName}',
-              style: kMainTextRoboto.copyWith(
-                fontSize: 17,
+              style: theme.textTheme.headline4!.copyWith(
                 fontWeight: FontWeight.w800,
               ),
               softWrap: true,
@@ -42,19 +41,16 @@ class AvatarAndUserInfo extends StatelessWidget {
           SizedBox(height: 6.h),
           Text(
             profile.phone[0].number,
-            style: kMainTextRoboto.copyWith(
-              fontSize: 14,
-            ),
+            style: theme.textTheme.headline6,
           ),
           SizedBox(height: 6.h),
           TextButton(
             onPressed: (() => context.goNamed(NavigationRouteNames.userData)),
             child: Text(
               AppLocalizations.of(context)!.watchData,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 16.sp,
+              style: theme.textTheme.headline5!.copyWith(
                 fontWeight: FontWeight.w800,
-                color: AppColors.blue,
+                color: theme.primaryColor,
               ),
             ),
           ),

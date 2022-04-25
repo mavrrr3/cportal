@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,11 +9,13 @@ class PhoneBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Container(
       width: double.infinity,
       height: 48.h,
       decoration: BoxDecoration(
-        color: AppColors.kLightTextColor.withOpacity(0.04),
+        color: theme.hoverColor.withOpacity(0.04),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(4.sp),
           topRight: Radius.circular(4.sp),
@@ -29,16 +29,12 @@ class PhoneBox extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.yourPhoneNumber,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.kLightTextColor.withOpacity(0.68),
-              ),
+              style: theme.textTheme.bodyText1!
+                  .copyWith(color: theme.hoverColor.withOpacity(0.68)),
             ),
             Text(
               '+7 923 456 78 91',
-              style: kMainTextRoboto.copyWith(
-                fontSize: 16.sp,
-              ),
+              style: theme.textTheme.headline5,
             ),
           ],
         ),

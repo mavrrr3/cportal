@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,16 +8,19 @@ class CardHorizontalScroll extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.text,
-    this.color = Colors.white,
+    this.color,
   }) : super(key: key);
-  final Color color;
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Container(
       width: 148.w,
       height: 92.h,
       decoration: BoxDecoration(
-        color: color,
+        color: color ?? theme.splashColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -27,12 +29,14 @@ class CardHorizontalScroll extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(icon, size: 20.sp),
+            Icon(
+              icon,
+              size: 20.sp,
+              color: theme.hoverColor.withOpacity(0.68),
+            ),
             Text(
               text,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 14,
-              ),
+              style: theme.textTheme.headline6,
             ),
           ],
         ),

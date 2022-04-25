@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
@@ -26,20 +24,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late ProfileEntity profile;
 
-  Color iconColor = AppColors.kLightTextColor.withOpacity(0.64);
-
-  Icon blueArrow = const Icon(
-    Icons.arrow_forward_ios_sharp,
-    color: AppColors.blue,
-    size: 18,
-  );
-
   bool isNotificationTurnedOn = true;
 
   void turnOnOffNotify(bool newValue) {
     setState(() {
       isNotificationTurnedOn = newValue;
-      showChooserNotification(context);
+      showChooserNotification(context, Theme.of(context));
     });
   }
 
@@ -49,21 +39,21 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => isFingerPrintAuth = newValue);
   }
 
-  void showToasterAboutNotify(String text) {
+  void showToasterAboutNotify(ThemeData theme, String text) {
     Fluttertoast.showToast(
       msg: text,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: AppColors.kLightTextColor,
-      textColor: Colors.white,
+      backgroundColor: theme.hoverColor,
+      textColor: theme.splashColor,
       fontSize: 16.0,
     );
   }
 
-  void showChooserNotification(BuildContext context) {
+  void showChooserNotification(BuildContext context, ThemeData theme) {
     showModalBottomSheet<void>(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.splashColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12.0),
@@ -82,16 +72,17 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Text(
                   AppLocalizations.of(context)!.turnOffNotify,
-                  style: kMainTextRoboto,
+                  style: theme.textTheme.headline5,
                 ),
                 SizedBox(height: 18.h),
                 GestureDetector(
                   onTap: (() => setState(() => showToasterAboutNotify(
+                        theme,
                         'Оповещения выключены на 1 час',
                       ))),
                   child: Text(
                     AppLocalizations.of(context)!.forHour,
-                    style: kMainTextRoboto.copyWith(
+                    style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -99,21 +90,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 24.h),
                 Text(
                   AppLocalizations.of(context)!.forFourHour,
-                  style: kMainTextRoboto.copyWith(
+                  style: theme.textTheme.headline5!.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 SizedBox(height: 24.h),
                 Text(
                   AppLocalizations.of(context)!.forTwentyFourHour,
-                  style: kMainTextRoboto.copyWith(
+                  style: theme.textTheme.headline5!.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 SizedBox(height: 24.h),
                 Text(
                   AppLocalizations.of(context)!.forever,
-                  style: kMainTextRoboto.copyWith(
+                  style: theme.textTheme.headline5!.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -125,18 +116,22 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget customSwitch(bool val, Function onChangeMethod) => Switch(
-        activeTrackColor: AppColors.blue.withOpacity(0.38),
-        activeColor: AppColors.blue,
+  Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
+      Switch(
+        activeTrackColor: theme.primaryColor.withOpacity(0.38),
+        activeColor: theme.primaryColor,
         // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
-        inactiveTrackColor: AppColors.kLightTextColor.withOpacity(0.08),
-        inactiveThumbColor: Colors.white,
+        inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
+        inactiveThumbColor: theme.splashColor,
         value: val,
         onChanged: (newValue) => onChangeMethod(newValue),
       );
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    Color iconColor = theme.hoverColor.withOpacity(0.64);
+
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
@@ -153,13 +148,13 @@ class _ProfilePageState extends State<ProfilePage> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              leading: const Icon(
+              leading: Icon(
                 Icons.close,
-                color: AppColors.kLightTextColor,
+                color: theme.hoverColor,
               ),
               title: Text(
                 AppLocalizations.of(context)!.profile,
-                style: kMainTextRusso.copyWith(fontSize: 28.sp),
+                style: theme.textTheme.headline2,
               ),
             ),
             body: SingleChildScrollView(
@@ -177,10 +172,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       decoration: BoxDecoration(
                         border: Border(
                           top: BorderSide(
-                            color: AppColors.kLightTextColor.withOpacity(0.08),
+                            color: theme.hoverColor.withOpacity(0.08),
                           ),
                           bottom: BorderSide(
-                            color: AppColors.kLightTextColor.withOpacity(0.08),
+                            color: theme.hoverColor.withOpacity(0.08),
                           ),
                         ),
                       ),
@@ -193,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 22.w,
                           ),
                           text: AppLocalizations.of(context)!.newEmpoyee,
-                          secondWidget: blueArrow,
+                          secondWidget: _getBlueArrow(theme),
                         ),
                       ),
                     ),
@@ -205,8 +200,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 21.w,
                       ),
                       text: AppLocalizations.of(context)!.notofications,
-                      secondWidget:
-                          customSwitch(isNotificationTurnedOn, turnOnOffNotify),
+                      secondWidget: customSwitch(
+                        theme,
+                        isNotificationTurnedOn,
+                        turnOnOffNotify,
+                      ),
                     ),
                     SizedBox(height: 24.h),
                     RowProfile(
@@ -217,6 +215,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       text: AppLocalizations.of(context)!.fingerPrint,
                       secondWidget: customSwitch(
+                        theme,
                         isFingerPrintAuth,
                         turnOnOffFingerPrintAuth,
                       ),
@@ -229,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 20.w,
                       ),
                       text: AppLocalizations.of(context)!.changePin,
-                      secondWidget: blueArrow,
+                      secondWidget: _getBlueArrow(theme),
                       call: () => context.goNamed(NavigationRouteNames.editPin),
                     ),
                     SizedBox(height: 28.h),
@@ -245,6 +244,14 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Text('Пусто'),
         );
       },
+    );
+  }
+
+  Widget _getBlueArrow(ThemeData theme) {
+    return Icon(
+      Icons.arrow_forward_ios_sharp,
+      color: theme.primaryColor,
+      size: 18,
     );
   }
 }

@@ -1,9 +1,7 @@
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HeaderText {
@@ -60,6 +58,8 @@ class HeaderTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       children: [
         Row(
@@ -76,9 +76,7 @@ class HeaderTextWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: kMainTextRusso.copyWith(
-                    fontSize: 28.sp,
-                  ),
+                  style: theme.textTheme.headline2,
                 ),
               ],
             ),
@@ -92,12 +90,11 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               secondText,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 14.sp,
+              style: theme.textTheme.bodyText1!.copyWith(
                 color: secondText ==
                         AppLocalizations.of(context)!.itWillBeNeedToEnter
-                    ? AppColors.kLightTextColor
-                    : AppColors.blue,
+                    ? theme.hoverColor
+                    : theme.primaryColor,
               ),
             ),
           ],
@@ -108,9 +105,8 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               error ?? '',
-              style: kMainTextRoboto.copyWith(
-                fontSize: 14.sp,
-                color: AppColors.red,
+              style: theme.textTheme.bodyText1!.copyWith(
+                color: theme.errorColor,
               ),
             ),
           ],

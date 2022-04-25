@@ -1,7 +1,4 @@
 import 'dart:developer';
-
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
@@ -52,6 +49,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -61,7 +60,7 @@ class _MainPageState extends State<MainPage> {
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: AppColors.textMain.withOpacity(0.2),
+              color: theme.hoverColor.withOpacity(0.2),
             ),
           SafeArea(
             child: Padding(
@@ -105,8 +104,8 @@ class _MainPageState extends State<MainPage> {
                     SizedBox(height: 16.h),
                     HorizontalListViewMain(
                       color: _isAnimation
-                          ? Colors.white.withOpacity(0.3)
-                          : Colors.white,
+                          ? theme.splashColor.withOpacity(0.3)
+                          : theme.splashColor,
                     ),
                     SizedBox(height: 24.h),
                     const TodayWidget(),
@@ -119,13 +118,13 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
           ),
-          _searchBox(context),
+          _searchBox(context, theme),
         ],
       ),
     );
   }
 
-  Widget _searchBox(BuildContext context) {
+  Widget _searchBox(BuildContext context, ThemeData theme) {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0.w),
@@ -142,7 +141,7 @@ class _MainPageState extends State<MainPage> {
               height: _isAnimation ? 216.h : 0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
+                color: theme.splashColor,
               ),
               child: Padding(
                 padding: EdgeInsets.all(16.w),
@@ -151,14 +150,17 @@ class _MainPageState extends State<MainPage> {
                   child: Column(
                     children: [
                       _searchBoxItem(
+                        theme,
                         text: 'Как запросить 2НДФЛ',
                         category: 'Вопросы',
                       ),
                       _searchBoxItem(
+                        theme,
                         text: 'Сменить ПИН',
                         category: 'Профиль',
                       ),
                       _searchBoxItem(
+                        theme,
                         text: 'Сменить ПИН',
                         category: 'Вопросы',
                       ),
@@ -173,7 +175,8 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _searchBoxItem({
+  Widget _searchBoxItem(
+    ThemeData theme, {
     required String category,
     required String text,
     Function()? onTap,
@@ -188,7 +191,8 @@ class _MainPageState extends State<MainPage> {
           children: [
             Text(
               category,
-              style: kMainTextRoboto.copyWith(fontSize: 12.sp),
+              style: theme.textTheme.bodyText1!
+                  .copyWith(color: theme.hoverColor.withOpacity(0.68)),
             ),
             SizedBox(height: 4.h),
             FaqRow(text: text),

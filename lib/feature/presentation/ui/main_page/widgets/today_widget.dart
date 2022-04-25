@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,12 +8,14 @@ class TodayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.today,
-          style: kMainTextRoboto.copyWith(fontSize: 22.sp),
+          style: theme.textTheme.headline3,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 14.0),
@@ -34,13 +35,12 @@ class TodayWidget extends StatelessWidget {
                     children: [
                       Text(
                         AppLocalizations.of(context)!.birthDay,
-                        style: kMainTextRoboto.copyWith(fontSize: 14.sp),
+                        style: theme.textTheme.headline6,
                       ),
                       Text(
                         'Романова Алексея Игоревича',
                         softWrap: true,
-                        style: kMainTextRoboto.copyWith(
-                          fontSize: 14,
+                        style: theme.textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -49,7 +49,9 @@ class TodayWidget extends StatelessWidget {
                         children: [
                           Text(
                             'Охранник',
-                            style: kMainTextRoboto.copyWith(fontSize: 12.sp),
+                            style: theme.textTheme.bodyText1!.copyWith(
+                              color: theme.hoverColor.withOpacity(0.68),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 7),
@@ -63,8 +65,9 @@ class TodayWidget extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 6.0),
                                 child: Text(
                                   'Новосталь-М',
-                                  style:
-                                      kMainTextRoboto.copyWith(fontSize: 12.sp),
+                                  style: theme.textTheme.bodyText1!.copyWith(
+                                    color: theme.hoverColor.withOpacity(0.68),
+                                  ),
                                 ),
                               ),
                             ),

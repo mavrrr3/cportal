@@ -7,8 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
@@ -121,11 +119,13 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     final defaultPinTheme = PinTheme(
       width: 16.w,
       height: 14.h,
       decoration: BoxDecoration(
-        color: AppColors.kLightTextColor.withOpacity(0.2),
+        color: theme.hoverColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(15),
       ),
     );
@@ -135,7 +135,7 @@ class _PinCodeInputState extends State<PinCodeInput> {
         return Pinput(
           obscureText: true,
           obscuringWidget: SvgIcon(
-            state.isWrongPin ? AppColors.red : AppColors.blue,
+            state.isWrongPin ? theme.errorColor : theme.primaryColor,
             path: 'obscure_symbol.svg',
             width: 16.w,
           ),
@@ -255,6 +255,8 @@ class HeaderTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       children: [
         Row(
@@ -271,9 +273,7 @@ class HeaderTextWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: kMainTextRusso.copyWith(
-                    fontSize: 28.sp,
-                  ),
+                  style: theme.textTheme.headline2,
                 ),
               ],
             ),
@@ -287,12 +287,11 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               secondText,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 14.sp,
+              style: theme.textTheme.headline6!.copyWith(
                 color: secondText ==
                         AppLocalizations.of(context)!.itWillBeNeedToEnter
-                    ? AppColors.kLightTextColor
-                    : AppColors.blue,
+                    ? theme.hoverColor
+                    : theme.primaryColor,
               ),
             ),
           ],
@@ -303,9 +302,8 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               error ?? '',
-              style: kMainTextRoboto.copyWith(
-                fontSize: 14.sp,
-                color: AppColors.red,
+              style: theme.textTheme.headline6!.copyWith(
+                color: theme.errorColor,
               ),
             ),
           ],

@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,15 +9,16 @@ class ChangeTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       children: [
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
             AppLocalizations.of(context)!.appTheme,
-            style: kMainTextRoboto.copyWith(
-              fontSize: 12,
-              color: AppColors.kLightTextColor.withOpacity(0.68),
+            style: theme.textTheme.bodyText1!.copyWith(
+              color: theme.hoverColor.withOpacity(0.68),
             ),
           ),
         ),
@@ -30,7 +29,7 @@ class ChangeTheme extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: AppColors.kLightTextColor.withOpacity(0.08),
+              color: theme.hoverColor.withOpacity(0.08),
             ),
           ),
           child: Row(
@@ -39,7 +38,7 @@ class ChangeTheme extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(100.w, 36.h),
-                  primary: AppColors.blue,
+                  primary: theme.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
                   ),
@@ -49,16 +48,14 @@ class ChangeTheme extends StatelessWidget {
                 },
                 child: Text(
                   AppLocalizations.of(context)!.lightTheme,
-                  style: kMainTextRoboto.copyWith(
-                    fontSize: 12,
-                    color: Colors.white,
-                  ),
+                  style: theme.textTheme.bodyText1!
+                      .copyWith(color: theme.splashColor),
                 ),
               ),
               TextButton(
                 style: TextButton.styleFrom(
                   minimumSize: Size(100.w, 36.h),
-                  primary: Colors.black,
+                  primary: theme.hoverColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
                   ),
@@ -68,15 +65,13 @@ class ChangeTheme extends StatelessWidget {
                 },
                 child: Text(
                   AppLocalizations.of(context)!.darkTheme,
-                  style: kMainTextRoboto.copyWith(
-                    fontSize: 12,
-                    color: AppColors.kLightTextColor,
-                  ),
+                  style: theme.textTheme.bodyText1!
+                      .copyWith(color: theme.hoverColor),
                 ),
               ),
               TextButton(
                 style: TextButton.styleFrom(
-                  primary: Colors.black,
+                  primary: theme.hoverColor,
                   minimumSize: Size(100.w, 36.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
@@ -87,10 +82,8 @@ class ChangeTheme extends StatelessWidget {
                 },
                 child: Text(
                   AppLocalizations.of(context)!.standartTheme,
-                  style: kMainTextRoboto.copyWith(
-                    fontSize: 12,
-                    color: AppColors.kLightTextColor,
-                  ),
+                  style: theme.textTheme.bodyText1!
+                      .copyWith(color: theme.hoverColor),
                 ),
               ),
             ],
