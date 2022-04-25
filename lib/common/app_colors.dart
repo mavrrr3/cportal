@@ -12,13 +12,13 @@ class AppColors {
   static const Color green = Color(0xFF559935);
 
   static const Color textMain = Color(0xFF282A2D);
+
+  static const Color appBarLight = Color.fromARGB(255, 179, 179, 179);
+  static const Color appBarDark = Color(0xFF111111);
+  static const Color iconLight = Color(0xFF999999);
 }
 
-const kPrimary = Color(0xFFEF1B48);
 // const kBubleLight = Color(0xFFE8E8E8);
 // const kBubleDark = Color(0xFF262629);
-const kAppBarLight = Color.fromARGB(255, 179, 179, 179);
-const kAppBarDark = Color(0xFF111111);
 // const kActiveUsersDark = Color(0xFF3B3B3B);
 // const kIndicatorBuble = Color(0xFF39B54A);
-const kIconLight = Color(0xFF999999);

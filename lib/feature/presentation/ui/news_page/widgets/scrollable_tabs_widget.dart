@@ -77,7 +77,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
                 ? Border(
                     bottom: BorderSide(
                       width: 2.5,
-                      color: widget.activeColor ?? theme.colorScheme.secondary,
+                      color: widget.activeColor ?? theme.primaryColor,
                     ),
                   )
                 : null,
@@ -89,7 +89,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
               style: isCurrent
                   ? kMainTextRoboto.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: widget.activeColor ?? theme.colorScheme.secondary,
+                      color: widget.activeColor ?? theme.primaryColor,
                     )
                   : kMainTextRoboto.copyWith(fontWeight: FontWeight.w700),
             ),
