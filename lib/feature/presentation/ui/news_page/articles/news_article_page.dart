@@ -2,6 +2,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,9 +47,10 @@ class NewsArticlePage extends StatelessWidget {
                         onPressed: () => _onBack(context),
                       ),
                       flexibleSpace: FlexibleSpaceBar(
-                        background: Image.network(
+                        background: ExtendedImage.network(
                           state.news.article[currentIndex].image,
                           fit: BoxFit.cover,
+                          cache: true,
                         ),
                       ),
                     ),

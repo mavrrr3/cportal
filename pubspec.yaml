@@ -64,6 +64,9 @@ dependencies:
 
   # flutter_web_auth: ^0.4.1
 
+  # Image Cache package
+  extended_image: ^6.0.2+1
+
 dev_dependencies:
   dart_code_metrics: ^4.13.0
   flutter_lints: ^1.0.0
@@ -87,7 +90,6 @@ flutter:
     - assets/icons/profile/
     - assets/fonts/
 
-
   fonts:
     - family: Roboto
       fonts:
@@ -103,7 +105,7 @@ flutter:
         - asset: assets/fonts/roboto/Roboto-Regular.ttf
         - asset: assets/fonts/roboto/Roboto-Thin.ttf
         - asset: assets/fonts/roboto/Roboto-ThinItalic.ttf
-       
+
     - family: Inter
       fonts:
         - asset: assets/fonts/inter/Inter-Black.ttf
@@ -119,7 +121,7 @@ flutter:
     - family: Russo One
       fonts:
         - asset: assets/fonts/russo/RussoOne-Regular.ttf
-        
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
