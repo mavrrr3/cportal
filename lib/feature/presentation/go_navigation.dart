@@ -79,7 +79,7 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.editPin,
+      name: NavigationRouteNames.inputPin,
       path: '/input_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
