@@ -7,8 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';

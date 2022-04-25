@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';

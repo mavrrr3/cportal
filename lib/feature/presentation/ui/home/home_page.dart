@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';

@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';

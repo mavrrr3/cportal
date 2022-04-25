@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
