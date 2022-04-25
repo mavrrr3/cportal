@@ -250,7 +250,16 @@ class HeaderTextWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+            SvgIcon(
+              null,
+              path: 'logo_grey.svg',
+              width: 24.0.w,
+            ),
+            SvgIcon(
+              theme.primaryColor,
+              path: 'finger_print.svg',
+              width: 24.0.w,
+            ),
           ],
         ),
         SizedBox(height: 31.h),
