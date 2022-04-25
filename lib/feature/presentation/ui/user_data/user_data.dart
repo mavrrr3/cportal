@@ -23,20 +23,21 @@ class UserData extends StatelessWidget {
       context,
       listen: false,
     ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
+    final ThemeData theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () => context.goNamed(NavigationRouteNames.profile),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: AppColors.kLightTextColor,
+            color: theme.hoverColor,
           ),
         ),
         title: Text(
           AppLocalizations.of(context)!.yourData,
-          style: kMainTextRusso.copyWith(fontSize: 28),
+          style: theme.textTheme.headline2,
         ),
       ),
       body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
@@ -74,6 +75,7 @@ class UserData extends StatelessWidget {
                   ),
                   const Expanded(child: SizedBox.shrink()),
                   Button.factory(
+                    context,
                     ButtonEnum.blue,
                     'Сохранить',
                     () {

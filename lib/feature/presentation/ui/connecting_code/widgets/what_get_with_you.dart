@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +15,8 @@ class WhatGetWithYou extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -29,7 +30,7 @@ class WhatGetWithYou extends StatelessWidget {
         ),
         Text(
           text,
-          style: kMainTextRoboto,
+          style: theme.textTheme.headline5,
         ),
       ],
     );

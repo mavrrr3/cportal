@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/common/util/keep_alive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -62,7 +61,8 @@ class _NewsPageState extends State<NewsPage> {
       _currentPage = widget.pageType;
       _currentIndex = 0;
     }
-    double width = MediaQuery.of(context).size.width;
+    final double width = MediaQuery.of(context).size.width;
+    final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
@@ -75,9 +75,7 @@ class _NewsPageState extends State<NewsPage> {
                 padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                 child: Text(
                   _getPageTitle,
-                  style: kMainTextRusso.copyWith(
-                    fontSize: 28.sp,
-                  ),
+                  style: theme.textTheme.headline2,
                 ),
               ),
               SizedBox(height: 16.h),

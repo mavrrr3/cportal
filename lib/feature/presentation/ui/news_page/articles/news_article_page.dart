@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
@@ -20,6 +19,8 @@ class NewsArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
@@ -33,7 +34,7 @@ class NewsArticlePage extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   slivers: [
                     SliverAppBar(
-                      backgroundColor: Theme.of(context).backgroundColor,
+                      backgroundColor: theme.backgroundColor,
                       expandedHeight: 176.h,
                       automaticallyImplyLeading: false,
                       leading: IconButton(
@@ -64,19 +65,19 @@ class NewsArticlePage extends StatelessWidget {
                           children: [
                             Text(
                               state.news.article[currentIndex].header,
-                              style: kMainTextRoboto.copyWith(fontSize: 22.sp),
+                              style: theme.textTheme.headline3,
                             ),
                             SizedBox(height: 4.h),
                             Text(
                               outputFormat.format(
                                 state.news.article[currentIndex].dateShow,
                               ),
-                              style: kMainTextRoboto.copyWith(fontSize: 12.sp),
+                              style: theme.textTheme.bodyText1,
                             ),
                             SizedBox(height: 20.h),
                             Text(
                               state.news.article[currentIndex].description,
-                              style: kMainTextRoboto.copyWith(fontSize: 14.sp),
+                              style: theme.textTheme.headline6,
                             ),
                             SizedBox(height: 20.h),
                             NewsHorizontalScroll(

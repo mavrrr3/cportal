@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
@@ -20,6 +19,8 @@ class QuestionArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                      final ThemeData theme = Theme.of(context);
+
     return Swipe(
       onSwipeRight: () => _onBack(context),
       child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
@@ -57,12 +58,12 @@ class QuestionArticlePage extends StatelessWidget {
                           children: [
                             Text(
                               state.news.article[currentIndex].header,
-                              style: kMainTextRoboto.copyWith(fontSize: 32.sp),
+                              style: theme.textTheme.headline1,
                             ),
                             SizedBox(height: 20.h),
                             Text(
                               state.news.article[currentIndex].description,
-                              style: kMainTextRoboto,
+                              style: theme.textTheme.headline5,
                             ),
                             SizedBox(height: 24.h),
                             if (state.news.article.length - 1 != currentIndex)

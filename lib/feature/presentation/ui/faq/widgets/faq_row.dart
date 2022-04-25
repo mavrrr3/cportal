@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +13,8 @@ class FaqRow extends StatelessWidget {
   final Function()? onTap;
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
@@ -22,10 +23,8 @@ class FaqRow extends StatelessWidget {
         children: [
           Text(
             text,
-            style: kMainTextRoboto.copyWith(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w700,
-            ),
+            style: theme.textTheme.headline5!
+                .copyWith(fontWeight: FontWeight.w700),
           ),
           SvgPicture.asset(
             'assets/icons/question_arrow.svg',

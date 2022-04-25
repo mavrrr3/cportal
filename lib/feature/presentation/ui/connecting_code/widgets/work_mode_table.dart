@@ -1,6 +1,4 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkModeTable extends StatelessWidget {
@@ -8,6 +6,7 @@ class WorkModeTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     var locale = AppLocalizations.of(context)!;
 
     var workModeMap = [
@@ -50,15 +49,11 @@ class WorkModeTable extends StatelessWidget {
                 children: [
                   Text(
                     row['day']!,
-                    style: kMainTextRoboto.copyWith(
-                      fontSize: 14.sp,
-                    ),
+                    style: theme.textTheme.headline6,
                   ),
                   Text(
                     row['time']!,
-                    style: kMainTextRoboto.copyWith(
-                      fontSize: 14.sp,
-                    ),
+                    style: theme.textTheme.headline6,
                   ),
                 ],
               ),

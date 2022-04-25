@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
@@ -27,6 +26,8 @@ class ConnectingCodePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUser) {
@@ -63,9 +64,7 @@ class ConnectingCodePage extends StatelessWidget {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.inputConnectingCode,
-                          style: kMainTextRusso.copyWith(
-                            fontSize: 28.sp,
-                          ),
+                          style: theme.textTheme.headline2,
                         ),
                       ],
                     ),
@@ -81,9 +80,10 @@ class ConnectingCodePage extends StatelessWidget {
                       onTap: () => _showHowToGetCOnnectingCode(context),
                       child: Text(
                         AppLocalizations.of(context)!.howToGetConnectingCode,
-                        style: kMainTextRoboto.copyWith(
-                          color: const Color(0xFF355A99),
-                          fontSize: 14.sp,
+                        style: theme.textTheme.headline6!.copyWith(
+                          color: theme.brightness == Brightness.light
+                              ? const Color(0xFF355A99)
+                              : const Color(0xFF365A99),
                         ),
                       ),
                     ),
@@ -98,6 +98,7 @@ class ConnectingCodePage extends StatelessWidget {
                     child: Opacity(
                       opacity: 0.6,
                       child: colorText(
+                        theme,
                         AppLocalizations.of(context)!.wrongConnectingCode,
                         'red',
                       ),
@@ -151,6 +152,8 @@ class _CellCodeInputState extends State<CellCodeInput> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     // Курсор, оставил код на случай если дизайнеры решат его всё таки сделать
     //
     // final cursor = Align(
@@ -171,10 +174,10 @@ class _CellCodeInputState extends State<CellCodeInput> {
         width: 44.w,
         height: 52.h,
         textStyle: isWrongCode(state)
-            ? kMainTextRoboto.copyWith(color: AppColors.red)
-            : kMainTextRoboto,
+            ? theme.textTheme.headline5!.copyWith(color: theme.errorColor)
+            : theme.textTheme.headline5,
         decoration: BoxDecoration(
-          color: isWrongCode(state) ? AppColors.lightRed : Colors.white,
+          color: isWrongCode(state) ? theme.hintColor : theme.splashColor,
           borderRadius: BorderRadius.circular(8),
         ),
       );
@@ -188,14 +191,14 @@ class _CellCodeInputState extends State<CellCodeInput> {
         defaultPinTheme: defaultPinTheme,
         separator: SizedBox(width: 11.w),
         errorPinTheme: defaultPinTheme.copyWith(
-          decoration: const BoxDecoration(color: AppColors.lightRed),
+          decoration:  BoxDecoration(color: theme.hintColor),
         ),
         // errorBuilder: ,
         focusedPinTheme: PinTheme(
           width: 52.w,
           height: 62.h,
           decoration: BoxDecoration(
-            color: isWrongCode(state) ? AppColors.lightRed : Colors.white,
+            color: isWrongCode(state) ? theme.hintColor : theme.splashColor,
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
               BoxShadow(
@@ -234,11 +237,13 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
     useRootNavigator: true,
     barrierDismissible: true,
     builder: (BuildContext context) {
+      final ThemeData theme = Theme.of(context);
+
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
             contentPadding: EdgeInsets.fromLTRB(16.0.w, 8.0.h, 16.0.w, 28.0.h),
-            backgroundColor: Colors.white,
+            backgroundColor: theme.splashColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -251,10 +256,8 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppLocalizations.of(context)!.howToGetCodeTitle,
-                      style: kMainTextRoboto.copyWith(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style:
+                          theme.textTheme.headline3,
                     ),
                   ),
                   SizedBox(
@@ -262,15 +265,13 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                   ),
                   Text(
                     AppLocalizations.of(context)!.howToGetCodeText,
-                    style: kMainTextRoboto.copyWith(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: theme.textTheme.headline6,
                   ),
                   SizedBox(height: 16.h),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: colorText(
+                      theme,
                       AppLocalizations.of(context)!.address,
                       'grey',
                     ),
@@ -280,10 +281,8 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppLocalizations.of(context)!.addressForCode,
-                      style: kMainTextRoboto.copyWith(
-                        fontSize: 14.sp,
-                        color: AppColors.kLightTextColor,
-                        fontWeight: FontWeight.w400,
+                      style: theme.textTheme.headline6!.copyWith(
+                        color: theme.hoverColor,
                       ),
                     ),
                   ),
@@ -292,6 +291,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       colorText(
+                        theme,
                         AppLocalizations.of(context)!.workMode,
                         'grey',
                       ),
@@ -304,7 +304,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                         icon: Icon(
                           Icons.keyboard_arrow_down_outlined,
                           size: 26.sp,
-                          color: AppColors.blue,
+                          color: theme.primaryColor,
                         ),
                       ),
                     ],
@@ -317,6 +317,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: colorText(
+                      theme,
                       AppLocalizations.of(context)!.getWithYou,
                       'grey',
                     ),
@@ -332,7 +333,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       WhatGetWithYou(
                         iconPath: 'assets/icons/what_get_icon.svg',
                         text: AppLocalizations.of(context)!.pass,
-                        color: AppColors.blue,
+                        color: theme.primaryColor,
                       ),
                     ],
                   ),
@@ -340,15 +341,17 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: colorText(
+                      theme,
                       AppLocalizations.of(context)!.callBeforeCame,
                       'grey',
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  phoneButton(),
+                  phoneButton(theme),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: colorText(
+                      theme,
                       '${AppLocalizations.of(context)!.callAfter} 6 ${AppLocalizations.of(context)!.hours}',
                       'red',
                     ),
@@ -363,7 +366,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 48.h),
-                    primary: AppColors.blue,
+                    primary: theme.primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -371,9 +374,9 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     AppLocalizations.of(context)!.close,
-                    style: kMainTextRoboto.copyWith(
+                    style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: theme.splashColor,
                     ),
                   ),
                 ),
@@ -386,12 +389,12 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
   );
 }
 
-Widget phoneButton() {
+Widget phoneButton(ThemeData theme) {
   return Container(
     width: double.infinity,
     height: 46.h,
     decoration: BoxDecoration(
-      color: const Color(0xFFF0F0F0),
+      color: theme.backgroundColor,
       borderRadius: BorderRadius.circular(12),
     ),
     child: Row(
@@ -400,13 +403,12 @@ Widget phoneButton() {
         Icon(
           Icons.phone,
           size: 26.sp,
-          color: AppColors.kLightTextColor,
+          color: theme.hoverColor,
         ),
         Text(
           '+7 495 487 34 66',
-          style: kMainTextRoboto.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
+          style:
+              theme.textTheme.headline5!.copyWith(fontWeight: FontWeight.w700),
         ),
         SizedBox(
           width: 40.w,
@@ -416,15 +418,17 @@ Widget phoneButton() {
   );
 }
 
-Text colorText(String text, String color) {
+Text colorText(
+  ThemeData theme,
+  String text,
+  String color,
+) {
   return Text(
     text,
-    style: kMainTextRoboto.copyWith(
-      fontSize: 14.sp,
+    style: theme.textTheme.headline6!.copyWith(
       color: color == 'red'
-          ? AppColors.red.withOpacity(0.6)
-          : AppColors.kLightTextColor.withOpacity(0.6),
-      fontWeight: FontWeight.w400,
+          ? theme.errorColor.withOpacity(0.6)
+          : theme.hoverColor.withOpacity(0.6),
     ),
   );
 }

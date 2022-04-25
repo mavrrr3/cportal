@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -107,10 +106,9 @@ class KeyboardNumber extends StatelessWidget {
         child: Text(
           '$number',
           textAlign: TextAlign.center,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 32.sp,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.headline1!.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
         ),
       ),
     );

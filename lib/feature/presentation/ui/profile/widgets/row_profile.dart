@@ -17,6 +17,8 @@ class RowProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Row(
       children: [
         firstWidget,
@@ -25,8 +27,7 @@ class RowProfile extends StatelessWidget {
         ),
         Text(
           text,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 16,
+          style: theme.textTheme.headline5!.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),

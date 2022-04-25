@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,6 +21,8 @@ class NewsCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,8 +49,7 @@ class NewsCardItem extends StatelessWidget {
               Text(
                 title,
                 softWrap: true,
-                style: kMainTextRoboto.copyWith(
-                  fontSize: fontSize ?? 14.sp,
+                style: theme.textTheme.headline4!.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -58,7 +58,7 @@ class NewsCardItem extends StatelessWidget {
                 children: [
                   Text(
                     dateTime,
-                    style: kMainTextRoboto.copyWith(fontSize: 12.sp),
+                    style: theme.textTheme.bodyText1,
                   ),
                 ],
               ),

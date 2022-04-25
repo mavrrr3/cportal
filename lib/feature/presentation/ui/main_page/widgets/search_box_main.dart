@@ -22,6 +22,8 @@ class SearchBoxMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     final double width = MediaQuery.of(context).size.width;
 
     return AnimatedContainer(
@@ -32,7 +34,7 @@ class SearchBoxMain extends StatelessWidget {
       height: 40.h,
       curve: Curves.easeIn,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.splashColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -53,9 +55,8 @@ class SearchBoxMain extends StatelessWidget {
               },
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.enterRequest,
-                labelStyle: kMainTextRoboto.copyWith(
-                  fontSize: 14,
-                  color: AppColors.kLightTextColor.withOpacity(0.68),
+                hintStyle: theme.textTheme.headline6!.copyWith(
+                  color: theme.hoverColor.withOpacity(0.68),
                 ),
                 border: InputBorder.none,
               ),
