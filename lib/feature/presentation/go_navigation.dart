@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
@@ -22,18 +23,20 @@ abstract class NavigationRouteNames {
   static const createPin = 'create_pin';
   static const inputPin = 'input_pin';
   static const editPin = 'edit_pin';
-  static const fingerPrintPage = 'fingerprint';
+  static const fingerPrint = 'finger_print';
+  static const faceId = 'face_id';
   static const news = 'news';
   static const newsArticlePage = 'news_article_page';
   static const questionArticlePage = 'question_article_page';
   static const profile = 'profile';
   static const userData = 'user_data';
   static const onBoarding = 'on_boarding';
+  static const qrScanner = 'qr_scanner';
 }
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/on_boarding',
+  initialLocation: '/face_id',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -91,11 +94,27 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.fingerPrintPage,
-      path: '/fingerprint',
+      name: NavigationRouteNames.fingerPrint,
+      path: '/finger_print',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: FingerPrintPage()),
+        child: const Scaffold(
+          body: FingerPrintOrFaceIdPage(
+            route: NavigationRouteNames.fingerPrint,
+          ),
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.faceId,
+      path: '/face_id',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: FingerPrintOrFaceIdPage(
+            route: NavigationRouteNames.faceId,
+          ),
+        ),
       ),
     ),
     GoRoute(
@@ -150,6 +169,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: StartBoarding()),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.qrScanner,
+      path: '/qr_scanner',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const QrScanner(),
       ),
     ),
   ],
