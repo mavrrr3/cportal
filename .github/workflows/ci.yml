@@ -34,7 +34,7 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build ios
+      - run: flutter build ios --flavor=prod
 
   build_appbundle:
     name: Build Flutter (Android)
@@ -50,4 +50,4 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build appbundle
+      - run: flutter build appbundle --flavor=prod
