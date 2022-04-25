@@ -49,7 +49,7 @@ class NewsCardItem extends StatelessWidget {
               Text(
                 title,
                 softWrap: true,
-                style: theme.textTheme.headline4!.copyWith(
+                style: theme.textTheme.headline6!.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
