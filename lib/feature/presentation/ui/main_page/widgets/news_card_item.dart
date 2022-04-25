@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,8 +35,9 @@ class NewsCardItem extends StatelessWidget {
             image: DecorationImage(
               fit: BoxFit.cover,
               alignment: FractionalOffset.topCenter,
-              image: NetworkImage(
+              image: ExtendedNetworkImageProvider(
                 imgPath,
+                cache: true,
               ),
             ),
           ),
