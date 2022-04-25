@@ -59,6 +59,7 @@ android {
     }
 
     flavorDimensions "cportal_app"
+    
 
     productFlavors {
         dev {
@@ -68,7 +69,7 @@ android {
             versionNameSuffix ".dev"
         }
         prod {
-            dimension "starter_app"
+            dimension "cportal_app"
             resValue "string", "app_name", "Cportal"
         }
     }
