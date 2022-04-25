@@ -149,7 +149,7 @@ final GoRouter router = GoRouter(
       path: '/qr_scanner',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: QrScanner()),
+        child: const QrScanner(),
       ),
     ),
   ],
