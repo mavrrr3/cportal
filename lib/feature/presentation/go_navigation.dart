@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/quest
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
@@ -77,16 +78,16 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
-    // GoRoute(
-    //   name: NavigationRouteNames.editPin,
-    //   path: '/repeat_pin',
-    //   pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
-    //     key: state.pageKey,
-    //     child: const Scaffold(
-    //       body: RepeatPinPage(),
-    //     ),
-    //   ),
-    // ),
+    GoRoute(
+      name: NavigationRouteNames.editPin,
+      path: '/input_pin',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: InputPinPage(),
+        ),
+      ),
+    ),
     GoRoute(
       name: NavigationRouteNames.fingerPrintPage,
       path: '/fingerprint',
