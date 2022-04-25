@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused) {
-      // TODO выставить нужный delay test CI
+      // TODO выставить нужный delay
       timer = Timer(
         const Duration(seconds: 10000000000000),
         () => _loadPinRequest(),
