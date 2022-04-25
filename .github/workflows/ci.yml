@@ -6,7 +6,7 @@ on:
 
 jobs:
   flutter_test:
-    name: Run dart-code metrics analyze and flutter analize
+    name: Run dart-code metrics analyze and flutter analyze
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -17,5 +17,5 @@ jobs:
         with:
           channel: "stable"
       - run: flutter pub get
-      - run: flutter analize
+      - run: flutter analyze
       - run: flutter pub run dart_code_metrics:metrics analyze lib
