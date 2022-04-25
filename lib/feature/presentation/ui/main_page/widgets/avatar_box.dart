@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,12 +22,13 @@ class AvatarBox extends StatelessWidget {
       width: isAnimation ? 0 : size.w,
       height: isAnimation ? 0 : size.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
           fit: BoxFit.cover,
           alignment: FractionalOffset.topCenter,
-          image: NetworkImage(
+          image: ExtendedNetworkImageProvider(
             imgPath,
+            cache: true,
           ),
         ),
       ),
