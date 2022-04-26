@@ -52,7 +52,12 @@ class ConnectingCodePage extends StatelessWidget {
                       path: 'logo_grey.svg',
                       width: 24.0.w,
                     ),
-                    SvgIcon(null, path: 'qr_code.svg', width: 24.0.w),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => GoRouter.of(context)
+                          .pushNamed(NavigationRouteNames.qrScanner),
+                      child: SvgIcon(null, path: 'qr_code.svg', width: 24.0.w),
+                    ),
                   ],
                 ),
                 SizedBox(height: 31.h),
@@ -190,7 +195,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
         defaultPinTheme: defaultPinTheme,
         separator: SizedBox(width: 11.w),
         errorPinTheme: defaultPinTheme.copyWith(
-          decoration:  BoxDecoration(color: theme.hintColor),
+          decoration: BoxDecoration(color: theme.hintColor),
         ),
         // errorBuilder: ,
         focusedPinTheme: PinTheme(
@@ -255,8 +260,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppLocalizations.of(context)!.howToGetCodeTitle,
-                      style:
-                          theme.textTheme.headline3,
+                      style: theme.textTheme.headline3,
                     ),
                   ),
                   SizedBox(
