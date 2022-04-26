@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
@@ -27,11 +28,12 @@ abstract class NavigationRouteNames {
   static const questionArticlePage = 'question_article_page';
   static const profile = 'profile';
   static const userData = 'user_data';
+  static const qrScanner = 'qr_scanner';
 }
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/main_page',
+  initialLocation: '/connecting_code',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -140,6 +142,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: UserData()),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.qrScanner,
+      path: '/qr_scanner',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const QrScanner(),
       ),
     ),
   ],
