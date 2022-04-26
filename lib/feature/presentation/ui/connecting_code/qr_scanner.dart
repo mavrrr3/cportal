@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,16 +19,36 @@ class QrScanner extends StatefulWidget {
 class _QrScannerState extends State<QrScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? _result;
-  QRViewController? controller;
+  late CameraController _cameraController;
+  late bool _isFlashLight;
+  QRViewController? qrController;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFlashLight = false;
+    _cameraInit();
+  }
 
   @override
   void reassemble() {
     super.reassemble();
+
     if (Platform.isIOS) {
-      controller!.resumeCamera();
+      qrController!.resumeCamera();
     } else if (Platform.isAndroid) {
-      controller!.pauseCamera();
+      qrController!.pauseCamera();
     }
+  }
+
+  /// For Camera Flash Light
+  void _cameraInit() async {
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+    _cameraController = CameraController(
+      firstCamera,
+      ResolutionPreset.medium,
+    );
   }
 
   @override
@@ -55,7 +76,18 @@ class _QrScannerState extends State<QrScanner> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    log('Flash');
+                    log('Flash Light $_isFlashLight');
+                    if (_isFlashLight) {
+                      _cameraController.setFlashMode(FlashMode.off);
+                      setState(() {
+                        _isFlashLight = false;
+                      });
+                    } else {
+                      _cameraController.setFlashMode(FlashMode.always);
+                      setState(() {
+                        _isFlashLight = true;
+                      });
+                    }
                   },
                   child: SvgPicture.asset(
                     'assets/icons/flash_light.svg',
@@ -77,7 +109,7 @@ class _QrScannerState extends State<QrScanner> {
   }
 
   void _onQrViewCreated(QRViewController controller) {
-    this.controller = controller;
+    qrController = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         _result = scanData;
@@ -87,7 +119,7 @@ class _QrScannerState extends State<QrScanner> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    qrController?.dispose();
     super.dispose();
   }
 }
