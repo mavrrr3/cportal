@@ -83,7 +83,7 @@ class _QrScannerState extends State<QrScanner> {
                         _isFlashLight = false;
                       });
                     } else {
-                      _cameraController.setFlashMode(FlashMode.always);
+                      _cameraController.setFlashMode(FlashMode.torch);
                       setState(() {
                         _isFlashLight = true;
                       });

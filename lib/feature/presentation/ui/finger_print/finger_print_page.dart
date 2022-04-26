@@ -7,8 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class FingerPrintPage extends StatelessWidget {
-  const FingerPrintPage({Key? key}) : super(key: key);
+class FingerPrintOrFaceIdPage extends StatelessWidget {
+  final String route;
+
+  const FingerPrintOrFaceIdPage({Key? key, required this.route})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class FingerPrintPage extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.useFingerPrint,
+                            state.getTitle(route, context),
                             style: theme.textTheme.headline2!
                                 .copyWith(height: 1.286),
                           ),
@@ -63,7 +66,7 @@ class FingerPrintPage extends StatelessWidget {
                   SizedBox(height: 48.h),
                   SvgIcon(
                     theme.hoverColor.withOpacity(0.1),
-                    path: 'finger_print.svg',
+                    path: state.getPathIcon(route),
                     width: 149.21.w,
                   ),
                   Padding(
