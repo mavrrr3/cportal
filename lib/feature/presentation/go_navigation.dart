@@ -6,6 +6,7 @@ import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_prin
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin.dart';
@@ -28,12 +29,13 @@ abstract class NavigationRouteNames {
   static const questionArticlePage = 'question_article_page';
   static const profile = 'profile';
   static const userData = 'user_data';
+  static const onBoarding = 'on_boarding';
   static const qrScanner = 'qr_scanner';
 }
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/connecting_code',
+  initialLocation: '/on_boarding',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -145,6 +147,14 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      name: NavigationRouteNames.onBoarding,
+      path: '/on_boarding',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(body: StartBoarding()),
+       ),
+     ),
+  GoRoute(
       name: NavigationRouteNames.qrScanner,
       path: '/qr_scanner',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
