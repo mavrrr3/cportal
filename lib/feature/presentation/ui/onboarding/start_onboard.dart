@@ -1,7 +1,9 @@
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 class StartBoarding extends StatelessWidget {
   const StartBoarding({Key? key}) : super(key: key);
@@ -47,7 +49,7 @@ class StartBoarding extends StatelessWidget {
             ButtonEnum.blue,
             AppLocalizations.of(context)!.forward,
             () {
-              // TODO релизовать редирект на страницу с онбордингом
+              GoRouter.of(context).pushNamed(NavigationRouteNames.onboarding);
             },
             Size(double.infinity, 48.h),
           ),

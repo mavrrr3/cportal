@@ -6,6 +6,8 @@ import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_prin
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
@@ -29,8 +31,9 @@ abstract class NavigationRouteNames {
   static const questionArticlePage = 'question_article_page';
   static const profile = 'profile';
   static const userData = 'user_data';
-  static const onBoarding = 'on_boarding';
+  static const onBoardingStart = 'on_boarding_start';
   static const qrScanner = 'qr_scanner';
+  static const onboarding = 'onboarding';
 }
 
 final GoRouter router = GoRouter(
@@ -147,19 +150,27 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.onBoarding,
+      name: NavigationRouteNames.onBoardingStart,
       path: '/on_boarding',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: StartBoarding()),
-       ),
-     ),
-  GoRoute(
+      ),
+    ),
+    GoRoute(
       name: NavigationRouteNames.qrScanner,
       path: '/qr_scanner',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const QrScanner(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.onboarding,
+      path: '/onboarding',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Onboarding(),
       ),
     ),
   ],
