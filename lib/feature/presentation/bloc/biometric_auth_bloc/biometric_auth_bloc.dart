@@ -2,6 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/biometric_usecase.dart';
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
@@ -62,6 +66,15 @@ class BiometricState {
     this.listBiometric = const <BiometricType>[],
     this.authStatus = BiometricEnum.notAuthenticated,
   });
+
+  String getTitle(String route, BuildContext context) =>
+      route == NavigationRouteNames.fingerPrint
+          ? AppLocalizations.of(context)!.fingerPrint
+          : AppLocalizations.of(context)!.useFaceId;
+
+  String getPathIcon(String route) => route == NavigationRouteNames.fingerPrint
+      ? 'finger_print.svg'
+      : 'face_id.svg';
 
   BiometricState copyWith({
     List<BiometricType>? listBiometric,
