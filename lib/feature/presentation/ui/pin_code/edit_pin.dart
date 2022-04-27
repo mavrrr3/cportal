@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +9,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 
-final pinController = TextEditingController();
-final pinFocusNode = FocusNode();
+final _pinController = TextEditingController();
+final _pinFocusNode = FocusNode();
 
 class EditPinPage extends StatelessWidget {
   const EditPinPage({Key? key}) : super(key: key);
@@ -30,42 +28,21 @@ class EditPinPage extends StatelessWidget {
           ),
           child: BlocConsumer<PinCodeBloc, PinCodeState>(
             listener: ((context, state) {
-              if (state.status == PinCodeInputEnum.repeatDone) {
+              if (state.status == PinCodeInputEnum.done) {
                 // Если ПИН код из базе Hive совпадает с
                 // введеным ПИНом, то редирект на страницу [/main_page]
                 context.goNamed(NavigationRouteNames.mainPage);
               }
             }),
             builder: ((context, state) {
-              log(state.toString());
-
-              switch (state.status) {
-                case PinCodeInputEnum.create:
-                case PinCodeInputEnum.creating:
-                case PinCodeInputEnum.repeatDone:
-                  return const BodyWidget(input: PinCodeInputEnum.edit);
-                case PinCodeInputEnum.repeat:
-                case PinCodeInputEnum.repeating:
-                  return const BodyWidget(input: PinCodeInputEnum.repeat);
-                case PinCodeInputEnum.wrongRepeat:
-                case PinCodeInputEnum.wrongCreate:
-                  return const BodyWidget(
-                    input: PinCodeInputEnum.wrongRepeat,
-                  );
-                case PinCodeInputEnum.error:
-                  return const BodyWidget(
-                    input: PinCodeInputEnum.error,
-                  );
-                default:
-                  return const Center(child: CircularProgressIndicator());
-              }
+              return BodyWidget(input: state.status);
             }),
           ),
         ),
         Column(
           children: [
             CustomKeyboard(
-              controller: pinController,
+              controller: _pinController,
               simbolQuantity: 4,
             ),
             SizedBox(height: 52.h),
@@ -85,11 +62,26 @@ class BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PinCodeInputEnum _changeBody(PinCodeInputEnum input) {
+      switch (input) {
+        case PinCodeInputEnum.create:
+          return PinCodeInputEnum.edit;
+        case PinCodeInputEnum.repeat:
+          return PinCodeInputEnum.repeat;
+        case PinCodeInputEnum.wrong:
+          return PinCodeInputEnum.wrong;
+        case PinCodeInputEnum.error:
+          return PinCodeInputEnum.error;
+        default:
+          return PinCodeInputEnum.edit;
+      }
+    }
+
     return Column(
       children: [
         SizedBox(height: 48.h),
         HeaderText.factory(
-          input,
+          _changeBody(input),
           context,
         ),
         SizedBox(height: 16.h),
@@ -119,8 +111,8 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
+    final theme = Theme.of(context);
+    final pinCodeBloc = BlocProvider.of<PinCodeBloc>(context, listen: false);
     final defaultPinTheme = PinTheme(
       width: 16.w,
       height: 14.h,
@@ -141,14 +133,14 @@ class _PinCodeInputState extends State<PinCodeInput> {
           ),
           useNativeKeyboard: false,
           length: 4,
-          controller: pinController,
-          focusNode: pinFocusNode,
+          controller: _pinController,
+          focusNode: _pinFocusNode,
           defaultPinTheme: defaultPinTheme,
           separator: SizedBox(width: 32.w),
           focusedPinTheme: defaultPinTheme,
           showCursor: false,
           onChanged: (value) {
-            BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+            pinCodeBloc.add(
               ChangedPinCode(
                 status: state.status,
                 pinCode: value,
@@ -156,22 +148,17 @@ class _PinCodeInputState extends State<PinCodeInput> {
             );
           },
           onCompleted: (value) {
-            if (state.doesItNeedToClean) {
-              Future.delayed(
-                const Duration(milliseconds: 600),
-                () => pinController.text = '',
-              );
-            }
+            state.cleanField(_pinController);
 
-            if (state.status != PinCodeInputEnum.repeating) {
-              BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+            if (state.status != PinCodeInputEnum.repeat) {
+              pinCodeBloc.add(
                 EditPinCodeSubmit(
                   pinCode: value,
                   status: state.status,
                 ),
               );
             } else {
-              BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+              pinCodeBloc.add(
                 RepeatPinCodeSubmit(
                   pinCode: value,
                   status: state.status,
@@ -213,11 +200,11 @@ class HeaderText {
           secondText: AppLocalizations.of(context)!.forgetPin,
           error: AppLocalizations.of(context)!.errorPinCode,
         );
-      case PinCodeInputEnum.wrongRepeat:
+      case PinCodeInputEnum.wrong:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: '',
-          error: pinController.text.length == 4
+          error: _pinController.text.length == 4
               ? AppLocalizations.of(context)!.pinNotCorrect
               : '',
         );

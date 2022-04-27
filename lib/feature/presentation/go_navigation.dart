@@ -25,7 +25,8 @@ abstract class NavigationRouteNames {
   static const createPin = 'create_pin';
   static const inputPin = 'input_pin';
   static const editPin = 'edit_pin';
-  static const fingerPrintPage = 'fingerprint';
+  static const fingerPrint = 'finger_print';
+  static const faceId = 'face_id';
   static const news = 'news';
   static const newsArticlePage = 'news_article_page';
   static const questionArticlePage = 'question_article_page';
@@ -39,7 +40,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/onboarding_start',
+  initialLocation: '/face_id',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -97,11 +98,27 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.fingerPrintPage,
-      path: '/fingerprint',
+      name: NavigationRouteNames.fingerPrint,
+      path: '/finger_print',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: FingerPrintPage()),
+        child: const Scaffold(
+          body: FingerPrintOrFaceIdPage(
+            route: NavigationRouteNames.fingerPrint,
+          ),
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.faceId,
+      path: '/face_id',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: FingerPrintOrFaceIdPage(
+            route: NavigationRouteNames.faceId,
+          ),
+        ),
       ),
     ),
     GoRoute(

@@ -36,6 +36,7 @@
     "forgetPin": "Забыли ПИН?",
     "errorPinCode": "Введенный вами ПИН неверен",
     "useFingerPrint": "Использовать \nсканер отпечатков?",
+    "useFaceId": "Использовать \nFace ID?",
     "doFingerPrintNotInputPin": "Подключите, чтобы каждый раз не \nвводить ПИН при входе",
     "yes": "Да",
     "noThanks": "Нет, спасибо",

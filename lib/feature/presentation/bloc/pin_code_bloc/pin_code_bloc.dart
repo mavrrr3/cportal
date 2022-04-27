@@ -5,21 +5,16 @@ import 'package:equatable/equatable.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/pin_code_enter_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
+import 'package:flutter/material.dart';
 
 enum PinCodeInputEnum {
   input,
   inputing,
   wrongInput,
   create,
-  creating,
-  wrongCreate,
+  wrong,
   repeat,
-  repeatDone,
-  repeating,
-  wrongRepeat,
   edit,
-  editing,
-  wrongEdit,
   error,
   done,
 }
@@ -44,6 +39,10 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
 
     on<ChangedPinCode>(
       _onCreate,
+      transformer: bloc_concurrency.sequential(),
+    );
+    on<ChangedInputPinCode>(
+      _onInputChange,
       transformer: bloc_concurrency.sequential(),
     );
     on<EditPinCodeSubmit>(
@@ -104,13 +103,35 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     ));
   }
 
-  PinCodeInputEnum getStatus(PinCodeInputEnum status) {
-    return status == PinCodeInputEnum.create ||
-            status == PinCodeInputEnum.creating
-        ? PinCodeInputEnum.creating
+  FutureOr<void> _onInputChange(
+    ChangedInputPinCode event,
+    Emitter<PinCodeState> emit,
+  ) async {
+    if (kDebugMode) log(event.pinCode.toString());
+    log('=========Такой эвент $event');
+
+    emit(state.copyWith(
+      status: getInputStatus(event.status),
+      pinCode: event.pinCode,
+    ));
+  }
+
+  PinCodeInputEnum getInputStatus(PinCodeInputEnum status) {
+    return status == PinCodeInputEnum.create
+        ? PinCodeInputEnum.create
         : status == PinCodeInputEnum.wrongInput
             ? PinCodeInputEnum.create
-            : PinCodeInputEnum.repeating;
+            : PinCodeInputEnum.repeat;
+  }
+
+  PinCodeInputEnum getStatus(PinCodeInputEnum status) {
+    return status == PinCodeInputEnum.create
+        ? PinCodeInputEnum.create
+        : status == PinCodeInputEnum.wrong
+            ? PinCodeInputEnum.create
+            : status == PinCodeInputEnum.wrongInput
+                ? PinCodeInputEnum.wrongInput
+                : PinCodeInputEnum.repeat;
   }
 
   FutureOr<void> _onInputSubmit(
@@ -161,9 +182,9 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     log('=========Такой новый пин ${event.pinCode} Такой из базы пин $pinCodeFromHive');
 
     if (event.pinCode == pinCodeFromHive) {
-      emit(state.copyWith(status: PinCodeInputEnum.repeatDone));
+      emit(state.copyWith(status: PinCodeInputEnum.done));
     } else {
-      emit(state.copyWith(status: PinCodeInputEnum.wrongCreate));
+      emit(state.copyWith(status: PinCodeInputEnum.wrong));
     }
   }
 
@@ -180,7 +201,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       final failureOrPinCode =
           await pinCodeEnter(PinCodeParams(pinCode: event.pinCode));
 
-      log(failureOrPinCode.toString());
+      log('Из кэша +++' + failureOrPinCode.toString());
 
       failureOrPinCode.fold(
         (failure) {
@@ -196,7 +217,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       if (event.pinCode == pinCodeFromHive) {
         emit(state.copyWith(status: PinCodeInputEnum.done));
       } else {
-        emit(state.copyWith(status: PinCodeInputEnum.wrongRepeat));
+        emit(state.copyWith(status: PinCodeInputEnum.wrong));
       }
     }
   }
@@ -208,16 +229,23 @@ class PinCodeState {
 
   bool get isWrongPin =>
       status == PinCodeInputEnum.error ||
-      status == PinCodeInputEnum.wrongCreate ||
-      status == PinCodeInputEnum.wrongInput ||
-      status == PinCodeInputEnum.wrongRepeat;
+      status == PinCodeInputEnum.wrong ||
+      status == PinCodeInputEnum.wrongInput;
 
-  bool get doesItNeedToClean =>
-      status == PinCodeInputEnum.repeat ||
-      status == PinCodeInputEnum.repeating ||
-      status == PinCodeInputEnum.create ||
-      status == PinCodeInputEnum.creating ||
-      status == PinCodeInputEnum.wrongRepeat;
+  Future<String> cleanField(TextEditingController textController) {
+    return status == PinCodeInputEnum.wrong ||
+            status == PinCodeInputEnum.create ||
+            status == PinCodeInputEnum.repeat ||
+            status == PinCodeInputEnum.wrongInput
+        ? Future.delayed(
+            const Duration(milliseconds: 1000),
+            () => textController.text = '',
+          )
+        : Future.delayed(
+            const Duration(milliseconds: 100),
+            () => textController.text = '',
+          );
+  }
 
   PinCodeState({
     this.pinCode = '',
@@ -236,7 +264,7 @@ class PinCodeState {
 
   @override
   String toString() {
-    return '++++++++++++Стейт $status';
+    return 'Стейт $status';
   }
 }
 
@@ -255,6 +283,12 @@ class ChangedPinCode extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
   const ChangedPinCode({required this.pinCode, required this.status});
+}
+
+class ChangedInputPinCode extends PinCodeEvent {
+  final String pinCode;
+  final PinCodeInputEnum status;
+  const ChangedInputPinCode({required this.pinCode, required this.status});
 }
 
 class EditPinCodeSubmit extends PinCodeEvent {
