@@ -7,7 +7,6 @@ import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
@@ -38,7 +37,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/on_boarding',
+  initialLocation: '/on_boarding_start',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -151,7 +150,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.onBoardingStart,
-      path: '/on_boarding',
+      path: '/on_boarding_start',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: StartBoarding()),
@@ -170,7 +169,7 @@ final GoRouter router = GoRouter(
       path: '/onboarding',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Onboarding(),
+        child: Onboarding(content: state.extra! as List<OnboardingEntity>),
       ),
     ),
   ],

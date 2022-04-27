@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,143 +16,159 @@ class OnboardingEntity {
 }
 
 class Onboarding extends StatefulWidget {
-  const Onboarding({Key? key}) : super(key: key);
+  const Onboarding({
+    Key? key,
+    required this.content,
+  }) : super(key: key);
 
+  final List<OnboardingEntity> content;
   @override
   State<Onboarding> createState() => _OnboardingState();
 }
 
-class _OnboardingState extends State<Onboarding> {
-  late bool _isPageInit;
+class _OnboardingState extends State<Onboarding>
+    with SingleTickerProviderStateMixin {
+  late int _currentIndex;
+  late PageController _pageController;
+  late AnimationController _animationController;
+  late List<OnboardingEntity> _onboardingContent;
+  late Duration _pageDuration;
+
   @override
   void initState() {
-    _isPageInit = false;
+    _currentIndex = 0;
+    _pageController = PageController(initialPage: _currentIndex);
+    _animationController = AnimationController(vsync: this);
+    _onboardingContent = widget.content;
+
+    // Время показа текущей страницы
+    _pageDuration = const Duration(seconds: 5);
+
+    _loadPage(animateToPage: false);
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController.stop();
+        _animationController.reset();
+        setState(() {
+          if (_currentIndex + 1 < _onboardingContent.length) {
+            _currentIndex += 1;
+            _loadPage();
+          } else {
+            _currentIndex = 0;
+            _loadPage();
+          }
+        });
+      }
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<OnboardingEntity> _onboardingContent = [];
-
-    /// Контент страниц онбординга
-    if (!_isPageInit) {
-      _onboardingContent = [
-        OnboardingEntity(
-          title: AppLocalizations.of(context)!.onboarding_title1,
-          description: AppLocalizations.of(context)!.onboarding_description1,
-          image: 'assets/img/onboarding/1.svg',
-        ),
-        OnboardingEntity(
-          title: AppLocalizations.of(context)!.onboarding_title2,
-          description: AppLocalizations.of(context)!.onboarding_description2,
-          image: 'assets/img/onboarding/2.svg',
-        ),
-        OnboardingEntity(
-          title: AppLocalizations.of(context)!.onboarding_title3,
-          description: AppLocalizations.of(context)!.onboarding_description3,
-          image: 'assets/img/onboarding/3.svg',
-        ),
-        OnboardingEntity(
-          title: AppLocalizations.of(context)!.onboarding_title4,
-          description: AppLocalizations.of(context)!.onboarding_description4,
-          image: 'assets/img/onboarding/4.svg',
-        ),
-        OnboardingEntity(
-          title: AppLocalizations.of(context)!.onboarding_title5,
-          description: AppLocalizations.of(context)!.onboarding_description5,
-          image: 'assets/img/onboarding/5.svg',
-        ),
-        OnboardingEntity(
-          title: AppLocalizations.of(context)!.onboarding_title6,
-          description: AppLocalizations.of(context)!.onboarding_description6,
-          image: 'assets/img/onboarding/6.svg',
-        ),
-        OnboardingEntity(
-          title: AppLocalizations.of(context)!.onboarding_title7,
-          description: AppLocalizations.of(context)!.onboarding_description7,
-          image: 'assets/img/onboarding/7.svg',
-        ),
-      ];
-      _isPageInit = false;
-    }
-
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          /// Контент
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 17.h),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Виджет прокрутки
-                  SafeArea(
-                    child: Container(
-                      height: 2.h,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.grey,
-                    ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTapDown: (details) => _onTapDown(details, _onboardingContent),
+        child:
+            // Контент
+            SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 17.h),
+              // Виджет прогресса
+              SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Row(
+                    children: _onboardingContent
+                        .asMap()
+                        .map((key, value) {
+                          return MapEntry(
+                            key,
+                            AnimatedBar(
+                              animationController: _animationController,
+                              position: key,
+                              currentIndex: _currentIndex,
+                            ),
+                          );
+                        })
+                        .values
+                        .toList(),
                   ),
-
-                  /// Страница онбординга
-                  SizedBox(
-                    width: width,
-                    height: height,
-                    child: PageView(
-                      children: [
-                        /// Генерация страниц онбординга
-                        ...List.generate(
-                          _onboardingContent.length,
-                          (index) => OnBoardingPage(
-                            content: _onboardingContent[index],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
 
-          /// Следующая страница
-          Align(
-            alignment: Alignment.centerRight,
-            child: _nagigationButton(
-              height,
-              onTap: () => log('Next'),
-            ),
+              // Страница онбординга
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: SizedBox(
+                  width: width,
+                  height: height * 0.85,
+                  child: PageView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _pageController,
+                    itemCount: _onboardingContent.length,
+                    itemBuilder: (context, i) =>
+                        OnBoardingPage(content: _onboardingContent[i]),
+                  ),
+                ),
+              ),
+            ],
           ),
-
-          /// Предыдущая страница
-          Align(
-            alignment: Alignment.centerLeft,
-            child: _nagigationButton(
-              height,
-              onTap: () => log('Back'),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _nagigationButton(
-    double height, {
-    Function()? onTap,
+  void _onTapDown(
+    TapDownDetails details,
+    List<OnboardingEntity> pages,
+  ) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double dx = details.globalPosition.dx;
+    if (dx < screenWidth / 3) {
+      setState(() {
+        if (_currentIndex - 1 >= 0) {
+          _currentIndex -= 1;
+          _loadPage();
+        }
+      });
+    } else if (dx > screenWidth * 2 / 3) {
+      setState(() {
+        // ignore: prefer-conditional-expressions
+        if (_currentIndex + 1 < pages.length) {
+          _currentIndex += 1;
+          _loadPage();
+        } else {
+          _currentIndex = 0;
+          _loadPage();
+        }
+      });
+    }
+  }
+
+  void _loadPage({
+    bool animateToPage = true,
   }) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: SizedBox(
-        width: 164.w,
-        height: height,
-      ),
-    );
+    _animationController.stop();
+    _animationController.reset();
+    _animationController.duration = _pageDuration;
+    _animationController.forward();
+
+    if (animateToPage) {
+      _pageController.jumpToPage(_currentIndex);
+    }
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _animationController.dispose();
+    super.dispose();
   }
 }

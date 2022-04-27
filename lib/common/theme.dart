@@ -43,6 +43,9 @@ ThemeData lightTheme() => ThemeData(
 
       /// [Light Text, also for icons with custom opacity]
       hoverColor: AppColors.kLightTextColor,
+
+      /// [Text]
+      cardColor: AppColors.textMain,
       //------
 
       /// [Other]
