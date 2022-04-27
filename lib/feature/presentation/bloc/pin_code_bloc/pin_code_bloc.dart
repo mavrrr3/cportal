@@ -12,12 +12,8 @@ enum PinCodeInputEnum {
   inputing,
   wrongInput,
   create,
-  creating,
-  wrongCreate,
+  wrong,
   repeat,
-  repeatDone,
-  repeating,
-  wrongRepeat,
   edit,
   editing,
   wrongEdit,
@@ -161,9 +157,9 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     log('=========Такой новый пин ${event.pinCode} Такой из базы пин $pinCodeFromHive');
 
     if (event.pinCode == pinCodeFromHive) {
-      emit(state.copyWith(status: PinCodeInputEnum.repeatDone));
+      emit(state.copyWith(status: PinCodeInputEnum.done));
     } else {
-      emit(state.copyWith(status: PinCodeInputEnum.wrongCreate));
+      emit(state.copyWith(status: PinCodeInputEnum.wrong));
     }
   }
 
@@ -196,7 +192,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       if (event.pinCode == pinCodeFromHive) {
         emit(state.copyWith(status: PinCodeInputEnum.done));
       } else {
-        emit(state.copyWith(status: PinCodeInputEnum.wrongRepeat));
+        emit(state.copyWith(status: PinCodeInputEnum.wrong));
       }
     }
   }
@@ -207,19 +203,10 @@ class PinCodeState {
   final PinCodeInputEnum status;
 
   bool get isWrongPin =>
-      status == PinCodeInputEnum.error ||
-      status == PinCodeInputEnum.wrongCreate ||
-      status == PinCodeInputEnum.wrongInput ||
-      status == PinCodeInputEnum.wrongRepeat;
-
-  bool get doesItNeedToClean =>
-      status == PinCodeInputEnum.repeat ||
-      status == PinCodeInputEnum.create ||
-      status == PinCodeInputEnum.wrongRepeat;
+      status == PinCodeInputEnum.error || status == PinCodeInputEnum.wrong;
 
   Future<String> cleanField(TextEditingController textController) {
-    return status == PinCodeInputEnum.wrongRepeat ||
-            status == PinCodeInputEnum.repeat
+    return status == PinCodeInputEnum.wrong || status == PinCodeInputEnum.repeat
         ? Future.delayed(
             const Duration(milliseconds: 1000),
             () => textController.text = '',
@@ -247,7 +234,7 @@ class PinCodeState {
 
   @override
   String toString() {
-    return '++++++++++++Стейт $status';
+    return 'Стейт $status';
   }
 }
 

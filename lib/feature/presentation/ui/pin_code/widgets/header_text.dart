@@ -27,7 +27,7 @@ class HeaderText {
           secondText: AppLocalizations.of(context)!.forgetPin,
           error: AppLocalizations.of(context)!.errorPinCode,
         );
-      case PinCodeInputEnum.wrongRepeat:
+      case PinCodeInputEnum.wrong:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: '',
