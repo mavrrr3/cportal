@@ -40,7 +40,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/face_id',
+  initialLocation: '/onboarding_start',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(

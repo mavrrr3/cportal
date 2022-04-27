@@ -1,10 +1,23 @@
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+
+class OnboardingEntity {
+  OnboardingEntity({
+    required this.title,
+    required this.description,
+    required this.image,
+    this.isVector = true,
+  });
+
+  final String title;
+  final String description;
+  final String image;
+  final bool isVector;
+}
 
 class StartBoarding extends StatelessWidget {
   const StartBoarding({Key? key}) : super(key: key);
@@ -18,37 +31,38 @@ class StartBoarding extends StatelessWidget {
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title1,
         description: AppLocalizations.of(context)!.onboarding_description1,
-        image: 'assets/img/onboarding/1.png',
+        image: 'assets/img/onboarding/1.svg',
       ),
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title2,
         description: AppLocalizations.of(context)!.onboarding_description2,
-        image: 'assets/img/onboarding/2.png',
+        image: 'assets/img/onboarding/2.svg',
       ),
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title3,
         description: AppLocalizations.of(context)!.onboarding_description3,
-        image: 'assets/img/onboarding/3.png',
+        image: 'assets/img/onboarding/3.svg',
       ),
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title4,
         description: AppLocalizations.of(context)!.onboarding_description4,
-        image: 'assets/img/onboarding/4.png',
+        image: 'assets/img/onboarding/4.svg',
       ),
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title5,
         description: AppLocalizations.of(context)!.onboarding_description5,
-        image: 'assets/img/onboarding/5.png',
+        image: 'assets/img/onboarding/5.svg',
       ),
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title6,
         description: AppLocalizations.of(context)!.onboarding_description6,
         image: 'assets/img/onboarding/6.png',
+        isVector: false,
       ),
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title7,
         description: AppLocalizations.of(context)!.onboarding_description7,
-        image: 'assets/img/onboarding/7.png',
+        image: 'assets/img/onboarding/7.svg',
       ),
     ];
 

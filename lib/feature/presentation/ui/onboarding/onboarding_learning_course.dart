@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,21 +25,20 @@ class _OnboardingLearningCourseState extends State<OnboardingLearningCourse>
     _animationController = AnimationController(vsync: this);
     _animationController.duration = const Duration(seconds: 10);
 
+    _animationController.forward().then(
+          (value) =>
+              GoRouter.of(context).goNamed(NavigationRouteNames.mainPage),
+        );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _animationController.forward().then(
-          (value) =>
-              GoRouter.of(context).goNamed(NavigationRouteNames.mainPage),
-        );
-
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 16.h,
-          vertical: 17.h, 
+          vertical: 17.h,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +60,7 @@ class _OnboardingLearningCourseState extends State<OnboardingLearningCourse>
                       title: AppLocalizations.of(context)!.onboarding_title8,
                       description:
                           AppLocalizations.of(context)!.onboarding_description8,
-                      image: 'assets/img/onboarding/8.png',
+                      image: 'assets/img/onboarding/8.svg',
                     ),
                   ),
                 ],

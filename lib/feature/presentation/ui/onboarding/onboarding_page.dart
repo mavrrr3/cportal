@@ -1,6 +1,7 @@
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({
@@ -31,10 +32,15 @@ class OnBoardingPage extends StatelessWidget {
         SizedBox(height: 64.h),
         Align(
           alignment: Alignment.center,
-          child: Image.asset(
-            content.image,
-            fit: BoxFit.cover,
-          ),
+          child: content.isVector
+              ? SvgPicture.asset(
+                  content.image,
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(
+                  content.image,
+                  fit: BoxFit.cover,
+                ),
         ),
       ],
     );
