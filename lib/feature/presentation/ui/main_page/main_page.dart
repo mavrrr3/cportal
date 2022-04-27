@@ -149,20 +149,20 @@ class _MainPageState extends State<MainPage> {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      _searchBoxItem(
-                        theme,
+                      _SearchBoxItem(
+                        () => null,
+                        category: 'Вопросы',
                         text: 'Как запросить 2НДФЛ',
-                        category: 'Вопросы',
                       ),
-                      _searchBoxItem(
-                        theme,
-                        text: 'Сменить ПИН',
+                      _SearchBoxItem(
+                        () => null,
                         category: 'Профиль',
-                      ),
-                      _searchBoxItem(
-                        theme,
                         text: 'Сменить ПИН',
+                      ),
+                      _SearchBoxItem(
+                        () => null,
                         category: 'Вопросы',
+                        text: 'Сменить ПИН',
                       ),
                     ],
                   ),
@@ -174,13 +174,24 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+}
 
-  Widget _searchBoxItem(
-    ThemeData theme, {
-    required String category,
-    required String text,
-    Function()? onTap,
-  }) {
+class _SearchBoxItem extends StatelessWidget {
+  final String category;
+  final String text;
+  final Function()? onTap;
+
+  const _SearchBoxItem(
+    this.onTap, {
+    Key? key,
+    required this.category,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: GestureDetector(
