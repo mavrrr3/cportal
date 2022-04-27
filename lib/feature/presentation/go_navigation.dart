@@ -6,6 +6,8 @@ import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_prin
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
@@ -30,8 +32,10 @@ abstract class NavigationRouteNames {
   static const questionArticlePage = 'question_article_page';
   static const profile = 'profile';
   static const userData = 'user_data';
-  static const onBoarding = 'on_boarding';
   static const qrScanner = 'qr_scanner';
+  static const onBoardingStart = 'onboarding_start';
+  static const onboarding = 'onboarding';
+  static const onboardingEnd = 'onboarding_end';
 }
 
 final GoRouter router = GoRouter(
@@ -131,9 +135,9 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
-        child: NewsArticlePage(currentIndex: state.extra! as int),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
+        child: NewsArticlePage(currentIndex: state.extra! as int),
       ),
     ),
     GoRoute(
@@ -164,8 +168,8 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.onBoarding,
-      path: '/on_boarding',
+      name: NavigationRouteNames.onBoardingStart,
+      path: '/onboarding_start',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: StartBoarding()),
@@ -177,6 +181,28 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const QrScanner(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.onboarding,
+      path: '/onboarding',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        child: Onboarding(content: state.extra! as List<OnboardingEntity>),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.onboardingEnd,
+      path: '/onboarding_end',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        child: const OnboardingLearningCourse(),
       ),
     ),
   ],
