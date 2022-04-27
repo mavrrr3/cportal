@@ -37,10 +37,6 @@ class EditPinPage extends StatelessWidget {
               }
             }),
             builder: ((context, state) {
-              log('================= ' +
-                  state.toString() +
-                  ' =================');
-
               return BodyWidget(input: state.status);
             }),
           ),

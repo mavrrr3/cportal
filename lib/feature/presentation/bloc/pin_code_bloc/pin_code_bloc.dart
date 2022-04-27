@@ -15,8 +15,6 @@ enum PinCodeInputEnum {
   wrong,
   repeat,
   edit,
-  editing,
-  wrongEdit,
   error,
   done,
 }
@@ -41,6 +39,10 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
 
     on<ChangedPinCode>(
       _onCreate,
+      transformer: bloc_concurrency.sequential(),
+    );
+    on<ChangedInputPinCode>(
+      _onInputChange,
       transformer: bloc_concurrency.sequential(),
     );
     on<EditPinCodeSubmit>(
@@ -101,12 +103,35 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     ));
   }
 
-  PinCodeInputEnum getStatus(PinCodeInputEnum status) {
+  FutureOr<void> _onInputChange(
+    ChangedInputPinCode event,
+    Emitter<PinCodeState> emit,
+  ) async {
+    if (kDebugMode) log(event.pinCode.toString());
+    log('=========Такой эвент $event');
+
+    emit(state.copyWith(
+      status: getInputStatus(event.status),
+      pinCode: event.pinCode,
+    ));
+  }
+
+  PinCodeInputEnum getInputStatus(PinCodeInputEnum status) {
     return status == PinCodeInputEnum.create
         ? PinCodeInputEnum.create
         : status == PinCodeInputEnum.wrongInput
             ? PinCodeInputEnum.create
             : PinCodeInputEnum.repeat;
+  }
+
+  PinCodeInputEnum getStatus(PinCodeInputEnum status) {
+    return status == PinCodeInputEnum.create
+        ? PinCodeInputEnum.create
+        : status == PinCodeInputEnum.wrong
+            ? PinCodeInputEnum.create
+            : status == PinCodeInputEnum.wrongInput
+                ? PinCodeInputEnum.wrongInput
+                : PinCodeInputEnum.repeat;
   }
 
   FutureOr<void> _onInputSubmit(
@@ -203,10 +228,15 @@ class PinCodeState {
   final PinCodeInputEnum status;
 
   bool get isWrongPin =>
-      status == PinCodeInputEnum.error || status == PinCodeInputEnum.wrong;
+      status == PinCodeInputEnum.error ||
+      status == PinCodeInputEnum.wrong ||
+      status == PinCodeInputEnum.wrongInput;
 
   Future<String> cleanField(TextEditingController textController) {
-    return status == PinCodeInputEnum.wrong || status == PinCodeInputEnum.repeat
+    return status == PinCodeInputEnum.wrong ||
+            status == PinCodeInputEnum.create ||
+            status == PinCodeInputEnum.repeat ||
+            status == PinCodeInputEnum.wrongInput
         ? Future.delayed(
             const Duration(milliseconds: 1000),
             () => textController.text = '',
@@ -253,6 +283,12 @@ class ChangedPinCode extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
   const ChangedPinCode({required this.pinCode, required this.status});
+}
+
+class ChangedInputPinCode extends PinCodeEvent {
+  final String pinCode;
+  final PinCodeInputEnum status;
+  const ChangedInputPinCode({required this.pinCode, required this.status});
 }
 
 class EditPinCodeSubmit extends PinCodeEvent {
