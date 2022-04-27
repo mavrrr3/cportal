@@ -72,6 +72,16 @@ class _OnboardingState extends State<Onboarding>
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: (details) => _onTapDown(details, _onboardingContent),
+        onLongPressEnd: (details) {
+          if (!_animationController.isAnimating) {
+            _animationController.forward();
+          }
+        },
+        onTapUp: (details) {
+          if (!_animationController.isAnimating) {
+            _animationController.forward();
+          }
+        },
         child:
             // Контент
             SingleChildScrollView(
@@ -131,6 +141,7 @@ class _OnboardingState extends State<Onboarding>
   ) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double dx = details.globalPosition.dx;
+
     if (dx < screenWidth / 3) {
       setState(() {
         if (_currentIndex - 1 >= 0) {
@@ -149,6 +160,10 @@ class _OnboardingState extends State<Onboarding>
           _loadPage();
         }
       });
+    } else {
+      if (_animationController.isAnimating) {
+        _animationController.stop();
+      }
     }
   }
 
