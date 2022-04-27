@@ -80,4 +80,10 @@ class _OnboardingLearningCourseState extends State<OnboardingLearningCourse>
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 }
