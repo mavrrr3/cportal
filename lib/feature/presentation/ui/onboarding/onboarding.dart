@@ -1,7 +1,9 @@
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingEntity {
   OnboardingEntity({
@@ -54,8 +56,7 @@ class _OnboardingState extends State<Onboarding>
             _currentIndex += 1;
             _loadPage();
           } else {
-            _currentIndex = 0;
-            _loadPage();
+            GoRouter.of(context).goNamed(NavigationRouteNames.onboardingEnd);
           }
         });
       }
@@ -156,8 +157,7 @@ class _OnboardingState extends State<Onboarding>
           _currentIndex += 1;
           _loadPage();
         } else {
-          _currentIndex = 0;
-          _loadPage();
+          GoRouter.of(context).goNamed(NavigationRouteNames.onboardingEnd);
         }
       });
     } else {

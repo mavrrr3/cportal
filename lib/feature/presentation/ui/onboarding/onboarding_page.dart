@@ -16,6 +16,7 @@ class OnBoardingPage extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(height: 68.h),
         Text(
