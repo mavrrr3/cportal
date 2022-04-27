@@ -23,18 +23,18 @@ class AnimatedBar extends StatelessWidget {
         child: LayoutBuilder(builder: (context, constraints) {
           return Stack(
             children: [
-              _buildContainer(
-                double.infinity,
-                position < currentIndex
+              _BuildContainer(
+                width: double.infinity,
+                color: position < currentIndex
                     ? theme.primaryColor
                     : theme.cardColor.withOpacity(0.34),
               ),
               position == currentIndex
                   ? AnimatedBuilder(
                       animation: animationController,
-                      builder: (context, child) => _buildContainer(
-                        constraints.maxWidth * animationController.value,
-                        theme.primaryColor,
+                      builder: (context, child) => _BuildContainer(
+                        width: constraints.maxWidth * animationController.value,
+                        color: theme.primaryColor,
                       ),
                     )
                   : const SizedBox.shrink(),
@@ -44,8 +44,18 @@ class AnimatedBar extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildContainer(double width, Color color) {
+class _BuildContainer extends StatelessWidget {
+  const _BuildContainer({
+    Key? key,
+    required this.width,
+    required this.color,
+  }) : super(key: key);
+  final double width;
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
     return Container(
       height: 2.0.h,
       width: width,
