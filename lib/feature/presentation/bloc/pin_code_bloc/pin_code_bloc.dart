@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/pin_code_enter_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
+import 'package:flutter/material.dart';
 
 enum PinCodeInputEnum {
   input,
@@ -105,12 +106,11 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   }
 
   PinCodeInputEnum getStatus(PinCodeInputEnum status) {
-    return status == PinCodeInputEnum.create ||
-            status == PinCodeInputEnum.creating
-        ? PinCodeInputEnum.creating
+    return status == PinCodeInputEnum.create
+        ? PinCodeInputEnum.create
         : status == PinCodeInputEnum.wrongInput
             ? PinCodeInputEnum.create
-            : PinCodeInputEnum.repeating;
+            : PinCodeInputEnum.repeat;
   }
 
   FutureOr<void> _onInputSubmit(
@@ -180,7 +180,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       final failureOrPinCode =
           await pinCodeEnter(PinCodeParams(pinCode: event.pinCode));
 
-      log(failureOrPinCode.toString());
+      log('Из кэша +++' + failureOrPinCode.toString());
 
       failureOrPinCode.fold(
         (failure) {
@@ -214,10 +214,21 @@ class PinCodeState {
 
   bool get doesItNeedToClean =>
       status == PinCodeInputEnum.repeat ||
-      status == PinCodeInputEnum.repeating ||
       status == PinCodeInputEnum.create ||
-      status == PinCodeInputEnum.creating ||
       status == PinCodeInputEnum.wrongRepeat;
+
+  Future<String> cleanField(TextEditingController textController) {
+    return status == PinCodeInputEnum.wrongRepeat ||
+            status == PinCodeInputEnum.repeat
+        ? Future.delayed(
+            const Duration(milliseconds: 1000),
+            () => textController.text = '',
+          )
+        : Future.delayed(
+            const Duration(milliseconds: 100),
+            () => textController.text = '',
+          );
+  }
 
   PinCodeState({
     this.pinCode = '',

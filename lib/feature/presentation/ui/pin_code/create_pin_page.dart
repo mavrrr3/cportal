@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_text.dart';
 import 'package:flutter/material.dart';
@@ -36,24 +38,7 @@ class CreatePinPage extends StatelessWidget {
               }
             }),
             builder: ((context, state) {
-              switch (state.status) {
-                case PinCodeInputEnum.create:
-                case PinCodeInputEnum.creating:
-                  return const BodyWidget(input: PinCodeInputEnum.create);
-                case PinCodeInputEnum.repeat:
-                case PinCodeInputEnum.repeating:
-                  return const BodyWidget(input: PinCodeInputEnum.repeat);
-
-                case PinCodeInputEnum.wrongRepeat:
-                  return const BodyWidget(
-                    input: PinCodeInputEnum.wrongRepeat,
-                  );
-                case PinCodeInputEnum.error:
-                  return const BodyWidget(input: PinCodeInputEnum.error);
-
-                default:
-                  return const Center(child: CircularProgressIndicator());
-              }
+              return BodyWidget(input: state.status);
             }),
           ),
         ),
@@ -88,18 +73,17 @@ class BodyWidget extends StatelessWidget {
           input,
           context,
         ),
-        SizedBox(height: 16.h),
-        const PinCodeInput(),
-        SizedBox(height: 8.h),
+        Padding(
+          padding: EdgeInsets.only(top: 16.h, bottom: 8.h),
+          child: const PinCodeInput(),
+        ),
       ],
     );
   }
 }
 
 class PinCodeInput extends StatefulWidget {
-  const PinCodeInput({
-    Key? key,
-  }) : super(key: key);
+  const PinCodeInput({Key? key}) : super(key: key);
 
   @override
   _PinCodeInputState createState() => _PinCodeInputState();
@@ -115,6 +99,9 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
   @override
   Widget build(BuildContext context) {
+    PinCodeBloc pinCodeBloc =
+        BlocProvider.of<PinCodeBloc>(context, listen: false);
+
     final defaultPinTheme = PinTheme(
       width: 16.w,
       height: 14.h,
@@ -142,7 +129,7 @@ class _PinCodeInputState extends State<PinCodeInput> {
           focusedPinTheme: defaultPinTheme,
           showCursor: false,
           onChanged: (value) {
-            BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+            pinCodeBloc.add(
               ChangedPinCode(
                 status: state.status,
                 pinCode: value,
@@ -150,18 +137,14 @@ class _PinCodeInputState extends State<PinCodeInput> {
             );
           },
           onCompleted: (value) {
-            BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+            pinCodeBloc.add(
               CreatePinCodeSubmit(
                 pinCode: value,
                 status: state.status,
               ),
             );
-            if (state.doesItNeedToClean) {
-              Future.delayed(
-                const Duration(milliseconds: 600),
-                () => _pinController.text = '',
-              );
-            }
+
+            state.cleanField(_pinController);
           },
         );
       },
