@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,12 +45,16 @@ class ChangeTheme extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  debugPrint('');
+                  AdaptiveTheme.of(context).setLight();
+                  debugPrint('Current theme is light');
                 },
                 child: Text(
                   AppLocalizations.of(context)!.lightTheme,
-                  style: theme.textTheme.bodyText1!
-                      .copyWith(color: theme.splashColor),
+                  style: theme.textTheme.bodyText1!.copyWith(
+                    color: theme.brightness == Brightness.light
+                        ? theme.splashColor
+                        : theme.hoverColor,
+                  ),
                 ),
               ),
               TextButton(
@@ -61,7 +66,8 @@ class ChangeTheme extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // TODO реализовать переключение темы
+                  AdaptiveTheme.of(context).setDark();
+                  debugPrint('Current theme is dark');
                 },
                 child: Text(
                   AppLocalizations.of(context)!.darkTheme,
@@ -78,7 +84,8 @@ class ChangeTheme extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  debugPrint('');
+                  AdaptiveTheme.of(context).setSystem();
+                  debugPrint('Current theme is system');
                 },
                 child: Text(
                   AppLocalizations.of(context)!.standartTheme,
