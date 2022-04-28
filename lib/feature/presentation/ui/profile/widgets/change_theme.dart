@@ -16,12 +16,12 @@ class ChangeTheme extends StatefulWidget {
 }
 
 class _ChangeThemeState extends State<ChangeTheme> {
-  late int _indexServices;
+  late int _index;
   late bool _canVibrate;
 
   @override
   void initState() {
-    _indexServices = 0;
+    _index = 0;
     _canVibrate = true;
     _initVibrate();
     super.initState();
@@ -40,11 +40,11 @@ class _ChangeThemeState extends State<ChangeTheme> {
     final double width = MediaQuery.of(context).size.width;
 
     if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light) {
-      _indexServices = 0;
+      _index = 0;
     } else if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark) {
-      _indexServices = 1;
+      _index = 1;
     } else {
-      _indexServices = 2;
+      _index = 2;
     }
 
     return Column(
@@ -78,7 +78,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                       _vibrate(_canVibrate);
                       AdaptiveTheme.of(context).setLight();
                       setState(() {
-                        _indexServices = 0;
+                        _index = 0;
                       });
                     },
                   ),
@@ -88,7 +88,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                       _vibrate(_canVibrate);
                       AdaptiveTheme.of(context).setDark();
                       setState(() {
-                        _indexServices = 1;
+                        _index = 1;
                       });
                     },
                   ),
@@ -98,7 +98,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                       _vibrate(_canVibrate);
                       AdaptiveTheme.of(context).setSystem();
                       setState(() {
-                        _indexServices = 2;
+                        _index = 2;
                       });
                     },
                   ),
@@ -107,9 +107,9 @@ class _ChangeThemeState extends State<ChangeTheme> {
               AnimatedAlign(
                 duration: const Duration(milliseconds: 150),
                 curve: Curves.easeIn,
-                alignment: _indexServices == 0
+                alignment: _index == 0
                     ? Alignment.centerLeft
-                    : _indexServices == 1
+                    : _index == 1
                         ? Alignment.center
                         : Alignment.topRight,
                 child: Container(
@@ -127,7 +127,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                     ],
                   ),
                   child: Text(
-                    _getTextForContainer(_indexServices),
+                    _getTextForContainer(_index),
                     style: theme.textTheme.bodyText1!.copyWith(
                       color: theme.brightness == Brightness.light
                           ? theme.splashColor
