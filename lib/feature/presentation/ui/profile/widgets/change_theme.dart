@@ -119,6 +119,12 @@ class _ChangeThemeState extends State<ChangeTheme> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
                     color: theme.primaryColor,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 4,
+                        color: Colors.black.withOpacity(0.31),
+                      ),
+                    ],
                   ),
                   child: Text(
                     _getTextForContainer(_indexServices),
