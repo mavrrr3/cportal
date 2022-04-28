@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-
 class Onboarding extends StatefulWidget {
   const Onboarding({
     Key? key,
@@ -58,8 +57,10 @@ class _OnboardingState extends State<Onboarding>
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-
+    final ThemeData theme = Theme.of(context);
+    
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: (details) => _onTapDown(details, _onboardingContent),

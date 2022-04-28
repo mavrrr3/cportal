@@ -148,9 +148,15 @@ class _ProfilePageState extends State<ProfilePage> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              leading: Icon(
-                Icons.close,
-                color: theme.hoverColor,
+              leading: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  GoRouter.of(context).pop();
+                },
+                child: Icon(
+                  Icons.close,
+                  color: theme.hoverColor,
+                ),
               ),
               title: Text(
                 AppLocalizations.of(context)!.profile,
@@ -158,6 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.only(
                   left: 16.0.w,

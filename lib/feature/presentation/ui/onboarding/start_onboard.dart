@@ -66,52 +66,56 @@ class StartBoarding extends StatelessWidget {
       ),
     ];
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20.0.w,
+    return Scaffold(
+      backgroundColor: theme.backgroundColor,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.0.w,
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 87.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.welcome,
+                          style: theme.textTheme.headline2,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!
+                              .findImportantInformation,
+                          style: theme.textTheme.headline5,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          child: Column(
-            children: [
-              SizedBox(height: 87.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.welcome,
-                        style: theme.textTheme.headline2,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.findImportantInformation,
-                        style: theme.textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Button.factory(
+              context,
+              ButtonEnum.blue,
+              AppLocalizations.of(context)!.forward,
+              () {
+                GoRouter.of(context).pushNamed(
+                  NavigationRouteNames.onboarding,
+                  extra: _onboardingContent,
+                );
+              },
+              Size(double.infinity, 48.h),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Button.factory(
-            context,
-            ButtonEnum.blue,
-            AppLocalizations.of(context)!.forward,
-            () {
-              GoRouter.of(context).pushNamed(
-                NavigationRouteNames.onboarding,
-                extra: _onboardingContent,
-              );
-            },
-            Size(double.infinity, 48.h),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -34,7 +34,10 @@ class _OnboardingLearningCourseState extends State<OnboardingLearningCourse>
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 16.h,
