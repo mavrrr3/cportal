@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
@@ -89,8 +90,8 @@ class _MainPageState extends State<MainPage> {
                           duration: const Duration(milliseconds: 150),
                           opacity: _isAnimation ? 0 : 1,
                           child: GestureDetector(
-                            onTap: (() =>
-                                context.goNamed(NavigationRouteNames.profile)),
+                            onTap: (() => context
+                                .pushNamed(NavigationRouteNames.profile)),
                             child: AvatarBox(
                               isAnimation: _isAnimation,
                               size: 40,

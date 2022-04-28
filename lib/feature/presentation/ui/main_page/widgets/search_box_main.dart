@@ -39,7 +39,11 @@ class SearchBoxMain extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: SvgIcon(null, path: 'search.svg', width: 20.w),
+            child: SvgIcon(
+              theme.brightness == Brightness.dark ? theme.hoverColor : null,
+              path: 'search.svg',
+              width: 20.w,
+            ),
           ),
           SizedBox(
             width: 200.w,

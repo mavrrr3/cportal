@@ -40,7 +40,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/onboarding_start',
+  initialLocation: '/main_page',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -172,7 +172,7 @@ final GoRouter router = GoRouter(
       path: '/onboarding_start',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: StartBoarding()),
+        child: const StartBoarding(),
       ),
     ),
     GoRoute(
