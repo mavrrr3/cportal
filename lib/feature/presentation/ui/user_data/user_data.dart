@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:swipe/swipe.dart';
 
 class UserData extends StatelessWidget {
   const UserData({Key? key}) : super(key: key);
@@ -23,71 +24,77 @@ class UserData extends StatelessWidget {
     ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
     final ThemeData theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => context.goNamed(NavigationRouteNames.profile),
-          icon: Icon(
-            Icons.arrow_back,
-            color: theme.hoverColor,
+    return Swipe(
+      onSwipeRight: () => context.goNamed(NavigationRouteNames.profile),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () => context.goNamed(NavigationRouteNames.profile),
+            icon: Icon(
+              Icons.arrow_back,
+              color: theme.hoverColor,
+            ),
+          ),
+          title: Text(
+            AppLocalizations.of(context)!.yourData,
+            style: theme.textTheme.headline2,
           ),
         ),
-        title: Text(
-          AppLocalizations.of(context)!.yourData,
-          style: theme.textTheme.headline2,
+        body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
+          builder: (context, state) {
+            if (state is GetSingleProfileLoadedState) {
+              final ProfileEntity profile = state.profile;
+
+              return Padding(
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  bottom: 16.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 33.h),
+                    const PhoneBox(),
+                    SizedBox(height: 24.h),
+                    UserDataRow(
+                      normalText: AppLocalizations.of(context)!.position,
+                      boldText: profile.position.description,
+                    ),
+                    SizedBox(height: 8.h),
+                    UserDataRow(
+                      normalText: AppLocalizations.of(context)!.department,
+                      boldText: profile.position.department,
+                    ),
+                    SizedBox(height: 8.h),
+                    UserDataRow(
+                      normalText: AppLocalizations.of(context)!.birthDay,
+                      boldText: profile.birthday,
+                    ),
+                    SizedBox(height: 8.h),
+                    UserDataRow(
+                      normalText: AppLocalizations.of(context)!.email,
+                      boldText: profile.email,
+                    ),
+                    const Expanded(child: SizedBox.shrink()),
+                    Button.factory(
+                      context,
+                      ButtonEnum.blue,
+                      'Сохранить',
+                      () {
+                        // TODO раелизовать сохранение номера
+                      },
+                      Size(double.infinity, 48.h),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return const Center(child: CircularProgressIndicator());
+          },
         ),
-      ),
-      body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
-        builder: (context, state) {
-          if (state is GetSingleProfileLoadedState) {
-            final ProfileEntity profile = state.profile;
-
-            return Padding(
-              padding:
-                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 33.h),
-                  const PhoneBox(),
-                  SizedBox(height: 24.h),
-                  UserDataRow(
-                    normalText: AppLocalizations.of(context)!.position,
-                    boldText: profile.position.description,
-                  ),
-                  SizedBox(height: 8.h),
-                  UserDataRow(
-                    normalText: AppLocalizations.of(context)!.department,
-                    boldText: profile.position.department,
-                  ),
-                  SizedBox(height: 8.h),
-                  UserDataRow(
-                    normalText: AppLocalizations.of(context)!.birthDay,
-                    boldText: profile.birthday,
-                  ),
-                  SizedBox(height: 8.h),
-                  UserDataRow(
-                    normalText: AppLocalizations.of(context)!.email,
-                    boldText: profile.email,
-                  ),
-                  const Expanded(child: SizedBox.shrink()),
-                  Button.factory(
-                    context,
-                    ButtonEnum.blue,
-                    'Сохранить',
-                    () {
-                      // TODO раелизовать сохранение номера
-                    },
-                    Size(double.infinity, 48.h),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return const Center(child: CircularProgressIndicator());
-        },
       ),
     );
   }

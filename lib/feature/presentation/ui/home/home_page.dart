@@ -48,7 +48,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final Color _nonActiveColor = theme.hoverColor.withOpacity(0.48);
+    final Color _nonActiveColor = theme.brightness == Brightness.light
+        ? theme.hoverColor.withOpacity(0.48)
+        : theme.cardColor.withOpacity(0.48);
     final Color _activeColor = theme.primaryColor;
 
     final double _width = MediaQuery.of(context).size.width;
@@ -64,7 +66,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     ];
 
     Color _iconColor(int index) {
+
       return _selectedItemIndex == index ? _activeColor : _nonActiveColor;
+    }
+
+    Color _textColor(int index) {
+      final ThemeData theme = Theme.of(context);
+
+      // ignore: prefer-conditional-expressions
+      if (theme.brightness == Brightness.light) {
+        return _selectedItemIndex == index ? _activeColor : _nonActiveColor;
+      } else {
+        return _selectedItemIndex == index ? _activeColor : Colors.white;
+      }
     }
 
     GestureDetector _navBarItem({
@@ -80,7 +94,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: Container(
           height: 56.h,
           width: width / 5,
-          decoration:  BoxDecoration(
+          decoration: BoxDecoration(
             color: theme.splashColor,
           ),
           child: Column(
@@ -92,7 +106,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               Text(
                 text,
                 style: theme.textTheme.bodyText2!.copyWith(
-                  color: _iconColor(index),
+                  color: _textColor(index),
                 ),
               ),
               SizedBox(height: 5.h),

@@ -28,7 +28,12 @@ class Button {
             ),
           ),
           onPressed: () => function(),
-          child: _TextForButton(text, theme.splashColor),
+          child: _TextForButton(
+            text,
+            theme.brightness == Brightness.light
+                ? theme.splashColor
+                : theme.hoverColor,
+          ),
         );
       case ButtonEnum.outlined:
         return OutlinedButton(
