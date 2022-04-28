@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/util/keep_alive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -26,7 +28,7 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
   final PageController _pageController = PageController();
-  int _currentIndex = 0;
+  late int _currentIndex = 0;
   late NewsCodeEnum _currentType;
 
   @override
@@ -46,8 +48,8 @@ class _NewsPageState extends State<NewsPage> {
   Widget build(BuildContext context) {
     // Для обновления стейта при смене страницы в BottomBar
     if (widget.pageType != _currentType) {
-      _contentInit(_currentType);
       _currentType = widget.pageType;
+      _contentInit(_currentType);
       _currentIndex = 0;
     }
     final double width = MediaQuery.of(context).size.width;
