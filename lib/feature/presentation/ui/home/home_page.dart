@@ -66,7 +66,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     ];
 
     Color _iconColor(int index) {
-      final ThemeData theme = Theme.of(context);
 
       return _selectedItemIndex == index ? _activeColor : _nonActiveColor;
     }
