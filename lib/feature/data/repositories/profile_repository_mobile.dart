@@ -2,8 +2,7 @@ import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/core/platform/network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
-
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -20,7 +19,7 @@ class ProfileRepositoryMobile implements IProfileRepository {
   });
 
   @override
-  Future<Either<Failure, ProfileEntity>> getSingleProfile(String id) async {
+  Future<Either<Failure, ProfileModel>> getSingleProfile(String id) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteUser = await remoteDataSource.getSingleProfile(id);
@@ -41,7 +40,7 @@ class ProfileRepositoryMobile implements IProfileRepository {
   }
 
   @override
-  Future<Either<Failure, List<ProfileEntity>>> searchProfiles(
+  Future<Either<Failure, List<ProfileModel>>> searchProfiles(
     String query,
   ) async {
     try {

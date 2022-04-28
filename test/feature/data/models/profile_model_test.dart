@@ -42,7 +42,7 @@ void main() {
     'should return valid [ProfileModel] model',
     () async {
       // arrange
-      const String stringUser = '''
+      const String stringProfile = '''
                           {
 "id": "A1B2C3D4E5",
 "external_id": "8877",
@@ -78,7 +78,7 @@ void main() {
 
       //act
       final ProfileModel profileModelFromString =
-          profileModelFromJson(stringUser);
+          profileModelFromJson(stringProfile);
 
       //assert
       expect(profileModelFromString, equals(tProfileModel));
