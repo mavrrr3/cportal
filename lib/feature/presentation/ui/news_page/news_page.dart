@@ -26,7 +26,7 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
   final PageController _pageController = PageController();
-  int _currentIndex = 0;
+  late int _currentIndex = 0;
   late NewsCodeEnum _currentType;
 
   @override
@@ -46,8 +46,8 @@ class _NewsPageState extends State<NewsPage> {
   Widget build(BuildContext context) {
     // Для обновления стейта при смене страницы в BottomBar
     if (widget.pageType != _currentType) {
-      _contentInit(_currentType);
       _currentType = widget.pageType;
+      _contentInit(_currentType);
       _currentIndex = 0;
     }
     final double width = MediaQuery.of(context).size.width;
