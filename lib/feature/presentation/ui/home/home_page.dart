@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
@@ -22,11 +23,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  late List<MenuButtonModel> _menuItems;
   Timer? timer;
 
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
+    _menuItems = [
+      MenuButtonModel(
+        img: 'assets/icons/navbar/main.svg',
+        text: 'Главная',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/news.svg',
+        text: 'Новости',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/questions.svg',
+        text: 'Вопросы',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/declaration.svg',
+        text: 'Заявки',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/contacts.svg',
+        text: 'Контакты',
+      ),
+    ];
 
     super.initState();
   }
@@ -127,28 +151,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             visible: false,
             visibleWhen: const [Condition<dynamic>.largerThan(name: TABLET)],
             child: DesktopMenu(
-              items: [
-                MenuButtonModel(
-                  img: 'assets/icons/navbar/main.svg',
-                  text: 'Главная',
-                ),
-                MenuButtonModel(
-                  img: 'assets/icons/navbar/news.svg',
-                  text: 'Новости',
-                ),
-                MenuButtonModel(
-                  img: 'assets/icons/navbar/questions.svg',
-                  text: 'Вопросы',
-                ),
-                MenuButtonModel(
-                  img: 'assets/icons/navbar/declaration.svg',
-                  text: 'Заявки',
-                ),
-                MenuButtonModel(
-                  img: 'assets/icons/navbar/contacts.svg',
-                  text: 'Контакты',
-                ),
-              ],
+              currentIndex: _selectedItemIndex,
+              onChange: (index) {
+                setState(() {
+                  _selectedItemIndex = index;
+                });
+              },
+              items: _menuItems,
             ),
           ),
           Expanded(child: _listPages[_selectedItemIndex]),
