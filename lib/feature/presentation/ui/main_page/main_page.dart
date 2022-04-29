@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
@@ -67,7 +68,7 @@ class _MainPageState extends State<MainPage> {
             ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: getPagePadding(context),
               child: SingleChildScrollView(
                 physics: _isAnimation
                     ? const NeverScrollableScrollPhysics()
@@ -79,7 +80,6 @@ class _MainPageState extends State<MainPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 11),
                       Row(
                         // mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

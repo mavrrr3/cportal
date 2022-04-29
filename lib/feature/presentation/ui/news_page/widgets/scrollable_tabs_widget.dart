@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,7 +29,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+          padding: getHorizontalPadding(context),
           child: SizedBox(
             width: width,
             height: 28.0.h,

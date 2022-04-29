@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,13 +19,17 @@ class SearchBox extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+            ? const EdgeInsets.only(left: 32)
+            : getHorizontalPadding(context),
         child: AnimatedOpacity(
           duration: animationDuration,
           opacity: isAnimation ? 1 : 0,
           curve: Curves.easeIn,
           child: Padding(
-            padding: const EdgeInsets.only(top: 56.0),
+            padding: EdgeInsets.only(
+              top: ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 60 : 56,
+            ),
             child: AnimatedContainer(
               duration: animationDuration,
               curve: Curves.easeIn,

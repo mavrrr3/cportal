@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/util/keep_alive_util.dart';
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'widgets/scrollable_tabs_widget.dart';
@@ -61,7 +63,7 @@ class _NewsPageState extends State<NewsPage> {
             children: [
               const SizedBox(height: 12),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: getHorizontalPadding(context),
                 child: Text(
                   _getPageTitle(_currentType),
                   style: theme.textTheme.headline2,
@@ -111,9 +113,7 @@ class _NewsPageState extends State<NewsPage> {
                             ...List.generate(state.tabs.length, (index) {
                               return KeepAlivePage(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                  ),
+                                  padding: getHorizontalPadding(context),
                                   child: Column(
                                     children: [
                                       const SizedBox(height: 20),
