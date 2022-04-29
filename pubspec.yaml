@@ -68,6 +68,7 @@ dependencies:
 
   # Image Cache package
   extended_image: ^6.0.2+1
+  responsive_framework: ^0.1.7
 
 dev_dependencies:
   dart_code_metrics: ^4.13.0

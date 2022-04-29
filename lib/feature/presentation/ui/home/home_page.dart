@@ -4,9 +4,11 @@ import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 
 int _selectedItemIndex = 0;
 
@@ -66,7 +68,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     ];
 
     Color _iconColor(int index) {
-
       return _selectedItemIndex == index ? _activeColor : _nonActiveColor;
     }
 
@@ -119,61 +120,63 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return Scaffold(
       body: _listPages[_selectedItemIndex],
       bottomNavigationBar: SizedBox(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _navBarItem(
-              index: 0,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(0),
-                path: 'navbar/main.svg',
-                width: 24.w,
-              ),
-              text: 'Главная',
-            ),
-            _navBarItem(
-              index: 1,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(1),
-                path: 'navbar/news.svg',
-                width: 20.w,
-              ),
-              text: 'Новости',
-            ),
-            _navBarItem(
-              index: 2,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(2),
-                path: 'navbar/questions.svg',
-                width: 22.w,
-              ),
-              text: 'Вопросы',
-            ),
-            _navBarItem(
-              index: 3,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(3),
-                path: 'navbar/declaration.svg',
-                width: 22.0.w,
-              ),
-              text: 'Заявки',
-            ),
-            _navBarItem(
-              index: 4,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(4),
-                path: 'navbar/contacts.svg',
-                width: 20.0.w,
-              ),
-              text: 'Контакты',
-            ),
-          ],
-        ),
+        child: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _navBarItem(
+                    index: 0,
+                    width: _width,
+                    iconWidget: SvgIcon(
+                      _iconColor(0),
+                      path: 'navbar/main.svg',
+                      width: 24.w,
+                    ),
+                    text: 'Главная',
+                  ),
+                  _navBarItem(
+                    index: 1,
+                    width: _width,
+                    iconWidget: SvgIcon(
+                      _iconColor(1),
+                      path: 'navbar/news.svg',
+                      width: 20.w,
+                    ),
+                    text: 'Новости',
+                  ),
+                  _navBarItem(
+                    index: 2,
+                    width: _width,
+                    iconWidget: SvgIcon(
+                      _iconColor(2),
+                      path: 'navbar/questions.svg',
+                      width: 22.w,
+                    ),
+                    text: 'Вопросы',
+                  ),
+                  _navBarItem(
+                    index: 3,
+                    width: _width,
+                    iconWidget: SvgIcon(
+                      _iconColor(3),
+                      path: 'navbar/declaration.svg',
+                      width: 22.0.w,
+                    ),
+                    text: 'Заявки',
+                  ),
+                  _navBarItem(
+                    index: 4,
+                    width: _width,
+                    iconWidget: SvgIcon(
+                      _iconColor(4),
+                      path: 'navbar/contacts.svg',
+                      width: 20.0.w,
+                    ),
+                    text: 'Контакты',
+                  ),
+                ],
+              )
+            : const SizedBox(),
       ),
     );
   }
