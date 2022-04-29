@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/util/keep_alive_util.dart';
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
@@ -59,19 +60,19 @@ class _NewsPageState extends State<NewsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 12.h),
+              const SizedBox(height: 12),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                padding: getHorizontalPadding(context),
                 child: Text(
                   _getPageTitle(_currentType),
                   style: theme.textTheme.headline2,
                 ),
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               if (state is FetchNewsLoadingState) ...[
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 60.0.h),
-                  child: const Center(
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 60.0),
+                  child: Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 3,
                     ),
@@ -102,7 +103,7 @@ class _NewsPageState extends State<NewsPage> {
                       },
                       child: SizedBox(
                         width: width,
-                        height: MediaQuery.of(context).size.height - 181.h,
+                        height: MediaQuery.of(context).size.height - 181,
                         child: PageView(
                           controller: _pageController,
                           physics: const NeverScrollableScrollPhysics(),
@@ -111,11 +112,10 @@ class _NewsPageState extends State<NewsPage> {
                             ...List.generate(state.tabs.length, (index) {
                               return KeepAlivePage(
                                 child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 16.0.w),
+                                  padding: getHorizontalPadding(context),
                                   child: Column(
                                     children: [
-                                      SizedBox(height: 20.h),
+                                      const SizedBox(height: 20),
 
                                       // Контент
                                       _content(state, width),
@@ -167,7 +167,7 @@ class _NewsPageState extends State<NewsPage> {
             // [Вопросы]
             if (articles[index].category == state.tabs[_currentIndex]) {
               return Padding(
-                padding: EdgeInsets.only(bottom: 30.0.h),
+                padding: const EdgeInsets.only(bottom: 30.0),
                 child: FaqRow(
                   text: articles[index].header,
                   onTap: () {

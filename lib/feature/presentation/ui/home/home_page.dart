@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 int _selectedItemIndex = 0;
 
@@ -20,11 +20,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  late List<MenuButtonModel> _menuItems;
   Timer? timer;
-
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
+    _menuItems = [
+      MenuButtonModel(
+        img: 'assets/icons/navbar/main.svg',
+        text: 'Главная',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/news.svg',
+        text: 'Новости',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/questions.svg',
+        text: 'Вопросы',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/declaration.svg',
+        text: 'Заявки',
+      ),
+      MenuButtonModel(
+        img: 'assets/icons/navbar/contacts.svg',
+        text: 'Контакты',
+      ),
+    ];
 
     super.initState();
   }
@@ -101,16 +123,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 5.h),
+              const SizedBox(height: 5),
               iconWidget,
-              SizedBox(height: 5.h),
+              const SizedBox(height: 5),
               Text(
                 text,
                 style: theme.textTheme.bodyText2!.copyWith(
                   color: _textColor(index),
                 ),
               ),
-              SizedBox(height: 5.h),
+              const SizedBox(height: 5),
             ],
           ),
         ),
@@ -118,65 +140,87 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
 
     return Scaffold(
-      body: _listPages[_selectedItemIndex],
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResponsiveVisibility(
+            visible: false,
+            visibleWhen: const [Condition<dynamic>.largerThan(name: TABLET)],
+            child: DesktopMenu(
+              currentIndex: _selectedItemIndex,
+              onChange: (index) {
+                setState(() {
+                  _selectedItemIndex = index;
+                });
+              },
+              items: _menuItems,
+            ),
+          ),
+          Expanded(
+            // Это потому что SingleChildScrollView должен быть именно в этом месте, но когда срабатывает анимация из-за него приложение ломается
+            child: _listPages[_selectedItemIndex],
+          ),
+        ],
+      ),
       bottomNavigationBar: SizedBox(
-        child: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _navBarItem(
-                    index: 0,
-                    width: _width,
-                    iconWidget: SvgIcon(
-                      _iconColor(0),
-                      path: 'navbar/main.svg',
-                      width: 24.w,
-                    ),
-                    text: 'Главная',
-                  ),
-                  _navBarItem(
-                    index: 1,
-                    width: _width,
-                    iconWidget: SvgIcon(
-                      _iconColor(1),
-                      path: 'navbar/news.svg',
-                      width: 20.w,
-                    ),
-                    text: 'Новости',
-                  ),
-                  _navBarItem(
-                    index: 2,
-                    width: _width,
-                    iconWidget: SvgIcon(
-                      _iconColor(2),
-                      path: 'navbar/questions.svg',
-                      width: 22.w,
-                    ),
-                    text: 'Вопросы',
-                  ),
-                  _navBarItem(
-                    index: 3,
-                    width: _width,
-                    iconWidget: SvgIcon(
-                      _iconColor(3),
-                      path: 'navbar/declaration.svg',
-                      width: 22.0.w,
-                    ),
-                    text: 'Заявки',
-                  ),
-                  _navBarItem(
-                    index: 4,
-                    width: _width,
-                    iconWidget: SvgIcon(
-                      _iconColor(4),
-                      path: 'navbar/contacts.svg',
-                      width: 20.0.w,
-                    ),
-                    text: 'Контакты',
-                  ),
-                ],
-              )
-            : const SizedBox(),
+        child: ResponsiveVisibility(
+          hiddenWhen: const [Condition<dynamic>.largerThan(name: TABLET)],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _navBarItem(
+                index: 0,
+                width: _width,
+                iconWidget: SvgIcon(
+                  _iconColor(0),
+                  path: 'navbar/main.svg',
+                  width: 24,
+                ),
+                text: 'Главная',
+              ),
+              _navBarItem(
+                index: 1,
+                width: _width,
+                iconWidget: SvgIcon(
+                  _iconColor(1),
+                  path: 'navbar/news.svg',
+                  width: 20,
+                ),
+                text: 'Новости',
+              ),
+              _navBarItem(
+                index: 2,
+                width: _width,
+                iconWidget: SvgIcon(
+                  _iconColor(2),
+                  path: 'navbar/questions.svg',
+                  width: 22,
+                ),
+                text: 'Вопросы',
+              ),
+              _navBarItem(
+                index: 3,
+                width: _width,
+                iconWidget: SvgIcon(
+                  _iconColor(3),
+                  path: 'navbar/declaration.svg',
+                  width: 22,
+                ),
+                text: 'Заявки',
+              ),
+              _navBarItem(
+                index: 4,
+                width: _width,
+                iconWidget: SvgIcon(
+                  _iconColor(4),
+                  path: 'navbar/contacts.svg',
+                  width: 20.0,
+                ),
+                text: 'Контакты',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

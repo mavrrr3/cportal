@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cportal_flutter/common/app_colors.dart';  
 
 const appBarTheme = AppBarTheme(
   centerTitle: true,
@@ -111,7 +110,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [32 px]
     headline1: TextStyle(
       fontFamily: FontFamilies.roboto,
-      fontSize: 32.sp,
+      fontSize: 32,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
@@ -119,7 +118,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [28 px]
     headline2: TextStyle(
       fontFamily: FontFamilies.russo,
-      fontSize: 28.sp,
+      fontSize: 28,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
@@ -127,7 +126,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [22 px]
     headline3: TextStyle(
       fontFamily: FontFamilies.roboto,
-      fontSize: 22.sp,
+      fontSize: 22,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
@@ -135,7 +134,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [17 px]
     headline4: TextStyle(
       fontFamily: FontFamilies.roboto,
-      fontSize: 17.sp,
+      fontSize: 17,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
@@ -143,7 +142,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [16 px]
     headline5: TextStyle(
       fontFamily: FontFamilies.roboto,
-      fontSize: 16.sp,
+      fontSize: 16,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
@@ -151,7 +150,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [14 px]
     headline6: TextStyle(
       fontFamily: FontFamilies.roboto,
-      fontSize: 14.sp,
+      fontSize: 14,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
@@ -159,7 +158,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [12 px]
     bodyText1: TextStyle(
       fontFamily: FontFamilies.roboto,
-      fontSize: 12.sp,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
@@ -167,7 +166,7 @@ TextTheme _getTextTheme(Color textColor) {
     /// [9 px] BottomBar
     bodyText2: TextStyle(
       fontFamily: FontFamilies.inter,
-      fontSize: 9.sp,
+      fontSize: 9,
       fontWeight: FontWeight.w500,
       color: textColor,
     ),
