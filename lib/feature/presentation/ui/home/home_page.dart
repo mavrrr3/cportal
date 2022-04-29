@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
 
 int _selectedItemIndex = 0;
 
@@ -25,7 +22,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   late List<MenuButtonModel> _menuItems;
   Timer? timer;
-
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
@@ -160,7 +156,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               items: _menuItems,
             ),
           ),
-          Expanded(child: _listPages[_selectedItemIndex]),
+          Expanded(
+            // Это потому что SingleChildScrollView должен быть именно в этом месте, но когда срабатывает анимация из-за него приложение ломается
+            child: _listPages[_selectedItemIndex],
+          ),
         ],
       ),
       bottomNavigationBar: SizedBox(
