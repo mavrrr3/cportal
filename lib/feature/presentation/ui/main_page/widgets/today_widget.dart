@@ -57,8 +57,8 @@ class TodayWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 7),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.06),
-                                borderRadius: BorderRadius.circular(2),
+                                color: theme.cardColor.withOpacity(0.06),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                               child: Padding(
                                 padding:

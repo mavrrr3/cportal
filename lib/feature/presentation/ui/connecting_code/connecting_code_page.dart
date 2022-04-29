@@ -48,7 +48,9 @@ class ConnectingCodePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SvgIcon(
-                      null,
+                      theme.brightness == Brightness.dark
+                          ? theme.hoverColor
+                          : null,
                       path: 'logo_grey.svg',
                       width: 24.0.w,
                     ),
@@ -56,7 +58,11 @@ class ConnectingCodePage extends StatelessWidget {
                       behavior: HitTestBehavior.translucent,
                       onTap: () => GoRouter.of(context)
                           .pushNamed(NavigationRouteNames.qrScanner),
-                      child: SvgIcon(null, path: 'qr_code.svg', width: 24.0.w),
+                      child: SvgIcon(
+                        theme.primaryColor,
+                        path: 'qr_code.svg',
+                        width: 24.0.w,
+                      ),
                     ),
                   ],
                 ),
@@ -85,9 +91,7 @@ class ConnectingCodePage extends StatelessWidget {
                       child: Text(
                         AppLocalizations.of(context)!.howToGetConnectingCode,
                         style: theme.textTheme.headline6!.copyWith(
-                          color: theme.brightness == Brightness.light
-                              ? const Color(0xFF355A99)
-                              : const Color(0xFF365A99),
+                          color: theme.primaryColor,
                         ),
                       ),
                     ),

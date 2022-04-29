@@ -72,6 +72,9 @@ class CustomKeyboard extends StatelessWidget {
                     'assets/icons/backspace.svg',
                     width: 48.w,
                     height: 60.h,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : null,
                   ),
                 ),
               ),

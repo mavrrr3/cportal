@@ -73,16 +73,16 @@ class MyApp extends StatelessWidget {
         designSize: const Size(360, 640),
         builder: (() => AdaptiveTheme(
               light: lightTheme(),
-              dark: darkTheme(context),
+              dark: darkTheme(),
               initial: AdaptiveThemeMode.light,
-              builder: (theme, darkTheme) => MaterialApp.router(
+              builder: (light, dark) => MaterialApp.router(
                 routerDelegate: router.routerDelegate,
                 routeInformationParser: router.routeInformationParser,
                 debugShowCheckedModeBanner: false,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
-                theme: theme,
-                darkTheme: darkTheme,
+                theme: light,
+                darkTheme: dark,
               ),
             )),
       ),

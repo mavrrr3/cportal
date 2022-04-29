@@ -15,12 +15,12 @@ class FontFamilies {
 }
 
 /// *---* [Light Theme] *---*
-ThemeData lightTheme() => ThemeData(
+ThemeData lightTheme() => ThemeData.light().copyWith(
       brightness: Brightness.light,
 
       /// --- [Color Scheme] ---
       /// [BackGround]
-      backgroundColor: AppColors.mainBgLight,
+      backgroundColor: Colors.white,
       scaffoldBackgroundColor: AppColors.mainBgLight,
 
       /// [White]
@@ -57,78 +57,119 @@ ThemeData lightTheme() => ThemeData(
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
       /// --- [Text Theme]
-      /// Default family
-      fontFamily: FontFamilies.roboto,
 
-      textTheme: TextTheme(
-        /// [32 px]
-        headline1: TextStyle(
-          fontSize: 32.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textMain,
-        ),
-
-        /// [28 px]
-        headline2: TextStyle(
-          fontFamily: FontFamilies.russo,
-          fontSize: 28.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textMain,
-        ),
-
-        /// [22 px]
-        headline3: TextStyle(
-          fontSize: 22.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textMain,
-        ),
-
-        /// [17 px]
-        headline4: TextStyle(
-          fontSize: 17.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textMain,
-        ),
-
-        /// [16 px]
-        headline5: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textMain,
-        ),
-
-        /// [14 px]
-        headline6: TextStyle(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textMain,
-        ),
-
-        /// [12 px]
-        bodyText1: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textMain,
-        ),
-
-        /// [9 px] BottomBar
-        bodyText2: TextStyle(
-          fontFamily: FontFamilies.inter,
-          fontSize: 9.sp,
-          fontWeight: FontWeight.w500,
-          color: AppColors.textMain,
-        ),
-      ),
+      textTheme: _getTextTheme(AppColors.textMain),
     );
 
 /// *---* [Dark Theme] *---*
-ThemeData darkTheme(BuildContext context) => ThemeData.dark().copyWith(
+ThemeData darkTheme() => ThemeData.dark().copyWith(
       brightness: Brightness.dark,
-      primaryColor: AppColors.blue,
-      backgroundColor: AppColors.mainBgDark,
+
+      /// --- [Color Scheme] ---
+      /// [BackGround]
+      backgroundColor: AppColors.secondBgDark,
       scaffoldBackgroundColor: AppColors.mainBgDark,
+
+      /// [White]
+      splashColor: const Color(0xFF33383F),
+
+      /// [Blue]
+      primaryColor: AppColors.blueDark,
+
+      /// [Red]
+      errorColor: AppColors.redDark,
+
+      /// [Green]
+      focusColor: AppColors.green,
+
+      /// [Light red for PIN]
+      hintColor: const Color(0xFFFF6A55).withOpacity(0.17),
+
+      /// [Divider]
+      dividerColor: AppColors.dividerColor.withOpacity(0.08),
+
+      /// [Light Text, also for icons with custom opacity]
+      hoverColor: AppColors.textDark,
+
+      /// [Text]
+      cardColor: AppColors.textDark,
+      //------
+
+      /// [Other]
+
       appBarTheme: appBarTheme.copyWith(backgroundColor: AppColors.appBarDark),
       iconTheme: const IconThemeData(color: Colors.white),
-      textTheme: Theme.of(context).textTheme.apply(displayColor: Colors.white),
       visualDensity: VisualDensity.adaptivePlatformDensity,
+
+      /// --- [Text Theme]
+
+      textTheme: _getTextTheme(AppColors.textDark),
     );
+
+TextTheme _getTextTheme(Color textColor) {
+  return TextTheme(
+    /// [32 px]
+    headline1: TextStyle(
+      fontFamily: FontFamilies.roboto,
+      fontSize: 32.sp,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+
+    /// [28 px]
+    headline2: TextStyle(
+      fontFamily: FontFamilies.russo,
+      fontSize: 28.sp,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+
+    /// [22 px]
+    headline3: TextStyle(
+      fontFamily: FontFamilies.roboto,
+      fontSize: 22.sp,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+
+    /// [17 px]
+    headline4: TextStyle(
+      fontFamily: FontFamilies.roboto,
+      fontSize: 17.sp,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+
+    /// [16 px]
+    headline5: TextStyle(
+      fontFamily: FontFamilies.roboto,
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+
+    /// [14 px]
+    headline6: TextStyle(
+      fontFamily: FontFamilies.roboto,
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+
+    /// [12 px]
+    bodyText1: TextStyle(
+      fontFamily: FontFamilies.roboto,
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      color: textColor,
+    ),
+
+    /// [9 px] BottomBar
+    bodyText2: TextStyle(
+      fontFamily: FontFamilies.inter,
+      fontSize: 9.sp,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+    ),
+  );
+}

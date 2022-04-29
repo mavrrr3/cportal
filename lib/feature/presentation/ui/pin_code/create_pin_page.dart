@@ -99,12 +99,15 @@ class _PinCodeInputState extends State<PinCodeInput> {
   Widget build(BuildContext context) {
     PinCodeBloc pinCodeBloc =
         BlocProvider.of<PinCodeBloc>(context, listen: false);
+    final ThemeData theme = Theme.of(context);
 
     final defaultPinTheme = PinTheme(
       width: 16.w,
       height: 14.h,
       decoration: BoxDecoration(
-        color: AppColors.kLightTextColor.withOpacity(0.2),
+        color: theme.brightness == Brightness.light
+            ? AppColors.kLightTextColor.withOpacity(0.2)
+            : theme.backgroundColor,
         borderRadius: BorderRadius.circular(15),
       ),
     );

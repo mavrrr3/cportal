@@ -89,8 +89,8 @@ class _MainPageState extends State<MainPage> {
                           duration: const Duration(milliseconds: 150),
                           opacity: _isAnimation ? 0 : 1,
                           child: GestureDetector(
-                            onTap: (() =>
-                                context.goNamed(NavigationRouteNames.profile)),
+                            onTap: (() => context
+                                .pushNamed(NavigationRouteNames.profile)),
                             child: AvatarBox(
                               isAnimation: _isAnimation,
                               size: 40,
