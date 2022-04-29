@@ -68,6 +68,7 @@ dependencies:
 
   # Image Cache package
   extended_image: ^6.0.2+1
+  responsive_framework: ^0.1.7
 
 dev_dependencies:
   dart_code_metrics: ^4.13.0
@@ -75,12 +76,13 @@ dev_dependencies:
   l: ^3.2.0
   hive_generator: ^1.1.2
   flutter_launcher_icons: ^0.9.2
-
+  build_runner: ^2.1.8
   # Testing packages
   flutter_test:
     sdk: flutter
   mockito: ^5.1.0
-  build_runner: ^2.1.8
+  mocktail: ^0.3.0
+  test: ^1.19.5
 
 flutter:
   generate: true

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FaqRow extends StatelessWidget {
@@ -28,7 +27,7 @@ class FaqRow extends StatelessWidget {
           ),
           SvgPicture.asset(
             'assets/icons/question_arrow.svg',
-            width: 8.w,
+            width: 8,
           ),
         ],
       ),

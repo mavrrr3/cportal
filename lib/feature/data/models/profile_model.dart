@@ -15,6 +15,8 @@ String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 PhoneModel phoneModelFromJson(String str) =>
     PhoneModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
+String phoneModelToJson(PhoneModel data) => json.encode(data.toJson());
+
 @HiveType(typeId: 2)
 class ProfileModel extends ProfileEntity {
   @HiveField(0)
@@ -130,8 +132,8 @@ class ProfileModel extends ProfileEntity {
         'photo_link': photoLink,
         'active': active,
         'position': position.toJson(),
-        'phone': List<PhoneModel>.from(
-          phone.map((x) => x.toJson()) as Iterable<PhoneModel>,
+        'phone': List<String>.from(
+          phone.map((x) => phoneModelToJson(x)).toList(),
         ),
         'user_created': userCreated,
         'date_created': dateCreated.toIso8601String(),
