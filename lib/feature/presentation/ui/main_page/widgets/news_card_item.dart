@@ -28,8 +28,8 @@ class NewsCardItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: width ?? 220.w,
-          height: height ?? 106.h,
+          width: width ?? 220,
+          height: height ?? 106,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             image: DecorationImage(
@@ -42,9 +42,9 @@ class NewsCardItem extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 12.h),
+        const SizedBox(height: 12),
         SizedBox(
-          width: 220.w,
+          width: 220,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,7 +55,7 @@ class NewsCardItem extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(height: 4.h),
+              const SizedBox(height: 4),
               Row(
                 children: [
                   Text(

@@ -12,7 +12,7 @@ class HorizontalListViewMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 92.h,
+      height: 92,
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -27,7 +27,7 @@ class HorizontalListViewMain extends StatelessWidget {
                 text: gridViewMap[i]['text'] as String,
                 color: color,
               ),
-              SizedBox(width: 8.w),
+              const SizedBox(width: 8),
             ],
           );
         },

@@ -17,8 +17,8 @@ class CardHorizontalScroll extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Container(
-      width: 148.w,
-      height: 92.h,
+      width: 148,
+      height: 92,
       decoration: BoxDecoration(
         color: color ?? theme.splashColor,
         borderRadius: BorderRadius.circular(12),
@@ -31,7 +31,7 @@ class CardHorizontalScroll extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 20.sp,
+              size: 20,
               color: theme.hoverColor.withOpacity(0.68),
             ),
             Text(

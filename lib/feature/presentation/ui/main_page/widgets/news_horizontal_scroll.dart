@@ -32,7 +32,7 @@ class NewsHorizontalScroll extends StatelessWidget {
             style: theme.textTheme.headline3,
           ),
         SizedBox(
-          height: 200.h,
+          height: 200,
           width: double.infinity,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -62,7 +62,7 @@ class NewsHorizontalScroll extends StatelessWidget {
                         title: listViewMap[i]['title'] as String,
                         dateTime: listViewMap[i]['dateTime'] as String,
                       ),
-                    SizedBox(width: 8.w),
+                   const SizedBox(width: 8),
                   ],
                 ),
               );
