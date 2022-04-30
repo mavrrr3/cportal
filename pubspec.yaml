@@ -98,38 +98,6 @@ flutter:
     - assets/icons/navbar/
     - assets/icons/profile/
 
-  fonts:
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/roboto/Roboto-Black.ttf
-        - asset: assets/fonts/roboto/Roboto-BlackItalic.ttf
-        - asset: assets/fonts/roboto/Roboto-Bold.ttf
-        - asset: assets/fonts/roboto/Roboto-BoldItalic.ttf
-        - asset: assets/fonts/roboto/Roboto-Italic.ttf
-        - asset: assets/fonts/roboto/Roboto-Light.ttf
-        - asset: assets/fonts/roboto/Roboto-LightItalic.ttf
-        - asset: assets/fonts/roboto/Roboto-Medium.ttf
-        - asset: assets/fonts/roboto/Roboto-MediumItalic.ttf
-        - asset: assets/fonts/roboto/Roboto-Regular.ttf
-        - asset: assets/fonts/roboto/Roboto-Thin.ttf
-        - asset: assets/fonts/roboto/Roboto-ThinItalic.ttf
-
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/inter/Inter-Black.ttf
-        - asset: assets/fonts/inter/Inter-Bold.ttf
-        - asset: assets/fonts/inter/Inter-ExtraBold.ttf
-        - asset: assets/fonts/inter/Inter-ExtraLight.ttf
-        - asset: assets/fonts/inter/Inter-Light.ttf
-        - asset: assets/fonts/inter/Inter-Medium.ttf
-        - asset: assets/fonts/inter/Inter-Regular.ttf
-        - asset: assets/fonts/inter/Inter-SemiBold.ttf
-        - asset: assets/fonts/inter/Inter-Thin.ttf
-
-    - family: Russo One
-      fonts:
-        - asset: assets/fonts/russo/RussoOne-Regular.ttf
-
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
