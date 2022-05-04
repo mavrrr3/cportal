@@ -61,7 +61,7 @@ class NewsHorizontalScroll extends StatelessWidget {
                         title: listViewMap[i]['title'] as String,
                         dateTime: listViewMap[i]['dateTime'] as String,
                       ),
-                   const SizedBox(width: 8),
+                    const SizedBox(width: 8),
                   ],
                 ),
               );

@@ -9,7 +9,9 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_h
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -98,9 +100,14 @@ class _MainPageState extends State<MainPage> {
                                     : 1
                                 : 1,
                             child: GestureDetector(
-                              onTap: (() => context.pushNamed(
-                                    NavigationRouteNames.profile,
-                                  )),
+                              onTap: (() {
+                                ResponsiveWrapper.of(context)
+                                        .isLargerThan(TABLET)
+                                    ? showProfile(context)
+                                    : context.pushNamed(
+                                        NavigationRouteNames.profile,
+                                      );
+                              }),
                               child: AvatarBox(
                                 isAnimation: !ResponsiveWrapper.of(context)
                                         .isLargerThan(TABLET)
@@ -163,4 +170,47 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+}
+
+Future<void> showProfile(BuildContext context) {
+  return showDialog(
+    context: context,
+    useRootNavigator: true,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      final ThemeData theme = Theme.of(context);
+
+      // final double width = MediaQuery.of(context).size.width;
+      // var horizontalPading = width * 0.28;
+      // log(horizontalPading.toString());
+
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Padding(
+            padding: EdgeInsets.only(
+              top: 10.h,
+              bottom: 10.h,
+              left: 100.w,
+              right: 100.w,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: theme.splashColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.only(
+                  left: 32.0,
+                  right: 32.0,
+                  bottom: 32.0,
+                  top: 32.0,
+                ),
+                child: ProfilePopUp(),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
 }
