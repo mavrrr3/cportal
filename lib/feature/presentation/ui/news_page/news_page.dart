@@ -12,6 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'widgets/scrollable_tabs_widget.dart';
@@ -103,24 +104,44 @@ class _NewsPageState extends State<NewsPage> {
                       },
                       child: SizedBox(
                         width: width,
-                        height: MediaQuery.of(context).size.height - 181,
+                        height:
+                            !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                                ? MediaQuery.of(context).size.height - 181
+                                : MediaQuery.of(context).size.height - 116,
                         child: PageView(
                           controller: _pageController,
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             // Генерация страниц под все категории
+
                             ...List.generate(state.tabs.length, (index) {
                               return KeepAlivePage(
                                 child: Padding(
                                   padding: getHorizontalPadding(context),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(height: 20),
+                                  child: !ResponsiveWrapper.of(context)
+                                          .isLargerThan(TABLET)
+                                      ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 20),
 
-                                      // Контент
-                                      _content(state, width),
-                                    ],
-                                  ),
+                                            // Контент
+                                            _content(state, width),
+                                          ],
+                                        )
+                                      : SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 20),
+
+                                              // Контент
+                                              _content(state, width),
+                                            ],
+                                          ),
+                                        ),
                                 ),
                               );
                             }),
@@ -141,50 +162,71 @@ class _NewsPageState extends State<NewsPage> {
   Widget _content(FetchNewsLoadedState state, double width) {
     List<ArticleEntity> articles = state.news.article;
 
-    return Expanded(
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: articles.length,
-        itemBuilder: (context, index) {
-          if (widget.pageType == NewsCodeEnum.news) {
-            // Распределение по категориям
-            // [Новости]
-            if (_currentIndex == 0) {
-              return _NewsCard(
-                width,
-                item: articles[index],
-                onTap: () => _onArticleSelected(index),
-              );
-            } else if (articles[index].category == state.tabs[_currentIndex]) {
-              return _NewsCard(
-                width,
-                item: articles[index],
-                onTap: () => _onArticleSelected(index),
-              );
-            }
-          } else if (widget.pageType == NewsCodeEnum.quastion) {
-            // Распределение по категориям
-            // [Вопросы]
-            if (articles[index].category == state.tabs[_currentIndex]) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 30.0),
-                child: FaqRow(
-                  text: articles[index].header,
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(
-                      NavigationRouteNames.questionArticlePage,
-                      extra: index,
-                    );
-                  },
-                ),
-              );
-            }
-          }
+    return !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+        ? Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                return _builderItem(state, width, index);
+              },
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsets.only(right: 78.0),
+            child: Wrap(
+              spacing: 16,
+              runSpacing: 20,
+              children: List.generate(articles.length, (index) {
+                return _builderItem(state, 312, index);
+              }),
+            ),
+          );
+  }
 
-          return const SizedBox();
-        },
-      ),
-    );
+  Widget _builderItem(
+    FetchNewsLoadedState state,
+    double width,
+    int index,
+  ) {
+    List<ArticleEntity> articles = state.news.article;
+
+    if (widget.pageType == NewsCodeEnum.news) {
+      // Распределение по категориям
+      // [Новости]
+      if (_currentIndex == 0) {
+        return _NewsCard(
+          width,
+          item: articles[index],
+          onTap: () => _onArticleSelected(index),
+        );
+      } else if (articles[index].category == state.tabs[_currentIndex]) {
+        return _NewsCard(
+          width,
+          item: articles[index],
+          onTap: () => _onArticleSelected(index),
+        );
+      }
+    } else if (widget.pageType == NewsCodeEnum.quastion) {
+      // Распределение по категориям
+      // [Вопросы]
+      if (articles[index].category == state.tabs[_currentIndex]) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 30.0),
+          child: FaqRow(
+            text: articles[index].header,
+            onTap: () {
+              GoRouter.of(context).pushNamed(
+                NavigationRouteNames.questionArticlePage,
+                extra: index,
+              );
+            },
+          ),
+        );
+      }
+    }
+
+    return const SizedBox();
   }
 
   void _onPageChanged(int index) {
@@ -224,14 +266,14 @@ class _NewsCard extends StatelessWidget {
     final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 20.0.h),
+      padding: const EdgeInsets.only(bottom: 20.0),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: onTap,
         child: NewsCardItem(
           width: width,
-          height: 160.h,
-          fontSize: 17.sp,
+          height: 160,
+          fontSize: 17,
           imgPath: item.image,
           title: item.header,
           dateTime: outputFormat.format(item.dateShow),
