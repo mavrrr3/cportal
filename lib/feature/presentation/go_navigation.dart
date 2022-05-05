@@ -137,7 +137,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: NewsArticlePage(currentIndex: state.extra! as int),
+        child: const NewsArticlePage(),
       ),
     ),
     GoRoute(

@@ -237,6 +237,8 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   void _onArticleSelected(int index) {
+    BlocProvider.of<FetchNewsBloc>(context)
+        .add(FetchNewsEventOpen(openedIndex: index));
     GoRouter.of(context).pushNamed(
       NavigationRouteNames.newsArticlePage,
       extra: index,

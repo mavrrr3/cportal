@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:developer';
+import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +22,10 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   void _setupEvents() {
     on<FetchNewsEventImpl>(
       _onEvent,
+      transformer: bloc_concurrency.sequential(),
+    );
+    on<FetchNewsEventOpen>(
+      _onOpen,
       transformer: bloc_concurrency.sequential(),
     );
   }
@@ -66,6 +72,22 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(FetchNewsLoadedState(news: news, tabs: tabs));
       },
     );
+  }
+
+  FutureOr<void> _onOpen(
+    FetchNewsEventOpen event,
+    Emitter emit,
+  ) {
+    final NewsEntity news = (state as FetchNewsLoadedState).news;
+    final List<String> tabs = (state as FetchNewsLoadedState).tabs;
+    emit(FetchNewsLoadingState());
+
+    emit(FetchNewsLoadedState(
+      news: news,
+      tabs: tabs,
+      openedIndex: event.openedIndex,
+    ));
+    debugPrint('Отработал эвент: $event');
   }
 }
 

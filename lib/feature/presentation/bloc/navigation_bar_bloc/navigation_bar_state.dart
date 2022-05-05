@@ -29,8 +29,4 @@ class NavBarState {
   NavBarState({
     this.currentIndex = 0,
   });
-
-  NavBarState copyWith({int? currentIndex}) {
-    return NavBarState(currentIndex: currentIndex ?? this.currentIndex);
-  }
 }

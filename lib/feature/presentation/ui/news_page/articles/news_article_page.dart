@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
@@ -16,19 +18,15 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:swipe/swipe.dart';
 
+final DateFormat _outputFormat = DateFormat('d MMMM y, H:m', 'ru');
+
 class NewsArticlePage extends StatelessWidget {
   const NewsArticlePage({
     Key? key,
-    required this.currentIndex,
   }) : super(key: key);
-  final int currentIndex;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
-
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         if (state is FetchNewsLoadedState) {
@@ -37,105 +35,15 @@ class NewsArticlePage extends StatelessWidget {
               return Swipe(
                 onSwipeRight: () => _onBack(context),
                 child: Scaffold(
-                  body: Row(
-                    children: [
-                      ResponsiveVisibility(
-                        visible: false,
-                        visibleWhen: const [
-                          Condition<dynamic>.largerThan(name: TABLET),
-                        ],
-                        child: DesktopMenu(
-                          currentIndex: navState.currentIndex,
-                          onChange: (index) {
-                            BlocProvider.of<NavBarBloc>(context)
-                                .add(NavBarEventImpl(index: index));
-                            GoRouter.of(context)
-                                .goNamed(NavigationRouteNames.mainPage);
-                          },
-                          items: navState.menuItems,
+                  body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                      ? _Mobile(
+                          state: state,
+                          navState: navState,
+                        )
+                      : _Web(
+                          state: state,
+                          navState: navState,
                         ),
-                      ),
-                      SafeArea(
-                        child: ResponsiveConstraints(
-                          constraint: const BoxConstraints(maxWidth: 640),
-                          child: CustomScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            slivers: [
-                              SliverAppBar(
-                                backgroundColor: theme.backgroundColor,
-                                expandedHeight: 176.h,
-                                automaticallyImplyLeading: false,
-                                leading: IconButton(
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                  enableFeedback: false,
-                                  icon: const Icon(Icons.arrow_back),
-                                  iconSize: 24.w,
-                                  onPressed: () => _onBack(context),
-                                ),
-                                flexibleSpace: FlexibleSpaceBar(
-                                  background: ExtendedImage.network(
-                                    state.news.article[currentIndex].image,
-                                    fit: BoxFit.cover,
-                                    cache: true,
-                                  ),
-                                ),
-                              ),
-
-                              /// Колонка с контентом статьи
-                              SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 16.0.h,
-                                    horizontal: 20.0.w,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        state.news.article[currentIndex].header,
-                                        style: theme.textTheme.headline3,
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        outputFormat.format(
-                                          state.news.article[currentIndex]
-                                              .dateShow,
-                                        ),
-                                        style: theme.textTheme.bodyText1,
-                                      ),
-                                      SizedBox(height: 20.h),
-                                      Text(
-                                        state.news.article[currentIndex]
-                                            .description,
-                                        style: theme.textTheme.headline6,
-                                      ),
-                                      SizedBox(height: 20.h),
-                                      NewsHorizontalScroll(
-                                        items: state.news.article,
-                                        isTextVisible: false,
-                                        currentArticle:
-                                            state.news.article[currentIndex],
-                                        onTap: (index) {
-                                          GoRouter.of(context).pop();
-                                          GoRouter.of(context).pushNamed(
-                                            NavigationRouteNames
-                                                .newsArticlePage,
-                                            extra: index,
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               );
             },
@@ -147,6 +55,195 @@ class NewsArticlePage extends StatelessWidget {
       },
     );
   }
-
-  void _onBack(BuildContext context) => GoRouter.of(context).pop();
 }
+
+class _Mobile extends StatelessWidget {
+  const _Mobile({
+    Key? key,
+    required this.state,
+    required this.navState,
+  }) : super(key: key);
+  final FetchNewsLoadedState state;
+  final NavBarState navState;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return SafeArea(
+      child: ResponsiveConstraints(
+        constraint: const BoxConstraints(maxWidth: 640),
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              backgroundColor: theme.backgroundColor,
+              expandedHeight: 176,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                enableFeedback: false,
+                icon: const Icon(Icons.arrow_back),
+                iconSize: 24,
+                onPressed: () => _onBack(context),
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                background: ExtendedImage.network(
+                  state.news.article[state.openedIndex!].image,
+                  fit: BoxFit.cover,
+                  cache: true,
+                ),
+              ),
+            ),
+
+            /// Колонка с контентом статьи
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 20.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      state.news.article[state.openedIndex!].header,
+                      style: theme.textTheme.headline3,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _outputFormat.format(
+                        state.news.article[state.openedIndex!].dateShow,
+                      ),
+                      style: theme.textTheme.bodyText1,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      state.news.article[state.openedIndex!].description,
+                      style: theme.textTheme.headline6,
+                    ),
+                    const SizedBox(height: 20),
+                    NewsHorizontalScroll(
+                      items: state.news.article,
+                      isTextVisible: false,
+                      currentArticle: state.news.article[state.openedIndex!],
+                      onTap: (index) {
+                        GoRouter.of(context).pop();
+                        GoRouter.of(context).pushNamed(
+                          NavigationRouteNames.newsArticlePage,
+                          extra: index,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Web extends StatelessWidget {
+  const _Web({
+    Key? key,
+    required this.state,
+    required this.navState,
+  }) : super(key: key);
+  final FetchNewsLoadedState state;
+  final NavBarState navState;
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    log('[Opened Index] ${state.openedIndex}');
+
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      DesktopMenu(
+        currentIndex: navState.currentIndex,
+        onChange: (index) {
+          BlocProvider.of<NavBarBloc>(context)
+              .add(NavBarEventImpl(index: index));
+          GoRouter.of(context).goNamed(NavigationRouteNames.mainPage);
+        },
+        items: navState.menuItems,
+      ),
+      SafeArea(
+        child: ResponsiveConstraints(
+          constraint: const BoxConstraints(maxWidth: 640),
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                backgroundColor: theme.backgroundColor,
+                expandedHeight: 176,
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  enableFeedback: false,
+                  icon: const Icon(Icons.arrow_back),
+                  iconSize: 24,
+                  onPressed: () => _onBack(context),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  background: ExtendedImage.network(
+                    state.news.article[state.openedIndex!].image,
+                    fit: BoxFit.cover,
+                    cache: true,
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16.0,
+                    horizontal: 20.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.news.article[state.openedIndex!].header,
+                        style: theme.textTheme.headline3,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _outputFormat.format(
+                          state.news.article[state.openedIndex!].dateShow,
+                        ),
+                        style: theme.textTheme.bodyText1,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        state.news.article[state.openedIndex!].description,
+                        style: theme.textTheme.headline6,
+                      ),
+                      const SizedBox(height: 20),
+                      NewsHorizontalScroll(
+                        items: state.news.article,
+                        isTextVisible: false,
+                        currentArticle: state.news.article[state.openedIndex!],
+                        onTap: (index) {
+                          GoRouter.of(context).pop();
+                          GoRouter.of(context).pushNamed(
+                            NavigationRouteNames.newsArticlePage,
+                            extra: index,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ]);
+  }
+}
+
+void _onBack(BuildContext context) => GoRouter.of(context).pop();
