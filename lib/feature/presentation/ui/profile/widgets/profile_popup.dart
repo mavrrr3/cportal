@@ -1,18 +1,17 @@
 // ignore_for_file: unused_element
-
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
-import 'package:flutter/material.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 bool _isNotificationTurnedOn = true;
@@ -97,6 +96,8 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
       );
     }
 
+    bool isNotificationTurnedOn = true;
+    bool isFingerPrintAuth = false;
     void turnOnOffNotify(bool newValue) {
       setState(() {
         _isNotificationTurnedOn = newValue;
@@ -133,10 +134,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      // ! При возврате со страницы Смотреть данные
-                      // ! и нажатии закрыть Профиль прилетает эксепшен
-                      // ! GoRouter.of(context).pop();
-                      context.goNamed(NavigationRouteNames.mainPage);
+                      Navigator.pop(context);
                     },
                     child: Icon(
                       Icons.close,
@@ -146,7 +144,6 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 ],
               ),
               const SizedBox(height: 32),
-
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 AvatarBox(
                   size: 102,
@@ -155,84 +152,193 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 const SizedBox(width: 16),
                 Column(
                   children: [
-                    Text(
-                      '${profile.firstName} ${profile.middleName} ${profile.lastName}',
-                      style: theme.textTheme.headline4!.copyWith(
-                        fontWeight: FontWeight.w800,
+                    SizedBox(
+                      width: 300,
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '${profile.firstName} ${profile.middleName} ${profile.lastName}',
+                              style: theme.textTheme.headline4!.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                              softWrap: true,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              profile.externalId,
+                              style: theme.textTheme.headline6!.copyWith(),
+                              softWrap: true,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ],
                       ),
-                      softWrap: true,
-                      textAlign: TextAlign.left,
                     ),
                   ],
                 ),
                 const Expanded(child: SizedBox()),
               ]),
-              SizedBox(height: 16.h),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      color: theme.hoverColor.withOpacity(0.08),
-                    ),
-                    bottom: BorderSide(
-                      color: theme.hoverColor.withOpacity(0.08),
-                    ),
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleAndDescriptionRow(
+                        title: AppLocalizations.of(context)!.department,
+                        description: profile.position.description,
+                      ),
+                      const SizedBox(height: 8),
+                      TitleAndDescriptionRow(
+                        title: AppLocalizations.of(context)!.position,
+                        description: profile.position.department,
+                      ),
+                    ],
                   ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0.h),
-                  child: RowProfile(
-                    firstWidget: SvgIcon(
-                      iconColor,
-                      path: 'profile/add_person.svg',
-                      width: 22.w,
-                    ),
-                    text: AppLocalizations.of(context)!.newEmpoyee,
-                    secondWidget: getBlueArrow(theme),
+                  const Expanded(child: SizedBox()),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleAndDescriptionRow(
+                        title: AppLocalizations.of(context)!.birthDay,
+                        description: profile.birthday,
+                      ),
+                      const SizedBox(height: 8),
+                      TitleAndDescriptionRow(
+                        title: AppLocalizations.of(context)!.email,
+                        description: profile.email,
+                      ),
+                    ],
                   ),
+                  const Flexible(child: SizedBox()),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TitleAndDescriptionRow(
+                  title: 'Рабочий телефон',
+                  description: profile.phone[1].number,
                 ),
               ),
-              // SizedBox(height: 24.h),
-              // RowProfile(
-              //   firstWidget: SvgIcon(
-              //     iconColor,
-              //     path: 'profile/bell.svg',
-              //     width: 21.w,
-              //   ),
-              //   text: AppLocalizations.of(context)!.notofications,
-              //   secondWidget: customSwitch(
-              //     theme,
-              //     _isNotificationTurnedOn,
-              //     turnOnOffNotify,
-              //   ),
-              // ),
-              // SizedBox(height: 24.h),
-              // RowProfile(
-              //   firstWidget: SvgIcon(
-              //     iconColor,
-              //     path: 'finger_print.svg',
-              //     width: 20.w,
-              //   ),
-              //   text: AppLocalizations.of(context)!.fingerPrint,
-              //   secondWidget: customSwitch(
-              //     theme,
-              //     _isFingerPrintAuth,
-              //     turnOnOffFingerPrintAuth,
-              //   ),
-              // ),
-              // SizedBox(height: 24.h),
-              // RowProfile(
-              //   firstWidget: SvgIcon(
-              //     iconColor,
-              //     path: 'profile/lock.svg',
-              //     width: 20.w,
-              //   ),
-              //   text: AppLocalizations.of(context)!.changePin,
-              //   secondWidget: getBlueArrow(theme),
-              //   call: () => context.goNamed(NavigationRouteNames.editPin),
-              // ),
-              // SizedBox(height: 28.h),
-              // const ChangeTheme(),
+              const SizedBox(height: 32),
+              Material(
+                color: Colors.transparent,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 350,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 350,
+                            height: 32.h,
+                            decoration: BoxDecoration(
+                              color: theme.hoverColor.withOpacity(0.04),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4),
+                                topRight: Radius.circular(4),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .yourPhoneNumber,
+                                    style: theme.textTheme.bodyText1!.copyWith(
+                                      color: theme.hoverColor.withOpacity(0.68),
+                                    ),
+                                  ),
+                                  Text(
+                                    '+7 923 456 78 91',
+                                    style: theme.textTheme.headline5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: theme.hoverColor.withOpacity(0.08),
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: RowProfile(
+                                firstWidget: SvgIcon(
+                                  iconColor,
+                                  path: 'profile/add_person.svg',
+                                  width: 22,
+                                ),
+                                text: AppLocalizations.of(context)!.newEmpoyee,
+                                secondWidget: getBlueArrow(theme),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          RowProfile(
+                            firstWidget: SvgIcon(
+                              iconColor,
+                              path: 'profile/bell.svg',
+                              width: 21,
+                            ),
+                            text: AppLocalizations.of(context)!.notofications,
+                            secondWidget: customSwitch(
+                              theme,
+                              isNotificationTurnedOn,
+                              turnOnOffNotify,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          RowProfile(
+                            firstWidget: SvgIcon(
+                              iconColor,
+                              path: 'finger_print.svg',
+                              width: 20,
+                            ),
+                            text: AppLocalizations.of(context)!.fingerPrint,
+                            secondWidget: customSwitch(
+                              theme,
+                              isFingerPrintAuth,
+                              turnOnOffFingerPrintAuth,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          RowProfile(
+                            firstWidget: SvgIcon(
+                              iconColor,
+                              path: 'profile/lock.svg',
+                              width: 20,
+                            ),
+                            text: AppLocalizations.of(context)!.changePin,
+                            secondWidget: getBlueArrow(theme),
+                            call: () =>
+                                context.goNamed(NavigationRouteNames.editPin),
+                          ),
+                          const SizedBox(height: 28),
+                          const ChangeTheme(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           );
         }
@@ -241,6 +347,284 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
           child: Text('Пусто'),
         );
       },
+    );
+  }
+}
+
+class TitleAndDescriptionRow extends StatelessWidget {
+  final String title;
+  final String description;
+  const TitleAndDescriptionRow({
+    Key? key,
+    required this.title,
+    required this.description,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.headline6!,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          description,
+          style: theme.textTheme.headline5!.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RowProfile extends StatelessWidget {
+  final Widget firstWidget;
+  final String text;
+  final Widget secondWidget;
+  final Function? call;
+  const RowProfile({
+    Key? key,
+    required this.firstWidget,
+    required this.text,
+    required this.secondWidget,
+    this.call,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Row(
+      children: [
+        firstWidget,
+        const SizedBox(
+          width: 17,
+        ),
+        Text(
+          text,
+          style: theme.textTheme.headline5!.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const Expanded(
+          child: SizedBox(),
+        ),
+        GestureDetector(
+          onTap: () => call != null ? call!() : debugPrint('call = null'),
+          child: secondWidget,
+        ),
+      ],
+    );
+  }
+}
+
+Widget getBlueArrow(ThemeData theme) {
+  return Icon(
+    Icons.arrow_forward_ios_sharp,
+    color: theme.primaryColor,
+    size: 18,
+  );
+}
+
+Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
+    Switch(
+      activeTrackColor: theme.primaryColor.withOpacity(0.38),
+      activeColor: theme.primaryColor,
+      hoverColor: Colors.transparent,
+      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
+      inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
+      inactiveThumbColor: theme.splashColor,
+      value: val,
+      onChanged: (newValue) => onChangeMethod(newValue),
+    );
+
+void showToasterAboutNotify(ThemeData theme, String text) {
+  Fluttertoast.showToast(
+    msg: text,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: theme.hoverColor,
+    textColor: theme.splashColor,
+    fontSize: 16.0,
+  );
+}
+
+class ChangeTheme extends StatefulWidget {
+  const ChangeTheme({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<ChangeTheme> createState() => _ChangeThemeState();
+}
+
+class _ChangeThemeState extends State<ChangeTheme> {
+  late int _index;
+
+  @override
+  void initState() {
+    _index = 0;
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light
+        ? _index = 0
+        : AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark
+            ? _index = 1
+            : _index = 2;
+
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            AppLocalizations.of(context)!.appTheme,
+            style: theme.textTheme.bodyText1!.copyWith(
+              color: theme.hoverColor.withOpacity(0.68),
+            ),
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Container(
+          width: 350,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: theme.hoverColor.withOpacity(0.08),
+            ),
+          ),
+          child: Stack(
+            children: [
+              Row(
+                children: [
+                  _BuildButtonChangeTheme(
+                    text: AppLocalizations.of(context)!.lightTheme,
+                    onTap: () {
+                      AdaptiveTheme.of(context).setLight();
+                      setState(() {
+                        _index = 0;
+                      });
+                    },
+                  ),
+                  _BuildButtonChangeTheme(
+                    text: AppLocalizations.of(context)!.darkTheme,
+                    onTap: () {
+                      AdaptiveTheme.of(context).setDark();
+                      setState(() {
+                        _index = 1;
+                      });
+                    },
+                  ),
+                  _BuildButtonChangeTheme(
+                    text: AppLocalizations.of(context)!.standartTheme,
+                    onTap: () {
+                      AdaptiveTheme.of(context).setSystem();
+                      setState(() {
+                        _index = 2;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              AnimatedAlign(
+                duration: const Duration(milliseconds: 150),
+                curve: Curves.easeIn,
+                alignment: _index == 0
+                    ? Alignment.centerLeft
+                    : _index == 1
+                        ? Alignment.center
+                        : Alignment.topRight,
+                child: Container(
+                  width: 352 / 3,
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    color: theme.primaryColor,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 4,
+                        color: Colors.black.withOpacity(0.31),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    _setTextButtonChangeTheme(_index),
+                    style: theme.textTheme.bodyText1!.copyWith(
+                      color: theme.brightness == Brightness.light
+                          ? theme.splashColor
+                          : theme.hoverColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _setTextButtonChangeTheme(int index) {
+    switch (index) {
+      case 0:
+        return AppLocalizations.of(context)!.lightTheme;
+      case 1:
+        return AppLocalizations.of(context)!.darkTheme;
+      case 2:
+        return AppLocalizations.of(context)!.standartTheme;
+      default:
+        return AppLocalizations.of(context)!.lightTheme;
+    }
+  }
+}
+
+class _BuildButtonChangeTheme extends StatelessWidget {
+  /// Кнопка для смены темы
+  const _BuildButtonChangeTheme({
+    Key? key,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
+  final String text;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    // final double width = MediaQuery.of(context).size.width;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        child: SizedBox(
+          width: 348 / 3,
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: theme.textTheme.bodyText1!.copyWith(
+                color: theme.hoverColor,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
