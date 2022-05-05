@@ -78,15 +78,15 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
     FetchNewsEventOpen event,
     Emitter emit,
   ) {
-    final NewsEntity news = (state as FetchNewsLoadedState).news;
-    final List<String> tabs = (state as FetchNewsLoadedState).tabs;
+    final FetchNewsLoadedState oldState = (state as FetchNewsLoadedState);
     emit(FetchNewsLoadingState());
 
     emit(FetchNewsLoadedState(
-      news: news,
-      tabs: tabs,
+      news: oldState.news,
+      tabs: oldState.tabs,
       openedIndex: event.openedIndex,
     ));
+
     debugPrint('Отработал эвент: $event');
   }
 }
