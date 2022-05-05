@@ -32,7 +32,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
           padding: getHorizontalPadding(context),
           child: SizedBox(
             width: width,
-            height: 28.0,
+            height: 30.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),

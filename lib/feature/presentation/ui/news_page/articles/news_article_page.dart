@@ -191,7 +191,7 @@ class _Web extends StatelessWidget {
                   children: [
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: () {},
+                      // onTap: () {},
                       child: Row(
                         children: [
                           SvgPicture.asset(

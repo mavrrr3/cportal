@@ -101,36 +101,52 @@ class _NewsPageState extends State<NewsPage> {
                           _onPageChanged(_currentIndex + 1);
                         }
                       },
-                      child: SizedBox(
-                        width: width,
-                        height:
-                            !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                                ? MediaQuery.of(context).size.height - 181
-                                : MediaQuery.of(context).size.height - 116,
-                        child: PageView(
-                          controller: _pageController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            // Генерация страниц под все категории
+                      child: ResponsiveConstraints(
+                        constraint: widget.pageType == NewsCodeEnum.quastion
+                            ? const BoxConstraints(maxWidth: 720)
+                            : null,
+                        child: SizedBox(
+                          width: width,
+                          height: !ResponsiveWrapper.of(context)
+                                  .isLargerThan(TABLET)
+                              ? MediaQuery.of(context).size.height - 181
+                              : MediaQuery.of(context).size.height - 116,
+                          child: PageView(
+                            controller: _pageController,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: [
+                              // Генерация страниц под все категории
 
-                            ...List.generate(state.tabs.length, (index) {
-                              return KeepAlivePage(
-                                child: Padding(
-                                  padding: getHorizontalPadding(context),
-                                  child: !ResponsiveWrapper.of(context)
-                                          .isLargerThan(TABLET)
-                                      ? Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(height: 20),
+                              ...List.generate(state.tabs.length, (index) {
+                                return KeepAlivePage(
+                                  child: Padding(
+                                    padding: getHorizontalPadding(context),
+                                    child: widget.pageType == NewsCodeEnum.news
+                                        ? !ResponsiveWrapper.of(context)
+                                                .isLargerThan(TABLET)
+                                            ? Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(height: 20),
 
-                                            // Контент
-                                            _content(state, width),
-                                          ],
-                                        )
-                                      : SingleChildScrollView(
-                                          child: Column(
+                                                  // Контент
+                                                  _content(state, width),
+                                                ],
+                                              )
+                                            : SingleChildScrollView(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(height: 20),
+
+                                                    // Контент
+                                                    _content(state, width),
+                                                  ],
+                                                ),
+                                              )
+                                        : Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
@@ -140,11 +156,11 @@ class _NewsPageState extends State<NewsPage> {
                                               _content(state, width),
                                             ],
                                           ),
-                                        ),
-                                ),
-                              );
-                            }),
-                          ],
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -161,24 +177,37 @@ class _NewsPageState extends State<NewsPage> {
   Widget _content(FetchNewsLoadedState state, double width) {
     List<ArticleEntity> articles = state.news.article;
 
-    return !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-        ? Expanded(
+    return widget.pageType == NewsCodeEnum.news
+        ? !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+            ? Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: articles.length,
+                  itemBuilder: (context, index) {
+                    return _builderItem(state, width, index);
+                  },
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(right: 78.0),
+                child: Wrap(
+                  spacing: 16,
+                  runSpacing: 20,
+                  children: List.generate(
+                    articles.length,
+                    (index) {
+                      return _builderItem(state, 312, index);
+                    },
+                  ),
+                ),
+              )
+        : Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: articles.length,
               itemBuilder: (context, index) {
                 return _builderItem(state, width, index);
               },
-            ),
-          )
-        : Padding(
-            padding: const EdgeInsets.only(right: 78.0),
-            child: Wrap(
-              spacing: 16,
-              runSpacing: 20,
-              children: List.generate(articles.length, (index) {
-                return _builderItem(state, 312, index);
-              }),
             ),
           );
   }
@@ -215,10 +244,10 @@ class _NewsPageState extends State<NewsPage> {
           child: FaqRow(
             text: articles[index].header,
             onTap: () {
-              GoRouter.of(context).pushNamed(
-                NavigationRouteNames.questionArticlePage,
-                extra: index,
-              );
+              BlocProvider.of<FetchNewsBloc>(context)
+                  .add(FetchNewsEventOpen(openedIndex: index));
+              GoRouter.of(context)
+                  .pushNamed(NavigationRouteNames.questionArticlePage);
             },
           ),
         );
