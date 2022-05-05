@@ -3,7 +3,6 @@ import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:cportal_flutter/common/app_colors.dart';
