@@ -9,7 +9,6 @@ import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -239,10 +238,7 @@ class _NewsPageState extends State<NewsPage> {
   void _onArticleSelected(int index) {
     BlocProvider.of<FetchNewsBloc>(context)
         .add(FetchNewsEventOpen(openedIndex: index));
-    GoRouter.of(context).pushNamed(
-      NavigationRouteNames.newsArticlePage,
-      extra: index,
-    );
+    GoRouter.of(context).pushNamed(NavigationRouteNames.newsArticlePage);
   }
 
   String _getPageTitle(NewsCodeEnum pageType) {

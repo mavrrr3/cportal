@@ -4,14 +4,17 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -130,6 +133,8 @@ class _Mobile extends StatelessWidget {
                       currentArticle: state.news.article[state.openedIndex!],
                       onTap: (index) {
                         GoRouter.of(context).pop();
+                        BlocProvider.of<FetchNewsBloc>(context)
+                            .add(FetchNewsEventOpen(openedIndex: index));
                         GoRouter.of(context).pushNamed(
                           NavigationRouteNames.newsArticlePage,
                           extra: index,
@@ -160,89 +165,121 @@ class _Web extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     log('[Opened Index] ${state.openedIndex}');
 
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      DesktopMenu(
-        currentIndex: navState.currentIndex,
-        onChange: (index) {
-          BlocProvider.of<NavBarBloc>(context)
-              .add(NavBarEventImpl(index: index));
-          GoRouter.of(context).goNamed(NavigationRouteNames.mainPage);
-        },
-        items: navState.menuItems,
-      ),
-      SafeArea(
-        child: ResponsiveConstraints(
-          constraint: const BoxConstraints(maxWidth: 640),
-          child: CustomScrollView(
+    return Row(
+      children: [
+        DesktopMenu(
+          currentIndex: navState.currentIndex,
+          onChange: (index) {
+            BlocProvider.of<NavBarBloc>(context)
+                .add(NavBarEventImpl(index: index));
+            GoRouter.of(context).goNamed(NavigationRouteNames.mainPage);
+          },
+          items: navState.menuItems,
+        ),
+        SafeArea(
+          child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                backgroundColor: theme.backgroundColor,
-                expandedHeight: 176,
-                automaticallyImplyLeading: false,
-                leading: IconButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  enableFeedback: false,
-                  icon: const Icon(Icons.arrow_back),
-                  iconSize: 24,
-                  onPressed: () => _onBack(context),
+            child: ResponsiveConstraints(
+              constraint: const BoxConstraints(maxWidth: 704),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 7,
                 ),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: ExtendedImage.network(
-                    state.news.article[state.openedIndex!].image,
-                    fit: BoxFit.cover,
-                    cache: true,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {},
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/back_arrow.svg',
+                            width: 16,
+                            color: theme.primaryColor,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            AppLocalizations.of(context)!.news,
+                            style: theme.textTheme.headline5!.copyWith(
+                              color: theme.primaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 310,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: Image.network(
+                                state.news.article[state.openedIndex!].image,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            state.news.article[state.openedIndex!].header,
+                            style: theme.textTheme.headline3,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            _outputFormat.format(
+                              state.news.article[state.openedIndex!].dateShow,
+                            ),
+                            style: theme.textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            state.news.article[state.openedIndex!].description,
+                            style: theme.textTheme.headline6,
+                          ),
+                          const SizedBox(height: 40),
+                          Wrap(
+                            children:
+                                List.generate(state.news.article.length, (i) {
+                              return state.news.article[state.openedIndex!] !=
+                                      state.news.article[i]
+                                  ? Padding(
+                                      padding: EdgeInsets.only(
+                                        right: i % 2 == 0 ? 0 : 8.0,
+                                        left: i % 2 == 0 ? 8.0 : 0,
+                                        top: 16,
+                                      ),
+                                      child: NewsCardItem(
+                                        width: 312,
+                                        height: 152,
+                                        imgPath: state.news.article[i].image,
+                                        title: state.news.article[i].header,
+                                        dateTime: _outputFormat.format(
+                                          state.news.article[i].dateShow,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox();
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16.0,
-                    horizontal: 20.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        state.news.article[state.openedIndex!].header,
-                        style: theme.textTheme.headline3,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        _outputFormat.format(
-                          state.news.article[state.openedIndex!].dateShow,
-                        ),
-                        style: theme.textTheme.bodyText1,
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        state.news.article[state.openedIndex!].description,
-                        style: theme.textTheme.headline6,
-                      ),
-                      const SizedBox(height: 20),
-                      NewsHorizontalScroll(
-                        items: state.news.article,
-                        isTextVisible: false,
-                        currentArticle: state.news.article[state.openedIndex!],
-                        onTap: (index) {
-                          GoRouter.of(context).pop();
-                          GoRouter.of(context).pushNamed(
-                            NavigationRouteNames.newsArticlePage,
-                            extra: index,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
