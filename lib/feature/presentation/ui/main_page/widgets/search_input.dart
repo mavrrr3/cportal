@@ -33,6 +33,7 @@ class SearchInput extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -57,6 +58,7 @@ class SearchInput extends StatelessWidget {
                 color: theme.hoverColor.withOpacity(0.68),
               ),
               decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(bottom: 4),
                 hintText: AppLocalizations.of(context)!.enterRequest,
                 hintStyle: theme.textTheme.headline6!.copyWith(
                   color: theme.hoverColor.withOpacity(0.68),

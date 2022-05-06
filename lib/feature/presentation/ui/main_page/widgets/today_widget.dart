@@ -122,30 +122,32 @@ class _TodayItem extends StatelessWidget {
               const SizedBox(height: 5),
               Row(
                 children: [
-                  Text(
-                    item.post ?? '',
-                    style: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.hoverColor.withOpacity(0.68),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 7),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: theme.cardColor.withOpacity(0.06),
-                        borderRadius: BorderRadius.circular(12),
+                  if (item.post != null)
+                    Text(
+                      item.post!,
+                      style: theme.textTheme.bodyText1!.copyWith(
+                        color: theme.hoverColor.withOpacity(0.68),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                        child: Text(
-                          item.place ?? '',
-                          style: theme.textTheme.bodyText1!.copyWith(
-                            color: theme.hoverColor.withOpacity(0.68),
+                    ),
+                  if (item.place != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 7),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: theme.cardColor.withOpacity(0.06),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          child: Text(
+                            item.place!,
+                            style: theme.textTheme.bodyText1!.copyWith(
+                              color: theme.hoverColor.withOpacity(0.68),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ],

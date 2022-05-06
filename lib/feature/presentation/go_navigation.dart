@@ -12,6 +12,8 @@ import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/create_pin_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/input_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
@@ -23,7 +25,9 @@ abstract class NavigationRouteNames {
   static const mainPage = 'main_page';
   static const connectingCode = 'connecting_code';
   static const createPin = 'create_pin';
+  static const createPinWeb = 'create_pin_web';
   static const inputPin = 'input_pin';
+  static const inputPinWeb = 'input_pin_web';
   static const editPin = 'edit_pin';
   static const fingerPrint = 'finger_print';
   static const faceId = 'face_id';
@@ -78,6 +82,16 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      name: NavigationRouteNames.createPinWeb,
+      path: '/create_pin_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: CreatePinWeb(),
+        ),
+      ),
+    ),
+    GoRoute(
       name: NavigationRouteNames.editPin,
       path: '/edit_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
@@ -94,6 +108,16 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const Scaffold(
           body: InputPinPage(),
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.inputPinWeb,
+      path: '/input_pin_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: InputPinWeb(),
         ),
       ),
     ),
@@ -137,7 +161,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: NewsArticlePage(currentIndex: state.extra! as int),
+        child: const NewsArticlePage(),
       ),
     ),
     GoRoute(
@@ -146,7 +170,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
-        child: QuestionArticlePage(currentIndex: state.extra! as int),
+        child: const QuestionArticlePage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
       ),
