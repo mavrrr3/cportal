@@ -10,7 +10,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 
 final _pinController = TextEditingController();
-final _pinFocusNode = FocusNode();
 
 class CreatePinWeb extends StatelessWidget {
   const CreatePinWeb({Key? key}) : super(key: key);
@@ -38,15 +37,6 @@ class CreatePinWeb extends StatelessWidget {
                 return BodyWidget(input: state.status);
               }),
             ),
-            // Column(
-            //   children: [
-            //     CustomKeyboard(
-            //       controller: _pinController,
-            //       simbolQuantity: 4,
-            //     ),
-            //     SizedBox(height: 52.h),
-            //   ],
-            // ),
           ],
         ),
         const SizedBox(),
@@ -72,7 +62,29 @@ class BodyWidget extends StatelessWidget {
           input,
           context,
         ),
-        const PinCodeInput(),
+        input == PinCodeInputEnum.repeat
+            ? const PinCodeRepeat()
+            : const PinCodeInput(),
+      ],
+    );
+  }
+}
+
+class RepeatePinWeb extends StatelessWidget {
+  const RepeatePinWeb({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const LoaderWidget(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            BodyWidget(input: PinCodeInputEnum.repeat),
+          ],
+        ),
+        const SizedBox(),
       ],
     );
   }
@@ -86,12 +98,19 @@ class PinCodeInput extends StatefulWidget {
 }
 
 class _PinCodeInputState extends State<PinCodeInput> {
+  late FocusNode _pinFocusNode;
   @override
-  void dispose() {
-    _pinController.dispose();
-    _pinFocusNode.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _pinFocusNode = FocusNode();
   }
+
+  // @override
+  // void dispose() {
+  //   _pinController.dispose();
+  //   _pinFocusNode.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +164,93 @@ class _PinCodeInputState extends State<PinCodeInput> {
             );
 
             state.cleanField(_pinController);
+
+            const RepeatePinWeb();
+          },
+        );
+      },
+    );
+  }
+}
+
+class PinCodeRepeat extends StatefulWidget {
+  const PinCodeRepeat({Key? key}) : super(key: key);
+
+  @override
+  _PinCodeRepeatState createState() => _PinCodeRepeatState();
+}
+
+class _PinCodeRepeatState extends State<PinCodeRepeat> {
+  late TextEditingController _pinRepeatController;
+
+  late FocusNode _pinFocusRepeatNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _pinFocusRepeatNode = FocusNode();
+    _pinRepeatController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _pinRepeatController.dispose();
+    // _pinFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    PinCodeBloc pinCodeBloc =
+        BlocProvider.of<PinCodeBloc>(context, listen: false);
+    final ThemeData theme = Theme.of(context);
+
+    final defaultPinTheme = PinTheme(
+      width: 16,
+      height: 16,
+      decoration: BoxDecoration(
+        color: theme.brightness == Brightness.light
+            ? AppColors.kLightTextColor.withOpacity(0.2)
+            : theme.backgroundColor,
+        borderRadius: BorderRadius.circular(15),
+      ),
+    );
+
+    return BlocBuilder<PinCodeBloc, PinCodeState>(
+      builder: (context, state) {
+        return Pinput(
+          autofocus: true,
+          obscureText: true,
+          obscuringWidget: SvgIcon(
+            state.isWrongPin ? AppColors.red : AppColors.blue,
+            path: 'obscure_symbol.svg',
+            width: 16,
+          ),
+          useNativeKeyboard: true,
+          length: 4,
+          controller: _pinRepeatController,
+          focusNode: _pinFocusRepeatNode,
+          defaultPinTheme: defaultPinTheme,
+          separator: const SizedBox(width: 32),
+          focusedPinTheme: defaultPinTheme,
+          showCursor: false,
+          onChanged: (value) {
+            pinCodeBloc.add(
+              ChangedPinCode(
+                status: state.status,
+                pinCode: value,
+              ),
+            );
+          },
+          onCompleted: (value) {
+            pinCodeBloc.add(
+              CreatePinCodeSubmit(
+                pinCode: value,
+                status: state.status,
+              ),
+            );
+
+            state.cleanField(_pinRepeatController);
           },
         );
       },

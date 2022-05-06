@@ -10,9 +10,10 @@ import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.da
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/create_pin_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/input_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
@@ -26,6 +27,7 @@ abstract class NavigationRouteNames {
   static const createPin = 'create_pin';
   static const createPinWeb = 'create_pin_web';
   static const inputPin = 'input_pin';
+  static const inputPinWeb = 'input_pin_web';
   static const editPin = 'edit_pin';
   static const fingerPrint = 'finger_print';
   static const faceId = 'face_id';
@@ -42,7 +44,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/create_pin_web',
+  initialLocation: '/main_page',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -106,6 +108,16 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const Scaffold(
           body: InputPinPage(),
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.inputPinWeb,
+      path: '/input_pin_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: InputPinWeb(),
         ),
       ),
     ),
