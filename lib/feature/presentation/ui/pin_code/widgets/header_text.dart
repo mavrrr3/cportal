@@ -3,6 +3,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_ic
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class HeaderText {
   static HeaderTextWidget factory(
@@ -62,12 +63,20 @@ class HeaderTextWidget extends StatelessWidget {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+        // Если веб то не отображаем Лого
+        // if (!kIsWeb) ...[
+        ResponsiveVisibility(
+          hiddenWhen: const [
+            Condition<dynamic>.largerThan(name: TABLET),
           ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+            ],
+          ),
         ),
+        // ],
         SizedBox(height: 31.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,

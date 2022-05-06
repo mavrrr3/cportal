@@ -12,3 +12,8 @@ class FetchNewsEventImpl extends FetchNewsEvent {
   final NewsCodeEnum newsCodeEnum;
   const FetchNewsEventImpl({required this.newsCodeEnum});
 }
+
+class FetchNewsEventOpen extends FetchNewsEvent {
+  final int openedIndex;
+  const FetchNewsEventOpen({required this.openedIndex});
+}

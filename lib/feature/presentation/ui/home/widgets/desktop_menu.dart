@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -39,9 +38,11 @@ class DesktopMenu extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
-              child: SvgIcon(
-                theme.brightness == Brightness.dark ? theme.hoverColor : null,
-                path: 'logo_grey.svg',
+              child: SvgPicture.asset(
+                'assets/icons/logo_grey.svg',
+                color: theme.brightness == Brightness.dark
+                    ? theme.hoverColor
+                    : null,
                 width: 24.0,
               ),
             ),

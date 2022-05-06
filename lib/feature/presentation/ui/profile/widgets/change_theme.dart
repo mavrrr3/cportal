@@ -187,9 +187,9 @@ class _BuildButton extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.only(top: 11, bottom: 15),
+        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         child: SizedBox(
-          width: (width - 44) / 3,
+          width: (width - 34.w) / 3,
           child: Align(
             alignment: Alignment.center,
             child: Text(

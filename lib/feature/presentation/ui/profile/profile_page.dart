@@ -39,18 +39,6 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => isFingerPrintAuth = newValue);
   }
 
-  void showToasterAboutNotify(ThemeData theme, String text) {
-    Fluttertoast.showToast(
-      msg: text,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: theme.hoverColor,
-      textColor: theme.splashColor,
-      fontSize: 16.0,
-    );
-  }
-
   void showChooserNotification(BuildContext context, ThemeData theme) {
     showModalBottomSheet<void>(
       backgroundColor: theme.splashColor,
@@ -116,17 +104,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
-      Switch(
-        activeTrackColor: theme.primaryColor.withOpacity(0.38),
-        activeColor: theme.primaryColor,
-        // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
-        inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
-        inactiveThumbColor: theme.splashColor,
-        value: val,
-        onChanged: (newValue) => onChangeMethod(newValue),
-      );
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -151,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
               leading: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  GoRouter.of(context).pop();
+                  context.goNamed(NavigationRouteNames.mainPage);
                 },
                 child: Icon(
                   Icons.close,
@@ -195,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 22.w,
                           ),
                           text: AppLocalizations.of(context)!.newEmpoyee,
-                          secondWidget: _getBlueArrow(theme),
+                          secondWidget: getBlueArrow(theme),
                         ),
                       ),
                     ),
@@ -235,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 20.w,
                       ),
                       text: AppLocalizations.of(context)!.changePin,
-                      secondWidget: _getBlueArrow(theme),
+                      secondWidget: getBlueArrow(theme),
                       call: () => context.goNamed(NavigationRouteNames.editPin),
                     ),
                     SizedBox(height: 28.h),
@@ -253,12 +230,35 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+}
 
-  Widget _getBlueArrow(ThemeData theme) {
-    return Icon(
-      Icons.arrow_forward_ios_sharp,
-      color: theme.primaryColor,
-      size: 18,
+Widget getBlueArrow(ThemeData theme) {
+  return Icon(
+    Icons.arrow_forward_ios_sharp,
+    color: theme.primaryColor,
+    size: 18,
+  );
+}
+
+Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
+    Switch(
+      activeTrackColor: theme.primaryColor.withOpacity(0.38),
+      activeColor: theme.primaryColor,
+      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
+      inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
+      inactiveThumbColor: theme.splashColor,
+      value: val,
+      onChanged: (newValue) => onChangeMethod(newValue),
     );
-  }
+
+void showToasterAboutNotify(ThemeData theme, String text) {
+  Fluttertoast.showToast(
+    msg: text,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: theme.hoverColor,
+    textColor: theme.splashColor,
+    fontSize: 16.0,
+  );
 }

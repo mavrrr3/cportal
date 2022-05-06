@@ -8,7 +8,8 @@ import 'package:cportal_flutter/feature/data/datasources/profile_datasource/prof
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
-import 'package:cportal_flutter/feature/data/repositories/news_repository.dart';
+import 'package:cportal_flutter/feature/data/repositories/news_repository_mobile.dart';
+import 'package:cportal_flutter/feature/data/repositories/news_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/pin_code_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/profile_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/profile_repository_web.dart';
@@ -28,6 +29,7 @@ import 'package:cportal_flutter/feature/domain/usecases/users_usecases/pin_code_
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/search_profile_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
@@ -46,6 +48,7 @@ Future<void> init() async {
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
   sl.registerFactory(() => FetchNewsBloc(fetchNews: sl()));
+  sl.registerFactory(() => NavBarBloc());
 
   // USECASE
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
@@ -102,14 +105,22 @@ Future<void> init() async {
     () => BiometricRepository(biometricInfo: sl()),
   );
 
-  sl.registerLazySingleton<INewsRepository>(
-    () => NewsRepository(
-      remoteDataSource: sl(),
-      localDataSource: sl(),
-      networkInfo: sl(),
-    ),
-  );
-
+  if (kIsWeb) {
+    sl.registerLazySingleton<INewsRepository>(
+      () => NewsRepositoryWeb(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+      ),
+    );
+  } else {
+    sl.registerLazySingleton<INewsRepository>(
+      () => NewsRepositoryMobile(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ),
+    );
+  }
   // DATASORCE
   sl.registerLazySingleton<IProfileRemoteDataSource>(
     () => ProfileRemoteDataSource(sl()),

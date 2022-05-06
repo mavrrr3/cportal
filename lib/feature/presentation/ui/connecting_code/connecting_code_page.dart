@@ -6,6 +6,7 @@ import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/what_get_with_you.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/work_mode_table.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,11 @@ class ConnectingCodePage extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUser) {
-          context.goNamed(NavigationRouteNames.createPin);
+          const String nextScreen = kIsWeb
+              ? NavigationRouteNames.createPinWeb
+              : NavigationRouteNames.createPin;
+
+          context.goNamed(nextScreen);
         }
         if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
       },

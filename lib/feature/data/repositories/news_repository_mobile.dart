@@ -8,12 +8,12 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class NewsRepository implements INewsRepository {
+class NewsRepositoryMobile implements INewsRepository {
   final INewsRemoteDataSource remoteDataSource;
   final INewsLocalDataSource localDataSource;
   final INetworkInfo networkInfo;
 
-  NewsRepository({
+  NewsRepositoryMobile({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.networkInfo,

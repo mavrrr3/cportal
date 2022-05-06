@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
@@ -24,6 +25,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.da
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:responsive_framework/responsive_framework.dart';
+
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -90,8 +92,7 @@ class MyApp extends StatelessWidget {
                   defaultName: DESKTOP,
                   breakpoints: [
                     const ResponsiveBreakpoint.resize(350, name: MOBILE),
-                    const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
-                    const ResponsiveBreakpoint.autoScale(850, name: TABLET),
+                    const ResponsiveBreakpoint.autoScale(600, name: TABLET),
                     const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
                     const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
                   ],
@@ -119,6 +120,9 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<FetchNewsBloc>(
       create: (ctx) => sl<FetchNewsBloc>(),
+    ),
+    BlocProvider<NavBarBloc>(
+      create: (ctx) => sl<NavBarBloc>(),
     ),
   ];
 }
