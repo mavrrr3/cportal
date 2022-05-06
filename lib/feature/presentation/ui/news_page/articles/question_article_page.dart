@@ -2,6 +2,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
@@ -42,10 +43,15 @@ class QuestionArticlePage extends StatelessWidget {
                           child: DesktopMenu(
                             currentIndex: navState.currentIndex,
                             onChange: (index) {
-                              BlocProvider.of<NavBarBloc>(context)
-                                  .add(NavBarEventImpl(index: index));
-                              GoRouter.of(context)
-                                  .goNamed(NavigationRouteNames.mainPage);
+                              if (index != navState.currentIndex) {
+                                BlocProvider.of<NavBarBloc>(context)
+                                    .add(NavBarEventImpl(index: index));
+
+                                GoRouter.of(context)
+                                    .goNamed(NavigationRouteNames.mainPage);
+                              } else {
+                                GoRouter.of(context).pop();
+                              }
                             },
                             items: navState.menuItems,
                           ),
@@ -63,7 +69,9 @@ class QuestionArticlePage extends StatelessWidget {
                                       ),
                                       child: GestureDetector(
                                         behavior: HitTestBehavior.translucent,
-                                        // onTap: () {},
+                                        onTap: () {
+                                          GoRouter.of(context).pop();
+                                        },
                                         child: Row(
                                           children: [
                                             SvgPicture.asset(
@@ -168,15 +176,14 @@ class QuestionArticlePage extends StatelessWidget {
                                                               1]
                                                       .header,
                                                   onTap: () {
-                                                    GoRouter.of(context).pop();
-                                                    GoRouter.of(context)
-                                                        .pushNamed(
-                                                      NavigationRouteNames
-                                                          .questionArticlePage,
-                                                      extra:
+                                                    BlocProvider.of<
+                                                        FetchNewsBloc>(
+                                                      context,
+                                                    ).add(FetchNewsEventOpen(
+                                                      openedIndex:
                                                           state.openedIndex! +
                                                               1,
-                                                    );
+                                                    ));
                                                   },
                                                 ),
                                               ),

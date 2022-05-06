@@ -42,7 +42,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/create_pin_web',
+  initialLocation: '/main_page',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
