@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
@@ -37,6 +38,7 @@ abstract class NavigationRouteNames {
   static const profile = 'profile';
   static const userData = 'user_data';
   static const qrScanner = 'qr_scanner';
+  static const qrScannerWeb = 'qr_scanner_web';
   static const onBoardingStart = 'onboarding_start';
   static const onboarding = 'onboarding';
   static const onboardingEnd = 'onboarding_end';
@@ -44,7 +46,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/main_page',
+  initialLocation: '/qr_scanner_web',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -205,6 +207,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const QrScanner(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.qrScannerWeb,
+      path: '/qr_scanner_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const QrScannerWeb(),
       ),
     ),
     GoRoute(
