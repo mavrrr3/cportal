@@ -246,8 +246,6 @@ class _NewsPageState extends State<NewsPage> {
           child: FaqRow(
             text: articles[index].header,
             onTap: () {
-              BlocProvider.of<FetchNewsBloc>(context)
-                  .add(FetchNewsEventOpen(openedIndex: index));
               GoRouter.of(context).pushNamed(
                 NavigationRouteNames.questionArticlePage,
                 params: {'fid': articles[index].id},
@@ -269,10 +267,6 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   void _onArticleSelected(String id) {
-    BlocProvider.of<FetchNewsBloc>(context)
-        .add(FetchNewsEventOpen(openedIndex: 1));
-    log(id);
-
     GoRouter.of(context).pushNamed(
       NavigationRouteNames.newsArticlePage,
       params: {'fid': id},

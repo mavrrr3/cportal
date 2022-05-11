@@ -22,10 +22,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       _onEvent,
       transformer: bloc_concurrency.sequential(),
     );
-    on<FetchNewsEventOpen>(
-      _onOpen,
-      transformer: bloc_concurrency.sequential(),
-    );
   }
 
   FutureOr _onEvent(
@@ -70,22 +66,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(FetchNewsLoadedState(news: news, tabs: tabs));
       },
     );
-  }
-
-  FutureOr<void> _onOpen(
-    FetchNewsEventOpen event,
-    Emitter emit,
-  ) {
-    final FetchNewsLoadedState oldState = (state as FetchNewsLoadedState);
-    emit(FetchNewsLoadingState());
-
-    emit(FetchNewsLoadedState(
-      news: oldState.news,
-      tabs: oldState.tabs,
-      openedIndex: event.openedIndex,
-    ));
-
-    debugPrint('Отработал эвент: $event');
   }
 }
 
