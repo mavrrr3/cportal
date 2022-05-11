@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
@@ -28,6 +29,37 @@ class QuestionArticlePage extends StatelessWidget {
       onSwipeRight: () => _onBack(context),
       child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
         builder: (context, state) {
+          dynamic id = GoRouter.of(context).location.split('/');
+          id = id[3] as String;
+          final ArticleEntity currentItem;
+          if (state is FetchNewsLoadedState) {
+            currentItem = state.news.article.firstWhere(
+              (element) => element.id == id,
+            );
+            log(currentItem.header);
+          } else {
+            //: TODO отработать другие стейты
+            currentItem = ArticleEntity(
+              id: '000',
+              articleType: const ArticleTypeEntity(
+                id: '000',
+                code: '000',
+                description: 'qqq',
+              ),
+              header: 'Emty state Header',
+              category: '',
+              description: '',
+              image: '',
+              dateShow: DateTime.now(),
+              externalLink: '',
+              show: true,
+              userCreated: '',
+              dateCreated: DateTime.now(),
+              userUpdate: '',
+              dateUpdated: DateTime.now(),
+            );
+          }
+
           return BlocBuilder<NavBarBloc, NavBarState>(
             builder: (context, navState) {
               return Scaffold(
@@ -149,18 +181,12 @@ class QuestionArticlePage extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              state
-                                                  .news
-                                                  .article[state.openedIndex!]
-                                                  .header,
+                                              currentItem.header,
                                               style: theme.textTheme.headline1,
                                             ),
                                             const SizedBox(height: 20),
                                             Text(
-                                              state
-                                                  .news
-                                                  .article[state.openedIndex!]
-                                                  .description,
+                                              currentItem.description,
                                               style: theme.textTheme.headline5,
                                             ),
                                             const SizedBox(height: 24),
@@ -171,22 +197,8 @@ class QuestionArticlePage extends StatelessWidget {
                                                   bottom: 32.0,
                                                 ),
                                                 child: FaqRow(
-                                                  text: state
-                                                      .news
-                                                      .article[
-                                                          state.openedIndex! +
-                                                              1]
-                                                      .header,
-                                                  onTap: () {
-                                                    BlocProvider.of<
-                                                        FetchNewsBloc>(
-                                                      context,
-                                                    ).add(FetchNewsEventOpen(
-                                                      openedIndex:
-                                                          state.openedIndex! +
-                                                              1,
-                                                    ));
-                                                  },
+                                                  text: currentItem.header,
+                                                  // onTap: () {},
                                                 ),
                                               ),
                                           ],
