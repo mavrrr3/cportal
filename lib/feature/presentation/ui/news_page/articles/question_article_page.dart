@@ -191,14 +191,19 @@ class QuestionArticlePage extends StatelessWidget {
                                             ),
                                             const SizedBox(height: 24),
                                             if (state.news.article.length - 1 !=
-                                                state.openedIndex!)
+                                                state.news.article.indexWhere(
+                                                  (element) =>
+                                                      element.id ==
+                                                      currentItem.id,
+                                                ))
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                   bottom: 32.0,
                                                 ),
-                                                child: FaqRow(
-                                                  text: currentItem.header,
-                                                  // onTap: () {},
+                                                child: _nextQuestion(
+                                                  currentItem,
+                                                  state,
+                                                  context,
                                                 ),
                                               ),
                                           ],
@@ -219,6 +224,27 @@ class QuestionArticlePage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  FaqRow _nextQuestion(
+    ArticleEntity currentItem,
+    FetchNewsLoadedState state,
+    BuildContext context,
+  ) {
+    final currentIndex = state.news.article
+        .indexWhere((element) => element.id == currentItem.id);
+
+    return FaqRow(
+      text: state.news.article[currentIndex + 1].header,
+      onTap: () {
+        GoRouter.of(context).pushNamed(
+          NavigationRouteNames.questionArticlePage,
+          params: {
+            'fid': state.news.article[currentIndex + 1].id,
+          },
+        );
+      },
     );
   }
 

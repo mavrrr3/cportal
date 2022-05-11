@@ -168,8 +168,6 @@ class _Mobile extends StatelessWidget {
                       currentArticle: item,
                       onTap: (index) {
                         GoRouter.of(context).pop();
-                        BlocProvider.of<FetchNewsBloc>(context)
-                            .add(FetchNewsEventOpen(openedIndex: index));
                         GoRouter.of(context).pushNamed(
                           NavigationRouteNames.newsArticlePage,
                           extra: index,
@@ -203,6 +201,7 @@ class _Web extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DesktopMenu(
           currentIndex: navState.currentIndex,
