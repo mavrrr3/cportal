@@ -54,6 +54,6 @@
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera access to scan QR codes</string>
 	<key>NSCameraUsageDescription</key>
-	<string>for qr code scanner</string>
+	<string>For qr code scanner</string>
 </dict>
 </plist>
