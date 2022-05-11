@@ -71,7 +71,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 }
 
 final ArticleModel newsArticle = ArticleModel(
-  id: 'id',
+  id: '999',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'NEWS',
@@ -92,7 +92,7 @@ final ArticleModel newsArticle = ArticleModel(
 );
 
 final ArticleModel newsArticle2 = ArticleModel(
-  id: 'id',
+  id: '555',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'NEWS',
@@ -112,7 +112,7 @@ final ArticleModel newsArticle2 = ArticleModel(
   dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
 );
 final ArticleModel newsArticle3 = ArticleModel(
-  id: 'id',
+  id: '123',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'NEWS',
@@ -133,7 +133,7 @@ final ArticleModel newsArticle3 = ArticleModel(
 );
 
 final ArticleModel quastion = ArticleModel(
-  id: 'id',
+  id: '333',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'QUASTION',
@@ -155,7 +155,7 @@ final ArticleModel quastion = ArticleModel(
 );
 
 final ArticleModel quastion2 = ArticleModel(
-  id: 'id',
+  id: '123',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'QUASTION',
@@ -177,7 +177,7 @@ final ArticleModel quastion2 = ArticleModel(
 );
 
 final ArticleModel quastion3 = ArticleModel(
-  id: 'id',
+  id: '777',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'QUASTION',

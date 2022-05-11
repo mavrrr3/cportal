@@ -46,7 +46,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/qr_scanner_web',
+  initialLocation: '/main_page',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -157,7 +157,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
-      path: '/news_article_page',
+      path: '/news/article/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
@@ -168,7 +168,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.questionArticlePage,
-      path: '/question_article_page',
+      path: '/question/article/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
