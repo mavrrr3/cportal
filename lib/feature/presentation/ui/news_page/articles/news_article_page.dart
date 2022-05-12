@@ -227,7 +227,9 @@ class _Web extends StatelessWidget {
                   children: [
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      // onTap: () {},
+                      onTap: () {
+                        GoRouter.of(context).pop();
+                      },
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -281,29 +283,7 @@ class _Web extends StatelessWidget {
                             style: theme.textTheme.headline6,
                           ),
                           const SizedBox(height: 40),
-                          Wrap(
-                            children:
-                                List.generate(state.news.article.length, (i) {
-                              return item != state.news.article[i]
-                                  ? Padding(
-                                      padding: EdgeInsets.only(
-                                        right: i % 2 == 0 ? 0 : 8.0,
-                                        left: i % 2 == 0 ? 8.0 : 0,
-                                        top: 16,
-                                      ),
-                                      child: NewsCardItem(
-                                        width: 312,
-                                        height: 152,
-                                        imgPath: state.news.article[i].image,
-                                        title: state.news.article[i].header,
-                                        dateTime: _outputFormat.format(
-                                          state.news.article[i].dateShow,
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox();
-                            }),
-                          ),
+                          _recomendations(),
                         ],
                       ),
                     ),
@@ -314,6 +294,27 @@ class _Web extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _recomendations() {
+    List<ArticleEntity> recomendationsList = state.news.article;
+    recomendationsList.removeWhere((element) => element == item);
+
+    return Wrap(
+      runSpacing: 16,
+      spacing: 16,
+      children: List.generate(recomendationsList.length, (i) {
+        return NewsCardItem(
+          width: 312,
+          height: 152,
+          imgPath: recomendationsList[i].image,
+          title: recomendationsList[i].header,
+          dateTime: _outputFormat.format(
+            recomendationsList[i].dateShow,
+          ),
+        );
+      }),
     );
   }
 }
