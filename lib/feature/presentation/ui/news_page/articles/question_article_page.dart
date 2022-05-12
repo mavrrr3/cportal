@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
@@ -62,7 +59,6 @@ class QuestionArticlePage extends StatelessWidget {
 
           return BlocBuilder<NavBarBloc, NavBarState>(
             builder: (context, navState) {
-              log('menu index = ${navState.currentIndex}');
 
               return Scaffold(
                 body: SafeArea(

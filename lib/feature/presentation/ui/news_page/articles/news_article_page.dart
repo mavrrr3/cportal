@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
@@ -36,11 +33,12 @@ class NewsArticlePage extends StatelessWidget {
         dynamic id = GoRouter.of(context).location.split('/');
         id = id[3] as String;
         final ArticleEntity _currentItem;
+        // ignore: prefer-conditional-expressions
         if (state is FetchNewsLoadedState) {
           _currentItem = state.news.article.firstWhere(
             (element) => element.id == id,
           );
-          log(_currentItem.header);
+          
         } else {
           //: TODO отработать другие стейты
           _currentItem = ArticleEntity(
