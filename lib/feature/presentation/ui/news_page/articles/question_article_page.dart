@@ -32,11 +32,11 @@ class QuestionArticlePage extends StatelessWidget {
           dynamic id = GoRouter.of(context).location.split('/');
           id = id[3] as String;
           final ArticleEntity currentItem;
+          // ignore: prefer-conditional-expressions
           if (state is FetchNewsLoadedState) {
             currentItem = state.news.article.firstWhere(
               (element) => element.id == id,
             );
-            log(currentItem.header);
           } else {
             //: TODO отработать другие стейты
             currentItem = ArticleEntity(
@@ -62,6 +62,8 @@ class QuestionArticlePage extends StatelessWidget {
 
           return BlocBuilder<NavBarBloc, NavBarState>(
             builder: (context, navState) {
+              log('menu index = ${navState.currentIndex}');
+
               return Scaffold(
                 body: SafeArea(
                   child: SingleChildScrollView(
@@ -190,22 +192,11 @@ class QuestionArticlePage extends StatelessWidget {
                                               style: theme.textTheme.headline5,
                                             ),
                                             const SizedBox(height: 24),
-                                            if (state.news.article.length - 1 !=
-                                                state.news.article.indexWhere(
-                                                  (element) =>
-                                                      element.id ==
-                                                      currentItem.id,
-                                                ))
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 32.0,
-                                                ),
-                                                child: _nextQuestion(
-                                                  currentItem,
-                                                  state,
-                                                  context,
-                                                ),
-                                              ),
+                                            _nextQuestion(
+                                              currentItem,
+                                              state,
+                                              context,
+                                            ),
                                           ],
                                         ),
                                     ],
@@ -227,25 +218,38 @@ class QuestionArticlePage extends StatelessWidget {
     );
   }
 
-  FaqRow _nextQuestion(
+  Widget _nextQuestion(
     ArticleEntity currentItem,
     FetchNewsLoadedState state,
     BuildContext context,
   ) {
-    final currentIndex = state.news.article
-        .indexWhere((element) => element.id == currentItem.id);
+    List<ArticleEntity> currentTabsItems = [];
+    for (var item in state.news.article) {
+      if (item.category == currentItem.category) {
+        currentTabsItems.add(item);
+      }
+    }
+    final currentIndex =
+        currentTabsItems.indexWhere((element) => element.id == currentItem.id);
 
-    return FaqRow(
-      text: state.news.article[currentIndex + 1].header,
-      onTap: () {
-        GoRouter.of(context).pushNamed(
-          NavigationRouteNames.questionArticlePage,
-          params: {
-            'fid': state.news.article[currentIndex + 1].id,
-          },
-        );
-      },
-    );
+    return currentTabsItems.length - 1 !=
+            currentTabsItems
+                .indexWhere((element) => element.id == currentItem.id)
+        ? Padding(
+            padding: const EdgeInsets.only(bottom: 32.0),
+            child: FaqRow(
+              text: currentTabsItems[currentIndex + 1].header,
+              onTap: () {
+                GoRouter.of(context).pushNamed(
+                  NavigationRouteNames.questionArticlePage,
+                  params: {
+                    'fid': currentTabsItems[currentIndex + 1].id,
+                  },
+                );
+              },
+            ),
+          )
+        : const SizedBox();
   }
 
   void _onBack(BuildContext context) => GoRouter.of(context).pop();
