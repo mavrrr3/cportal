@@ -91,5 +91,6 @@
     "go_over": "Перейти",
     "scan_qr_by_phone": "Сканируйте QR-код с телефона",
     "qr_code_connect_descript": "1. Запустите KoApp на телефоне\n2. Откройте настройки, раздел устройства\n3. Сканируйте этот код для авторизации",
-    "enter_by_connecting_code": "Вход по коду связывания"
+    "enter_by_connecting_code": "Вход по коду связывания",
+    "enter_by_qr_code": "Вход по QR-код"
 }

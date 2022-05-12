@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
@@ -25,6 +26,7 @@ abstract class NavigationRouteNames {
   static const splashScreen = 'splash_screen';
   static const mainPage = 'main_page';
   static const connectingCode = 'connecting_code';
+  static const connectingCodeWeb = 'connecting_code_web';
   static const createPin = 'create_pin';
   static const createPinWeb = 'create_pin_web';
   static const inputPin = 'input_pin';
@@ -71,6 +73,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: ConnectingCodePage()),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.connectingCodeWeb,
+      path: '/connecting_code_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(body: ConnectingCodeWeb()),
       ),
     ),
     GoRoute(
