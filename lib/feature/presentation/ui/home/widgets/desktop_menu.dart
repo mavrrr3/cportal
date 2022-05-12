@@ -74,11 +74,10 @@ class _MenuItem extends StatelessWidget {
     Key? key,
     required this.item,
     required this.isActive,
-    this.duration = const Duration(milliseconds: 250),
   }) : super(key: key);
 
   final MenuButtonModel item;
-  final Duration duration;
+  final Duration duration = const Duration(milliseconds: 250);
   final bool isActive;
   @override
   Widget build(BuildContext context) {

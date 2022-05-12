@@ -1,4 +1,6 @@
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
@@ -24,6 +26,7 @@ abstract class NavigationRouteNames {
   static const splashScreen = 'splash_screen';
   static const mainPage = 'main_page';
   static const connectingCode = 'connecting_code';
+  static const connectingCodeWeb = 'connecting_code_web';
   static const createPin = 'create_pin';
   static const createPinWeb = 'create_pin_web';
   static const inputPin = 'input_pin';
@@ -37,6 +40,7 @@ abstract class NavigationRouteNames {
   static const profile = 'profile';
   static const userData = 'user_data';
   static const qrScanner = 'qr_scanner';
+  static const qrScannerWeb = 'qr_scanner_web';
   static const onBoardingStart = 'onboarding_start';
   static const onboarding = 'onboarding';
   static const onboardingEnd = 'onboarding_end';
@@ -44,7 +48,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/main_page',
+  initialLocation: '/',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -69,6 +73,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: ConnectingCodePage()),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.connectingCodeWeb,
+      path: '/connecting_code_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(body: ConnectingCodeWeb()),
       ),
     ),
     GoRoute(
@@ -155,7 +167,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
-      path: '/news_article_page',
+      path: '/news/article/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
@@ -166,7 +178,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.questionArticlePage,
-      path: '/question_article_page',
+      path: '/question/article/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
@@ -205,6 +217,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const QrScanner(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.qrScannerWeb,
+      path: '/qr_scanner_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const QrScannerWeb(),
       ),
     ),
     GoRoute(

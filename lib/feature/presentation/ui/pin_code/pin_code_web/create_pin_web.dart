@@ -21,7 +21,7 @@ class CreatePinWeb extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const LoaderWidget(),
+        const LoaderWebWidget(),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -77,7 +77,7 @@ class RepeatePinWeb extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const LoaderWidget(),
+        const LoaderWebWidget(),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [

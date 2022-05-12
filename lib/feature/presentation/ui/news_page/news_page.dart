@@ -226,13 +226,13 @@ class _NewsPageState extends State<NewsPage> {
         return _NewsCard(
           width,
           item: articles[index],
-          onTap: () => _onArticleSelected(index),
+          onTap: () => _onArticleSelected(articles[index].id),
         );
       } else if (articles[index].category == state.tabs[_currentIndex]) {
         return _NewsCard(
           width,
           item: articles[index],
-          onTap: () => _onArticleSelected(index),
+          onTap: () => _onArticleSelected(articles[index].id),
         );
       }
     } else if (widget.pageType == NewsCodeEnum.quastion) {
@@ -244,10 +244,10 @@ class _NewsPageState extends State<NewsPage> {
           child: FaqRow(
             text: articles[index].header,
             onTap: () {
-              BlocProvider.of<FetchNewsBloc>(context)
-                  .add(FetchNewsEventOpen(openedIndex: index));
-              GoRouter.of(context)
-                  .pushNamed(NavigationRouteNames.questionArticlePage);
+              GoRouter.of(context).pushNamed(
+                NavigationRouteNames.questionArticlePage,
+                params: {'fid': articles[index].id},
+              );
             },
           ),
         );
@@ -264,10 +264,11 @@ class _NewsPageState extends State<NewsPage> {
     _pageController.jumpToPage(_currentIndex);
   }
 
-  void _onArticleSelected(int index) {
-    BlocProvider.of<FetchNewsBloc>(context)
-        .add(FetchNewsEventOpen(openedIndex: index));
-    GoRouter.of(context).pushNamed(NavigationRouteNames.newsArticlePage);
+  void _onArticleSelected(String id) {
+    GoRouter.of(context).pushNamed(
+      NavigationRouteNames.newsArticlePage,
+      params: {'fid': id},
+    );
   }
 
   String _getPageTitle(NewsCodeEnum pageType) {
