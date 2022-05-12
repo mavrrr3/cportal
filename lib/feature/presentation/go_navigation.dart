@@ -48,7 +48,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/connecting_code_web',
+  initialLocation: '/',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
