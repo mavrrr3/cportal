@@ -70,8 +70,10 @@ class LoaderWebWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 576,
+      width: width * 0.42,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/img/bg_splash.png'),
