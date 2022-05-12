@@ -1,10 +1,8 @@
-import 'dart:developer';
-
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
@@ -28,8 +26,40 @@ class QuestionArticlePage extends StatelessWidget {
       onSwipeRight: () => _onBack(context),
       child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
         builder: (context, state) {
+          dynamic id = GoRouter.of(context).location.split('/');
+          id = id[3] as String;
+          final ArticleEntity currentItem;
+          // ignore: prefer-conditional-expressions
+          if (state is FetchNewsLoadedState) {
+            currentItem = state.news.article.firstWhere(
+              (element) => element.id == id,
+            );
+          } else {
+            //: TODO отработать другие стейты
+            currentItem = ArticleEntity(
+              id: '000',
+              articleType: const ArticleTypeEntity(
+                id: '000',
+                code: '000',
+                description: 'qqq',
+              ),
+              header: 'Emty state Header',
+              category: '',
+              description: '',
+              image: '',
+              dateShow: DateTime.now(),
+              externalLink: '',
+              show: true,
+              userCreated: '',
+              dateCreated: DateTime.now(),
+              userUpdate: '',
+              dateUpdated: DateTime.now(),
+            );
+          }
+
           return BlocBuilder<NavBarBloc, NavBarState>(
             builder: (context, navState) {
+
               return Scaffold(
                 body: SafeArea(
                   child: SingleChildScrollView(
@@ -149,46 +179,20 @@ class QuestionArticlePage extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              state
-                                                  .news
-                                                  .article[state.openedIndex!]
-                                                  .header,
+                                              currentItem.header,
                                               style: theme.textTheme.headline1,
                                             ),
                                             const SizedBox(height: 20),
                                             Text(
-                                              state
-                                                  .news
-                                                  .article[state.openedIndex!]
-                                                  .description,
+                                              currentItem.description,
                                               style: theme.textTheme.headline5,
                                             ),
                                             const SizedBox(height: 24),
-                                            if (state.news.article.length - 1 !=
-                                                state.openedIndex!)
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 32.0,
-                                                ),
-                                                child: FaqRow(
-                                                  text: state
-                                                      .news
-                                                      .article[
-                                                          state.openedIndex! +
-                                                              1]
-                                                      .header,
-                                                  onTap: () {
-                                                    BlocProvider.of<
-                                                        FetchNewsBloc>(
-                                                      context,
-                                                    ).add(FetchNewsEventOpen(
-                                                      openedIndex:
-                                                          state.openedIndex! +
-                                                              1,
-                                                    ));
-                                                  },
-                                                ),
-                                              ),
+                                            _nextQuestion(
+                                              currentItem,
+                                              state,
+                                              context,
+                                            ),
                                           ],
                                         ),
                                     ],
@@ -208,6 +212,40 @@ class QuestionArticlePage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _nextQuestion(
+    ArticleEntity currentItem,
+    FetchNewsLoadedState state,
+    BuildContext context,
+  ) {
+    List<ArticleEntity> currentTabsItems = [];
+    for (var item in state.news.article) {
+      if (item.category == currentItem.category) {
+        currentTabsItems.add(item);
+      }
+    }
+    final currentIndex =
+        currentTabsItems.indexWhere((element) => element.id == currentItem.id);
+
+    return currentTabsItems.length - 1 !=
+            currentTabsItems
+                .indexWhere((element) => element.id == currentItem.id)
+        ? Padding(
+            padding: const EdgeInsets.only(bottom: 32.0),
+            child: FaqRow(
+              text: currentTabsItems[currentIndex + 1].header,
+              onTap: () {
+                GoRouter.of(context).pushNamed(
+                  NavigationRouteNames.questionArticlePage,
+                  params: {
+                    'fid': currentTabsItems[currentIndex + 1].id,
+                  },
+                );
+              },
+            ),
+          )
+        : const SizedBox();
   }
 
   void _onBack(BuildContext context) => GoRouter.of(context).pop();
