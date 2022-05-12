@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 final _codeController = TextEditingController();
 
@@ -29,7 +30,11 @@ class ConnectingCodeWeb extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const LoaderWebWidget(),
+        if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) ...[
+          const LoaderWebWidget()
+        ] else ...[
+          const SizedBox(),
+        ],
         BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthUser) {
@@ -42,83 +47,70 @@ class ConnectingCodeWeb extends StatelessWidget {
             if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
           },
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 260),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.inputConnectingCode,
-                          style: theme.textTheme.headline2,
-                        ),
-                        const SizedBox(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () => _showHowToGetCOnnectingCode(context),
-                          child: Text(
-                            AppLocalizations.of(context)!
-                                .howToGetConnectingCode,
-                            style: theme.textTheme.headline6!.copyWith(
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 27),
-                    const CellCodeInput(),
-                    const SizedBox(height: 8),
-                    if (_isWrongCode) ...[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Opacity(
-                          opacity: 0.6,
-                          child: colorText(
-                            theme,
-                            AppLocalizations.of(context)!.wrongConnectingCode,
-                            'red',
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 260),
+                  Text(
+                    AppLocalizations.of(context)!.inputConnectingCode,
+                    style: theme.textTheme.headline2,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () => _showHowToGetCOnnectingCode(context),
+                        child: Text(
+                          AppLocalizations.of(context)!.howToGetConnectingCode,
+                          style: theme.textTheme.headline6!.copyWith(
+                            color: theme.primaryColor,
                           ),
                         ),
                       ),
-
-                      // Вывод текста Повторите попытку через 30 секунд
-                      // Align(
-                      //   alignment: Alignment.centerLeft,
-                      //   child: Text(
-                      //     AppLocalizations.of(context)!
-                      //         .tryToRepeatAfter30sec,
-                      //     style: kMainTextRoboto.copyWith(
-                      //       fontSize: 14,
-                      //       color: AppColors.kLightTextColor,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
-                    const SizedBox(height: 96),
+                  ),
+                  const SizedBox(height: 27),
+                  const CellCodeInput(),
+                  const SizedBox(height: 8),
+                  if (_isWrongCode) ...[
                     Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        AppLocalizations.of(context)!.enter_by_qr_code,
-                        style: theme.textTheme.headline5!.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: theme.primaryColor,
+                      alignment: Alignment.centerLeft,
+                      child: Opacity(
+                        opacity: 0.6,
+                        child: colorText(
+                          theme,
+                          AppLocalizations.of(context)!.wrongConnectingCode,
+                          'red',
                         ),
                       ),
                     ),
+
+                    // Вывод текста Повторите попытку через 30 секунд
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Text(
+                    //     AppLocalizations.of(context)!
+                    //         .tryToRepeatAfter30sec,
+                    //     style: kMainTextRoboto.copyWith(
+                    //       fontSize: 14,
+                    //       color: AppColors.kLightTextColor,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
+                  const SizedBox(height: 96),
+                ],
+              ),
+              Text(
+                AppLocalizations.of(context)!.enter_by_qr_code,
+                style: theme.textTheme.headline5!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: theme.primaryColor,
                 ),
               ),
             ],
@@ -178,7 +170,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
       );
 
       return Pinput(
-        autofocus: true,
+        // autofocus: true,
         key: _formKey,
         useNativeKeyboard: true,
         length: 6,
@@ -189,7 +181,6 @@ class _CellCodeInputState extends State<CellCodeInput> {
         errorPinTheme: defaultPinTheme.copyWith(
           decoration: BoxDecoration(color: theme.hintColor),
         ),
-        // errorBuilder: ,
         focusedPinTheme: PinTheme(
           width: 52,
           height: 62,
