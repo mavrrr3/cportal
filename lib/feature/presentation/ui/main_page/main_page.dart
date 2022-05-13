@@ -12,7 +12,6 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 

@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
@@ -8,7 +5,6 @@ import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 class OnBoardingPopUp extends StatefulWidget {
   const OnBoardingPopUp({
