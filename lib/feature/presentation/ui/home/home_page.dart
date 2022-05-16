@@ -70,7 +70,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
   // Для онбординга
   late bool _isOnboarding;
@@ -82,6 +83,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late Duration _pageDuration;
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     _onBoardingIndex = 0;
     _pageController = PageController(initialPage: _onBoardingIndex);
     _animationController = AnimationController(vsync: this);
@@ -126,6 +128,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     if (mounted) context.goNamed(NavigationRouteNames.inputPin);
   }
 
+  // В случае сворачивания приложения отсчитывает delay
+  // и перенаправляет на Ввод ПИН-кода
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused) {
