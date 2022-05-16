@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
@@ -252,7 +253,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  color: theme.hoverColor.withOpacity(0.2),
+                  color: theme.brightness == Brightness.light
+                      ? theme.hoverColor.withOpacity(0.2)
+                      : AppColors.darkOnboardingBG.withOpacity(0.95),
                 ),
 
               // Закрыть онбординг
