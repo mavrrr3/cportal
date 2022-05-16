@@ -1,6 +1,5 @@
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingPage extends StatelessWidget {
@@ -19,17 +18,17 @@ class OnBoardingPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 68.h),
+        const SizedBox(height: 68),
         Text(
           content.title,
           style: theme.textTheme.headline2,
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
         Text(
           content.description,
           style: theme.textTheme.headline5,
         ),
-        SizedBox(height: 64.h),
+        const SizedBox(height: 64),
         Align(
           alignment: Alignment.center,
           child: content.isVector

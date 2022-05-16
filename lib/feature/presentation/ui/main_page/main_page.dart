@@ -165,6 +165,7 @@ class _MainPageState extends State<MainPage> {
                 animationDuration: _animationDuration,
               ),
             ),
+           
           ],
         ),
       ),
@@ -214,3 +215,7 @@ Future<void> showProfile(BuildContext context) {
     },
   );
 }
+
+// Future<void> onBoarding(BuildContext context) {
+//   return Column()
+// }
