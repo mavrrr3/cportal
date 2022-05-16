@@ -75,7 +75,7 @@ dependencies:
   qr_flutter: ^4.0.0
 
 dev_dependencies:
-  dart_code_metrics: ^4.13.0
+  dart_code_metrics: ^4.15.2
   flutter_lints: ^1.0.0
   l: ^3.2.0
   hive_generator: ^1.1.2
