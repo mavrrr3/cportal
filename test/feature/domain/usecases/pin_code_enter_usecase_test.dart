@@ -42,8 +42,6 @@ void main() {
     'Должен получить [String] или [Failure] из репозитория',
     () async {
       //arrange
-      // when(() => mockPinCodeRepository.getPin())
-      //     .thenAnswer((_) async => tPinCode);
       when(() => mockPinCodeRepository.writePin(any()))
           .thenAnswer((_) async => Right<Failure, String>(tPinCode));
 
