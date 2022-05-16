@@ -17,11 +17,13 @@ class DesktopMenu extends StatelessWidget {
     required this.items,
     required this.currentIndex,
     required this.onChange,
+    this.onboarding,
   }) : super(key: key);
 
   final List<MenuButtonModel> items;
   final int currentIndex;
   final Function(int) onChange;
+  final Function()? onboarding;
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +38,17 @@ class DesktopMenu extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: SvgPicture.asset(
-                'assets/icons/logo_grey.svg',
-                color: theme.brightness == Brightness.dark
-                    ? theme.hoverColor
-                    : null,
-                width: 24.0,
+            GestureDetector(
+              onTap: onboarding,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: SvgPicture.asset(
+                  'assets/icons/logo_grey.svg',
+                  color: theme.brightness == Brightness.dark
+                      ? theme.hoverColor
+                      : null,
+                  width: 24.0,
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -74,11 +79,10 @@ class _MenuItem extends StatelessWidget {
     Key? key,
     required this.item,
     required this.isActive,
-    this.duration = const Duration(milliseconds: 250),
   }) : super(key: key);
 
   final MenuButtonModel item;
-  final Duration duration;
+  final Duration duration = const Duration(milliseconds: 250);
   final bool isActive;
   @override
   Widget build(BuildContext context) {
