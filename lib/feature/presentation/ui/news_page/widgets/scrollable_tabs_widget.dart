@@ -1,5 +1,6 @@
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class ScrollableTabsWidget extends StatefulWidget {
   const ScrollableTabsWidget({
@@ -28,10 +29,10 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+          padding: getHorizontalPadding(context),
           child: SizedBox(
             width: width,
-            height: 28.0.h,
+            height: 30.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
@@ -67,7 +68,9 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(right: 8.0.w),
+        padding: EdgeInsets.only(
+          right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
+        ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           curve: Curves.easeIn,
@@ -82,7 +85,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
                 : null,
           ),
           child: Padding(
-            padding: EdgeInsets.only(bottom: 10.0.h),
+            padding: const EdgeInsets.only(bottom: 10.0),
             child: Text(
               text,
               style: isCurrent

@@ -2,7 +2,6 @@ import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class NewsHorizontalScroll extends StatelessWidget {
@@ -32,7 +31,7 @@ class NewsHorizontalScroll extends StatelessWidget {
             style: theme.textTheme.headline3,
           ),
         SizedBox(
-          height: 200.h,
+          height: 200,
           width: double.infinity,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -62,7 +61,7 @@ class NewsHorizontalScroll extends StatelessWidget {
                         title: listViewMap[i]['title'] as String,
                         dateTime: listViewMap[i]['dateTime'] as String,
                       ),
-                    SizedBox(width: 8.w),
+                    const SizedBox(width: 8),
                   ],
                 ),
               );

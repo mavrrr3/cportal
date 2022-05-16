@@ -29,12 +29,23 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
           quastion,
           newsArticle2,
           newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
+          newsArticle3,
           quastion3,
-          quastion,
-          quastion,
-          quastion,
           quastion2,
-          quastion2,
+          quastion4,
         ],
       );
 
@@ -57,7 +68,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 }
 
 final ArticleModel newsArticle = ArticleModel(
-  id: 'id',
+  id: '999',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'NEWS',
@@ -78,7 +89,7 @@ final ArticleModel newsArticle = ArticleModel(
 );
 
 final ArticleModel newsArticle2 = ArticleModel(
-  id: 'id',
+  id: '555',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'NEWS',
@@ -98,7 +109,7 @@ final ArticleModel newsArticle2 = ArticleModel(
   dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
 );
 final ArticleModel newsArticle3 = ArticleModel(
-  id: 'id',
+  id: '123',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'NEWS',
@@ -119,7 +130,7 @@ final ArticleModel newsArticle3 = ArticleModel(
 );
 
 final ArticleModel quastion = ArticleModel(
-  id: 'id',
+  id: '333',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'QUASTION',
@@ -141,7 +152,7 @@ final ArticleModel quastion = ArticleModel(
 );
 
 final ArticleModel quastion2 = ArticleModel(
-  id: 'id',
+  id: '123',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'QUASTION',
@@ -163,13 +174,34 @@ final ArticleModel quastion2 = ArticleModel(
 );
 
 final ArticleModel quastion3 = ArticleModel(
-  id: 'id',
+  id: '777',
   articleType: const ArticleTypeModel(
     id: 'id',
     code: 'QUASTION',
     description: 'description',
   ),
   header: 'Как взять отпуск?',
+  category: 'Кадры',
+  description:
+      'И нет сомнений, что базовые сценарии поведения пользователей представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.\n\nПо требованию собственника компенсация требует депозитный суд, хотя законодательством может быть установлено иное. Наследование своевременно исполняет закон. Пленум Высшего Арбитражного Суда неоднократно разъяснял, как доверенность противоречиво арендует правомерный сервитут. Оферта императивна. Страховой полис объективно опровергает международный индоссамент.\n\nАкционерное общество поручает конфиденциальный взаимозачет, исключая принцип презумпции невиновности. Перестрахование своевременно исполняет императивный сервитут, что не имеет аналогов в англо-саксонской правовой системе. Конституция, как бы это ни казалось парадоксальным, акцептована.',
+  image:
+      'https://img3.goodfon.ru/original/1152x864/e/2c/wyoming-grand-teton-national.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+final ArticleModel quastion4 = ArticleModel(
+  id: '111',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'QUASTION',
+    description: 'description',
+  ),
+  header: 'Как взять больничный?',
   category: 'Кадры',
   description:
       'И нет сомнений, что базовые сценарии поведения пользователей представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.\n\nПо требованию собственника компенсация требует депозитный суд, хотя законодательством может быть установлено иное. Наследование своевременно исполняет закон. Пленум Высшего Арбитражного Суда неоднократно разъяснял, как доверенность противоречиво арендует правомерный сервитут. Оферта императивна. Страховой полис объективно опровергает международный индоссамент.\n\nАкционерное общество поручает конфиденциальный взаимозачет, исключая принцип презумпции невиновности. Перестрахование своевременно исполняет императивный сервитут, что не имеет аналогов в англо-саксонской правовой системе. Конституция, как бы это ни казалось парадоксальным, акцептована.',

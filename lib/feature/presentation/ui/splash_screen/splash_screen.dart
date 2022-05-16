@@ -64,3 +64,34 @@ class LoaderWidget extends StatelessWidget {
     );
   }
 }
+
+class LoaderWebWidget extends StatelessWidget {
+  const LoaderWebWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
+    return Container(
+      width: width * 0.42,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/img/bg_splash.png'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Color.fromRGBO(37, 39, 40, 0.7),
+            BlendMode.darken,
+          ),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Center(
+            child: SvgIcon(null, path: 'logo.svg', width: 120),
+          ),
+        ],
+      ),
+    );
+  }
+}

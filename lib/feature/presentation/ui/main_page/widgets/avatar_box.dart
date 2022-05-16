@@ -1,6 +1,5 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AvatarBox extends StatelessWidget {
   final double size;
@@ -19,8 +18,8 @@ class AvatarBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: isAnimation ? duration : const Duration(milliseconds: 300),
-      width: isAnimation ? 0 : size.w,
-      height: isAnimation ? 0 : size.h,
+      width: isAnimation ? 0 : size,
+      height: isAnimation ? 0 : size,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         image: DecorationImage(

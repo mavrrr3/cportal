@@ -1,10 +1,10 @@
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
-class SearchBoxMain extends StatelessWidget {
-  const SearchBoxMain({
+class SearchInput extends StatelessWidget {
+  const SearchInput({
     Key? key,
     required this.controller,
     required this.onChanged,
@@ -22,31 +22,30 @@ class SearchBoxMain extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final double width = MediaQuery.of(context).size.width;
-
     return AnimatedContainer(
       duration:
           isAnimation ? animationDuration : const Duration(milliseconds: 100),
-      // width: 276.w,
-      width: isAnimation ? width - 32.w : 276.w,
-      height: 40.h,
+      width: _getContainerWidth(context),
+      height: 40,
       curve: Curves.easeIn,
       decoration: BoxDecoration(
         color: theme.splashColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: SvgIcon(
               theme.brightness == Brightness.dark ? theme.hoverColor : null,
               path: 'search.svg',
-              width: 20.w,
+              width: 20,
             ),
           ),
           SizedBox(
-            width: 200.w,
+            width:
+                ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 510 : 200,
             child: TextField(
               showCursor: true,
               controller: controller,
@@ -55,7 +54,11 @@ class SearchBoxMain extends StatelessWidget {
               onChanged: (text) {
                 onChanged(text);
               },
+              style: theme.textTheme.headline6!.copyWith(
+                color: theme.hoverColor.withOpacity(0.68),
+              ),
               decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(bottom: 4),
                 hintText: AppLocalizations.of(context)!.enterRequest,
                 hintStyle: theme.textTheme.headline6!.copyWith(
                   color: theme.hoverColor.withOpacity(0.68),
@@ -67,5 +70,18 @@ class SearchBoxMain extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  double _getContainerWidth(
+    BuildContext context,
+  ) {
+    final double width = MediaQuery.of(context).size.width;
+
+    // ignore: prefer-conditional-expressions
+    if (!ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
+      return isAnimation ? width - 32 : width - 84;
+    } else {
+      return 584;
+    }
   }
 }

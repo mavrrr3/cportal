@@ -1,4 +1,6 @@
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
@@ -12,6 +14,8 @@ import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/create_pin_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/input_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
@@ -22,8 +26,11 @@ abstract class NavigationRouteNames {
   static const splashScreen = 'splash_screen';
   static const mainPage = 'main_page';
   static const connectingCode = 'connecting_code';
+  static const connectingCodeWeb = 'connecting_code_web';
   static const createPin = 'create_pin';
+  static const createPinWeb = 'create_pin_web';
   static const inputPin = 'input_pin';
+  static const inputPinWeb = 'input_pin_web';
   static const editPin = 'edit_pin';
   static const fingerPrint = 'finger_print';
   static const faceId = 'face_id';
@@ -33,6 +40,7 @@ abstract class NavigationRouteNames {
   static const profile = 'profile';
   static const userData = 'user_data';
   static const qrScanner = 'qr_scanner';
+  static const qrScannerWeb = 'qr_scanner_web';
   static const onBoardingStart = 'onboarding_start';
   static const onboarding = 'onboarding';
   static const onboardingEnd = 'onboarding_end';
@@ -40,7 +48,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/main_page',
+  initialLocation: '/',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
@@ -68,12 +76,30 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      name: NavigationRouteNames.connectingCodeWeb,
+      path: '/connecting_code_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(body: ConnectingCodeWeb()),
+      ),
+    ),
+    GoRoute(
       name: NavigationRouteNames.createPin,
       path: '/create_pin',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: CreatePinPage(),
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.createPinWeb,
+      path: '/create_pin_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: CreatePinWeb(),
         ),
       ),
     ),
@@ -94,6 +120,16 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const Scaffold(
           body: InputPinPage(),
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.inputPinWeb,
+      path: '/input_pin_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const Scaffold(
+          body: InputPinWeb(),
         ),
       ),
     ),
@@ -131,22 +167,22 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
-      path: '/news_article_page',
+      path: '/news/article/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: NewsArticlePage(currentIndex: state.extra! as int),
+        child: const NewsArticlePage(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.questionArticlePage,
-      path: '/question_article_page',
+      path: '/question/article/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
-        child: QuestionArticlePage(currentIndex: state.extra! as int),
+        child: const QuestionArticlePage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
       ),
@@ -181,6 +217,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const QrScanner(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.qrScannerWeb,
+      path: '/qr_scanner_web',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const QrScannerWeb(),
       ),
     ),
     GoRoute(

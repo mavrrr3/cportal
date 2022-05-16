@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +20,14 @@ class _QrScannerState extends State<QrScanner> {
   Barcode? _result;
   late CameraController _cameraController;
   late bool _isFlashLight;
+  late bool _isLoading;
   QRViewController? qrController;
 
   @override
   void initState() {
     super.initState();
     _isFlashLight = false;
+    _isLoading = false;
     _cameraInit();
   }
 
@@ -34,11 +35,7 @@ class _QrScannerState extends State<QrScanner> {
   void reassemble() {
     super.reassemble();
 
-    if (Platform.isIOS) {
-      qrController!.resumeCamera();
-    } else if (Platform.isAndroid) {
-      qrController!.pauseCamera();
-    }
+    qrController!.resumeCamera();
   }
 
   /// For Camera Flash Light
@@ -56,54 +53,68 @@ class _QrScannerState extends State<QrScanner> {
     return Swipe(
       onSwipeRight: () => GoRouter.of(context).pop(),
       child: Scaffold(
-        body: Stack(
-          children: [
-            QRView(
-              key: qrKey,
-              overlay: QrScannerOverlayShape(
-                borderRadius: 12,
-                borderLength: 20.h,
-                borderWidth: 10.w,
-                cutOutSize: MediaQuery.of(context).size.width * 0.8,
-                borderColor: Theme.of(context).splashColor,
-              ),
-              onQRViewCreated: _onQrViewCreated,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 84.h),
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    log('Flash Light $_isFlashLight');
-                    if (_isFlashLight) {
-                      _cameraController.setFlashMode(FlashMode.off);
-                      setState(() {
-                        _isFlashLight = false;
-                      });
-                    } else {
-                      _cameraController.setFlashMode(FlashMode.torch);
-                      setState(() {
-                        _isFlashLight = true;
-                      });
-                    }
-                  },
-                  child: SvgPicture.asset(
-                    'assets/icons/flash_light.svg',
-                    width: 48.w,
-                    fit: BoxFit.cover,
+        body: !_isLoading
+            ? Stack(
+                children: [
+                  QRView(
+                    key: qrKey,
+                    overlay: QrScannerOverlayShape(
+                      borderRadius: 12,
+                      borderLength: 20.h,
+                      borderWidth: 10.w,
+                      cutOutSize: MediaQuery.of(context).size.width * 0.8,
+                      borderColor: Theme.of(context).splashColor,
+                    ),
+                    onQRViewCreated: _onQrViewCreated,
                   ),
-                ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 84.h),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () async {
+                          try {
+                            if (!_cameraController.value.isInitialized) {
+                              await _cameraController.initialize();
+                              log('[Camera Controller');
+                            }
+                            if (_isFlashLight) {
+                              await _cameraController
+                                  .setFlashMode(FlashMode.off);
+                              setState(() {
+                                _isFlashLight = false;
+                              });
+                            } else {
+                              await _cameraController
+                                  .setFlashMode(FlashMode.torch);
+                              setState(() {
+                                _isFlashLight = true;
+                              });
+                            }
+                            log('Flash Light $_isFlashLight');
+                          } catch (e) {
+                            log('[Camera Error] $e');
+                          }
+                        },
+                        child: SvgPicture.asset(
+                          'assets/icons/flash_light.svg',
+                          width: 48.w,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (_result != null)
+                    Text(
+                      '${_result!.code}',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                ],
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-            if (_result != null)
-              Text(
-                '${_result!.code}',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-          ],
-        ),
       ),
     );
   }

@@ -1,17 +1,22 @@
 import 'dart:async';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
-int _selectedItemIndex = 0;
+import 'package:responsive_framework/responsive_framework.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,10 +24,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Timer? timer;
-
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     super.initState();
   }
@@ -65,116 +69,145 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       const MainPage(),
     ];
 
-    Color _iconColor(int index) {
-
-      return _selectedItemIndex == index ? _activeColor : _nonActiveColor;
+    Color _iconColor(int index, NavBarState state) {
+      return state.currentIndex == index ? _activeColor : _nonActiveColor;
     }
 
-    Color _textColor(int index) {
+    Color _textColor(int index, NavBarState state) {
       final ThemeData theme = Theme.of(context);
 
       // ignore: prefer-conditional-expressions
       if (theme.brightness == Brightness.light) {
-        return _selectedItemIndex == index ? _activeColor : _nonActiveColor;
+        return state.currentIndex == index ? _activeColor : _nonActiveColor;
       } else {
-        return _selectedItemIndex == index ? _activeColor : Colors.white;
+        return state.currentIndex == index ? _activeColor : Colors.white;
       }
     }
 
     GestureDetector _navBarItem({
+      required NavBarState state,
       required int index,
-      required double width,
       required Widget iconWidget,
       required String text,
     }) {
       return GestureDetector(
         onTap: () => setState(
-          () => _selectedItemIndex = index,
+          () => BlocProvider.of<NavBarBloc>(context)
+              .add(NavBarEventImpl(index: index)),
         ),
         child: Container(
-          height: 56.h,
-          width: width / 5,
+          height: 56,
+          width: _width / 5,
           decoration: BoxDecoration(
             color: theme.splashColor,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 5.h),
-              iconWidget,
-              SizedBox(height: 5.h),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                child: iconWidget,
+              ),
               Text(
                 text,
                 style: theme.textTheme.bodyText2!.copyWith(
-                  color: _textColor(index),
+                  color: _textColor(index, state),
                 ),
               ),
-              SizedBox(height: 5.h),
+              const SizedBox(height: 5),
             ],
           ),
         ),
       );
     }
 
-    return Scaffold(
-      body: _listPages[_selectedItemIndex],
-      bottomNavigationBar: SizedBox(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _navBarItem(
-              index: 0,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(0),
-                path: 'navbar/main.svg',
-                width: 24.w,
+    return BlocBuilder<NavBarBloc, NavBarState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ResponsiveVisibility(
+                visible: false,
+                visibleWhen: const [
+                  Condition<dynamic>.largerThan(name: TABLET),
+                ],
+                child: DesktopMenu(
+                  currentIndex: state.currentIndex,
+                  onChange: (index) {
+                    BlocProvider.of<NavBarBloc>(context)
+                        .add(NavBarEventImpl(index: index));
+                  },
+                  items: state.menuItems,
+                ),
               ),
-              text: 'Главная',
-            ),
-            _navBarItem(
-              index: 1,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(1),
-                path: 'navbar/news.svg',
-                width: 20.w,
+              Expanded(
+                child: _listPages[state.currentIndex],
               ),
-              text: 'Новости',
-            ),
-            _navBarItem(
-              index: 2,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(2),
-                path: 'navbar/questions.svg',
-                width: 22.w,
+            ],
+          ),
+          bottomNavigationBar: SizedBox(
+            child: ResponsiveVisibility(
+              hiddenWhen: const [Condition<dynamic>.largerThan(name: TABLET)],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _navBarItem(
+                    state: state,
+                    index: 0,
+                    iconWidget: SvgPicture.asset(
+                      state.menuItems[0].img,
+                      color: _iconColor(0, state),
+                      width: 24,
+                    ),
+                    text: state.menuItems[0].text,
+                  ),
+                  _navBarItem(
+                    state: state,
+                    index: 1,
+                    iconWidget: SvgPicture.asset(
+                      state.menuItems[1].img,
+                      color: _iconColor(1, state),
+                      width: 20,
+                    ),
+                    text: state.menuItems[1].text,
+                  ),
+                  _navBarItem(
+                    state: state,
+                    index: 2,
+                    iconWidget: SvgPicture.asset(
+                      state.menuItems[2].img,
+                      color: _iconColor(2, state),
+                      width: 22,
+                    ),
+                    text: state.menuItems[2].text,
+                  ),
+                  _navBarItem(
+                    state: state,
+                    index: 3,
+                    iconWidget: SvgPicture.asset(
+                      state.menuItems[3].img,
+                      color: _iconColor(3, state),
+                      width: 22,
+                    ),
+                    text: state.menuItems[3].text,
+                  ),
+                  _navBarItem(
+                    state: state,
+                    index: 4,
+                    iconWidget: SvgPicture.asset(
+                      state.menuItems[4].img,
+                      color: _iconColor(4, state),
+                      width: 20.0,
+                    ),
+                    text: state.menuItems[4].text,
+                  ),
+                ],
               ),
-              text: 'Вопросы',
             ),
-            _navBarItem(
-              index: 3,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(3),
-                path: 'navbar/declaration.svg',
-                width: 22.0.w,
-              ),
-              text: 'Заявки',
-            ),
-            _navBarItem(
-              index: 4,
-              width: _width,
-              iconWidget: SvgIcon(
-                _iconColor(4),
-                path: 'navbar/contacts.svg',
-                width: 20.0.w,
-              ),
-              text: 'Контакты',
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
