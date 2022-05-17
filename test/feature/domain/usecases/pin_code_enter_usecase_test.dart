@@ -49,7 +49,7 @@ void main() {
       final result = await useCase.call(PinCodeParams(pinCode: tPinCode));
 
       //assert
-      void getStringOrEntity(Either<Failure, String> either) {
+      void getStringOrFailure(Either<Failure, String> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
           expect(tFailure, failure);
@@ -59,7 +59,7 @@ void main() {
         }
       }
 
-      getStringOrEntity(result);
+      getStringOrFailure(result);
       verify(() => mockPinCodeRepository.writePin(tPinCode));
       verifyNoMoreInteractions(mockPinCodeRepository);
     },
@@ -76,7 +76,7 @@ void main() {
       final result = await useCase.call(PinCodeParams(pinCode: tPinCode));
 
       //assert
-      void getStringOrEntity(Either<Failure, String> either) {
+      void getStringOrFailure(Either<Failure, String> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
           expect(tFailure, failure);
@@ -86,7 +86,7 @@ void main() {
         }
       }
 
-      getStringOrEntity(result);
+      getStringOrFailure(result);
       verify(() => mockPinCodeRepository.writePin(tPinCode));
       verifyNoMoreInteractions(mockPinCodeRepository);
     },
