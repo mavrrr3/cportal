@@ -1,6 +1,5 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
@@ -59,7 +58,6 @@ class QuestionArticlePage extends StatelessWidget {
 
           return BlocBuilder<NavBarBloc, NavBarState>(
             builder: (context, navState) {
-
               return Scaffold(
                 body: SafeArea(
                   child: SingleChildScrollView(
@@ -73,18 +71,8 @@ class QuestionArticlePage extends StatelessWidget {
                             Condition<dynamic>.largerThan(name: TABLET),
                           ],
                           child: DesktopMenu(
-                            currentIndex: navState.currentIndex,
-                            onChange: (index) {
-                              if (index != navState.currentIndex) {
-                                BlocProvider.of<NavBarBloc>(context)
-                                    .add(NavBarEventImpl(index: index));
-
-                                GoRouter.of(context)
-                                    .goNamed(NavigationRouteNames.mainPage);
-                              } else {
-                                GoRouter.of(context).pop();
-                              }
-                            },
+                            currentIndex: 2,
+                            onChange: (index) => changePage(context, index),
                             items: navState.menuItems,
                           ),
                         ),
