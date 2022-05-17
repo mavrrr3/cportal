@@ -31,7 +31,7 @@ class NewsArticlePage extends StatelessWidget {
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         dynamic id = GoRouter.of(context).location.split('/');
-        id = id[3] as String;
+        id = id[2] as String;
         final ArticleEntity _currentItem;
         // ignore: prefer-conditional-expressions
         if (state is FetchNewsLoadedState) {

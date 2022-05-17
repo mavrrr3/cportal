@@ -167,7 +167,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
-      path: '/news/article/:fid',
+      path: '/news/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
@@ -178,7 +178,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.questionArticlePage,
-      path: '/question/article/:fid',
+      path: '/question/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
