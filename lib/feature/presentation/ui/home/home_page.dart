@@ -3,12 +3,9 @@ import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -65,8 +62,11 @@ final List<OnboardingEntity> _onboardingContent = [
 class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
+    required this.child,
+    required this.desktopMenuIndex,
   }) : super(key: key);
-
+  final Widget child;
+  final int desktopMenuIndex;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -90,10 +90,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _isOnboarding = false;
     _isLearningCourse = false;
 
-    _pageController = PageController(initialPage: _onBoardingIndex);
-    _animationController = AnimationController(vsync: this);
-
-    // Время показа текущей страницы
+    // Onboarding page duration
     _pageDuration = const Duration(seconds: 5);
 
     _animationController.addStatusListener((status) {
@@ -151,16 +148,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     final double _width = MediaQuery.of(context).size.width;
 
-    // Список страниц для навигации должен
-    // строго соответствовать количеству элемнтов навбара
-    List<Widget> _listPages = <Widget>[
-      const MainPage(),
-      const NewsPage(pageType: NewsCodeEnum.news),
-      const NewsPage(pageType: NewsCodeEnum.quastion),
-      const MainPage(),
-      const MainPage(),
-    ];
-
     Color _iconColor(int index, NavBarState state) {
       return state.currentIndex == index ? _activeColor : _nonActiveColor;
     }
@@ -176,7 +163,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       }
     }
 
-    GestureDetector _navBarItem({
+    Widget _navBarItem({
       required NavBarState state,
       required int index,
       required Widget iconWidget,
@@ -226,6 +213,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     visibleWhen: const [
                       Condition<dynamic>.largerThan(name: TABLET),
                     ],
+                    // Меню Web
                     child: DesktopMenu(
                       onboarding: () {
                         setState(
@@ -234,16 +222,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           },
                         );
                       },
-                      currentIndex: state.currentIndex,
-                      onChange: (index) {
-                        BlocProvider.of<NavBarBloc>(context)
-                            .add(NavBarEventImpl(index: index));
-                      },
+                      currentIndex: widget.desktopMenuIndex,
+                      onChange: (index) => changePage(context, index),
                       items: state.menuItems,
                     ),
                   ),
+
+                  // Текущая страница
                   Expanded(
-                    child: _listPages[state.currentIndex],
+                    child: widget.child,
                   ),
                 ],
               ),
