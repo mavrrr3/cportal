@@ -23,7 +23,7 @@ void main() {
   });
 
   test(
-    'Должен вернуть [boolean] из репозитория',
+    'Return [boolean] from repository',
     () async {
       //arrange
 
@@ -51,7 +51,7 @@ void main() {
   );
 
   test(
-    'Должен вернуть [Failure] из репозитория',
+    'Return [Failure] from repository',
     () async {
       //arrange
 

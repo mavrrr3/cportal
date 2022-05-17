@@ -23,7 +23,7 @@ void main() {
   });
 
   test(
-    'Должен получить [String?] из репозитория',
+    'Return [String?] from repository',
     () async {
       //arrange
       when(() => mockPinCodeRepository.getPin())
@@ -39,11 +39,38 @@ void main() {
   );
 
   test(
-    'Должен получить [String] или [Failure] из репозитория',
+    'Return [String] from repository',
     () async {
       //arrange
       when(() => mockPinCodeRepository.writePin(any()))
           .thenAnswer((_) async => Right<Failure, String>(tPinCode));
+
+      //act
+      final result = await useCase.call(PinCodeParams(pinCode: tPinCode));
+
+      //assert
+      void getStringOrEntity(Either<Failure, String> either) {
+        if (either.isLeft()) {
+          final Failure failure = either.asLeft();
+          expect(tFailure, failure);
+        } else {
+          final String pinCode = either.asRight();
+          expect(result, equals(Right<Failure, String>(pinCode)));
+        }
+      }
+
+      getStringOrEntity(result);
+      verify(() => mockPinCodeRepository.writePin(tPinCode));
+      verifyNoMoreInteractions(mockPinCodeRepository);
+    },
+  );
+
+  test(
+    'Return [Failure] from repository',
+    () async {
+      //arrange
+      when(() => mockPinCodeRepository.writePin(any()))
+          .thenAnswer((_) async => Left<Failure, String>(tFailure));
 
       //act
       final result = await useCase.call(PinCodeParams(pinCode: tPinCode));
