@@ -1,5 +1,10 @@
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class MenuButtonModel {
   final String img;
@@ -113,14 +118,31 @@ class _MenuItem extends StatelessWidget {
             Text(
               item.text,
               style: theme.textTheme.headline5!.copyWith(
-                color: isActive
-                    ? theme.primaryColor
-                    : theme.cardColor.withOpacity(0.68),
+                color: isActive ? theme.primaryColor : theme.cardColor,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+void changePage(BuildContext context, int index) {
+  BlocProvider.of<NavBarBloc>(context).add(NavBarEventImpl(index: index));
+
+  switch (index) {
+    case 0:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+      break;
+    case 1:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.news);
+      break;
+    case 2:
+      // GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
+      break;
+    default:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
   }
 }
