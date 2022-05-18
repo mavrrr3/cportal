@@ -1,6 +1,5 @@
 import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/repositories/profile_repository_web.dart';
@@ -9,21 +8,17 @@ import 'package:dartz/dartz.dart';
 import 'package:test/test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockLocalDataSource extends Mock implements IProfileLocalDataSource {}
-
 class MockRemoteDataSource extends Mock implements IProfileRemoteDataSource {}
 
 void main() {
   late ProfileRepositoryWeb repository;
   late MockRemoteDataSource mockRemoteDataSource;
-  late MockLocalDataSource mockLocalDataSource;
 
   setUp(() {
     mockRemoteDataSource = MockRemoteDataSource();
-    mockLocalDataSource = MockLocalDataSource();
+
     repository = ProfileRepositoryWeb(
       remoteDataSource: mockRemoteDataSource,
-      localDataSource: mockLocalDataSource,
     );
   });
 
@@ -79,9 +74,7 @@ void main() {
         //act
         await repository.getSingleProfile(tProfileId);
         //assert
-        verifyNever(
-          () => mockLocalDataSource.singleProfileToCache(tProfileModel),
-        );
+
         verify(() => mockRemoteDataSource.getSingleProfile(tProfileId));
       },
     );
@@ -95,7 +88,6 @@ void main() {
         final result = await repository.getSingleProfile(tProfileId);
         //assert
         verify(() => mockRemoteDataSource.getSingleProfile(tProfileId));
-        verifyZeroInteractions(mockLocalDataSource);
         expect(result, equals(Left<ServerFailure, dynamic>(ServerFailure())));
       },
     );

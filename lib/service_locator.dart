@@ -67,7 +67,6 @@ Future<void> init() async {
     sl.registerLazySingleton<IProfileRepository>(
       () => ProfileRepositoryWeb(
         remoteDataSource: sl(),
-        localDataSource: sl(),
       ),
     );
   } else {
