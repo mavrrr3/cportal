@@ -110,6 +110,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               setState(() {
                 _isOnboarding = false;
                 _isLearningCourse = true;
+                _animationController.stop();
+                _animationController.reset();
+                _animationController.duration = const Duration(seconds: 5);
+                _animationController.forward();
               });
             }
           }
