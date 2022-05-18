@@ -64,34 +64,43 @@ class InputCodeBlocWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 260),
-              Text(
-                AppLocalizations.of(context)!.inputConnectingCode,
-                style: theme.textTheme.headline2,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.of(context)
-                        .push<dynamic>(MaterialPageRoute<dynamic>(
-                      builder: (context) =>
-                          const Scaffold(body: GetCodeWidget()),
-                    )),
-                    child: Text(
-                      AppLocalizations.of(context)!.howToGetConnectingCode,
-                      style: theme.textTheme.headline6!.copyWith(
-                        color: theme.primaryColor,
-                      ),
+              Padding(
+                padding: const EdgeInsets.only(left: 18.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 260),
+                    Text(
+                      AppLocalizations.of(context)!.inputConnectingCode,
+                      style: theme.textTheme.headline2,
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .push<dynamic>(MaterialPageRoute<dynamic>(
+                            builder: (context) =>
+                                const Scaffold(body: GetCodeWidget()),
+                          )),
+                          child: Text(
+                            AppLocalizations.of(context)!
+                                .howToGetConnectingCode,
+                            style: theme.textTheme.headline6!.copyWith(
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 27),
+                  ],
+                ),
               ),
-              const SizedBox(height: 27),
-              const CellCodeInput(),
+              const SizedBox(height: 70, child: CellCodeInput()),
               const SizedBox(height: 8),
               if (_isWrongCode) ...[
                 Align(
@@ -183,7 +192,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
       );
 
       return Pinput(
-        // autofocus: true,
+        autofocus: true,
         key: _formKey,
         useNativeKeyboard: true,
         length: 6,
