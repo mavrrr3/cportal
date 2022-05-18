@@ -1,6 +1,5 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
@@ -31,14 +30,13 @@ class NewsArticlePage extends StatelessWidget {
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         dynamic id = GoRouter.of(context).location.split('/');
-        id = id[3] as String;
+        id = id[2] as String;
         final ArticleEntity _currentItem;
         // ignore: prefer-conditional-expressions
         if (state is FetchNewsLoadedState) {
           _currentItem = state.news.article.firstWhere(
             (element) => element.id == id,
           );
-          
         } else {
           //: TODO отработать другие стейты
           _currentItem = ArticleEntity(
@@ -202,12 +200,8 @@ class _Web extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DesktopMenu(
-          currentIndex: navState.currentIndex,
-          onChange: (index) {
-            BlocProvider.of<NavBarBloc>(context)
-                .add(NavBarEventImpl(index: index));
-            GoRouter.of(context).goNamed(NavigationRouteNames.mainPage);
-          },
+          currentIndex: 1,
+          onChange: (index) => changePage(context, index),
           items: navState.menuItems,
         ),
         SafeArea(
@@ -225,9 +219,7 @@ class _Web extends StatelessWidget {
                   children: [
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        GoRouter.of(context).pop();
-                      },
+                      onTap: () => _onBack(context),
                       child: Row(
                         children: [
                           SvgPicture.asset(
