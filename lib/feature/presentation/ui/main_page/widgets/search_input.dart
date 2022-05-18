@@ -58,7 +58,7 @@ class SearchInput extends StatelessWidget {
                 color: theme.hoverColor.withOpacity(0.68),
               ),
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(bottom: 4),
+                contentPadding: const EdgeInsets.only(bottom: 8),
                 hintText: AppLocalizations.of(context)!.enterRequest,
                 hintStyle: theme.textTheme.headline6!.copyWith(
                   color: theme.hoverColor.withOpacity(0.68),
