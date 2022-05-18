@@ -31,7 +31,7 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
         userType: UserTypeModel(id: '1', code: 'ddd', description: 'ddd'),
       );
       // log(remoteUser.toString());
-      await localDatasource.singleUserToCache(remoteUser);
+      await localDatasource.currentUserToCache(remoteUser);
 
       return remoteUser;
     } on ServerException {

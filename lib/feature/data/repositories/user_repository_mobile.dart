@@ -30,13 +30,13 @@ class UserRepositoryMobile implements IUserRepository {
       }
     } else {
       try {
-        final localUser = await localDataSource.getSingleUserFromCache();
+        final localUser = await localDataSource.getCurrentUserFromCache();
         if (localUser == null) {
           return Left(CacheFailure());
         }
 
         return Right(localUser);
-      } on CacheFailure {
+      } on CacheException {
         return Left(CacheFailure());
       }
     }
@@ -45,13 +45,13 @@ class UserRepositoryMobile implements IUserRepository {
   @override
   Future<Either<Failure, bool>> checkAuth() async {
     try {
-      final localUser = await localDataSource.getSingleUserFromCache();
+      final localUser = await localDataSource.getCurrentUserFromCache();
       if (localUser == null) {
         return const Right(false);
       }
 
       return const Right(true);
-    } on CacheFailure {
+    } on CacheException {
       return Left(CacheFailure());
     }
   }

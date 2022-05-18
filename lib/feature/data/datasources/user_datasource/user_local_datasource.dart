@@ -7,17 +7,17 @@ abstract class IUserLocalDataSource {
   /// Сохраняем [UserModel] в кэш
   ///
   /// Пробрасываем все ошибки через [CacheException]
-  Future<void> singleUserToCache(UserModel user);
+  Future<void> currentUserToCache(UserModel user);
 
   /// Извлекаем [UserModel] из кеша
   ///
   /// Пробрасываем все ошибки через [CacheException]
-  Future<UserModel?> getSingleUserFromCache();
+  Future<UserModel?> getCurrentUserFromCache();
 }
 
 class UserLocalDataSource implements IUserLocalDataSource {
   @override
-  Future<void> singleUserToCache(UserModel user) async {
+  Future<void> currentUserToCache(UserModel user) async {
     // await Hive.deleteBoxFromDisk('single_user');
     if (kDebugMode) log('UserModel сохранил в кэш ' + user.toString());
 
@@ -29,7 +29,7 @@ class UserLocalDataSource implements IUserLocalDataSource {
   }
 
   @override
-  Future<UserModel?> getSingleUserFromCache() async {
+  Future<UserModel?> getCurrentUserFromCache() async {
     var box = await Hive.openBox<UserModel>('single_user');
     var user = box.get('current_user');
     if (kDebugMode) log('UserModel Из кэша ' + user.toString());
