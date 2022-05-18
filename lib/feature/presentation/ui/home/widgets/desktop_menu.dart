@@ -128,21 +128,20 @@ class _MenuItem extends StatelessWidget {
     );
   }
 }
+  void changePage(BuildContext context,int index) {
+    BlocProvider.of<NavBarBloc>(context).add(NavBarEventImpl(index: index));
 
-void changePage(BuildContext context, int index) {
-  BlocProvider.of<NavBarBloc>(context).add(NavBarEventImpl(index: index));
-
-  switch (index) {
-    case 0:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
-      break;
-    case 1:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.news);
-      break;
-    case 2:
-      // GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
-      break;
-    default:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+    switch (index) {
+      case 0:
+        GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+        break;
+      case 1:
+        GoRouter.of(context).pushNamed(NavigationRouteNames.news);
+        break;
+      case 2:
+        GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
+        break;
+      default:
+        GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+    }
   }
-}
