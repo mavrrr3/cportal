@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class QrScannerWeb extends StatelessWidget {
   const QrScannerWeb({Key? key}) : super(key: key);
@@ -61,10 +62,11 @@ class BodyWidget extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 260),
-        // TODO Реализовать генерацию QR кода
-        const Placeholder(
-          fallbackHeight: 206,
-          fallbackWidth: 206,
+        // TODO Реализовать получение QR кода из БД
+        QrImage(
+          data: 'data',
+          size: 206,
+          backgroundColor: theme.splashColor,
         ),
         const SizedBox(height: 16),
         Text(

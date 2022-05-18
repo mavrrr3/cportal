@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scann
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
@@ -35,6 +36,7 @@ abstract class NavigationRouteNames {
   static const fingerPrint = 'finger_print';
   static const faceId = 'face_id';
   static const news = 'news';
+  static const questions = 'questions';
   static const newsArticlePage = 'news_article_page';
   static const questionArticlePage = 'question_article_page';
   static const profile = 'profile';
@@ -48,12 +50,12 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/main_page',
+  initialLocation: '/',
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
-      path: '/',
+      path: '/splash_screen',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: SplashScreen()),
@@ -61,10 +63,13 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.mainPage,
-      path: '/main_page',
+      path: '/',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const HomePage(),
+        child: const HomePage(
+          child: MainPage(),
+          desktopMenuIndex: 0,
+        ),
       ),
     ),
     GoRoute(
@@ -162,12 +167,15 @@ final GoRouter router = GoRouter(
       path: '/news',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: NewsPage(pageType: NewsCodeEnum.news)),
+        child: const HomePage(
+          child: NewsPage(pageType: NewsCodeEnum.news),
+          desktopMenuIndex: 1,
+        ),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
-      path: '/news/article/:fid',
+      path: '/news/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
@@ -177,8 +185,19 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      name: NavigationRouteNames.questions,
+      path: '/questions',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const HomePage(
+          child: NewsPage(pageType: NewsCodeEnum.quastion),
+          desktopMenuIndex: 2,
+        ),
+      ),
+    ),
+    GoRoute(
       name: NavigationRouteNames.questionArticlePage,
-      path: '/question/article/:fid',
+      path: '/questions/:fid',
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,

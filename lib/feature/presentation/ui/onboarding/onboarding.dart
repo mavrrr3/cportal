@@ -81,11 +81,11 @@ class _OnboardingState extends State<Onboarding>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 17.h),
+            const SizedBox(height: 17),
               // Виджет прогресса
               SafeArea(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding:const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: _onboardingContent
                         .asMap()
