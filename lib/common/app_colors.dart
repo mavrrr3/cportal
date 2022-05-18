@@ -12,6 +12,7 @@ class AppColors {
   static const Color blue = Color(0xFF5284DA);
   static const Color blueDark = Color(0xFF2A85FF);
   static const Color dividerColor = Color(0x32394414);
+  static const Color darkOnboardingBG = Color(0xFF1A1D1F);
 
   static const Color green = Color(0xFF559935);
 
