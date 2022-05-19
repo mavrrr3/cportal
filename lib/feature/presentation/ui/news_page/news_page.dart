@@ -109,7 +109,7 @@ class _NewsPageState extends State<NewsPage> {
                           width: width,
                           height: !ResponsiveWrapper.of(context)
                                   .isLargerThan(TABLET)
-                              ? MediaQuery.of(context).size.height - 181
+                              ? MediaQuery.of(context).size.height - 204
                               : MediaQuery.of(context).size.height - 116,
                           child: PageView(
                             controller: _pageController,
