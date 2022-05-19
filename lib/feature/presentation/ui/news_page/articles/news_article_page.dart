@@ -166,7 +166,7 @@ class _Mobile extends StatelessWidget {
                         GoRouter.of(context).pop();
                         GoRouter.of(context).pushNamed(
                           NavigationRouteNames.newsArticlePage,
-                          extra: index,
+                          params: {'fid': state.news.article[index].id},
                         );
                       },
                     ),
