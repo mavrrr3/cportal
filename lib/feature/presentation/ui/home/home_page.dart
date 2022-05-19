@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts/contacts.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
@@ -167,7 +168,7 @@ class _HomePageState extends State<HomePage>
       const NewsPage(pageType: NewsCodeEnum.news),
       const NewsPage(pageType: NewsCodeEnum.quastion),
       const MainPage(),
-      const MainPage(),
+      const Contacts(),
     ];
 
     Color _iconColor(int index, NavBarState state) {
