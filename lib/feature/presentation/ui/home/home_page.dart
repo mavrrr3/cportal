@@ -3,11 +3,15 @@ import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,6 +116,10 @@ class _HomePageState extends State<HomePage>
               setState(() {
                 _isOnboarding = false;
                 _isLearningCourse = true;
+                _animationController.stop();
+                _animationController.reset();
+                _animationController.duration = const Duration(seconds: 5);
+                _animationController.forward();
               });
             }
           }
@@ -151,6 +159,16 @@ class _HomePageState extends State<HomePage>
     final Color _activeColor = theme.primaryColor;
 
     final double _width = MediaQuery.of(context).size.width;
+
+    // Список страниц для навигации должен
+    // строго соответствовать количеству элемнтов навбара
+    List<Widget> _listPages = <Widget>[
+      const MainPage(),
+      const NewsPage(pageType: NewsCodeEnum.news),
+      const NewsPage(pageType: NewsCodeEnum.quastion),
+      const MainPage(),
+      const MainPage(),
+    ];
 
     Color _iconColor(int index, NavBarState state) {
       return state.currentIndex == index ? _activeColor : _nonActiveColor;
@@ -233,8 +251,10 @@ class _HomePageState extends State<HomePage>
                   ),
 
                   // Текущая страница
+
                   Expanded(
-                    child: widget.child,
+                    child:
+                        kIsWeb ? widget.child : _listPages[state.currentIndex],
                   ),
                 ],
               ),

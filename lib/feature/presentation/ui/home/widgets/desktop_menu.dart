@@ -119,6 +119,7 @@ class _MenuItem extends StatelessWidget {
               item.text,
               style: theme.textTheme.headline5!.copyWith(
                 color: isActive ? theme.primaryColor : theme.cardColor,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],

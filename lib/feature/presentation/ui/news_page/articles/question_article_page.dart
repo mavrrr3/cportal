@@ -224,6 +224,7 @@ class QuestionArticlePage extends StatelessWidget {
             child: FaqRow(
               text: currentTabsItems[currentIndex + 1].header,
               onTap: () {
+                GoRouter.of(context).pop();
                 GoRouter.of(context).pushNamed(
                   NavigationRouteNames.questionArticlePage,
                   params: {
