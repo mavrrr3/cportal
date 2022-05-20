@@ -173,13 +173,9 @@ class _WebState extends State<_Web> {
     }
 
     List<ArticleEntity> articlesToRecomendations(String id) {
-      List<ArticleEntity> articles = [];
-      for (var element in widget.state.news.article) {
-        element.id == id;
-        articles.add(element);
-      }
-
-      return articles;
+      return widget.state.news.article
+          .where((element) => element.id != id)
+          .toList();
     }
 
     ArticleEntity article = widget.item;
