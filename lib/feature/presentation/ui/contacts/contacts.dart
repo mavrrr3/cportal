@@ -3,6 +3,7 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/favorites.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -250,6 +251,8 @@ class _ContactsState extends State<Contacts> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -266,14 +269,20 @@ class _ContactsState extends State<Contacts> {
                     onChanged: (text) {},
                   ),
                   _FilterButton(
-                    onTap: () {},
+                    onTap: () async {
+                      await showModalBottomSheet<void>(
+                        context: context,
+                        backgroundColor: theme.splashColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0)),
+                        builder: (context) => Filter(),
+                      );
+                    },
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 31,
-            ),
+            const SizedBox(height: 31),
 
             // Favorites
             if (_contacts.isNotEmpty)
