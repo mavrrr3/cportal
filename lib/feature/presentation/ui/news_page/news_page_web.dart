@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -47,7 +44,6 @@ class _NewsPageWebState extends State<NewsPageWeb> {
         _currentIndex = index;
         _contentInit(context);
       });
-      log(_currentIndex.toString());
     }
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
@@ -291,28 +287,4 @@ class _TabBarWidgetState extends State<TabBarWidget> {
       ),
     );
   }
-}
-
-SliverAppBar _appBar() {
-  return SliverAppBar(
-    onStretchTrigger: () => Future(() => debugPrint('qwee')),
-    automaticallyImplyLeading: false,
-    expandedHeight: 205,
-    bottom: const TabBar(
-      indicator: BoxDecoration(
-        color: AppColors.appBarLight,
-        borderRadius: BorderRadius.all(
-          Radius.circular(15.0),
-        ),
-      ),
-      labelStyle: TextStyle(fontSize: 14),
-      indicatorColor: Colors.transparent,
-      indicatorWeight: 3.0,
-      tabs: [
-        Tab(child: Text('Все заказы')),
-        Tab(child: Text('Принятые')),
-        Tab(child: Text('История')),
-      ],
-    ),
-  );
 }

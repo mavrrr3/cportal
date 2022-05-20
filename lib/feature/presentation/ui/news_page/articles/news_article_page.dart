@@ -301,25 +301,4 @@ class _WebState extends State<_Web> {
       ],
     );
   }
-
-  Widget _recomendations() {
-    List<ArticleEntity> recomendationsList = widget.state.news.article;
-    recomendationsList.removeWhere((element) => element == widget.item);
-
-    return Wrap(
-      runSpacing: 16,
-      spacing: 16,
-      children: List.generate(widget.state.news.article.length, (i) {
-        return NewsCardItem(
-          width: 312,
-          height: 152,
-          imgPath: widget.state.news.article[i].image,
-          title: widget.state.news.article[i].header,
-          dateTime: _outputFormat.format(
-            widget.state.news.article[i].dateShow,
-          ),
-        );
-      }),
-    );
-  }
 }
