@@ -18,6 +18,11 @@ import 'package:swipe/swipe.dart';
 
 final DateFormat _outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
+void _contentInit(BuildContext context) {
+  return BlocProvider.of<FetchNewsBloc>(context, listen: false)
+      .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
+}
+
 class NewsArticlePage extends StatelessWidget {
   final String id;
   const NewsArticlePage({
@@ -27,13 +32,16 @@ class NewsArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late ArticleEntity article;
+    _contentInit(context);
+
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         if (state is FetchNewsLoadedState) {
-          for (var element in state.news.article) {
-            element.id == id;
-            article = element;
+          ArticleEntity articlefromBloc() {
+            return state.news.article
+                .where((element) => element.id == id)
+                .toList()
+                .first;
           }
 
           return Swipe(
@@ -41,11 +49,11 @@ class NewsArticlePage extends StatelessWidget {
             child: Scaffold(
               body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
                   ? _Mobile(
-                      item: article,
+                      item: articlefromBloc(),
                       state: state,
                     )
                   : _Web(
-                      item: article,
+                      item: articlefromBloc(),
                       state: state,
                     ),
             ),
@@ -167,11 +175,6 @@ class _WebState extends State<_Web> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    void _contentInit(BuildContext context) {
-      return BlocProvider.of<FetchNewsBloc>(context, listen: false)
-          .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
-    }
-
     List<ArticleEntity> articlesToRecomendations(String id) {
       return widget.state.news.article
           .where((element) => element.id != id)
@@ -271,16 +274,27 @@ class _WebState extends State<_Web> {
                             children: List.generate(
                                 articlesToRecomendations(article.id).length,
                                 (i) {
-                              return NewsCardItem(
-                                width: 312,
-                                height: 152,
-                                imgPath: articlesToRecomendations(article.id)[i]
-                                    .image,
-                                title: articlesToRecomendations(article.id)[i]
-                                    .header,
-                                dateTime: _outputFormat.format(
-                                  articlesToRecomendations(article.id)[i]
-                                      .dateShow,
+                              return GestureDetector(
+                                onTap: () => GoRouter.of(context).pushNamed(
+                                  NavigationRouteNames.newsArticlePage,
+                                  params: {
+                                    'fid':
+                                        articlesToRecomendations(article.id)[i]
+                                            .id
+                                  },
+                                ),
+                                child: NewsCardItem(
+                                  width: 312,
+                                  height: 152,
+                                  imgPath:
+                                      articlesToRecomendations(article.id)[i]
+                                          .image,
+                                  title: articlesToRecomendations(article.id)[i]
+                                      .header,
+                                  dateTime: _outputFormat.format(
+                                    articlesToRecomendations(article.id)[i]
+                                        .dateShow,
+                                  ),
                                 ),
                               );
                             }),
