@@ -1,6 +1,10 @@
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
@@ -17,125 +21,135 @@ class ContactProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Swipe(
-      onSwipeRight: () => _onBack(context),
-      child: Scaffold(
-        body: Stack(
-          children: [
-            // Action buttons
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _ActionButton(
-                      img: 'assets/icons/phone.svg',
-                      onTap: () {},
-                    ),
-                    const SizedBox(width: 16),
-                    _ActionButton(
-                      img: 'assets/icons/message.svg',
-                      onTap: () {},
-                    ),
-                    const SizedBox(width: 16),
-                    _ActionButton(
-                      img: 'assets/icons/email.svg',
-                      onTap: () {},
-                    )
-                  ],
-                ),
-              ),
+    return BlocBuilder<NavBarBloc, NavBarState>(
+      builder: (context, state) {
+        return Swipe(
+          onSwipeRight: () => _onBack(context),
+          child: Scaffold(
+            bottomNavigationBar: CustomBottomBar(
+              state: state,
+              isNestedNavigation: true,
             ),
-
-            // Content
-            SingleChildScrollView(
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Back button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _BackButton(
-                            onTap: () => _onBack(context),
-                          ),
-                          const SizedBox(width: 24),
-                        ],
-                      ),
-                      const SizedBox(height: 41),
-
-                      // Profile image
-                      Align(
-                        alignment: Alignment.center,
-                        child: AvatarBox(
-                          size: 102,
-                          imgPath: user.photoLink,
+            body: Stack(
+              children: [
+                // Action buttons
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _ActionButton(
+                          img: 'assets/icons/phone.svg',
+                          onTap: () {},
                         ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Full name
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          '${user.firstName} ${user.middleName}\n${user.lastName}',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
+                        const SizedBox(width: 16),
+                        _ActionButton(
+                          img: 'assets/icons/message.svg',
+                          onTap: () {},
                         ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      //-- Profile info --
-                      // Post
-                      _BuildInfo(
-                        headline: AppLocalizations.of(context)!.position,
-                        text: user.position.description,
-                      ),
-
-                      // Department
-                      _BuildInfo(
-                        headline: AppLocalizations.of(context)!.department,
-                        text: user.position.description,
-                      ),
-
-                      // Office phone
-                      _BuildInfo(
-                        headline: AppLocalizations.of(context)!.office_phone,
-                        text: user.phone[0].number,
-                      ),
-
-                      // Self phone
-                      _BuildInfo(
-                        headline: AppLocalizations.of(context)!.self_phone,
-                        text: '${user.phone[1].suffix} ${user.phone[1].number}',
-                      ),
-
-                      // Birth date
-                      _BuildInfo(
-                        headline: AppLocalizations.of(context)!.birth_date,
-                        text: user.birthday,
-                      ),
-
-                      // Email
-                      _BuildInfo(
-                        headline: AppLocalizations.of(context)!.email,
-                        text: user.email,
-                      ),
-                    ],
+                        const SizedBox(width: 16),
+                        _ActionButton(
+                          img: 'assets/icons/email.svg',
+                          onTap: () {},
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
+
+                // Content
+                SingleChildScrollView(
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Back button
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _BackButton(
+                                onTap: () => _onBack(context),
+                              ),
+                              const SizedBox(width: 24),
+                            ],
+                          ),
+                          const SizedBox(height: 41),
+
+                          // Profile image
+                          Align(
+                            alignment: Alignment.center,
+                            child: AvatarBox(
+                              size: 102,
+                              imgPath: user.photoLink,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Full name
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${user.firstName} ${user.middleName}\n${user.lastName}',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.headline4!.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+
+                          //-- Profile info --
+                          // Post
+                          _BuildInfo(
+                            headline: AppLocalizations.of(context)!.position,
+                            text: user.position.description,
+                          ),
+
+                          // Department
+                          _BuildInfo(
+                            headline: AppLocalizations.of(context)!.department,
+                            text: user.position.description,
+                          ),
+
+                          // Office phone
+                          _BuildInfo(
+                            headline:
+                                AppLocalizations.of(context)!.office_phone,
+                            text: user.phone[0].number,
+                          ),
+
+                          // Self phone
+                          _BuildInfo(
+                            headline: AppLocalizations.of(context)!.self_phone,
+                            text:
+                                '${user.phone[1].suffix} ${user.phone[1].number}',
+                          ),
+
+                          // Birth date
+                          _BuildInfo(
+                            headline: AppLocalizations.of(context)!.birth_date,
+                            text: user.birthday,
+                          ),
+
+                          // Email
+                          _BuildInfo(
+                            headline: AppLocalizations.of(context)!.email,
+                            text: user.email,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -211,6 +225,7 @@ class _BackButton extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
+  /// Кнопка взаимодействия с Юзером [Звонок, Чат, Почта]
   const _ActionButton({
     Key? key,
     required this.img,
