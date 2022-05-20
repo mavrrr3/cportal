@@ -1,7 +1,6 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
@@ -15,70 +14,41 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
 import 'package:swipe/swipe.dart';
 
 final DateFormat _outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
 class NewsArticlePage extends StatelessWidget {
+  final String id;
   const NewsArticlePage({
     Key? key,
+    required this.id,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    late ArticleEntity article;
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
-        dynamic id = GoRouter.of(context).location.split('/');
-        id = id[2] as String;
-        final ArticleEntity _currentItem;
-        // ignore: prefer-conditional-expressions
         if (state is FetchNewsLoadedState) {
-          _currentItem = state.news.article.firstWhere(
-            (element) => element.id == id,
-          );
-        } else {
-          //: TODO отработать другие стейты
-          _currentItem = ArticleEntity(
-            id: '000',
-            articleType: const ArticleTypeEntity(
-              id: '000',
-              code: '000',
-              description: 'qqq',
+          for (var element in state.news.article) {
+            element.id == id;
+            article = element;
+          }
+
+          return Swipe(
+            onSwipeRight: () => GoRouter.of(context).pop(),
+            child: Scaffold(
+              body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                  ? _Mobile(
+                      item: article,
+                      state: state,
+                    )
+                  : _Web(
+                      item: article,
+                      state: state,
+                    ),
             ),
-            header: 'Emty state Header',
-            category: '',
-            description: '',
-            image: '',
-            dateShow: DateTime.now(),
-            externalLink: '',
-            show: true,
-            userCreated: '',
-            dateCreated: DateTime.now(),
-            userUpdate: '',
-            dateUpdated: DateTime.now(),
-          );
-        }
-        if (state is FetchNewsLoadedState) {
-          return BlocBuilder<NavBarBloc, NavBarState>(
-            builder: (context, navState) {
-              return Swipe(
-                onSwipeRight: () => _onBack(context),
-                child: Scaffold(
-                  body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                      ? _Mobile(
-                          item: _currentItem,
-                          navState: navState,
-                          state: state,
-                        )
-                      : _Web(
-                          item: _currentItem,
-                          navState: navState,
-                          state: state,
-                        ),
-                ),
-              );
-            },
           );
         }
 
@@ -93,12 +63,10 @@ class _Mobile extends StatelessWidget {
   const _Mobile({
     Key? key,
     required this.item,
-    required this.navState,
     required this.state,
   }) : super(key: key);
   final ArticleEntity item;
   final FetchNewsLoadedState state;
-  final NavBarState navState;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +88,7 @@ class _Mobile extends StatelessWidget {
                 enableFeedback: false,
                 icon: const Icon(Icons.arrow_back),
                 iconSize: 24,
-                onPressed: () => _onBack(context),
+                onPressed: () => GoRouter.of(context).pop(),
               ),
               flexibleSpace: FlexibleSpaceBar(
                 background: ExtendedImage.network(
@@ -181,28 +149,51 @@ class _Mobile extends StatelessWidget {
   }
 }
 
-class _Web extends StatelessWidget {
+class _Web extends StatefulWidget {
   const _Web({
     Key? key,
     required this.item,
-    required this.navState,
     required this.state,
   }) : super(key: key);
   final ArticleEntity item;
   final FetchNewsLoadedState state;
 
-  final NavBarState navState;
+  @override
+  State<_Web> createState() => _WebState();
+}
+
+class _WebState extends State<_Web> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
+    void _contentInit(BuildContext context) {
+      return BlocProvider.of<FetchNewsBloc>(context, listen: false)
+          .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
+    }
+
+    List<ArticleEntity> articlesToRecomendations(String id) {
+      List<ArticleEntity> articles = [];
+      for (var element in widget.state.news.article) {
+        element.id == id;
+        articles.add(element);
+      }
+
+      return articles;
+    }
+
+    ArticleEntity article = widget.item;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DesktopMenu(
           currentIndex: 1,
-          onChange: (index) => changePage(context, index),
-          items: navState.menuItems,
+          onChange: (index) {
+            setState(() {
+              changePage(context, index);
+            });
+          },
         ),
         SafeArea(
           child: SingleChildScrollView(
@@ -219,7 +210,12 @@ class _Web extends StatelessWidget {
                   children: [
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: () => _onBack(context),
+                      onTap: () {
+                        _contentInit(context);
+                        setState(() {
+                          GoRouter.of(context).pop();
+                        });
+                      },
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -250,30 +246,49 @@ class _Web extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(6),
                               child: Image.network(
-                                item.image,
+                                article.image,
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                           const SizedBox(height: 24),
                           Text(
-                            item.header,
+                            article.header,
                             style: theme.textTheme.headline3,
                           ),
                           const SizedBox(height: 12),
                           Text(
                             _outputFormat.format(
-                              item.dateShow,
+                              widget.item.dateShow,
                             ),
                             style: theme.textTheme.bodyText1,
                           ),
                           const SizedBox(height: 24),
                           Text(
-                            item.description,
+                            article.description,
                             style: theme.textTheme.headline6,
                           ),
                           const SizedBox(height: 40),
-                          _recomendations(),
+                          Wrap(
+                            runSpacing: 16,
+                            spacing: 16,
+                            children: List.generate(
+                                articlesToRecomendations(article.id).length,
+                                (i) {
+                              return NewsCardItem(
+                                width: 312,
+                                height: 152,
+                                imgPath: articlesToRecomendations(article.id)[i]
+                                    .image,
+                                title: articlesToRecomendations(article.id)[i]
+                                    .header,
+                                dateTime: _outputFormat.format(
+                                  articlesToRecomendations(article.id)[i]
+                                      .dateShow,
+                                ),
+                              );
+                            }),
+                          ),
                         ],
                       ),
                     ),
@@ -288,25 +303,23 @@ class _Web extends StatelessWidget {
   }
 
   Widget _recomendations() {
-    List<ArticleEntity> recomendationsList = state.news.article;
-    recomendationsList.removeWhere((element) => element == item);
+    List<ArticleEntity> recomendationsList = widget.state.news.article;
+    recomendationsList.removeWhere((element) => element == widget.item);
 
     return Wrap(
       runSpacing: 16,
       spacing: 16,
-      children: List.generate(recomendationsList.length, (i) {
+      children: List.generate(widget.state.news.article.length, (i) {
         return NewsCardItem(
           width: 312,
           height: 152,
-          imgPath: recomendationsList[i].image,
-          title: recomendationsList[i].header,
+          imgPath: widget.state.news.article[i].image,
+          title: widget.state.news.article[i].header,
           dateTime: _outputFormat.format(
-            recomendationsList[i].dateShow,
+            widget.state.news.article[i].dateShow,
           ),
         );
       }),
     );
   }
 }
-
-void _onBack(BuildContext context) => GoRouter.of(context).pop();

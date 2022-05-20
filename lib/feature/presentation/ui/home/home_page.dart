@@ -242,7 +242,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       },
                       currentIndex: widget.desktopMenuIndex,
                       onChange: (index) => changePage(context, index),
-                      items: state.menuItems,
                     ),
                   ),
 

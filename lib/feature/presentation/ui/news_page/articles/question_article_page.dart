@@ -73,7 +73,6 @@ class QuestionArticlePage extends StatelessWidget {
                           child: DesktopMenu(
                             currentIndex: 2,
                             onChange: (index) => changePage(context, index),
-                            items: navState.menuItems,
                           ),
                         ),
                         Expanded(

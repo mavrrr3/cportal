@@ -9,6 +9,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
@@ -168,7 +169,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const HomePage(
-          child: NewsPage(pageType: NewsCodeEnum.news),
+          child: NewsPageWeb(),
           desktopMenuIndex: 1,
         ),
       ),
@@ -181,7 +182,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const NewsArticlePage(),
+        child: NewsArticlePage(id: state.params['fid']!),
       ),
     ),
     GoRoute(

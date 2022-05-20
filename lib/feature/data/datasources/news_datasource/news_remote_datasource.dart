@@ -28,21 +28,13 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
           newsArticle,
           quastion,
           newsArticle2,
+          newsArticle4,
           newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
-          newsArticle3,
+          newsArticle5,
+          newsArticle6,
+          newsArticle7,
+          newsArticle8,
+          newsArticle9,
           quastion3,
           quastion2,
           quastion4,
@@ -74,7 +66,7 @@ final ArticleModel newsArticle = ArticleModel(
     code: 'NEWS',
     description: 'description',
   ),
-  header: 'header',
+  header: 'Header 1',
   category: 'Новосталь-М',
   description: 'description',
   image:
@@ -108,6 +100,27 @@ final ArticleModel newsArticle2 = ArticleModel(
   userUpdate: 'userUpdate',
   dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
 );
+
+final ArticleModel newsArticle6 = ArticleModel(
+  id: '5r5',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Header 6',
+  category: 'Новосталь-М',
+  description: 'description',
+  image:
+      'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
 final ArticleModel newsArticle3 = ArticleModel(
   id: '123',
   articleType: const ArticleTypeModel(
@@ -116,6 +129,110 @@ final ArticleModel newsArticle3 = ArticleModel(
     description: 'description',
   ),
   header: 'Header 3',
+  category: 'Новосталь-М',
+  description: 'description',
+  image:
+      'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+
+final ArticleModel newsArticle4 = ArticleModel(
+  id: '5r5',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Header 4',
+  category: 'Новосталь-М',
+  description: 'description',
+  image:
+      'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+final ArticleModel newsArticle5 = ArticleModel(
+  id: '12fff3',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Header 5',
+  category: 'Новосталь-М',
+  description: 'description',
+  image:
+      'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+
+final ArticleModel newsArticle7 = ArticleModel(
+  id: '222fffff3',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Header 7',
+  category: 'Новосталь-М',
+  description: 'description',
+  image:
+      'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+
+final ArticleModel newsArticle8 = ArticleModel(
+  id: '3',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Header 8',
+  category: 'Новосталь-М',
+  description: 'description',
+  image:
+      'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  externalLink: 'externalLink',
+  show: true,
+  userCreated: 'userCreated',
+  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+  userUpdate: 'userUpdate',
+  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+);
+
+final ArticleModel newsArticle9 = ArticleModel(
+  id: 'kjlfljk34',
+  articleType: const ArticleTypeModel(
+    id: 'id',
+    code: 'NEWS',
+    description: 'description',
+  ),
+  header: 'Header 9',
   category: 'Новосталь-М',
   description: 'description',
   image:
