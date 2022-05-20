@@ -9,6 +9,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
@@ -20,6 +21,7 @@ import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/in
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,7 +37,8 @@ abstract class NavigationRouteNames {
   static const editPin = 'edit_pin';
   static const fingerPrint = 'finger_print';
   static const faceId = 'face_id';
-  static const news = 'news';
+  static const news = 'news_mobile';
+  static const newsWeb = 'news';
   static const questions = 'questions';
   static const newsArticlePage = 'news_article_page';
   static const questionArticlePage = 'question_article_page';
@@ -163,12 +166,27 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.news,
+        name: NavigationRouteNames.news,
+        path: '/news_mobile',
+        pageBuilder: (BuildContext context, GoRouterState state) =>
+            MaterialPage(
+              key: state.pageKey,
+              child: const HomePage(
+                child: NewsPage(pageType: NewsCodeEnum.news),
+                desktopMenuIndex: 1,
+              ),
+            ),
+        redirect: (state) {
+          if (kIsWeb) return '/news';
+          return null;
+        }),
+    GoRoute(
+      name: NavigationRouteNames.newsWeb,
       path: '/news',
       pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
         key: state.pageKey,
         child: const HomePage(
-          child: NewsPage(pageType: NewsCodeEnum.news),
+          child: NewsPageWeb(),
           desktopMenuIndex: 1,
         ),
       ),
@@ -181,7 +199,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const NewsArticlePage(),
+        child: NewsArticlePage(id: state.params['fid']!),
       ),
     ),
     GoRoute(

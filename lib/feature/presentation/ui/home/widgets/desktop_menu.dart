@@ -6,6 +6,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
+final List<MenuButtonModel> menuItems = [
+  MenuButtonModel(
+    img: 'assets/icons/navbar/main.svg',
+    text: 'Главная',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/news.svg',
+    text: 'Новости',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/questions.svg',
+    text: 'Вопросы',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/declaration.svg',
+    text: 'Заявки',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/contacts.svg',
+    text: 'Контакты',
+  ),
+];
+
 class MenuButtonModel {
   final String img;
   final String text;
@@ -19,13 +42,11 @@ class MenuButtonModel {
 class DesktopMenu extends StatelessWidget {
   const DesktopMenu({
     Key? key,
-    required this.items,
     required this.currentIndex,
     required this.onChange,
     this.onboarding,
   }) : super(key: key);
 
-  final List<MenuButtonModel> items;
   final int currentIndex;
   final Function(int) onChange;
   final Function()? onboarding;
@@ -60,14 +81,14 @@ class DesktopMenu extends StatelessWidget {
 
             // Генерация навигационных элементов меню
             ...List.generate(
-              items.length,
+              menuItems.length,
               (index) => GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
                   onChange(index);
                 },
                 child: _MenuItem(
-                  item: items[index],
+                  item: menuItems[index],
                   isActive: currentIndex == index,
                 ),
               ),
@@ -128,20 +149,21 @@ class _MenuItem extends StatelessWidget {
     );
   }
 }
-  void changePage(BuildContext context,int index) {
-    BlocProvider.of<NavBarBloc>(context).add(NavBarEventImpl(index: index));
 
-    switch (index) {
-      case 0:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
-        break;
-      case 1:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.news);
-        break;
-      case 2:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
-        break;
-      default:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
-    }
+void changePage(BuildContext context, int index) {
+  BlocProvider.of<NavBarBloc>(context).add(NavBarEventImpl(index: index));
+
+  switch (index) {
+    case 0:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+      break;
+    case 1:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.news);
+      break;
+    case 2:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
+      break;
+    default:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
   }
+}

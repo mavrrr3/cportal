@@ -246,7 +246,6 @@ class _HomePageState extends State<HomePage>
                       },
                       currentIndex: widget.desktopMenuIndex,
                       onChange: (index) => changePage(context, index),
-                      items: state.menuItems,
                     ),
                   ),
 
