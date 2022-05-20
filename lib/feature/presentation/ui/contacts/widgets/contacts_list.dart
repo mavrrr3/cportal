@@ -22,7 +22,9 @@ class ContactsList extends StatelessWidget {
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            onTap(index);
+          },
           child: _ContactItem(
             item: items[index],
           ),

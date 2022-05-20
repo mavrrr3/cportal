@@ -1,12 +1,12 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/favorites.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 final List<ProfileEntity> _contacts = [
   ProfileEntity(
@@ -15,8 +15,8 @@ final List<ProfileEntity> _contacts = [
     firstName: 'Суханенков',
     middleName: 'Владимир',
     lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
+    birthday: '18.07.1989',
+    email: 'email@example.com',
     photoLink:
         'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
     active: true,
@@ -24,7 +24,18 @@ final List<ProfileEntity> _contacts = [
         id: '',
         department: 'Новосталь-М',
         description: 'Директор мобильных решений'),
-    phone: const [],
+    phone: const [
+      PhoneEntity(
+        number: '76-56-67',
+        suffix: '',
+        primary: false,
+      ),
+      PhoneEntity(
+        number: '923 456 67 78',
+        suffix: '+7',
+        primary: false,
+      ),
+    ],
     userCreated: 'userCreated',
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
@@ -36,8 +47,8 @@ final List<ProfileEntity> _contacts = [
     firstName: 'Суханенков',
     middleName: 'Владимир',
     lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
+    birthday: '18.07.1989',
+    email: 'email@example.com',
     photoLink:
         'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
     active: true,
@@ -45,7 +56,18 @@ final List<ProfileEntity> _contacts = [
         id: '',
         department: 'Новосталь-М',
         description: 'Руководитель проектов'),
-    phone: const [],
+    phone: const [
+      PhoneEntity(
+        number: '76-56-67',
+        suffix: '',
+        primary: false,
+      ),
+      PhoneEntity(
+        number: '923 456 67 78',
+        suffix: '+7',
+        primary: false,
+      ),
+    ],
     userCreated: 'userCreated',
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
@@ -57,14 +79,57 @@ final List<ProfileEntity> _contacts = [
     firstName: 'Суханенков',
     middleName: 'Владимир',
     lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
+    birthday: '18.07.1989',
+    email: 'email@example.com',
     photoLink:
         'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
     active: true,
     position: const PositionEntity(
         id: '', department: 'Новосталь-М', description: 'Начальник отдела'),
-    phone: const [],
+    phone: const [
+      PhoneEntity(
+        number: '76-56-67',
+        suffix: '',
+        primary: false,
+      ),
+      PhoneEntity(
+        number: '923 456 67 78',
+        suffix: '+7',
+        primary: false,
+      ),
+    ],
+    userCreated: 'userCreated',
+    dateCreated: DateTime.now(),
+    userUpdate: 'userUpdate',
+    dateUpdated: DateTime.now(),
+  ),
+  ProfileEntity(
+    id: '111',
+    externalId: '111',
+    firstName: 'Суханенков',
+    middleName: 'Владимир',
+    lastName: 'Константинович',
+    birthday: '18.07.1989',
+    email: 'email@example.com',
+    photoLink:
+        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
+    active: true,
+    position: const PositionEntity(
+        id: '',
+        department: 'Новосталь-М',
+        description: 'Руководитель проектов'),
+    phone: const [
+      PhoneEntity(
+        number: '76-56-67',
+        suffix: '',
+        primary: false,
+      ),
+      PhoneEntity(
+        number: '923 456 67 78',
+        suffix: '+7',
+        primary: false,
+      ),
+    ],
     userCreated: 'userCreated',
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
@@ -85,28 +150,18 @@ final List<ProfileEntity> _contacts = [
         id: '',
         department: 'Новосталь-М',
         description: 'Руководитель проектов'),
-    phone: const [],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
-    active: true,
-    position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Руководитель проектов'),
-    phone: const [],
+    phone: const [
+      PhoneEntity(
+        number: '76-56-67',
+        suffix: '',
+        primary: false,
+      ),
+      PhoneEntity(
+        number: '923 456 67 78',
+        suffix: '+7',
+        primary: false,
+      ),
+    ],
     userCreated: 'userCreated',
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
@@ -190,14 +245,11 @@ class _ContactsState extends State<Contacts> {
   @override
   void initState() {
     _searchController = TextEditingController();
-    log('${DateTime.now()}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -220,25 +272,30 @@ class _ContactsState extends State<Contacts> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 31,
             ),
 
             // Favorites
             if (_contacts.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 16, bottom: 16),
                 child: SizedBox(
                     height: 48,
                     child: FavoritesRow(items: _contacts, onTap: (i) {})),
               ),
-            const SizedBox(height: 31),
 
             // Contacts Column
             Padding(
               padding: getHorizontalPadding(context),
               child: ContactsList(
                 items: _contacts,
-                onTap: (i) {},
+                onTap: (i) {
+                  GoRouter.of(context).pushNamed(
+                    NavigationRouteNames.contactProfile,
+                    params: {'fid': _contacts[i].id},
+                    extra: _contacts[i],
+                  );
+                },
               ),
             ),
 

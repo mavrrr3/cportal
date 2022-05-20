@@ -13,6 +13,7 @@ class FavoritesRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
@@ -31,6 +32,7 @@ class FavoritesRow extends StatelessWidget {
               width: 48,
               child: CircleAvatar(
                 backgroundImage: NetworkImage(items[index].photoLink),
+                backgroundColor: theme.hoverColor.withOpacity(0.38),
               ),
             ),
           ),
