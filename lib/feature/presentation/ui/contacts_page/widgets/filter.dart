@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
@@ -29,31 +27,6 @@ class FilterItemModel {
     this.isActive = false,
   });
 }
-
-// List<FilterModel> _filters = [
-//   FilterModel(
-//     headline: 'Компания',
-//     items: [
-//       FilterItemModel(name: 'АЭМ3'),
-//       FilterItemModel(name: 'Новосталь-М'),
-//       FilterItemModel(name: 'Демедия'),
-//     ],
-//   ),
-//   FilterModel(
-//     headline: 'Отдел',
-//     items: [
-//       FilterItemModel(name: 'Информационные технологии'),
-//       FilterItemModel(name: 'Отдел кадров'),
-//       FilterItemModel(name: 'Служба безопасности'),
-//       FilterItemModel(name: 'Менеджеры по документообороту'),
-//       FilterItemModel(name: 'Отдел мобильной разработки'),
-//       FilterItemModel(name: 'Отдел продаж'),
-//       FilterItemModel(name: 'Производственный отдел'),
-//       FilterItemModel(name: 'Отдел сбыта'),
-//       FilterItemModel(name: 'Администрация'),
-//     ],
-//   ),
-// ];
 
 class Filter extends StatefulWidget {
   const Filter({

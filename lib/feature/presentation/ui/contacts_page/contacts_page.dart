@@ -126,7 +126,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
 
     return SafeArea(
       child: SingleChildScrollView(
