@@ -41,7 +41,8 @@ final List<ProfileEntity> _contacts = [
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
     dateUpdated: DateTime.now(),
-  ), ProfileEntity(
+  ),
+  ProfileEntity(
     id: '111',
     externalId: '111',
     firstName: 'Суханенков',
@@ -72,7 +73,8 @@ final List<ProfileEntity> _contacts = [
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
     dateUpdated: DateTime.now(),
-  ), ProfileEntity(
+  ),
+  ProfileEntity(
     id: '111',
     externalId: '111',
     firstName: 'Суханенков',
@@ -145,10 +147,18 @@ class _ContactsPageState extends State<ContactsPage> {
                     onTap: () async {
                       await showModalBottomSheet<void>(
                         context: context,
-                        backgroundColor: theme.splashColor,
+                        isScrollControlled: true,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0)),
-                        builder: (context) => Filter(),
+                        builder: (context) => DraggableScrollableSheet(
+                            expand: false,
+                            snap: true,
+                            initialChildSize: 0.57,
+                            minChildSize: 0.57,
+                            maxChildSize: 0.875,
+                            builder: (context, scrollController) => Filter(
+                                  scrollController: scrollController,
+                                )),
                       );
                     },
                   ),

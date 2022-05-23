@@ -35,10 +35,23 @@ List<FilterModel> _filters = [
       FilterItemModel(name: 'Демедия'),
     ],
   ),
+  FilterModel(
+    headline: 'Компания',
+    items: [
+      FilterItemModel(name: 'АЭМ3'),
+      FilterItemModel(name: 'Новосталь-М'),
+      FilterItemModel(name: 'Демедия'),
+    ],
+  ),
 ];
 
 class Filter extends StatefulWidget {
-  const Filter({Key? key}) : super(key: key);
+  const Filter({
+    Key? key,
+    required this.scrollController,
+  }) : super(key: key);
+
+  final ScrollController scrollController;
   @override
   State<Filter> createState() => _FilterState();
 }
@@ -46,36 +59,28 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 396,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...List.generate(
-                  _filters.length,
-                  (index) => _FilterItem(
-                    item: _filters[index],
-                    onTap: () {
-                      setState(() {
-                        _filters[index].isActive = !_filters[index].isActive;
-                      });
-                    },
-                    onSelect: (i) {
-                      setState(() {
-                        _filters[index].items[i].isActive =
-                            !_filters[index].items[i].isActive;
-                      });
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView.builder(
+        controller: widget.scrollController,
+        physics: const BouncingScrollPhysics(),
+        itemCount: _filters.length,
+        itemBuilder: (context, index) => _FilterItem(
+          item: _filters[index],
+          onTap: () {
+            setState(() {
+              _filters[index].isActive = !_filters[index].isActive;
+            });
+          },
+          onSelect: (i) {
+            setState(() {
+              _filters[index].items[i].isActive =
+                  !_filters[index].items[i].isActive;
+            });
+          },
+        ),
+      ),
+    );
   }
 }
 
@@ -100,15 +105,15 @@ class _FilterItemState extends State<_FilterItem> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: widget.onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: widget.onTap,
+            child: Row(
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width - 80,
@@ -141,34 +146,45 @@ class _FilterItemState extends State<_FilterItem> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            if (widget.item.isActive)
-              ...List.generate(widget.item.items.length, (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    left: 8,
-                    bottom: 12.0,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomCheckBox(
-                        onTap: () {
-                          widget.onSelect(index);
-                        },
-                        isActive: widget.item.items[index].isActive,
+          ),
+          const SizedBox(height: 16),
+          if (widget.item.isActive)
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: widget.item.items.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      bottom: 12.0,
+                    ),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        widget.onSelect(index);
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomCheckBox(
+                            onTap: () {
+                              widget.onSelect(index);
+                            },
+                            isActive: widget.item.items[index].isActive,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            widget.item.items[index].name,
+                            style: theme.textTheme.headline6,
+                          )
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        widget.item.items[index].name,
-                        style: theme.textTheme.headline6,
-                      )
-                    ],
-                  ),
-                );
-              }),
-          ],
-        ),
+                    ),
+                  );
+                })
+          // ...List.generate(, ),
+        ],
       ),
     );
   }
