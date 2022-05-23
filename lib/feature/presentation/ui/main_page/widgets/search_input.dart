@@ -8,13 +8,13 @@ class SearchInput extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.onChanged,
-    required this.focusNode,
-    required this.animationDuration,
+     this.focusNode,
+    this.animationDuration = const Duration(milliseconds: 300),
     this.isAnimation = false,
   }) : super(key: key);
   final Function(String) onChanged;
   final TextEditingController controller;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final Duration animationDuration;
   final bool isAnimation;
 

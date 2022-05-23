@@ -215,7 +215,3 @@ Future<void> showProfile(BuildContext context) {
     },
   );
 }
-
-// Future<void> onBoarding(BuildContext context) {
-//   return Column()
-// }
