@@ -29,6 +29,7 @@ import 'package:cportal_flutter/feature/domain/usecases/users_usecases/pin_code_
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/search_profile_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -49,6 +50,7 @@ Future<void> init() async {
   sl.registerFactory(() => BiometricBloc(sl()));
   sl.registerFactory(() => FetchNewsBloc(fetchNews: sl()));
   sl.registerFactory(() => NavBarBloc());
+  sl.registerFactory(() => FilterBloc());
 
   // USECASE
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));

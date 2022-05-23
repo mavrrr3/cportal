@@ -1,7 +1,11 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/check_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FilterModel {
@@ -26,30 +30,30 @@ class FilterItemModel {
   });
 }
 
-List<FilterModel> _filters = [
-  FilterModel(
-    headline: 'Компания',
-    items: [
-      FilterItemModel(name: 'АЭМ3'),
-      FilterItemModel(name: 'Новосталь-М'),
-      FilterItemModel(name: 'Демедия'),
-    ],
-  ),
-  FilterModel(
-    headline: 'Отдел',
-    items: [
-      FilterItemModel(name: 'Информационные технологии'),
-      FilterItemModel(name: 'Отдел кадров'),
-      FilterItemModel(name: 'Служба безопасности'),
-      FilterItemModel(name: 'Менеджеры по документообороту'),
-      FilterItemModel(name: 'Отдел мобильной разработки'),
-      FilterItemModel(name: 'Отдел продаж'),
-      FilterItemModel(name: 'Производственный отдел'),
-      FilterItemModel(name: 'Отдел сбыта'),
-      FilterItemModel(name: 'Администрация'),
-    ],
-  ),
-];
+// List<FilterModel> _filters = [
+//   FilterModel(
+//     headline: 'Компания',
+//     items: [
+//       FilterItemModel(name: 'АЭМ3'),
+//       FilterItemModel(name: 'Новосталь-М'),
+//       FilterItemModel(name: 'Демедия'),
+//     ],
+//   ),
+//   FilterModel(
+//     headline: 'Отдел',
+//     items: [
+//       FilterItemModel(name: 'Информационные технологии'),
+//       FilterItemModel(name: 'Отдел кадров'),
+//       FilterItemModel(name: 'Служба безопасности'),
+//       FilterItemModel(name: 'Менеджеры по документообороту'),
+//       FilterItemModel(name: 'Отдел мобильной разработки'),
+//       FilterItemModel(name: 'Отдел продаж'),
+//       FilterItemModel(name: 'Производственный отдел'),
+//       FilterItemModel(name: 'Отдел сбыта'),
+//       FilterItemModel(name: 'Администрация'),
+//     ],
+//   ),
+// ];
 
 class Filter extends StatefulWidget {
   const Filter({
@@ -64,28 +68,39 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   @override
+  void initState() {
+    BlocProvider.of<FilterBloc>(context, listen: false).add(FilterInitEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView.builder(
-        controller: widget.scrollController,
-        physics: const BouncingScrollPhysics(),
-        itemCount: _filters.length,
-        itemBuilder: (context, index) => _FilterItem(
-          item: _filters[index],
-          onTap: () {
-            setState(() {
-              _filters[index].isActive = !_filters[index].isActive;
-            });
-          },
-          onSelect: (i) {
-            setState(() {
-              _filters[index].items[i].isActive =
-                  !_filters[index].items[i].isActive;
-            });
-          },
-        ),
-      ),
+    return BlocBuilder<FilterBloc, FilterStateImpl>(
+      builder: (context, state) {
+        if (state.filters != null) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              controller: widget.scrollController,
+              physics: const BouncingScrollPhysics(),
+              itemCount: state.filters!.length,
+              itemBuilder: (context, index) => _FilterItem(
+                item: state.filters![index],
+                onExpand: () {
+                  setState(() {
+                    BlocProvider.of<FilterBloc>(context, listen: false)
+                        .add(FilterExpandSectionEvent(index: index));
+                  });
+                },
+                onSelect: (i) {},
+              ),
+            ),
+          );
+        } else {
+
+        return const SizedBox();
+        }
+      },
     );
   }
 }
@@ -95,12 +110,12 @@ class _FilterItem extends StatefulWidget {
   const _FilterItem({
     Key? key,
     required this.item,
-    required this.onTap,
+    required this.onExpand,
     required this.onSelect,
   }) : super(key: key);
 
   final FilterModel item;
-  final Function() onTap;
+  final Function() onExpand;
   final Function(int) onSelect;
 
   @override
@@ -118,7 +133,7 @@ class _FilterItemState extends State<_FilterItem> {
         children: [
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: widget.onTap,
+            onTap: widget.onExpand,
             child: Row(
               children: [
                 Container(
