@@ -2,7 +2,7 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/bottom_navigation_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
