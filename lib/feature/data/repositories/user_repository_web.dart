@@ -29,7 +29,7 @@ class UserRepositoryWeb implements IUserRepository {
   @override
   Future<Either<Failure, bool>> checkAuth() async {
     try {
-      final localUser = await localDataSource.getSingleUserFromCache();
+      final localUser = await localDataSource.getCurrentUserFromCache();
       if (localUser == null) {
         return const Right(false);
       }

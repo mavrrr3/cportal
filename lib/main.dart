@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -123,6 +124,9 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<NavBarBloc>(
       create: (ctx) => sl<NavBarBloc>(),
+    ),
+    BlocProvider<FilterBloc>(
+      create: (ctx) => sl<FilterBloc>(),
     ),
   ];
 }

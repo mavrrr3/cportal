@@ -1,7 +1,10 @@
+import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
@@ -49,6 +52,8 @@ abstract class NavigationRouteNames {
   static const onBoardingStart = 'onboarding_start';
   static const onboarding = 'onboarding';
   static const onboardingEnd = 'onboarding_end';
+  static const contacts = 'contacts';
+  static const contactProfile = 'contact_profile';
 }
 
 final GoRouter router = GoRouter(
@@ -284,6 +289,30 @@ final GoRouter router = GoRouter(
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
         child: const OnboardingLearningCourse(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.contacts,
+      path: '/contacts',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        child: const ContactsPage(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.contactProfile,
+      path: '/users/profile/:fid',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        child: ContactProfilePage(
+          user: state.extra! as ProfileEntity,
+        ),
       ),
     ),
   ],

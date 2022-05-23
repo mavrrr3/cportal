@@ -48,11 +48,39 @@ void main() {
   });
 
   test(
-    'Должен получить [ProfileEntity] или [Failure] из репозитория',
+    'Return [ProfileEntity] from repository',
     () async {
       // arange
       when(mockProfileRepository.getSingleProfile(tProfileId))
           .thenAnswer((_) async => Right(tProfileEntity));
+
+      // act
+      final Either<Failure, ProfileEntity> result =
+          await useCase.call(GetSingleProfileParams(id: tProfileId));
+
+      // assert
+      void getProfileOrEntity(Either<Failure, ProfileEntity> either) {
+        if (either.isLeft()) {
+          final Failure failure = either.asLeft();
+          expect(tFailure, failure);
+        } else {
+          final ProfileEntity profileEntity = either.asRight();
+          expect(result, equals(Right<dynamic, ProfileEntity>(profileEntity)));
+        }
+      }
+
+      getProfileOrEntity(result);
+      verify(mockProfileRepository.getSingleProfile(tProfileId));
+      verifyNoMoreInteractions(mockProfileRepository);
+    },
+  );
+
+  test(
+    'Return [Failure] from repository',
+    () async {
+      // arange
+      when(mockProfileRepository.getSingleProfile(tProfileId))
+          .thenAnswer((_) async => Left(tFailure));
 
       // act
       final Either<Failure, ProfileEntity> result =

@@ -29,7 +29,7 @@ class ConnectingCodeWeb extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) ...[
-          const LoaderWebWidget()
+          const LoaderWebWidget(),
         ] else ...[
           const SizedBox(),
         ],
@@ -46,6 +46,7 @@ class InputCodeBlocWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUser) {
@@ -254,7 +255,7 @@ class GetCodeWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) ...[
-          const LoaderWebWidget()
+          const LoaderWebWidget(),
         ] else ...[
           const SizedBox(),
         ],
@@ -296,7 +297,7 @@ class GetCodeWidget extends StatelessWidget {
                           GestureDetector(
                             onTap: () => Navigator.pop(context),
                             child: const Icon(Icons.close),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 8),
