@@ -1,9 +1,9 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/contacts_list.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/favorites.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/filter.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

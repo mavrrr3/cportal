@@ -10,8 +10,8 @@ import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ContactProfile extends StatelessWidget {
-  const ContactProfile({
+class ContactProfilePage extends StatelessWidget {
+  const ContactProfilePage({
     Key? key,
     required this.user,
   }) : super(key: key);

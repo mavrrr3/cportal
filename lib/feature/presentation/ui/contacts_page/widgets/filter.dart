@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/check_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -36,11 +36,17 @@ List<FilterModel> _filters = [
     ],
   ),
   FilterModel(
-    headline: 'Компания',
+    headline: 'Отдел',
     items: [
-      FilterItemModel(name: 'АЭМ3'),
-      FilterItemModel(name: 'Новосталь-М'),
-      FilterItemModel(name: 'Демедия'),
+      FilterItemModel(name: 'Информационные технологии'),
+      FilterItemModel(name: 'Отдел кадров'),
+      FilterItemModel(name: 'Служба безопасности'),
+      FilterItemModel(name: 'Менеджеры по документообороту'),
+      FilterItemModel(name: 'Отдел мобильной разработки'),
+      FilterItemModel(name: 'Отдел продаж'),
+      FilterItemModel(name: 'Производственный отдел'),
+      FilterItemModel(name: 'Отдел сбыта'),
+      FilterItemModel(name: 'Администрация'),
     ],
   ),
 ];
