@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/presentation/ui/contacts/widgets/check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FilterModel {
   final String headline;
-  final List<String> items;
+  final List<FilterItemModel> items;
   bool isActive;
 
   FilterModel({
@@ -14,29 +16,23 @@ class FilterModel {
   });
 }
 
+class FilterItemModel {
+  final String name;
+  bool isActive;
+
+  FilterItemModel({
+    required this.name,
+    this.isActive = false,
+  });
+}
+
 List<FilterModel> _filters = [
   FilterModel(
     headline: 'Компания',
     items: [
-      'АЭМ3',
-      'Новосталь-М',
-      'Демедия',
-    ],
-  ),
-  FilterModel(
-    headline: 'Компания',
-    items: [
-      'АЭМ3',
-      'Новосталь-М',
-      'Демедия',
-    ],
-  ),
-  FilterModel(
-    headline: 'Компания',
-    items: [
-      'АЭМ3',
-      'Новосталь-М',
-      'Демедия',
+      FilterItemModel(name: 'АЭМ3'),
+      FilterItemModel(name: 'Новосталь-М'),
+      FilterItemModel(name: 'Демедия'),
     ],
   ),
 ];
@@ -68,7 +64,12 @@ class _FilterState extends State<Filter> {
                         _filters[index].isActive = !_filters[index].isActive;
                       });
                     },
-                    onSelect: (i) {},
+                    onSelect: (i) {
+                      setState(() {
+                        _filters[index].items[i].isActive =
+                            !_filters[index].items[i].isActive;
+                      });
+                    },
                   ),
                 )
               ],
@@ -155,11 +156,11 @@ class _FilterItemState extends State<_FilterItem> {
                         onTap: () {
                           widget.onSelect(index);
                         },
-                        isActive: true,
+                        isActive: widget.item.items[index].isActive,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        widget.item.items[index],
+                        widget.item.items[index].name,
                         style: theme.textTheme.headline6,
                       )
                     ],

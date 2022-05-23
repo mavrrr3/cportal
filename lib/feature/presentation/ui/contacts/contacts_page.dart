@@ -16,42 +16,10 @@ final List<ProfileEntity> _contacts = [
     firstName: 'Суханенков',
     middleName: 'Владимир',
     lastName: 'Константинович',
-    birthday: '18.07.1989',
-    email: 'email@example.com',
+    birthday: 'birthday',
+    email: 'email',
     photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
-    active: true,
-    position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Директор мобильных решений'),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: '18.07.1989',
-    email: 'email@example.com',
-    photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
+        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
     active: true,
     position: const PositionEntity(
         id: '',
@@ -73,70 +41,7 @@ final List<ProfileEntity> _contacts = [
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
     dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: '18.07.1989',
-    email: 'email@example.com',
-    photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
-    active: true,
-    position: const PositionEntity(
-        id: '', department: 'Новосталь-М', description: 'Начальник отдела'),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: '18.07.1989',
-    email: 'email@example.com',
-    photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
-    active: true,
-    position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Руководитель проектов'),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
+  ), ProfileEntity(
     id: '111',
     externalId: '111',
     firstName: 'Суханенков',
@@ -145,7 +50,7 @@ final List<ProfileEntity> _contacts = [
     birthday: 'birthday',
     email: 'email',
     photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
+        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
     active: true,
     position: const PositionEntity(
         id: '',
@@ -167,8 +72,7 @@ final List<ProfileEntity> _contacts = [
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
     dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
+  ), ProfileEntity(
     id: '111',
     externalId: '111',
     firstName: 'Суханенков',
@@ -177,55 +81,24 @@ final List<ProfileEntity> _contacts = [
     birthday: 'birthday',
     email: 'email',
     photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
+        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
     active: true,
     position: const PositionEntity(
         id: '',
         department: 'Новосталь-М',
         description: 'Руководитель проектов'),
-    phone: const [],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
-    active: true,
-    position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Руководитель проектов'),
-    phone: const [],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://kartinkin.net/uploads/posts/2021-03/1616044597_16-p-fon-shrek-17.jpg',
-    active: true,
-    position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Руководитель проектов'),
-    phone: const [],
+    phone: const [
+      PhoneEntity(
+        number: '76-56-67',
+        suffix: '',
+        primary: false,
+      ),
+      PhoneEntity(
+        number: '923 456 67 78',
+        suffix: '+7',
+        primary: false,
+      ),
+    ],
     userCreated: 'userCreated',
     dateCreated: DateTime.now(),
     userUpdate: 'userUpdate',
@@ -233,14 +106,14 @@ final List<ProfileEntity> _contacts = [
   ),
 ];
 
-class Contacts extends StatefulWidget {
-  const Contacts({Key? key}) : super(key: key);
+class ContactsPage extends StatefulWidget {
+  const ContactsPage({Key? key}) : super(key: key);
 
   @override
-  State<Contacts> createState() => _ContactsState();
+  State<ContactsPage> createState() => _ContactsPageState();
 }
 
-class _ContactsState extends State<Contacts> {
+class _ContactsPageState extends State<ContactsPage> {
   late TextEditingController _searchController;
 
   @override

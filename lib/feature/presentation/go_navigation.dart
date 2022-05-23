@@ -4,7 +4,7 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecti
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts/contact_profile_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts/contacts.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
@@ -281,7 +281,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const Contacts(),
+        child: const ContactsPage(),
       ),
     ),
     GoRoute(
