@@ -46,6 +46,7 @@ class _ContactItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return GestureDetector(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -81,8 +82,9 @@ class _ContactItem extends StatelessWidget {
                   const SizedBox(height: 8),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: theme.hoverColor.withOpacity(0.06)),
+                      borderRadius: BorderRadius.circular(12),
+                      color: theme.hoverColor.withOpacity(0.06),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
@@ -94,7 +96,7 @@ class _ContactItem extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

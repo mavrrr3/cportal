@@ -58,7 +58,7 @@ class ContactProfilePage extends StatelessWidget {
                         _ActionButton(
                           img: 'assets/icons/email.svg',
                           onTap: () {},
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -222,7 +222,7 @@ class _BackButton extends StatelessWidget {
           const SizedBox(
             width: 48,
             height: 24,
-          )
+          ),
         ],
       ),
     );
@@ -249,9 +249,10 @@ class _ActionButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.8),
         boxShadow: [
           BoxShadow(
-              offset: const Offset(0, 4),
-              blurRadius: 10,
-              color: Colors.black.withOpacity(0.25))
+            offset: const Offset(0, 4),
+            blurRadius: 10,
+            color: Colors.black.withOpacity(0.25),
+          ),
         ],
       ),
       child: Padding(

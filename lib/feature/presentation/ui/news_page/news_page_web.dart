@@ -50,27 +50,29 @@ class _NewsPageWebState extends State<NewsPageWeb> {
       builder: (context, state) {
         return Scaffold(
           appBar: PreferredSize(
-              child: TabBarWidget(
-                title: AppLocalizations.of(context)!.news,
-                categoryTitle: [
-                  if (state is FetchNewsLoadedState) ...state.tabs
-                ],
-                currentIndex: _currentIndex,
-                onTap: (index) => _onPageChanged(index),
-              ),
-              preferredSize: Size(width, 114)),
+            child: TabBarWidget(
+              title: AppLocalizations.of(context)!.news,
+              categoryTitle: [
+                if (state is FetchNewsLoadedState) ...state.tabs,
+              ],
+              currentIndex: _currentIndex,
+              onTap: (index) => _onPageChanged(index),
+            ),
+            preferredSize: Size(width, 114),
+          ),
           body: Padding(
-              padding: getHorizontalPadding(context),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    if (state is FetchNewsLoadedState)
-                      _ContentPage(blocState: state),
-                  ],
-                ),
-              )),
+            padding: getHorizontalPadding(context),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  if (state is FetchNewsLoadedState)
+                    _ContentPage(blocState: state),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );
@@ -116,6 +118,7 @@ class _ContentPage extends StatelessWidget {
       } else if (articles[index].category == state.tabs[_currentIndex]) {
         return _newsCard();
       }
+
       return const SizedBox();
     }
 

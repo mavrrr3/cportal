@@ -272,32 +272,35 @@ class _WebState extends State<_Web> {
                             runSpacing: 16,
                             spacing: 16,
                             children: List.generate(
-                                articlesToRecomendations(article.id).length,
-                                (i) {
-                              return GestureDetector(
-                                onTap: () => GoRouter.of(context).pushNamed(
-                                  NavigationRouteNames.newsArticlePage,
-                                  params: {
-                                    'fid':
-                                        articlesToRecomendations(article.id)[i]
-                                            .id
-                                  },
-                                ),
-                                child: NewsCardItem(
-                                  width: 312,
-                                  height: 152,
-                                  imgPath:
-                                      articlesToRecomendations(article.id)[i]
-                                          .image,
-                                  title: articlesToRecomendations(article.id)[i]
-                                      .header,
-                                  dateTime: _outputFormat.format(
-                                    articlesToRecomendations(article.id)[i]
-                                        .dateShow,
+                              articlesToRecomendations(article.id).length,
+                              (i) {
+                                return GestureDetector(
+                                  onTap: () => GoRouter.of(context).pushNamed(
+                                    NavigationRouteNames.newsArticlePage,
+                                    params: {
+                                      'fid': articlesToRecomendations(
+                                        article.id,
+                                      )[i]
+                                          .id,
+                                    },
                                   ),
-                                ),
-                              );
-                            }),
+                                  child: NewsCardItem(
+                                    width: 312,
+                                    height: 152,
+                                    imgPath:
+                                        articlesToRecomendations(article.id)[i]
+                                            .image,
+                                    title:
+                                        articlesToRecomendations(article.id)[i]
+                                            .header,
+                                    dateTime: _outputFormat.format(
+                                      articlesToRecomendations(article.id)[i]
+                                          .dateShow,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
