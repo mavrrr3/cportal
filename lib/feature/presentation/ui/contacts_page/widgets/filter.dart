@@ -41,12 +41,6 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   @override
-  void initState() {
-    BlocProvider.of<FilterBloc>(context, listen: false).add(FilterInitEvent());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<FilterBloc, FilterStateImpl>(
       builder: (context, state) {
@@ -57,7 +51,7 @@ class _FilterState extends State<Filter> {
                   controller: widget.scrollController,
                   physics: const BouncingScrollPhysics(),
                   itemCount: state.filters!.length,
-                  itemBuilder: (context, index) => _FilterItem(
+                  itemBuilder: (context, index) => _FilterSectionItem(
                     item: state.filters![index],
                     onExpand: () {
                       setState(() {
@@ -84,9 +78,9 @@ class _FilterState extends State<Filter> {
   }
 }
 
-class _FilterItem extends StatefulWidget {
-  /// Блок отдельного фильтра
-  const _FilterItem({
+class _FilterSectionItem extends StatefulWidget {
+  /// Блок отдельного раздела фильтра
+  const _FilterSectionItem({
     Key? key,
     required this.item,
     required this.onExpand,
@@ -98,16 +92,17 @@ class _FilterItem extends StatefulWidget {
   final Function(int) onSelect;
 
   @override
-  State<_FilterItem> createState() => _FilterItemState();
+  State<_FilterSectionItem> createState() => _FilterSectionItemState();
 }
 
-class _FilterItemState extends State<_FilterItem> {
+class _FilterSectionItemState extends State<_FilterSectionItem> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

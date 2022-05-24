@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
@@ -24,6 +25,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
       _onSelect,
       transformer: bloc_concurrency.sequential(),
     );
+    on<FilterRemoveItemEvent>(
+      _onRemove,
+      transformer: bloc_concurrency.sequential(),
+    );
   }
 
   // Инициализация фильтра
@@ -42,7 +47,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
         ],
       ),
       FilterModel(
-        headline: 'Отдел',
+        headline: 'Должность',
         items: [
           FilterItemModel(name: 'Информационные технологии'),
           FilterItemModel(name: 'Отдел кадров'),
@@ -83,6 +88,22 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     List<FilterModel> _filters = state.filters ?? [];
     _filters[event.filterIndex].items[event.itemIndex].isActive =
         !_filters[event.filterIndex].items[event.itemIndex].isActive;
+
+    emit(FilterStateImpl(filters: _filters));
+
+    debugPrint('Отработал эвент: ' + event.toString());
+  }
+
+  // Обработка отмены выбора пункта в фильтре
+  void _onRemove(
+    FilterRemoveItemEvent event,
+    Emitter emit,
+  ) {
+    List<FilterModel> _filters = state.filters ?? [];
+
+    final int itemIndex = _filters[event.filterIndex].items.indexOf(event.item);
+    _filters[event.filterIndex].items[itemIndex].isActive =
+        !_filters[event.filterIndex].items[itemIndex].isActive;
 
     emit(FilterStateImpl(filters: _filters));
 

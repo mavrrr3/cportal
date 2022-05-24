@@ -1,11 +1,19 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_view_selected_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/tag_container.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -124,11 +132,15 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     _searchController = TextEditingController();
+    BlocProvider.of<FilterBloc>(context, listen: false).add(FilterInitEvent());
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -140,10 +152,13 @@ class _ContactsPageState extends State<ContactsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Поиск
                   SearchInput(
                     controller: _searchController,
                     onChanged: (text) {},
                   ),
+
+                  // Фильтр
                   _FilterButton(
                     onTap: () async {
                       await showModalBottomSheet<void>(
@@ -163,6 +178,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           ),
                         ),
                       );
+                      setState(() {});
                     },
                   ),
                 ],
@@ -170,10 +186,63 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
             const SizedBox(height: 31),
 
-            // Favorites
+            // Выбранные фильтры
+            Padding(
+              padding: getHorizontalPadding(context),
+              child: BlocBuilder<FilterBloc, FilterStateImpl>(
+                builder: (context, state) {
+                  return state.filters != null
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.filters!.length,
+                          itemBuilder: ((context, index) {
+                            // Выбран ли хоть один пункт в текущем разделе фильтра
+                            final bool isActive = state.filters![index].items
+                                .any((element) => element.isActive);
+
+                            // если isActive - создаем список только с выбранными пунктами в текущем разделе
+                            List<FilterItemModel> selectedItems = [];
+                            if (isActive) {
+                              for (var item in state.filters![index].items) {
+                                if (item.isActive) {
+                                  selectedItems.add(item);
+                                }
+                              }
+                            }
+
+                            // Рендеринг
+                            return isActive
+                                ? FilterViewSelectedRow(
+                                    headline: state.filters![index].headline,
+                                    selectedItems: selectedItems,
+                                    onClose: (item) {
+                                      setState(() {
+                                        BlocProvider.of<FilterBloc>(context)
+                                            .add(
+                                          FilterRemoveItemEvent(
+                                            filterIndex: index,
+                                            item: item,
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  )
+                                : const SizedBox();
+                          }),
+                        )
+                      : const SizedBox();
+                },
+              ),
+            ),
+
+            // Избранные
             if (_contacts.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 16),
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  bottom: 16,
+                  top: 8,
+                ),
                 child: SizedBox(
                   height: 48,
                   child: FavoritesRow(
@@ -183,7 +252,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ),
 
-            // Contacts Column
+            // Колонка контактов
             Padding(
               padding: getHorizontalPadding(context),
               child: ContactsList(

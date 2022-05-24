@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/tag_container.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 
@@ -80,21 +81,7 @@ class _ContactItem extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: theme.hoverColor.withOpacity(0.06),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        item.position.department,
-                        style: theme.textTheme.bodyText1!.copyWith(
-                          color: theme.hoverColor.withOpacity(0.68),
-                        ),
-                      ),
-                    ),
-                  ),
+                  TagContainer(text: item.position.department),
                 ],
               ),
             ],
