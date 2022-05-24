@@ -178,7 +178,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   height: 48,
                   child: FavoritesRow(
                     items: _contacts,
-                    onTap: (i) {},
+                    onTap: (i) => _goToUserPage(i),
                   ),
                 ),
               ),
@@ -188,13 +188,7 @@ class _ContactsPageState extends State<ContactsPage> {
               padding: getHorizontalPadding(context),
               child: ContactsList(
                 items: _contacts,
-                onTap: (i) {
-                  GoRouter.of(context).pushNamed(
-                    NavigationRouteNames.contactProfile,
-                    params: {'fid': _contacts[i].id},
-                    extra: _contacts[i],
-                  );
-                },
+                onTap: (i) => _goToUserPage(i),
               ),
             ),
 
@@ -204,6 +198,12 @@ class _ContactsPageState extends State<ContactsPage> {
       ),
     );
   }
+
+  void _goToUserPage(int i) => GoRouter.of(context).pushNamed(
+        NavigationRouteNames.contactProfile,
+        params: {'fid': _contacts[i].id},
+        extra: _contacts[i],
+      );
 }
 
 class _FilterButton extends StatelessWidget {

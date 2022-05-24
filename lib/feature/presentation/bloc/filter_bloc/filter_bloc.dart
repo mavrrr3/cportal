@@ -20,13 +20,18 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
       _onExpandSection,
       transformer: bloc_concurrency.sequential(),
     );
+    on<FilterSelectItemEvent>(
+      _onSelect,
+      transformer: bloc_concurrency.sequential(),
+    );
   }
 
+  // Инициализация фильтра
   FutureOr<void> _onInit(
     FilterInitEvent event,
     Emitter emit,
   ) async {
-    //: TODO запрос получения фильров
+    //: TODO запрос получения фильтров
     final List<FilterModel> mock = [
       FilterModel(
         headline: 'Компания',
@@ -57,12 +62,27 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     debugPrint('Отработал эвент: ' + event.toString());
   }
 
-  FutureOr<void> _onExpandSection(
+  // Обработка раскрытия раздела в фильтре
+  void _onExpandSection(
     FilterExpandSectionEvent event,
     Emitter emit,
-  ) async {
+  ) {
     List<FilterModel> _filters = state.filters ?? [];
     _filters[event.index].isActive = !_filters[event.index].isActive;
+
+    emit(FilterStateImpl(filters: _filters));
+
+    debugPrint('Отработал эвент: ' + event.toString());
+  }
+
+  // Обработка выбора пункта в фильтре
+  void _onSelect(
+    FilterSelectItemEvent event,
+    Emitter emit,
+  ) {
+    List<FilterModel> _filters = state.filters ?? [];
+    _filters[event.filterIndex].items[event.itemIndex].isActive =
+        !_filters[event.filterIndex].items[event.itemIndex].isActive;
 
     emit(FilterStateImpl(filters: _filters));
 

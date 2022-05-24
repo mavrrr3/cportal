@@ -65,7 +65,16 @@ class _FilterState extends State<Filter> {
                             .add(FilterExpandSectionEvent(index: index));
                       });
                     },
-                    onSelect: (i) {},
+                    onSelect: (i) {
+                      setState(() {
+                        BlocProvider.of<FilterBloc>(context, listen: false).add(
+                          FilterSelectItemEvent(
+                            filterIndex: index,
+                            itemIndex: i,
+                          ),
+                        );
+                      });
+                    },
                   ),
                 ),
               )
@@ -105,6 +114,7 @@ class _FilterItemState extends State<_FilterItem> {
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: widget.onExpand,
+            // Разделы фильтра
             child: Row(
               children: [
                 Container(
@@ -141,6 +151,7 @@ class _FilterItemState extends State<_FilterItem> {
           ),
           const SizedBox(height: 16),
           if (widget.item.isActive)
+            // Пункты фильтра
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
