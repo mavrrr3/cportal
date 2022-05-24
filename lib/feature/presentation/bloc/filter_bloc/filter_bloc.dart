@@ -1,11 +1,12 @@
 import 'dart:async';
+
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
   FilterBloc() : super(const FilterStateImpl()) {
@@ -49,7 +50,9 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     Emitter emit,
   ) {
     List<FilterEntity> _filters = state.filters ?? [];
-    _filters[event.index].isActive = !_filters[event.index].isActive;
+    FilterEntity _filter = _filters[event.index];
+    _filter = _filter.copyWith(isActive: _filter.changeActivity);
+    _filters[event.index] = _filter;
 
     emit(FilterStateImpl(filters: _filters));
 
@@ -62,8 +65,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     Emitter emit,
   ) {
     List<FilterEntity> _filters = state.filters ?? [];
-    _filters[event.filterIndex].items[event.itemIndex].isActive =
-        !_filters[event.filterIndex].items[event.itemIndex].isActive;
+    FilterEntity _filter = _filters[event.filterIndex];
+    FilterItemEntity _filterItem = _filter.items[event.itemIndex]
+        .copyWith(isActive: _filter.items[event.itemIndex].changeActivity);
+    _filters[event.filterIndex].items[event.itemIndex] = _filterItem;
 
     emit(FilterStateImpl(filters: _filters));
 
@@ -78,8 +83,11 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     List<FilterEntity> _filters = state.filters ?? [];
 
     final int itemIndex = _filters[event.filterIndex].items.indexOf(event.item);
-    _filters[event.filterIndex].items[itemIndex].isActive =
-        !_filters[event.filterIndex].items[itemIndex].isActive;
+
+    FilterEntity _filter = _filters[event.filterIndex];
+    FilterItemEntity _filterItem = _filter.items[itemIndex]
+        .copyWith(isActive: _filter.items[itemIndex].changeActivity);
+    _filters[event.filterIndex].items[itemIndex] = _filterItem;
 
     emit(FilterStateImpl(filters: _filters));
 
