@@ -87,6 +87,7 @@ class _HomePageState extends State<HomePage>
   late PageController _pageController;
   late AnimationController _animationController;
   late Duration _pageDuration;
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
@@ -139,7 +140,7 @@ class _HomePageState extends State<HomePage>
   // и перенаправляет на Ввод ПИН-кода
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.paused && !kIsWeb) {
       // TODO выставить нужный delay
       timer = Timer(
         const Duration(seconds: 10000000000000),
@@ -313,7 +314,6 @@ class _HomePageState extends State<HomePage>
         isNextArrow: true,
         onNext: () {
           setState(() {
-            // ignore: prefer-conditional-expressions
             if (_onBoardingIndex + 1 < _onboardingContent.length) {
               _onBoardingIndex += 1;
               _loadPage();
