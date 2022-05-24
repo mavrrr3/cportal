@@ -87,7 +87,8 @@ void main() {
     () async {
       //arrange
       when(() => mockBiometricRepository.getBiometrics()).thenAnswer(
-          (_) async => Right<Failure, List<BiometricType>>(tListBiometricType));
+        (_) async => Right<Failure, List<BiometricType>>(tListBiometricType),
+      );
 
       //act
       final result = await useCase.getBiometrics();

@@ -18,6 +18,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: widget.onTap,
@@ -28,10 +29,11 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-              color: widget.isActive
-                  ? theme.primaryColor
-                  : theme.hoverColor.withOpacity(0.34),
-              width: 2),
+            color: widget.isActive
+                ? theme.primaryColor
+                : theme.hoverColor.withOpacity(0.34),
+            width: 2,
+          ),
           color: widget.isActive ? theme.primaryColor : Colors.transparent,
         ),
         child: widget.isActive

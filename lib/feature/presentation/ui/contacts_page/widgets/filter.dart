@@ -50,29 +50,26 @@ class _FilterState extends State<Filter> {
   Widget build(BuildContext context) {
     return BlocBuilder<FilterBloc, FilterStateImpl>(
       builder: (context, state) {
-        if (state.filters != null) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ListView.builder(
-              controller: widget.scrollController,
-              physics: const BouncingScrollPhysics(),
-              itemCount: state.filters!.length,
-              itemBuilder: (context, index) => _FilterItem(
-                item: state.filters![index],
-                onExpand: () {
-                  setState(() {
-                    BlocProvider.of<FilterBloc>(context, listen: false)
-                        .add(FilterExpandSectionEvent(index: index));
-                  });
-                },
-                onSelect: (i) {},
-              ),
-            ),
-          );
-        } else {
-
-        return const SizedBox();
-        }
+        return state.filters != null
+            ? Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.builder(
+                  controller: widget.scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: state.filters!.length,
+                  itemBuilder: (context, index) => _FilterItem(
+                    item: state.filters![index],
+                    onExpand: () {
+                      setState(() {
+                        BlocProvider.of<FilterBloc>(context, listen: false)
+                            .add(FilterExpandSectionEvent(index: index));
+                      });
+                    },
+                    onSelect: (i) {},
+                  ),
+                ),
+              )
+            : const SizedBox();
       },
     );
   }
@@ -99,6 +96,7 @@ class _FilterItemState extends State<_FilterItem> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       child: Column(
@@ -144,39 +142,40 @@ class _FilterItemState extends State<_FilterItem> {
           const SizedBox(height: 16),
           if (widget.item.isActive)
             ListView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: widget.item.items.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                      bottom: 12.0,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: widget.item.items.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    bottom: 12.0,
+                  ),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      widget.onSelect(index);
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomCheckBox(
+                          onTap: () {
+                            widget.onSelect(index);
+                          },
+                          isActive: widget.item.items[index].isActive,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          widget.item.items[index].name,
+                          style: theme.textTheme.headline6,
+                        ),
+                      ],
                     ),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        widget.onSelect(index);
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CustomCheckBox(
-                            onTap: () {
-                              widget.onSelect(index);
-                            },
-                            isActive: widget.item.items[index].isActive,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            widget.item.items[index].name,
-                            style: theme.textTheme.headline6,
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                })
+                  ),
+                );
+              },
+            ),
           // ...List.generate(, ),
         ],
       ),

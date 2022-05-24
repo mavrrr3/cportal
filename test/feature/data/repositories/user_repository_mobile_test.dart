@@ -106,7 +106,9 @@ void main() {
         verify(() => mockRemoteDataSource.login(tConnectingCode));
         verifyZeroInteractions(mockLocalDataSource);
         expect(
-            result, equals(Left<ServerFailure, UserEntity>(ServerFailure())));
+          result,
+          equals(Left<ServerFailure, UserEntity>(ServerFailure())),
+        );
       },
     );
 

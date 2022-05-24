@@ -22,9 +22,10 @@ final List<ProfileEntity> _contacts = [
         'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
     active: true,
     position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Руководитель проектов'),
+      id: '',
+      department: 'Новосталь-М',
+      description: 'Руководитель проектов',
+    ),
     phone: const [
       PhoneEntity(
         number: '76-56-67',
@@ -54,9 +55,10 @@ final List<ProfileEntity> _contacts = [
         'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
     active: true,
     position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Руководитель проектов'),
+      id: '',
+      department: 'Новосталь-М',
+      description: 'Руководитель проектов',
+    ),
     phone: const [
       PhoneEntity(
         number: '76-56-67',
@@ -86,9 +88,10 @@ final List<ProfileEntity> _contacts = [
         'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
     active: true,
     position: const PositionEntity(
-        id: '',
-        department: 'Новосталь-М',
-        description: 'Руководитель проектов'),
+      id: '',
+      department: 'Новосталь-М',
+      description: 'Руководитель проектов',
+    ),
     phone: const [
       PhoneEntity(
         number: '76-56-67',
@@ -126,7 +129,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -148,16 +150,18 @@ class _ContactsPageState extends State<ContactsPage> {
                         context: context,
                         isScrollControlled: true,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0)),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
                         builder: (context) => DraggableScrollableSheet(
-                            expand: false,
-                            snap: true,
-                            initialChildSize: 0.57,
-                            minChildSize: 0.57,
-                            maxChildSize: 0.875,
-                            builder: (context, scrollController) => Filter(
-                                  scrollController: scrollController,
-                                )),
+                          expand: false,
+                          snap: true,
+                          initialChildSize: 0.57,
+                          minChildSize: 0.57,
+                          maxChildSize: 0.875,
+                          builder: (context, scrollController) => Filter(
+                            scrollController: scrollController,
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -171,8 +175,12 @@ class _ContactsPageState extends State<ContactsPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 16, bottom: 16),
                 child: SizedBox(
-                    height: 48,
-                    child: FavoritesRow(items: _contacts, onTap: (i) {})),
+                  height: 48,
+                  child: FavoritesRow(
+                    items: _contacts,
+                    onTap: (i) {},
+                  ),
+                ),
               ),
 
             // Contacts Column

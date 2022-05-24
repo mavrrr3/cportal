@@ -171,20 +171,21 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-        name: NavigationRouteNames.news,
-        path: '/news_mobile',
-        pageBuilder: (BuildContext context, GoRouterState state) =>
-            MaterialPage(
-              key: state.pageKey,
-              child: const HomePage(
-                child: NewsPage(pageType: NewsCodeEnum.news),
-                desktopMenuIndex: 1,
-              ),
-            ),
-        redirect: (state) {
-          if (kIsWeb) return '/news';
-          return null;
-        }),
+      name: NavigationRouteNames.news,
+      path: '/news_mobile',
+      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+        key: state.pageKey,
+        child: const HomePage(
+          child: NewsPage(pageType: NewsCodeEnum.news),
+          desktopMenuIndex: 1,
+        ),
+      ),
+      redirect: (state) {
+        if (kIsWeb) return '/news';
+
+        return null;
+      },
+    ),
     GoRoute(
       name: NavigationRouteNames.newsWeb,
       path: '/news',
