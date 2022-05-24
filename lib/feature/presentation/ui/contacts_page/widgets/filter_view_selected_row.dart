@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/tag_container.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +11,8 @@ class FilterViewSelectedRow extends StatelessWidget {
   }) : super(key: key);
 
   final String headline;
-  final List<FilterItemModel> selectedItems;
-  final Function(FilterItemModel) onClose;
+  final List<FilterItemEntity> selectedItems;
+  final Function(FilterItemEntity) onClose;
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
@@ -5,28 +6,6 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/ch
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-class FilterModel {
-  final String headline;
-  final List<FilterItemModel> items;
-  bool isActive;
-
-  FilterModel({
-    required this.headline,
-    required this.items,
-    this.isActive = false,
-  });
-}
-
-class FilterItemModel {
-  final String name;
-  bool isActive;
-
-  FilterItemModel({
-    required this.name,
-    this.isActive = false,
-  });
-}
 
 class Filter extends StatefulWidget {
   const Filter({
@@ -87,7 +66,7 @@ class _FilterSectionItem extends StatefulWidget {
     required this.onSelect,
   }) : super(key: key);
 
-  final FilterModel item;
+  final FilterEntity item;
   final Function() onExpand;
   final Function(int) onSelect;
 

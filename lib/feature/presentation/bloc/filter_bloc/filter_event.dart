@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class FilterEvent extends Equatable {
@@ -28,7 +28,7 @@ class FilterSelectItemEvent extends FilterEvent {
 
 class FilterRemoveItemEvent extends FilterEvent {
   final int filterIndex;
-  final FilterItemModel item;
+  final FilterItemEntity item;
 
   const FilterRemoveItemEvent({
     required this.filterIndex,

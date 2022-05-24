@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -10,114 +10,13 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/co
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_view_selected_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/tag_container.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-final List<ProfileEntity> _contacts = [
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
-    active: true,
-    position: const PositionEntity(
-      id: '',
-      department: 'Новосталь-М',
-      description: 'Руководитель проектов',
-    ),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
-    active: true,
-    position: const PositionEntity(
-      id: '',
-      department: 'Новосталь-М',
-      description: 'Руководитель проектов',
-    ),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
-    active: true,
-    position: const PositionEntity(
-      id: '',
-      department: 'Новосталь-М',
-      description: 'Руководитель проектов',
-    ),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-];
+final List<ProfileEntity> _contacts = Mocks.contacts;
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({Key? key}) : super(key: key);
@@ -139,8 +38,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -201,7 +98,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 .any((element) => element.isActive);
 
                             // если isActive - создаем список только с выбранными пунктами в текущем разделе
-                            List<FilterItemModel> selectedItems = [];
+                            List<FilterItemEntity> selectedItems = [];
                             if (isActive) {
                               for (var item in state.filters![index].items) {
                                 if (item.isActive) {
