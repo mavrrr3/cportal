@@ -36,18 +36,19 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             children: List.generate(
               widget.state.menuItems.length,
               (index) => _MenuItem(
-                  item: widget.state.menuItems[index],
-                  state: widget.state,
-                  index: index,
-                  onTap: () {
-                    if (widget.isNestedNavigation) {
-                      context.pop();
-                    }
-                    setState(
-                      () => BlocProvider.of<NavBarBloc>(context)
-                          .add(NavBarEventImpl(index: index)),
-                    );
-                  }),
+                item: widget.state.menuItems[index],
+                state: widget.state,
+                index: index,
+                onTap: () {
+                  if (widget.isNestedNavigation) {
+                    context.pop();
+                  }
+                  setState(
+                    () => BlocProvider.of<NavBarBloc>(context)
+                        .add(NavBarEventImpl(index: index)),
+                  );
+                },
+              ),
             ),
           ),
         ),

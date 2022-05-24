@@ -14,6 +14,7 @@ class FavoritesRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),

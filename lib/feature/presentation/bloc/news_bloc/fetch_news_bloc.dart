@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +63,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
             tabs.add(item.category);
           }
         }
-
+        log(news.article.length.toString());
         emit(FetchNewsLoadedState(news: news, tabs: tabs));
       },
     );

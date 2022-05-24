@@ -27,7 +27,7 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
   final PageController _pageController = PageController();
-  late int _currentIndex = 0;
+  late int _currentIndex;
   late NewsCodeEnum _currentType;
 
   @override
@@ -35,6 +35,7 @@ class _NewsPageState extends State<NewsPage> {
     super.initState();
     _currentType = widget.pageType;
     _contentInit(_currentType);
+    _currentIndex = 0;
   }
 
   // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы
@@ -46,9 +47,10 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     // Для обновления стейта при смене страницы в BottomBar
+    _contentInit(_currentType);
+
     if (widget.pageType != _currentType) {
       _currentType = widget.pageType;
-      _contentInit(_currentType);
       _currentIndex = 0;
     }
     final double width = MediaQuery.of(context).size.width;
@@ -260,6 +262,7 @@ class _NewsPageState extends State<NewsPage> {
   void _onPageChanged(int index) {
     setState(() {
       _currentIndex = index;
+      _contentInit(_currentType);
     });
     _pageController.jumpToPage(_currentIndex);
   }

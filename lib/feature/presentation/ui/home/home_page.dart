@@ -8,7 +8,7 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_p
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/bottom_navigation_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/bottom_navigation_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
@@ -188,7 +188,6 @@ class _HomePageState extends State<HomePage>
                       },
                       currentIndex: widget.desktopMenuIndex,
                       onChange: (index) => changePage(context, index),
-                      items: state.menuItems,
                     ),
                   ),
 
