@@ -32,8 +32,6 @@ class NewsArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _contentInit(context);
-
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         if (state is FetchNewsLoadedState) {
@@ -54,7 +52,6 @@ class NewsArticlePage extends StatelessWidget {
                     )
                   : _Web(
                       item: articlefromBloc(),
-                      state: state,
                     ),
             ),
           );
@@ -161,10 +158,8 @@ class _Web extends StatefulWidget {
   const _Web({
     Key? key,
     required this.item,
-    required this.state,
   }) : super(key: key);
   final ArticleEntity item;
-  final FetchNewsLoadedState state;
 
   @override
   State<_Web> createState() => _WebState();
@@ -175,143 +170,154 @@ class _WebState extends State<_Web> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    List<ArticleEntity> articlesToRecomendations(String id) {
-      return widget.state.news.article
-          .where((element) => element.id != id)
-          .toList();
-    }
+    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
+      builder: (context, state) {
+        if (state is FetchNewsLoadedState) {
+          List<ArticleEntity> articlesToRecomendations(String id) {
+            return state.news.article
+                .where((element) => element.id != id)
+                .toList();
+          }
 
-    ArticleEntity article = widget.item;
+          ArticleEntity article = widget.item;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DesktopMenu(
-          currentIndex: 1,
-          onChange: (index) {
-            setState(() {
-              changePage(context, index);
-            });
-          },
-        ),
-        SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: ResponsiveConstraints(
-              constraint: const BoxConstraints(maxWidth: 704),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                  horizontal: 7,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        _contentInit(context);
-                        setState(() {
-                          GoRouter.of(context).pop();
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/back_arrow.svg',
-                            width: 16,
-                            color: theme.primaryColor,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            AppLocalizations.of(context)!.news,
-                            style: theme.textTheme.headline5!.copyWith(
-                              color: theme.primaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DesktopMenu(
+                currentIndex: 1,
+                onChange: (index) {
+                  changePage(context, index);
+                },
+              ),
+              SafeArea(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: ResponsiveConstraints(
+                    constraint: const BoxConstraints(maxWidth: 704),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16.0,
+                        horizontal: 7,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 4),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 310,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.network(
-                                article.image,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            article.header,
-                            style: theme.textTheme.headline3,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            _outputFormat.format(
-                              widget.item.dateShow,
-                            ),
-                            style: theme.textTheme.bodyText1,
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            article.description,
-                            style: theme.textTheme.headline6,
-                          ),
-                          const SizedBox(height: 40),
-                          Wrap(
-                            runSpacing: 16,
-                            spacing: 16,
-                            children: List.generate(
-                              articlesToRecomendations(article.id).length,
-                              (i) {
-                                return GestureDetector(
-                                  onTap: () => GoRouter.of(context).pushNamed(
-                                    NavigationRouteNames.newsArticlePage,
-                                    params: {
-                                      'fid': articlesToRecomendations(
-                                        article.id,
-                                      )[i]
-                                          .id,
-                                    },
+                          GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              _contentInit(context);
+
+                              GoRouter.of(context).pop();
+                            },
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/back_arrow.svg',
+                                  width: 16,
+                                  color: theme.primaryColor,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  AppLocalizations.of(context)!.news,
+                                  style: theme.textTheme.headline5!.copyWith(
+                                    color: theme.primaryColor,
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                  child: NewsCardItem(
-                                    width: 312,
-                                    height: 152,
-                                    imgPath:
-                                        articlesToRecomendations(article.id)[i]
-                                            .image,
-                                    title:
-                                        articlesToRecomendations(article.id)[i]
-                                            .header,
-                                    dateTime: _outputFormat.format(
-                                      articlesToRecomendations(article.id)[i]
-                                          .dateShow,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 25.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 4),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 310,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.network(
+                                      article.image,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                );
-                              },
+                                ),
+                                const SizedBox(height: 24),
+                                Text(
+                                  article.header,
+                                  style: theme.textTheme.headline3,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  _outputFormat.format(
+                                    widget.item.dateShow,
+                                  ),
+                                  style: theme.textTheme.bodyText1,
+                                ),
+                                const SizedBox(height: 24),
+                                Text(
+                                  article.description,
+                                  style: theme.textTheme.headline6,
+                                ),
+                                const SizedBox(height: 40),
+                                Wrap(
+                                  runSpacing: 16,
+                                  spacing: 16,
+                                  children: List.generate(
+                                    articlesToRecomendations(article.id).length,
+                                    (i) {
+                                      return GestureDetector(
+                                        onTap: () =>
+                                            GoRouter.of(context).pushNamed(
+                                          NavigationRouteNames.newsArticlePage,
+                                          params: {
+                                            'fid': articlesToRecomendations(
+                                              article.id,
+                                            )[i]
+                                                .id,
+                                          },
+                                        ),
+                                        child: NewsCardItem(
+                                          width: 312,
+                                          height: 152,
+                                          imgPath: articlesToRecomendations(
+                                            article.id,
+                                          )[i]
+                                              .image,
+                                          title: articlesToRecomendations(
+                                            article.id,
+                                          )[i]
+                                              .header,
+                                          dateTime: _outputFormat.format(
+                                            articlesToRecomendations(
+                                              article.id,
+                                            )[i]
+                                                .dateShow,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-      ],
+            ],
+          );
+        }
+
+        return const SizedBox();
+      },
     );
   }
 }

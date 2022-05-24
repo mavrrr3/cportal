@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
@@ -30,7 +29,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
     Emitter emit,
   ) async {
     emit(FetchNewsLoadingState());
-    debugPrint('Отработал эвент: ' + event.toString());
+    log('Отработал эвент: ' + event.toString());
 
     String _mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
@@ -63,7 +62,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
             tabs.add(item.category);
           }
         }
-        log(news.article.length.toString());
+        log(tabs.toString());
         emit(FetchNewsLoadedState(news: news, tabs: tabs));
       },
     );

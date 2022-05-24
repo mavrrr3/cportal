@@ -5,7 +5,6 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
-import 'package:flutter/foundation.dart';
 
 abstract class INewsRemoteDataSource {
   /// Обращается к эндпойнту .....
@@ -41,7 +40,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         ],
       );
 
-      if (kDebugMode) log(remoteNews.toString());
+      log('NewsRemoteDataSource  ==========' + remoteNews.toString());
       await localDatasource.newsToCache(remoteNews);
 
       List<ArticleModel> articlesWithCode = remoteNews.article
