@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
@@ -5,28 +6,6 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/ch
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-class FilterModel {
-  final String headline;
-  final List<FilterItemModel> items;
-  bool isActive;
-
-  FilterModel({
-    required this.headline,
-    required this.items,
-    this.isActive = false,
-  });
-}
-
-class FilterItemModel {
-  final String name;
-  bool isActive;
-
-  FilterItemModel({
-    required this.name,
-    this.isActive = false,
-  });
-}
 
 class Filter extends StatefulWidget {
   const Filter({
@@ -41,12 +20,6 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   @override
-  void initState() {
-    BlocProvider.of<FilterBloc>(context, listen: false).add(FilterInitEvent());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<FilterBloc, FilterStateImpl>(
       builder: (context, state) {
@@ -57,7 +30,7 @@ class _FilterState extends State<Filter> {
                   controller: widget.scrollController,
                   physics: const BouncingScrollPhysics(),
                   itemCount: state.filters!.length,
-                  itemBuilder: (context, index) => _FilterItem(
+                  itemBuilder: (context, index) => _FilterSectionItem(
                     item: state.filters![index],
                     onExpand: () {
                       setState(() {
@@ -65,7 +38,16 @@ class _FilterState extends State<Filter> {
                             .add(FilterExpandSectionEvent(index: index));
                       });
                     },
-                    onSelect: (i) {},
+                    onSelect: (i) {
+                      setState(() {
+                        BlocProvider.of<FilterBloc>(context, listen: false).add(
+                          FilterSelectItemEvent(
+                            filterIndex: index,
+                            itemIndex: i,
+                          ),
+                        );
+                      });
+                    },
                   ),
                 ),
               )
@@ -75,36 +57,38 @@ class _FilterState extends State<Filter> {
   }
 }
 
-class _FilterItem extends StatefulWidget {
-  /// Блок отдельного фильтра
-  const _FilterItem({
+class _FilterSectionItem extends StatefulWidget {
+  /// Блок отдельного раздела фильтра
+  const _FilterSectionItem({
     Key? key,
     required this.item,
     required this.onExpand,
     required this.onSelect,
   }) : super(key: key);
 
-  final FilterModel item;
+  final FilterEntity item;
   final Function() onExpand;
   final Function(int) onSelect;
 
   @override
-  State<_FilterItem> createState() => _FilterItemState();
+  State<_FilterSectionItem> createState() => _FilterSectionItemState();
 }
 
-class _FilterItemState extends State<_FilterItem> {
+class _FilterSectionItemState extends State<_FilterSectionItem> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: widget.onExpand,
+            // Разделы фильтра
             child: Row(
               children: [
                 Container(
@@ -141,6 +125,7 @@ class _FilterItemState extends State<_FilterItem> {
           ),
           const SizedBox(height: 16),
           if (widget.item.isActive)
+            // Пункты фильтра
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),

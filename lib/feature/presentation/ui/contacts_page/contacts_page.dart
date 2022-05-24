@@ -1,115 +1,22 @@
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_view_selected_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-final List<ProfileEntity> _contacts = [
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
-    active: true,
-    position: const PositionEntity(
-      id: '',
-      department: 'Новосталь-М',
-      description: 'Руководитель проектов',
-    ),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
-    active: true,
-    position: const PositionEntity(
-      id: '',
-      department: 'Новосталь-М',
-      description: 'Руководитель проектов',
-    ),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-  ProfileEntity(
-    id: '111',
-    externalId: '111',
-    firstName: 'Суханенков',
-    middleName: 'Владимир',
-    lastName: 'Константинович',
-    birthday: 'birthday',
-    email: 'email',
-    photoLink:
-        'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
-    active: true,
-    position: const PositionEntity(
-      id: '',
-      department: 'Новосталь-М',
-      description: 'Руководитель проектов',
-    ),
-    phone: const [
-      PhoneEntity(
-        number: '76-56-67',
-        suffix: '',
-        primary: false,
-      ),
-      PhoneEntity(
-        number: '923 456 67 78',
-        suffix: '+7',
-        primary: false,
-      ),
-    ],
-    userCreated: 'userCreated',
-    dateCreated: DateTime.now(),
-    userUpdate: 'userUpdate',
-    dateUpdated: DateTime.now(),
-  ),
-];
+final List<ProfileEntity> _contacts = Mocks.contacts;
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({Key? key}) : super(key: key);
@@ -124,6 +31,8 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     _searchController = TextEditingController();
+    BlocProvider.of<FilterBloc>(context, listen: false).add(FilterInitEvent());
+
     super.initState();
   }
 
@@ -140,10 +49,13 @@ class _ContactsPageState extends State<ContactsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Поиск
                   SearchInput(
                     controller: _searchController,
                     onChanged: (text) {},
                   ),
+
+                  // Фильтр
                   _FilterButton(
                     onTap: () async {
                       await showModalBottomSheet<void>(
@@ -163,6 +75,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           ),
                         ),
                       );
+                      setState(() {});
                     },
                   ),
                 ],
@@ -170,31 +83,78 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
             const SizedBox(height: 31),
 
-            // Favorites
+            // Выбранные фильтры
+            Padding(
+              padding: getHorizontalPadding(context),
+              child: BlocBuilder<FilterBloc, FilterStateImpl>(
+                builder: (context, state) {
+                  return state.filters != null
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.filters!.length,
+                          itemBuilder: ((context, index) {
+                            // Выбран ли хоть один пункт в текущем разделе фильтра
+                            final bool isActive = state.filters![index].items
+                                .any((element) => element.isActive);
+
+                            // если isActive - создаем список только с выбранными пунктами в текущем разделе
+                            List<FilterItemEntity> selectedItems = [];
+                            if (isActive) {
+                              for (var item in state.filters![index].items) {
+                                if (item.isActive) {
+                                  selectedItems.add(item);
+                                }
+                              }
+                            }
+
+                            // Рендеринг
+                            return isActive
+                                ? FilterViewSelectedRow(
+                                    headline: state.filters![index].headline,
+                                    selectedItems: selectedItems,
+                                    onClose: (item) {
+                                      setState(() {
+                                        BlocProvider.of<FilterBloc>(context)
+                                            .add(
+                                          FilterRemoveItemEvent(
+                                            filterIndex: index,
+                                            item: item,
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  )
+                                : const SizedBox();
+                          }),
+                        )
+                      : const SizedBox();
+                },
+              ),
+            ),
+
+            // Избранные
             if (_contacts.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 16),
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  bottom: 16,
+                  top: 8,
+                ),
                 child: SizedBox(
                   height: 48,
                   child: FavoritesRow(
                     items: _contacts,
-                    onTap: (i) {},
+                    onTap: (i) => _goToUserPage(i),
                   ),
                 ),
               ),
 
-            // Contacts Column
+            // Колонка контактов
             Padding(
               padding: getHorizontalPadding(context),
               child: ContactsList(
                 items: _contacts,
-                onTap: (i) {
-                  GoRouter.of(context).pushNamed(
-                    NavigationRouteNames.contactProfile,
-                    params: {'fid': _contacts[i].id},
-                    extra: _contacts[i],
-                  );
-                },
+                onTap: (i) => _goToUserPage(i),
               ),
             ),
 
@@ -204,6 +164,12 @@ class _ContactsPageState extends State<ContactsPage> {
       ),
     );
   }
+
+  void _goToUserPage(int i) => GoRouter.of(context).pushNamed(
+        NavigationRouteNames.contactProfile,
+        params: {'fid': _contacts[i].id},
+        extra: _contacts[i],
+      );
 }
 
 class _FilterButton extends StatelessWidget {
