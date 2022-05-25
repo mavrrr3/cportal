@@ -65,7 +65,7 @@ void main() {
       ],
     );
 
-    final NewsEntity tNewsEntity = tNewsModel;
+    // final NewsEntity tNewsEntity = tNewsModel;
 
     test('should check if the device is online', () async {
       //arrange
