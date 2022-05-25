@@ -29,26 +29,15 @@ class FilterEntity extends Equatable {
   List<Object?> get props => [headline, items, isActive];
 }
 
+// ignore: must_be_immutable
 class FilterItemEntity extends Equatable {
   final String name;
-  final bool isActive;
+  bool isActive;
 
-  const FilterItemEntity({
+  FilterItemEntity({
     required this.name,
     this.isActive = false,
   });
-
-  FilterItemEntity copyWith({
-    String? name,
-    bool? isActive,
-  }) {
-    return FilterItemEntity(
-      name: name ?? this.name,
-      isActive: isActive ?? this.isActive,
-    );
-  }
-
-  bool get changeActivity => !isActive;
 
   @override
   List<Object?> get props => [name, isActive];

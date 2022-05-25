@@ -65,14 +65,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     Emitter emit,
   ) {
     List<FilterEntity> _filters = state.filters ?? [];
-    FilterEntity _filter = _filters[event.filterIndex];
-    FilterItemEntity _filterItem = _filter.items[event.itemIndex]
-        .copyWith(isActive: _filter.items[event.itemIndex].changeActivity);
-    _filters[event.filterIndex].items[event.itemIndex] = _filterItem;
+    _filters[event.filterIndex].items[event.itemIndex].isActive =
+        !_filters[event.filterIndex].items[event.itemIndex].isActive;
 
     emit(FilterStateImpl(filters: _filters));
-
-    debugPrint('Отработал эвент: ' + event.toString());
   }
 
   // Обработка отмены выбора пункта в фильтре
@@ -83,11 +79,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     List<FilterEntity> _filters = state.filters ?? [];
 
     final int itemIndex = _filters[event.filterIndex].items.indexOf(event.item);
-
-    FilterEntity _filter = _filters[event.filterIndex];
-    FilterItemEntity _filterItem = _filter.items[itemIndex]
-        .copyWith(isActive: _filter.items[itemIndex].changeActivity);
-    _filters[event.filterIndex].items[itemIndex] = _filterItem;
+    _filters[event.filterIndex].items[itemIndex].isActive =
+        !_filters[event.filterIndex].items[itemIndex].isActive;
 
     emit(FilterStateImpl(filters: _filters));
 
