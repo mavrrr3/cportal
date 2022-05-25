@@ -38,7 +38,7 @@ class NewsRepositoryMobile implements INewsRepository {
         NewsModel news = NewsModel(show: true, article: [...articles]);
 
         return Right(news);
-      } on CacheFailure {
+      } on CacheException {
         return Left(CacheFailure());
       }
     }
