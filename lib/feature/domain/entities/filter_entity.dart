@@ -26,6 +26,10 @@ class FilterEntity extends Equatable {
   bool get changeActivity => !isActive;
 
   @override
+  String toString() =>
+      'FilterEntity(Headline: $headline,\nIsActive: $isActive,\nItems: $items)';
+
+  @override
   List<Object?> get props => [headline, items, isActive];
 }
 
@@ -38,6 +42,9 @@ class FilterItemEntity extends Equatable {
     required this.name,
     this.isActive = false,
   });
+
+  @override
+  String toString() => 'Name: $name, IsActive: $isActive';
 
   @override
   List<Object?> get props => [name, isActive];

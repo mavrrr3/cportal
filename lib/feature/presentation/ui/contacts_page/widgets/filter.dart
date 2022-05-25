@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -21,37 +23,39 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FilterBloc, FilterStateImpl>(
+    return BlocConsumer<FilterBloc, FilterState>(
+      listener: (context, state) {
+        log('State has changed');
+      },
       builder: (context, state) {
-        return state.filters != null
-            ? Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  controller: widget.scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: state.filters!.length,
-                  itemBuilder: (context, index) => _FilterSectionItem(
-                    item: state.filters![index],
-                    onExpand: () {
-                      setState(() {
-                        BlocProvider.of<FilterBloc>(context, listen: false)
-                            .add(FilterExpandSectionEvent(index: index));
-                      });
-                    },
-                    onSelect: (i) {
-                      setState(() {
-                        BlocProvider.of<FilterBloc>(context, listen: false).add(
-                          FilterSelectItemEvent(
-                            filterIndex: index,
-                            itemIndex: i,
-                          ),
-                        );
-                      });
-                    },
-                  ),
-                ),
-              )
-            : const SizedBox();
+        if (state is FilterLoadedState) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              controller: widget.scrollController,
+              physics: const BouncingScrollPhysics(),
+              itemCount: state.filters.length,
+              itemBuilder: (context, index) => _FilterSectionItem(
+                item: state.filters[index],
+                onExpand: () {
+                  BlocProvider.of<FilterBloc>(context)
+                      .add(FilterExpandSectionEvent(index: index));
+                },
+                onSelect: (i) {
+                  BlocProvider.of<FilterBloc>(context).add(
+                    FilterSelectItemEvent(
+                      filterIndex: index,
+                      itemIndex: i,
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }
+
+        // TODO: Обработать другие стейты
+        return const SizedBox();
       },
     );
   }

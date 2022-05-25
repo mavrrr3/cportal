@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
@@ -8,16 +9,17 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_sta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
-  FilterBloc() : super(const FilterStateImpl()) {
+class FilterBloc extends Bloc<FilterEvent, FilterState> {
+  FilterBloc() : super(FilterEmptyState()) {
     _setupEvents();
   }
 
   void _setupEvents() {
-    on<FilterInitEvent>(
-      _onInit,
+    on<FetchFiltersEvent>(
+      _onFetch,
       transformer: bloc_concurrency.sequential(),
     );
+
     on<FilterExpandSectionEvent>(
       _onExpandSection,
       transformer: bloc_concurrency.sequential(),
@@ -33,56 +35,60 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
   }
 
   // Инициализация фильтра
-  FutureOr<void> _onInit(
-    FilterInitEvent event,
+  FutureOr<void> _onFetch(
+    FetchFiltersEvent event,
     Emitter emit,
   ) async {
+    emit(FilterLoadingState());
+
     //: TODO запрос получения фильтров
 
-    emit(FilterStateImpl(filters: Mocks.filter));
+    emit(FilterLoadedState(filters: Mocks.filter));
 
     debugPrint('Отработал эвент: ' + event.toString());
   }
 
   // Обработка раскрытия раздела в фильтре
-  void _onExpandSection(
+  FutureOr<void> _onExpandSection(
     FilterExpandSectionEvent event,
     Emitter emit,
-  ) {
-    List<FilterEntity> _filters = state.filters ?? [];
+  ) async {
+    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
     FilterEntity _filter = _filters[event.index];
     _filter = _filter.copyWith(isActive: _filter.changeActivity);
     _filters[event.index] = _filter;
 
-    emit(FilterStateImpl(filters: _filters));
+    emit(FilterLoadingState());
+    emit(FilterLoadedState(filters: _filters));
 
     debugPrint('Отработал эвент: ' + event.toString());
   }
 
   // Обработка выбора пункта в фильтре
-  void _onSelect(
+  FutureOr<void> _onSelect(
     FilterSelectItemEvent event,
     Emitter emit,
   ) {
-    List<FilterEntity> _filters = state.filters ?? [];
+    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
     _filters[event.filterIndex].items[event.itemIndex].isActive =
         !_filters[event.filterIndex].items[event.itemIndex].isActive;
 
-    emit(FilterStateImpl(filters: _filters));
+    emit(FilterLoadingState());
+    emit(FilterLoadedState(filters: _filters));
   }
 
-  // Обработка отмены выбора пункта в фильтре
-  void _onRemove(
+  FutureOr<void> _onRemove(
     FilterRemoveItemEvent event,
     Emitter emit,
-  ) {
-    List<FilterEntity> _filters = state.filters ?? [];
+  ) async {
+    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
 
     final int itemIndex = _filters[event.filterIndex].items.indexOf(event.item);
     _filters[event.filterIndex].items[itemIndex].isActive =
         !_filters[event.filterIndex].items[itemIndex].isActive;
 
-    emit(FilterStateImpl(filters: _filters));
+    emit(FilterLoadingState());
+    emit(FilterLoadedState(filters: _filters));
 
     debugPrint('Отработал эвент: ' + event.toString());
   }

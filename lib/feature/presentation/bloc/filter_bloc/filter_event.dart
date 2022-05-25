@@ -8,7 +8,7 @@ abstract class FilterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FilterInitEvent extends FilterEvent {}
+class FetchFiltersEvent extends FilterEvent {}
 
 class FilterExpandSectionEvent extends FilterEvent {
   final int index;
