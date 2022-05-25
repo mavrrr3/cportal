@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
@@ -34,14 +33,14 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     );
   }
 
-  // Инициализация фильтра
+  // Получение данных от API
   FutureOr<void> _onFetch(
     FetchFiltersEvent event,
     Emitter emit,
   ) async {
     emit(FilterLoadingState());
 
-    //: TODO запрос получения фильтров
+    //TODO реализовать получение данных от API
 
     emit(FilterLoadedState(filters: Mocks.filter));
 

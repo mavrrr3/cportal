@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -23,10 +21,7 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FilterBloc, FilterState>(
-      listener: (context, state) {
-        log('State has changed');
-      },
+    return BlocBuilder<FilterBloc, FilterState>(
       builder: (context, state) {
         if (state is FilterLoadedState) {
           return Padding(
