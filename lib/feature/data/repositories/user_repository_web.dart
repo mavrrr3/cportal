@@ -35,7 +35,7 @@ class UserRepositoryWeb implements IUserRepository {
       }
 
       return const Right(true);
-    } on CacheFailure {
+    } on CacheException {
       return Left(CacheFailure());
     }
   }
