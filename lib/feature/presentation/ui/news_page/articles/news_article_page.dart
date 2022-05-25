@@ -1,7 +1,6 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
@@ -15,70 +14,46 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
 import 'package:swipe/swipe.dart';
 
 final DateFormat _outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
+void _contentInit(BuildContext context) {
+  return BlocProvider.of<FetchNewsBloc>(context, listen: false)
+      .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
+}
+
 class NewsArticlePage extends StatelessWidget {
+  final String id;
   const NewsArticlePage({
     Key? key,
+    required this.id,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
-        dynamic id = GoRouter.of(context).location.split('/');
-        id = id[2] as String;
-        final ArticleEntity _currentItem;
-        // ignore: prefer-conditional-expressions
         if (state is FetchNewsLoadedState) {
-          _currentItem = state.news.article.firstWhere(
-            (element) => element.id == id,
-          );
-        } else {
-          //: TODO отработать другие стейты
-          _currentItem = ArticleEntity(
-            id: '000',
-            articleType: const ArticleTypeEntity(
-              id: '000',
-              code: '000',
-              description: 'qqq',
+          ArticleEntity articlefromBloc() {
+            return state.news.article
+                .where((element) => element.id == id)
+                .toList()
+                .first;
+          }
+
+          return Swipe(
+            onSwipeRight: () => GoRouter.of(context).pop(),
+            child: Scaffold(
+              body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                  ? _Mobile(
+                      item: articlefromBloc(),
+                      state: state,
+                    )
+                  : _Web(
+                      item: articlefromBloc(),
+                    ),
             ),
-            header: 'Emty state Header',
-            category: '',
-            description: '',
-            image: '',
-            dateShow: DateTime.now(),
-            externalLink: '',
-            show: true,
-            userCreated: '',
-            dateCreated: DateTime.now(),
-            userUpdate: '',
-            dateUpdated: DateTime.now(),
-          );
-        }
-        if (state is FetchNewsLoadedState) {
-          return BlocBuilder<NavBarBloc, NavBarState>(
-            builder: (context, navState) {
-              return Swipe(
-                onSwipeRight: () => _onBack(context),
-                child: Scaffold(
-                  body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                      ? _Mobile(
-                          item: _currentItem,
-                          navState: navState,
-                          state: state,
-                        )
-                      : _Web(
-                          item: _currentItem,
-                          navState: navState,
-                          state: state,
-                        ),
-                ),
-              );
-            },
           );
         }
 
@@ -93,12 +68,10 @@ class _Mobile extends StatelessWidget {
   const _Mobile({
     Key? key,
     required this.item,
-    required this.navState,
     required this.state,
   }) : super(key: key);
   final ArticleEntity item;
   final FetchNewsLoadedState state;
-  final NavBarState navState;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +93,7 @@ class _Mobile extends StatelessWidget {
                 enableFeedback: false,
                 icon: const Icon(Icons.arrow_back),
                 iconSize: 24,
-                onPressed: () => _onBack(context),
+                onPressed: () => GoRouter.of(context).pop(),
               ),
               flexibleSpace: FlexibleSpaceBar(
                 background: ExtendedImage.network(
@@ -166,7 +139,7 @@ class _Mobile extends StatelessWidget {
                         GoRouter.of(context).pop();
                         GoRouter.of(context).pushNamed(
                           NavigationRouteNames.newsArticlePage,
-                          extra: index,
+                          params: {'fid': state.news.article[index].id},
                         );
                       },
                     ),
@@ -181,132 +154,170 @@ class _Mobile extends StatelessWidget {
   }
 }
 
-class _Web extends StatelessWidget {
+class _Web extends StatefulWidget {
   const _Web({
     Key? key,
     required this.item,
-    required this.navState,
-    required this.state,
   }) : super(key: key);
   final ArticleEntity item;
-  final FetchNewsLoadedState state;
 
-  final NavBarState navState;
+  @override
+  State<_Web> createState() => _WebState();
+}
+
+class _WebState extends State<_Web> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DesktopMenu(
-          currentIndex: 1,
-          onChange: (index) => changePage(context, index),
-          items: navState.menuItems,
-        ),
-        SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: ResponsiveConstraints(
-              constraint: const BoxConstraints(maxWidth: 704),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                  horizontal: 7,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () => _onBack(context),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/back_arrow.svg',
-                            width: 16,
-                            color: theme.primaryColor,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            AppLocalizations.of(context)!.news,
-                            style: theme.textTheme.headline5!.copyWith(
-                              color: theme.primaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
+    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
+      builder: (context, state) {
+        if (state is FetchNewsLoadedState) {
+          List<ArticleEntity> articlesToRecomendations(String id) {
+            return state.news.article
+                .where((element) => element.id != id)
+                .toList();
+          }
+
+          ArticleEntity article = widget.item;
+
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DesktopMenu(
+                currentIndex: 1,
+                onChange: (index) {
+                  changePage(context, index);
+                },
+              ),
+              SafeArea(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: ResponsiveConstraints(
+                    constraint: const BoxConstraints(maxWidth: 704),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16.0,
+                        horizontal: 7,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 4),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 310,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.network(
-                                item.image,
-                                fit: BoxFit.cover,
-                              ),
+                          GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              _contentInit(context);
+
+                              GoRouter.of(context).pop();
+                            },
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/back_arrow.svg',
+                                  width: 16,
+                                  color: theme.primaryColor,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  AppLocalizations.of(context)!.news,
+                                  style: theme.textTheme.headline5!.copyWith(
+                                    color: theme.primaryColor,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 24),
-                          Text(
-                            item.header,
-                            style: theme.textTheme.headline3,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            _outputFormat.format(
-                              item.dateShow,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 25.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 4),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 310,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.network(
+                                      article.image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                Text(
+                                  article.header,
+                                  style: theme.textTheme.headline3,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  _outputFormat.format(
+                                    widget.item.dateShow,
+                                  ),
+                                  style: theme.textTheme.bodyText1,
+                                ),
+                                const SizedBox(height: 24),
+                                Text(
+                                  article.description,
+                                  style: theme.textTheme.headline6,
+                                ),
+                                const SizedBox(height: 40),
+                                Wrap(
+                                  runSpacing: 16,
+                                  spacing: 16,
+                                  children: List.generate(
+                                    articlesToRecomendations(article.id).length,
+                                    (i) {
+                                      return GestureDetector(
+                                        onTap: () =>
+                                            GoRouter.of(context).pushNamed(
+                                          NavigationRouteNames.newsArticlePage,
+                                          params: {
+                                            'fid': articlesToRecomendations(
+                                              article.id,
+                                            )[i]
+                                                .id,
+                                          },
+                                        ),
+                                        child: NewsCardItem(
+                                          width: 312,
+                                          height: 152,
+                                          imgPath: articlesToRecomendations(
+                                            article.id,
+                                          )[i]
+                                              .image,
+                                          title: articlesToRecomendations(
+                                            article.id,
+                                          )[i]
+                                              .header,
+                                          dateTime: _outputFormat.format(
+                                            articlesToRecomendations(
+                                              article.id,
+                                            )[i]
+                                                .dateShow,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                            style: theme.textTheme.bodyText1,
                           ),
-                          const SizedBox(height: 24),
-                          Text(
-                            item.description,
-                            style: theme.textTheme.headline6,
-                          ),
-                          const SizedBox(height: 40),
-                          _recomendations(),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+            ],
+          );
+        }
 
-  Widget _recomendations() {
-    List<ArticleEntity> recomendationsList = state.news.article;
-    recomendationsList.removeWhere((element) => element == item);
-
-    return Wrap(
-      runSpacing: 16,
-      spacing: 16,
-      children: List.generate(recomendationsList.length, (i) {
-        return NewsCardItem(
-          width: 312,
-          height: 152,
-          imgPath: recomendationsList[i].image,
-          title: recomendationsList[i].header,
-          dateTime: _outputFormat.format(
-            recomendationsList[i].dateShow,
-          ),
-        );
-      }),
+        return const SizedBox();
+      },
     );
   }
 }
-
-void _onBack(BuildContext context) => GoRouter.of(context).pop();

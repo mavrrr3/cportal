@@ -1,7 +1,10 @@
+import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
@@ -35,7 +38,8 @@ abstract class NavigationRouteNames {
   static const editPin = 'edit_pin';
   static const fingerPrint = 'finger_print';
   static const faceId = 'face_id';
-  static const news = 'news';
+  static const news = 'news_mobile';
+  static const newsWeb = 'news';
   static const questions = 'questions';
   static const newsArticlePage = 'news_article_page';
   static const questionArticlePage = 'question_article_page';
@@ -46,6 +50,8 @@ abstract class NavigationRouteNames {
   static const onBoardingStart = 'onboarding_start';
   static const onboarding = 'onboarding';
   static const onboardingEnd = 'onboarding_end';
+  static const contacts = 'contacts';
+  static const contactProfile = 'contact_profile';
 }
 
 final GoRouter router = GoRouter(
@@ -172,7 +178,23 @@ final GoRouter router = GoRouter(
           desktopMenuIndex: 1,
         ),
       ),
+      // redirect: (state) {
+      //   if (kIsWeb) return '/news';
+
+      //   return null;
+      // },
     ),
+    // GoRoute(
+    //   name: NavigationRouteNames.newsWeb,
+    //   path: '/news',
+    //   pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+    //     key: state.pageKey,
+    //     child: const HomePage(
+    //       child: NewsPageWeb(),
+    //       desktopMenuIndex: 1,
+    //     ),
+    //   ),
+    // ),
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
       path: '/news/:fid',
@@ -181,7 +203,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const NewsArticlePage(),
+        child: NewsArticlePage(id: state.params['fid']!),
       ),
     ),
     GoRoute(
@@ -201,7 +223,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) =>
           CustomTransitionPage<void>(
         key: state.pageKey,
-        child: const QuestionArticlePage(),
+        child: QuestionArticlePage(id: state.params['fid']!),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
       ),
@@ -266,6 +288,30 @@ final GoRouter router = GoRouter(
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
         child: const OnboardingLearningCourse(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.contacts,
+      path: '/contacts',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        child: const ContactsPage(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.contactProfile,
+      path: '/users/profile/:fid',
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+        key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        child: ContactProfilePage(
+          user: state.extra! as ProfileEntity,
+        ),
       ),
     ),
   ],
