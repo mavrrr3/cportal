@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
@@ -65,9 +66,16 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     Emitter emit,
   ) {
     List<FilterEntity> _filters = state.filters ?? [];
-    _filters[event.filterIndex].items[event.itemIndex].isActive =
-        !_filters[event.filterIndex].items[event.itemIndex].isActive;
+    FilterEntity _filter = _filters[event.filterIndex];
+    FilterItemEntity _filterItem =
+        _filters[event.filterIndex].items[event.itemIndex];
 
+    List<FilterItemEntity> itemsWithSelect =
+        getItemEntities(_filter, _filterItem);
+    FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
+    _filters[event.filterIndex] = filterWithSelect;
+
+    log(filterWithSelect.toString());
     emit(FilterStateImpl(filters: _filters));
   }
 
@@ -79,11 +87,29 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     List<FilterEntity> _filters = state.filters ?? [];
 
     final int itemIndex = _filters[event.filterIndex].items.indexOf(event.item);
-    _filters[event.filterIndex].items[itemIndex].isActive =
-        !_filters[event.filterIndex].items[itemIndex].isActive;
+    FilterEntity _filter = _filters[event.filterIndex];
+    FilterItemEntity _filterItem = _filters[event.filterIndex].items[itemIndex];
+
+    List<FilterItemEntity> itemsWithSelect =
+        getItemEntities(_filter, _filterItem);
+    FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
+    _filters[event.filterIndex] = filterWithSelect;
 
     emit(FilterStateImpl(filters: _filters));
 
     debugPrint('Отработал эвент: ' + event.toString());
+  }
+
+  List<FilterItemEntity> getItemEntities(
+    FilterEntity entity,
+    FilterItemEntity filterItem,
+  ) {
+    return entity.items.map((item) {
+      if (item.name == filterItem.name) {
+        return item.copyWith(isActive: item.changeActivity);
+      }
+
+      return item;
+    }).toList();
   }
 }
