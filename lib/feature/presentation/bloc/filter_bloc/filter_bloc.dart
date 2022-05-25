@@ -70,8 +70,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     FilterItemEntity _filterItem =
         _filters[event.filterIndex].items[event.itemIndex];
 
-    List<FilterItemEntity> itemsWithSelect =
-        getItemEntities(_filter, _filterItem);
+    List<FilterItemEntity> itemsWithSelect = selectItems(_filter, _filterItem);
     FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
     _filters[event.filterIndex] = filterWithSelect;
 
@@ -90,8 +89,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     FilterEntity _filter = _filters[event.filterIndex];
     FilterItemEntity _filterItem = _filters[event.filterIndex].items[itemIndex];
 
-    List<FilterItemEntity> itemsWithSelect =
-        getItemEntities(_filter, _filterItem);
+    List<FilterItemEntity> itemsWithSelect = selectItems(_filter, _filterItem);
     FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
     _filters[event.filterIndex] = filterWithSelect;
 
@@ -100,7 +98,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterStateImpl> {
     debugPrint('Отработал эвент: ' + event.toString());
   }
 
-  List<FilterItemEntity> getItemEntities(
+  List<FilterItemEntity> selectItems(
     FilterEntity entity,
     FilterItemEntity filterItem,
   ) {
