@@ -25,6 +25,8 @@ class FilterEntity extends Equatable {
 
   bool get changeActivity => !isActive;
 
+
+
   @override
   List<Object?> get props => [headline, items, isActive];
 }
@@ -53,3 +55,18 @@ class FilterItemEntity extends Equatable {
   @override
   List<Object?> get props => [name, isActive];
 }
+
+
+// ignore: must_be_immutable
+// class FilterItemEntity extends Equatable {
+//   final String name;
+//   bool isActive;
+
+//   FilterItemEntity({
+//     required this.name,
+//     this.isActive = false,
+//   });
+
+//   @override
+//   List<Object?> get props => [name, isActive];
+// }
