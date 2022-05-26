@@ -46,12 +46,11 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       List<ArticleModel> articlesWithCode = remoteNews.article
           .where((article) => article.articleType.code == code)
           .toList();
-      NewsModel news = NewsModel(
+
+      return NewsModel(
         show: true,
         article: [...articlesWithCode],
       );
-
-      return news;
     } on ServerException {
       throw ServerFailure();
     }
