@@ -109,7 +109,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
     _filters[event.filterIndex] = filterWithSelect;
 
-    log(filterWithSelect.toString());
+    // log(filterWithSelect.toString());
 
     emit(FilterLoadingState());
     emit(FilterLoadedState(filters: _filters));
