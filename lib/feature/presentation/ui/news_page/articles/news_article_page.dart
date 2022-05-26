@@ -45,7 +45,7 @@ class NewsArticlePage extends StatelessWidget {
           return Swipe(
             onSwipeRight: () => GoRouter.of(context).pop(),
             child: Scaffold(
-              body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+              body: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
                   ? _Mobile(
                       item: articlefromBloc(),
                       state: state,

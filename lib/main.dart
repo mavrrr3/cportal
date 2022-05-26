@@ -35,7 +35,7 @@ void main() {
   ));
 
   runZonedGuarded<void>(
-    () async {
+    () async { 
       WidgetsFlutterBinding.ensureInitialized();
       await AppConfig.load();
       await di.init();
@@ -44,7 +44,12 @@ void main() {
       _hiveAdaptersInit();
 
       await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp],
+        [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ],
       );
       BlocOverrides.runZoned(
         () => runApp(const MyApp()),
