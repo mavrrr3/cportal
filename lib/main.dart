@@ -47,7 +47,7 @@ void main() {
         [DeviceOrientation.portraitUp],
       );
       BlocOverrides.runZoned(
-        () => runApp(const MyApp()),
+        () => runApp(const Main()),
         blocObserver: AppBlocObserver.instance(),
         eventTransformer: bloc_concurrency.sequential<Object?>(),
       );
@@ -66,8 +66,8 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Main extends StatelessWidget {
+  const Main({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

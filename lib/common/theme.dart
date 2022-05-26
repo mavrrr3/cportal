@@ -2,13 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const appBarTheme = AppBarTheme(
-  centerTitle: true,
-  elevation: 0,
-  backgroundColor: Colors.white,
-);
-
-class FontFamilies {
+class Theme {
   static const String roboto = 'Roboto';
   static const String inter = 'Inter';
   static const String russo = 'Russo One';
@@ -165,3 +159,9 @@ TextTheme _getTextTheme(Color textColor) {
     ),
   );
 }
+
+const appBarTheme = AppBarTheme(
+  centerTitle: true,
+  elevation: 0,
+  backgroundColor: Colors.white,
+);
