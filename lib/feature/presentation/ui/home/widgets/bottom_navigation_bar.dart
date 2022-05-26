@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({
@@ -25,31 +24,26 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return SizedBox(
-      child: ResponsiveVisibility(
-        hiddenWhen: const [Condition<dynamic>.largerThan(name: TABLET)],
-        child: Container(
-          height: 56,
-          color: theme.splashColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(
-              widget.state.menuItems.length,
-              (index) => _MenuItem(
-                item: widget.state.menuItems[index],
-                state: widget.state,
-                index: index,
-                onTap: () {
-                  if (widget.isNestedNavigation) {
-                    context.pop();
-                  }
-                  setState(
-                    () => BlocProvider.of<NavBarBloc>(context)
-                        .add(NavBarEventImpl(index: index)),
-                  );
-                },
-              ),
-            ),
+    return Container(
+      height: 56,
+      color: theme.splashColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(
+          widget.state.menuItems.length,
+          (index) => _MenuItem(
+            item: widget.state.menuItems[index],
+            state: widget.state,
+            index: index,
+            onTap: () {
+              if (widget.isNestedNavigation) {
+                context.pop();
+              }
+              setState(
+                () => BlocProvider.of<NavBarBloc>(context)
+                    .add(NavBarEventImpl(index: index)),
+              );
+            },
           ),
         ),
       ),

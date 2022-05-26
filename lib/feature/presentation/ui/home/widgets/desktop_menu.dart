@@ -56,7 +56,7 @@ class DesktopMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
+  
     return Container(
       width: 256,
       height: MediaQuery.of(context).size.height,
@@ -66,16 +66,18 @@ class DesktopMenu extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: onboarding,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: SvgPicture.asset(
-                  'assets/icons/logo_grey.svg',
-                  color: theme.brightness == Brightness.dark
-                      ? theme.hoverColor
-                      : null,
-                  width: 24.0,
+            SafeArea(
+              child: GestureDetector(
+                onTap: onboarding,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: SvgPicture.asset(
+                    'assets/icons/logo_grey.svg',
+                    color: theme.brightness == Brightness.dark
+                        ? theme.hoverColor
+                        : null,
+                    width: 24.0,
+                  ),
                 ),
               ),
             ),
