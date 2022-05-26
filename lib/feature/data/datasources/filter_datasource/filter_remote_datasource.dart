@@ -35,7 +35,7 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   }
 }
 
-final FilterModel _filter1 = FilterModel(
+const FilterModel _filter1 = FilterModel(
   headline: 'Компания',
   items: [
     FilterItemModel(name: 'АЭМ3'),
@@ -44,7 +44,7 @@ final FilterModel _filter1 = FilterModel(
   ],
 );
 
-final FilterModel _filter2 = FilterModel(
+const FilterModel _filter2 = FilterModel(
   headline: 'Должность',
   items: [
     FilterItemModel(name: 'Информационные технологии'),

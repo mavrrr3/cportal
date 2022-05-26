@@ -27,9 +27,8 @@ class FilterModel extends FilterEntity {
 }
 
 @HiveType(typeId: 9)
-// ignore: must_be_immutable
 class FilterItemModel extends FilterItemEntity {
-  FilterItemModel({
+  const FilterItemModel({
     required this.name,
     this.isActive = false,
   }) : super(
