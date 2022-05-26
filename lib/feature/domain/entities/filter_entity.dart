@@ -25,6 +25,8 @@ class FilterEntity extends Equatable {
 
   bool get changeActivity => !isActive;
 
+
+
   @override
   List<Object?> get props => [headline, items, isActive];
 }

@@ -31,7 +31,8 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     _searchController = TextEditingController();
-    BlocProvider.of<FilterBloc>(context, listen: false).add(FilterInitEvent());
+    BlocProvider.of<FilterBloc>(context, listen: false)
+        .add(FetchFiltersEvent());
 
     super.initState();
   }
@@ -86,48 +87,50 @@ class _ContactsPageState extends State<ContactsPage> {
             // Выбранные фильтры
             Padding(
               padding: getHorizontalPadding(context),
-              child: BlocBuilder<FilterBloc, FilterStateImpl>(
+              child: BlocBuilder<FilterBloc, FilterState>(
                 builder: (context, state) {
-                  return state.filters != null
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: state.filters!.length,
-                          itemBuilder: ((context, index) {
-                            // Выбран ли хоть один пункт в текущем разделе фильтра
-                            final bool isActive = state.filters![index].items
-                                .any((element) => element.isActive);
+                  if (state is FilterLoadedState) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.filters.length,
+                      itemBuilder: ((context, index) {
+                        // Выбран ли хоть один пункт в текущем разделе фильтра
+                        final bool isActive = state.filters[index].items
+                            .any((element) => element.isActive);
 
-                            // если isActive - создаем список только с выбранными пунктами в текущем разделе
-                            List<FilterItemEntity> selectedItems = [];
-                            if (isActive) {
-                              for (var item in state.filters![index].items) {
-                                if (item.isActive) {
-                                  selectedItems.add(item);
-                                }
-                              }
+                        // если isActive - создаем список только с выбранными пунктами в текущем разделе
+                        List<FilterItemEntity> selectedItems = [];
+                        if (isActive) {
+                          for (var item in state.filters[index].items) {
+                            if (item.isActive) {
+                              selectedItems.add(item);
                             }
+                          }
+                        }
 
-                            // Рендеринг
-                            return isActive
-                                ? FilterViewSelectedRow(
-                                    headline: state.filters![index].headline,
-                                    selectedItems: selectedItems,
-                                    onClose: (item) {
-                                      setState(() {
-                                        BlocProvider.of<FilterBloc>(context)
-                                            .add(
-                                          FilterRemoveItemEvent(
-                                            filterIndex: index,
-                                            item: item,
-                                          ),
-                                        );
-                                      });
-                                    },
-                                  )
-                                : const SizedBox();
-                          }),
-                        )
-                      : const SizedBox();
+                        // Рендеринг
+                        return isActive
+                            ? FilterViewSelectedRow(
+                                headline: state.filters[index].headline,
+                                selectedItems: selectedItems,
+                                onClose: (item) {
+                                  setState(() {
+                                    BlocProvider.of<FilterBloc>(context).add(
+                                      FilterRemoveItemEvent(
+                                        filterIndex: index,
+                                        item: item,
+                                      ),
+                                    );
+                                  });
+                                },
+                              )
+                            : const SizedBox();
+                      }),
+                    );
+                  }
+
+                  // TODO: Обработать другие стейты
+                  return const SizedBox();
                 },
               ),
             ),
