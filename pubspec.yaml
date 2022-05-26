@@ -73,6 +73,7 @@ dependencies:
   extended_image: ^6.1.0
   responsive_framework: ^0.1.8
   qr_flutter: ^4.0.0
+  bloc_test: ^9.0.3
 
 dev_dependencies:
   dart_code_metrics: ^4.15.2
