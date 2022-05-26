@@ -116,7 +116,6 @@ Future<void> init() async {
     sl.registerLazySingleton<INewsRepository>(
       () => NewsRepositoryWeb(
         remoteDataSource: sl(),
-        localDataSource: sl(),
       ),
     );
   } else {
