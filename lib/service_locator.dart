@@ -1,5 +1,7 @@
 import 'package:cportal_flutter/core/platform/biometric_info.dart';
 import 'package:cportal_flutter/core/platform/network_info.dart';
+import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/pin_code_local_datasource.dart';
@@ -8,6 +10,7 @@ import 'package:cportal_flutter/feature/data/datasources/profile_datasource/prof
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
+import 'package:cportal_flutter/feature/data/repositories/filter_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/pin_code_repository.dart';
@@ -16,6 +19,7 @@ import 'package:cportal_flutter/feature/data/repositories/profile_repository_web
 import 'package:cportal_flutter/feature/data/repositories/user_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/user_repository_web.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
@@ -23,6 +27,7 @@ import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.da
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/check_auth_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news.dart';
+import 'package:cportal_flutter/feature/domain/usecases/users_usecases/filter_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/pin_code_enter_usecase.dart';
@@ -50,7 +55,7 @@ Future<void> init() async {
   sl.registerFactory(() => BiometricBloc(sl()));
   sl.registerFactory(() => FetchNewsBloc(fetchNews: sl()));
   sl.registerFactory(() => NavBarBloc());
-  sl.registerFactory(() => FilterBloc());
+  sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
 
   // USECASE
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
@@ -60,6 +65,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PinCodeEnterUseCase(sl()));
   sl.registerLazySingleton(() => BiometricUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsUseCase(sl()));
+  sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -122,6 +128,14 @@ Future<void> init() async {
       ),
     );
   }
+  sl.registerLazySingleton<IFilterRepository>(
+    () => FilterRepository(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+    ),
+  );
+
   // DATASORCE
   sl.registerLazySingleton<IProfileRemoteDataSource>(
     () => ProfileRemoteDataSource(sl()),
@@ -149,6 +163,12 @@ Future<void> init() async {
 
   sl.registerLazySingleton<INewsLocalDataSource>(
     () => NewsLocalDataSource(sl()),
+  );
+  sl.registerLazySingleton<IFilterRemoteDataSource>(
+    () => FilterRemoteDataSource(sl()),
+  );
+  sl.registerLazySingleton<IFilterLocalDataSource>(
+    () => FilterLocalDataSource(sl()),
   );
 
   // CORE

@@ -108,7 +108,7 @@ class Mocks {
 
   // Фильтр
   static final List<FilterEntity> filter = [
-    FilterEntity(
+    const FilterEntity(
       headline: 'Компания',
       items: [
         FilterItemEntity(name: 'АЭМ3'),
@@ -116,7 +116,7 @@ class Mocks {
         FilterItemEntity(name: 'Демедия'),
       ],
     ),
-    FilterEntity(
+    const FilterEntity(
       headline: 'Должность',
       items: [
         FilterItemEntity(name: 'Информационные технологии'),

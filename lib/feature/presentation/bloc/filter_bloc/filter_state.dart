@@ -12,6 +12,14 @@ class FilterEmptyState extends FilterState {}
 
 class FilterLoadingState extends FilterState {}
 
+class FilterLoadingErrorState extends FilterState {
+  final String message;
+  const FilterLoadingErrorState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class FilterLoadedState extends FilterState {
   final List<FilterEntity> filters;
 
