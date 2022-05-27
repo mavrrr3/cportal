@@ -22,6 +22,19 @@ abstract class IBiometricInfo {
 class BiometricInfo implements IBiometricInfo {
   final LocalAuthentication localAuth;
 
+  final IOSAuthMessages _iosStrings = const IOSAuthMessages(
+    cancelButton: 'ОТМЕНА',
+    goToSettingsButton: 'Настройки',
+    goToSettingsDescription: 'Please set up your Touch ID.',
+    lockOut: 'Please reenable your Touch ID',
+  );
+
+  final AndroidAuthMessages _androidStrings = const AndroidAuthMessages(
+    cancelButton: 'ОТМЕНА',
+    goToSettingsButton: 'Настройки',
+    goToSettingsDescription: 'Please set up your Touch ID.',
+  );
+
   BiometricInfo(this.localAuth);
 
   @override
@@ -47,17 +60,4 @@ class BiometricInfo implements IBiometricInfo {
       androidAuthStrings: _androidStrings,
     );
   }
-
-  final IOSAuthMessages _iosStrings = const IOSAuthMessages(
-    cancelButton: 'ОТМЕНА',
-    goToSettingsButton: 'Настройки',
-    goToSettingsDescription: 'Please set up your Touch ID.',
-    lockOut: 'Please reenable your Touch ID',
-  );
-
-  final AndroidAuthMessages _androidStrings = const AndroidAuthMessages(
-    cancelButton: 'ОТМЕНА',
-    goToSettingsButton: 'Настройки',
-    goToSettingsDescription: 'Please set up your Touch ID.',
-  );
 }

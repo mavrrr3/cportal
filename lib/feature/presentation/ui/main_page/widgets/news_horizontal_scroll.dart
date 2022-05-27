@@ -4,16 +4,16 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_c
 import 'package:flutter/material.dart';
 
 class NewsHorizontalScroll extends StatelessWidget {
+  final List<ArticleEntity> items;
+  final Function(int)? onTap;
+  final ArticleEntity? currentArticle;
+
   const NewsHorizontalScroll({
     Key? key,
     required this.items,
     this.currentArticle,
     this.onTap,
   }) : super(key: key);
-
-  final List<ArticleEntity> items;
-  final Function(int)? onTap;
-  final ArticleEntity? currentArticle;
 
   @override
   Widget build(BuildContext context) {

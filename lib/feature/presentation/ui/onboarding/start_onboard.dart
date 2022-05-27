@@ -2,21 +2,21 @@ import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class OnboardingEntity {
+  final String title;
+  final String description;
+  final String image;
+  final bool isVector;
+
   OnboardingEntity({
     required this.title,
     required this.description,
     required this.image,
     this.isVector = true,
   });
-
-  final String title;
-  final String description;
-  final String image;
-  final bool isVector;
 }
 
 class StartBoarding extends StatelessWidget {

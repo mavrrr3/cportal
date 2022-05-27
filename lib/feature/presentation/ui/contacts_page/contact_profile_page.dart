@@ -11,12 +11,13 @@ import 'package:swipe/swipe.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContactProfilePage extends StatelessWidget {
+  final ProfileEntity user;
+
   const ContactProfilePage({
     Key? key,
     required this.user,
   }) : super(key: key);
 
-  final ProfileEntity user;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -162,15 +163,15 @@ class ContactProfilePage extends StatelessWidget {
 }
 
 class _BuildInfo extends StatelessWidget {
+  final String headline;
+  final String text;
+
   /// Элемент информации
   const _BuildInfo({
     Key? key,
     required this.headline,
     required this.text,
   }) : super(key: key);
-
-  final String headline;
-  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -199,12 +200,13 @@ class _BuildInfo extends StatelessWidget {
 }
 
 class _BackButton extends StatelessWidget {
+  final Function() onTap;
+
   const _BackButton({
     Key? key,
     required this.onTap,
   }) : super(key: key);
 
-  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -230,6 +232,9 @@ class _BackButton extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
+  final String img;
+  final Function onTap;
+
   /// Кнопка взаимодействия с Юзером [Звонок, Чат, Почта]
   const _ActionButton({
     Key? key,
@@ -237,8 +242,6 @@ class _ActionButton extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final String img;
-  final Function onTap;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);

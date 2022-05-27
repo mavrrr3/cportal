@@ -42,6 +42,10 @@ class MenuButtonModel {
 }
 
 class DesktopMenu extends StatelessWidget {
+  final int currentIndex;
+  final Function(int) onChange;
+  final Function()? onboarding;
+
   const DesktopMenu({
     Key? key,
     required this.currentIndex,
@@ -49,14 +53,10 @@ class DesktopMenu extends StatelessWidget {
     this.onboarding,
   }) : super(key: key);
 
-  final int currentIndex;
-  final Function(int) onChange;
-  final Function()? onboarding;
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-  
+
     return Container(
       width: 256,
       height: MediaQuery.of(context).size.height,
@@ -105,15 +105,16 @@ class DesktopMenu extends StatelessWidget {
 }
 
 class _MenuItem extends StatelessWidget {
+  final MenuButtonModel item;
+  final Duration duration = const Duration(milliseconds: 250);
+  final bool isActive;
+
   const _MenuItem({
     Key? key,
     required this.item,
     required this.isActive,
   }) : super(key: key);
 
-  final MenuButtonModel item;
-  final Duration duration = const Duration(milliseconds: 250);
-  final bool isActive;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);

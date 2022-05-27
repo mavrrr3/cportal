@@ -65,13 +65,15 @@ final List<OnboardingEntity> _onboardingContent = [
 ];
 
 class HomePage extends StatefulWidget {
+  final Widget child;
+  final int desktopMenuIndex;
+
   const HomePage({
     Key? key,
     required this.child,
     required this.desktopMenuIndex,
   }) : super(key: key);
-  final Widget child;
-  final int desktopMenuIndex;
+
   @override
   State<HomePage> createState() => _HomePageState();
 }

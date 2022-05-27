@@ -8,13 +8,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomBottomBar extends StatefulWidget {
+  final NavBarState state;
+  final bool isNestedNavigation;
+
   const CustomBottomBar({
     Key? key,
     required this.state,
     this.isNestedNavigation = false,
   }) : super(key: key);
-  final NavBarState state;
-  final bool isNestedNavigation;
+
   @override
   State<CustomBottomBar> createState() => _CustomBottomBarState();
 }
@@ -52,6 +54,11 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 }
 
 class _MenuItem extends StatelessWidget {
+  final NavBarState state;
+  final MenuButtonModel item;
+  final Function() onTap;
+  final int index;
+
   const _MenuItem({
     Key? key,
     required this.item,
@@ -60,10 +67,6 @@ class _MenuItem extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final NavBarState state;
-  final MenuButtonModel item;
-  final Function() onTap;
-  final int index;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);

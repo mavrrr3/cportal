@@ -2,14 +2,14 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesRow extends StatelessWidget {
+  final List<ProfileEntity> items;
+  final Function(int) onTap;
+
   const FavoritesRow({
     Key? key,
     required this.items,
     required this.onTap,
   }) : super(key: key);
-
-  final List<ProfileEntity> items;
-  final Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {

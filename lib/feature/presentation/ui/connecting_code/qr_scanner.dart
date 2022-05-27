@@ -16,12 +16,13 @@ class QrScanner extends StatefulWidget {
 }
 
 class _QrScannerState extends State<QrScanner> {
+  QRViewController? qrController;
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? _result;
   late CameraController _cameraController;
   late bool _isFlashLight;
   late bool _isLoading;
-  QRViewController? qrController;
 
   @override
   void initState() {

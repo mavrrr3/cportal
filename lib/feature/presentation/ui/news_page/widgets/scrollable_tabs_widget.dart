@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class ScrollableTabsWidget extends StatefulWidget {
+  final List<String> items;
+  final int currentIndex;
+  final Function(int) onTap;
+  final Color? activeColor;
+
   const ScrollableTabsWidget({
     Key? key,
     required this.items,
@@ -10,11 +15,6 @@ class ScrollableTabsWidget extends StatefulWidget {
     required this.onTap,
     this.activeColor,
   }) : super(key: key);
-
-  final List<String> items;
-  final int currentIndex;
-  final Function(int) onTap;
-  final Color? activeColor;
 
   @override
   State<ScrollableTabsWidget> createState() => _ScrollableTabsWidgetState();

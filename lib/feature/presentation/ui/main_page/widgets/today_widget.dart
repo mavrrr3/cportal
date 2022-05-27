@@ -86,11 +86,12 @@ class TodayWidget extends StatelessWidget {
 }
 
 class _TodayItem extends StatelessWidget {
+  final TodayItemModel item;
+
   const _TodayItem({
     Key? key,
     required this.item,
   }) : super(key: key);
-  final TodayItemModel item;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
