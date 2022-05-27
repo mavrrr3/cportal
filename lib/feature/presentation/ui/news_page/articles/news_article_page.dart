@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
@@ -126,7 +127,7 @@ class _Mobile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: getHorizontalPadding(context),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -151,10 +152,11 @@ class _Mobile extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
+                          padding: EdgeInsets.only(
+                            left: getSingleHorizontalPadding(context),
+                          ),
                           child: NewsHorizontalScroll(
                             items: state.news.article,
-                            isTextVisible: false,
                             currentArticle: item,
                             onTap: (index) {
                               GoRouter.of(context).pop();
@@ -308,20 +310,9 @@ class _WebState extends State<_Web> {
                                         child: NewsCardItem(
                                           width: 312,
                                           height: 152,
-                                          imgPath: articlesToRecomendations(
+                                          item: articlesToRecomendations(
                                             article.id,
-                                          )[i]
-                                              .image,
-                                          title: articlesToRecomendations(
-                                            article.id,
-                                          )[i]
-                                              .header,
-                                          dateTime: _outputFormat.format(
-                                            articlesToRecomendations(
-                                              article.id,
-                                            )[i]
-                                                .dateShow,
-                                          ),
+                                          )[i],
                                         ),
                                       );
                                     },

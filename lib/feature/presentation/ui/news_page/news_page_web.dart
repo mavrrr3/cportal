@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 int _currentIndex = 0;
@@ -161,21 +160,14 @@ class _NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
+      child: NewsCardItem(
         onTap: onTap,
-        child: NewsCardItem(
-          width: width,
-          height: 160,
-          fontSize: 17,
-          imgPath: item.image,
-          title: item.header,
-          dateTime: outputFormat.format(item.dateShow),
-        ),
+        width: width,
+        height: 160,
+        fontSize: 17,
+        item: item,
       ),
     );
   }
