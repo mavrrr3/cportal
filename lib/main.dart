@@ -35,7 +35,7 @@ void main() {
   ));
 
   runZonedGuarded<void>(
-    () async {
+    () async { 
       WidgetsFlutterBinding.ensureInitialized();
       await AppConfig.load();
       await di.init();
@@ -44,7 +44,12 @@ void main() {
       _hiveAdaptersInit();
 
       await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp],
+        [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ],
       );
       BlocOverrides.runZoned(
         () => runApp(const Main()),
@@ -94,7 +99,8 @@ class Main extends StatelessWidget {
                   defaultName: DESKTOP,
                   breakpoints: [
                     const ResponsiveBreakpoint.resize(350, name: MOBILE),
-                    const ResponsiveBreakpoint.autoScale(600, name: TABLET),
+                    const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
+                    const ResponsiveBreakpoint.resize(1024, name: TABLET),
                     const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
                     const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
                   ],

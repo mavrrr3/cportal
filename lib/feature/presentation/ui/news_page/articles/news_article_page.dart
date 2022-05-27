@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_men
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,9 +44,13 @@ class NewsArticlePage extends StatelessWidget {
           }
 
           return Swipe(
-            onSwipeRight: () => GoRouter.of(context).pop(),
+            onSwipeRight: () {
+              if (!kIsWeb) {
+                GoRouter.of(context).pop();
+              }
+            },
             child: Scaffold(
-              body: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+              body: !kIsWeb
                   ? _Mobile(
                       item: articlefromBloc(),
                       state: state,
@@ -77,79 +82,98 @@ class _Mobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return SafeArea(
-      child: ResponsiveConstraints(
-        constraint: const BoxConstraints(maxWidth: 640),
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverAppBar(
-              backgroundColor: theme.backgroundColor,
-              expandedHeight: 176,
-              automaticallyImplyLeading: false,
-              leading: IconButton(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                enableFeedback: false,
-                icon: const Icon(Icons.arrow_back),
-                iconSize: 24,
-                onPressed: () => GoRouter.of(context).pop(),
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                background: ExtendedImage.network(
-                  item.image,
-                  fit: BoxFit.cover,
-                  cache: true,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
+          DesktopMenu(
+            currentIndex: 1,
+            onChange: (index) {
+              changePage(context, index);
+            },
+          ),
+        Expanded(
+          child: SafeArea(
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: theme.backgroundColor,
+                  expandedHeight: 176,
+                  automaticallyImplyLeading: false,
+                  leading: IconButton(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    enableFeedback: false,
+                    icon: const Icon(Icons.arrow_back),
+                    iconSize: 24,
+                    onPressed: () => GoRouter.of(context).pop(),
+                  ),
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: ExtendedImage.network(
+                      item.image,
+                      fit: BoxFit.cover,
+                      cache: true,
+                    ),
+                  ),
                 ),
-              ),
-            ),
 
-            /// Колонка с контентом статьи
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                  horizontal: 20.0,
+                /// Колонка с контентом статьи
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.header,
+                                style: theme.textTheme.headline3,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _outputFormat.format(
+                                  item.dateShow,
+                                ),
+                                style: theme.textTheme.bodyText1,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                item.description,
+                                style: theme.textTheme.headline6,
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: NewsHorizontalScroll(
+                            items: state.news.article,
+                            isTextVisible: false,
+                            currentArticle: item,
+                            onTap: (index) {
+                              GoRouter.of(context).pop();
+                              GoRouter.of(context).pushNamed(
+                                NavigationRouteNames.newsArticlePage,
+                                params: {'fid': state.news.article[index].id},
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.header,
-                      style: theme.textTheme.headline3,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _outputFormat.format(
-                        item.dateShow,
-                      ),
-                      style: theme.textTheme.bodyText1,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      item.description,
-                      style: theme.textTheme.headline6,
-                    ),
-                    const SizedBox(height: 20),
-                    NewsHorizontalScroll(
-                      items: state.news.article,
-                      isTextVisible: false,
-                      currentArticle: item,
-                      onTap: (index) {
-                        GoRouter.of(context).pop();
-                        GoRouter.of(context).pushNamed(
-                          NavigationRouteNames.newsArticlePage,
-                          params: {'fid': state.news.article[index].id},
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

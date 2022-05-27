@@ -8,7 +8,7 @@ class SearchInput extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.onChanged,
-     this.focusNode,
+    this.focusNode,
     this.animationDuration = const Duration(milliseconds: 300),
     this.isAnimation = false,
   }) : super(key: key);
@@ -77,11 +77,7 @@ class SearchInput extends StatelessWidget {
   ) {
     final double width = MediaQuery.of(context).size.width;
 
-    // ignore: prefer-conditional-expressions
-    if (!ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
-      return isAnimation ? width - 32 : width - 84;
-    } else {
-      return 584;
-    }
+  
+    return ResponsiveWrapper.of(context).isSmallerThan(TABLET) ? isAnimation ? width - 32 : width - 84 : 584;
   }
 }

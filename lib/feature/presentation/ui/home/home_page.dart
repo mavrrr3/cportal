@@ -154,7 +154,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     List<Widget> _listPages = <Widget>[
@@ -176,7 +175,7 @@ class _HomePageState extends State<HomePage>
                   ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [
-                      Condition<dynamic>.largerThan(name: TABLET),
+                      Condition<dynamic>.largerThan(name: MOBILE),
                     ],
                     // Меню Web
                     child: DesktopMenu(
@@ -249,7 +248,12 @@ class _HomePageState extends State<HomePage>
               if (_isLearningCourse) _learningCourse(context),
             ],
           ),
-          bottomNavigationBar: CustomBottomBar(state: state),
+          bottomNavigationBar: ResponsiveVisibility(
+            hiddenWhen: const [
+              Condition<dynamic>.largerThan(name: MOBILE),
+            ],
+            child: CustomBottomBar(state: state),
+          ),
         );
       },
     );
