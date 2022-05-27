@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:flutter/material.dart';
