@@ -13,3 +13,7 @@ EdgeInsetsGeometry getHorizontalPadding(BuildContext context) {
     horizontal: ResponsiveWrapper.of(context).isLargerThan(MOBILE) ? 32 : 16,
   );
 }
+
+double getSingleHorizontalPadding(BuildContext context) {
+  return ResponsiveWrapper.of(context).isLargerThan(MOBILE) ? 32 : 16;
+}

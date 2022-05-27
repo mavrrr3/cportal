@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:flutter/material.dart';
@@ -47,21 +48,32 @@ class NewsHorizontalScroll extends StatelessWidget {
 
                       ///Условие, чтобы не отрисовывалась новость, которая сейчас открыта
                       if (items![i] != currentArticle)
-                        _buildCard(
-                          item: items![i],
-                          onTap: () {
-                            if (onTap != null) {
-                              onTap!(i);
-                            }
-                          },
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: i != items!.length - 1 ? 8 : 20,
+                          ),
+                          child: _buildCard(
+                            item: items![i],
+                            onTap: () {
+                              if (onTap != null) {
+                                onTap!(i);
+                              }
+                            },
+                          ),
                         ),
                     if (items == null)
-                      NewsCardItem(
-                        imgPath: listViewMap[i]['imgPath'] as String,
-                        title: listViewMap[i]['title'] as String,
-                        dateTime: listViewMap[i]['dateTime'] as String,
+                      Padding(
+                        padding: EdgeInsets.only(
+                          right: i != listViewMap.length - 1
+                              ? 8
+                              : getSingleHorizontalPadding(context),
+                        ),
+                        child: NewsCardItem(
+                          imgPath: listViewMap[i]['imgPath'] as String,
+                          title: listViewMap[i]['title'] as String,
+                          dateTime: listViewMap[i]['dateTime'] as String,
+                        ),
                       ),
-                    const SizedBox(width: 8),
                   ],
                 ),
               );

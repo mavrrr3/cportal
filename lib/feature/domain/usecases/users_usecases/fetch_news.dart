@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/core/usecases/i_usecase.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
@@ -15,8 +13,6 @@ class FetchNewsUseCase extends IUseCase<NewsEntity, FetchNewsParams> {
   @override
   Future<Either<Failure, NewsEntity>> call(FetchNewsParams params) async {
     var data = await newsRepository.fetchNews(params.code);
-
-    log('*/*/* $data');
 
     return data;
   }

@@ -10,6 +10,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -59,115 +60,139 @@ class _MainPageState extends State<MainPage> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: SingleChildScrollView(
-        child: Stack(
-          children: [
-            if (_isAnimation && theme.brightness == Brightness.light)
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                color: theme.hoverColor.withOpacity(0.2),
-              ),
-            SafeArea(
+      child: Stack(
+        children: [
+          if (_isAnimation && theme.brightness == Brightness.light)
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: theme.hoverColor.withOpacity(0.2),
+            ),
+          SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: getPagePadding(context),
+                padding: EdgeInsets.symmetric(
+                  vertical: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? 16
+                      : 13,
+                ),
                 child: ResponsiveConstraints(
-                  constraint: ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                      ? const BoxConstraints(maxWidth: 640)
-                      : null,
+                  constraint:
+                      kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SearchInput(
-                            controller: _searchController,
-                            focusNode: _searchFocus,
-                            animationDuration: _animationDuration,
-                            isAnimation: _isAnimation,
-                            onChanged: (text) {
-                              log('[Search text] $text');
-                            },
-                          ),
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 150),
-                            opacity: !ResponsiveWrapper.of(context)
-                                    .isLargerThan(TABLET)
-                                ? _isAnimation
-                                    ? 0
-                                    : 1
-                                : 1,
-                            child: GestureDetector(
-                              onTap: (() {
-                                ResponsiveWrapper.of(context)
-                                        .isLargerThan(TABLET)
-                                    ? showProfile(context)
-                                    : context.pushNamed(
-                                        NavigationRouteNames.profile,
-                                      );
-                              }),
-                              child: AvatarBox(
-                                isAnimation: !ResponsiveWrapper.of(context)
-                                        .isLargerThan(TABLET)
-                                    ? _isAnimation
-                                    : false,
-                                size: 40,
-                                imgPath:
-                                    'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+                      Padding(
+                        padding: getHorizontalPadding(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SearchInput(
+                              controller: _searchController,
+                              focusNode: _searchFocus,
+                              animationDuration: _animationDuration,
+                              isAnimation: _isAnimation,
+                              onChanged: (text) {
+                                log('[Search text] $text');
+                              },
+                            ),
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 150),
+                              opacity: !ResponsiveWrapper.of(context)
+                                      .isLargerThan(TABLET)
+                                  ? _isAnimation
+                                      ? 0
+                                      : 1
+                                  : 1,
+                              child: GestureDetector(
+                                onTap: (() {
+                                  ResponsiveWrapper.of(context)
+                                          .isLargerThan(TABLET)
+                                      ? showProfile(context)
+                                      : context.pushNamed(
+                                          NavigationRouteNames.profile,
+                                        );
+                                }),
+                                child: AvatarBox(
+                                  isAnimation: !ResponsiveWrapper.of(context)
+                                          .isLargerThan(TABLET)
+                                      ? _isAnimation
+                                      : false,
+                                  size: 40,
+                                  imgPath:
+                                      'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 16),
-                      HorizontalListViewMain(
-                        color: _isAnimation
-                            ? theme.brightness == Brightness.light
-                                ? theme.splashColor.withOpacity(0.3)
-                                : theme.splashColor
-                            : theme.splashColor,
+                      Padding(
+                        padding: getHorizontalPadding(context),
+                        child: HorizontalListViewMain(
+                          color: _isAnimation
+                              ? theme.brightness == Brightness.light
+                                  ? theme.splashColor.withOpacity(0.3)
+                                  : theme.splashColor
+                              : theme.splashColor,
+                        ),
                       ),
                       const SizedBox(height: 24),
-                      const TodayWidget(),
+                      Padding(
+                        padding: getHorizontalPadding(context),
+                        child: const TodayWidget(),
+                      ),
                       const SizedBox(height: 24),
-                      !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                          ? const NewsHorizontalScroll()
-                          : Wrap(
-                              spacing: 16,
-                              runSpacing: 20,
-                              children: List.generate(
-                                listViewMap.length,
-                                (i) => NewsCardItem(
-                                  width: 312,
-                                  height: 152,
-                                  imgPath: listViewMap[i]['imgPath'] as String,
-                                  title: listViewMap[i]['title'] as String,
-                                  dateTime:
-                                      listViewMap[i]['dateTime'] as String,
+                      !kIsWeb
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                left: getSingleHorizontalPadding(context),
+                              ),
+                              child: const NewsHorizontalScroll(),
+                            )
+                          : Padding(
+                              padding: getHorizontalPadding(context),
+                              child: Wrap(
+                                spacing: 16,
+                                runSpacing: 20,
+                                children: List.generate(
+                                  listViewMap.length,
+                                  (i) => NewsCardItem(
+                                    width: 312,
+                                    height: 152,
+                                    imgPath:
+                                        listViewMap[i]['imgPath'] as String,
+                                    title: listViewMap[i]['title'] as String,
+                                    dateTime:
+                                        listViewMap[i]['dateTime'] as String,
+                                  ),
                                 ),
                               ),
                             ),
                       const SizedBox(height: 24),
-                      const FaqWidget(),
+                      Padding(
+                        padding: getHorizontalPadding(context),
+                        child: const FaqWidget(),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            ResponsiveConstraints(
-              constraint: ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                  ? const BoxConstraints(maxWidth: 640)
-                  : null,
-              child: SearchBox(
-                isAnimation: _isAnimation,
-                animationDuration: _animationDuration,
-              ),
+          ),
+          ResponsiveConstraints(
+            constraint: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                ? const BoxConstraints(maxWidth: 640)
+                : null,
+            child: SearchBox(
+              isAnimation: _isAnimation,
+              animationDuration: _animationDuration,
             ),
-           
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
