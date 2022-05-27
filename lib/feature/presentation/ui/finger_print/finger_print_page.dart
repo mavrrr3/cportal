@@ -97,7 +97,7 @@ class FingerPrintOrFaceIdPage extends StatelessWidget {
                           ButtonEnum.outlined,
                           AppLocalizations.of(context)!.noThanks,
                           () async {
-                            // TODO Реализовать функционал кнопки Нет, спасибо
+                            // TODO Реализовать функционал кнопки Нет, спасибо.
                           },
                           Size(142.w, 48.h),
                         ),

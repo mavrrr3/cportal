@@ -27,10 +27,10 @@ class NewsHorizontalScroll extends StatelessWidget {
         itemCount: items.length,
         itemBuilder: (context, i) {
           return Padding(
-            padding: const EdgeInsets.only(top: 12.0),
+            padding: const EdgeInsets.only(top: 12),
             child: Row(
               children: [
-                ///Условие, чтобы не отрисовывалась новость, которая сейчас открыта
+                /// Условие, чтобы не отрисовывалась новость, которая сейчас открыта.
                 if (items[i] != currentArticle)
                   Padding(
                     padding: EdgeInsets.only(
@@ -42,6 +42,7 @@ class NewsHorizontalScroll extends StatelessWidget {
                       item: items[i],
                       onTap: () {
                         if (onTap != null) {
+                          // ignore: prefer_null_aware_method_calls
                           onTap!(i);
                         }
                       },

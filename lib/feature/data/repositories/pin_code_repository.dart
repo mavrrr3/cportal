@@ -26,6 +26,6 @@ class PinCodeRepository implements IPinCodeRepository {
 
   @override
   Future<String?> getPin() async {
-    return await localDataSource.getPin();
+    return localDataSource.getPin();
   }
 }

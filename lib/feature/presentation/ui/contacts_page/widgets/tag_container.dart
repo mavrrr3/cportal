@@ -25,7 +25,7 @@ class TagContainer extends StatelessWidget {
           color: theme.hoverColor.withOpacity(0.06),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(6.0),
+          padding: const EdgeInsets.all(6),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

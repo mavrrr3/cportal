@@ -39,8 +39,8 @@ class _QrScannerState extends State<QrScanner> {
     qrController!.resumeCamera();
   }
 
-  /// For Camera Flash Light
-  void _cameraInit() async {
+  /// For Camera Flash Light.
+  Future<void> _cameraInit() async {
     final cameras = await availableCameras();
     final firstCamera = cameras.first;
     _cameraController = CameraController(
@@ -94,7 +94,7 @@ class _QrScannerState extends State<QrScanner> {
                               });
                             }
                             log('Flash Light $_isFlashLight');
-                          } catch (e) {
+                          } on Exception catch (e) {
                             log('[Camera Error] $e');
                           }
                         },

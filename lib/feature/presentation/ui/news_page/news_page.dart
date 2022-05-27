@@ -15,7 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
-import 'widgets/scrollable_tabs_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 class NewsPage extends StatefulWidget {
   final NewsCodeEnum pageType;
@@ -40,7 +40,7 @@ class _NewsPageState extends State<NewsPage> {
     _currentIndex = 0;
   }
 
-  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы
+  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы.
   void _contentInit(NewsCodeEnum type) {
     return BlocProvider.of<FetchNewsBloc>(context, listen: false)
         .add(FetchNewsEventImpl(newsCodeEnum: type));
@@ -48,7 +48,7 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Для обновления стейта при смене страницы в BottomBar
+    // Для обновления стейта при смене страницы в BottomBar.
     if (widget.pageType != _currentType) {
       _currentType = widget.pageType;
       _contentInit(_currentType);
@@ -75,7 +75,7 @@ class _NewsPageState extends State<NewsPage> {
               const SizedBox(height: 16),
               if (state is FetchNewsLoadingState) ...[
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 60.0),
+                  padding: EdgeInsets.symmetric(vertical: 60),
                   child: Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 3,
@@ -88,11 +88,11 @@ class _NewsPageState extends State<NewsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Категории
+                      // Категории.
                       ScrollableTabsWidget(
                         currentIndex: _currentIndex,
                         items: state.tabs,
-                        onTap: (index) => _onPageChanged(index),
+                        onTap: _onPageChanged,
                       ),
 
                       Expanded(
@@ -119,7 +119,7 @@ class _NewsPageState extends State<NewsPage> {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     children: [
-                                      // Генерация страниц под все категории
+                                      // Генерация страниц под все категории.
 
                                       ...List.generate(
                                         state.tabs.length,
@@ -163,52 +163,51 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  // Отрисовка контента по типу страницы
+  // Отрисовка контента по типу страницы.
   Widget _content(FetchNewsLoadedState state, double width) {
-    List<ArticleEntity> articles = state.news.article;
-    log('===================== ' +
-        state.tabs.toString() +
-        ' ===========================');
+    final List<ArticleEntity> articles = state.news.article;
+    log('===================== ${state.tabs} ===========================');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 20),
 
-        // Контент
-        widget.pageType == NewsCodeEnum.news
-            ? !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                ? Expanded(
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: articles.length,
-                      itemBuilder: (context, index) {
-                        return _builderItem(state, width, index);
+        // Контент.
+        if (widget.pageType == NewsCodeEnum.news)
+          !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+              ? Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      return _builderItem(state, width, index);
+                    },
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(right: 78),
+                  child: Wrap(
+                    spacing: 16,
+                    runSpacing: 20,
+                    children: List.generate(
+                      articles.length,
+                      (index) {
+                        return _builderItem(state, 312, index);
                       },
                     ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(right: 78.0),
-                    child: Wrap(
-                      spacing: 16,
-                      runSpacing: 20,
-                      children: List.generate(
-                        articles.length,
-                        (index) {
-                          return _builderItem(state, 312, index);
-                        },
-                      ),
-                    ),
-                  )
-            : Expanded(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: articles.length,
-                  itemBuilder: (context, index) {
-                    return _builderItem(state, width, index);
-                  },
-                ),
-              ),
+                  ),
+                )
+        else
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                return _builderItem(state, width, index);
+              },
+            ),
+          ),
       ],
     );
   }
@@ -218,7 +217,7 @@ class _NewsPageState extends State<NewsPage> {
     double width,
     int index,
   ) {
-    List<ArticleEntity> articles = state.news.article;
+    final List<ArticleEntity> articles = state.news.article;
 
     if (widget.pageType == NewsCodeEnum.news) {
       // Распределение по категориям
@@ -241,7 +240,7 @@ class _NewsPageState extends State<NewsPage> {
       // [Вопросы]
       if (articles[index].category == state.tabs[_currentIndex]) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
+          padding: const EdgeInsets.only(bottom: 30),
           child: FaqRow(
             text: articles[index].header,
             onTap: () {
@@ -293,7 +292,7 @@ class _NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(bottom: 20),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: onTap,

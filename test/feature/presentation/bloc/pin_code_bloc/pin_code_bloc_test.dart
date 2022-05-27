@@ -28,12 +28,12 @@ void main() {
   });
 
   group('PinCodeCheckEvent', () {
-    String tPinCode = '1234';
+    const String tPinCode = '1234';
 
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.done] when PinCodeCheckEvent return PIN-code.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => tPinCode);
 
         bloc.add(PinCodeCheckEvent());
@@ -52,7 +52,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [PinCodeInputEnum.create] when PinCodeCheckEvent return null.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => null);
 
         bloc.add(PinCodeCheckEvent());
@@ -72,7 +72,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.done] when CreatePinCodeSubmit return right PIN-code.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => tPinCode);
 
         bloc.add(CreatePinCodeSubmit(
@@ -96,7 +96,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.wrong] when CreatePinCodeSubmit return wrong PIN-code.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => tPinCode);
 
         bloc.add(const CreatePinCodeSubmit(
@@ -120,7 +120,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.create, PinCodeInputEnum.repeat] when CreatePinCodeSubmit return null.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => null);
         when(() => useCase(PinCodeParams(pinCode: tPinCode)))
             .thenAnswer((_) async => Right(tPinCode));
@@ -147,7 +147,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.create, PinCodeInputEnum.error] when CreatePinCodeSubmit return CacheFailure.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => null);
         when(() => useCase(PinCodeParams(pinCode: tPinCode)))
             .thenAnswer((_) async => Left(CacheFailure()));
@@ -176,7 +176,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.done] when RepeatPinCodeSubmit return right PIN-code.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => tPinCode);
 
         bloc.add(RepeatPinCodeSubmit(
@@ -197,7 +197,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.done] when RepeatPinCodeSubmit return wrong PIN-code.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => tPinCode);
 
         bloc.add(const RepeatPinCodeSubmit(
@@ -220,7 +220,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.repeat] when EditPinCodeSubmit return Right(tPinCode).''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase(PinCodeParams(pinCode: tPinCode)))
             .thenAnswer((_) async => Right(tPinCode));
 
@@ -242,7 +242,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.error] when EditPinCodeSubmit return Left(CacheFailure()).''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase(PinCodeParams(pinCode: tPinCode)))
             .thenAnswer((_) async => Left(CacheFailure()));
 
@@ -266,7 +266,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.repeat] when InputPinCodeSubmit return right PIN-code.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => tPinCode);
 
         bloc.add(InputPinCodeSubmit(
@@ -287,7 +287,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.repeat] when InputPinCodeSubmit return wrong PIN-code.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         when(() => useCase.getPin()).thenAnswer((_) async => tPinCode);
 
         bloc.add(const InputPinCodeSubmit(
@@ -310,7 +310,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.create] when EditPinCodeCheckEvent.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         bloc.add(EditPinCodeCheckEvent());
       },
       expect: () => [
@@ -321,7 +321,7 @@ void main() {
     );
   });
 
-  group('ChangedPinCode', (() {
+  group('ChangedPinCode', () {
     PinCodeInputEnum getStatus(PinCodeInputEnum status) {
       return status == PinCodeInputEnum.create
           ? PinCodeInputEnum.create
@@ -335,7 +335,7 @@ void main() {
     blocTest<PinCodeBloc, PinCodeState>(
       '''emits [ PinCodeInputEnum.repeat] when ChangedPinCode.''',
       build: () => getPinCodeBloc,
-      act: (PinCodeBloc bloc) {
+      act: (bloc) {
         bloc.add(
           ChangedPinCode(
             pinCode: tPinCode,
@@ -350,5 +350,5 @@ void main() {
         ),
       ],
     );
-  }));
+  });
 }

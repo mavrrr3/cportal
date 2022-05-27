@@ -35,11 +35,11 @@ void main() {
   ));
 
   runZonedGuarded<void>(
-    () async { 
+    () async {
       WidgetsFlutterBinding.ensureInitialized();
       await AppConfig.load();
       await di.init();
-      // await Firebase.initializeApp();
+
       await Hive.initFlutter();
       _hiveAdaptersInit();
 
@@ -60,7 +60,7 @@ void main() {
     (error, stackTrace) {
       if (kDebugMode) {
         print('Caught Framework error');
-        // В debug режиме выводим ошибки в консоль
+        // В debug режиме выводим ошибки в консоль.
         FlutterError.dumpErrorToConsole(
           FlutterErrorDetails(exception: error),
         );
@@ -80,33 +80,33 @@ class Main extends StatelessWidget {
       providers: listOfBlocs(),
       child: ScreenUtilInit(
         designSize: const Size(360, 640),
-        builder: (() => AdaptiveTheme(
-              light: lightTheme(),
-              dark: darkTheme(),
-              initial: AdaptiveThemeMode.light,
-              builder: (light, dark) => MaterialApp.router(
-                routerDelegate: router.routerDelegate,
-                routeInformationParser: router.routeInformationParser,
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                theme: light,
-                darkTheme: dark,
-                builder: (context, widget) => ResponsiveWrapper.builder(
-                  ClampingScrollWrapper.builder(context, widget!),
-                  defaultScale: true,
-                  minWidth: 350,
-                  defaultName: DESKTOP,
-                  breakpoints: [
-                    const ResponsiveBreakpoint.resize(350, name: MOBILE),
-                    const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
-                    const ResponsiveBreakpoint.resize(1024, name: TABLET),
-                    const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
-                    const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
-                  ],
-                ),
-              ),
-            )),
+        builder: () => AdaptiveTheme(
+          light: lightTheme(),
+          dark: darkTheme(),
+          initial: AdaptiveThemeMode.light,
+          builder: (light, dark) => MaterialApp.router(
+            routerDelegate: router.routerDelegate,
+            routeInformationParser: router.routeInformationParser,
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: light,
+            darkTheme: dark,
+            builder: (context, widget) => ResponsiveWrapper.builder(
+              ClampingScrollWrapper.builder(context, widget!),
+              defaultScale: true,
+              minWidth: 350,
+              defaultName: DESKTOP,
+              breakpoints: [
+                const ResponsiveBreakpoint.resize(350, name: MOBILE),
+                const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
+                const ResponsiveBreakpoint.resize(1024, name: TABLET),
+                const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
+                const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -139,14 +139,15 @@ List<BlocProvider> listOfBlocs() {
 }
 
 void _hiveAdaptersInit() {
-  Hive.registerAdapter(UserModelAdapter());
-  Hive.registerAdapter(UserTypeModelAdapter());
-  Hive.registerAdapter(ProfileModelAdapter());
-  Hive.registerAdapter(PositionModelAdapter());
-  Hive.registerAdapter(PhoneModelAdapter());
-  Hive.registerAdapter(ArticleModelAdapter());
-  Hive.registerAdapter(ArticleTypeModelAdapter());
-  Hive.registerAdapter(NewsModelAdapter());
-  Hive.registerAdapter(FilterModelAdapter());
-  Hive.registerAdapter(FilterItemModelAdapter());
+  Hive
+    ..registerAdapter(UserModelAdapter())
+    ..registerAdapter(UserTypeModelAdapter())
+    ..registerAdapter(ProfileModelAdapter())
+    ..registerAdapter(PositionModelAdapter())
+    ..registerAdapter(PhoneModelAdapter())
+    ..registerAdapter(ArticleModelAdapter())
+    ..registerAdapter(ArticleTypeModelAdapter())
+    ..registerAdapter(NewsModelAdapter())
+    ..registerAdapter(FilterModelAdapter())
+    ..registerAdapter(FilterItemModelAdapter());
 }

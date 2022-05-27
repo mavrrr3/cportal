@@ -31,11 +31,11 @@ class NewsRepositoryMobile implements INewsRepository {
     } else {
       try {
         final localNews = await localDataSource.fetchNewsFromCache();
-        List<ArticleModel> articles = localNews.article
+        final List<ArticleModel> articles = localNews.article
             .where((article) => article.articleType.code == code)
             .toList();
 
-        NewsModel news = NewsModel(show: true, article: [...articles]);
+        final NewsModel news = NewsModel(show: true, article: [...articles]);
 
         return Right(news);
       } on CacheException {

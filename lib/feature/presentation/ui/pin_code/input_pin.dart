@@ -27,16 +27,16 @@ class InputPinPage extends StatelessWidget {
             horizontal: 20.0.w,
           ),
           child: BlocConsumer<PinCodeBloc, PinCodeState>(
-            listener: ((context, state) {
+            listener: (context, state) {
               if (state.status == PinCodeInputEnum.done) {
                 // Если ПИН код из базе Hive совпадает с
                 // введеным ПИНом, то редирект на страницу [/main_page]
                 context.goNamed(NavigationRouteNames.mainPage);
               }
-            }),
-            builder: ((context, state) {
+            },
+            builder: (context, state) {
               return BodyWidget(input: state.status);
-            }),
+            },
           ),
         ),
         Column(

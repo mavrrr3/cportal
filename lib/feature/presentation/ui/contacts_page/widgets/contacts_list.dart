@@ -7,7 +7,7 @@ class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
   final Function(int) onTap;
 
-  /// Колонка с контактами
+  /// Колонка с контактами.
   const ContactsList({
     Key? key,
     required this.items,
@@ -21,7 +21,7 @@ class ContactsList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 8),
         child: GestureDetector(
           onTap: () {
             onTap(index);
@@ -38,7 +38,7 @@ class ContactsList extends StatelessWidget {
 class _ContactItem extends StatelessWidget {
   final ProfileEntity item;
 
-  /// Карточка контакта
+  /// Карточка контакта.
   const _ContactItem({
     Key? key,
     required this.item,
@@ -56,7 +56,7 @@ class _ContactItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

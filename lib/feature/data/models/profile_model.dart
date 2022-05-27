@@ -133,7 +133,7 @@ class ProfileModel extends ProfileEntity {
         'active': active,
         'position': position.toJson(),
         'phone': List<String>.from(
-          phone.map((x) => phoneModelToJson(x)).toList(),
+          phone.map(phoneModelToJson).toList(),
         ),
         'user_created': userCreated,
         'date_created': dateCreated.toIso8601String(),

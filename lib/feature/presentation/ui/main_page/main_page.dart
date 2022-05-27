@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
-  /// Анимация при нажатии на поиск
+  /// Анимация при нажатии на поиск.
   void _onFocusChange() {
     if (_searchFocus.hasFocus) {
       setState(() {
@@ -121,15 +121,17 @@ class _MainPageState extends State<MainPage> {
                                       : 1
                                   : 1,
                               child: GestureDetector(
-                                onTap: (() {
+                                onTap: () {
                                   ResponsiveWrapper.of(context)
                                           .isLargerThan(TABLET)
                                       ? showProfile(context)
                                       : context.pushNamed(
                                           NavigationRouteNames.profile,
                                         );
-                                }),
+                                },
                                 child: AvatarBox(
+                                  // TODO:(flutfix) протестировать вариант без булевого литерала
+                                  // ignore: avoid_bool_literals_in_conditional_expressions
                                   isAnimation: !ResponsiveWrapper.of(context)
                                           .isLargerThan(TABLET)
                                       ? _isAnimation
@@ -144,7 +146,6 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      
                       Padding(
                         padding: getHorizontalPadding(context),
                         child: HorizontalListViewMain(
@@ -250,7 +251,7 @@ Future<void> showProfile(BuildContext context) {
     context: context,
     useRootNavigator: true,
     barrierDismissible: true,
-    builder: (BuildContext context) {
+    builder: (context) {
       final ThemeData theme = Theme.of(context);
 
       // final double width = MediaQuery.of(context).size.width;
@@ -273,10 +274,10 @@ Future<void> showProfile(BuildContext context) {
               ),
               child: const Padding(
                 padding: EdgeInsets.only(
-                  left: 32.0,
-                  right: 32.0,
-                  bottom: 32.0,
-                  top: 32.0,
+                  left: 32,
+                  right: 32,
+                  bottom: 32,
+                  top: 32,
                 ),
                 child: ProfilePopUp(),
               ),

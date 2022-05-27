@@ -63,8 +63,6 @@ class HeaderTextWidget extends StatelessWidget {
 
     return Column(
       children: [
-        // Если веб то не отображаем Лого
-        // if (!kIsWeb) ...[
         ResponsiveVisibility(
           hiddenWhen: const [
             Condition<dynamic>.largerThan(name: TABLET),
@@ -76,7 +74,6 @@ class HeaderTextWidget extends StatelessWidget {
             ],
           ),
         ),
-        // ],
         SizedBox(height: 31.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,

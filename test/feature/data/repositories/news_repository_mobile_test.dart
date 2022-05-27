@@ -68,28 +68,28 @@ void main() {
     final NewsEntity tNewsEntity = tNewsModel;
 
     test('should check if the device is online', () async {
-      //arrange
+      // Arrange.
 
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
       when(() => mockRemoteDataSource.fetchNews(any()))
           .thenAnswer((_) async => tNewsModel);
-      //act
+      // Act..
       await repository.fetchNews(tNewsTypeCode);
-      //assert
+      // Assert.
       verify(() => mockNetworkInfo.isConnected);
     });
 
     test(
       'should return NewsEntity when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
         when(() => mockRemoteDataSource.fetchNews(any()))
             .thenAnswer((_) async => tNewsModel);
-        //act
+        // Act..
         final result = await repository.fetchNews(tNewsTypeCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
         expect(result, equals(Right<dynamic, NewsEntity>(tNewsModel)));
       },
@@ -98,7 +98,7 @@ void main() {
     test(
       'should put NewsModel to cache when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
         when(() => mockRemoteDataSource.fetchNews(any()))
@@ -106,9 +106,9 @@ void main() {
         when(() => mockLocalDataSource.newsToCache(tNewsModel))
             .thenAnswer((_) async => Future<void>.value());
 
-        //act
+        // Act..
         await repository.fetchNews(tNewsTypeCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
         verifyNever(() => mockLocalDataSource.newsToCache(tNewsModel));
       },
@@ -116,13 +116,13 @@ void main() {
     test(
       'should return serverfailure when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
         when(() => mockRemoteDataSource.fetchNews(any()))
             .thenThrow(ServerException());
-        //act
+        // Act..
         final result = await repository.fetchNews(tNewsTypeCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
         verifyZeroInteractions(mockLocalDataSource);
         expect(
@@ -135,17 +135,17 @@ void main() {
     test(
       'should return locally cached data when the cached data is present',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
         when(() => mockLocalDataSource.newsToCache(tNewsModel))
             .thenAnswer((_) async => Future<void>.value());
         when(() => mockLocalDataSource.fetchNewsFromCache())
             .thenAnswer((_) async => tNewsModel);
 
-        //act
+        // Act..
         final result = await repository.fetchNews(tNewsTypeCode);
 
-        //assert
+        // Assert.
         verifyZeroInteractions(mockRemoteDataSource);
         verify(() => mockLocalDataSource.fetchNewsFromCache());
         expect(result, equals(Right<Failure, NewsEntity>(tNewsEntity)));
@@ -155,13 +155,13 @@ void main() {
     test(
       'should return CacheFailure when there is no cached data present',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
         when(() => mockLocalDataSource.fetchNewsFromCache())
             .thenThrow(CacheException());
-        //act
+        // Act..
         final result = await repository.fetchNews(tNewsTypeCode);
-        //assert
+        // Assert.
         verifyZeroInteractions(mockRemoteDataSource);
         verify(() => mockLocalDataSource.fetchNewsFromCache());
         expect(result, equals(Left<CacheFailure, NewsEntity>(CacheFailure())));

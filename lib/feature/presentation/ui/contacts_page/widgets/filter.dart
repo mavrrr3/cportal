@@ -26,7 +26,7 @@ class _FilterState extends State<Filter> {
       builder: (context, state) {
         if (state is FilterLoadedState) {
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: ListView.builder(
               controller: widget.scrollController,
               physics: const BouncingScrollPhysics(),
@@ -50,7 +50,7 @@ class _FilterState extends State<Filter> {
           );
         }
 
-        // TODO: Обработать другие стейты
+        // TODO: Обработать другие стейты.
         return const SizedBox();
       },
     );
@@ -62,7 +62,7 @@ class _FilterSectionItem extends StatefulWidget {
   final Function() onExpand;
   final Function(int) onSelect;
 
-  /// Блок отдельного раздела фильтра
+  /// Блок отдельного раздела фильтра.
   const _FilterSectionItem({
     Key? key,
     required this.item,
@@ -88,7 +88,8 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: widget.onExpand,
-            // Разделы фильтра
+
+            /// Разделы фильтра.
             child: Row(
               children: [
                 Container(
@@ -125,7 +126,7 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
           ),
           const SizedBox(height: 16),
           if (widget.item.isActive)
-            // Пункты фильтра
+            // Пункты фильтра.
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
@@ -134,7 +135,7 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
                 return Padding(
                   padding: const EdgeInsets.only(
                     left: 8,
-                    bottom: 12.0,
+                    bottom: 12,
                   ),
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
@@ -161,7 +162,6 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
                 );
               },
             ),
-          // ...List.generate(, ),
         ],
       ),
     );

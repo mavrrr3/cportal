@@ -45,7 +45,7 @@ class AvatarAndUserInfo extends StatelessWidget {
           ),
           SizedBox(height: 6.h),
           TextButton(
-            onPressed: (() => context.goNamed(NavigationRouteNames.userData)),
+            onPressed: () => context.goNamed(NavigationRouteNames.userData),
             child: Text(
               AppLocalizations.of(context)!.watchData,
               style: theme.textTheme.headline5!.copyWith(

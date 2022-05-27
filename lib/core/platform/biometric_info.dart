@@ -39,12 +39,12 @@ class BiometricInfo implements IBiometricInfo {
 
   @override
   Future<bool> hasBiometrics() async {
-    return await localAuth.canCheckBiometrics;
+    return localAuth.canCheckBiometrics;
   }
 
   @override
   Future<List<BiometricType>> getBiometrics() async {
-    return await localAuth.getAvailableBiometrics();
+    return localAuth.getAvailableBiometrics();
   }
 
   @override
@@ -52,7 +52,7 @@ class BiometricInfo implements IBiometricInfo {
     final isAvailable = await hasBiometrics();
     if (!isAvailable) return false;
 
-    return await localAuth.authenticate(
+    return localAuth.authenticate(
       localizedReason: 'Приложите ваш палец к сенсору для входа',
       useErrorDialogs: true,
       stickyAuth: true,

@@ -96,7 +96,7 @@ class _OnBoardingContentWebState extends State<OnBoardingContentWeb> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Виджет прогресса
+        // Виджет прогресса.
         Row(
           children: widget.content
               .asMap()

@@ -40,10 +40,10 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         ],
       );
 
-      log('NewsRemoteDataSource  ==========' + remoteNews.toString());
+      log('NewsRemoteDataSource  ==========$remoteNews');
       await localDatasource.newsToCache(remoteNews);
 
-      List<ArticleModel> articlesWithCode = remoteNews.article
+      final List<ArticleModel> articlesWithCode = remoteNews.article
           .where((article) => article.articleType.code == code)
           .toList();
 

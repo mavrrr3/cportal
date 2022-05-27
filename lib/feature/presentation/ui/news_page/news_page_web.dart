@@ -55,7 +55,7 @@ class _NewsPageWebState extends State<NewsPageWeb> {
                 if (state is FetchNewsLoadedState) ...state.tabs,
               ],
               currentIndex: _currentIndex,
-              onTap: (index) => _onPageChanged(index),
+              onTap: _onPageChanged,
             ),
             preferredSize: Size(width, 114),
           ),
@@ -87,7 +87,7 @@ class _ContentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ArticleEntity> articles = blocState.news.article;
+    final List<ArticleEntity> articles = blocState.news.article;
     final double width = MediaQuery.of(context).size.width;
 
     void _onArticleSelected(String id) {
@@ -102,7 +102,7 @@ class _ContentPage extends StatelessWidget {
       double width,
       int index,
     ) {
-      List<ArticleEntity> articles = state.news.article;
+      final List<ArticleEntity> articles = state.news.article;
 
       Widget _newsCard() {
         return _NewsCard(
@@ -132,7 +132,7 @@ class _ContentPage extends StatelessWidget {
             ),
           )
         : Padding(
-            padding: const EdgeInsets.only(right: 78.0),
+            padding: const EdgeInsets.only(right: 78),
             child: Wrap(
               spacing: 16,
               runSpacing: 20,
@@ -161,7 +161,7 @@ class _NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(bottom: 20),
       child: NewsCardItem(
         onTap: onTap,
         width: width,
@@ -212,7 +212,7 @@ class _TabBarWidgetState extends State<TabBarWidget> {
           padding: getHorizontalPadding(context),
           child: SizedBox(
             width: width,
-            height: 30.0,
+            height: 30,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
@@ -265,7 +265,7 @@ class _TabBarWidgetState extends State<TabBarWidget> {
                 : null,
           ),
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Text(
               text,
               style: isCurrent

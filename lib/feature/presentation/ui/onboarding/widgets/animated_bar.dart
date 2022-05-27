@@ -31,16 +31,17 @@ class AnimatedBar extends StatelessWidget {
                     ? theme.primaryColor
                     : theme.cardColor.withOpacity(0.34),
               ),
-              position == currentIndex
-                  ? AnimatedBuilder(
-                      animation: animationController,
-                      builder: (context, child) => _BuildContainer(
-                        height: height,
-                        width: constraints.maxWidth * animationController.value,
-                        color: theme.primaryColor,
-                      ),
-                    )
-                  : const SizedBox.shrink(),
+              if (position == currentIndex)
+                AnimatedBuilder(
+                  animation: animationController,
+                  builder: (context, child) => _BuildContainer(
+                    height: height,
+                    width: constraints.maxWidth * animationController.value,
+                    color: theme.primaryColor,
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
             ],
           );
         }),

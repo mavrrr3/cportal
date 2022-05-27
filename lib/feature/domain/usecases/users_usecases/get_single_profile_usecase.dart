@@ -15,7 +15,7 @@ class GetSingleProfileUseCase
   Future<Either<Failure, ProfileEntity>> call(
     GetSingleProfileParams params,
   ) async {
-    return await profileRepository.getSingleProfile(params.id);
+    return profileRepository.getSingleProfile(params.id);
   }
 }
 

@@ -50,20 +50,20 @@ class _ContactsPageState extends State<ContactsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Поиск
+                  // Поиск.
                   SearchInput(
                     controller: _searchController,
                     onChanged: (text) {},
                   ),
 
-                  // Фильтр
+                  // Фильтр.
                   _FilterButton(
                     onTap: () async {
                       await showModalBottomSheet<void>(
                         context: context,
                         isScrollControlled: true,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         builder: (context) => DraggableScrollableSheet(
                           expand: false,
@@ -84,7 +84,7 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
             const SizedBox(height: 31),
 
-            // Выбранные фильтры
+            // Выбранные фильтры.
             Padding(
               padding: getHorizontalPadding(context),
               child: BlocBuilder<FilterBloc, FilterState>(
@@ -93,22 +93,22 @@ class _ContactsPageState extends State<ContactsPage> {
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: state.filters.length,
-                      itemBuilder: ((context, index) {
-                        // Выбран ли хоть один пункт в текущем разделе фильтра
+                      itemBuilder: (context, index) {
+                        // Выбран ли хоть один пункт в текущем разделе фильтра.
                         final bool isActive = state.filters[index].items
                             .any((element) => element.isActive);
 
-                        // если isActive - создаем список только с выбранными пунктами в текущем разделе
-                        List<FilterItemEntity> selectedItems = [];
+                        // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
+                        final List<FilterItemEntity> selectedItems = [];
                         if (isActive) {
-                          for (var item in state.filters[index].items) {
+                          for (final item in state.filters[index].items) {
                             if (item.isActive) {
                               selectedItems.add(item);
                             }
                           }
                         }
 
-                        // Рендеринг
+                        // Рендеринг.
                         return isActive
                             ? FilterViewSelectedRow(
                                 headline: state.filters[index].headline,
@@ -125,17 +125,17 @@ class _ContactsPageState extends State<ContactsPage> {
                                 },
                               )
                             : const SizedBox();
-                      }),
+                      },
                     );
                   }
 
-                  // TODO: Обработать другие стейты
+                  // TODO: Обработать другие стейты.
                   return const SizedBox();
                 },
               ),
             ),
 
-            // Избранные
+            // Избранные.
             if (_contacts.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(
@@ -147,17 +147,17 @@ class _ContactsPageState extends State<ContactsPage> {
                   height: 48,
                   child: FavoritesRow(
                     items: _contacts,
-                    onTap: (i) => _goToUserPage(i),
+                    onTap: _goToUserPage,
                   ),
                 ),
               ),
 
-            // Колонка контактов
+            // Колонка контактов.
             Padding(
               padding: getHorizontalPadding(context),
               child: ContactsList(
                 items: _contacts,
-                onTap: (i) => _goToUserPage(i),
+                onTap: _goToUserPage,
               ),
             ),
 
@@ -196,7 +196,7 @@ class _FilterButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: SvgPicture.asset(
             'assets/icons/filter.svg',
             color: theme.cardColor.withOpacity(0.68),

@@ -28,7 +28,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
   }
 
   Future<void> _initVibrate() async {
-    bool canVibrate = await Vibrate.canVibrate;
+    final bool canVibrate = await Vibrate.canVibrate;
     setState(() {
       _canVibrate = canVibrate;
     });
@@ -156,14 +156,14 @@ class _ChangeThemeState extends State<ChangeTheme> {
     }
   }
 
-  /// Вибрация по нажатию
+  /// Вибрация по нажатию.
   void _vibrate(bool canVibrate) {
     try {
       if (canVibrate) {
         Vibrate.feedback(FeedbackType.light);
       }
-    } catch (e) {
-      log('Device can`t vibrate');
+    } on Exception catch (e) {
+      log('Device can`t vibrate error: $e');
     }
   }
 }
@@ -172,7 +172,7 @@ class _BuildButton extends StatelessWidget {
   final String text;
   final Function() onTap;
 
-  /// Кнопка для смены темы
+  /// Кнопка для смены темы.
   const _BuildButton({
     Key? key,
     required this.text,
