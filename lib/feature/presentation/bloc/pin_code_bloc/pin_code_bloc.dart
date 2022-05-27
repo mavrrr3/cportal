@@ -23,7 +23,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   PinCodeEnterUseCase pinCodeEnter;
   PinCodeBloc(
     this.pinCodeEnter,
-  ) : super(PinCodeState()) {
+  ) : super(const PinCodeState()) {
     _setupEvents();
   }
 
@@ -223,7 +223,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   }
 }
 
-class PinCodeState {
+class PinCodeState extends Equatable {
   final String pinCode;
   final PinCodeInputEnum status;
 
@@ -247,7 +247,7 @@ class PinCodeState {
           );
   }
 
-  PinCodeState({
+  const PinCodeState({
     this.pinCode = '',
     this.status = PinCodeInputEnum.create,
   });
@@ -266,13 +266,13 @@ class PinCodeState {
   String toString() {
     return 'Стейт $status';
   }
-}
-
-abstract class PinCodeEvent extends Equatable {
-  const PinCodeEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [pinCode, status];
+}
+
+abstract class PinCodeEvent {
+  const PinCodeEvent();
 }
 
 class PinCodeCheckEvent extends PinCodeEvent {}
@@ -282,35 +282,41 @@ class EditPinCodeCheckEvent extends PinCodeEvent {}
 class ChangedPinCode extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const ChangedPinCode({required this.pinCode, required this.status});
 }
 
 class ChangedInputPinCode extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const ChangedInputPinCode({required this.pinCode, required this.status});
 }
 
 class EditPinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const EditPinCodeSubmit({required this.pinCode, required this.status});
 }
 
 class RepeatPinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const RepeatPinCodeSubmit({required this.pinCode, required this.status});
 }
 
 class InputPinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const InputPinCodeSubmit({required this.pinCode, required this.status});
 }
 
 class CreatePinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const CreatePinCodeSubmit({required this.pinCode, required this.status});
 }
