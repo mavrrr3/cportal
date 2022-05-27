@@ -19,7 +19,7 @@ class NewsModel extends NewsEntity {
 
   @HiveField(1)
   final List<ArticleModel> article;
-  NewsModel({
+  const NewsModel({
     required final this.show,
     required final this.article,
   }) : super(

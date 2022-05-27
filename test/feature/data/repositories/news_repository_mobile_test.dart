@@ -65,7 +65,7 @@ void main() {
       ],
     );
 
-    // final NewsEntity tNewsEntity = tNewsModel;
+    final NewsEntity tNewsEntity = tNewsModel;
 
     test('should check if the device is online', () async {
       //arrange
@@ -132,26 +132,25 @@ void main() {
       },
     );
 
-    // TODO попробовать разобраться позже
-    // test(
-    //   'should return locally cached data when the cached data is present',
-    //   () async {
-    //     //arrange
-    //     when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
-    //     when(() => mockLocalDataSource.newsToCache(tNewsModel))
-    //         .thenAnswer((_) async => Future<void>.value());
-    //     when(() => mockLocalDataSource.fetchNewsFromCache())
-    //         .thenAnswer((_) async => tNewsModel);
+    test(
+      'should return locally cached data when the cached data is present',
+      () async {
+        //arrange
+        when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+        when(() => mockLocalDataSource.newsToCache(tNewsModel))
+            .thenAnswer((_) async => Future<void>.value());
+        when(() => mockLocalDataSource.fetchNewsFromCache())
+            .thenAnswer((_) async => tNewsModel);
 
-    //     //act
-    //     final result = await repository.fetchNews(tNewsTypeCode);
+        //act
+        final result = await repository.fetchNews(tNewsTypeCode);
 
-    //     //assert
-    //     // verifyZeroInteractions(mockRemoteDataSource);
-    //     verify(() => mockLocalDataSource.fetchNewsFromCache());
-    //     expect(result, equals(Right<Failure, NewsEntity>(tNewsEntity)));
-    //   },
-    // );
+        //assert
+        verifyZeroInteractions(mockRemoteDataSource);
+        verify(() => mockLocalDataSource.fetchNewsFromCache());
+        expect(result, equals(Right<Failure, NewsEntity>(tNewsEntity)));
+      },
+    );
 
     test(
       'should return CacheFailure when there is no cached data present',
@@ -168,48 +167,5 @@ void main() {
         expect(result, equals(Left<CacheFailure, NewsEntity>(CacheFailure())));
       },
     );
-    // });
-
-    // group('checkAuth()', () {
-    //   final UserModel tUserModel = UserModel(
-    //     id: 'id',
-    //     userName: 'userName',
-    //     profileId: 'profileId',
-    //     lastLogin: DateTime.parse('2022-03-21T14:59:58.884Z'),
-    //     blocked: false,
-    //     dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-    //     userCreated: 'userCreated',
-    //     dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-    //     userUpdated: 'userUpdated',
-    //     userType: UserTypeModel(id: '1', code: 'ddd', description: 'ddd'),
-    //   );
-
-    //   test('should return [bool] if user is Auth', () async {
-    //     //arrange
-    //     when(() => mockLocalDataSource.currentUserToCache(tUserModel))
-    //         .thenAnswer((_) async => Future.value());
-    //     when(() => mockLocalDataSource.getCurrentUserFromCache())
-    //         .thenAnswer((_) async => tUserModel);
-
-    //     //act
-    //     final Either<Failure, bool> result = await repository.checkAuth();
-
-    //     //assert
-    //     verify(() => mockLocalDataSource.getCurrentUserFromCache());
-    //     expect(result, equals(result));
-    //   });
-
-    //   test('should return [Failure] if user is not Auth', () async {
-    //     //arrange
-    //     when(() => mockLocalDataSource.getCurrentUserFromCache())
-    //         .thenThrow(CacheException());
-
-    //     //act
-    //     final Either<Failure, bool> result = await repository.checkAuth();
-
-    //     //assert
-    //     verify(() => mockLocalDataSource.getCurrentUserFromCache());
-    //     expect(result, equals(result));
-    //   });
   });
 }
