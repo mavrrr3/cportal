@@ -38,7 +38,7 @@ dart_code_metrics:
     - prefer-last
     - prefer-immediate-return
     - no-boolean-literal-compare
-    # - format-comment
+    - format-comment
     - prefer-trailing-comma
     - prefer-conditional-expressions
     - no-equal-then-else
