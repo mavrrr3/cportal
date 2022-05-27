@@ -85,64 +85,67 @@ class _NewsPageState extends State<NewsPage> {
                 ),
               ],
               if (state is FetchNewsLoadedState)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Категории
-                    ScrollableTabsWidget(
-                      currentIndex: _currentIndex,
-                      items: state.tabs,
-                      onTap: (index) => _onPageChanged(index),
-                    ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Категории
+                      ScrollableTabsWidget(
+                        currentIndex: _currentIndex,
+                        items: state.tabs,
+                        onTap: (index) => _onPageChanged(index),
+                      ),
 
-                    Swipe(
-                      onSwipeRight: () {
-                        if (_currentIndex != 0) {
-                          _onPageChanged(_currentIndex - 1);
-                        }
-                      },
-                      onSwipeLeft: () {
-                        if (state.tabs.length - 1 != _currentIndex) {
-                          _onPageChanged(_currentIndex + 1);
-                        }
-                      },
-                      child: ResponsiveConstraints(
-                        constraint: widget.pageType == NewsCodeEnum.quastion
-                            ? const BoxConstraints(maxWidth: 720)
-                            : null,
-                        child: SizedBox(
-                          width: width,
-                          height: !ResponsiveWrapper.of(context)
-                                  .isLargerThan(TABLET)
-                              ? MediaQuery.of(context).size.height - 204
-                              : MediaQuery.of(context).size.height - 116,
-                          child: PageView(
-                            controller: _pageController,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: [
-                              // Генерация страниц под все категории
+                      Expanded(
+                        child: Swipe(
+                          onSwipeRight: () {
+                            if (_currentIndex != 0) {
+                              _onPageChanged(_currentIndex - 1);
+                            }
+                          },
+                          onSwipeLeft: () {
+                            if (state.tabs.length - 1 != _currentIndex) {
+                              _onPageChanged(_currentIndex + 1);
+                            }
+                          },
+                          child: ResponsiveConstraints(
+                            constraint: widget.pageType == NewsCodeEnum.quastion
+                                ? const BoxConstraints(maxWidth: 720)
+                                : null,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: PageView(
+                                    controller: _pageController,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    children: [
+                                      // Генерация страниц под все категории
 
-                              ...List.generate(state.tabs.length, (index) {
-                                return KeepAlivePage(
-                                  child: Padding(
-                                    padding: getHorizontalPadding(context),
-                                    child: widget.pageType == NewsCodeEnum.news
-                                        ? !ResponsiveWrapper.of(context)
-                                                .isLargerThan(TABLET)
-                                            ? _content(state, width)
-                                            : SingleChildScrollView(
-                                                child: _content(state, width),
-                                              )
-                                        : _content(state, width),
+                                      ...List.generate(state.tabs.length, (index) {
+                                        return KeepAlivePage(
+                                          child: Padding(
+                                            padding: getHorizontalPadding(context),
+                                            child: widget.pageType == NewsCodeEnum.news
+                                                ? !ResponsiveWrapper.of(context)
+                                                        .isLargerThan(TABLET)
+                                                    ? _content(state, width)
+                                                    : SingleChildScrollView(
+                                                        child: _content(state, width),
+                                                      )
+                                                : _content(state, width),
+                                          ),
+                                        );
+                                      }),
+                                    ],
                                   ),
-                                );
-                              }),
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
             ],
           ),

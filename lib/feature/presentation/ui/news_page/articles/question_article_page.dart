@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_s
 import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,11 @@ class QuestionArticlePage extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Swipe(
-      onSwipeRight: () => _onBack(context),
+      onSwipeRight: () {
+        if (!kIsWeb) {
+          _onBack(context);
+        }
+      },
       child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
         builder: (context, state) {
           if (state is FetchNewsLoadedState) {
