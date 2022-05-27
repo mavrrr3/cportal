@@ -25,7 +25,7 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
         _filter2,
       ];
 
-      log('FilterRemouteDataSource  ==========' + remoteFilters.toString());
+      log('FilterRemouteDataSource  ==========  $remoteFilters');
       await localDatasource.filtersToCache(remoteFilters);
 
       return remoteFilters;

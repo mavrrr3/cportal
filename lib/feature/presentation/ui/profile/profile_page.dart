@@ -44,16 +44,16 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: theme.splashColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12.0),
-          topRight: Radius.circular(12.0),
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
       ),
       isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return SizedBox(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,10 +64,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 18.h),
                 GestureDetector(
-                  onTap: (() => setState(() => showToasterAboutNotify(
+                  onTap: () => setState(() => showToasterAboutNotify(
                         theme,
                         'Оповещения выключены на 1 час',
-                      ))),
+                      )),
                   child: Text(
                     AppLocalizations.of(context)!.forHour,
                     style: theme.textTheme.headline5!.copyWith(
@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    Color iconColor = theme.hoverColor.withOpacity(0.64);
+    final Color iconColor = theme.hoverColor.withOpacity(0.64);
 
     BlocProvider.of<GetSingleProfileBloc>(
       context,
@@ -259,6 +259,6 @@ void showToasterAboutNotify(ThemeData theme, String text) {
     timeInSecForIosWeb: 1,
     backgroundColor: theme.hoverColor,
     textColor: theme.splashColor,
-    fontSize: 16.0,
+    fontSize: 16,
   );
 }

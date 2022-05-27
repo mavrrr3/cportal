@@ -26,7 +26,7 @@ class _FilterState extends State<Filter> {
       builder: (context, state) {
         if (state is FilterLoadedState) {
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: ListView.builder(
               controller: widget.scrollController,
               physics: const BouncingScrollPhysics(),
@@ -134,7 +134,7 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
                 return Padding(
                   padding: const EdgeInsets.only(
                     left: 8,
-                    bottom: 12.0,
+                    bottom: 12,
                   ),
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,

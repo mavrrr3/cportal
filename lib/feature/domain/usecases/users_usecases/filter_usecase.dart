@@ -13,7 +13,7 @@ class FetchFiltersUseCase {
 
   // @override
   Future<Either<Failure, List<FilterEntity>>> call() async {
-    var data = await filterRepository.fetchFilters();
+    final data = await filterRepository.fetchFilters();
     log('*/*/* $data');
 
     return data;

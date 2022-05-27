@@ -68,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthUser(user: user));
       },
     );
-    if (kDebugMode) log('AuthState: ' + state.toString());
+    if (kDebugMode) log('AuthState: $state');
   }
 }
 

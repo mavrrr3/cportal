@@ -69,43 +69,43 @@ class QuestionArticlePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Кнопка назад для Web
-                                ResponsiveWrapper.of(context)
-                                        .isLargerThan(TABLET)
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 7.0,
-                                          top: 16.0,
-                                        ),
-                                        child: GestureDetector(
-                                          behavior: HitTestBehavior.translucent,
-                                          onTap: () {
-                                            _contentInit(context);
+                                if (ResponsiveWrapper.of(context)
+                                    .isLargerThan(TABLET))
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 7,
+                                      top: 16,
+                                    ),
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
+                                      onTap: () {
+                                        _contentInit(context);
 
-                                            GoRouter.of(context).pop();
-                                          },
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/icons/back_arrow.svg',
-                                                width: 16,
-                                                color: theme.primaryColor,
-                                              ),
-                                              const SizedBox(width: 6),
-                                              Text(
-                                                AppLocalizations.of(context)!
-                                                    .questions,
-                                                style: theme
-                                                    .textTheme.headline5!
-                                                    .copyWith(
-                                                  color: theme.primaryColor,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ],
+                                        GoRouter.of(context).pop();
+                                      },
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/back_arrow.svg',
+                                            width: 16,
+                                            color: theme.primaryColor,
                                           ),
-                                        ),
-                                      )
-                                    : const SizedBox(),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            AppLocalizations.of(context)!
+                                                .questions,
+                                            style: theme.textTheme.headline5!
+                                                .copyWith(
+                                              color: theme.primaryColor,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  const SizedBox(),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: ResponsiveWrapper.of(context)
@@ -129,30 +129,32 @@ class QuestionArticlePage extends StatelessWidget {
                                               : 19,
                                         ),
                                         // Кнопка назад mobile
-                                        !ResponsiveWrapper.of(context)
-                                                .isLargerThan(TABLET)
-                                            ? GestureDetector(
-                                                behavior:
-                                                    HitTestBehavior.translucent,
-                                                onTap: () => _onBack(context),
-                                                child: Stack(
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 26,
-                                                      height: 24,
-                                                    ),
-                                                    SvgPicture.asset(
-                                                      'assets/icons/back_arrow.svg',
-                                                      width: 16,
-                                                    ),
-                                                  ],
+                                        if (!ResponsiveWrapper.of(context)
+                                            .isLargerThan(TABLET))
+                                          GestureDetector(
+                                            behavior:
+                                                HitTestBehavior.translucent,
+                                            onTap: () => _onBack(context),
+                                            child: Stack(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 26,
+                                                  height: 24,
                                                 ),
-                                              )
-                                            : const SizedBox(),
-                                        !ResponsiveWrapper.of(context)
-                                                .isLargerThan(TABLET)
-                                            ? const SizedBox(height: 19)
-                                            : const SizedBox(),
+                                                SvgPicture.asset(
+                                                  'assets/icons/back_arrow.svg',
+                                                  width: 16,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        else
+                                          const SizedBox(),
+                                        if (!ResponsiveWrapper.of(context)
+                                            .isLargerThan(TABLET))
+                                          const SizedBox(height: 19)
+                                        else
+                                          const SizedBox(),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -196,15 +198,13 @@ class QuestionArticlePage extends StatelessWidget {
     );
   }
 
-
-
   Widget _nextQuestion(
     ArticleEntity currentItem,
     FetchNewsLoadedState state,
     BuildContext context,
   ) {
-    List<ArticleEntity> currentTabsItems = [];
-    for (var item in state.news.article) {
+    final List<ArticleEntity> currentTabsItems = [];
+    for (final item in state.news.article) {
       if (item.category == currentItem.category) {
         currentTabsItems.add(item);
       }
@@ -216,7 +216,7 @@ class QuestionArticlePage extends StatelessWidget {
             currentTabsItems
                 .indexWhere((element) => element.id == currentItem.id)
         ? Padding(
-            padding: const EdgeInsets.only(bottom: 32.0),
+            padding: const EdgeInsets.only(bottom: 32),
             child: FaqRow(
               text: currentTabsItems[currentIndex + 1].header,
               onTap: () {

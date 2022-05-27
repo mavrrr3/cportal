@@ -12,7 +12,7 @@ class FetchNewsUseCase extends IUseCase<NewsEntity, FetchNewsParams> {
 
   @override
   Future<Either<Failure, NewsEntity>> call(FetchNewsParams params) async {
-    return await newsRepository.fetchNews(params.code);
+    return newsRepository.fetchNews(params.code);
   }
 }
 

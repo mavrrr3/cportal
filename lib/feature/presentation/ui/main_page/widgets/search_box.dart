@@ -92,7 +92,7 @@ class _SearchBoxItem extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(bottom: 16),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: onTap,

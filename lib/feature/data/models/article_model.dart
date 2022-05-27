@@ -44,19 +44,19 @@ class ArticleModel extends ArticleEntity {
   final String category;
 
   const ArticleModel({
-    required final this.id,
-    required final this.articleType,
-    required final this.header,
-    required final this.category,
-    required final this.description,
-    required final this.image,
-    required final this.dateShow,
-    required final this.externalLink,
-    required final this.show,
-    required final this.userCreated,
-    required final this.dateCreated,
-    required final this.userUpdate,
-    required final this.dateUpdated,
+    required this.id,
+    required this.articleType,
+    required this.header,
+    required this.category,
+    required this.description,
+    required this.image,
+    required this.dateShow,
+    required this.externalLink,
+    required this.show,
+    required this.userCreated,
+    required this.dateCreated,
+    required this.userUpdate,
+    required this.dateUpdated,
   }) : super(
           id: id,
           articleType: articleType,
@@ -118,9 +118,9 @@ class ArticleTypeModel extends ArticleTypeEntity {
   final String description;
 
   const ArticleTypeModel({
-    required final this.id,
-    required final this.code,
-    required final this.description,
+    required this.id,
+    required this.code,
+    required this.description,
   }) : super(
           id: id,
           code: code,

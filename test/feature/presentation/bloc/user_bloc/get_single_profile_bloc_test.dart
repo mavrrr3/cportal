@@ -48,8 +48,8 @@ void main() {
       dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
     );
     const String tProfileId = 'A1B2C3D4E5';
-    ServerFailure tServerFailure = ServerFailure();
-    CacheFailure tCacheFailure = CacheFailure();
+    final ServerFailure tServerFailure = ServerFailure();
+    final CacheFailure tCacheFailure = CacheFailure();
 
     String _mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
@@ -69,7 +69,7 @@ void main() {
     blocTest<GetSingleProfileBloc, GetSingleProfileState>(
       'emits [GetSingleProfileLoadingState, GetSingleProfileLoadedState] when GetSingleProfileEventImpl is added.',
       build: () => getSingleProfileBloc,
-      act: (GetSingleProfileBloc bloc) {
+      act: (bloc) {
         when(() => useCase.call(const GetSingleProfileParams(id: tProfileId)))
             .thenAnswer(
           (_) async => Right<Failure, ProfileEntity>(tProfileEntity),
@@ -89,7 +89,7 @@ void main() {
     blocTest<GetSingleProfileBloc, GetSingleProfileState>(
       'emits [GetSingleProfileLoadingState, GetSingleProfileLoadingError] when ServerFailure().',
       build: () => getSingleProfileBloc,
-      act: (GetSingleProfileBloc bloc) {
+      act: (bloc) {
         when(() => useCase.call(const GetSingleProfileParams(id: tProfileId)))
             .thenAnswer(
           (_) async => Left<Failure, ProfileEntity>(tServerFailure),
@@ -111,7 +111,7 @@ void main() {
     blocTest<GetSingleProfileBloc, GetSingleProfileState>(
       'emits [GetSingleProfileLoadingState, GetSingleProfileLoadingError] when CacheFailure().',
       build: () => getSingleProfileBloc,
-      act: (GetSingleProfileBloc bloc) {
+      act: (bloc) {
         when(() => useCase.call(const GetSingleProfileParams(id: tProfileId)))
             .thenAnswer(
           (_) async => Left<Failure, ProfileEntity>(tCacheFailure),

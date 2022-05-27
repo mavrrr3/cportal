@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:cportal_flutter/core/platform/biometric_info.dart';
 import 'package:cportal_flutter/core/platform/network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
@@ -54,7 +56,7 @@ Future<void> init() async {
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
   sl.registerFactory(() => FetchNewsBloc(fetchNews: sl()));
-  sl.registerFactory(() => NavBarBloc());
+  sl.registerFactory(NavBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
 
   // USECASE
@@ -141,7 +143,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<IProfileLocalDataSource>(
-    () => ProfileLocalDataSource(),
+    ProfileLocalDataSource.new,
   );
 
   sl.registerLazySingleton<IUserRemoteDataSource>(
@@ -149,11 +151,11 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<IUserLocalDataSource>(
-    () => UserLocalDataSource(),
+    UserLocalDataSource.new,
   );
 
   sl.registerLazySingleton<IPinCodeDataSource>(
-    () => PinCodeDataSource(),
+    PinCodeDataSource.new,
   );
 
   sl.registerLazySingleton<INewsRemoteDataSource>(
@@ -178,7 +180,7 @@ Future<void> init() async {
 
   // EXTERNAL
 
-  sl.registerLazySingleton(() => InternetConnectionChecker());
-  sl.registerLazySingleton(() => LocalAuthentication());
+  sl.registerLazySingleton(InternetConnectionChecker.new);
+  sl.registerLazySingleton(LocalAuthentication.new);
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 }

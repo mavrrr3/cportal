@@ -123,7 +123,7 @@ class _Mobile extends StatelessWidget {
                 /// Колонка с контентом статьи
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -207,7 +207,7 @@ class _WebState extends State<_Web> {
                 .toList();
           }
 
-          ArticleEntity article = widget.item;
+          final ArticleEntity article = widget.item;
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,7 +225,7 @@ class _WebState extends State<_Web> {
                     constraint: const BoxConstraints(maxWidth: 704),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 16.0,
+                        vertical: 16,
                         horizontal: 7,
                       ),
                       child: Column(
@@ -257,8 +257,7 @@ class _WebState extends State<_Web> {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 25.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

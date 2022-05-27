@@ -62,7 +62,7 @@ class DesktopMenu extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       color: theme.splashColor,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,13 +70,13 @@ class DesktopMenu extends StatelessWidget {
               child: GestureDetector(
                 onTap: onboarding,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
+                  padding: const EdgeInsets.only(left: 12),
                   child: SvgPicture.asset(
                     'assets/icons/logo_grey.svg',
                     color: theme.brightness == Brightness.dark
                         ? theme.hoverColor
                         : null,
-                    width: 24.0,
+                    width: 24,
                   ),
                 ),
               ),
@@ -130,7 +130,7 @@ class _MenuItem extends StatelessWidget {
             : Colors.transparent,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             SvgPicture.asset(

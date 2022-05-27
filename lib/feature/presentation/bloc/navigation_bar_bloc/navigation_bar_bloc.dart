@@ -22,6 +22,6 @@ class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
     Emitter emit,
   ) async {
     emit(NavBarState(currentIndex: event.index));
-    debugPrint('Отработал эвент: ' + event.toString());
+    debugPrint('Отработал эвент: $event');
   }
 }

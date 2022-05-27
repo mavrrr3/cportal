@@ -94,7 +94,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     ChangedPinCode event,
     Emitter<PinCodeState> emit,
   ) async {
-    if (kDebugMode) log(event.pinCode.toString());
+    if (kDebugMode) log(event.pinCode);
     log('=========Такой эвент $event');
 
     emit(state.copyWith(
@@ -107,7 +107,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     ChangedInputPinCode event,
     Emitter<PinCodeState> emit,
   ) async {
-    if (kDebugMode) log(event.pinCode.toString());
+    if (kDebugMode) log(event.pinCode);
     log('=========Такой эвент $event');
 
     emit(state.copyWith(
@@ -201,7 +201,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       final failureOrPinCode =
           await pinCodeEnter(PinCodeParams(pinCode: event.pinCode));
 
-      log('Из кэша +++' + failureOrPinCode.toString());
+      log('Из кэша +++$failureOrPinCode');
 
       failureOrPinCode.fold(
         (failure) {

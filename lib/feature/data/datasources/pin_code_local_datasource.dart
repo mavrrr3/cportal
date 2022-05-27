@@ -21,11 +21,11 @@ class PinCodeDataSource implements IPinCodeDataSource {
     // await Hive.deleteBoxFromDisk('pin_code');
 
     // Открывает Box
-    var box = await Hive.openBox<String>('pin_code');
+    final box = await Hive.openBox<String>('pin_code');
 
     await box.put('pin_code', pinCode);
 
-    if (kDebugMode) log('pinCode записал в кэш ' + pinCode.toString());
+    if (kDebugMode) log('pinCode записал в кэш $pinCode');
 
     // Закрывает Box
     await Hive.box<String>('pin_code').close();
@@ -39,11 +39,11 @@ class PinCodeDataSource implements IPinCodeDataSource {
     // await Hive.deleteBoxFromDisk('pin_code');
 
     // Открывает Box
-    var box = await Hive.openBox<String>('pin_code');
+    final box = await Hive.openBox<String>('pin_code');
 
     // Запрашивает из локальной базы есть ли строка с ключём 'pin_code'
-    String? localPin = box.get('pin_code');
-    if (kDebugMode) log('pinCode в кэше ' + localPin.toString());
+    final String? localPin = box.get('pin_code');
+    if (kDebugMode) log('pinCode в кэше $localPin');
 
     // Проверяет если такой строки в базе нет
     // то записывает пришедший ПИН и

@@ -29,7 +29,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
     Emitter emit,
   ) async {
     emit(FetchNewsLoadingState());
-    log('Отработал эвент: ' + event.toString());
+    log('Отработал эвент: $event');
 
     String _mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
@@ -53,11 +53,11 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       },
       (news) {
         /// Создание листа со всеми вкладками
-        List<String> tabs = [];
+        final List<String> tabs = [];
         if (event.newsCodeEnum == NewsCodeEnum.news) {
           tabs.add('Все');
         }
-        for (var item in news.article) {
+        for (final item in news.article) {
           if (!tabs.contains(item.category)) {
             tabs.add(item.category);
           }

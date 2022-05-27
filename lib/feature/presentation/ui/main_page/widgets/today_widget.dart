@@ -60,26 +60,27 @@ class TodayWidget extends StatelessWidget {
           style: theme.textTheme.headline3,
         ),
         const SizedBox(height: 12),
-        !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  _items.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: _TodayItem(item: _items[index]),
-                  ),
-                ),
-              )
-            : Wrap(
-                spacing: 51,
-                runSpacing: 16,
-                children: List.generate(
-                  _items.length,
-                  (index) => _TodayItem(item: _items[index]),
-                ),
+        if (!ResponsiveWrapper.of(context).isLargerThan(TABLET))
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              _items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _TodayItem(item: _items[index]),
               ),
+            ),
+          )
+        else
+          Wrap(
+            spacing: 51,
+            runSpacing: 16,
+            children: List.generate(
+              _items.length,
+              (index) => _TodayItem(item: _items[index]),
+            ),
+          ),
       ],
     );
   }
@@ -139,7 +140,7 @@ class _TodayItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
                           child: Text(
                             item.place!,
                             style: theme.textTheme.bodyText1!.copyWith(

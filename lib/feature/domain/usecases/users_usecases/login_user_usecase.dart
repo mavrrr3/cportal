@@ -13,9 +13,8 @@ class LoginUserUseCase extends IUseCase<UserEntity, LoginUserParams> {
   @override
   Future<Either<Failure, UserEntity>> call(
     LoginUserParams params,
-  ) async {
-    return await userRepository.login(params.connectingCode);
-  }
+  ) async =>
+      userRepository.login(params.connectingCode);
 }
 
 class LoginUserParams extends Equatable {

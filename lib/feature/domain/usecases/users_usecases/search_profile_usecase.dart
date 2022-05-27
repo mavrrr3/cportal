@@ -14,9 +14,8 @@ class SearchProfileUseCase
   @override
   Future<Either<Failure, List<ProfileEntity>>> call(
     SearchProfilesParams params,
-  ) async {
-    return await profileRepository.searchProfiles(params.query);
-  }
+  ) async =>
+      profileRepository.searchProfiles(params.query);
 }
 
 class SearchProfilesParams extends Equatable {

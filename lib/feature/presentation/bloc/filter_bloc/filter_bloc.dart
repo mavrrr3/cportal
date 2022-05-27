@@ -70,7 +70,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       },
     );
 
-    debugPrint('Отработал эвент: ' + event.toString());
+    debugPrint('Отработал эвент: $event');
   }
 
   // Обработка раскрытия раздела в фильтре
@@ -78,20 +78,20 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     FilterExpandSectionEvent event,
     Emitter emit,
   ) async {
-    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
-    FilterEntity _filter = _filters[event.index];
-    _filter = _filter.copyWith(isActive: _filter.changeActivity);
+    final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+    FilterEntity filter = filters[event.index];
+    filter = filter.copyWith(isActive: filter.changeActivity);
 
     // log('*** ${_filters[event.index]} ***');
     // log('=== ${_filter}');
 
-    _filters[event.index] = _filter;
+    filters[event.index] = filter;
     // log('///');
 
     emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: _filters));
+    emit(FilterLoadedState(filters: filters));
 
-    debugPrint('Отработал эвент: ' + event.toString());
+    debugPrint('Отработал эвент: $event');
   }
 
   // Обработка выбора пункта в фильтре
@@ -99,39 +99,44 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     FilterSelectItemEvent event,
     Emitter emit,
   ) {
-    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
-    FilterEntity _filter = _filters[event.filterIndex];
-    FilterItemEntity _filterItem =
-        _filters[event.filterIndex].items[event.itemIndex];
+    final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+    final FilterEntity filter = filters[event.filterIndex];
+    final FilterItemEntity filterItem =
+        filters[event.filterIndex].items[event.itemIndex];
 
-    List<FilterItemEntity> itemsWithSelect = selectItems(_filter, _filterItem);
-    FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
-    _filters[event.filterIndex] = filterWithSelect;
+    final List<FilterItemEntity> itemsWithSelect =
+        selectItems(filter, filterItem);
+    final FilterEntity filterWithSelect =
+        filter.copyWith(items: itemsWithSelect);
+    filters[event.filterIndex] = filterWithSelect;
 
     // log(filterWithSelect.toString());
 
     emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: _filters));
+    emit(FilterLoadedState(filters: filters));
   }
 
   FutureOr<void> _onRemove(
     FilterRemoveItemEvent event,
     Emitter emit,
   ) async {
-    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
+    final List<FilterEntity> filters = (state as FilterLoadedState).filters;
 
-    final int itemIndex = _filters[event.filterIndex].items.indexOf(event.item);
-    FilterEntity _filter = _filters[event.filterIndex];
-    FilterItemEntity _filterItem = _filters[event.filterIndex].items[itemIndex];
+    final int itemIndex = filters[event.filterIndex].items.indexOf(event.item);
+    final FilterEntity filter = filters[event.filterIndex];
+    final FilterItemEntity filterItem =
+        filters[event.filterIndex].items[itemIndex];
 
-    List<FilterItemEntity> itemsWithSelect = selectItems(_filter, _filterItem);
-    FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
-    _filters[event.filterIndex] = filterWithSelect;
+    final List<FilterItemEntity> itemsWithSelect =
+        selectItems(filter, filterItem);
+    final FilterEntity filterWithSelect =
+        filter.copyWith(items: itemsWithSelect);
+    filters[event.filterIndex] = filterWithSelect;
 
     emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: _filters));
+    emit(FilterLoadedState(filters: filters));
 
-    debugPrint('Отработал эвент: ' + event.toString());
+    debugPrint('Отработал эвент: $event');
   }
 
   List<FilterItemEntity> selectItems(

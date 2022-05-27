@@ -243,13 +243,13 @@ bool isWrongCode(AuthState state) {
 }
 
 Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
-  bool _isShow = false;
+  bool isShow = false;
 
   return showDialog(
     context: context,
     useRootNavigator: true,
     barrierDismissible: true,
-    builder: (BuildContext context) {
+    builder: (context) {
       final ThemeData theme = Theme.of(context);
 
       return StatefulBuilder(
@@ -310,7 +310,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            _isShow = !_isShow;
+                            isShow = !isShow;
                           });
                         },
                         icon: Icon(
@@ -322,7 +322,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     ],
                   ),
                   Visibility(
-                    visible: _isShow,
+                    visible: isShow,
                     child: const WorkModeTable(),
                   ),
                   SizedBox(height: 10.w),

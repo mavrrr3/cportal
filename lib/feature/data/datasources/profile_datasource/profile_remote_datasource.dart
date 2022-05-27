@@ -22,7 +22,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   ProfileRemoteDataSource(this.localDataSource);
   @override
   Future<ProfileModel> getSingleProfile(String id) async {
-    String stringUser = '''
+    const String stringUser = '''
                           {
 "id": "A1B2C3D4E5",
 "external_id": "8877",
@@ -58,8 +58,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
 
     try {
       //TODO реализовать получение данных от API
-
-      ProfileModel localeUser = profileModelFromJson(stringUser);
+      final ProfileModel localeUser = profileModelFromJson(stringUser);
       log('$localeUser');
 
       await localDataSource.singleProfileToCache(localeUser);
@@ -67,7 +66,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
       return localeUser;
     } on SocketException {
       throw ServerException();
-    } catch (e) {
+    } on Exception catch (e) {
       log('Ошибка в методе ProfileRemoteDataSource: $e');
       rethrow;
     }

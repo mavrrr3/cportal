@@ -105,8 +105,9 @@ class _HomePageState extends State<HomePage>
 
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _animationController.stop();
-        _animationController.reset();
+        _animationController
+          ..stop()
+          ..reset();
         setState(() {
           if (_onBoardingIndex + 1 < _onboardingContent.length) {
             _onBoardingIndex += 1;
@@ -120,10 +121,11 @@ class _HomePageState extends State<HomePage>
               setState(() {
                 _isOnboarding = false;
                 _isLearningCourse = true;
-                _animationController.stop();
-                _animationController.reset();
-                _animationController.duration = const Duration(seconds: 5);
-                _animationController.forward();
+                _animationController
+                  ..stop()
+                  ..reset()
+                  ..duration = const Duration(seconds: 5)
+                  ..forward();
               });
             }
           }
@@ -134,7 +136,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  void _loadPinRequest() async {
+  Future<void> _loadPinRequest() async {
     if (mounted) context.goNamed(NavigationRouteNames.inputPin);
   }
 
@@ -146,7 +148,7 @@ class _HomePageState extends State<HomePage>
       // TODO выставить нужный delay
       timer = Timer(
         const Duration(seconds: 10000000000000),
-        () => _loadPinRequest(),
+        _loadPinRequest,
       );
     } else if (state == AppLifecycleState.resumed) {
       timer?.cancel();
@@ -158,7 +160,7 @@ class _HomePageState extends State<HomePage>
     final ThemeData theme = Theme.of(context);
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
-    List<Widget> _listPages = <Widget>[
+    final List<Widget> listPages = <Widget>[
       const MainPage(),
       const NewsPage(pageType: NewsCodeEnum.news),
       const NewsPage(pageType: NewsCodeEnum.quastion),
@@ -197,7 +199,7 @@ class _HomePageState extends State<HomePage>
 
                   Expanded(
                     child:
-                        kIsWeb ? widget.child : _listPages[state.currentIndex],
+                        kIsWeb ? widget.child : listPages[state.currentIndex],
                   ),
                 ],
               ),
@@ -229,8 +231,9 @@ class _HomePageState extends State<HomePage>
                           _isWelcome = false;
                           _isOnboarding = false;
                           _isLearningCourse = false;
-                          _animationController.stop();
-                          _animationController.reset();
+                          _animationController
+                            ..stop()
+                            ..reset();
                         });
                       },
                       child: SvgPicture.asset(
@@ -268,7 +271,7 @@ class _HomePageState extends State<HomePage>
         isBackArrow: false,
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 60.0,
+            top: 60,
             bottom: 32,
             left: 32,
           ),
@@ -291,7 +294,7 @@ class _HomePageState extends State<HomePage>
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 174.0, right: 206),
+                padding: const EdgeInsets.only(left: 174, right: 206),
                 child: Button.factory(
                   context,
                   ButtonEnum.blue,
@@ -327,10 +330,11 @@ class _HomePageState extends State<HomePage>
               setState(() {
                 _isOnboarding = false;
                 _isLearningCourse = true;
-                _animationController.stop();
-                _animationController.reset();
-                _animationController.duration = const Duration(seconds: 5);
-                _animationController.forward();
+                _animationController
+                  ..stop()
+                  ..reset()
+                  ..duration = const Duration(seconds: 5)
+                  ..forward();
               });
             }
           });
@@ -345,7 +349,7 @@ class _HomePageState extends State<HomePage>
         },
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 17.0,
+            top: 17,
             bottom: 32,
             left: 32,
             right: 32,
@@ -375,7 +379,7 @@ class _HomePageState extends State<HomePage>
         },
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 17.0,
+            top: 17,
             bottom: 32,
             left: 32,
             right: 32,
@@ -405,10 +409,11 @@ class _HomePageState extends State<HomePage>
   void _loadPage({
     bool animateToPage = true,
   }) {
-    _animationController.stop();
-    _animationController.reset();
-    _animationController.duration = _pageDuration;
-    _animationController.forward();
+    _animationController
+      ..stop()
+      ..reset()
+      ..duration = _pageDuration
+      ..forward();
 
     if (animateToPage) {
       _pageController.jumpToPage(_onBoardingIndex);

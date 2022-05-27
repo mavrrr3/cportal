@@ -28,7 +28,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
   }
 
   Future<void> _initVibrate() async {
-    bool canVibrate = await Vibrate.canVibrate;
+    final bool canVibrate = await Vibrate.canVibrate;
     setState(() {
       _canVibrate = canVibrate;
     });
@@ -162,8 +162,8 @@ class _ChangeThemeState extends State<ChangeTheme> {
       if (canVibrate) {
         Vibrate.feedback(FeedbackType.light);
       }
-    } catch (e) {
-      log('Device can`t vibrate');
+    } on Exception catch (e) {
+      log('Device can`t vibrate error: $e');
     }
   }
 }

@@ -70,24 +70,24 @@ class _MenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final Color _nonActiveColor = theme.brightness == Brightness.light
+    final Color nonActiveColor = theme.brightness == Brightness.light
         ? theme.hoverColor.withOpacity(0.48)
         : theme.cardColor.withOpacity(0.48);
-    final Color _activeColor = theme.primaryColor;
+    final Color activeColor = theme.primaryColor;
 
     Color _textColor(int index, NavBarState state) {
       final ThemeData theme = Theme.of(context);
 
       // ignore: prefer-conditional-expressions
       if (theme.brightness == Brightness.light) {
-        return state.currentIndex == index ? _activeColor : _nonActiveColor;
+        return state.currentIndex == index ? activeColor : nonActiveColor;
       } else {
-        return state.currentIndex == index ? _activeColor : Colors.white;
+        return state.currentIndex == index ? activeColor : Colors.white;
       }
     }
 
     Color _iconColor(int index, NavBarState state) {
-      return state.currentIndex == index ? _activeColor : _nonActiveColor;
+      return state.currentIndex == index ? activeColor : nonActiveColor;
     }
 
     return GestureDetector(

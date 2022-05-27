@@ -27,7 +27,7 @@ class StartBoarding extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     // Контент страниц онбординга
-    final List<OnboardingEntity> _onboardingContent = [
+    final List<OnboardingEntity> onboardingContent = [
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title1,
         description: AppLocalizations.of(context)!.onboarding_description1,
@@ -100,7 +100,7 @@ class StartBoarding extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Button.factory(
               context,
               ButtonEnum.blue,
@@ -108,7 +108,7 @@ class StartBoarding extends StatelessWidget {
               () {
                 GoRouter.of(context).pushNamed(
                   NavigationRouteNames.onboarding,
-                  extra: _onboardingContent,
+                  extra: onboardingContent,
                 );
               },
               Size(double.infinity, 48.h),

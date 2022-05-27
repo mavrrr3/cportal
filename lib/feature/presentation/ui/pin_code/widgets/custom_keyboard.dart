@@ -101,7 +101,7 @@ class KeyboardNumber extends StatelessWidget {
       height: 60.h,
       alignment: Alignment.center,
       child: MaterialButton(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         onPressed: () {
           concatTextFieled(number, _codeController);
         },

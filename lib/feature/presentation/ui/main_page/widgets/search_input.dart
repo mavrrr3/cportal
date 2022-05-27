@@ -37,7 +37,7 @@ class SearchInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             child: SvgIcon(
               theme.brightness == Brightness.dark ? theme.hoverColor : null,
               path: 'search.svg',
@@ -52,9 +52,7 @@ class SearchInput extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               textInputAction: TextInputAction.search,
-              onChanged: (text) {
-                onChanged(text);
-              },
+              onChanged: onChanged,
               style: theme.textTheme.headline6!.copyWith(
                 color: theme.hoverColor.withOpacity(0.68),
               ),

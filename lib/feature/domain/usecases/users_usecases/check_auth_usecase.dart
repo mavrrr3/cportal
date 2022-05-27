@@ -8,6 +8,6 @@ class CheckAuthUseCase {
   CheckAuthUseCase(this.userRepository);
 
   Future<Either<Failure, bool>> call() async {
-    return await userRepository.checkAuth();
+    return userRepository.checkAuth();
   }
 }

@@ -39,8 +39,9 @@ class _OnboardingState extends State<Onboarding>
     _loadPage(animateToPage: false);
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _animationController.stop();
-        _animationController.reset();
+        _animationController
+          ..stop()
+          ..reset();
         setState(() {
           if (_currentIndex + 1 < _onboardingContent.length) {
             _currentIndex += 1;
@@ -162,10 +163,11 @@ class _OnboardingState extends State<Onboarding>
   void _loadPage({
     bool animateToPage = true,
   }) {
-    _animationController.stop();
-    _animationController.reset();
-    _animationController.duration = _pageDuration;
-    _animationController.forward();
+    _animationController
+      ..stop()
+      ..reset()
+      ..duration = _pageDuration
+      ..forward();
 
     if (animateToPage) {
       _pageController.jumpToPage(_currentIndex);
