@@ -117,25 +117,35 @@ class _NewsPageState extends State<NewsPage> {
                                 Expanded(
                                   child: PageView(
                                     controller: _pageController,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     children: [
                                       // Генерация страниц под все категории
 
-                                      ...List.generate(state.tabs.length, (index) {
-                                        return KeepAlivePage(
-                                          child: Padding(
-                                            padding: getHorizontalPadding(context),
-                                            child: widget.pageType == NewsCodeEnum.news
-                                                ? !ResponsiveWrapper.of(context)
-                                                        .isLargerThan(TABLET)
-                                                    ? _content(state, width)
-                                                    : SingleChildScrollView(
-                                                        child: _content(state, width),
-                                                      )
-                                                : _content(state, width),
-                                          ),
-                                        );
-                                      }),
+                                      ...List.generate(
+                                        state.tabs.length,
+                                        (index) {
+                                          return KeepAlivePage(
+                                            child: Padding(
+                                              padding:
+                                                  getHorizontalPadding(context),
+                                              child: widget.pageType ==
+                                                      NewsCodeEnum.news
+                                                  ? !ResponsiveWrapper.of(
+                                                      context,
+                                                    ).isLargerThan(TABLET)
+                                                      ? _content(state, width)
+                                                      : SingleChildScrollView(
+                                                          child: _content(
+                                                            state,
+                                                            width,
+                                                          ),
+                                                        )
+                                                  : _content(state, width),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -283,8 +293,6 @@ class _NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: GestureDetector(
@@ -294,9 +302,7 @@ class _NewsCard extends StatelessWidget {
           width: width,
           height: 160,
           fontSize: 17,
-          imgPath: item.image,
-          title: item.header,
-          dateTime: outputFormat.format(item.dateShow),
+          item: item,
         ),
       ),
     );

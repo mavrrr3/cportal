@@ -196,6 +196,8 @@ class QuestionArticlePage extends StatelessWidget {
     );
   }
 
+
+
   Widget _nextQuestion(
     ArticleEntity currentItem,
     FetchNewsLoadedState state,

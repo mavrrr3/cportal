@@ -308,20 +308,9 @@ class _WebState extends State<_Web> {
                                         child: NewsCardItem(
                                           width: 312,
                                           height: 152,
-                                          imgPath: articlesToRecomendations(
+                                          item: articlesToRecomendations(
                                             article.id,
-                                          )[i]
-                                              .image,
-                                          title: articlesToRecomendations(
-                                            article.id,
-                                          )[i]
-                                              .header,
-                                          dateTime: _outputFormat.format(
-                                            articlesToRecomendations(
-                                              article.id,
-                                            )[i]
-                                                .dateShow,
-                                          ),
+                                          )[i],
                                         ),
                                       );
                                     },

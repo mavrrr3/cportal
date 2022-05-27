@@ -151,7 +151,11 @@ class _MainPageState extends State<MainPage> {
                               padding: EdgeInsets.only(
                                 left: getSingleHorizontalPadding(context),
                               ),
-                              child: const NewsHorizontalScroll(),
+                              child: NewsHorizontalScroll(
+                                onTap: (i) =>
+                                    _onArticleSelected(listViewMap[i].id),
+                                items: listViewMap,
+                              ),
                             )
                           : Padding(
                               padding: getHorizontalPadding(context),
@@ -161,13 +165,11 @@ class _MainPageState extends State<MainPage> {
                                 children: List.generate(
                                   listViewMap.length,
                                   (i) => NewsCardItem(
+                                    onTap: () =>
+                                        _onArticleSelected(listViewMap[i].id),
                                     width: 312,
                                     height: 152,
-                                    imgPath:
-                                        listViewMap[i]['imgPath'] as String,
-                                    title: listViewMap[i]['title'] as String,
-                                    dateTime:
-                                        listViewMap[i]['dateTime'] as String,
+                                    item: listViewMap[i],
                                   ),
                                 ),
                               ),
@@ -194,6 +196,13 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _onArticleSelected(String id) {
+    GoRouter.of(context).pushNamed(
+      NavigationRouteNames.newsArticlePage,
+      params: {'fid': id},
     );
   }
 }
