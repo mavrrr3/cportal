@@ -124,7 +124,7 @@ class ContactProfilePage extends StatelessWidget {
                           _BuildInfo(
                             headline:
                                 AppLocalizations.of(context)!.office_phone,
-                            text: user.phone[0].number,
+                            text: user.phone.first.number,
                           ),
 
                           // Self phone

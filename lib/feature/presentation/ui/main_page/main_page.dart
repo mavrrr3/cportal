@@ -40,6 +40,12 @@ class _MainPageState extends State<MainPage> {
     _searchFocus.addListener(_onFocusChange);
   }
 
+  @override
+  void dispose() {
+    _searchFocus.removeListener(_onFocusChange);
+    super.dispose();
+  }
+
   /// Анимация при нажатии на поиск
   void _onFocusChange() {
     if (_searchFocus.hasFocus) {

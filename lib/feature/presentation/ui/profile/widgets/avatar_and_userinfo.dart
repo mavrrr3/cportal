@@ -40,7 +40,7 @@ class AvatarAndUserInfo extends StatelessWidget {
           ),
           SizedBox(height: 6.h),
           Text(
-            profile.phone[0].number,
+            profile.phone.first.number,
             style: theme.textTheme.headline6,
           ),
           SizedBox(height: 6.h),
