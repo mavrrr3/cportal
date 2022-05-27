@@ -9,8 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
   static const String routeName = 'splashScreen';
+
+  const SplashScreen({Key? key}) : super(key: key);
   static Route<SplashScreen> route() {
     return MaterialPageRoute<SplashScreen>(
       settings: const RouteSettings(name: routeName),

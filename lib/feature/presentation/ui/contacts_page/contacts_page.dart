@@ -176,12 +176,12 @@ class _ContactsPageState extends State<ContactsPage> {
 }
 
 class _FilterButton extends StatelessWidget {
+  final Function()? onTap;
+
   const _FilterButton({
     Key? key,
     this.onTap,
   }) : super(key: key);
-
-  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

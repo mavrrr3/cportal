@@ -71,13 +71,14 @@ class NewsArticlePage extends StatelessWidget {
 }
 
 class _Mobile extends StatelessWidget {
+  final ArticleEntity item;
+  final FetchNewsLoadedState state;
+
   const _Mobile({
     Key? key,
     required this.item,
     required this.state,
   }) : super(key: key);
-  final ArticleEntity item;
-  final FetchNewsLoadedState state;
 
   @override
   Widget build(BuildContext context) {
@@ -181,11 +182,12 @@ class _Mobile extends StatelessWidget {
 }
 
 class _Web extends StatefulWidget {
+  final ArticleEntity item;
+
   const _Web({
     Key? key,
     required this.item,
   }) : super(key: key);
-  final ArticleEntity item;
 
   @override
   State<_Web> createState() => _WebState();

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingPage extends StatelessWidget {
+  final OnboardingEntity content;
+
   const OnBoardingPage({
     Key? key,
     required this.content,
   }) : super(key: key);
-
-  final OnboardingEntity content;
 
   @override
   Widget build(BuildContext context) {

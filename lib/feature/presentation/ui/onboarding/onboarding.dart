@@ -7,12 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class Onboarding extends StatefulWidget {
+  final List<OnboardingEntity> content;
+
   const Onboarding({
     Key? key,
     required this.content,
   }) : super(key: key);
 
-  final List<OnboardingEntity> content;
   @override
   State<Onboarding> createState() => _OnboardingState();
 }
@@ -58,7 +59,7 @@ class _OnboardingState extends State<Onboarding>
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final ThemeData theme = Theme.of(context);
-    
+
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: GestureDetector(
@@ -81,11 +82,11 @@ class _OnboardingState extends State<Onboarding>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const SizedBox(height: 17),
+              const SizedBox(height: 17),
               // Виджет прогресса
               SafeArea(
                 child: Padding(
-                  padding:const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: _onboardingContent
                         .asMap()

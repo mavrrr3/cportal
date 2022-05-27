@@ -8,12 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Filter extends StatefulWidget {
+  final ScrollController scrollController;
+
   const Filter({
     Key? key,
     required this.scrollController,
   }) : super(key: key);
 
-  final ScrollController scrollController;
   @override
   State<Filter> createState() => _FilterState();
 }
@@ -57,6 +58,10 @@ class _FilterState extends State<Filter> {
 }
 
 class _FilterSectionItem extends StatefulWidget {
+  final FilterEntity item;
+  final Function() onExpand;
+  final Function(int) onSelect;
+
   /// Блок отдельного раздела фильтра
   const _FilterSectionItem({
     Key? key,
@@ -64,10 +69,6 @@ class _FilterSectionItem extends StatefulWidget {
     required this.onExpand,
     required this.onSelect,
   }) : super(key: key);
-
-  final FilterEntity item;
-  final Function() onExpand;
-  final Function(int) onSelect;
 
   @override
   State<_FilterSectionItem> createState() => _FilterSectionItemState();

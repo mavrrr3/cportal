@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class HorizontalListViewMain extends StatelessWidget {
+  final Color color;
+
   const HorizontalListViewMain({
     Key? key,
     required this.color,
   }) : super(key: key);
-  final Color color;
 
   @override
   Widget build(BuildContext context) {

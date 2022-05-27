@@ -169,14 +169,15 @@ class _ChangeThemeState extends State<ChangeTheme> {
 }
 
 class _BuildButton extends StatelessWidget {
+  final String text;
+  final Function() onTap;
+
   /// Кнопка для смены темы
   const _BuildButton({
     Key? key,
     required this.text,
     required this.onTap,
   }) : super(key: key);
-  final String text;
-  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {

@@ -21,12 +21,12 @@ dart_code_metrics:
   rules:
     # - avoid-dynamic
     - avoid-global-state
-    # - member-ordering:
-    #     alphabetize: false
-    #     order:
-    #       - public-fields
-    #       - private-fields
-    #       - constructors
+    - member-ordering:
+        alphabetize: false
+        order:
+          - public-fields
+          - private-fields
+          - constructors
     # - prefer-match-file-name:
     #     exclude:
     #       - test/**

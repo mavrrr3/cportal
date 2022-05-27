@@ -5,14 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchBox extends StatelessWidget {
+  final bool isAnimation;
+  final Duration animationDuration;
+
   const SearchBox({
     Key? key,
     required this.isAnimation,
     required this.animationDuration,
   }) : super(key: key);
 
-  final bool isAnimation;
-  final Duration animationDuration;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);

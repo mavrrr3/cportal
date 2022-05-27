@@ -6,6 +6,15 @@ part 'filter_model.g.dart';
 // ignore_for_file: annotate_overrides, overridden_fields
 @HiveType(typeId: 8)
 class FilterModel extends FilterEntity {
+  @HiveField(0)
+  final String headline;
+
+  @HiveField(1)
+  final bool isActive;
+
+  @HiveField(2)
+  final List<FilterItemEntity> items;
+
   const FilterModel({
     required this.headline,
     required this.items,
@@ -15,19 +24,15 @@ class FilterModel extends FilterEntity {
           items: items,
           isActive: isActive,
         );
-
-  @HiveField(0)
-  final String headline;
-
-  @HiveField(1)
-  final bool isActive;
-
-  @HiveField(2)
-  final List<FilterItemEntity> items;
 }
 
 @HiveType(typeId: 9)
 class FilterItemModel extends FilterItemEntity {
+  @HiveField(0)
+  final String name;
+  @HiveField(1)
+  final bool isActive;
+
   const FilterItemModel({
     required this.name,
     this.isActive = false,
@@ -35,9 +40,4 @@ class FilterItemModel extends FilterItemEntity {
           name: name,
           isActive: isActive,
         );
-
-  @HiveField(0)
-  final String name;
-  @HiveField(1)
-  final bool isActive;
 }

@@ -4,6 +4,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchInput extends StatelessWidget {
+  final Function(String) onChanged;
+  final TextEditingController controller;
+  final FocusNode? focusNode;
+  final Duration animationDuration;
+  final bool isAnimation;
+
   const SearchInput({
     Key? key,
     required this.controller,
@@ -12,11 +18,6 @@ class SearchInput extends StatelessWidget {
     this.animationDuration = const Duration(milliseconds: 300),
     this.isAnimation = false,
   }) : super(key: key);
-  final Function(String) onChanged;
-  final TextEditingController controller;
-  final FocusNode? focusNode;
-  final Duration animationDuration;
-  final bool isAnimation;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +78,10 @@ class SearchInput extends StatelessWidget {
   ) {
     final double width = MediaQuery.of(context).size.width;
 
-  
-    return ResponsiveWrapper.of(context).isSmallerThan(TABLET) ? isAnimation ? width - 32 : width - 84 : 584;
+    return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
+        ? isAnimation
+            ? width - 32
+            : width - 84
+        : 584;
   }
 }

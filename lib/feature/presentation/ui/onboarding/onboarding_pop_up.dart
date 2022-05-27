@@ -7,6 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingPopUp extends StatefulWidget {
+  final bool isBackArrow;
+  final bool isNextArrow;
+  final Function()? onBack;
+  final Function()? onNext;
+  final Widget child;
+
   const OnBoardingPopUp({
     Key? key,
     required this.child,
@@ -15,12 +21,6 @@ class OnBoardingPopUp extends StatefulWidget {
     this.onBack,
     this.onNext,
   }) : super(key: key);
-
-  final bool isBackArrow;
-  final bool isNextArrow;
-  final Function()? onBack;
-  final Function()? onNext;
-  final Widget child;
 
   @override
   State<OnBoardingPopUp> createState() => _OnBoardingPopUpState();
@@ -67,6 +67,13 @@ class _OnBoardingPopUpState extends State<OnBoardingPopUp> {
 }
 
 class OnBoardingContentWeb extends StatefulWidget {
+  final List<OnboardingEntity> content;
+  final int currentIndex;
+  final PageController pageController;
+  final AnimationController animationController;
+  final bool isButton;
+  final Function? onTap;
+
   const OnBoardingContentWeb({
     Key? key,
     required this.content,
@@ -76,12 +83,7 @@ class OnBoardingContentWeb extends StatefulWidget {
     this.isButton = false,
     this.onTap,
   }) : super(key: key);
-  final List<OnboardingEntity> content;
-  final int currentIndex;
-  final PageController pageController;
-  final AnimationController animationController;
-  final bool isButton;
-  final Function? onTap;
+
   @override
   State<OnBoardingContentWeb> createState() => _OnBoardingContentWebState();
 }

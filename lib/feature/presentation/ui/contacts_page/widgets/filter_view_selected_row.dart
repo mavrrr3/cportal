@@ -3,16 +3,16 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/ta
 import 'package:flutter/material.dart';
 
 class FilterViewSelectedRow extends StatelessWidget {
+  final String headline;
+  final List<FilterItemEntity> selectedItems;
+  final Function(FilterItemEntity) onClose;
+
   const FilterViewSelectedRow({
     Key? key,
     required this.headline,
     required this.selectedItems,
     required this.onClose,
   }) : super(key: key);
-
-  final String headline;
-  final List<FilterItemEntity> selectedItems;
-  final Function(FilterItemEntity) onClose;
 
   @override
   Widget build(BuildContext context) {
