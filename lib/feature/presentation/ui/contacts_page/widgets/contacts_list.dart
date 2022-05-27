@@ -7,7 +7,7 @@ class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
   final Function(int) onTap;
 
-  /// Колонка с контактами
+  /// Колонка с контактами.
   const ContactsList({
     Key? key,
     required this.items,
@@ -38,7 +38,7 @@ class ContactsList extends StatelessWidget {
 class _ContactItem extends StatelessWidget {
   final ProfileEntity item;
 
-  /// Карточка контакта
+  /// Карточка контакта.
   const _ContactItem({
     Key? key,
     required this.item,

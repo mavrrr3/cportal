@@ -37,7 +37,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     );
   }
 
-  // Получение данных от API
+  // Получение данных от API.
   FutureOr<void> _onFetch(
     FetchFiltersEvent event,
     Emitter emit,
@@ -73,7 +73,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     debugPrint('Отработал эвент: $event');
   }
 
-  // Обработка раскрытия раздела в фильтре
+  // Обработка раскрытия раздела в фильтре.
   FutureOr<void> _onExpandSection(
     FilterExpandSectionEvent event,
     Emitter emit,
@@ -86,7 +86,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     // log('=== ${_filter}');
 
     filters[event.index] = filter;
-    // log('///');
 
     emit(FilterLoadingState());
     emit(FilterLoadedState(filters: filters));
@@ -94,7 +93,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     debugPrint('Отработал эвент: $event');
   }
 
-  // Обработка выбора пункта в фильтре
+  // Обработка выбора пункта в фильтре.
   FutureOr<void> _onSelect(
     FilterSelectItemEvent event,
     Emitter emit,
@@ -109,8 +108,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     final FilterEntity filterWithSelect =
         filter.copyWith(items: itemsWithSelect);
     filters[event.filterIndex] = filterWithSelect;
-
-    // log(filterWithSelect.toString());
 
     emit(FilterLoadingState());
     emit(FilterLoadedState(filters: filters));

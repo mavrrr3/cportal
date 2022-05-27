@@ -62,7 +62,7 @@ class BodyWidget extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 260),
-        // TODO Реализовать получение QR кода из БД
+        // TODO Реализовать получение QR кода из БД.
         QrImage(
           data: 'data',
           size: 206,

@@ -244,7 +244,7 @@ Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
     Switch(
       activeTrackColor: theme.primaryColor.withOpacity(0.38),
       activeColor: theme.primaryColor,
-      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
+      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9.
       inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
       inactiveThumbColor: theme.splashColor,
       value: val,

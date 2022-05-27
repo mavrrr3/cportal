@@ -30,7 +30,7 @@ class NewsHorizontalScroll extends StatelessWidget {
             padding: const EdgeInsets.only(top: 12),
             child: Row(
               children: [
-                ///Условие, чтобы не отрисовывалась новость, которая сейчас открыта
+                /// Условие, чтобы не отрисовывалась новость, которая сейчас открыта.
                 if (items[i] != currentArticle)
                   Padding(
                     padding: EdgeInsets.only(

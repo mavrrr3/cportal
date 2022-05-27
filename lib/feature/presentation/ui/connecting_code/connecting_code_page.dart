@@ -206,7 +206,6 @@ class _CellCodeInputState extends State<CellCodeInput> {
         errorPinTheme: defaultPinTheme.copyWith(
           decoration: BoxDecoration(color: theme.hintColor),
         ),
-        // errorBuilder: ,
         focusedPinTheme: PinTheme(
           width: 52.w,
           height: 62.h,
@@ -224,6 +223,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
           ),
         ),
         showCursor: false,
+        // ignore: format-comment
         // cursor: cursor,
         onChanged: (value) =>
             context.read<AuthBloc>().add(ChangeAuthCode(value)),

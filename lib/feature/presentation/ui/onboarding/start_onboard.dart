@@ -26,7 +26,7 @@ class StartBoarding extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    // Контент страниц онбординга
+    // Контент страниц онбординга.
     final List<OnboardingEntity> onboardingContent = [
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title1,

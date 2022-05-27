@@ -74,7 +74,7 @@ class _OnboardingLearningCourseState extends State<OnboardingLearningCourse>
               ButtonEnum.blue,
               AppLocalizations.of(context)!.go_over,
               () {
-                //  TODO: обработать навигацию на прохождение курса
+                // TODO: обработать навигацию на прохождение курса.
               },
               Size(double.infinity, 48.h),
             ),

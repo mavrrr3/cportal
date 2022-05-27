@@ -33,7 +33,7 @@ class _OnboardingState extends State<Onboarding>
     _animationController = AnimationController(vsync: this);
     _onboardingContent = widget.content;
 
-    // Время показа текущей страницы
+    // Время показа текущей страницы.
     _pageDuration = const Duration(seconds: 5);
 
     _loadPage(animateToPage: false);
@@ -77,14 +77,14 @@ class _OnboardingState extends State<Onboarding>
           }
         },
         child:
-            // Контент
+            // Контент.
             SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 17),
-              // Виджет прогресса
+              // Виджет прогресса.
               SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -107,7 +107,7 @@ class _OnboardingState extends State<Onboarding>
                 ),
               ),
 
-              // Страница онбординга
+              // Страница онбординга.
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: SizedBox(

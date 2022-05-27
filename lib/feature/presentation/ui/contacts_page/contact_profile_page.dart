@@ -33,7 +33,7 @@ class ContactProfilePage extends StatelessWidget {
             ),
             body: Stack(
               children: [
-                // Action buttons
+                // Action buttons.
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
@@ -41,21 +41,21 @@ class ContactProfilePage extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Call
+                        // Call.
                         _ActionButton(
                           img: 'assets/icons/phone.svg',
                           onTap: () {},
                         ),
                         const SizedBox(width: 16),
 
-                        // Message
+                        // Message.
                         _ActionButton(
                           img: 'assets/icons/message.svg',
                           onTap: () {},
                         ),
                         const SizedBox(width: 16),
 
-                        // Send email
+                        // Send email.
                         _ActionButton(
                           img: 'assets/icons/email.svg',
                           onTap: () {},
@@ -65,7 +65,7 @@ class ContactProfilePage extends StatelessWidget {
                   ),
                 ),
 
-                // Content
+                // Content.
                 SingleChildScrollView(
                   child: SafeArea(
                     child: Padding(
@@ -73,7 +73,7 @@ class ContactProfilePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Back button
+                          // Back button.
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -85,7 +85,7 @@ class ContactProfilePage extends StatelessWidget {
                           ),
                           const SizedBox(height: 41),
 
-                          // Profile image
+                          // Profile image.
                           Align(
                             alignment: Alignment.center,
                             child: AvatarBox(
@@ -95,7 +95,7 @@ class ContactProfilePage extends StatelessWidget {
                           ),
                           const SizedBox(height: 12),
 
-                          // Full name
+                          // Full name.
                           Align(
                             alignment: Alignment.center,
                             child: Text(
@@ -115,33 +115,33 @@ class ContactProfilePage extends StatelessWidget {
                             text: user.position.description,
                           ),
 
-                          // Department
+                          // Department.
                           _BuildInfo(
                             headline: AppLocalizations.of(context)!.department,
                             text: user.position.description,
                           ),
 
-                          // Office phone
+                          // Office phone.
                           _BuildInfo(
                             headline:
                                 AppLocalizations.of(context)!.office_phone,
                             text: user.phone.first.number,
                           ),
 
-                          // Self phone
+                          // Self phone.
                           _BuildInfo(
                             headline: AppLocalizations.of(context)!.self_phone,
                             text:
                                 '${user.phone[1].suffix} ${user.phone[1].number}',
                           ),
 
-                          // Birth date
+                          // Birth date.
                           _BuildInfo(
                             headline: AppLocalizations.of(context)!.birth_date,
                             text: user.birthday,
                           ),
 
-                          // Email
+                          // Email.
                           _BuildInfo(
                             headline: AppLocalizations.of(context)!.email,
                             text: user.email,
@@ -166,7 +166,7 @@ class _BuildInfo extends StatelessWidget {
   final String headline;
   final String text;
 
-  /// Элемент информации
+  /// Элемент информации.
   const _BuildInfo({
     Key? key,
     required this.headline,
@@ -235,7 +235,7 @@ class _ActionButton extends StatelessWidget {
   final String img;
   final Function onTap;
 
-  /// Кнопка взаимодействия с Юзером [Звонок, Чат, Почта]
+  /// Кнопка взаимодействия с Юзером [Звонок, Чат, Почта].
   const _ActionButton({
     Key? key,
     required this.img,

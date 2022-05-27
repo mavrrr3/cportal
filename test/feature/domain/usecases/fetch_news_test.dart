@@ -58,14 +58,14 @@ void main() {
   test(
     'Return [NewsEntity] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockNewsRepository.fetchNews(any()))
           .thenAnswer((_) async => Right<Failure, NewsEntity>(tNewsEntity));
 
-      //act
+      // Act..
       final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
 
-      //assert
+      // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -85,14 +85,14 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockNewsRepository.fetchNews(any()))
           .thenAnswer((_) async => Left<Failure, NewsEntity>(tFailure));
 
-      //act
+      // Act..
       final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
 
-      //assert
+      // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

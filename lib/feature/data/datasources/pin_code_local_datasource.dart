@@ -1,5 +1,4 @@
 import 'dart:developer';
-// import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -27,10 +26,10 @@ class PinCodeDataSource implements IPinCodeDataSource {
 
     if (kDebugMode) log('pinCode записал в кэш $pinCode');
 
-    // Закрывает Box
+    // Закрывает Box.
     await Hive.box<String>('pin_code').close();
 
-    // Возвращает записаный ПИН
+    // Возвращает записаный ПИН.
     return pinCode;
   }
 
@@ -41,7 +40,7 @@ class PinCodeDataSource implements IPinCodeDataSource {
     // Открывает Box
     final box = await Hive.openBox<String>('pin_code');
 
-    // Запрашивает из локальной базы есть ли строка с ключём 'pin_code'
+    // Запрашивает из локальной базы есть ли строка с ключём 'pin_code'.
     final String? localPin = box.get('pin_code');
     if (kDebugMode) log('pinCode в кэше $localPin');
 
@@ -52,7 +51,7 @@ class PinCodeDataSource implements IPinCodeDataSource {
     // Закрывает Box
     await Hive.box<String>('pin_code').close();
 
-    // Возвращает записаный ПИН
+    // Возвращает записаный ПИН.
     return localPin;
   }
 }

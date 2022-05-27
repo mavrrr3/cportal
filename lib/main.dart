@@ -39,7 +39,7 @@ void main() {
       WidgetsFlutterBinding.ensureInitialized();
       await AppConfig.load();
       await di.init();
-      // await Firebase.initializeApp();
+
       await Hive.initFlutter();
       _hiveAdaptersInit();
 
@@ -60,7 +60,7 @@ void main() {
     (error, stackTrace) {
       if (kDebugMode) {
         print('Caught Framework error');
-        // В debug режиме выводим ошибки в консоль
+        // В debug режиме выводим ошибки в консоль.
         FlutterError.dumpErrorToConsole(
           FlutterErrorDetails(exception: error),
         );

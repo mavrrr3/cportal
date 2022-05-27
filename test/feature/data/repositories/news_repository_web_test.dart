@@ -54,17 +54,15 @@ void main() {
       ],
     );
 
-    // final NewsEntity tNewsEntity = tNewsModel;
-
     test(
       'should return NewsEntity when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.fetchNews(any()))
             .thenAnswer((_) async => tNewsModel);
-        //act
+        // Act..
         final result = await repository.fetchNews(tNewsTypeCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
         expect(result, equals(Right<dynamic, NewsEntity>(tNewsModel)));
       },
@@ -73,12 +71,12 @@ void main() {
     test(
       'should return serverfailure when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.fetchNews(any()))
             .thenThrow(ServerException());
-        //act
+        // Act..
         final result = await repository.fetchNews(tNewsTypeCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
 
         expect(

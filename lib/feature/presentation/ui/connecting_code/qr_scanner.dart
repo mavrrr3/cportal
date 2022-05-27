@@ -39,7 +39,7 @@ class _QrScannerState extends State<QrScanner> {
     qrController!.resumeCamera();
   }
 
-  /// For Camera Flash Light
+  /// For Camera Flash Light.
   Future<void> _cameraInit() async {
     final cameras = await availableCameras();
     final firstCamera = cameras.first;

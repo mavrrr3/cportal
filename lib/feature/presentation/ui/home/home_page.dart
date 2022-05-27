@@ -81,7 +81,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
-  // Для онбординга
+  // Для онбординга.
   late bool _isOnboarding;
   late bool _isWelcome;
   late bool _isLearningCourse;
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage>
     _isOnboarding = false;
     _isLearningCourse = false;
 
-    // Onboarding page duration
+    // Onboarding page duration.
     _pageDuration = const Duration(seconds: 5);
 
     _animationController.addStatusListener((status) {
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage>
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused && !kIsWeb) {
-      // TODO выставить нужный delay
+      // TODO выставить нужный delay.
       timer = Timer(
         const Duration(seconds: 10000000000000),
         _loadPinRequest,
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage>
                     visibleWhen: const [
                       Condition<dynamic>.largerThan(name: MOBILE),
                     ],
-                    // Меню Web
+                    // Меню Web.
                     child: DesktopMenu(
                       onboarding: () {
                         setState(
@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
 
-                  // Текущая страница
+                  // Текущая страница.
 
                   Expanded(
                     child:
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage>
                       : AppColors.darkOnboardingBG.withOpacity(0.95),
                 ),
 
-              // Закрыть онбординг
+              // Закрыть онбординг.
               if (_isOnboarding || _isWelcome || _isLearningCourse)
                 Align(
                   alignment: Alignment.topRight,
@@ -243,13 +243,13 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
 
-              // Добро пожаловать
+              // Добро пожаловать.
               if (_isWelcome) _welcome(context, theme),
 
-              // Контент онбординга и его навигация
+              // Контент онбординга и его навигация.
               if (_isOnboarding) _onBoarding(),
 
-              // Обучающий курс (Последний этап онбординга)
+              // Обучающий курс (Последний этап онбординга).
               if (_isLearningCourse) _learningCourse(context),
             ],
           ),
@@ -389,7 +389,7 @@ class _HomePageState extends State<HomePage>
             pageController: _pageController,
             isButton: true,
             onTap: () {
-              // TODO: Отработать переход на курс
+              // TODO: Отработать переход на курс.
             },
             content: [
               OnboardingEntity(

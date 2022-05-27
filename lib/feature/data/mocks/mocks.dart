@@ -1,9 +1,9 @@
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-// Временный файл с моками данных на разных страницах, чтобы не засорять основной код
+// Временный файл с моками данных на разных страницах, чтобы не засорять основной код.
 
 class Mocks {
-  // Контакты
+  // Контакты.
   static final List<ProfileEntity> contacts = [
     ProfileEntity(
       id: '111',
@@ -106,7 +106,7 @@ class Mocks {
     ),
   ];
 
-  // Фильтр
+  // Фильтр.
   static final List<FilterEntity> filter = [
     const FilterEntity(
       headline: 'Компания',

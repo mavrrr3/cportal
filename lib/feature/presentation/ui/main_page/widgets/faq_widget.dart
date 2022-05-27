@@ -26,7 +26,7 @@ class FaqWidget extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 24),
               child: FaqRow(
                 text: faqList[i],
-                // onTap: () {},
+                // OnTap: () {},.
               ),
             );
           },

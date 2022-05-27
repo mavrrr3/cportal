@@ -156,7 +156,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
     }
   }
 
-  /// Вибрация по нажатию
+  /// Вибрация по нажатию.
   void _vibrate(bool canVibrate) {
     try {
       if (canVibrate) {
@@ -172,7 +172,7 @@ class _BuildButton extends StatelessWidget {
   final String text;
   final Function() onTap;
 
-  /// Кнопка для смены темы
+  /// Кнопка для смены темы.
   const _BuildButton({
     Key? key,
     required this.text,

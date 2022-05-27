@@ -50,15 +50,15 @@ void main() {
   test(
     'Return [ProfileEntity] from repository',
     () async {
-      // arange
+      // Arrange.
       when(mockProfileRepository.getSingleProfile(tProfileId))
           .thenAnswer((_) async => Right(tProfileEntity));
 
-      // act
+      // Act.
       final Either<Failure, ProfileEntity> result =
           await useCase.call(GetSingleProfileParams(id: tProfileId));
 
-      // assert
+      // Assert.
       void getProfileOrEntity(Either<Failure, ProfileEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -78,15 +78,15 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      // arange
+      // Arrange.
       when(mockProfileRepository.getSingleProfile(tProfileId))
           .thenAnswer((_) async => Left(tFailure));
 
-      // act
+      // Act.
       final Either<Failure, ProfileEntity> result =
           await useCase.call(GetSingleProfileParams(id: tProfileId));
 
-      // assert
+      // Assert.
       void getProfileOrEntity(Either<Failure, ProfileEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

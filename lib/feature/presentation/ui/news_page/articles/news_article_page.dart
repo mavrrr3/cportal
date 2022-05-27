@@ -63,7 +63,7 @@ class NewsArticlePage extends StatelessWidget {
           );
         }
 
-        /// TODO: Отработать другие стейты
+        // TODO: Отработать другие стейты.
         return const SizedBox();
       },
     );
@@ -120,7 +120,7 @@ class _Mobile extends StatelessWidget {
                   ),
                 ),
 
-                /// Колонка с контентом статьи
+                /// Колонка с контентом статьи.
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),

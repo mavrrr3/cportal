@@ -34,14 +34,14 @@ void main() {
   });
 
   test('should be a subclass of [ProfileEntity] entity', () async {
-    //assert
+    // Assert.
     expect(tProfileModel, isA<ProfileEntity>());
   });
 
   test(
     'should return valid [ProfileModel] model',
     () async {
-      // arrange
+      // Arrange.
       const String stringProfile = '''
                           {
 "id": "A1B2C3D4E5",
@@ -76,24 +76,24 @@ void main() {
 "date_updated": "2022-03-21T14:37:12.068Z"
 }''';
 
-      //act
+      // Act..
       final ProfileModel profileModelFromString =
           profileModelFromJson(stringProfile);
 
-      //assert
+      // Assert.
       expect(profileModelFromString, equals(tProfileModel));
     },
   );
 
   test('should return ', () async {
-    // arrange
+    // Arrange.
     const String expectedString =
         r'{"id":"A1B2C3D4E5","external_id":"8877","first_name":"Александр","last_name":"Дымченко","middle_name":"Валерьевич","birthday":"20.11.1984","email":"aaa@novostal.ru","photo_link":"https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg","active":true,"position":{"id":"a1b2c3d4","description":"Начальник отдела","department":"Информационные технологии"},"phone":["{\"number\":\"25-425-655\",\"suffix\":\"033\",\"primary\":true}","{\"number\":\"987-65-06\",\"suffix\":\"033\",\"primary\":false}"],"user_created":"id_user_created","date_created":"2022-03-21T14:37:12.068Z","user_update":"id_user_updated","date_updated":"2022-03-21T14:37:12.068Z"}';
 
-    //act
+    // Act.
     final result = profileModelToJson(tProfileModel);
 
-    //assert
+    // Assert.
     expect(result, equals(expectedString));
   });
 }

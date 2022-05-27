@@ -40,7 +40,7 @@ class _NewsPageState extends State<NewsPage> {
     _currentIndex = 0;
   }
 
-  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы
+  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы.
   void _contentInit(NewsCodeEnum type) {
     return BlocProvider.of<FetchNewsBloc>(context, listen: false)
         .add(FetchNewsEventImpl(newsCodeEnum: type));
@@ -48,7 +48,7 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Для обновления стейта при смене страницы в BottomBar
+    // Для обновления стейта при смене страницы в BottomBar.
     if (widget.pageType != _currentType) {
       _currentType = widget.pageType;
       _contentInit(_currentType);
@@ -88,7 +88,7 @@ class _NewsPageState extends State<NewsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Категории
+                      // Категории.
                       ScrollableTabsWidget(
                         currentIndex: _currentIndex,
                         items: state.tabs,
@@ -119,7 +119,7 @@ class _NewsPageState extends State<NewsPage> {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     children: [
-                                      // Генерация страниц под все категории
+                                      // Генерация страниц под все категории.
 
                                       ...List.generate(
                                         state.tabs.length,
@@ -163,7 +163,7 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  // Отрисовка контента по типу страницы
+  // Отрисовка контента по типу страницы.
   Widget _content(FetchNewsLoadedState state, double width) {
     final List<ArticleEntity> articles = state.news.article;
     log('===================== ${state.tabs} ===========================');
@@ -173,7 +173,7 @@ class _NewsPageState extends State<NewsPage> {
       children: [
         const SizedBox(height: 20),
 
-        // Контент
+        // Контент.
         if (widget.pageType == NewsCodeEnum.news)
           !ResponsiveWrapper.of(context).isLargerThan(TABLET)
               ? Expanded(

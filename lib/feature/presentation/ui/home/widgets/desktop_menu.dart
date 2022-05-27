@@ -83,7 +83,7 @@ class DesktopMenu extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Генерация навигационных элементов меню
+            // Генерация навигационных элементов меню.
             ...List.generate(
               menuItems.length,
               (index) => GestureDetector(

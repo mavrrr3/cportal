@@ -49,13 +49,13 @@ void main() {
     test(
       'should return UserEntity when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.login(any()))
             .thenAnswer((_) async => tUserModel);
 
-        //act
+        // Act..
         final result = await repository.login(tConnectingCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.login(tConnectingCode));
         expect(result, equals(Right<dynamic, UserEntity>(tUserEntity)));
       },
@@ -64,24 +64,24 @@ void main() {
     test(
       'should put UserModel to cache when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.login(any()))
             .thenAnswer((_) async => tUserModel);
-        //act
+        // Act..
         await repository.login(tConnectingCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.login(tConnectingCode));
       },
     );
     test(
       'should return serverfailure when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.login(any()))
             .thenThrow(ServerException());
-        //act
+        // Act..
         final result = await repository.login(tConnectingCode);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.login(tConnectingCode));
         verifyZeroInteractions(mockLocalDataSource);
         expect(
@@ -107,29 +107,29 @@ void main() {
     );
 
     test('should return [bool] if user is Auth', () async {
-      //arrange
+      // Arrange.
       when(() => mockLocalDataSource.currentUserToCache(tUserModel))
           .thenAnswer((_) async => Future.value());
       when(() => mockLocalDataSource.getCurrentUserFromCache())
           .thenAnswer((_) async => tUserModel);
 
-      //act
+      // Act..
       final Either<Failure, bool> result = await repository.checkAuth();
 
-      //assert
+      // Assert.
       verify(() => mockLocalDataSource.getCurrentUserFromCache());
       expect(result, equals(result));
     });
 
     test('should return [Failure] if user is not Auth', () async {
-      //arrange
+      // Arrange.
       when(() => mockLocalDataSource.getCurrentUserFromCache())
           .thenThrow(CacheException());
 
-      //act
+      // Act..
       final Either<Failure, bool> result = await repository.checkAuth();
 
-      //assert
+      // Assert.
       verify(() => mockLocalDataSource.getCurrentUserFromCache());
       expect(result, equals(result));
     });

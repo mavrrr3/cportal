@@ -50,7 +50,7 @@ import 'package:local_auth/local_auth.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  // BLOC/CUBIT
+  // BLOC/CUBIT.
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
   sl.registerFactory(() => AuthBloc(sl(), sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
@@ -59,7 +59,7 @@ Future<void> init() async {
   sl.registerFactory(NavBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
 
-  // USECASE
+  // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
   sl.registerLazySingleton(() => SearchProfileUseCase(sl()));
   sl.registerLazySingleton(() => LoginUserUseCase(sl()));
@@ -137,7 +137,7 @@ Future<void> init() async {
     ),
   );
 
-  // DATASORCE
+  // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
     () => ProfileRemoteDataSource(sl()),
   );
@@ -172,14 +172,13 @@ Future<void> init() async {
     () => FilterLocalDataSource(sl()),
   );
 
-  // CORE
+  // CORE.
   if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
   if (!kIsWeb) {
     sl.registerLazySingleton<IBiometricInfo>(() => BiometricInfo(sl()));
   }
 
-  // EXTERNAL
-
+  // EXTERNAL.
   sl.registerLazySingleton(InternetConnectionChecker.new);
   sl.registerLazySingleton(LocalAuthentication.new);
   sl.registerLazySingleton<HiveInterface>(() => Hive);

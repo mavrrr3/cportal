@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.dart';
@@ -11,13 +9,8 @@ class FetchFiltersUseCase {
 
   FetchFiltersUseCase(this.filterRepository);
 
-  // @override
-  Future<Either<Failure, List<FilterEntity>>> call() async {
-    final data = await filterRepository.fetchFilters();
-    log('*/*/* $data');
-
-    return data;
-  }
+  Future<Either<Failure, List<FilterEntity>>> call() async =>
+      filterRepository.fetchFilters();
 }
 
 class FetchFiltersParams extends Equatable {

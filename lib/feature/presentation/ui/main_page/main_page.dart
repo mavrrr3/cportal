@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
-  /// Анимация при нажатии на поиск
+  /// Анимация при нажатии на поиск.
   void _onFocusChange() {
     if (_searchFocus.hasFocus) {
       setState(() {

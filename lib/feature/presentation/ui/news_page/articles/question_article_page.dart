@@ -68,7 +68,7 @@ class QuestionArticlePage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Кнопка назад для Web
+                                // Кнопка назад для Web.
                                 if (ResponsiveWrapper.of(context)
                                     .isLargerThan(TABLET))
                                   Padding(
@@ -128,7 +128,7 @@ class QuestionArticlePage extends StatelessWidget {
                                               ? 4
                                               : 19,
                                         ),
-                                        // Кнопка назад mobile
+                                        // Кнопка назад mobile.
                                         if (!ResponsiveWrapper.of(context)
                                             .isLargerThan(TABLET))
                                           GestureDetector(

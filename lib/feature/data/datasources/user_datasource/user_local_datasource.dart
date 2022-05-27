@@ -18,6 +18,7 @@ abstract class IUserLocalDataSource {
 class UserLocalDataSource implements IUserLocalDataSource {
   @override
   Future<void> currentUserToCache(UserModel user) async {
+    // ignore: format-comment
     // await Hive.deleteBoxFromDisk('single_user');
     if (kDebugMode) log('UserModel сохранил в кэш $user');
 

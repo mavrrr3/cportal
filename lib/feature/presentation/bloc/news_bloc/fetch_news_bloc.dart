@@ -7,7 +7,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_e
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-// Инам для выдачи NewsEntity Новости, Вопросы, Справочник
+// Инам для выдачи NewsEntity Новости, Вопросы, Справочник.
 enum NewsCodeEnum { news, quastion, catalog }
 
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
@@ -52,7 +52,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         ));
       },
       (news) {
-        /// Создание листа со всеми вкладками
+        /// Создание листа со всеми вкладками.
         final List<String> tabs = [];
         if (event.newsCodeEnum == NewsCodeEnum.news) {
           tabs.add('Все');

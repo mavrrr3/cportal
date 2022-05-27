@@ -50,13 +50,13 @@ class _ContactsPageState extends State<ContactsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Поиск
+                  // Поиск.
                   SearchInput(
                     controller: _searchController,
                     onChanged: (text) {},
                   ),
 
-                  // Фильтр
+                  // Фильтр.
                   _FilterButton(
                     onTap: () async {
                       await showModalBottomSheet<void>(
@@ -84,7 +84,7 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
             const SizedBox(height: 31),
 
-            // Выбранные фильтры
+            // Выбранные фильтры.
             Padding(
               padding: getHorizontalPadding(context),
               child: BlocBuilder<FilterBloc, FilterState>(
@@ -94,11 +94,11 @@ class _ContactsPageState extends State<ContactsPage> {
                       shrinkWrap: true,
                       itemCount: state.filters.length,
                       itemBuilder: (context, index) {
-                        // Выбран ли хоть один пункт в текущем разделе фильтра
+                        // Выбран ли хоть один пункт в текущем разделе фильтра.
                         final bool isActive = state.filters[index].items
                             .any((element) => element.isActive);
 
-                        // если isActive - создаем список только с выбранными пунктами в текущем разделе
+                        // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
                         final List<FilterItemEntity> selectedItems = [];
                         if (isActive) {
                           for (final item in state.filters[index].items) {
@@ -108,7 +108,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           }
                         }
 
-                        // Рендеринг
+                        // Рендеринг.
                         return isActive
                             ? FilterViewSelectedRow(
                                 headline: state.filters[index].headline,
@@ -129,13 +129,13 @@ class _ContactsPageState extends State<ContactsPage> {
                     );
                   }
 
-                  // TODO: Обработать другие стейты
+                  // TODO: Обработать другие стейты.
                   return const SizedBox();
                 },
               ),
             ),
 
-            // Избранные
+            // Избранные.
             if (_contacts.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(
@@ -152,7 +152,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ),
 
-            // Колонка контактов
+            // Колонка контактов.
             Padding(
               padding: getHorizontalPadding(context),
               child: ContactsList(

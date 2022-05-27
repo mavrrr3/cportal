@@ -437,7 +437,7 @@ Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
       activeTrackColor: theme.primaryColor.withOpacity(0.38),
       activeColor: theme.primaryColor,
       hoverColor: Colors.transparent,
-      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
+      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9.
       inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
       inactiveThumbColor: theme.splashColor,
       value: val,
@@ -596,7 +596,7 @@ class _BuildButtonChangeTheme extends StatelessWidget {
   final String text;
   final Function() onTap;
 
-  /// Кнопка для смены темы
+  /// Кнопка для смены темы.
   const _BuildButtonChangeTheme({
     Key? key,
     required this.text,
@@ -606,7 +606,6 @@ class _BuildButtonChangeTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    // final double width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,

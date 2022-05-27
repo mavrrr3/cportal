@@ -2,7 +2,7 @@ import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_men
 
 class NavBarState {
   final int currentIndex;
-  // TODO: Вынести в файл с константами
+  // TODO: Вынести в файл с константами.
   final List<MenuButtonModel> menuItems = [
     MenuButtonModel(
       img: 'assets/icons/navbar/main.svg',
