@@ -196,7 +196,7 @@ class _PinCodeRepeatState extends State<PinCodeRepeat> {
   @override
   void dispose() {
     _pinRepeatController.dispose();
-    // _pinFocusNode.dispose();
+    // _pinFocusNode.dispose();.
     super.dispose();
   }
 
