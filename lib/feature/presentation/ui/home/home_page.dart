@@ -3,15 +3,15 @@ import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/bottom_navigation_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage>
       const ContactsPage(),
     ];
 
-    return BlocBuilder<NavBarBloc, NavBarState>(
+    return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(

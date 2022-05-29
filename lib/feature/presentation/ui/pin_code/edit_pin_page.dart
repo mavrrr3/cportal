@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,8 +12,8 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_ic
 final _pinController = TextEditingController();
 final _pinFocusNode = FocusNode();
 
-class InputPinPage extends StatelessWidget {
-  const InputPinPage({Key? key}) : super(key: key);
+class EditPinPage extends StatelessWidget {
+  const EditPinPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
@@ -65,14 +65,15 @@ class BodyWidget extends StatelessWidget {
     PinCodeInputEnum _changeBody(PinCodeInputEnum input) {
       switch (input) {
         case PinCodeInputEnum.create:
-          return PinCodeInputEnum.input;
-
-        case PinCodeInputEnum.wrongInput:
-          return PinCodeInputEnum.wrongInput;
+          return PinCodeInputEnum.edit;
+        case PinCodeInputEnum.repeat:
+          return PinCodeInputEnum.repeat;
+        case PinCodeInputEnum.wrong:
+          return PinCodeInputEnum.wrong;
         case PinCodeInputEnum.error:
           return PinCodeInputEnum.error;
         default:
-          return PinCodeInputEnum.create;
+          return PinCodeInputEnum.edit;
       }
     }
 
@@ -140,7 +141,7 @@ class _PinCodeInputState extends State<PinCodeInput> {
           showCursor: false,
           onChanged: (value) {
             pinCodeBloc.add(
-              ChangedInputPinCode(
+              ChangedPinCode(
                 status: state.status,
                 pinCode: value,
               ),
@@ -149,12 +150,21 @@ class _PinCodeInputState extends State<PinCodeInput> {
           onCompleted: (value) {
             state.cleanField(_pinController);
 
-            pinCodeBloc.add(
-              InputPinCodeSubmit(
-                pinCode: value,
-                status: state.status,
-              ),
-            );
+            if (state.status != PinCodeInputEnum.repeat) {
+              pinCodeBloc.add(
+                EditPinCodeSubmit(
+                  pinCode: value,
+                  status: state.status,
+                ),
+              );
+            } else {
+              pinCodeBloc.add(
+                RepeatPinCodeSubmit(
+                  pinCode: value,
+                  status: state.status,
+                ),
+              );
+            }
           },
         );
       },
@@ -239,16 +249,7 @@ class HeaderTextWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SvgIcon(
-              null,
-              path: 'logo_grey.svg',
-              width: 24.0.w,
-            ),
-            SvgIcon(
-              theme.primaryColor,
-              path: 'finger_print.svg',
-              width: 24.0.w,
-            ),
+            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
           ],
         ),
         SizedBox(height: 31.h),
@@ -288,8 +289,9 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               error ?? '',
-              style:
-                  theme.textTheme.headline6!.copyWith(color: theme.errorColor),
+              style: theme.textTheme.headline6!.copyWith(
+                color: theme.errorColor,
+              ),
             ),
           ],
         ),

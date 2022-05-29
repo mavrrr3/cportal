@@ -7,18 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:flutter/material.dart';
 
-enum PinCodeInputEnum {
-  input,
-  inputing,
-  wrongInput,
-  create,
-  wrong,
-  repeat,
-  edit,
-  error,
-  done,
-}
-
 class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   PinCodeEnterUseCase pinCodeEnter;
   PinCodeBloc(
@@ -221,6 +209,18 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       }
     }
   }
+}
+
+enum PinCodeInputEnum {
+  input,
+  inputing,
+  wrongInput,
+  create,
+  wrong,
+  repeat,
+  edit,
+  error,
+  done,
 }
 
 class PinCodeState extends Equatable {

@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
 
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
