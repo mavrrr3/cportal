@@ -27,10 +27,10 @@ dart_code_metrics:
           - public-fields
           - private-fields
           - constructors
-    # - prefer-match-file-name:
-    #     exclude:
-    #       - test/**
-    #       - lib/feature/data/datasources/**
+    - prefer-match-file-name:
+        exclude:
+          - test/**
+          - lib/feature/data/datasources/**
     - always-remove-listener
     - newline-before-return
     - prefer-async-await
