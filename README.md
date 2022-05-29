@@ -1,3 +1,5 @@
+<a href="https://github.com/mavrrr3/cportal/actions"><img src="https://github.com/mavrrr3/cportal/workflows/test-my-app/badge.svg" alt="Build Status"></a>
+
 # cportal_flutter
 
 A new Flutter project.
