@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

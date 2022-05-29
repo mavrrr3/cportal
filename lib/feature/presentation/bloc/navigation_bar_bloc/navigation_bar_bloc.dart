@@ -5,23 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
-  NavBarBloc() : super(NavBarState()) {
+class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
+  NavigationBarBloc() : super(NavigationBarState()) {
     _setupEvents();
   }
 
   void _setupEvents() {
-    on<NavBarEventImpl>(
+    on<NavigationBarEventImpl>(
       _onEvent,
       transformer: bloc_concurrency.sequential(),
     );
   }
 
   FutureOr<void> _onEvent(
-    NavBarEventImpl event,
+    NavigationBarEventImpl event,
     Emitter emit,
   ) async {
-    emit(NavBarState(currentIndex: event.index));
+    emit(NavigationBarState(currentIndex: event.index));
     debugPrint('Отработал эвент: $event');
   }
 }

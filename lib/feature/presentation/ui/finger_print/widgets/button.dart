@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 
-enum ButtonEnum {
-  blue,
-  outlined,
-  text,
-}
-
 class Button {
   // ignore: long-parameter-list
   static ButtonStyleButton factory(
@@ -62,6 +56,12 @@ class Button {
         );
     }
   }
+}
+
+enum ButtonEnum {
+  blue,
+  outlined,
+  text,
 }
 
 class _TextForButton extends StatelessWidget {

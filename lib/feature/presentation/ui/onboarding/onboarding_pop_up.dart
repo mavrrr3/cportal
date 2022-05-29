@@ -1,7 +1,7 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

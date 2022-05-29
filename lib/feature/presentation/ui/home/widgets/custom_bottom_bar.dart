@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  final NavBarState state;
+  final NavigationBarState state;
   final bool isNestedNavigation;
 
   const CustomBottomBar({
@@ -42,8 +42,8 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                 context.pop();
               }
               setState(
-                () => BlocProvider.of<NavBarBloc>(context)
-                    .add(NavBarEventImpl(index: index)),
+                () => BlocProvider.of<NavigationBarBloc>(context)
+                    .add(NavigationBarEventImpl(index: index)),
               );
             },
           ),
@@ -54,7 +54,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 }
 
 class _MenuItem extends StatelessWidget {
-  final NavBarState state;
+  final NavigationBarState state;
   final MenuButtonModel item;
   final Function() onTap;
   final int index;
@@ -75,18 +75,19 @@ class _MenuItem extends StatelessWidget {
         : theme.cardColor.withOpacity(0.48);
     final Color activeColor = theme.primaryColor;
 
-    Color _textColor(int index, NavBarState state) {
+    Color _textColor(int index, NavigationBarState state) {
       final ThemeData theme = Theme.of(context);
 
-      // ignore: prefer-conditional-expressions
-      if (theme.brightness == Brightness.light) {
-        return state.currentIndex == index ? activeColor : nonActiveColor;
-      } else {
-        return state.currentIndex == index ? activeColor : Colors.white;
-      }
+      return theme.brightness == Brightness.light
+          ? state.currentIndex == index
+              ? activeColor
+              : nonActiveColor
+          : state.currentIndex == index
+              ? activeColor
+              : Colors.white;
     }
 
-    Color _iconColor(int index, NavBarState state) {
+    Color _iconColor(int index, NavigationBarState state) {
       return state.currentIndex == index ? activeColor : nonActiveColor;
     }
 

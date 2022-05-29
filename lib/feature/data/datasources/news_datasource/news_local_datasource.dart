@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';

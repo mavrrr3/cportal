@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 

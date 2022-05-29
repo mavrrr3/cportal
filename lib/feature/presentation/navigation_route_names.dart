@@ -7,17 +7,17 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_pr
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_or_faceid_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_learning_course.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/create_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/input_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
@@ -248,7 +248,7 @@ final GoRouter router = GoRouter(
       path: '/onboarding_start',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const StartBoarding(),
+        child: const StartOnBoarding(),
       ),
     ),
     GoRoute(

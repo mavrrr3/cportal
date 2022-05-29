@@ -2,44 +2,11 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
-final List<MenuButtonModel> menuItems = [
-  MenuButtonModel(
-    img: 'assets/icons/navbar/main.svg',
-    text: 'Главная',
-  ),
-  MenuButtonModel(
-    img: 'assets/icons/navbar/news.svg',
-    text: 'Новости',
-  ),
-  MenuButtonModel(
-    img: 'assets/icons/navbar/questions.svg',
-    text: 'Вопросы',
-  ),
-  MenuButtonModel(
-    img: 'assets/icons/navbar/declaration.svg',
-    text: 'Заявки',
-  ),
-  MenuButtonModel(
-    img: 'assets/icons/navbar/contacts.svg',
-    text: 'Контакты',
-  ),
-];
-
-class MenuButtonModel {
-  final String img;
-  final String text;
-
-  MenuButtonModel({
-    required this.img,
-    required this.text,
-  });
-}
 
 class DesktopMenu extends StatelessWidget {
   final int currentIndex;
@@ -104,6 +71,39 @@ class DesktopMenu extends StatelessWidget {
   }
 }
 
+final List<MenuButtonModel> menuItems = [
+  MenuButtonModel(
+    img: 'assets/icons/navbar/main.svg',
+    text: 'Главная',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/news.svg',
+    text: 'Новости',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/questions.svg',
+    text: 'Вопросы',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/declaration.svg',
+    text: 'Заявки',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/contacts.svg',
+    text: 'Контакты',
+  ),
+];
+
+class MenuButtonModel {
+  final String img;
+  final String text;
+
+  MenuButtonModel({
+    required this.img,
+    required this.text,
+  });
+}
+
 class _MenuItem extends StatelessWidget {
   final MenuButtonModel item;
   final Duration duration = const Duration(milliseconds: 250);
@@ -156,7 +156,8 @@ class _MenuItem extends StatelessWidget {
 }
 
 void changePage(BuildContext context, int index) {
-  BlocProvider.of<NavBarBloc>(context).add(NavBarEventImpl(index: index));
+  BlocProvider.of<NavigationBarBloc>(context)
+      .add(NavigationBarEventImpl(index: index));
 
   switch (index) {
     case 0:

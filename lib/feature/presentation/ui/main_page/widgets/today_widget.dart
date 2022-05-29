@@ -4,46 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 // Для теста, в будущем заменить на реальные данные.
-class TodayItemModel {
-  final String image;
-  final String? title;
-  final String description;
-  final String? post;
-  final String? place;
-
-  TodayItemModel({
-    required this.image,
-    this.title,
-    required this.description,
-    this.post,
-    this.place,
-  });
-}
-
-final List<TodayItemModel> _items = [
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-];
 
 class TodayWidget extends StatelessWidget {
   const TodayWidget({Key? key}) : super(key: key);
@@ -159,3 +119,44 @@ class _TodayItem extends StatelessWidget {
     );
   }
 }
+
+class TodayItemModel {
+  final String image;
+  final String? title;
+  final String description;
+  final String? post;
+  final String? place;
+
+  TodayItemModel({
+    required this.image,
+    this.title,
+    required this.description,
+    this.post,
+    this.place,
+  });
+}
+
+final List<TodayItemModel> _items = [
+  TodayItemModel(
+    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    description: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+];

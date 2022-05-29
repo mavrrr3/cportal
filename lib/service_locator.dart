@@ -1,7 +1,7 @@
 // ignore_for_file: cascade_invocations
 
-import 'package:cportal_flutter/core/platform/biometric_info.dart';
-import 'package:cportal_flutter/core/platform/network_info.dart';
+import 'package:cportal_flutter/core/platform/i_biometric_info.dart';
+import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
@@ -28,14 +28,14 @@ import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/check_auth_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/filter_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_filters_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/pin_code_enter_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/search_profile_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -56,7 +56,7 @@ Future<void> init() async {
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
   sl.registerFactory(() => FetchNewsBloc(fetchNews: sl()));
-  sl.registerFactory(NavBarBloc.new);
+  sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
 
   // USECASE.
