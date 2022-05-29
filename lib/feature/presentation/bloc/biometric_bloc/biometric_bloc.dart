@@ -15,7 +15,7 @@ class BiometricBloc extends Bloc<BiometricEvent, BiometricState> {
   BiometricUseCase biometricUseCase;
   BiometricBloc(
     this.biometricUseCase,
-  ) : super(BiometricState()) {
+  ) : super(const BiometricState()) {
     _setupEvents();
   }
 
@@ -58,11 +58,11 @@ enum BiometricEnum {
   error,
 }
 
-class BiometricState {
+class BiometricState extends Equatable {
   final List<BiometricType> listBiometric;
   final BiometricEnum authStatus;
 
-  BiometricState({
+  const BiometricState({
     this.listBiometric = const <BiometricType>[],
     this.authStatus = BiometricEnum.notAuthenticated,
   });
@@ -85,6 +85,9 @@ class BiometricState {
       authStatus: authStatus ?? this.authStatus,
     );
   }
+
+  @override
+  List<Object?> get props => [listBiometric, authStatus];
 }
 
 abstract class BiometricEvent extends Equatable {
