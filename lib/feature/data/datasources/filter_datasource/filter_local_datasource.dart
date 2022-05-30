@@ -37,7 +37,7 @@ class FilterLocalDataSource implements IFilterLocalDataSource {
   @override
   Future<void> filtersToCache(List<FilterModel> filters) async {
     if (kDebugMode) {
-      log('List<FilterModel> сохранил в кэш ${filters.toString()}');
+      log('List<FilterModel> сохранил в кэш');
     }
 
     final box = await hive.openBox<List<FilterModel>>('filters');
