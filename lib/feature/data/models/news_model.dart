@@ -19,9 +19,9 @@ class NewsModel extends NewsEntity {
 
   @HiveField(1)
   final List<ArticleModel> article;
-  NewsModel({
-    required final this.show,
-    required final this.article,
+  const NewsModel({
+    required this.show,
+    required this.article,
   }) : super(
           show: show,
           article: article,
@@ -39,7 +39,7 @@ class NewsModel extends NewsEntity {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'show': show,
         'article': List<ArticleModel>.from(
-          (article).map((x) => x.toJson()) as Iterable<ArticleModel>,
+          article.map((x) => x.toJson()) as Iterable<ArticleModel>,
         ),
       };
 }

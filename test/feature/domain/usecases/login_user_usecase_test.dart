@@ -44,15 +44,15 @@ void main() {
   test(
     'Return [ProfileEntity] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockUserRepository.login(any()))
           .thenAnswer((_) async => Right<Failure, UserEntity>(tUserModel));
 
-      //act
+      // Act..
       final result =
           await useCase.call(LoginUserParams(connectingCode: tConnectingCode));
 
-      //assert
+      // Assert.
       void getUserOrFailure(Either<Failure, UserEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -72,15 +72,15 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockUserRepository.login(any()))
           .thenAnswer((_) async => Left<Failure, UserEntity>(tFailure));
 
-      //act
+      // Act..
       final result =
           await useCase.call(LoginUserParams(connectingCode: tConnectingCode));
 
-      //assert
+      // Assert.
       void getUserOrFailure(Either<Failure, UserEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

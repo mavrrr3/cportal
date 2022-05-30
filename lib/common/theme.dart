@@ -2,53 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const appBarTheme = AppBarTheme(
-  centerTitle: true,
-  elevation: 0,
-  backgroundColor: Colors.white,
-);
-
-class FontFamilies {
+class Theme {
   static const String roboto = 'Roboto';
   static const String inter = 'Inter';
   static const String russo = 'Russo One';
 }
 
-/// *---* [Light Theme] *---*
+// *---* [Light Theme] *---*
+//
 ThemeData lightTheme() => ThemeData.light().copyWith(
       brightness: Brightness.light,
 
-      /// --- [Color Scheme] ---
-      /// [BackGround]
+      // --- [Color Scheme] ---
+      // [BackGround]
       backgroundColor: Colors.white,
       scaffoldBackgroundColor: AppColors.mainBgLight,
 
-      /// [White]
+      // [White].
       splashColor: Colors.white,
 
-      /// [Blue]
+      // [Blue].
       primaryColor: AppColors.blue,
 
-      /// [Red]
+      // [Red].
       errorColor: AppColors.red,
 
-      /// [Green]
+      // [Green].
       focusColor: AppColors.green,
 
-      /// [Light red for PIN]
+      // [Light red for PIN].
       hintColor: AppColors.lightRed,
 
-      /// [Divider]
+      // [Divider].
       dividerColor: AppColors.dividerColor.withOpacity(0.08),
 
-      /// [Light Text, also for icons with custom opacity]
+      // [Light Text, also for icons with custom opacity].
       hoverColor: AppColors.kLightTextColor,
 
-      /// [Text]
+      // [Text].
       cardColor: AppColors.textMain,
       //------
 
-      /// [Other]
+      // [Other]
       appBarTheme: appBarTheme.copyWith(
         backgroundColor: AppColors.appBarLight,
         titleTextStyle: const TextStyle(color: AppColors.kLightTextColor),
@@ -56,112 +51,116 @@ ThemeData lightTheme() => ThemeData.light().copyWith(
       iconTheme: const IconThemeData(color: Colors.black),
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
-      /// --- [Text Theme]
+      // --- [Text Theme].
 
       textTheme: _getTextTheme(AppColors.textMain),
     );
 
-/// *---* [Dark Theme] *---*
+// *---* [Dark Theme] *---*
+//
 ThemeData darkTheme() => ThemeData.dark().copyWith(
       brightness: Brightness.dark,
 
-      /// --- [Color Scheme] ---
-      /// [BackGround]
+      // --- [Color Scheme] ---
+      // [BackGround]
       backgroundColor: AppColors.secondBgDark,
       scaffoldBackgroundColor: AppColors.mainBgDark,
 
-      /// [White]
+      // [White].
       splashColor: const Color(0xFF33383F),
 
-      /// [Blue]
+      // [Blue].
       primaryColor: AppColors.blueDark,
 
-      /// [Red]
+      // [Red].
       errorColor: AppColors.redDark,
 
-      /// [Green]
+      // [Green].
       focusColor: AppColors.green,
 
-      /// [Light red for PIN]
+      // [Light red for PIN].
       hintColor: const Color(0xFFFF6A55).withOpacity(0.17),
 
-      /// [Divider]
+      // [Divider].
       dividerColor: AppColors.dividerColor.withOpacity(0.08),
 
-      /// [Light Text, also for icons with custom opacity]
+      // [Light Text, also for icons with custom opacity].
       hoverColor: AppColors.textDark,
 
-      /// [Text]
+      // [Text].
       cardColor: AppColors.textDark,
       //------
 
-      /// [Other]
+      // [Other]
 
       appBarTheme: appBarTheme.copyWith(backgroundColor: AppColors.appBarDark),
       iconTheme: const IconThemeData(color: Colors.white),
       visualDensity: VisualDensity.adaptivePlatformDensity,
 
-      /// --- [Text Theme]
-
+      // --- [Text Theme].
       textTheme: _getTextTheme(AppColors.textDark),
     );
 
-TextTheme _getTextTheme(Color textColor) {
-  return TextTheme(
-    /// [32 px]
-    headline1: GoogleFonts.roboto(
-      fontSize: 32,
-      fontWeight: FontWeight.w400,
-      color: textColor,
-    ),
+TextTheme _getTextTheme(Color textColor) => TextTheme(
+      // [32 px].
+      headline1: GoogleFonts.roboto(
+        fontSize: 32,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
 
-    /// [28 px]
-    headline2: GoogleFonts.russoOne(
-      fontSize: 28,
-      fontWeight: FontWeight.w400,
-      color: textColor,
-    ),
+      // [28 px].
+      headline2: GoogleFonts.russoOne(
+        fontSize: 28,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
 
-    /// [22 px]
-    headline3: GoogleFonts.roboto(
-      fontSize: 22,
-      fontWeight: FontWeight.w400,
-      color: textColor,
-    ),
+      // [22 px].
+      headline3: GoogleFonts.roboto(
+        fontSize: 22,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
 
-    /// [17 px]
-    headline4: GoogleFonts.roboto(
-      fontSize: 17,
-      fontWeight: FontWeight.w400,
-      color: textColor,
-    ),
+      // [17 px].
+      headline4: GoogleFonts.roboto(
+        fontSize: 17,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
 
-    /// [16 px]
-    headline5: GoogleFonts.roboto(
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      color: textColor,
-    ),
+      // [16 px].
+      headline5: GoogleFonts.roboto(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
 
-    /// [14 px]
-    headline6: GoogleFonts.roboto(
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
-      color: textColor,
-    ),
+      // [14 px].
+      headline6: GoogleFonts.roboto(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
 
-    /// [12 px]
-    bodyText1: GoogleFonts.roboto(
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      color: textColor,
-    ),
+      // [12 px].
+      bodyText1: GoogleFonts.roboto(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
 
-    /// [9 px] BottomBar
-    bodyText2: GoogleFonts.inter(
-      fontSize: 9,
-      fontWeight: FontWeight.w500,
-      color: textColor,
-    ),
-  );
-}
+      // [9 px] BottomBar.
+      bodyText2: GoogleFonts.inter(
+        fontSize: 9,
+        fontWeight: FontWeight.w500,
+        color: textColor,
+      ),
+    );
+
+const appBarTheme = AppBarTheme(
+  centerTitle: true,
+  elevation: 0,
+  backgroundColor: Colors.white,
+);

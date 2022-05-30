@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TagContainer extends StatelessWidget {
+  final String text;
+  final bool isCloseAction;
+  final Function()? onTap;
+
   const TagContainer({
     Key? key,
     required this.text,
     this.isCloseAction = false,
     this.onTap,
   }) : super(key: key);
-
-  final String text;
-  final bool isCloseAction;
-  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class TagContainer extends StatelessWidget {
           color: theme.hoverColor.withOpacity(0.06),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(6.0),
+          padding: const EdgeInsets.all(6),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

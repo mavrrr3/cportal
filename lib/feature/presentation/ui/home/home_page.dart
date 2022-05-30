@@ -3,15 +3,15 @@ import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/bottom_navigation_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +65,15 @@ final List<OnboardingEntity> _onboardingContent = [
 ];
 
 class HomePage extends StatefulWidget {
+  final Widget child;
+  final int desktopMenuIndex;
+
   const HomePage({
     Key? key,
     required this.child,
     required this.desktopMenuIndex,
   }) : super(key: key);
-  final Widget child;
-  final int desktopMenuIndex;
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -79,7 +81,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
-  // Для онбординга
+  // Для онбординга.
   late bool _isOnboarding;
   late bool _isWelcome;
   late bool _isLearningCourse;
@@ -98,13 +100,14 @@ class _HomePageState extends State<HomePage>
     _isOnboarding = false;
     _isLearningCourse = false;
 
-    // Onboarding page duration
+    // Onboarding page duration.
     _pageDuration = const Duration(seconds: 5);
 
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _animationController.stop();
-        _animationController.reset();
+        _animationController
+          ..stop()
+          ..reset();
         setState(() {
           if (_onBoardingIndex + 1 < _onboardingContent.length) {
             _onBoardingIndex += 1;
@@ -118,10 +121,11 @@ class _HomePageState extends State<HomePage>
               setState(() {
                 _isOnboarding = false;
                 _isLearningCourse = true;
-                _animationController.stop();
-                _animationController.reset();
-                _animationController.duration = const Duration(seconds: 5);
-                _animationController.forward();
+                _animationController
+                  ..stop()
+                  ..reset()
+                  ..duration = const Duration(seconds: 5)
+                  ..forward();
               });
             }
           }
@@ -132,7 +136,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  void _loadPinRequest() async {
+  Future<void> _loadPinRequest() async {
     if (mounted) context.goNamed(NavigationRouteNames.inputPin);
   }
 
@@ -141,10 +145,10 @@ class _HomePageState extends State<HomePage>
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused && !kIsWeb) {
-      // TODO выставить нужный delay
+      // TODO выставить нужный delay.
       timer = Timer(
         const Duration(seconds: 10000000000000),
-        () => _loadPinRequest(),
+        _loadPinRequest,
       );
     } else if (state == AppLifecycleState.resumed) {
       timer?.cancel();
@@ -154,10 +158,9 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
-    List<Widget> _listPages = <Widget>[
+    final List<Widget> listPages = <Widget>[
       const MainPage(),
       const NewsPage(pageType: NewsCodeEnum.news),
       const NewsPage(pageType: NewsCodeEnum.quastion),
@@ -165,7 +168,7 @@ class _HomePageState extends State<HomePage>
       const ContactsPage(),
     ];
 
-    return BlocBuilder<NavBarBloc, NavBarState>(
+    return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(
@@ -176,9 +179,9 @@ class _HomePageState extends State<HomePage>
                   ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [
-                      Condition<dynamic>.largerThan(name: TABLET),
+                      Condition<dynamic>.largerThan(name: MOBILE),
                     ],
-                    // Меню Web
+                    // Меню Web.
                     child: DesktopMenu(
                       onboarding: () {
                         setState(
@@ -192,11 +195,11 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
 
-                  // Текущая страница
+                  // Текущая страница.
 
                   Expanded(
                     child:
-                        kIsWeb ? widget.child : _listPages[state.currentIndex],
+                        kIsWeb ? widget.child : listPages[state.currentIndex],
                   ),
                 ],
               ),
@@ -211,7 +214,7 @@ class _HomePageState extends State<HomePage>
                       : AppColors.darkOnboardingBG.withOpacity(0.95),
                 ),
 
-              // Закрыть онбординг
+              // Закрыть онбординг.
               if (_isOnboarding || _isWelcome || _isLearningCourse)
                 Align(
                   alignment: Alignment.topRight,
@@ -228,8 +231,9 @@ class _HomePageState extends State<HomePage>
                           _isWelcome = false;
                           _isOnboarding = false;
                           _isLearningCourse = false;
-                          _animationController.stop();
-                          _animationController.reset();
+                          _animationController
+                            ..stop()
+                            ..reset();
                         });
                       },
                       child: SvgPicture.asset(
@@ -239,17 +243,22 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
 
-              // Добро пожаловать
+              // Добро пожаловать.
               if (_isWelcome) _welcome(context, theme),
 
-              // Контент онбординга и его навигация
+              // Контент онбординга и его навигация.
               if (_isOnboarding) _onBoarding(),
 
-              // Обучающий курс (Последний этап онбординга)
+              // Обучающий курс (Последний этап онбординга).
               if (_isLearningCourse) _learningCourse(context),
             ],
           ),
-          bottomNavigationBar: CustomBottomBar(state: state),
+          bottomNavigationBar: ResponsiveVisibility(
+            hiddenWhen: const [
+              Condition<dynamic>.largerThan(name: MOBILE),
+            ],
+            child: CustomBottomBar(state: state),
+          ),
         );
       },
     );
@@ -262,7 +271,7 @@ class _HomePageState extends State<HomePage>
         isBackArrow: false,
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 60.0,
+            top: 60,
             bottom: 32,
             left: 32,
           ),
@@ -285,7 +294,7 @@ class _HomePageState extends State<HomePage>
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 174.0, right: 206),
+                padding: const EdgeInsets.only(left: 174, right: 206),
                 child: Button.factory(
                   context,
                   ButtonEnum.blue,
@@ -321,10 +330,11 @@ class _HomePageState extends State<HomePage>
               setState(() {
                 _isOnboarding = false;
                 _isLearningCourse = true;
-                _animationController.stop();
-                _animationController.reset();
-                _animationController.duration = const Duration(seconds: 5);
-                _animationController.forward();
+                _animationController
+                  ..stop()
+                  ..reset()
+                  ..duration = const Duration(seconds: 5)
+                  ..forward();
               });
             }
           });
@@ -339,7 +349,7 @@ class _HomePageState extends State<HomePage>
         },
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 17.0,
+            top: 17,
             bottom: 32,
             left: 32,
             right: 32,
@@ -369,7 +379,7 @@ class _HomePageState extends State<HomePage>
         },
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 17.0,
+            top: 17,
             bottom: 32,
             left: 32,
             right: 32,
@@ -379,7 +389,7 @@ class _HomePageState extends State<HomePage>
             pageController: _pageController,
             isButton: true,
             onTap: () {
-              // TODO: Отработать переход на курс
+              // TODO: Отработать переход на курс.
             },
             content: [
               OnboardingEntity(
@@ -399,10 +409,11 @@ class _HomePageState extends State<HomePage>
   void _loadPage({
     bool animateToPage = true,
   }) {
-    _animationController.stop();
-    _animationController.reset();
-    _animationController.duration = _pageDuration;
-    _animationController.forward();
+    _animationController
+      ..stop()
+      ..reset()
+      ..duration = _pageDuration
+      ..forward();
 
     if (animateToPage) {
       _pageController.jumpToPage(_onBoardingIndex);

@@ -6,16 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 class CustomBottomBar extends StatefulWidget {
+  final NavigationBarState state;
+  final bool isNestedNavigation;
+
   const CustomBottomBar({
     Key? key,
     required this.state,
     this.isNestedNavigation = false,
   }) : super(key: key);
-  final NavBarState state;
-  final bool isNestedNavigation;
+
   @override
   State<CustomBottomBar> createState() => _CustomBottomBarState();
 }
@@ -25,31 +26,26 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return SizedBox(
-      child: ResponsiveVisibility(
-        hiddenWhen: const [Condition<dynamic>.largerThan(name: TABLET)],
-        child: Container(
-          height: 56,
-          color: theme.splashColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(
-              widget.state.menuItems.length,
-              (index) => _MenuItem(
-                item: widget.state.menuItems[index],
-                state: widget.state,
-                index: index,
-                onTap: () {
-                  if (widget.isNestedNavigation) {
-                    context.pop();
-                  }
-                  setState(
-                    () => BlocProvider.of<NavBarBloc>(context)
-                        .add(NavBarEventImpl(index: index)),
-                  );
-                },
-              ),
-            ),
+    return Container(
+      height: 56,
+      color: theme.splashColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(
+          widget.state.menuItems.length,
+          (index) => _MenuItem(
+            item: widget.state.menuItems[index],
+            state: widget.state,
+            index: index,
+            onTap: () {
+              if (widget.isNestedNavigation) {
+                context.pop();
+              }
+              setState(
+                () => BlocProvider.of<NavigationBarBloc>(context)
+                    .add(NavigationBarEventImpl(index: index)),
+              );
+            },
           ),
         ),
       ),
@@ -58,6 +54,11 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 }
 
 class _MenuItem extends StatelessWidget {
+  final NavigationBarState state;
+  final MenuButtonModel item;
+  final Function() onTap;
+  final int index;
+
   const _MenuItem({
     Key? key,
     required this.item,
@@ -66,31 +67,28 @@ class _MenuItem extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final NavBarState state;
-  final MenuButtonModel item;
-  final Function() onTap;
-  final int index;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final Color _nonActiveColor = theme.brightness == Brightness.light
+    final Color nonActiveColor = theme.brightness == Brightness.light
         ? theme.hoverColor.withOpacity(0.48)
         : theme.cardColor.withOpacity(0.48);
-    final Color _activeColor = theme.primaryColor;
+    final Color activeColor = theme.primaryColor;
 
-    Color _textColor(int index, NavBarState state) {
+    Color _textColor(int index, NavigationBarState state) {
       final ThemeData theme = Theme.of(context);
 
-      // ignore: prefer-conditional-expressions
-      if (theme.brightness == Brightness.light) {
-        return state.currentIndex == index ? _activeColor : _nonActiveColor;
-      } else {
-        return state.currentIndex == index ? _activeColor : Colors.white;
-      }
+      return theme.brightness == Brightness.light
+          ? state.currentIndex == index
+              ? activeColor
+              : nonActiveColor
+          : state.currentIndex == index
+              ? activeColor
+              : Colors.white;
     }
 
-    Color _iconColor(int index, NavBarState state) {
-      return state.currentIndex == index ? _activeColor : _nonActiveColor;
+    Color _iconColor(int index, NavigationBarState state) {
+      return state.currentIndex == index ? activeColor : nonActiveColor;
     }
 
     return GestureDetector(

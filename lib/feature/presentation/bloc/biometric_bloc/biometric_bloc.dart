@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/biometric_usecase.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,17 +11,11 @@ import 'package:flutter/foundation.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:local_auth/local_auth.dart';
 
-enum BiometricEnum {
-  authenticated,
-  notAuthenticated,
-  error,
-}
-
 class BiometricBloc extends Bloc<BiometricEvent, BiometricState> {
   BiometricUseCase biometricUseCase;
   BiometricBloc(
     this.biometricUseCase,
-  ) : super(BiometricState()) {
+  ) : super(const BiometricState()) {
     _setupEvents();
   }
 
@@ -58,11 +52,17 @@ class BiometricBloc extends Bloc<BiometricEvent, BiometricState> {
   }
 }
 
-class BiometricState {
+enum BiometricEnum {
+  authenticated,
+  notAuthenticated,
+  error,
+}
+
+class BiometricState extends Equatable {
   final List<BiometricType> listBiometric;
   final BiometricEnum authStatus;
 
-  BiometricState({
+  const BiometricState({
     this.listBiometric = const <BiometricType>[],
     this.authStatus = BiometricEnum.notAuthenticated,
   });
@@ -85,6 +85,9 @@ class BiometricState {
       authStatus: authStatus ?? this.authStatus,
     );
   }
+
+  @override
+  List<Object?> get props => [listBiometric, authStatus];
 }
 
 abstract class BiometricEvent extends Equatable {

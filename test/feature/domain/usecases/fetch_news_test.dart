@@ -3,7 +3,7 @@ import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news.dart';
+import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -58,14 +58,14 @@ void main() {
   test(
     'Return [NewsEntity] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockNewsRepository.fetchNews(any()))
           .thenAnswer((_) async => Right<Failure, NewsEntity>(tNewsEntity));
 
-      //act
+      // Act..
       final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
 
-      //assert
+      // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -85,14 +85,14 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockNewsRepository.fetchNews(any()))
           .thenAnswer((_) async => Left<Failure, NewsEntity>(tFailure));
 
-      //act
+      // Act..
       final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
 
-      //assert
+      // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

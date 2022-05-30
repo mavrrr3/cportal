@@ -1,18 +1,19 @@
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class Onboarding extends StatefulWidget {
+  final List<OnboardingEntity> content;
+
   const Onboarding({
     Key? key,
     required this.content,
   }) : super(key: key);
 
-  final List<OnboardingEntity> content;
   @override
   State<Onboarding> createState() => _OnboardingState();
 }
@@ -32,14 +33,15 @@ class _OnboardingState extends State<Onboarding>
     _animationController = AnimationController(vsync: this);
     _onboardingContent = widget.content;
 
-    // Время показа текущей страницы
+    // Время показа текущей страницы.
     _pageDuration = const Duration(seconds: 5);
 
     _loadPage(animateToPage: false);
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _animationController.stop();
-        _animationController.reset();
+        _animationController
+          ..stop()
+          ..reset();
         setState(() {
           if (_currentIndex + 1 < _onboardingContent.length) {
             _currentIndex += 1;
@@ -58,7 +60,7 @@ class _OnboardingState extends State<Onboarding>
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final ThemeData theme = Theme.of(context);
-    
+
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: GestureDetector(
@@ -75,17 +77,17 @@ class _OnboardingState extends State<Onboarding>
           }
         },
         child:
-            // Контент
+            // Контент.
             SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const SizedBox(height: 17),
-              // Виджет прогресса
+              const SizedBox(height: 17),
+              // Виджет прогресса.
               SafeArea(
                 child: Padding(
-                  padding:const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: _onboardingContent
                         .asMap()
@@ -105,7 +107,7 @@ class _OnboardingState extends State<Onboarding>
                 ),
               ),
 
-              // Страница онбординга
+              // Страница онбординга.
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: SizedBox(
@@ -161,10 +163,11 @@ class _OnboardingState extends State<Onboarding>
   void _loadPage({
     bool animateToPage = true,
   }) {
-    _animationController.stop();
-    _animationController.reset();
-    _animationController.duration = _pageDuration;
-    _animationController.forward();
+    _animationController
+      ..stop()
+      ..reset()
+      ..duration = _pageDuration
+      ..forward();
 
     if (animateToPage) {
       _pageController.jumpToPage(_currentIndex);

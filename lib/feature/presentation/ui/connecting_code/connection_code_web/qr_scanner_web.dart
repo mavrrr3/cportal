@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class QrScannerWeb extends StatelessWidget {
   const QrScannerWeb({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool _isWrongCode = false;
+    bool isWrongCode = false;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,7 +29,7 @@ class QrScannerWeb extends StatelessWidget {
                 horizontal: 20.0.w,
               ),
               child: BlocConsumer<AuthBloc, AuthState>(
-                listener: ((context, state) {
+                listener: (context, state) {
                   if (state is AuthUser) {
                     const String nextScreen = kIsWeb
                         ? NavigationRouteNames.createPinWeb
@@ -37,11 +37,11 @@ class QrScannerWeb extends StatelessWidget {
 
                     context.goNamed(nextScreen);
                   }
-                  if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
-                }),
-                builder: ((context, state) {
+                  if (state is ErrorAuthState) isWrongCode = !isWrongCode;
+                },
+                builder: (context, state) {
                   return const BodyWidget();
-                }),
+                },
               ),
             ),
           ],
@@ -62,7 +62,7 @@ class BodyWidget extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 260),
-        // TODO Реализовать получение QR кода из БД
+        // TODO Реализовать получение QR кода из БД.
         QrImage(
           data: 'data',
           size: 206,

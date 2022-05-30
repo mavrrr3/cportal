@@ -1,33 +1,19 @@
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-class OnboardingEntity {
-  OnboardingEntity({
-    required this.title,
-    required this.description,
-    required this.image,
-    this.isVector = true,
-  });
-
-  final String title;
-  final String description;
-  final String image;
-  final bool isVector;
-}
-
-class StartBoarding extends StatelessWidget {
-  const StartBoarding({Key? key}) : super(key: key);
+class StartOnBoarding extends StatelessWidget {
+  const StartOnBoarding({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    // Контент страниц онбординга
-    final List<OnboardingEntity> _onboardingContent = [
+    // Контент страниц онбординга.
+    final List<OnboardingEntity> onboardingContent = [
       OnboardingEntity(
         title: AppLocalizations.of(context)!.onboarding_title1,
         description: AppLocalizations.of(context)!.onboarding_description1,
@@ -100,7 +86,7 @@ class StartBoarding extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Button.factory(
               context,
               ButtonEnum.blue,
@@ -108,7 +94,7 @@ class StartBoarding extends StatelessWidget {
               () {
                 GoRouter.of(context).pushNamed(
                   NavigationRouteNames.onboarding,
-                  extra: _onboardingContent,
+                  extra: onboardingContent,
                 );
               },
               Size(double.infinity, 48.h),
@@ -118,4 +104,18 @@ class StartBoarding extends StatelessWidget {
       ),
     );
   }
+}
+
+class OnboardingEntity {
+  final String title;
+  final String description;
+  final String image;
+  final bool isVector;
+
+  OnboardingEntity({
+    required this.title,
+    required this.description,
+    required this.image,
+    this.isVector = true,
+  });
 }

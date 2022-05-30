@@ -9,10 +9,10 @@ class BiometricUseCase {
   BiometricUseCase(this.biometricInfo);
 
   Future<Either<Failure, bool>> autheticate() async {
-    return await biometricInfo.autheticate();
+    return biometricInfo.autheticate();
   }
 
   Future<Either<Failure, List<BiometricType>>> getBiometrics() async {
-    return await biometricInfo.getBiometrics();
+    return biometricInfo.getBiometrics();
   }
 }

@@ -2,18 +2,19 @@ import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/check_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/custom_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Filter extends StatefulWidget {
+  final ScrollController scrollController;
+
   const Filter({
     Key? key,
     required this.scrollController,
   }) : super(key: key);
 
-  final ScrollController scrollController;
   @override
   State<Filter> createState() => _FilterState();
 }
@@ -25,7 +26,7 @@ class _FilterState extends State<Filter> {
       builder: (context, state) {
         if (state is FilterLoadedState) {
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: ListView.builder(
               controller: widget.scrollController,
               physics: const BouncingScrollPhysics(),
@@ -49,7 +50,7 @@ class _FilterState extends State<Filter> {
           );
         }
 
-        // TODO: Обработать другие стейты
+        // TODO: Обработать другие стейты.
         return const SizedBox();
       },
     );
@@ -57,17 +58,17 @@ class _FilterState extends State<Filter> {
 }
 
 class _FilterSectionItem extends StatefulWidget {
-  /// Блок отдельного раздела фильтра
+  final FilterEntity item;
+  final Function() onExpand;
+  final Function(int) onSelect;
+
+  /// Блок отдельного раздела фильтра.
   const _FilterSectionItem({
     Key? key,
     required this.item,
     required this.onExpand,
     required this.onSelect,
   }) : super(key: key);
-
-  final FilterEntity item;
-  final Function() onExpand;
-  final Function(int) onSelect;
 
   @override
   State<_FilterSectionItem> createState() => _FilterSectionItemState();
@@ -87,7 +88,8 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: widget.onExpand,
-            // Разделы фильтра
+
+            /// Разделы фильтра.
             child: Row(
               children: [
                 Container(
@@ -124,7 +126,7 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
           ),
           const SizedBox(height: 16),
           if (widget.item.isActive)
-            // Пункты фильтра
+            // Пункты фильтра.
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
@@ -133,7 +135,7 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
                 return Padding(
                   padding: const EdgeInsets.only(
                     left: 8,
-                    bottom: 12.0,
+                    bottom: 12,
                   ),
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
@@ -160,7 +162,6 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
                 );
               },
             ),
-          // ...List.generate(, ),
         ],
       ),
     );

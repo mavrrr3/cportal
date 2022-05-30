@@ -22,32 +22,6 @@ abstract class IBiometricInfo {
 class BiometricInfo implements IBiometricInfo {
   final LocalAuthentication localAuth;
 
-  BiometricInfo(this.localAuth);
-
-  @override
-  Future<bool> hasBiometrics() async {
-    return await localAuth.canCheckBiometrics;
-  }
-
-  @override
-  Future<List<BiometricType>> getBiometrics() async {
-    return await localAuth.getAvailableBiometrics();
-  }
-
-  @override
-  Future<bool> autheticate() async {
-    final isAvailable = await hasBiometrics();
-    if (!isAvailable) return false;
-
-    return await localAuth.authenticate(
-      localizedReason: 'Приложите ваш палец к сенсору для входа',
-      useErrorDialogs: true,
-      stickyAuth: true,
-      iOSAuthStrings: _iosStrings,
-      androidAuthStrings: _androidStrings,
-    );
-  }
-
   final IOSAuthMessages _iosStrings = const IOSAuthMessages(
     cancelButton: 'ОТМЕНА',
     goToSettingsButton: 'Настройки',
@@ -60,4 +34,30 @@ class BiometricInfo implements IBiometricInfo {
     goToSettingsButton: 'Настройки',
     goToSettingsDescription: 'Please set up your Touch ID.',
   );
+
+  BiometricInfo(this.localAuth);
+
+  @override
+  Future<bool> hasBiometrics() async {
+    return localAuth.canCheckBiometrics;
+  }
+
+  @override
+  Future<List<BiometricType>> getBiometrics() async {
+    return localAuth.getAvailableBiometrics();
+  }
+
+  @override
+  Future<bool> autheticate() async {
+    final isAvailable = await hasBiometrics();
+    if (!isAvailable) return false;
+
+    return localAuth.authenticate(
+      localizedReason: 'Приложите ваш палец к сенсору для входа',
+      useErrorDialogs: true,
+      stickyAuth: true,
+      iOSAuthStrings: _iosStrings,
+      androidAuthStrings: _androidStrings,
+    );
+  }
 }

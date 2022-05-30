@@ -11,4 +11,7 @@ class GetSingleProfileEventImpl extends GetSingleProfileEvent {
   final String id;
 
   const GetSingleProfileEventImpl(this.id);
+
+  @override
+  List<Object> get props => [id];
 }

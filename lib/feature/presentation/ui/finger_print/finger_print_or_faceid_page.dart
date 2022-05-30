@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:cportal_flutter/feature/presentation/bloc/biometric_auth_bloc/biometric_auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ class FingerPrintOrFaceIdPage extends StatelessWidget {
                           ButtonEnum.outlined,
                           AppLocalizations.of(context)!.noThanks,
                           () async {
-                            // TODO Реализовать функционал кнопки Нет, спасибо
+                            // TODO Реализовать функционал кнопки Нет, спасибо.
                           },
                           Size(142.w, 48.h),
                         ),

@@ -1,6 +1,7 @@
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/cache_exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/core/platform/network_info.dart';
+import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
@@ -64,28 +65,28 @@ void main() {
     final ProfileEntity tProfileEntity = tProfileModel;
 
     test('should check if the device is online', () async {
-      //arrange
+      // Arrange.
 
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
       when(() => mockRemoteDataSource.getSingleProfile(any()))
           .thenAnswer((_) async => tProfileModel);
-      //act
+      // Act..
       await repository.getSingleProfile(tProfileId);
-      //assert
+      // Assert.
       verify(() => mockNetworkInfo.isConnected);
     });
 
     test(
       'should return remote data when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
         when(() => mockRemoteDataSource.getSingleProfile(any()))
             .thenAnswer((_) async => tProfileModel);
-        //act
+        // Act..
         final result = await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.getSingleProfile(tProfileId));
         expect(result, equals(Right<dynamic, ProfileEntity>(tProfileEntity)));
       },
@@ -93,14 +94,14 @@ void main() {
     test(
       'should cache the data locally when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
         when(() => mockRemoteDataSource.getSingleProfile(any()))
             .thenAnswer((_) async => tProfileModel);
-        //act
+        // Act..
         await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
         verifyNever(
           () => mockLocalDataSource.singleProfileToCache(tProfileModel),
         );
@@ -110,13 +111,13 @@ void main() {
     test(
       'should return serverfailure when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
         when(() => mockRemoteDataSource.getSingleProfile(tProfileId))
             .thenThrow(ServerException());
-        //act
+        // Act..
         final result = await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.getSingleProfile(tProfileId));
         verifyZeroInteractions(mockLocalDataSource);
         expect(result, equals(Left<ServerFailure, dynamic>(ServerFailure())));
@@ -126,16 +127,16 @@ void main() {
     test(
       'should return locally cached data when the cached data is present',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
         when(() => mockLocalDataSource.singleProfileToCache(tProfileModel))
             .thenAnswer((_) async => Future.value());
         when(() => mockLocalDataSource.getSingleProfileFromCache(tProfileId))
             .thenAnswer((_) async => tProfileModel);
 
-        //act
+        // Act..
         final result = await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
         // verifyZeroInteractions(mockRemoteDataSource);
         verify(() => mockLocalDataSource.getSingleProfileFromCache(tProfileId));
         expect(result, equals(Right<dynamic, ProfileEntity>(tProfileEntity)));
@@ -145,13 +146,13 @@ void main() {
     test(
       'should return CacheFailure when there is no cached data present',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
         when(() => mockLocalDataSource.getSingleProfileFromCache(tProfileId))
             .thenThrow(CacheException());
-        //act
+        // Act..
         final result = await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
         verifyZeroInteractions(mockRemoteDataSource);
         verify(() => mockLocalDataSource.getSingleProfileFromCache(tProfileId));
         expect(result, equals(Left<CacheFailure, dynamic>(CacheFailure())));

@@ -21,16 +21,16 @@ void main() {
   test(
     'should return PIN code when it present',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockLocalDataSource.writePin(tPinCode))
           .thenAnswer((_) async => any());
       when(() => mockLocalDataSource.getPin())
           .thenAnswer((_) async => tPinCode);
 
-      //act
+      // Act..
       final String? result = await repository.getPin();
 
-      //assert
+      // Assert.
       verify(() => mockLocalDataSource.getPin());
       expect(result, equals(tPinCode));
     },

@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
@@ -55,12 +55,12 @@ void main() {
     test(
       'should return remote data when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.getSingleProfile(any()))
             .thenAnswer((_) async => tProfileModel);
-        //act
+        // Act..
         final result = await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.getSingleProfile(tProfileId));
         expect(result, equals(Right<dynamic, ProfileEntity>(tProfileEntity)));
       },
@@ -68,12 +68,12 @@ void main() {
     test(
       'should cache the data locally when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.getSingleProfile(any()))
             .thenAnswer((_) async => tProfileModel);
-        //act
+        // Act..
         await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
 
         verify(() => mockRemoteDataSource.getSingleProfile(tProfileId));
       },
@@ -81,12 +81,12 @@ void main() {
     test(
       'should return serverfailure when the call to remote data source is successful',
       () async {
-        //arrange
+        // Arrange.
         when(() => mockRemoteDataSource.getSingleProfile(tProfileId))
             .thenThrow(ServerException());
-        //act
+        // Act..
         final result = await repository.getSingleProfile(tProfileId);
-        //assert
+        // Assert.
         verify(() => mockRemoteDataSource.getSingleProfile(tProfileId));
         expect(result, equals(Left<ServerFailure, dynamic>(ServerFailure())));
       },

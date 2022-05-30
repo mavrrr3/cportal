@@ -3,6 +3,10 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/ta
 import 'package:flutter/material.dart';
 
 class FilterViewSelectedRow extends StatelessWidget {
+  final String headline;
+  final List<FilterItemEntity> selectedItems;
+  final Function(FilterItemEntity) onClose;
+
   const FilterViewSelectedRow({
     Key? key,
     required this.headline,
@@ -10,21 +14,17 @@ class FilterViewSelectedRow extends StatelessWidget {
     required this.onClose,
   }) : super(key: key);
 
-  final String headline;
-  final List<FilterItemEntity> selectedItems;
-  final Function(FilterItemEntity) onClose;
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
+      padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 6.0),
+            padding: const EdgeInsets.only(top: 6),
             child: Text(
               headline,
               style: theme.textTheme.bodyText1!.copyWith(

@@ -5,8 +5,9 @@ import 'package:cportal_flutter/common/util/error_util.dart';
 
 @sealed
 class AppBlocObserver extends BlocObserver {
-  factory AppBlocObserver.instance() => _singleton ??= AppBlocObserver._();
   static AppBlocObserver? _singleton;
+
+  factory AppBlocObserver.instance() => _singleton ??= AppBlocObserver._();
   AppBlocObserver._();
 
   @override

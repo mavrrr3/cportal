@@ -7,23 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:flutter/material.dart';
 
-enum PinCodeInputEnum {
-  input,
-  inputing,
-  wrongInput,
-  create,
-  wrong,
-  repeat,
-  edit,
-  error,
-  done,
-}
-
 class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   PinCodeEnterUseCase pinCodeEnter;
   PinCodeBloc(
     this.pinCodeEnter,
-  ) : super(PinCodeState()) {
+  ) : super(const PinCodeState()) {
     _setupEvents();
   }
 
@@ -94,7 +82,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     ChangedPinCode event,
     Emitter<PinCodeState> emit,
   ) async {
-    if (kDebugMode) log(event.pinCode.toString());
+    if (kDebugMode) log(event.pinCode);
     log('=========Такой эвент $event');
 
     emit(state.copyWith(
@@ -107,7 +95,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     ChangedInputPinCode event,
     Emitter<PinCodeState> emit,
   ) async {
-    if (kDebugMode) log(event.pinCode.toString());
+    if (kDebugMode) log(event.pinCode);
     log('=========Такой эвент $event');
 
     emit(state.copyWith(
@@ -201,7 +189,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       final failureOrPinCode =
           await pinCodeEnter(PinCodeParams(pinCode: event.pinCode));
 
-      log('Из кэша +++' + failureOrPinCode.toString());
+      log('Из кэша +++$failureOrPinCode');
 
       failureOrPinCode.fold(
         (failure) {
@@ -223,7 +211,19 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   }
 }
 
-class PinCodeState {
+enum PinCodeInputEnum {
+  input,
+  inputing,
+  wrongInput,
+  create,
+  wrong,
+  repeat,
+  edit,
+  error,
+  done,
+}
+
+class PinCodeState extends Equatable {
   final String pinCode;
   final PinCodeInputEnum status;
 
@@ -247,7 +247,7 @@ class PinCodeState {
           );
   }
 
-  PinCodeState({
+  const PinCodeState({
     this.pinCode = '',
     this.status = PinCodeInputEnum.create,
   });
@@ -266,13 +266,13 @@ class PinCodeState {
   String toString() {
     return 'Стейт $status';
   }
-}
-
-abstract class PinCodeEvent extends Equatable {
-  const PinCodeEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [pinCode, status];
+}
+
+abstract class PinCodeEvent {
+  const PinCodeEvent();
 }
 
 class PinCodeCheckEvent extends PinCodeEvent {}
@@ -282,35 +282,41 @@ class EditPinCodeCheckEvent extends PinCodeEvent {}
 class ChangedPinCode extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const ChangedPinCode({required this.pinCode, required this.status});
 }
 
 class ChangedInputPinCode extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const ChangedInputPinCode({required this.pinCode, required this.status});
 }
 
 class EditPinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const EditPinCodeSubmit({required this.pinCode, required this.status});
 }
 
 class RepeatPinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const RepeatPinCodeSubmit({required this.pinCode, required this.status});
 }
 
 class InputPinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const InputPinCodeSubmit({required this.pinCode, required this.status});
 }
 
 class CreatePinCodeSubmit extends PinCodeEvent {
   final String pinCode;
   final PinCodeInputEnum status;
+
   const CreatePinCodeSubmit({required this.pinCode, required this.status});
 }

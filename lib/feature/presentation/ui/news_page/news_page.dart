@@ -1,22 +1,21 @@
 import 'dart:developer';
 
-import 'package:cportal_flutter/common/util/keep_alive_util.dart';
+import 'package:cportal_flutter/common/util/keep_alive_page.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
-import 'widgets/scrollable_tabs_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 class NewsPage extends StatefulWidget {
   final NewsCodeEnum pageType;
@@ -41,7 +40,7 @@ class _NewsPageState extends State<NewsPage> {
     _currentIndex = 0;
   }
 
-  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы
+  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы.
   void _contentInit(NewsCodeEnum type) {
     return BlocProvider.of<FetchNewsBloc>(context, listen: false)
         .add(FetchNewsEventImpl(newsCodeEnum: type));
@@ -49,7 +48,7 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Для обновления стейта при смене страницы в BottomBar
+    // Для обновления стейта при смене страницы в BottomBar.
     if (widget.pageType != _currentType) {
       _currentType = widget.pageType;
       _contentInit(_currentType);
@@ -76,7 +75,7 @@ class _NewsPageState extends State<NewsPage> {
               const SizedBox(height: 16),
               if (state is FetchNewsLoadingState) ...[
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 60.0),
+                  padding: EdgeInsets.symmetric(vertical: 60),
                   child: Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 3,
@@ -85,64 +84,77 @@ class _NewsPageState extends State<NewsPage> {
                 ),
               ],
               if (state is FetchNewsLoadedState)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Категории
-                    ScrollableTabsWidget(
-                      currentIndex: _currentIndex,
-                      items: state.tabs,
-                      onTap: (index) => _onPageChanged(index),
-                    ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Категории.
+                      ScrollableTabsWidget(
+                        currentIndex: _currentIndex,
+                        items: state.tabs,
+                        onTap: _onPageChanged,
+                      ),
 
-                    Swipe(
-                      onSwipeRight: () {
-                        if (_currentIndex != 0) {
-                          _onPageChanged(_currentIndex - 1);
-                        }
-                      },
-                      onSwipeLeft: () {
-                        if (state.tabs.length - 1 != _currentIndex) {
-                          _onPageChanged(_currentIndex + 1);
-                        }
-                      },
-                      child: ResponsiveConstraints(
-                        constraint: widget.pageType == NewsCodeEnum.quastion
-                            ? const BoxConstraints(maxWidth: 720)
-                            : null,
-                        child: SizedBox(
-                          width: width,
-                          height: !ResponsiveWrapper.of(context)
-                                  .isLargerThan(TABLET)
-                              ? MediaQuery.of(context).size.height - 204
-                              : MediaQuery.of(context).size.height - 116,
-                          child: PageView(
-                            controller: _pageController,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: [
-                              // Генерация страниц под все категории
+                      Expanded(
+                        child: Swipe(
+                          onSwipeRight: () {
+                            if (_currentIndex != 0) {
+                              _onPageChanged(_currentIndex - 1);
+                            }
+                          },
+                          onSwipeLeft: () {
+                            if (state.tabs.length - 1 != _currentIndex) {
+                              _onPageChanged(_currentIndex + 1);
+                            }
+                          },
+                          child: ResponsiveConstraints(
+                            constraint: widget.pageType == NewsCodeEnum.quastion
+                                ? const BoxConstraints(maxWidth: 720)
+                                : null,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: PageView(
+                                    controller: _pageController,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    children: [
+                                      // Генерация страниц под все категории.
 
-                              ...List.generate(state.tabs.length, (index) {
-                                return KeepAlivePage(
-                                  child: Padding(
-                                    padding: getHorizontalPadding(context),
-                                    child: widget.pageType == NewsCodeEnum.news
-                                        ? !ResponsiveWrapper.of(context)
-                                                .isLargerThan(TABLET)
-                                            ? _content(state, width)
-                                            : SingleChildScrollView(
-                                                child: _content(state, width),
-                                              )
-                                        : _content(state, width),
+                                      ...List.generate(
+                                        state.tabs.length,
+                                        (index) {
+                                          return KeepAlivePage(
+                                            child: Padding(
+                                              padding:
+                                                  getHorizontalPadding(context),
+                                              child: widget.pageType ==
+                                                      NewsCodeEnum.news
+                                                  ? !ResponsiveWrapper.of(
+                                                      context,
+                                                    ).isLargerThan(TABLET)
+                                                      ? _content(state, width)
+                                                      : SingleChildScrollView(
+                                                          child: _content(
+                                                            state,
+                                                            width,
+                                                          ),
+                                                        )
+                                                  : _content(state, width),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                );
-                              }),
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
             ],
           ),
@@ -151,52 +163,51 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  // Отрисовка контента по типу страницы
+  // Отрисовка контента по типу страницы.
   Widget _content(FetchNewsLoadedState state, double width) {
-    List<ArticleEntity> articles = state.news.article;
-    log('===================== ' +
-        state.tabs.toString() +
-        ' ===========================');
+    final List<ArticleEntity> articles = state.news.article;
+    log('===================== ${state.tabs} ===========================');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 20),
 
-        // Контент
-        widget.pageType == NewsCodeEnum.news
-            ? !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                ? Expanded(
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: articles.length,
-                      itemBuilder: (context, index) {
-                        return _builderItem(state, width, index);
+        // Контент.
+        if (widget.pageType == NewsCodeEnum.news)
+          !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+              ? Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      return _builderItem(state, width, index);
+                    },
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(right: 78),
+                  child: Wrap(
+                    spacing: 16,
+                    runSpacing: 20,
+                    children: List.generate(
+                      articles.length,
+                      (index) {
+                        return _builderItem(state, 312, index);
                       },
                     ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(right: 78.0),
-                    child: Wrap(
-                      spacing: 16,
-                      runSpacing: 20,
-                      children: List.generate(
-                        articles.length,
-                        (index) {
-                          return _builderItem(state, 312, index);
-                        },
-                      ),
-                    ),
-                  )
-            : Expanded(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: articles.length,
-                  itemBuilder: (context, index) {
-                    return _builderItem(state, width, index);
-                  },
-                ),
-              ),
+                  ),
+                )
+        else
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                return _builderItem(state, width, index);
+              },
+            ),
+          ),
       ],
     );
   }
@@ -206,7 +217,7 @@ class _NewsPageState extends State<NewsPage> {
     double width,
     int index,
   ) {
-    List<ArticleEntity> articles = state.news.article;
+    final List<ArticleEntity> articles = state.news.article;
 
     if (widget.pageType == NewsCodeEnum.news) {
       // Распределение по категориям
@@ -229,7 +240,7 @@ class _NewsPageState extends State<NewsPage> {
       // [Вопросы]
       if (articles[index].category == state.tabs[_currentIndex]) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
+          padding: const EdgeInsets.only(bottom: 30),
           child: FaqRow(
             text: articles[index].header,
             onTap: () {
@@ -280,10 +291,8 @@ class _NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
-
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(bottom: 20),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: onTap,
@@ -291,9 +300,7 @@ class _NewsCard extends StatelessWidget {
           width: width,
           height: 160,
           fontSize: 17,
-          imgPath: item.image,
-          title: item.header,
-          dateTime: outputFormat.format(item.dateShow),
+          item: item,
         ),
       ),
     );

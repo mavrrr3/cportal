@@ -25,14 +25,14 @@ void main() {
   test(
     'Return [String?] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockPinCodeRepository.getPin())
           .thenAnswer((_) async => tPinCode);
 
-      //act
+      // Act..
       final result = await useCase.getPin();
 
-      //assert
+      // Assert.
       verify(() => mockPinCodeRepository.getPin());
       expect(result, equals(tPinCode));
     },
@@ -41,14 +41,14 @@ void main() {
   test(
     'Return [String] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockPinCodeRepository.writePin(any()))
           .thenAnswer((_) async => Right<Failure, String>(tPinCode));
 
-      //act
+      // Act..
       final result = await useCase.call(PinCodeParams(pinCode: tPinCode));
 
-      //assert
+      // Assert.
       void getStringOrFailure(Either<Failure, String> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -68,14 +68,14 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockPinCodeRepository.writePin(any()))
           .thenAnswer((_) async => Left<Failure, String>(tFailure));
 
-      //act
+      // Act..
       final result = await useCase.call(PinCodeParams(pinCode: tPinCode));
 
-      //assert
+      // Assert.
       void getStringOrFailure(Either<Failure, String> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

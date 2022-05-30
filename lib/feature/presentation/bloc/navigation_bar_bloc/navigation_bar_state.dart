@@ -1,8 +1,8 @@
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 
-class NavBarState {
+class NavigationBarState {
   final int currentIndex;
-  // TODO: Вынести в файл с константами
+  // TODO: Вынести в файл с константами.
   final List<MenuButtonModel> menuItems = [
     MenuButtonModel(
       img: 'assets/icons/navbar/main.svg',
@@ -26,7 +26,7 @@ class NavBarState {
     ),
   ];
 
-  NavBarState({
+  NavigationBarState({
     this.currentIndex = 0,
   });
 }

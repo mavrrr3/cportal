@@ -4,9 +4,10 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,11 @@ class QuestionArticlePage extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Swipe(
-      onSwipeRight: () => _onBack(context),
+      onSwipeRight: () {
+        if (!kIsWeb) {
+          _onBack(context);
+        }
+      },
       child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
         builder: (context, state) {
           if (state is FetchNewsLoadedState) {
@@ -40,7 +45,7 @@ class QuestionArticlePage extends StatelessWidget {
                   .first;
             }
 
-            return BlocBuilder<NavBarBloc, NavBarState>(
+            return BlocBuilder<NavigationBarBloc, NavigationBarState>(
               builder: (context, navState) {
                 return Scaffold(
                   body: SafeArea(
@@ -63,44 +68,44 @@ class QuestionArticlePage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Кнопка назад для Web
-                                ResponsiveWrapper.of(context)
-                                        .isLargerThan(TABLET)
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 7.0,
-                                          top: 16.0,
-                                        ),
-                                        child: GestureDetector(
-                                          behavior: HitTestBehavior.translucent,
-                                          onTap: () {
-                                            _contentInit(context);
+                                // Кнопка назад для Web.
+                                if (ResponsiveWrapper.of(context)
+                                    .isLargerThan(TABLET))
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 7,
+                                      top: 16,
+                                    ),
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
+                                      onTap: () {
+                                        _contentInit(context);
 
-                                            GoRouter.of(context).pop();
-                                          },
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/icons/back_arrow.svg',
-                                                width: 16,
-                                                color: theme.primaryColor,
-                                              ),
-                                              const SizedBox(width: 6),
-                                              Text(
-                                                AppLocalizations.of(context)!
-                                                    .questions,
-                                                style: theme
-                                                    .textTheme.headline5!
-                                                    .copyWith(
-                                                  color: theme.primaryColor,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ],
+                                        GoRouter.of(context).pop();
+                                      },
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/back_arrow.svg',
+                                            width: 16,
+                                            color: theme.primaryColor,
                                           ),
-                                        ),
-                                      )
-                                    : const SizedBox(),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            AppLocalizations.of(context)!
+                                                .questions,
+                                            style: theme.textTheme.headline5!
+                                                .copyWith(
+                                              color: theme.primaryColor,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  const SizedBox(),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: ResponsiveWrapper.of(context)
@@ -123,31 +128,33 @@ class QuestionArticlePage extends StatelessWidget {
                                               ? 4
                                               : 19,
                                         ),
-                                        // Кнопка назад mobile
-                                        !ResponsiveWrapper.of(context)
-                                                .isLargerThan(TABLET)
-                                            ? GestureDetector(
-                                                behavior:
-                                                    HitTestBehavior.translucent,
-                                                onTap: () => _onBack(context),
-                                                child: Stack(
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 26,
-                                                      height: 24,
-                                                    ),
-                                                    SvgPicture.asset(
-                                                      'assets/icons/back_arrow.svg',
-                                                      width: 16,
-                                                    ),
-                                                  ],
+                                        // Кнопка назад mobile.
+                                        if (!ResponsiveWrapper.of(context)
+                                            .isLargerThan(TABLET))
+                                          GestureDetector(
+                                            behavior:
+                                                HitTestBehavior.translucent,
+                                            onTap: () => _onBack(context),
+                                            child: Stack(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 26,
+                                                  height: 24,
                                                 ),
-                                              )
-                                            : const SizedBox(),
-                                        !ResponsiveWrapper.of(context)
-                                                .isLargerThan(TABLET)
-                                            ? const SizedBox(height: 19)
-                                            : const SizedBox(),
+                                                SvgPicture.asset(
+                                                  'assets/icons/back_arrow.svg',
+                                                  width: 16,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        else
+                                          const SizedBox(),
+                                        if (!ResponsiveWrapper.of(context)
+                                            .isLargerThan(TABLET))
+                                          const SizedBox(height: 19)
+                                        else
+                                          const SizedBox(),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -196,8 +203,8 @@ class QuestionArticlePage extends StatelessWidget {
     FetchNewsLoadedState state,
     BuildContext context,
   ) {
-    List<ArticleEntity> currentTabsItems = [];
-    for (var item in state.news.article) {
+    final List<ArticleEntity> currentTabsItems = [];
+    for (final item in state.news.article) {
       if (item.category == currentItem.category) {
         currentTabsItems.add(item);
       }
@@ -209,7 +216,7 @@ class QuestionArticlePage extends StatelessWidget {
             currentTabsItems
                 .indexWhere((element) => element.id == currentItem.id)
         ? Padding(
-            padding: const EdgeInsets.only(bottom: 32.0),
+            padding: const EdgeInsets.only(bottom: 32),
             child: FaqRow(
               text: currentTabsItems[currentIndex + 1].header,
               onTap: () {

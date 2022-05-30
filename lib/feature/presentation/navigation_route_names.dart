@@ -7,17 +7,17 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_pr
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_or_faceid_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_learning_course.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/create_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_web/input_pin_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
@@ -57,12 +57,13 @@ abstract class NavigationRouteNames {
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
   initialLocation: '/',
+  // ignore: format-comment
   // debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
       path: '/splash_screen',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: SplashScreen()),
       ),
@@ -70,7 +71,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.mainPage,
       path: '/',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const HomePage(
           child: MainPage(),
@@ -81,7 +82,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.connectingCode,
       path: '/connecting_code',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: ConnectingCodePage()),
       ),
@@ -89,7 +90,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.connectingCodeWeb,
       path: '/connecting_code_web',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: ConnectingCodeWeb()),
       ),
@@ -97,7 +98,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.createPin,
       path: '/create_pin',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: CreatePinPage(),
@@ -107,7 +108,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.createPinWeb,
       path: '/create_pin_web',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: CreatePinWeb(),
@@ -117,7 +118,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.editPin,
       path: '/edit_pin',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: EditPinPage(),
@@ -127,7 +128,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.inputPin,
       path: '/input_pin',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: InputPinPage(),
@@ -137,7 +138,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.inputPinWeb,
       path: '/input_pin_web',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: InputPinWeb(),
@@ -147,7 +148,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.fingerPrint,
       path: '/finger_print',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: FingerPrintOrFaceIdPage(
@@ -159,7 +160,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.faceId,
       path: '/face_id',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(
           body: FingerPrintOrFaceIdPage(
@@ -171,7 +172,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.news,
       path: '/news',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const HomePage(
           child: NewsPage(pageType: NewsCodeEnum.news),
@@ -198,8 +199,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
       path: '/news/:fid',
-      pageBuilder: (BuildContext context, GoRouterState state) =>
-          CustomTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -209,7 +209,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.questions,
       path: '/questions',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const HomePage(
           child: NewsPage(pageType: NewsCodeEnum.quastion),
@@ -220,8 +220,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.questionArticlePage,
       path: '/questions/:fid',
-      pageBuilder: (BuildContext context, GoRouterState state) =>
-          CustomTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         child: QuestionArticlePage(id: state.params['fid']!),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
@@ -231,7 +230,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.profile,
       path: '/profile',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: ProfilePage()),
       ),
@@ -239,7 +238,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.userData,
       path: '/user_data',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: UserData()),
       ),
@@ -247,15 +246,15 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.onBoardingStart,
       path: '/onboarding_start',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const StartBoarding(),
+        child: const StartOnBoarding(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.qrScanner,
       path: '/qr_scanner',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const QrScanner(),
       ),
@@ -263,7 +262,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.qrScannerWeb,
       path: '/qr_scanner_web',
-      pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const QrScannerWeb(),
       ),
@@ -271,8 +270,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.onboarding,
       path: '/onboarding',
-      pageBuilder: (BuildContext context, GoRouterState state) =>
-          CustomTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -282,8 +280,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.onboardingEnd,
       path: '/onboarding_end',
-      pageBuilder: (BuildContext context, GoRouterState state) =>
-          CustomTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -293,8 +290,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.contacts,
       path: '/contacts',
-      pageBuilder: (BuildContext context, GoRouterState state) =>
-          CustomTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -304,8 +300,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.contactProfile,
       path: '/users/profile/:fid',
-      pageBuilder: (BuildContext context, GoRouterState state) =>
-          CustomTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -315,7 +310,7 @@ final GoRouter router = GoRouter(
       ),
     ),
   ],
-  errorPageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
+  errorPageBuilder: (context, state) => MaterialPage(
     key: state.pageKey,
     child: Center(
       child: Text(state.error.toString()),

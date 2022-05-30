@@ -4,15 +4,15 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
-  /// Колонка с контактами
+  final List<ProfileEntity> items;
+  final Function(int) onTap;
+
+  /// Колонка с контактами.
   const ContactsList({
     Key? key,
     required this.items,
     required this.onTap,
   }) : super(key: key);
-
-  final List<ProfileEntity> items;
-  final Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ContactsList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 8),
         child: GestureDetector(
           onTap: () {
             onTap(index);
@@ -36,13 +36,13 @@ class ContactsList extends StatelessWidget {
 }
 
 class _ContactItem extends StatelessWidget {
-  /// Карточка контакта
+  final ProfileEntity item;
+
+  /// Карточка контакта.
   const _ContactItem({
     Key? key,
     required this.item,
   }) : super(key: key);
-
-  final ProfileEntity item;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _ContactItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

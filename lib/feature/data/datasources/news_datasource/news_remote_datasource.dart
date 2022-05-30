@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
@@ -40,18 +40,17 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         ],
       );
 
-      log('NewsRemoteDataSource  ==========' + remoteNews.toString());
+      log('NewsRemoteDataSource  ==========$remoteNews');
       await localDatasource.newsToCache(remoteNews);
 
-      List<ArticleModel> articlesWithCode = remoteNews.article
+      final List<ArticleModel> articlesWithCode = remoteNews.article
           .where((article) => article.articleType.code == code)
           .toList();
-      NewsModel news = NewsModel(
+
+      return NewsModel(
         show: true,
         article: [...articlesWithCode],
       );
-
-      return news;
     } on ServerException {
       throw ServerFailure();
     }
