@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 // Временный файл с моками данных на разных страницах, чтобы не засорять основной код.
 
@@ -106,29 +105,4 @@ class Mocks {
     ),
   ];
 
-  // Фильтр.
-  static final List<FilterEntity> filter = [
-    const FilterEntity(
-      headline: 'Компания',
-      items: [
-        FilterItemEntity(name: 'АЭМ3'),
-        FilterItemEntity(name: 'Новосталь-М'),
-        FilterItemEntity(name: 'Демедия'),
-      ],
-    ),
-    const FilterEntity(
-      headline: 'Должность',
-      items: [
-        FilterItemEntity(name: 'Информационные технологии'),
-        FilterItemEntity(name: 'Отдел кадров'),
-        FilterItemEntity(name: 'Служба безопасности'),
-        FilterItemEntity(name: 'Менеджеры по документообороту'),
-        FilterItemEntity(name: 'Отдел мобильной разработки'),
-        FilterItemEntity(name: 'Отдел продаж'),
-        FilterItemEntity(name: 'Производственный отдел'),
-        FilterItemEntity(name: 'Отдел сбыта'),
-        FilterItemEntity(name: 'Администрация'),
-      ],
-    ),
-  ];
 }

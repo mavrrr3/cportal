@@ -1,8 +1,10 @@
+// ignore_for_file: prefer_final_locals
+
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_filters_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -64,9 +66,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         ));
       },
       (filters) {
-        // log('||| ${filters} ***');
-        // emit(FilterLoadedState(filters: filters));
-        emit(FilterLoadedState(filters: Mocks.filter));
+        emit(FilterLoadedState(filters: filters));
+        
       },
     );
 
@@ -82,10 +83,9 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     FilterEntity filter = filters[event.index];
     filter = filter.copyWith(isActive: filter.changeActivity);
 
-    // log('*** ${_filters[event.index]} ***');
-    // log('=== ${_filter}');
-
+    log('**${filters[event.index]}**');
     filters[event.index] = filter;
+    log('//');
 
     emit(FilterLoadingState());
     emit(FilterLoadedState(filters: filters));

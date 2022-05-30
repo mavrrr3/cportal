@@ -62,6 +62,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
           }
         }
         log(tabs.toString());
+        log('Bloc $news');
         emit(FetchNewsLoadedState(news: news, tabs: tabs));
       },
     );
