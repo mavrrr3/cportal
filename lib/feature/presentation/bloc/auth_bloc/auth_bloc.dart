@@ -40,10 +40,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     log(event.toString());
     emit(const AuthInitial());
 
-    final notAuth = await checkAuth();
-    log(notAuth.toString());
-    notAuth.fold(
-      (failure) => const ErrorAuthState(error: 'Ошибка обработки кэша'),
+    final authOrFail = await checkAuth();
+    log(authOrFail.toString());
+    authOrFail.fold(
+      (failure) => emit(ErrorAuthState(error: _mapFailureToMessage(failure))),
       (isAuth) => emit(Authenticated(isAuth)),
     );
   }
