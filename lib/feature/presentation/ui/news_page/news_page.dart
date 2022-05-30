@@ -42,7 +42,7 @@ class _NewsPageState extends State<NewsPage> {
 
   // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы.
   void _contentInit(NewsCodeEnum type) {
-    return BlocProvider.of<FetchNewsBloc>(context, listen: false)
+     BlocProvider.of<FetchNewsBloc>(context, listen: false)
         .add(FetchNewsEventImpl(newsCodeEnum: type));
   }
 

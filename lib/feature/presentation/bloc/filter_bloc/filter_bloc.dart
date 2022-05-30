@@ -84,6 +84,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       filter = filter.copyWith(isActive: filter.changeActivity);
 
       log('**${filters[event.index]}**');
+      log('###$filter###');
+
       filters[event.index] = filter;
       log('//');
 
