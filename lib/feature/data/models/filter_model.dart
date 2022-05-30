@@ -13,7 +13,7 @@ class FilterModel extends FilterEntity {
   final bool isActive;
 
   @HiveField(2)
-  final List<FilterItemEntity> items;
+  final List<FilterItemModel> items;
 
   const FilterModel({
     required this.headline,

@@ -18,7 +18,7 @@ class FilterModelAdapter extends TypeAdapter<FilterModel> {
     };
     return FilterModel(
       headline: fields[0] as String,
-      items: (fields[2] as List).cast<FilterItemEntity>(),
+      items: (fields[2] as List).cast<FilterItemModel>(),
       isActive: fields[1] as bool,
     );
   }

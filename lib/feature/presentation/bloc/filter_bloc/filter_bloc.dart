@@ -67,7 +67,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       },
       (filters) {
         emit(FilterLoadedState(filters: filters));
-        
       },
     );
 
@@ -79,18 +78,18 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     FilterExpandSectionEvent event,
     Emitter emit,
   ) async {
-    final List<FilterEntity> filters = (state as FilterLoadedState).filters;
-    FilterEntity filter = filters[event.index];
-    filter = filter.copyWith(isActive: filter.changeActivity);
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+      FilterEntity filter = filters[event.index];
+      filter = filter.copyWith(isActive: filter.changeActivity);
 
-    log('**${filters[event.index]}**');
-    filters[event.index] = filter;
-    log('//');
+      log('**${filters[event.index]}**');
+      filters[event.index] = filter;
+      log('//');
 
-    emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: filters));
-
-    debugPrint('Отработал эвент: $event');
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+    }
   }
 
   // Обработка выбора пункта в фильтре.
@@ -98,42 +97,45 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     FilterSelectItemEvent event,
     Emitter emit,
   ) {
-    final List<FilterEntity> filters = (state as FilterLoadedState).filters;
-    final FilterEntity filter = filters[event.filterIndex];
-    final FilterItemEntity filterItem =
-        filters[event.filterIndex].items[event.itemIndex];
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+      final FilterEntity filter = filters[event.filterIndex];
+      final FilterItemEntity filterItem =
+          filters[event.filterIndex].items[event.itemIndex];
 
-    final List<FilterItemEntity> itemsWithSelect =
-        selectItems(filter, filterItem);
-    final FilterEntity filterWithSelect =
-        filter.copyWith(items: itemsWithSelect);
-    filters[event.filterIndex] = filterWithSelect;
+      final List<FilterItemEntity> itemsWithSelect =
+          selectItems(filter, filterItem);
+      final FilterEntity filterWithSelect =
+          filter.copyWith(items: itemsWithSelect);
+      filters[event.filterIndex] = filterWithSelect;
 
-    emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: filters));
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+    }
   }
 
   FutureOr<void> _onRemove(
     FilterRemoveItemEvent event,
     Emitter emit,
   ) async {
-    final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
 
-    final int itemIndex = filters[event.filterIndex].items.indexOf(event.item);
-    final FilterEntity filter = filters[event.filterIndex];
-    final FilterItemEntity filterItem =
-        filters[event.filterIndex].items[itemIndex];
+      final int itemIndex =
+          filters[event.filterIndex].items.indexOf(event.item);
+      final FilterEntity filter = filters[event.filterIndex];
+      final FilterItemEntity filterItem =
+          filters[event.filterIndex].items[itemIndex];
 
-    final List<FilterItemEntity> itemsWithSelect =
-        selectItems(filter, filterItem);
-    final FilterEntity filterWithSelect =
-        filter.copyWith(items: itemsWithSelect);
-    filters[event.filterIndex] = filterWithSelect;
+      final List<FilterItemEntity> itemsWithSelect =
+          selectItems(filter, filterItem);
+      final FilterEntity filterWithSelect =
+          filter.copyWith(items: itemsWithSelect);
+      filters[event.filterIndex] = filterWithSelect;
 
-    emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: filters));
-
-    debugPrint('Отработал эвент: $event');
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+    }
   }
 
   List<FilterItemEntity> selectItems(
