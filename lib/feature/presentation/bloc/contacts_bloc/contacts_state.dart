@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
 import 'package:equatable/equatable.dart';
 

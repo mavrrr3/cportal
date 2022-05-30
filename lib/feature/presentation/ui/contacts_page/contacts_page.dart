@@ -183,7 +183,7 @@ class _ContactsPageState extends State<ContactsPage> {
           );
         }
 
-        // TODO: Отработать другие стейты
+        // TODO: Отработать другие стейты.
         return const SizedBox();
       },
     );
