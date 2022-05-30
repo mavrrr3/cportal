@@ -1,10 +1,8 @@
-// ignore_for_file: prefer_final_locals
-
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_filters_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -83,11 +81,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       FilterEntity filter = filters[event.index];
       filter = filter.copyWith(isActive: filter.changeActivity);
 
-      log('**${filters[event.index]}**');
       filters[event.index] = filter;
-      log('//');
 
       emit(FilterLoadingState());
+
       emit(FilterLoadedState(filters: filters));
     }
   }
@@ -107,7 +104,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           selectItems(filter, filterItem);
       final FilterEntity filterWithSelect =
           filter.copyWith(items: itemsWithSelect);
-      filters[event.filterIndex] = filterWithSelect;
+      filters[event.filterIndex] =
+          switchFilterEntityToFilterModel(filterWithSelect);
 
       emit(FilterLoadingState());
       emit(FilterLoadedState(filters: filters));
@@ -131,7 +129,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           selectItems(filter, filterItem);
       final FilterEntity filterWithSelect =
           filter.copyWith(items: itemsWithSelect);
-      filters[event.filterIndex] = filterWithSelect;
+      filters[event.filterIndex] =
+          switchFilterEntityToFilterModel(filterWithSelect);
 
       emit(FilterLoadingState());
       emit(FilterLoadedState(filters: filters));
@@ -149,5 +148,27 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
       return item;
     }).toList();
+  }
+
+  FilterModel switchFilterEntityToFilterModel(FilterEntity filterEntity) {
+    return FilterModel(
+      headline: filterEntity.headline,
+      items: switchFilterItemsEntityToFilterItemsModel(filterEntity.items),
+      isActive: filterEntity.isActive,
+    );
+  }
+
+  List<FilterItemModel> switchFilterItemsEntityToFilterItemsModel(
+    List<FilterItemEntity> itemsEntityList,
+  ) {
+    final List<FilterItemModel> itemsModel = [];
+    for (final FilterItemEntity item in itemsEntityList) {
+      itemsModel.add(FilterItemModel(
+        name: item.name,
+        isActive: item.isActive,
+      ));
+    }
+
+    return itemsModel;
   }
 }

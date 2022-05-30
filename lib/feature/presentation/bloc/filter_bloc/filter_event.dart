@@ -14,6 +14,9 @@ class FilterExpandSectionEvent extends FilterEvent {
   final int index;
 
   const FilterExpandSectionEvent({required this.index});
+
+  @override
+  List<Object> get props => [index];
 }
 
 class FilterSelectItemEvent extends FilterEvent {
@@ -24,6 +27,8 @@ class FilterSelectItemEvent extends FilterEvent {
     required this.filterIndex,
     required this.itemIndex,
   });
+  @override
+  List<Object> get props => [filterIndex, itemIndex];
 }
 
 class FilterRemoveItemEvent extends FilterEvent {
@@ -34,4 +39,6 @@ class FilterRemoveItemEvent extends FilterEvent {
     required this.filterIndex,
     required this.item,
   });
+  @override
+  List<Object> get props => [filterIndex, item];
 }
