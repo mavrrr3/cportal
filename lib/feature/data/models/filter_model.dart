@@ -13,7 +13,7 @@ class FilterModel extends FilterEntity {
   final bool isActive;
 
   @HiveField(2)
-  final List<FilterItemEntity> items;
+  final List<FilterItemModel> items;
 
   const FilterModel({
     required this.headline,
@@ -40,4 +40,16 @@ class FilterItemModel extends FilterItemEntity {
           name: name,
           isActive: isActive,
         );
+
+  // FilterItemModel copyWith({
+  //   String? name,
+  //   bool? isActive,
+  // }) {
+  //   return FilterItemModel(
+  //     name: name ?? this.name,
+  //     isActive: isActive ?? this.isActive,
+  //   );
+  // }
+
+  // bool get changeActivity => !isActive;
 }

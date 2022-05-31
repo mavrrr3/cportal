@@ -42,7 +42,7 @@ class _NewsPageState extends State<NewsPage> {
 
   // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы.
   void _contentInit(NewsCodeEnum type) {
-    return BlocProvider.of<FetchNewsBloc>(context, listen: false)
+    BlocProvider.of<FetchNewsBloc>(context, listen: false)
         .add(FetchNewsEventImpl(newsCodeEnum: type));
   }
 
@@ -165,7 +165,7 @@ class _NewsPageState extends State<NewsPage> {
 
   // Отрисовка контента по типу страницы.
   Widget _content(FetchNewsLoadedState state, double width) {
-    final List<ArticleEntity> articles = state.news.article;
+    final List<ArticleEntity> articles = state.news.response.articles;
     log('===================== ${state.tabs} ===========================');
 
     return Column(
@@ -217,7 +217,7 @@ class _NewsPageState extends State<NewsPage> {
     double width,
     int index,
   ) {
-    final List<ArticleEntity> articles = state.news.article;
+    final List<ArticleEntity> articles = state.news.response.articles;
 
     if (widget.pageType == NewsCodeEnum.news) {
       // Распределение по категориям

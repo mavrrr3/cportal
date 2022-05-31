@@ -171,6 +171,9 @@ void changePage(BuildContext context, int index) {
           .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.quastion));
       GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
       break;
+    case 4:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.contacts);
+      break;
     default:
       GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
   }

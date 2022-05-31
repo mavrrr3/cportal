@@ -4,11 +4,13 @@ import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
+import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -135,6 +137,9 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<FilterBloc>(
       create: (ctx) => sl<FilterBloc>(),
     ),
+    BlocProvider<ContactsBloc>(
+      create: (ctx) => sl<ContactsBloc>(),
+    ),
   ];
 }
 
@@ -146,8 +151,10 @@ void _hiveAdaptersInit() {
     ..registerAdapter(PositionModelAdapter())
     ..registerAdapter(PhoneModelAdapter())
     ..registerAdapter(ArticleModelAdapter())
-    ..registerAdapter(ArticleTypeModelAdapter())
+    ..registerAdapter(ParagraphModelAdapter())
+    ..registerAdapter(ResponseModelAdapter())
     ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(FilterModelAdapter())
-    ..registerAdapter(FilterItemModelAdapter());
+    ..registerAdapter(FilterItemModelAdapter())
+    ..registerAdapter(ContactsModelAdapter());
 }

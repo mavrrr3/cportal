@@ -56,7 +56,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         if (event.newsCodeEnum == NewsCodeEnum.news) {
           tabs.add('Все');
         }
-        for (final item in news.article) {
+        for (final item in news.response.articles) {
           if (!tabs.contains(item.category)) {
             tabs.add(item.category);
           }

@@ -24,7 +24,7 @@ class FilterLoadedState extends FilterState {
   final List<FilterEntity> filters;
 
   const FilterLoadedState({
-    this.filters = const [],
+    required this.filters,
   });
 
   @override

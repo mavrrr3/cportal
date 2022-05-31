@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
@@ -179,6 +178,7 @@ final GoRouter router = GoRouter(
           desktopMenuIndex: 1,
         ),
       ),
+
       // redirect: (state) {
       //   if (kIsWeb) return '/news';
 
@@ -294,7 +294,9 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const ContactsPage(),
+        child: const Scaffold(
+          body: ContactsPage(),
+        ),
       ),
     ),
     GoRoute(
@@ -305,7 +307,7 @@ final GoRouter router = GoRouter(
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
         child: ContactProfilePage(
-          user: state.extra! as ProfileEntity,
+          id: state.params['fid']!,
         ),
       ),
     ),
