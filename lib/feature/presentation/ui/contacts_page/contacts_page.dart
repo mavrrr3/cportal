@@ -66,7 +66,7 @@ class _ContactsPageState extends State<ContactsPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 ResponsiveVisibility(
+                  ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [
                       Condition<dynamic>.largerThan(name: MOBILE),
@@ -92,23 +92,28 @@ class _ContactsPageState extends State<ContactsPage> {
                               child: ResponsiveConstraints(
                                 constraint: const BoxConstraints(maxWidth: 640),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     // Поиск.
                                     SearchInput(
                                       controller: _searchController,
                                       onChanged: (text) {},
                                     ),
-                  
+
                                     // Фильтр.
                                     _FilterButton(
                                       onTap: () async {
-                                        if (!kIsWeb) {
+                                        if (!ResponsiveWrapper.of(context)
+                                            .isLargerThan(MOBILE)) {
                                           await showModalBottomSheet<void>(
                                             context: context,
                                             isScrollControlled: true,
+                                            backgroundColor:
+                                                theme.backgroundColor,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
                                             builder: (context) =>
                                                 DraggableScrollableSheet(
@@ -117,9 +122,11 @@ class _ContactsPageState extends State<ContactsPage> {
                                               initialChildSize: 0.57,
                                               minChildSize: 0.57,
                                               maxChildSize: 0.875,
-                                              builder: (context, scrollController) =>
-                                                  Filter(
-                                                scrollController: scrollController,
+                                              builder:
+                                                  (context, scrollController) =>
+                                                      Filter(
+                                                scrollController:
+                                                    scrollController,
                                               ),
                                             ),
                                           );
@@ -135,7 +142,7 @@ class _ContactsPageState extends State<ContactsPage> {
                               ),
                             ),
                             const SizedBox(height: 31),
-                  
+
                             // Выбранные фильтры.
                             Padding(
                               padding: getHorizontalPadding(context),
@@ -150,10 +157,10 @@ class _ContactsPageState extends State<ContactsPage> {
                                         final bool isActive = state
                                             .filters[index].items
                                             .any((element) => element.isActive);
-                  
+
                                         // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
-                                        final List<FilterItemEntity> selectedItems =
-                                            [];
+                                        final List<FilterItemEntity>
+                                            selectedItems = [];
                                         if (isActive) {
                                           for (final item
                                               in state.filters[index].items) {
@@ -162,16 +169,17 @@ class _ContactsPageState extends State<ContactsPage> {
                                             }
                                           }
                                         }
-                  
+
                                         // Рендеринг.
                                         return isActive
                                             ? FilterViewSelectedRow(
-                                                headline:
-                                                    state.filters[index].headline,
+                                                headline: state
+                                                    .filters[index].headline,
                                                 selectedItems: selectedItems,
                                                 onClose: (item) {
-                                                  BlocProvider.of<FilterBloc>(context)
-                                                      .add(
+                                                  BlocProvider.of<FilterBloc>(
+                                                    context,
+                                                  ).add(
                                                     FilterRemoveItemEvent(
                                                       filterIndex: index,
                                                       item: item,
@@ -183,13 +191,13 @@ class _ContactsPageState extends State<ContactsPage> {
                                       },
                                     );
                                   }
-                  
+
                                   // TODO: Обработать другие стейты.
                                   return const SizedBox();
                                 },
                               ),
                             ),
-                  
+
                             // Избранные.
                             if (state.data.favorites.isNotEmpty)
                               Padding(
@@ -206,7 +214,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                   ),
                                 ),
                               ),
-                  
+
                             // Колонка контактов.
                             Padding(
                               padding: getHorizontalPadding(context),
@@ -222,16 +230,25 @@ class _ContactsPageState extends State<ContactsPage> {
                                         state.data.contacts.length,
                                         (index) => GestureDetector(
                                           behavior: HitTestBehavior.translucent,
-                                          onTap: () {},
+                                          onTap: () {
+                                            if (ResponsiveWrapper.of(context)
+                                                .isDesktop) {
+                                            } else {
+                                              _goToUserPage(state, index);
+                                            }
+                                          },
                                           child: ContactCard(
                                             item: state.data.contacts[index],
-                                            width: 328,
+                                            width: ResponsiveWrapper.of(context)
+                                                    .isLargerThan(MOBILE)
+                                                ? 328
+                                                : null,
                                           ),
                                         ),
                                       ),
                                     ),
                             ),
-                  
+
                             const SizedBox(height: 42),
                           ],
                         ),
@@ -275,7 +292,6 @@ class _ContactsPageState extends State<ContactsPage> {
       GoRouter.of(context).pushNamed(
         NavigationRouteNames.contactProfile,
         params: {'fid': state.data.contacts[i].id},
-        extra: state.data.contacts[i],
       );
 }
 
