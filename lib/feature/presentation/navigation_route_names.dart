@@ -308,7 +308,7 @@ final GoRouter router = GoRouter(
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
         child: ContactProfilePage(
-          user: state.extra! as ProfileEntity,
+          id: state.params['fid']!,
         ),
       ),
     ),
