@@ -57,27 +57,26 @@ class _FilterWebState extends State<FilterWeb> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Применить.
+                          _ActionButton(
+                            text: 'Применить',
+                            onTap: () {},
+                          ),
 
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 32),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       // Применить.
-                    //       _ActionButton(
-                    //         text: 'Применить',
-                    //         onTap: () {},
-                    //       ),
-
-                    //       // Очистить.
-                    //       _ActionButton(
-                    //         text: 'Очистить',
-                    //         onTap: () {},
-                    //         isOutline: true,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                          // Очистить.
+                          _ActionButton(
+                            text: 'Очистить',
+                            onTap: () {},
+                            isOutline: true,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
