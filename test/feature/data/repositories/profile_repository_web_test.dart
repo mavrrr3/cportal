@@ -33,8 +33,7 @@ void main() {
       middleName: 'Валерьевич',
       birthday: '20.11.1984',
       email: 'aaa@novostal.ru',
-      photoLink:
-          'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+      photoLink: '2.jpg',
       active: true,
       position: const PositionModel(
         id: 'a1b2c3d4',

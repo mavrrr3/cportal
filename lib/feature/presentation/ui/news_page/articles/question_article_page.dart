@@ -39,7 +39,7 @@ class QuestionArticlePage extends StatelessWidget {
         builder: (context, state) {
           if (state is FetchNewsLoadedState) {
             ArticleEntity articlefromBloc() {
-              return state.news.article
+              return state.news.response.articles
                   .where((element) => element.id == id)
                   .toList()
                   .first;
@@ -165,7 +165,9 @@ class QuestionArticlePage extends StatelessWidget {
                                             ),
                                             const SizedBox(height: 20),
                                             Text(
-                                              articlefromBloc().description,
+                                              articlefromBloc()
+                                                  .content
+                                                  .toString(),
                                               style: theme.textTheme.headline5,
                                             ),
                                             const SizedBox(height: 24),
@@ -204,7 +206,7 @@ class QuestionArticlePage extends StatelessWidget {
     BuildContext context,
   ) {
     final List<ArticleEntity> currentTabsItems = [];
-    for (final item in state.news.article) {
+    for (final item in state.news.response.articles) {
       if (item.category == currentItem.category) {
         currentTabsItems.add(item);
       }

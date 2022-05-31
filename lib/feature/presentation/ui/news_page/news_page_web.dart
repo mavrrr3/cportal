@@ -87,7 +87,7 @@ class _ContentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ArticleEntity> articles = blocState.news.article;
+    final List<ArticleEntity> articles = blocState.news.response.articles;
     final double width = MediaQuery.of(context).size.width;
 
     void _onArticleSelected(String id) {
@@ -102,7 +102,7 @@ class _ContentPage extends StatelessWidget {
       double width,
       int index,
     ) {
-      final List<ArticleEntity> articles = state.news.article;
+      final List<ArticleEntity> articles = state.news.response.articles;
 
       Widget _newsCard() {
         return _NewsCard(

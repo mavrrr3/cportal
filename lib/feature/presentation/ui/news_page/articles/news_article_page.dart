@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +40,7 @@ class NewsArticlePage extends StatelessWidget {
       builder: (context, state) {
         if (state is FetchNewsLoadedState) {
           ArticleEntity articlefromBloc() {
-            return state.news.article
+            return state.news.response.articles
                 .where((element) => element.id == id)
                 .toList()
                 .first;
@@ -113,7 +115,7 @@ class _Mobile extends StatelessWidget {
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
-                      item.image,
+                      '${AppConfig.apiUri}/images/${item.image}',
                       fit: BoxFit.cover,
                       cache: true,
                     ),
@@ -139,14 +141,23 @@ class _Mobile extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 _outputFormat.format(
-                                  item.dateShow,
+                                  item.date,
                                 ),
                                 style: theme.textTheme.bodyText1,
                               ),
                               const SizedBox(height: 20),
-                              Text(
-                                item.description,
-                                style: theme.textTheme.headline6,
+                              Column(
+                                children: [
+                                  ...List.generate(
+                                    item.content.length,
+                                    (index) {
+                                      return NewsTemplate.factory(
+                                        context,
+                                        item.content[index],
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 20),
                             ],
@@ -157,13 +168,15 @@ class _Mobile extends StatelessWidget {
                             left: getSingleHorizontalPadding(context),
                           ),
                           child: NewsHorizontalScroll(
-                            items: state.news.article,
+                            items: state.news.response.articles,
                             currentArticle: item,
                             onTap: (index) {
                               GoRouter.of(context).pop();
                               GoRouter.of(context).pushNamed(
                                 NavigationRouteNames.newsArticlePage,
-                                params: {'fid': state.news.article[index].id},
+                                params: {
+                                  'fid': state.news.response.articles[index].id,
+                                },
                               );
                             },
                           ),
@@ -202,7 +215,7 @@ class _WebState extends State<_Web> {
       builder: (context, state) {
         if (state is FetchNewsLoadedState) {
           List<ArticleEntity> articlesToRecomendations(String id) {
-            return state.news.article
+            return state.news.response.articles
                 .where((element) => element.id != id)
                 .toList();
           }
@@ -281,13 +294,13 @@ class _WebState extends State<_Web> {
                                 const SizedBox(height: 12),
                                 Text(
                                   _outputFormat.format(
-                                    widget.item.dateShow,
+                                    widget.item.date,
                                   ),
                                   style: theme.textTheme.bodyText1,
                                 ),
                                 const SizedBox(height: 24),
                                 Text(
-                                  article.description,
+                                  article.content.toString(),
                                   style: theme.textTheme.headline6,
                                 ),
                                 const SizedBox(height: 40),

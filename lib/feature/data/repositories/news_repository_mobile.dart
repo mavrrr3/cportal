@@ -1,13 +1,21 @@
+import 'dart:io';
+
 import 'package:cportal_flutter/core/error/cache_exception.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
-import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:http/io_client.dart';
+
+const bool trustSelfSigned = true;
+final HttpClient _httpClient = HttpClient()
+  ..badCertificateCallback = ((cert, host, port) => trustSelfSigned);
+final IOClient _ioClient = IOClient(_httpClient);
+const String _baseUrl = 'https://cportal.ru/api/v1/';
 
 class NewsRepositoryMobile implements INewsRepository {
   final INewsRemoteDataSource remoteDataSource;
@@ -32,13 +40,8 @@ class NewsRepositoryMobile implements INewsRepository {
     } else {
       try {
         final localNews = await localDataSource.fetchNewsFromCache();
-        final List<ArticleModel> articles = localNews.article
-            .where((article) => article.articleType.code == code)
-            .toList();
 
-        final NewsModel news = NewsModel(show: true, article: [...articles]);
-
-        return Right(news);
+        return Right(localNews);
       } on CacheException {
         return Left(CacheFailure());
       }

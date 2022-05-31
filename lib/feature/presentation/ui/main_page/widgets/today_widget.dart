@@ -138,23 +138,23 @@ class TodayItemModel {
 
 final List<TodayItemModel> _items = [
   TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    image: '1.jpg',
     description: 'Романова Алексея Игоревича',
     post: 'Охранник',
     place: 'Новосталь-М',
   ),
   TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    image: '2.jpg',
     description: 'Новосталь-М',
   ),
   TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    image: '1.jpg',
     description: 'Романова Алексея Игоревича',
     post: 'Охранник',
     place: 'Новосталь-М',
   ),
   TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    image: '2.jpg',
     description: 'Романова Алексея Игоревича',
     post: 'Охранник',
     place: 'Новосталь-М',
