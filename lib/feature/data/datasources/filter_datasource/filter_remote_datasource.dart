@@ -45,7 +45,7 @@ const FilterModel _filter1 = FilterModel(
 );
 
 const FilterModel _filter2 = FilterModel(
-  headline: 'Должность',
+  headline: 'Отдел',
   items: [
     FilterItemModel(name: 'Информационные технологии'),
     FilterItemModel(name: 'Отдел кадров'),

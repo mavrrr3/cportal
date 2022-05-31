@@ -31,7 +31,7 @@ class _FilterState extends State<Filter> {
               controller: widget.scrollController,
               physics: const BouncingScrollPhysics(),
               itemCount: state.filters.length,
-              itemBuilder: (context, index) => _FilterSectionItem(
+              itemBuilder: (context, index) => FilterSectionItem(
                 item: state.filters[index],
                 onExpand: () {
                   BlocProvider.of<FilterBloc>(context)
@@ -57,24 +57,26 @@ class _FilterState extends State<Filter> {
   }
 }
 
-class _FilterSectionItem extends StatefulWidget {
+class FilterSectionItem extends StatefulWidget {
   final FilterEntity item;
   final Function() onExpand;
   final Function(int) onSelect;
+  final double? sectionWidth;
 
   /// Блок отдельного раздела фильтра.
-  const _FilterSectionItem({
+  const FilterSectionItem({
     Key? key,
     required this.item,
     required this.onExpand,
     required this.onSelect,
+    this.sectionWidth,
   }) : super(key: key);
 
   @override
-  State<_FilterSectionItem> createState() => _FilterSectionItemState();
+  State<FilterSectionItem> createState() => _FilterSectionItemState();
 }
 
-class _FilterSectionItemState extends State<_FilterSectionItem> {
+class _FilterSectionItemState extends State<FilterSectionItem> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -93,7 +95,8 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
             child: Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width - 80,
+                  width: widget.sectionWidth ??
+                      (MediaQuery.of(context).size.width - 80),
                   decoration: BoxDecoration(
                     color: theme.brightness == Brightness.light
                         ? theme.scaffoldBackgroundColor
@@ -152,9 +155,11 @@ class _FilterSectionItemState extends State<_FilterSectionItem> {
                           isActive: widget.item.items[index].isActive,
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          widget.item.items[index].name,
-                          style: theme.textTheme.headline6,
+                        Expanded(
+                          child: Text(
+                            widget.item.items[index].name,
+                            style: theme.textTheme.headline6,
+                          ),
                         ),
                       ],
                     ),
