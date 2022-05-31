@@ -2,14 +2,25 @@ import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class NewsEntity extends Equatable {
-  final bool show;
-  final List<ArticleEntity> article;
+  final ResponseEntity response;
 
-  const NewsEntity({
-    required this.show,
-    required this.article,
+  const NewsEntity({required this.response});
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class ResponseEntity extends Equatable {
+  final int count;
+  final int update;
+  final List<ArticleEntity> articles;
+
+  const ResponseEntity({
+    required this.count,
+    required this.update,
+    required this.articles,
   });
 
   @override
-  List<Object?> get props => [show, article];
+  List<Object?> get props => [count, update, articles];
 }

@@ -137,8 +137,7 @@ class _MainPageState extends State<MainPage> {
                                       ? _isAnimation
                                       : false,
                                   size: 40,
-                                  imgPath:
-                                      'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+                                  imgPath: '2.jpg',
                                 ),
                               ),
                             ),
@@ -185,9 +184,9 @@ class _MainPageState extends State<MainPage> {
                                     ),
                                     child: NewsHorizontalScroll(
                                       onTap: (i) => _onArticleSelected(
-                                        state.news.article[i].id,
+                                        state.news.response.articles[i].id,
                                       ),
-                                      items: state.news.article,
+                                      items: state.news.response.articles,
                                     ),
                                   )
                                 : Padding(
@@ -196,14 +195,14 @@ class _MainPageState extends State<MainPage> {
                                       spacing: 16,
                                       runSpacing: 20,
                                       children: List.generate(
-                                        state.news.article.length,
+                                        state.news.response.articles.length,
                                         (i) => NewsCardItem(
                                           onTap: () => _onArticleSelected(
-                                            state.news.article[i].id,
+                                            state.news.response.articles[i].id,
                                           ),
                                           width: 312,
                                           height: 152,
-                                          item: state.news.article[i],
+                                          item: state.news.response.articles[i],
                                         ),
                                       ),
                                     ),
