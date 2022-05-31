@@ -81,7 +81,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       FilterEntity filter = filters[event.index];
       filter = filter.copyWith(isActive: filter.changeActivity);
 
-      filters[event.index] = filter;
+      filters[event.index] = switchFilterEntityToFilterModel(filter);
 
       emit(FilterLoadingState());
 
