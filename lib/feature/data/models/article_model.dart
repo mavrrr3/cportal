@@ -3,24 +3,25 @@ import 'package:hive/hive.dart';
 
 part 'article_model.g.dart';
 
+// ignore_for_file: overridden_fields
+// ignore_for_file: annotate_overrides
 @HiveType(typeId: 5)
 class ArticleModel extends ArticleEntity {
-  @override
   @HiveField(0)
   final String id;
-  @override
+
   @HiveField(1)
   final DateTime date;
-  @override
+
   @HiveField(2)
   final String category;
-  @override
+
   @HiveField(3)
   final String header;
-  @override
+
   @HiveField(4)
   final List<ParagraphModel> content;
-  @override
+
   @HiveField(5)
   final String image;
 

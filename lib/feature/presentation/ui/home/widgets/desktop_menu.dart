@@ -1,5 +1,3 @@
-import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
