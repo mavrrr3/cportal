@@ -52,9 +52,9 @@ final ProfileModel _user1 = ProfileModel(
   middleName: 'Владимир',
   lastName: 'Константинович',
   birthday: 'birthday',
-  email: 'email',
+  email: 'email@example.com',
   photoLink:
-      'https://www.clipartmax.com/png/middle/91-915439_to-the-functionality-and-user-experience-of-our-site-red-person-icon.png',
+      'https://avatars.mds.yandex.net/i?id=08365f5b8db600cf8af1086fdbe51e9d-5858549-images-thumbs&n=13&exp=1',
   active: true,
   position: const PositionModel(
     id: '',

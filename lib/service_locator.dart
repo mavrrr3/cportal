@@ -14,8 +14,10 @@ import 'package:cportal_flutter/feature/data/datasources/profile_datasource/prof
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
-import 'package:cportal_flutter/feature/data/repositories/contacts_repository.dart';
-import 'package:cportal_flutter/feature/data/repositories/filter_repository.dart';
+import 'package:cportal_flutter/feature/data/repositories/contacts_repository_mobile.dart';
+import 'package:cportal_flutter/feature/data/repositories/contacts_repository_web.dart';
+import 'package:cportal_flutter/feature/data/repositories/filter_repository_mobile.dart';
+import 'package:cportal_flutter/feature/data/repositories/filter_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/pin_code_repository.dart';
@@ -137,20 +139,33 @@ Future<void> init() async {
       ),
     );
   }
-  sl.registerLazySingleton<IFilterRepository>(
-    () => FilterRepository(
-      remoteDataSource: sl(),
-      localDataSource: sl(),
-      networkInfo: sl(),
-    ),
-  );
-  sl.registerLazySingleton<IContactsRepository>(
-    () => ContactsRepository(
-      remoteDataSource: sl(),
-      localDataSource: sl(),
-      networkInfo: sl(),
-    ),
-  );
+  if (kIsWeb) {
+    sl.registerLazySingleton<IFilterRepository>(
+      () => FilterRepositoryWeb(remoteDataSource: sl()),
+    );
+  } else {
+    sl.registerLazySingleton<IFilterRepository>(
+      () => FilterRepositoryMobile(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ),
+    );
+  }
+
+  if (kIsWeb) {
+    sl.registerLazySingleton<IContactsRepository>(
+      () => ContactsRepositoryWeb(remoteDataSource: sl()),
+    );
+  } else {
+    sl.registerLazySingleton<IContactsRepository>(
+      () => ContactsRepositoryMobile(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ),
+    );
+  }
 
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(

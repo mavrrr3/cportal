@@ -7,12 +7,12 @@ import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class FilterRepository implements IFilterRepository {
+class FilterRepositoryMobile implements IFilterRepository {
   final IFilterRemoteDataSource remoteDataSource;
   final IFilterLocalDataSource localDataSource;
   final INetworkInfo networkInfo;
 
-  FilterRepository({
+  FilterRepositoryMobile({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.networkInfo,

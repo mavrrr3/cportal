@@ -179,6 +179,7 @@ final GoRouter router = GoRouter(
           desktopMenuIndex: 1,
         ),
       ),
+
       // redirect: (state) {
       //   if (kIsWeb) return '/news';
 
@@ -294,7 +295,10 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const ContactsPage(),
+        child: const HomePage(
+          child: ContactsPage(),
+          desktopMenuIndex: 4,
+        ),
       ),
     ),
     GoRoute(

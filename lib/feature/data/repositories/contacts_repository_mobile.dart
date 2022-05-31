@@ -7,12 +7,12 @@ import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class ContactsRepository implements IContactsRepository {
+class ContactsRepositoryMobile implements IContactsRepository {
   final IContactsRemoteDataSource remoteDataSource;
   final IContactsLocalDataSource localDataSource;
   final INetworkInfo networkInfo;
 
-  ContactsRepository({
+  ContactsRepositoryMobile({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.networkInfo,

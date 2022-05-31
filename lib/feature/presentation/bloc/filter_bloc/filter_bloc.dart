@@ -84,7 +84,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       filters[event.index] = switchFilterEntityToFilterModel(filter);
 
       emit(FilterLoadingState());
-
       emit(FilterLoadedState(filters: filters));
     }
   }
@@ -112,6 +111,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     }
   }
 
+  // Обработка удаления пункта фильтра из вью выбранных.
   FutureOr<void> _onRemove(
     FilterRemoveItemEvent event,
     Emitter emit,
