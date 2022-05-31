@@ -26,7 +26,7 @@ class ContactsList extends StatelessWidget {
           onTap: () {
             onTap(index);
           },
-          child: _ContactItem(
+          child: ContactCard(
             item: items[index],
           ),
         ),
@@ -35,13 +35,15 @@ class ContactsList extends StatelessWidget {
   }
 }
 
-class _ContactItem extends StatelessWidget {
+class ContactCard extends StatelessWidget {
   final ProfileEntity item;
+  final double? width;
 
   /// Карточка контакта.
-  const _ContactItem({
+  const ContactCard({
     Key? key,
     required this.item,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -50,7 +52,7 @@ class _ContactItem extends StatelessWidget {
 
     return GestureDetector(
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: width ?? MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: theme.splashColor,
           borderRadius: BorderRadius.circular(12),
@@ -65,24 +67,26 @@ class _ContactItem extends StatelessWidget {
                 imgPath: item.photoLink,
               ),
               const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${item.firstName} ${item.middleName} ${item.lastName}',
-                    style: theme.textTheme.headline6!
-                        .copyWith(fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.position.description,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.hoverColor.withOpacity(0.68),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${item.firstName} ${item.middleName} ${item.lastName}',
+                      style: theme.textTheme.headline6!
+                          .copyWith(fontWeight: FontWeight.w700),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  TagContainer(text: item.position.department),
-                ],
+                    const SizedBox(height: 8),
+                    Text(
+                      item.position.description,
+                      style: theme.textTheme.bodyText1!.copyWith(
+                        color: theme.hoverColor.withOpacity(0.68),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TagContainer(text: item.position.department),
+                  ],
+                ),
               ),
             ],
           ),

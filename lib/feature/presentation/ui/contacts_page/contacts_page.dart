@@ -12,10 +12,12 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/fa
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_view_selected_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({Key? key}) : super(key: key);
@@ -57,43 +59,50 @@ class _ContactsPageState extends State<ContactsPage> {
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 7),
+                  const SizedBox(
+                    height: kIsWeb ? 12 : 7,
+                  ),
                   Padding(
                     padding: getHorizontalPadding(context),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Поиск.
-                        SearchInput(
-                          controller: _searchController,
-                          onChanged: (text) {},
-                        ),
+                    child: ResponsiveConstraints(
+                      constraint: const BoxConstraints(maxWidth: 640),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Поиск.
+                          SearchInput(
+                            controller: _searchController,
+                            onChanged: (text) {},
+                          ),
 
-                        // Фильтр.
-                        _FilterButton(
-                          onTap: () async {
-                            await showModalBottomSheet<void>(
-                              context: context,
-                              isScrollControlled: true,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              builder: (context) => DraggableScrollableSheet(
-                                expand: false,
-                                snap: true,
-                                initialChildSize: 0.57,
-                                minChildSize: 0.57,
-                                maxChildSize: 0.875,
-                                builder: (context, scrollController) => Filter(
-                                  scrollController: scrollController,
+                          // Фильтр.
+                          _FilterButton(
+                            onTap: () async {
+                              await showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                              ),
-                            );
-                            setState(() {});
-                          },
-                        ),
-                      ],
+                                builder: (context) => DraggableScrollableSheet(
+                                  expand: false,
+                                  snap: true,
+                                  initialChildSize: 0.57,
+                                  minChildSize: 0.57,
+                                  maxChildSize: 0.875,
+                                  builder: (context, scrollController) =>
+                                      Filter(
+                                    scrollController: scrollController,
+                                  ),
+                                ),
+                              );
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 31),
@@ -128,15 +137,13 @@ class _ContactsPageState extends State<ContactsPage> {
                                       headline: state.filters[index].headline,
                                       selectedItems: selectedItems,
                                       onClose: (item) {
-                                        setState(() {
-                                          BlocProvider.of<FilterBloc>(context)
-                                              .add(
-                                            FilterRemoveItemEvent(
-                                              filterIndex: index,
-                                              item: item,
-                                            ),
-                                          );
-                                        });
+                                        BlocProvider.of<FilterBloc>(context)
+                                            .add(
+                                          FilterRemoveItemEvent(
+                                            filterIndex: index,
+                                            item: item,
+                                          ),
+                                        );
                                       },
                                     )
                                   : const SizedBox();
@@ -153,8 +160,8 @@ class _ContactsPageState extends State<ContactsPage> {
                   // Избранные.
                   if (state.data.favorites.isNotEmpty)
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
+                      padding: EdgeInsets.only(
+                        left: getSingleHorizontalPadding(context),
                         bottom: 16,
                         top: 8,
                       ),
@@ -170,10 +177,26 @@ class _ContactsPageState extends State<ContactsPage> {
                   // Колонка контактов.
                   Padding(
                     padding: getHorizontalPadding(context),
-                    child: ContactsList(
-                      items: state.data.contacts,
-                      onTap: (i) => _goToUserPage(state, i),
-                    ),
+                    child: !kIsWeb
+                        ? ContactsList(
+                            items: state.data.contacts,
+                            onTap: (i) => _goToUserPage(state, i),
+                          )
+                        : Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: List.generate(
+                              state.data.contacts.length,
+                              (index) => GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () {},
+                                child: ContactCard(
+                                  item: state.data.contacts[index],
+                                  width: 328,
+                                ),
+                              ),
+                            ),
+                          ),
                   ),
 
                   const SizedBox(height: 42),
