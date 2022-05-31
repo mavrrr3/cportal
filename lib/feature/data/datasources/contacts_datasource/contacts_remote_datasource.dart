@@ -28,6 +28,8 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
         _user1,
         _user1,
         _user1,
+        _user1,
+        _user1,
       ];
 
       final remoteContacts = ContactsModel(

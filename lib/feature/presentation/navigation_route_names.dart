@@ -295,9 +295,8 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const HomePage(
-          child: ContactsPage(),
-          desktopMenuIndex: 4,
+        child: const Scaffold(
+          body: ContactsPage(),
         ),
       ),
     ),
