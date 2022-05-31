@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
