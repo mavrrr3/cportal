@@ -11,7 +11,7 @@ class NewsTemplate {
     final width = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
 
-    switch (paragraph.template) {
+    switch ((paragraph as ParagraphEntity).template) {
       case '1':
         return Text(
           paragraph.content,
