@@ -4,6 +4,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -128,6 +129,8 @@ class ContactProfilePage extends StatelessWidget {
                                   child: AvatarBox(
                                     size: 102,
                                     imgPath: user.photoLink,
+                                    isApiImg: false,
+                                    borderRadius: 24,
                                   ),
                                 ),
                                 const SizedBox(height: 12),
@@ -147,28 +150,28 @@ class ContactProfilePage extends StatelessWidget {
 
                                 //-- Profile info --
                                 // Post
-                                _BuildInfo(
+                                ProfileInfoSection(
                                   headline:
                                       AppLocalizations.of(context)!.position,
                                   text: user.position.description,
                                 ),
 
                                 // Department.
-                                _BuildInfo(
+                                ProfileInfoSection(
                                   headline:
                                       AppLocalizations.of(context)!.department,
                                   text: user.position.description,
                                 ),
 
                                 // Office phone.
-                                _BuildInfo(
+                                ProfileInfoSection(
                                   headline: AppLocalizations.of(context)!
                                       .office_phone,
                                   text: user.phone.first.number,
                                 ),
 
                                 // Self phone.
-                                _BuildInfo(
+                                ProfileInfoSection(
                                   headline:
                                       AppLocalizations.of(context)!.self_phone,
                                   text:
@@ -176,14 +179,14 @@ class ContactProfilePage extends StatelessWidget {
                                 ),
 
                                 // Birth date.
-                                _BuildInfo(
+                                ProfileInfoSection(
                                   headline:
                                       AppLocalizations.of(context)!.birth_date,
                                   text: user.birthday,
                                 ),
 
                                 // Email.
-                                _BuildInfo(
+                                ProfileInfoSection(
                                   headline: AppLocalizations.of(context)!.email,
                                   text: user.email,
                                 ),
@@ -211,43 +214,6 @@ class ContactProfilePage extends StatelessWidget {
   }
 
   void _onBack(BuildContext context) => context.pop();
-}
-
-class _BuildInfo extends StatelessWidget {
-  final String headline;
-  final String text;
-
-  /// Элемент информации.
-  const _BuildInfo({
-    Key? key,
-    required this.headline,
-    required this.text,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            headline,
-            style: theme.textTheme.headline6,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            text,
-            style: theme.textTheme.headline5!.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _BackButton extends StatelessWidget {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
@@ -8,6 +10,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_blo
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
@@ -18,9 +21,12 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
+import '../profile/widgets/profile_popup.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({Key? key}) : super(key: key);
@@ -170,7 +176,6 @@ class _ContactsPageState extends State<ContactsPage> {
                                           }
                                         }
 
-                                        // Рендеринг.
                                         return isActive
                                             ? FilterViewSelectedRow(
                                                 headline: state
@@ -210,7 +215,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                   height: 48,
                                   child: FavoritesRow(
                                     items: state.data.favorites,
-                                    onTap: (i) => _goToUserPage(state, i),
+                                    onTap: (i) {
+                                      _goToUserPage(state, i);
+                                    },
                                   ),
                                 ),
                               ),
@@ -228,17 +235,22 @@ class _ContactsPageState extends State<ContactsPage> {
                                       runSpacing: 8,
                                       children: List.generate(
                                         state.data.contacts.length,
-                                        (index) => GestureDetector(
+                                        (i) => GestureDetector(
                                           behavior: HitTestBehavior.translucent,
-                                          onTap: () {
+                                          onTap: () async {
                                             if (ResponsiveWrapper.of(context)
                                                 .isDesktop) {
+                                              await _showContactProfile(
+                                                context,
+                                                state,
+                                                i,
+                                              );
                                             } else {
-                                              _goToUserPage(state, index);
+                                              _goToUserPage(state, i);
                                             }
                                           },
                                           child: ContactCard(
-                                            item: state.data.contacts[index],
+                                            item: state.data.contacts[i],
                                             width: ResponsiveWrapper.of(context)
                                                     .isLargerThan(MOBILE)
                                                 ? 328
@@ -293,6 +305,37 @@ class _ContactsPageState extends State<ContactsPage> {
         NavigationRouteNames.contactProfile,
         params: {'fid': state.data.contacts[i].id},
       );
+}
+
+Future<void> _showContactProfile(
+  BuildContext context,
+  FetchContactsLoadedState state,
+  int i,
+) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      final ThemeData theme = Theme.of(context);
+
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              decoration: BoxDecoration(
+                color: theme.splashColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: ContactProfilePopUp(user: state.data.contacts[i]),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
 }
 
 class _FilterButton extends StatelessWidget {
