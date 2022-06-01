@@ -3,7 +3,7 @@ import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -18,7 +18,7 @@ void main() {
   late String tNewsTypeCode;
   late Failure tFailure;
 
-  final ArticleModel newsArticle = ArticleModel(
+  final ArticleModel tNewsArticle = ArticleModel(
     id: 'id',
     date: DateTime.parse('2022-03-21T14:59:58.884Z'),
     category: 'Новости',
@@ -50,7 +50,7 @@ void main() {
       response: ResponseModel(
         count: 1,
         update: 1,
-        articles: [newsArticle],
+        articles: [tNewsArticle],
       ),
     );
 

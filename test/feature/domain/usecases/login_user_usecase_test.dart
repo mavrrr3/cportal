@@ -2,7 +2,7 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/user_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/login_user_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

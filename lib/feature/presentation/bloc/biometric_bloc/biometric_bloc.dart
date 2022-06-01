@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/biometric_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
