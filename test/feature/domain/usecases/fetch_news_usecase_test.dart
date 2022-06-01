@@ -18,7 +18,7 @@ void main() {
   late String tNewsTypeCode;
   late Failure tFailure;
 
-  final ArticleModel newsArticle = ArticleModel(
+  final ArticleModel tNewsArticle = ArticleModel(
     id: 'id',
     date: DateTime.parse('2022-03-21T14:59:58.884Z'),
     category: 'Новости',
@@ -50,7 +50,7 @@ void main() {
       response: ResponseModel(
         count: 1,
         update: 1,
-        articles: [newsArticle],
+        articles: [tNewsArticle],
       ),
     );
 
