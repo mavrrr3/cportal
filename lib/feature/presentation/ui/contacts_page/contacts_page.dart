@@ -11,6 +11,7 @@ import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites_wrap.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_view_selected_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_web.dart';
@@ -55,29 +56,27 @@ class _ContactsPageState extends State<ContactsPage> {
 
     return BlocBuilder<ContactsBloc, ContactsState>(
       builder: (context, state) {
-        if (state is FetchContactsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        if (state is FetchContactsLoadedState) {
-          return Stack(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ResponsiveVisibility(
-                    visible: false,
-                    visibleWhen: const [
-                      Condition<dynamic>.largerThan(name: MOBILE),
-                    ],
-                    // Меню Web.
-                    child: DesktopMenu(
-                      currentIndex: 4,
-                      onChange: (index) => changePage(context, index),
-                    ),
+        return Stack(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ResponsiveVisibility(
+                  visible: false,
+                  visibleWhen: const [
+                    Condition<dynamic>.largerThan(name: MOBILE),
+                  ],
+                  // Меню Web.
+                  child: DesktopMenu(
+                    currentIndex: 4,
+                    onChange: (index) => changePage(context, index),
                   ),
+                ),
+                if (state is FetchContactsLoadingState)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                if (state is FetchContactsLoadedState)
                   Expanded(
                     child: SafeArea(
                       child: SingleChildScrollView(
@@ -206,15 +205,33 @@ class _ContactsPageState extends State<ContactsPage> {
                                   bottom: 16,
                                   top: 8,
                                 ),
-                                child: SizedBox(
-                                  height: 48,
-                                  child: FavoritesRow(
-                                    items: state.data.favorites,
-                                    onTap: (i) {
-                                      _goToUserPage(state, i);
-                                    },
-                                  ),
-                                ),
+                                child: !ResponsiveWrapper.of(context)
+                                        .isLargerThan(TABLET)
+                                    ? SizedBox(
+                                        height: 48,
+                                        child: FavoritesRow(
+                                          items: state.data.favorites,
+                                          onTap: (i) {
+                                            _goToUserPage(state, i);
+                                          },
+                                        ),
+                                      )
+                                    : FavoritesWrap(
+                                        items: state.data.favorites,
+                                        onTap: (i) async {
+                                          if (ResponsiveWrapper.of(
+                                            context,
+                                          ).isDesktop) {
+                                            await _showContactProfile(
+                                              context,
+                                              state,
+                                              i,
+                                            );
+                                          } else {
+                                            _goToUserPage(state, i);
+                                          }
+                                        },
+                                      ),
                               ),
 
                             // Колонка контактов.
@@ -262,32 +279,28 @@ class _ContactsPageState extends State<ContactsPage> {
                       ),
                     ),
                   ),
-                ],
+              ],
+            ),
+            if (_isShowFilterWeb)
+              GestureDetector(
+                onTap: () => setState(() {
+                  _isShowFilterWeb = false;
+                }),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: theme.brightness == Brightness.light
+                      ? theme.hoverColor.withOpacity(0.2)
+                      : AppColors.darkOnboardingBG.withOpacity(0.8),
+                ),
               ),
-              if (_isShowFilterWeb)
-                GestureDetector(
-                  onTap: () => setState(() {
-                    _isShowFilterWeb = false;
-                  }),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    color: theme.brightness == Brightness.light
-                        ? theme.hoverColor.withOpacity(0.2)
-                        : AppColors.darkOnboardingBG.withOpacity(0.8),
-                  ),
-                ),
-              if (_isShowFilterWeb)
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: FilterWeb(),
-                ),
-            ],
-          );
-        }
-
-        // TODO: Отработать другие стейты.
-        return const SizedBox();
+            if (_isShowFilterWeb)
+              const Align(
+                alignment: Alignment.centerRight,
+                child: FilterWeb(),
+              ),
+          ],
+        );
       },
     );
   }
