@@ -122,6 +122,7 @@ class _MainPageState extends State<MainPage> {
                                   : 1,
                               child: GestureDetector(
                                 onTap: () {
+                                 
                                   ResponsiveWrapper.of(context)
                                           .isLargerThan(TABLET)
                                       ? showProfile(context)
