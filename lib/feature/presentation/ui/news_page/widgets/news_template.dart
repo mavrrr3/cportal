@@ -13,10 +13,10 @@ class NewsTemplate {
     final width = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
 
-    switch ((paragraph as ParagraphEntity).template) {
+    switch (paragraph.template) {
       case '1':
         return Text(
-          paragraph.content,
+          paragraph.content ?? '',
           style: theme.textTheme.headline6,
         );
       case '2':
@@ -31,7 +31,10 @@ class NewsTemplate {
                 ),
               ),
               const SizedBox(height: 12),
-              Text(paragraph.imagesTitle, style: theme.textTheme.bodyText1),
+              Text(
+                paragraph.imagesTitle ?? '',
+                style: theme.textTheme.bodyText1,
+              ),
             ],
           ),
         );
@@ -53,7 +56,7 @@ class NewsTemplate {
           ),
         );
       default:
-        return Text(paragraph.content);
+        return Text(paragraph.content ?? '');
     }
   }
 }

@@ -71,13 +71,13 @@ class ParagraphModel extends ParagraphEntity {
   final String template;
   @override
   @HiveField(1)
-  final String content;
+  final String? content;
   @override
   @HiveField(2)
-  final String imagesTitle;
+  final String? imagesTitle;
   @override
   @HiveField(3)
-  final String images;
+  final String? images;
 
   const ParagraphModel({
     required this.template,
@@ -86,16 +86,16 @@ class ParagraphModel extends ParagraphEntity {
     required this.images,
   }) : super(
           template: template,
-          content: content,
-          imagesTitle: imagesTitle,
-          images: images,
+          content: content ?? '',
+          imagesTitle: imagesTitle ?? '',
+          images: images ?? '',
         );
 
   factory ParagraphModel.fromJson(Map<String, dynamic> json) => ParagraphModel(
         template: json['template'] as String,
-        content: json['content'] as String,
-        imagesTitle: json['images_title'] as String,
-        images: json['images'] as String,
+        content: json['content'] as String?,
+        imagesTitle: json['images_title'] as String?,
+        images: json['images'] as String?,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{

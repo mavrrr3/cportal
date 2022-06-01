@@ -22,9 +22,9 @@ class ArticleEntity extends Equatable {
 
 class ParagraphEntity extends Equatable {
   final String template;
-  final String content;
-  final String imagesTitle;
-  final String images;
+  final String? content;
+  final String? imagesTitle;
+  final String? images;
 
   const ParagraphEntity({
     required this.template,
