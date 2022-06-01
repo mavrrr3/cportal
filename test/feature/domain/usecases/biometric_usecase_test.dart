@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/biometric_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:local_auth/local_auth.dart';

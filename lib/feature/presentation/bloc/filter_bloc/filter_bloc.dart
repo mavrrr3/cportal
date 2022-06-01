@@ -4,7 +4,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:flutter/material.dart';

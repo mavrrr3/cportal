@@ -4,8 +4,8 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/check_auth_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/login_user_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 

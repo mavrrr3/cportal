@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/check_auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

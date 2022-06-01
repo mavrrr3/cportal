@@ -3,7 +3,7 @@ import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
