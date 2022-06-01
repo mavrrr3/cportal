@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/pin_code_local_datasource.dart';
@@ -26,8 +26,6 @@ class PinCodeRepository implements IPinCodeRepository {
 
   @override
   Future<String?> getPin() async {
-    final cacheHasPinCode = await localDataSource.getPin();
-
-    return cacheHasPinCode;
+    return localDataSource.getPin();
   }
 }

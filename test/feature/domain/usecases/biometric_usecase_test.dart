@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/biometric_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:local_auth/local_auth.dart';
@@ -31,14 +31,14 @@ void main() {
   test(
     'Return [bool] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockBiometricRepository.autheticate())
           .thenAnswer((_) async => Right<Failure, bool>(tIsAuth));
 
-      //act
+      // Act..
       final result = await useCase.autheticate();
 
-      //assert
+      // Assert.
       void getUserOrFailure(Either<Failure, bool> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -58,14 +58,14 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockBiometricRepository.autheticate())
           .thenAnswer((_) async => Left<Failure, bool>(tFailure));
 
-      //act
+      // Act..
       final result = await useCase.autheticate();
 
-      //assert
+      // Assert.
       void getUserOrFailure(Either<Failure, bool> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -85,15 +85,15 @@ void main() {
   test(
     'Return [List<BiometricType>] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockBiometricRepository.getBiometrics()).thenAnswer(
         (_) async => Right<Failure, List<BiometricType>>(tListBiometricType),
       );
 
-      //act
+      // Act..
       final result = await useCase.getBiometrics();
 
-      //assert
+      // Assert.
       void getUserOrFailure(Either<Failure, List<BiometricType>> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

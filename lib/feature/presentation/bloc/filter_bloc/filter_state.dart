@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class FilterState extends Equatable {
@@ -8,13 +8,34 @@ abstract class FilterState extends Equatable {
   List<Object?> get props => [];
 }
 
-class FilterStateImpl extends FilterState {
-  const FilterStateImpl({
-    this.filters,
-  });
+class FilterEmptyState extends FilterState {}
 
-  final List<FilterModel>? filters;
+class FilterLoadingState extends FilterState {}
+
+class FilterLoadingErrorState extends FilterState {
+  final String message;
+  const FilterLoadingErrorState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class FilterLoadedState extends FilterState {
+  final List<FilterEntity> filters;
+
+  const FilterLoadedState({
+    required this.filters,
+  });
 
   @override
   List<Object?> get props => [filters];
+}
+
+class FilterFetchErrorState extends FilterState {
+  final String message;
+
+  const FilterFetchErrorState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

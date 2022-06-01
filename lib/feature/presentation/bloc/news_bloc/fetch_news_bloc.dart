@@ -1,15 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/fetch_news.dart';
-import 'package:flutter/material.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
-
-// Инам для выдачи NewsEntity Новости, Вопросы, Справочник
-enum NewsCodeEnum { news, quastion, catalog }
 
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
@@ -30,7 +26,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
     Emitter emit,
   ) async {
     emit(FetchNewsLoadingState());
-    debugPrint('Отработал эвент: ' + event.toString());
+    log('Отработал эвент: $event');
 
     String _mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
@@ -53,22 +49,25 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         ));
       },
       (news) {
-        /// Создание листа со всеми вкладками
-        List<String> tabs = [];
+        /// Создание листа со всеми вкладками.
+        final List<String> tabs = [];
         if (event.newsCodeEnum == NewsCodeEnum.news) {
           tabs.add('Все');
         }
-        for (var item in news.article) {
+        for (final item in news.response.articles) {
           if (!tabs.contains(item.category)) {
             tabs.add(item.category);
           }
         }
-        log(news.article.length.toString());
+        log(tabs.toString());
         emit(FetchNewsLoadedState(news: news, tabs: tabs));
       },
     );
   }
 }
+
+// Инам для выдачи NewsEntity Новости, Вопросы, Справочник.
+enum NewsCodeEnum { news, quastion, catalog }
 
 String newsCode(NewsCodeEnum codeEnum) {
   switch (codeEnum) {

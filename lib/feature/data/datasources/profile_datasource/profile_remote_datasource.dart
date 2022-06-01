@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 
@@ -22,7 +22,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   ProfileRemoteDataSource(this.localDataSource);
   @override
   Future<ProfileModel> getSingleProfile(String id) async {
-    String stringUser = '''
+    const String stringUser = '''
                           {
 "id": "A1B2C3D4E5",
 "external_id": "8877",
@@ -31,7 +31,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
 "middle_name": "Валерьевич",
 "birthday": "20.11.1984",
 "email": "aaa@novostal.ru",
-"photo_link": "https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg",
+"photo_link": "2.jpg",
 "active": true,
 "position": {
 "id": "a1b2c3d4",
@@ -57,9 +57,8 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
 }''';
 
     try {
-      //TODO реализовать получение данных от API
-
-      ProfileModel localeUser = profileModelFromJson(stringUser);
+      // TODO реализовать получение данных от API.
+      final ProfileModel localeUser = profileModelFromJson(stringUser);
       log('$localeUser');
 
       await localDataSource.singleProfileToCache(localeUser);
@@ -67,7 +66,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
       return localeUser;
     } on SocketException {
       throw ServerException();
-    } catch (e) {
+    } on Exception catch (e) {
       log('Ошибка в методе ProfileRemoteDataSource: $e');
       rethrow;
     }

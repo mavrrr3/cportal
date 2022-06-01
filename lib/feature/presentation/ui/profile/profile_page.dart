@@ -2,7 +2,7 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme.dart';
@@ -44,16 +44,16 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: theme.splashColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12.0),
-          topRight: Radius.circular(12.0),
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
       ),
       isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return SizedBox(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,10 +64,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 18.h),
                 GestureDetector(
-                  onTap: (() => setState(() => showToasterAboutNotify(
+                  onTap: () => setState(() => showToasterAboutNotify(
                         theme,
                         'Оповещения выключены на 1 час',
-                      ))),
+                      )),
                   child: Text(
                     AppLocalizations.of(context)!.forHour,
                     style: theme.textTheme.headline5!.copyWith(
@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    Color iconColor = theme.hoverColor.withOpacity(0.64);
+    final Color iconColor = theme.hoverColor.withOpacity(0.64);
 
     BlocProvider.of<GetSingleProfileBloc>(
       context,
@@ -244,7 +244,7 @@ Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
     Switch(
       activeTrackColor: theme.primaryColor.withOpacity(0.38),
       activeColor: theme.primaryColor,
-      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
+      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9.
       inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
       inactiveThumbColor: theme.splashColor,
       value: val,
@@ -259,6 +259,6 @@ void showToasterAboutNotify(ThemeData theme, String text) {
     timeInSecForIosWeb: 1,
     backgroundColor: theme.hoverColor,
     textColor: theme.splashColor,
-    fontSize: 16.0,
+    fontSize: 16,
   );
 }

@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/what_get_with_you.dart';
@@ -206,7 +206,6 @@ class _CellCodeInputState extends State<CellCodeInput> {
         errorPinTheme: defaultPinTheme.copyWith(
           decoration: BoxDecoration(color: theme.hintColor),
         ),
-        // errorBuilder: ,
         focusedPinTheme: PinTheme(
           width: 52.w,
           height: 62.h,
@@ -224,6 +223,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
           ),
         ),
         showCursor: false,
+        // ignore: format-comment
         // cursor: cursor,
         onChanged: (value) =>
             context.read<AuthBloc>().add(ChangeAuthCode(value)),
@@ -243,13 +243,13 @@ bool isWrongCode(AuthState state) {
 }
 
 Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
-  bool _isShow = false;
+  bool isShow = false;
 
   return showDialog(
     context: context,
     useRootNavigator: true,
     barrierDismissible: true,
-    builder: (BuildContext context) {
+    builder: (context) {
       final ThemeData theme = Theme.of(context);
 
       return StatefulBuilder(
@@ -310,7 +310,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            _isShow = !_isShow;
+                            isShow = !isShow;
                           });
                         },
                         icon: Icon(
@@ -322,7 +322,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     ],
                   ),
                   Visibility(
-                    visible: _isShow,
+                    visible: isShow,
                     child: const WorkModeTable(),
                   ),
                   SizedBox(height: 10.w),

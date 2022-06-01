@@ -1,8 +1,13 @@
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/bottom_navigation_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,148 +16,198 @@ import 'package:swipe/swipe.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContactProfilePage extends StatelessWidget {
+  final String id;
+
   const ContactProfilePage({
     Key? key,
-    required this.user,
+    required this.id,
   }) : super(key: key);
 
-  final ProfileEntity user;
+  void _contentInit(BuildContext context) {
+    return BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(FetchContactsEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return BlocBuilder<NavBarBloc, NavBarState>(
-      builder: (context, state) {
-        return Swipe(
-          onSwipeRight: () => _onBack(context),
-          child: Scaffold(
-            bottomNavigationBar: CustomBottomBar(
-              state: state,
-              isNestedNavigation: true,
-            ),
-            body: Stack(
-              children: [
-                // Action buttons
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Call
-                        _ActionButton(
-                          img: 'assets/icons/phone.svg',
-                          onTap: () {},
-                        ),
-                        const SizedBox(width: 16),
-
-                        // Message
-                        _ActionButton(
-                          img: 'assets/icons/message.svg',
-                          onTap: () {},
-                        ),
-                        const SizedBox(width: 16),
-
-                        // Send email
-                        _ActionButton(
-                          img: 'assets/icons/email.svg',
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-                  ),
+    return BlocBuilder<NavigationBarBloc, NavigationBarState>(
+      builder: (context, navState) {
+        return BlocBuilder<ContactsBloc, ContactsState>(
+          builder: (context, state) {
+            if (state is FetchContactsLoadingState) {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
                 ),
+              );
+            }
 
-                // Content
-                SingleChildScrollView(
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Back button
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            if (state is FetchContactsLoadedState) {
+              final ProfileEntity user = state.data.contacts.firstWhere(
+                (element) => element.id == id,
+              );
+
+              return Swipe(
+                onSwipeRight: () {
+                  if (kIsWeb) {
+                    _contentInit(context);
+                  }
+                  _onBack(context);
+                },
+                child: Scaffold(
+                  bottomNavigationBar: !kIsWeb
+                      ? CustomBottomBar(
+                          state: navState,
+                          isNestedNavigation: true,
+                        )
+                      : null,
+                  body: Stack(
+                    children: [
+                      // Action buttons.
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              _BackButton(
-                                onTap: () => _onBack(context),
+                              // Call.
+                              _ActionButton(
+                                img: 'assets/icons/phone.svg',
+                                onTap: () {},
                               ),
-                              const SizedBox(width: 24),
+                              const SizedBox(width: 16),
+
+                              // Message.
+                              _ActionButton(
+                                img: 'assets/icons/message.svg',
+                                onTap: () {},
+                              ),
+                              const SizedBox(width: 16),
+
+                              // Send email.
+                              _ActionButton(
+                                img: 'assets/icons/email.svg',
+                                onTap: () {},
+                              ),
                             ],
                           ),
-                          const SizedBox(height: 41),
-
-                          // Profile image
-                          Align(
-                            alignment: Alignment.center,
-                            child: AvatarBox(
-                              size: 102,
-                              imgPath: user.photoLink,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // Full name
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '${user.firstName} ${user.middleName}\n${user.lastName}',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.headline4!.copyWith(
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-
-                          //-- Profile info --
-                          // Post
-                          _BuildInfo(
-                            headline: AppLocalizations.of(context)!.position,
-                            text: user.position.description,
-                          ),
-
-                          // Department
-                          _BuildInfo(
-                            headline: AppLocalizations.of(context)!.department,
-                            text: user.position.description,
-                          ),
-
-                          // Office phone
-                          _BuildInfo(
-                            headline:
-                                AppLocalizations.of(context)!.office_phone,
-                            text: user.phone[0].number,
-                          ),
-
-                          // Self phone
-                          _BuildInfo(
-                            headline: AppLocalizations.of(context)!.self_phone,
-                            text:
-                                '${user.phone[1].suffix} ${user.phone[1].number}',
-                          ),
-
-                          // Birth date
-                          _BuildInfo(
-                            headline: AppLocalizations.of(context)!.birth_date,
-                            text: user.birthday,
-                          ),
-
-                          // Email
-                          _BuildInfo(
-                            headline: AppLocalizations.of(context)!.email,
-                            text: user.email,
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+
+                      // Content.
+                      SingleChildScrollView(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Back button.
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    _BackButton(
+                                      onTap: () {
+                                        if (kIsWeb) {
+                                          _contentInit(context);
+                                        }
+                                        _onBack(context);
+                                      },
+                                    ),
+                                    const SizedBox(width: 24),
+                                  ],
+                                ),
+                                const SizedBox(height: 41),
+
+                                // Profile image.
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: AvatarBox(
+                                    size: 102,
+                                    imgPath: user.photoLink,
+                                    isApiImg: false,
+                                    borderRadius: 24,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+
+                                // Full name.
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '${user.firstName} ${user.middleName}\n${user.lastName}',
+                                    textAlign: TextAlign.center,
+                                    style: theme.textTheme.headline4!.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+
+                                //-- Profile info --
+                                // Post
+                                ProfileInfoSection(
+                                  headline:
+                                      AppLocalizations.of(context)!.position,
+                                  text: user.position.description,
+                                ),
+
+                                // Department.
+                                ProfileInfoSection(
+                                  headline:
+                                      AppLocalizations.of(context)!.department,
+                                  text: user.position.description,
+                                ),
+
+                                // Office phone.
+                                ProfileInfoSection(
+                                  headline: AppLocalizations.of(context)!
+                                      .office_phone,
+                                  text: user.phone.first.number,
+                                ),
+
+                                // Self phone.
+                                ProfileInfoSection(
+                                  headline:
+                                      AppLocalizations.of(context)!.self_phone,
+                                  text:
+                                      '${user.phone[1].suffix} ${user.phone[1].number}',
+                                ),
+
+                                // Birth date.
+                                ProfileInfoSection(
+                                  headline:
+                                      AppLocalizations.of(context)!.birth_date,
+                                  text: user.birthday,
+                                ),
+
+                                // Email.
+                                ProfileInfoSection(
+                                  headline: AppLocalizations.of(context)!.email,
+                                  text: user.email,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
+              );
+            }
+
+            if (state is ContactsEmptyState) {
+              _contentInit(context);
+            }
+
+            // TODO: Отработать другие стейты.
+            return const SizedBox();
+          },
         );
       },
     );
@@ -161,53 +216,17 @@ class ContactProfilePage extends StatelessWidget {
   void _onBack(BuildContext context) => context.pop();
 }
 
-class _BuildInfo extends StatelessWidget {
-  /// Элемент информации
-  const _BuildInfo({
-    Key? key,
-    required this.headline,
-    required this.text,
-  }) : super(key: key);
-
-  final String headline;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            headline,
-            style: theme.textTheme.headline6,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            text,
-            style: theme.textTheme.headline5!.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _BackButton extends StatelessWidget {
+  final Function() onTap;
+
   const _BackButton({
     Key? key,
     required this.onTap,
   }) : super(key: key);
 
-  final Function() onTap;
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -230,15 +249,16 @@ class _BackButton extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
-  /// Кнопка взаимодействия с Юзером [Звонок, Чат, Почта]
+  final String img;
+  final Function onTap;
+
+  /// Кнопка взаимодействия с Юзером [Звонок, Чат, Почта].
   const _ActionButton({
     Key? key,
     required this.img,
     required this.onTap,
   }) : super(key: key);
 
-  final String img;
-  final Function onTap;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -256,7 +276,7 @@ class _ActionButton extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: SvgPicture.asset(
           img,
           width: 24,

@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/check_auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -25,15 +25,15 @@ void main() {
   test(
     'Return [boolean] from repository',
     () async {
-      //arrange
+      // Arrange.
 
       when(() => mockUserRepository.checkAuth())
           .thenAnswer((_) async => Right<Failure, bool>(tIsAuth));
 
-      //act
+      // Act..
       final result = await useCase.call();
 
-      //assert
+      // Assert.
       void getStringOrEntity(Either<Failure, bool> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -53,15 +53,15 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      //arrange
+      // Arrange.
 
       when(() => mockUserRepository.checkAuth())
           .thenAnswer((_) async => Left<Failure, bool>(tFailure));
 
-      //act
+      // Act..
       final result = await useCase.call();
 
-      //assert
+      // Assert.
       void getStringOrEntity(Either<Failure, bool> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

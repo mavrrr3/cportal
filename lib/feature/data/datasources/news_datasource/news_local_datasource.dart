@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cportal_flutter/core/error/exception.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
@@ -24,11 +23,11 @@ class NewsLocalDataSource implements INewsLocalDataSource {
 
   @override
   Future<NewsModel> fetchNewsFromCache() async {
-    var box = await hive.openBox<NewsModel>('news');
+    final box = await hive.openBox<NewsModel>('news');
 
-    var news = box.get('news');
+    final news = box.get('news');
 
-    if (kDebugMode) log('NewsModel из кэша ' + news.toString());
+    if (kDebugMode) log('NewsModel из кэша $news');
 
     await Hive.box<NewsModel>('news').close();
 
@@ -40,9 +39,9 @@ class NewsLocalDataSource implements INewsLocalDataSource {
     // Удаляет box с диска
     // await Hive.deleteBoxFromDisk('news');
 
-    if (kDebugMode) log('NewsModel сохранил в кэш ' + news.toString());
+    if (kDebugMode) log('NewsModel сохранил в кэш $news');
 
-    var box = await hive.openBox<NewsModel>('news');
+    final box = await hive.openBox<NewsModel>('news');
 
     await box.put('news', news);
 

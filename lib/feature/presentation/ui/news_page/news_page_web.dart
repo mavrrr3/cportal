@@ -3,13 +3,12 @@ import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 int _currentIndex = 0;
@@ -56,7 +55,7 @@ class _NewsPageWebState extends State<NewsPageWeb> {
                 if (state is FetchNewsLoadedState) ...state.tabs,
               ],
               currentIndex: _currentIndex,
-              onTap: (index) => _onPageChanged(index),
+              onTap: _onPageChanged,
             ),
             preferredSize: Size(width, 114),
           ),
@@ -88,7 +87,7 @@ class _ContentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ArticleEntity> articles = blocState.news.article;
+    final List<ArticleEntity> articles = blocState.news.response.articles;
     final double width = MediaQuery.of(context).size.width;
 
     void _onArticleSelected(String id) {
@@ -103,7 +102,7 @@ class _ContentPage extends StatelessWidget {
       double width,
       int index,
     ) {
-      List<ArticleEntity> articles = state.news.article;
+      final List<ArticleEntity> articles = state.news.response.articles;
 
       Widget _newsCard() {
         return _NewsCard(
@@ -133,7 +132,7 @@ class _ContentPage extends StatelessWidget {
             ),
           )
         : Padding(
-            padding: const EdgeInsets.only(right: 78.0),
+            padding: const EdgeInsets.only(right: 78),
             child: Wrap(
               spacing: 16,
               runSpacing: 20,
@@ -161,21 +160,14 @@ class _NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
-
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
+      padding: const EdgeInsets.only(bottom: 20),
+      child: NewsCardItem(
         onTap: onTap,
-        child: NewsCardItem(
-          width: width,
-          height: 160,
-          fontSize: 17,
-          imgPath: item.image,
-          title: item.header,
-          dateTime: outputFormat.format(item.dateShow),
-        ),
+        width: width,
+        height: 160,
+        fontSize: 17,
+        item: item,
       ),
     );
   }
@@ -220,7 +212,7 @@ class _TabBarWidgetState extends State<TabBarWidget> {
           padding: getHorizontalPadding(context),
           child: SizedBox(
             width: width,
-            height: 30.0,
+            height: 30,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
@@ -273,7 +265,7 @@ class _TabBarWidgetState extends State<TabBarWidget> {
                 : null,
           ),
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Text(
               text,
               style: isCurrent

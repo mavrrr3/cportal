@@ -3,47 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-//для теста, в будущем заменить на реальные данные
-class TodayItemModel {
-  final String image;
-  final String? title;
-  final String description;
-  final String? post;
-  final String? place;
-
-  TodayItemModel({
-    required this.image,
-    this.title,
-    required this.description,
-    this.post,
-    this.place,
-  });
-}
-
-final List<TodayItemModel> _items = [
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-];
+// Для теста, в будущем заменить на реальные данные.
 
 class TodayWidget extends StatelessWidget {
   const TodayWidget({Key? key}) : super(key: key);
@@ -60,37 +20,39 @@ class TodayWidget extends StatelessWidget {
           style: theme.textTheme.headline3,
         ),
         const SizedBox(height: 12),
-        !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  _items.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: _TodayItem(item: _items[index]),
-                  ),
-                ),
-              )
-            : Wrap(
-                spacing: 51,
-                runSpacing: 16,
-                children: List.generate(
-                  _items.length,
-                  (index) => _TodayItem(item: _items[index]),
-                ),
+        if (!ResponsiveWrapper.of(context).isLargerThan(TABLET))
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              _items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _TodayItem(item: _items[index]),
               ),
+            ),
+          )
+        else
+          Wrap(
+            spacing: 51,
+            runSpacing: 16,
+            children: List.generate(
+              _items.length,
+              (index) => _TodayItem(item: _items[index]),
+            ),
+          ),
       ],
     );
   }
 }
 
 class _TodayItem extends StatelessWidget {
+  final TodayItemModel item;
+
   const _TodayItem({
     Key? key,
     required this.item,
   }) : super(key: key);
-  final TodayItemModel item;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -138,7 +100,7 @@ class _TodayItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
                           child: Text(
                             item.place!,
                             style: theme.textTheme.bodyText1!.copyWith(
@@ -157,3 +119,44 @@ class _TodayItem extends StatelessWidget {
     );
   }
 }
+
+class TodayItemModel {
+  final String image;
+  final String? title;
+  final String description;
+  final String? post;
+  final String? place;
+
+  TodayItemModel({
+    required this.image,
+    this.title,
+    required this.description,
+    this.post,
+    this.place,
+  });
+}
+
+final List<TodayItemModel> _items = [
+  TodayItemModel(
+    image: '1.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '2.jpg',
+    description: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '1.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '2.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+];

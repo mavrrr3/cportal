@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-abstract class NavBarEvent extends Equatable {
-  const NavBarEvent();
+abstract class NavigationBarEvent extends Equatable {
+  const NavigationBarEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class NavBarEventImpl extends NavBarEvent {
+class NavigationBarEventImpl extends NavigationBarEvent {
   final int index;
-  const NavBarEventImpl({required this.index});
+  const NavigationBarEventImpl({required this.index});
 }
