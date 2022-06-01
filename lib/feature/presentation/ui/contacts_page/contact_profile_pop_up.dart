@@ -98,7 +98,7 @@ class ContactProfilePopUp extends StatelessWidget {
             ProfileInfoSection(
               headline: AppLocalizations.of(context)!.birth_date,
               text: user.birthday,
-              bottomPadding: 18,
+              bottomPadding: 0,
             ),
 
             const SizedBox(height: 32),

@@ -1,11 +1,11 @@
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
+import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnBoardingPage extends StatelessWidget {
+class OnBoardingStepPage extends StatelessWidget {
   final OnboardingEntity content;
 
-  const OnBoardingPage({
+  const OnBoardingStepPage({
     Key? key,
     required this.content,
   }) : super(key: key);
