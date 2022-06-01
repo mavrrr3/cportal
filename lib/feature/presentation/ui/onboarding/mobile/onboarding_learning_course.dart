@@ -1,22 +1,22 @@
+import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_step_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-class OnboardingLearningCourse extends StatefulWidget {
-  const OnboardingLearningCourse({Key? key}) : super(key: key);
+class OnBoardingLearningCourse extends StatefulWidget {
+  const OnBoardingLearningCourse({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingLearningCourse> createState() =>
-      _OnboardingLearningCourseState();
+  State<OnBoardingLearningCourse> createState() =>
+      _OnBoardingLearningCourseState();
 }
 
-class _OnboardingLearningCourseState extends State<OnboardingLearningCourse>
+class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
@@ -58,7 +58,7 @@ class _OnboardingLearningCourseState extends State<OnboardingLearningCourse>
                       ),
                     ],
                   ),
-                  OnBoardingPage(
+                  OnBoardingStepPage(
                     content: OnboardingEntity(
                       title: AppLocalizations.of(context)!.onboarding_title8,
                       description:

@@ -1,6 +1,6 @@
+import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_step_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -118,7 +118,7 @@ class _OnboardingState extends State<Onboarding>
                     controller: _pageController,
                     itemCount: _onboardingContent.length,
                     itemBuilder: (context, i) =>
-                        OnBoardingPage(content: _onboardingContent[i]),
+                        OnBoardingStepPage(content: _onboardingContent[i]),
                   ),
                 ),
               ),

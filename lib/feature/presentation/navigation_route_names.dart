@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
@@ -11,9 +12,9 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_learning_course.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_welcome.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_learning_course.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/edit_pin_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/input_pin_page.dart';
@@ -248,7 +249,7 @@ final GoRouter router = GoRouter(
       path: '/onboarding_start',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const StartOnBoarding(),
+        child: const OnBoardingWelcome(),
       ),
     ),
     GoRoute(
@@ -284,7 +285,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: const OnboardingLearningCourse(),
+        child: const OnBoardingLearningCourse(),
       ),
     ),
     GoRoute(
