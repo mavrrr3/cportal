@@ -26,7 +26,7 @@ class ProfileInfoSection extends StatelessWidget {
             headline,
             style: theme.textTheme.headline6,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             text,
             style: theme.textTheme.headline5!.copyWith(
