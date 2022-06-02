@@ -66,7 +66,7 @@ class ContactCard extends StatelessWidget {
                 size: 48,
                 imgPath: item.photoLink,
                 isApiImg: false,
-                borderRadius: 6,
+                borderRadius: 10.38,
               ),
               const SizedBox(width: 12),
               Expanded(
