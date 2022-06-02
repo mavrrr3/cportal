@@ -13,14 +13,16 @@ class NewsEntity extends Equatable {
 class ResponseEntity extends Equatable {
   final int count;
   final int update;
+  final List<String>? categories;
   final List<ArticleEntity> articles;
 
   const ResponseEntity({
     required this.count,
     required this.update,
+    required this.categories,
     required this.articles,
   });
 
   @override
-  List<Object?> get props => [count, update, articles];
+  List<Object?> get props => [count, update, categories, articles];
 }

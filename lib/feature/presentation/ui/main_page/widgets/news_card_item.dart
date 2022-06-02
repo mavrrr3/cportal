@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class NewsCardItem extends StatelessWidget {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  '${AppConfig.apiUri}/images/${item.image}',
+                  'http://ribadi.ddns.net:88/images/${item.image}',
                   cache: true,
                 ),
               ),

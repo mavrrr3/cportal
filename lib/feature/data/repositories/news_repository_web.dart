@@ -12,9 +12,12 @@ class NewsRepositoryWeb implements INewsRepository {
     required this.remoteDataSource,
   });
   @override
-  Future<Either<Failure, NewsModel>> fetchNews(String code) async {
+  Future<Either<Failure, NewsModel>> fetchNews(
+    int page,
+    String? category,
+  ) async {
     try {
-      final remoteNews = await remoteDataSource.fetchNews(code);
+      final remoteNews = await remoteDataSource.fetchNews(page, category);
 
       return Right(remoteNews);
     } on ServerException {

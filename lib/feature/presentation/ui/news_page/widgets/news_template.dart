@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_cast
 
-import 'package:cportal_flutter/app_config.dart';
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class NewsTemplate {
   ) {
     final width = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
+    log(paragraph.toString());
 
     switch (paragraph.template) {
       case '1':
@@ -26,13 +28,13 @@ class NewsTemplate {
             children: [
               Image(
                 image: ExtendedNetworkImageProvider(
-                  '${AppConfig.apiUri}/images/${paragraph.images}',
+                  'http://ribadi.ddns.net:88/images/${paragraph.image}',
                   cache: true,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
-                paragraph.imagesTitle ?? '',
+                paragraph.imageTitle ?? '',
                 style: theme.textTheme.bodyText1,
               ),
             ],
@@ -48,7 +50,7 @@ class NewsTemplate {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  '${AppConfig.apiUri}/images/${paragraph.images}',
+                  'http://ribadi.ddns.net:88/images/${paragraph.image}',
                   cache: true,
                 ),
               ),

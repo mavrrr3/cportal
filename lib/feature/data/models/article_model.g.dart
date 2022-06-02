@@ -67,9 +67,9 @@ class ParagraphModelAdapter extends TypeAdapter<ParagraphModel> {
     };
     return ParagraphModel(
       template: fields[0] as String,
-      content: fields[1] as String,
-      imagesTitle: fields[2] as String,
-      images: fields[3] as String,
+      content: fields[1] as String?,
+      imageTitle: fields[2] as String?,
+      image: fields[3] as String?,
     );
   }
 
@@ -82,9 +82,9 @@ class ParagraphModelAdapter extends TypeAdapter<ParagraphModel> {
       ..writeByte(1)
       ..write(obj.content)
       ..writeByte(2)
-      ..write(obj.imagesTitle)
+      ..write(obj.imageTitle)
       ..writeByte(3)
-      ..write(obj.images);
+      ..write(obj.image);
   }
 
   @override

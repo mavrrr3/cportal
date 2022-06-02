@@ -1,9 +1,7 @@
-import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
+
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
@@ -24,7 +22,7 @@ final DateFormat _outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
 void _contentInit(BuildContext context) {
   return BlocProvider.of<FetchNewsBloc>(context, listen: false)
-      .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
+      .add(const FetchNewsEvent());
 }
 
 class NewsArticlePage extends StatelessWidget {
@@ -115,7 +113,7 @@ class _Mobile extends StatelessWidget {
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
-                      '${AppConfig.apiUri}/images/${item.image}',
+                      'http://ribadi.ddns.net:88/images/${item.image}',
                       fit: BoxFit.cover,
                       cache: true,
                     ),

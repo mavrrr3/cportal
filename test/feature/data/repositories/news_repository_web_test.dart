@@ -35,14 +35,14 @@ void main() {
         ParagraphModel(
           template: '1',
           content: 'content',
-          imagesTitle: '',
-          images: '',
+          imageTitle: '',
+          image: '',
         ),
         ParagraphModel(
           template: '2',
           content: 'content',
-          imagesTitle: '',
-          images: 'imagesTitle',
+          imageTitle: '',
+          image: 'imagesTitle',
         ),
       ],
       image:
@@ -52,6 +52,7 @@ void main() {
       response: ResponseModel(
         count: 1,
         update: 1,
+        categories: const ['Новости'],
         articles: [tNewsArticle],
       ),
     );
@@ -60,12 +61,12 @@ void main() {
       'should return NewsEntity when the call to remote data source is successful',
       () async {
         // Arrange.
-        when(() => mockRemoteDataSource.fetchNews(any()))
+        when(() => mockRemoteDataSource.fetchNews(any(), any()))
             .thenAnswer((_) async => tNewsModel);
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(1, tNewsTypeCode);
         // Assert.
-        verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
+        verify(() => mockRemoteDataSource.fetchNews(1, tNewsTypeCode));
         expect(result, equals(Right<dynamic, NewsEntity>(tNewsModel)));
       },
     );
@@ -74,12 +75,12 @@ void main() {
       'should return serverfailure when the call to remote data source is successful',
       () async {
         // Arrange.
-        when(() => mockRemoteDataSource.fetchNews(any()))
+        when(() => mockRemoteDataSource.fetchNews(any(), any()))
             .thenThrow(ServerException());
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(1, tNewsTypeCode);
         // Assert.
-        verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
+        verify(() => mockRemoteDataSource.fetchNews(1, tNewsTypeCode));
 
         expect(
           result,

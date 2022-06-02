@@ -1,8 +1,7 @@
 import 'dart:developer';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
+
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,8 +43,9 @@ class _MainPageState extends State<MainPage> {
     _isAnimation = false;
     _searchFocus.addListener(_onFocusChange);
 
-    BlocProvider.of<FetchNewsBloc>(context, listen: false)
-        .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
+    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+      const FetchNewsEvent(),
+    );
   }
 
   @override
@@ -122,7 +122,6 @@ class _MainPageState extends State<MainPage> {
                                   : 1,
                               child: GestureDetector(
                                 onTap: () {
-                                 
                                   ResponsiveWrapper.of(context)
                                           .isLargerThan(TABLET)
                                       ? showProfile(context)

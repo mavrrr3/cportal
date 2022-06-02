@@ -1,32 +1,49 @@
+// ignore_for_file: prefer_final_locals, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'dart:async';
 import 'dart:developer';
+import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
+  int page = 1;
 
   FetchNewsBloc({required this.fetchNews}) : super(FetchNewsEmptyState()) {
     _setupEvents();
   }
 
   void _setupEvents() {
-    on<FetchNewsEventImpl>(
+    on<FetchNewsEvent>(
       _onEvent,
       transformer: bloc_concurrency.sequential(),
     );
   }
 
   FutureOr _onEvent(
-    FetchNewsEventImpl event,
+    FetchNewsEvent event,
     Emitter emit,
   ) async {
-    emit(FetchNewsLoadingState());
-    log('Отработал эвент: $event');
+    if (state is FetchNewsLoadingState) return;
+
+    NewsEntity oldNews = NewsEntity(
+      response: ResponseEntity(
+        count: 0,
+        update: 0,
+        categories: null,
+        articles: [],
+      ),
+    );
+
+    if (state is FetchNewsLoadedState) {
+      oldNews = (state as FetchNewsLoadedState).news;
+    }
+
+    emit(FetchNewsLoadingState(oldNews, isFirstFetch: page == 1));
 
     String _mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
@@ -39,8 +56,10 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       }
     }
 
-    final failureOrNews =
-        await fetchNews(FetchNewsParams(code: newsCode(event.newsCodeEnum)));
+    final failureOrNews = await fetchNews(FetchNewsParams(
+      page: page,
+      category: null,
+    ));
 
     failureOrNews.fold(
       (failure) {
@@ -49,18 +68,17 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         ));
       },
       (news) {
+        page++;
+
         /// Создание листа со всеми вкладками.
-        final List<String> tabs = [];
-        if (event.newsCodeEnum == NewsCodeEnum.news) {
-          tabs.add('Все');
-        }
-        for (final item in news.response.articles) {
-          if (!tabs.contains(item.category)) {
-            tabs.add(item.category);
-          }
-        }
+        List<String> tabs = ['Все', ...news.response.categories!];
+
         log(tabs.toString());
-        emit(FetchNewsLoadedState(news: news, tabs: tabs));
+
+        var newNews = (state as FetchNewsLoadingState).oldNews;
+        newNews.response.articles.addAll(news.response.articles);
+        log(newNews.response.articles.length.toString());
+        emit(FetchNewsLoadedState(news: newNews, tabs: tabs));
       },
     );
   }
@@ -78,4 +96,50 @@ String newsCode(NewsCodeEnum codeEnum) {
     default:
       return 'CATALOG';
   }
+}
+
+class FetchNewsEvent {
+  const FetchNewsEvent();
+}
+
+abstract class FetchNewsState extends Equatable {
+  const FetchNewsState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FetchNewsEmptyState extends FetchNewsState {}
+
+class FetchNewsLoadingState extends FetchNewsState {
+  final NewsEntity oldNews;
+
+  final bool isFirstFetch;
+
+  const FetchNewsLoadingState(this.oldNews, {this.isFirstFetch = false});
+
+  @override
+  List<Object?> get props => [oldNews];
+}
+
+class FetchNewsLoadedState extends FetchNewsState {
+  final NewsEntity news;
+
+  final List<String> tabs;
+  const FetchNewsLoadedState({
+    required this.news,
+    required this.tabs,
+  });
+
+  @override
+  List<Object?> get props => [news, tabs];
+}
+
+class FetchNewsLoadingError extends FetchNewsState {
+  final String message;
+
+  const FetchNewsLoadingError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

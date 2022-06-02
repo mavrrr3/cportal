@@ -19,10 +19,13 @@ class NewsRepositoryMobile implements INewsRepository {
     required this.networkInfo,
   });
   @override
-  Future<Either<Failure, NewsModel>> fetchNews(String code) async {
+  Future<Either<Failure, NewsModel>> fetchNews(
+    int page,
+    String? category,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteNews = await remoteDataSource.fetchNews(code);
+        final remoteNews = await remoteDataSource.fetchNews(page, category);
 
         return Right(remoteNews);
       } on ServerException {

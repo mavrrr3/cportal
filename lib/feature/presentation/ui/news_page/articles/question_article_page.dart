@@ -2,8 +2,7 @@ import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
+
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
@@ -17,8 +16,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 
 void _contentInit(BuildContext context) {
-  return BlocProvider.of<FetchNewsBloc>(context, listen: false)
-      .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.quastion));
+  return BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+    const FetchNewsEvent(),
+  );
 }
 
 class QuestionArticlePage extends StatelessWidget {

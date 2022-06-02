@@ -37,7 +37,7 @@ void main() {
 
   group('fetchNews()', () {
     const String tNewsTypeCode = 'NEWS';
-
+    const int tPage = 1;
     final ArticleModel tNewsArticle = ArticleModel(
       id: 'id',
       date: DateTime.parse('2022-03-21T14:59:58.884Z'),
@@ -47,14 +47,14 @@ void main() {
         ParagraphModel(
           template: '1',
           content: 'content',
-          imagesTitle: '',
-          images: '',
+          imageTitle: '',
+          image: '',
         ),
         ParagraphModel(
           template: '2',
           content: 'content',
-          imagesTitle: '',
-          images: 'imagesTitle',
+          imageTitle: '',
+          image: 'imagesTitle',
         ),
       ],
       image:
@@ -64,6 +64,7 @@ void main() {
       response: ResponseModel(
         count: 1,
         update: 1,
+        categories: const ['Новости'],
         articles: [tNewsArticle],
       ),
     );
@@ -74,10 +75,10 @@ void main() {
       // Arrange.
 
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.fetchNews(any()))
+      when(() => mockRemoteDataSource.fetchNews(any(), any()))
           .thenAnswer((_) async => tNewsModel);
       // Act..
-      await repository.fetchNews(tNewsTypeCode);
+      await repository.fetchNews(tPage, tNewsTypeCode);
       // Assert.
       verify(() => mockNetworkInfo.isConnected);
     });
@@ -88,12 +89,12 @@ void main() {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
-        when(() => mockRemoteDataSource.fetchNews(any()))
+        when(() => mockRemoteDataSource.fetchNews(any(), any()))
             .thenAnswer((_) async => tNewsModel);
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(tPage, tNewsTypeCode);
         // Assert.
-        verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
+        verify(() => mockRemoteDataSource.fetchNews(tPage, tNewsTypeCode));
         expect(result, equals(Right<dynamic, NewsEntity>(tNewsModel)));
       },
     );
@@ -104,15 +105,15 @@ void main() {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
-        when(() => mockRemoteDataSource.fetchNews(any()))
+        when(() => mockRemoteDataSource.fetchNews(any(), any()))
             .thenAnswer((_) async => tNewsModel);
         when(() => mockLocalDataSource.newsToCache(tNewsModel))
             .thenAnswer((_) async => Future<void>.value());
 
         // Act..
-        await repository.fetchNews(tNewsTypeCode);
+        await repository.fetchNews(tPage, tNewsTypeCode);
         // Assert.
-        verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
+        verify(() => mockRemoteDataSource.fetchNews(tPage, tNewsTypeCode));
         verifyNever(() => mockLocalDataSource.newsToCache(tNewsModel));
       },
     );
@@ -121,12 +122,12 @@ void main() {
       () async {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-        when(() => mockRemoteDataSource.fetchNews(any()))
+        when(() => mockRemoteDataSource.fetchNews(any(), any()))
             .thenThrow(ServerException());
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(tPage, tNewsTypeCode);
         // Assert.
-        verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
+        verify(() => mockRemoteDataSource.fetchNews(tPage, tNewsTypeCode));
         verifyZeroInteractions(mockLocalDataSource);
         expect(
           result,
@@ -146,7 +147,7 @@ void main() {
             .thenAnswer((_) async => tNewsModel);
 
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(tPage, tNewsTypeCode);
 
         // Assert.
         verifyZeroInteractions(mockRemoteDataSource);
@@ -163,7 +164,7 @@ void main() {
         when(() => mockLocalDataSource.fetchNewsFromCache())
             .thenThrow(CacheException());
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(tPage, tNewsTypeCode);
         // Assert.
         verifyZeroInteractions(mockRemoteDataSource);
         verify(() => mockLocalDataSource.fetchNewsFromCache());

@@ -15,7 +15,8 @@ void main() {
   late FetchNewsUseCase useCase;
   late MockINewsRepository mockNewsRepository;
   late NewsEntity tNewsEntity;
-  late String tNewsTypeCode;
+  late String tNewsCategory;
+  late int tPage;
   late Failure tFailure;
 
   final ArticleModel tNewsArticle = ArticleModel(
@@ -27,14 +28,14 @@ void main() {
       ParagraphModel(
         template: '1',
         content: 'content',
-        imagesTitle: '',
-        images: '',
+        imageTitle: '',
+        image: '',
       ),
       ParagraphModel(
         template: '2',
         content: 'content',
-        imagesTitle: '',
-        images: 'imagesTitle',
+        imageTitle: '',
+        image: 'imagesTitle',
       ),
     ],
     image:
@@ -50,12 +51,13 @@ void main() {
       response: ResponseModel(
         count: 1,
         update: 1,
+        categories: const ['Новости'],
         articles: [tNewsArticle],
       ),
     );
 
-    tNewsTypeCode = 'news';
-
+    tNewsCategory = 'Финансы';
+    tPage = 0;
     tFailure = ServerFailure();
   });
 
@@ -63,11 +65,12 @@ void main() {
     'Return [NewsEntity] from repository',
     () async {
       // Arrange.
-      when(() => mockNewsRepository.fetchNews(any()))
+      when(() => mockNewsRepository.fetchNews(any(), any()))
           .thenAnswer((_) async => Right<Failure, NewsEntity>(tNewsEntity));
 
       // Act..
-      final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
+      final result =
+          await useCase(FetchNewsParams(category: tNewsCategory, page: 1));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
@@ -81,7 +84,7 @@ void main() {
       }
 
       getNewsOrFailure(result);
-      verify(() => mockNewsRepository.fetchNews(tNewsTypeCode));
+      verify(() => mockNewsRepository.fetchNews(tPage, tNewsCategory));
       verifyNoMoreInteractions(mockNewsRepository);
     },
   );
@@ -90,11 +93,12 @@ void main() {
     'Return [Failure] from repository',
     () async {
       // Arrange.
-      when(() => mockNewsRepository.fetchNews(any()))
+      when(() => mockNewsRepository.fetchNews(any(), any()))
           .thenAnswer((_) async => Left<Failure, NewsEntity>(tFailure));
 
       // Act..
-      final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
+      final result =
+          await useCase(FetchNewsParams(category: tNewsCategory, page: 1));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
@@ -108,7 +112,7 @@ void main() {
       }
 
       getNewsOrFailure(result);
-      verify(() => mockNewsRepository.fetchNews(tNewsTypeCode));
+      verify(() => mockNewsRepository.fetchNews(tPage, tNewsCategory));
       verifyNoMoreInteractions(mockNewsRepository);
     },
   );

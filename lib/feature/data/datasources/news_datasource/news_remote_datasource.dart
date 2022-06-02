@@ -12,13 +12,12 @@ const bool trustSelfSigned = true;
 final HttpClient _httpClient = HttpClient()
   ..badCertificateCallback = ((cert, host, port) => trustSelfSigned);
 final IOClient _ioClient = IOClient(_httpClient);
-final String _baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0';
 
 abstract class INewsRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchNews(String code);
+  Future<NewsModel> fetchNews(int page, String? category);
 }
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
@@ -27,9 +26,15 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   NewsRemoteDataSource(this.localDatasource);
 
   @override
-  Future<NewsModel> fetchNews(String code) async {
+  Future<NewsModel> fetchNews(int page, String? category) async {
+    // final String baseUrl = category == null
+    //     ? '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page'
+    //     : '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page&category=$category';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page';
+
     try {
-      final response = await _ioClient.get(Uri.parse(_baseUrl), headers: {
+      final response = await _ioClient.get(Uri.parse(baseUrl), headers: {
         'Content-Type': 'application/json',
       });
 

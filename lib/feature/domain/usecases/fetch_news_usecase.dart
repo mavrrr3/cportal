@@ -12,13 +12,14 @@ class FetchNewsUseCase extends IUseCase<NewsEntity, FetchNewsParams> {
 
   @override
   Future<Either<Failure, NewsEntity>> call(FetchNewsParams params) =>
-      newsRepository.fetchNews(params.code);
+      newsRepository.fetchNews(params.page, params.category);
 }
 
 class FetchNewsParams extends Equatable {
-  final String code;
+  final int page;
+  final String? category;
 
-  const FetchNewsParams({required this.code});
+  const FetchNewsParams({required this.page, required this.category});
   @override
-  List<Object?> get props => [code];
+  List<Object?> get props => [page, category];
 }
