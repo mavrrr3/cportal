@@ -14,7 +14,7 @@ class OnboardingEntity extends Equatable {
   });
 
   @override
-  // TODO: implement props
+  // TODO: implement props.
   List<Object?> get props => [
         title,
         description,

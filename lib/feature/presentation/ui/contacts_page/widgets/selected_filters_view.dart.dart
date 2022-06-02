@@ -36,19 +36,22 @@ class SelectedFiltersView extends StatelessWidget {
         }
 
         return isActive
-            ? FilterViewSelectedRow(
-                headline: state.filters[index].headline,
-                selectedItems: selectedItems,
-                onClose: (item, i) {
-                  BlocProvider.of<FilterBloc>(
-                    context,
-                  ).add(
-                    FilterRemoveItemEvent(
-                      filterIndex: index,
-                      item: item,
-                    ),
-                  );
-                },
+            ? Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: FilterViewSelectedRow(
+                  headline: state.filters[index].headline,
+                  selectedItems: selectedItems,
+                  onClose: (item, i) {
+                    BlocProvider.of<FilterBloc>(
+                      context,
+                    ).add(
+                      FilterRemoveItemEvent(
+                        filterIndex: index,
+                        item: item,
+                      ),
+                    );
+                  },
+                ),
               )
             : const SizedBox();
       },
@@ -72,43 +75,36 @@ class FilterViewSelectedRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: Text(
-              headline,
-              style: theme.textTheme.bodyText1!.copyWith(
-                color: theme.cardColor.withOpacity(0.68),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Text(
+            headline,
+            style: theme.textTheme.bodyText1!.copyWith(
+              color: theme.cardColor.withOpacity(0.68),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: List.generate(
+              selectedItems.length,
+              (index) => TagContainer(
+                text: selectedItems[index].name,
+                isCloseAction: true,
+                onTap: () {
+                  onClose(selectedItems[index], index);
+                },
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Wrap(
-              children: List.generate(
-                selectedItems.length,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(
-                    right: 4,
-                    bottom: 4,
-                  ),
-                  child: TagContainer(
-                    text: selectedItems[index].name,
-                    isCloseAction: true,
-                    onTap: () {
-                      onClose(selectedItems[index], index);
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

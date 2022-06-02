@@ -154,6 +154,7 @@ class ContactProfilePage extends StatelessWidget {
                                   headline:
                                       AppLocalizations.of(context)!.position,
                                   text: user.position.description,
+                                  bottomPadding: 21,
                                 ),
 
                                 // Department.
@@ -161,6 +162,7 @@ class ContactProfilePage extends StatelessWidget {
                                   headline:
                                       AppLocalizations.of(context)!.department,
                                   text: user.position.description,
+                                  bottomPadding: 21,
                                 ),
 
                                 // Office phone.
@@ -168,6 +170,7 @@ class ContactProfilePage extends StatelessWidget {
                                   headline: AppLocalizations.of(context)!
                                       .office_phone,
                                   text: user.phone.first.number,
+                                  bottomPadding: 21,
                                 ),
 
                                 // Self phone.
@@ -176,6 +179,7 @@ class ContactProfilePage extends StatelessWidget {
                                       AppLocalizations.of(context)!.self_phone,
                                   text:
                                       '${user.phone[1].suffix} ${user.phone[1].number}',
+                                  bottomPadding: 21,
                                 ),
 
                                 // Birth date.
@@ -183,12 +187,14 @@ class ContactProfilePage extends StatelessWidget {
                                   headline:
                                       AppLocalizations.of(context)!.birth_date,
                                   text: user.birthday,
+                                  bottomPadding: 21,
                                 ),
 
                                 // Email.
                                 ProfileInfoSection(
                                   headline: AppLocalizations.of(context)!.email,
                                   text: user.email,
+                                  bottomPadding: 21,
                                 ),
                               ],
                             ),

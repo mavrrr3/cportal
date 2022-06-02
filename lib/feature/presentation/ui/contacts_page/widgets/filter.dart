@@ -124,11 +124,7 @@ class _FilterSectionItemState extends State<FilterSectionItem> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
-                      bottom: 9,
-                      top: 11,
-                    ),
+                    padding: const EdgeInsets.all(12),
                     child: Text(
                       widget.item.headline,
                       style: theme.textTheme.headline6!.copyWith(
@@ -143,6 +139,7 @@ class _FilterSectionItemState extends State<FilterSectionItem> {
                       ? 'assets/icons/arrow_up.svg'
                       : 'assets/icons/arrow_down.svg',
                   width: 24,
+                  color: theme.primaryColor,
                 ),
               ],
             ),

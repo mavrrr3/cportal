@@ -21,7 +21,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   @override
   Future<ContactsModel> fetchContacts() async {
     try {
-      final List<ProfileModel> uesersList = [
+      final List<ProfileModel> usersList = [
         _user1,
         _user1,
         _user1,
@@ -31,8 +31,8 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
       ];
 
       final remoteContacts = ContactsModel(
-        contacts: uesersList,
-        favorites: uesersList,
+        contacts: usersList,
+        favorites: usersList,
       );
 
       log('ContactsRemouteDataSource  ==========  $remoteContacts');
