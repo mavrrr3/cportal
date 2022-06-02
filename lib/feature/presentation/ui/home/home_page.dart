@@ -20,7 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-final List<OnboardingEntity> _onboardingContent = [
+const List<OnboardingEntity> _onboardingContent = [
   OnboardingEntity(
     title: 'Как общаться с коллегами?',
     description:
