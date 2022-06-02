@@ -2,7 +2,7 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/phone_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/user_data_row.dart';
@@ -48,9 +48,9 @@ class UserData extends StatelessWidget {
 
               return Padding(
                 padding: const EdgeInsets.only(
-                  left: 16.0,
-                  right: 16.0,
-                  bottom: 16.0,
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +83,7 @@ class UserData extends StatelessWidget {
                       ButtonEnum.blue,
                       'Сохранить',
                       () {
-                        // TODO раелизовать сохранение номера
+                        // TODO раелизовать сохранение номера.
                       },
                       Size(double.infinity, 48.h),
                     ),

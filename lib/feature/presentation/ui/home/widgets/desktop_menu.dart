@@ -1,34 +1,24 @@
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class MenuButtonModel {
-  final String img;
-  final String text;
-
-  MenuButtonModel({
-    required this.img,
-    required this.text,
-  });
-}
-
 class DesktopMenu extends StatelessWidget {
+  final int currentIndex;
+  final Function(int) onChange;
+  final Function()? onboarding;
+
   const DesktopMenu({
     Key? key,
-    required this.items,
     required this.currentIndex,
     required this.onChange,
     this.onboarding,
   }) : super(key: key);
-
-  final List<MenuButtonModel> items;
-  final int currentIndex;
-  final Function(int) onChange;
-  final Function()? onboarding;
 
   @override
   Widget build(BuildContext context) {
@@ -39,35 +29,37 @@ class DesktopMenu extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       color: theme.splashColor,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: onboarding,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: SvgPicture.asset(
-                  'assets/icons/logo_grey.svg',
-                  color: theme.brightness == Brightness.dark
-                      ? theme.hoverColor
-                      : null,
-                  width: 24.0,
+            SafeArea(
+              child: GestureDetector(
+                onTap: onboarding,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: SvgPicture.asset(
+                    'assets/icons/logo_grey.svg',
+                    color: theme.brightness == Brightness.dark
+                        ? theme.hoverColor
+                        : null,
+                    width: 24,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 24),
 
-            // Генерация навигационных элементов меню
+            // Генерация навигационных элементов меню.
             ...List.generate(
-              items.length,
+              menuItems.length,
               (index) => GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
                   onChange(index);
                 },
                 child: _MenuItem(
-                  item: items[index],
+                  item: menuItems[index],
                   isActive: currentIndex == index,
                 ),
               ),
@@ -79,16 +71,50 @@ class DesktopMenu extends StatelessWidget {
   }
 }
 
+final List<MenuButtonModel> menuItems = [
+  MenuButtonModel(
+    img: 'assets/icons/navbar/main.svg',
+    text: 'Главная',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/news.svg',
+    text: 'Новости',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/questions.svg',
+    text: 'Вопросы',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/declaration.svg',
+    text: 'Заявки',
+  ),
+  MenuButtonModel(
+    img: 'assets/icons/navbar/contacts.svg',
+    text: 'Контакты',
+  ),
+];
+
+class MenuButtonModel {
+  final String img;
+  final String text;
+
+  MenuButtonModel({
+    required this.img,
+    required this.text,
+  });
+}
+
 class _MenuItem extends StatelessWidget {
+  final MenuButtonModel item;
+  final Duration duration = const Duration(milliseconds: 250);
+  final bool isActive;
+
   const _MenuItem({
     Key? key,
     required this.item,
     required this.isActive,
   }) : super(key: key);
 
-  final MenuButtonModel item;
-  final Duration duration = const Duration(milliseconds: 250);
-  final bool isActive;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -104,7 +130,7 @@ class _MenuItem extends StatelessWidget {
             : Colors.transparent,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             SvgPicture.asset(
@@ -128,20 +154,27 @@ class _MenuItem extends StatelessWidget {
     );
   }
 }
-  void changePage(BuildContext context,int index) {
-    BlocProvider.of<NavBarBloc>(context).add(NavBarEventImpl(index: index));
 
-    switch (index) {
-      case 0:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
-        break;
-      case 1:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.news);
-        break;
-      case 2:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
-        break;
-      default:
-        GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
-    }
+void changePage(BuildContext context, int index) {
+  BlocProvider.of<NavigationBarBloc>(context)
+      .add(NavigationBarEventImpl(index: index));
+
+  switch (index) {
+    case 0:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+      break;
+    case 1:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.news);
+      break;
+    case 2:
+      BlocProvider.of<FetchNewsBloc>(context, listen: false)
+          .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.quastion));
+      GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
+      break;
+    case 4:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.contacts);
+      break;
+    default:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
   }
+}

@@ -4,19 +4,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchInput extends StatelessWidget {
+  final Function(String) onChanged;
+  final TextEditingController controller;
+  final FocusNode? focusNode;
+  final Duration animationDuration;
+  final bool isAnimation;
+
   const SearchInput({
     Key? key,
     required this.controller,
     required this.onChanged,
-    required this.focusNode,
-    required this.animationDuration,
+    this.focusNode,
+    this.animationDuration = const Duration(milliseconds: 300),
     this.isAnimation = false,
   }) : super(key: key);
-  final Function(String) onChanged;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final Duration animationDuration;
-  final bool isAnimation;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class SearchInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             child: SvgIcon(
               theme.brightness == Brightness.dark ? theme.hoverColor : null,
               path: 'search.svg',
@@ -51,9 +52,7 @@ class SearchInput extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               textInputAction: TextInputAction.search,
-              onChanged: (text) {
-                onChanged(text);
-              },
+              onChanged: onChanged,
               style: theme.textTheme.headline6!.copyWith(
                 color: theme.hoverColor.withOpacity(0.68),
               ),
@@ -77,11 +76,10 @@ class SearchInput extends StatelessWidget {
   ) {
     final double width = MediaQuery.of(context).size.width;
 
-    // ignore: prefer-conditional-expressions
-    if (!ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
-      return isAnimation ? width - 32 : width - 84;
-    } else {
-      return 584;
-    }
+    return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
+        ? isAnimation
+            ? width - 32
+            : width - 84
+        : 584;
   }
 }

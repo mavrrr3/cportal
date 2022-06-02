@@ -5,6 +5,22 @@
 import 'package:equatable/equatable.dart';
 
 class ProfileEntity extends Equatable {
+  final String id;
+  final String externalId;
+  final String firstName;
+  final String lastName;
+  final String middleName;
+  final String birthday;
+  final String email;
+  final String photoLink;
+  final bool active;
+  final PositionEntity position;
+  final List<PhoneEntity> phone;
+  final String userCreated;
+  final DateTime dateCreated;
+  final String userUpdate;
+  final DateTime dateUpdated;
+
   const ProfileEntity({
     required this.id,
     required this.externalId,
@@ -22,22 +38,6 @@ class ProfileEntity extends Equatable {
     required this.userUpdate,
     required this.dateUpdated,
   });
-
-  final String id;
-  final String externalId;
-  final String firstName;
-  final String lastName;
-  final String middleName;
-  final String birthday;
-  final String email;
-  final String photoLink;
-  final bool active;
-  final PositionEntity position;
-  final List<PhoneEntity> phone;
-  final String userCreated;
-  final DateTime dateCreated;
-  final String userUpdate;
-  final DateTime dateUpdated;
 
   @override
   List<Object?> get props => [
@@ -60,30 +60,30 @@ class ProfileEntity extends Equatable {
 }
 
 class PhoneEntity extends Equatable {
+  final String number;
+  final String? suffix;
+  final bool primary;
+
   const PhoneEntity({
     required this.number,
     required this.suffix,
     required this.primary,
   });
 
-  final String number;
-  final String? suffix;
-  final bool primary;
-
   @override
   List<Object?> get props => [number, suffix, primary];
 }
 
 class PositionEntity extends Equatable {
+  final String id;
+  final String description;
+  final String department;
+
   const PositionEntity({
     required this.id,
     required this.description,
     required this.department,
   });
-
-  final String id;
-  final String description;
-  final String department;
 
   @override
   List<Object?> get props => [id, description, department];

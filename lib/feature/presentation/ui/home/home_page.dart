@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/start_onboard.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -64,20 +65,23 @@ final List<OnboardingEntity> _onboardingContent = [
 ];
 
 class HomePage extends StatefulWidget {
+  final Widget child;
+  final int desktopMenuIndex;
+
   const HomePage({
     Key? key,
     required this.child,
     required this.desktopMenuIndex,
   }) : super(key: key);
-  final Widget child;
-  final int desktopMenuIndex;
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
-  // Для онбординга
+  // Для онбординга.
   late bool _isOnboarding;
   late bool _isWelcome;
   late bool _isLearningCourse;
@@ -85,8 +89,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageController;
   late AnimationController _animationController;
   late Duration _pageDuration;
+
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     _onBoardingIndex = 0;
     _pageController = PageController(initialPage: _onBoardingIndex);
     _animationController = AnimationController(vsync: this);
@@ -94,131 +100,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _isOnboarding = false;
     _isLearningCourse = false;
 
-    // Onboarding page duration
+    _onboardingAnimationListener();
     _pageDuration = const Duration(seconds: 5);
-
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _animationController.stop();
-        _animationController.reset();
-        setState(() {
-          if (_onBoardingIndex + 1 < _onboardingContent.length) {
-            _onBoardingIndex += 1;
-            _loadPage();
-          } else {
-            if (_isLearningCourse) {
-              setState(() {
-                _isLearningCourse = false;
-              });
-            } else {
-              setState(() {
-                _isOnboarding = false;
-                _isLearningCourse = true;
-                _animationController.stop();
-                _animationController.reset();
-                _animationController.duration = const Duration(seconds: 5);
-                _animationController.forward();
-              });
-            }
-          }
-        });
-      }
-    });
 
     super.initState();
   }
 
-  void _loadPinRequest() async {
-    if (mounted) context.goNamed(NavigationRouteNames.inputPin);
-  }
-
+  // В случае сворачивания приложения отсчитывает delay
+  // и перенаправляет на Ввод ПИН-кода
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.paused) {
-      // TODO выставить нужный delay
+    if (state == AppLifecycleState.paused && !kIsWeb) {
+      // TODO выставить нужный delay.
       timer = Timer(
         const Duration(seconds: 10000000000000),
-        () => _loadPinRequest(),
+        _loadPinRequest,
       );
     } else if (state == AppLifecycleState.resumed) {
       timer?.cancel();
     }
   }
 
+  Future<void> _loadPinRequest() async {
+    if (mounted) context.goNamed(NavigationRouteNames.inputPin);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
-    final Color _nonActiveColor = theme.brightness == Brightness.light
-        ? theme.hoverColor.withOpacity(0.48)
-        : theme.cardColor.withOpacity(0.48);
-    final Color _activeColor = theme.primaryColor;
-
-    final double _width = MediaQuery.of(context).size.width;
-
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
-    List<Widget> _listPages = <Widget>[
+    final List<Widget> listPages = <Widget>[
       const MainPage(),
       const NewsPage(pageType: NewsCodeEnum.news),
       const NewsPage(pageType: NewsCodeEnum.quastion),
       const MainPage(),
-      const MainPage(),
+      const ContactsPage(),
     ];
 
-    Color _iconColor(int index, NavBarState state) {
-      return state.currentIndex == index ? _activeColor : _nonActiveColor;
-    }
-
-    Color _textColor(int index, NavBarState state) {
-      final ThemeData theme = Theme.of(context);
-
-      // ignore: prefer-conditional-expressions
-      if (theme.brightness == Brightness.light) {
-        return state.currentIndex == index ? _activeColor : _nonActiveColor;
-      } else {
-        return state.currentIndex == index ? _activeColor : Colors.white;
-      }
-    }
-
-    Widget _navBarItem({
-      required NavBarState state,
-      required int index,
-      required Widget iconWidget,
-      required String text,
-    }) {
-      return GestureDetector(
-        onTap: () => setState(
-          () => BlocProvider.of<NavBarBloc>(context)
-              .add(NavBarEventImpl(index: index)),
-        ),
-        child: Container(
-          height: 56,
-          width: _width / 5,
-          decoration: BoxDecoration(
-            color: theme.splashColor,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                child: iconWidget,
-              ),
-              Text(
-                text,
-                style: theme.textTheme.bodyText2!.copyWith(
-                  color: _textColor(index, state),
-                ),
-              ),
-              const SizedBox(height: 5),
-            ],
-          ),
-        ),
-      );
-    }
-
-    return BlocBuilder<NavBarBloc, NavBarState>(
+    return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(
@@ -229,9 +149,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ResponsiveVisibility(
                     visible: false,
                     visibleWhen: const [
-                      Condition<dynamic>.largerThan(name: TABLET),
+                      Condition<dynamic>.largerThan(name: MOBILE),
                     ],
-                    // Меню Web
+                    // Меню Web.
                     child: DesktopMenu(
                       onboarding: () {
                         setState(
@@ -242,19 +162,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       },
                       currentIndex: widget.desktopMenuIndex,
                       onChange: (index) => changePage(context, index),
-                      items: state.menuItems,
                     ),
                   ),
 
-                  // Текущая страница
-
+                  // Текущая страница.
                   Expanded(
                     child:
-                        kIsWeb ? widget.child : _listPages[state.currentIndex],
+                        kIsWeb ? widget.child : listPages[state.currentIndex],
                   ),
                 ],
               ),
-              // Онбординг для Web
+
+              // -- Онбординг для Web --
               // Затемнение заднего фона
               if (_isOnboarding || _isWelcome || _isLearningCourse)
                 Container(
@@ -265,7 +184,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       : AppColors.darkOnboardingBG.withOpacity(0.95),
                 ),
 
-              // Закрыть онбординг
+              // Закрыть онбординг.
               if (_isOnboarding || _isWelcome || _isLearningCourse)
                 Align(
                   alignment: Alignment.topRight,
@@ -282,8 +201,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           _isWelcome = false;
                           _isOnboarding = false;
                           _isLearningCourse = false;
-                          _animationController.stop();
-                          _animationController.reset();
+                          _animationController
+                            ..stop()
+                            ..reset();
                         });
                       },
                       child: SvgPicture.asset(
@@ -293,230 +213,124 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ),
 
-              // Добро пожаловать
-              if (_isWelcome) _welcome(context, theme),
+              // Добро пожаловать.
+              if (_isWelcome)
+                OnBoardingWelcomeWeb(
+                  onTap: () {
+                    setState(() {
+                      _isWelcome = false;
+                      _isOnboarding = true;
+                    });
+                    _loadOnboardingPage(animateToPage: false);
+                  },
+                ),
 
-              // Контент онбординга и его навигация
-              if (_isOnboarding) _onBoarding(),
+              // Контент онбординга и его навигация.
+              if (_isOnboarding)
+                OnBoardingStepWeb(
+                  animationController: _animationController,
+                  pageController: _pageController,
+                  content: _onboardingContent,
+                  currentIndex: _onBoardingIndex,
+                  onNext: () {
+                    setState(() {
+                      if (_onBoardingIndex + 1 < _onboardingContent.length) {
+                        _onBoardingIndex += 1;
+                        _loadOnboardingPage();
+                      } else {
+                        setState(() {
+                          _isOnboarding = false;
+                          _isLearningCourse = true;
+                          _animationController
+                            ..stop()
+                            ..reset()
+                            ..duration = const Duration(seconds: 5)
+                            ..forward();
+                        });
+                      }
+                    });
+                  },
+                  onBack: () {
+                    setState(() {
+                      if (_onBoardingIndex - 1 >= 0) {
+                        _onBoardingIndex -= 1;
+                        _loadOnboardingPage();
+                      }
+                    });
+                  },
+                ),
 
-              // Обучающий курс (Последний этап онбординга)
-              if (_isLearningCourse) _learningCourse(context),
+              // Обучающий курс (Последний этап онбординга).
+              if (_isLearningCourse)
+                OnBoardingLearningCourseWeb(
+                  animationController: _animationController,
+                  pageController: _pageController,
+                  onBack: () {
+                    setState(() {
+                      _isOnboarding = true;
+                      _isLearningCourse = false;
+                      _onBoardingIndex = _onboardingContent.length - 1;
+                      _loadOnboardingPage();
+                    });
+                  },
+                ),
             ],
           ),
-          bottomNavigationBar: SizedBox(
-            child: ResponsiveVisibility(
-              hiddenWhen: const [Condition<dynamic>.largerThan(name: TABLET)],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _navBarItem(
-                    state: state,
-                    index: 0,
-                    iconWidget: SvgPicture.asset(
-                      state.menuItems[0].img,
-                      color: _iconColor(0, state),
-                      width: 24,
-                    ),
-                    text: state.menuItems[0].text,
-                  ),
-                  _navBarItem(
-                    state: state,
-                    index: 1,
-                    iconWidget: SvgPicture.asset(
-                      state.menuItems[1].img,
-                      color: _iconColor(1, state),
-                      width: 20,
-                    ),
-                    text: state.menuItems[1].text,
-                  ),
-                  _navBarItem(
-                    state: state,
-                    index: 2,
-                    iconWidget: SvgPicture.asset(
-                      state.menuItems[2].img,
-                      color: _iconColor(2, state),
-                      width: 22,
-                    ),
-                    text: state.menuItems[2].text,
-                  ),
-                  _navBarItem(
-                    state: state,
-                    index: 3,
-                    iconWidget: SvgPicture.asset(
-                      state.menuItems[3].img,
-                      color: _iconColor(3, state),
-                      width: 22,
-                    ),
-                    text: state.menuItems[3].text,
-                  ),
-                  _navBarItem(
-                    state: state,
-                    index: 4,
-                    iconWidget: SvgPicture.asset(
-                      state.menuItems[4].img,
-                      color: _iconColor(4, state),
-                      width: 20.0,
-                    ),
-                    text: state.menuItems[4].text,
-                  ),
-                ],
-              ),
-            ),
+
+          // Bottom Bar.
+          bottomNavigationBar: ResponsiveVisibility(
+            hiddenWhen: const [
+              Condition<dynamic>.largerThan(name: MOBILE),
+            ],
+            child: CustomBottomBar(state: state),
           ),
         );
       },
     );
   }
 
-  Widget _welcome(BuildContext context, ThemeData theme) {
-    return Align(
-      alignment: Alignment.center,
-      child: OnBoardingPopUp(
-        isBackArrow: false,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 60.0,
-            bottom: 32,
-            left: 32,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.welcome,
-                    style: theme.textTheme.headline2,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    AppLocalizations.of(context)!.findImportantInformation,
-                    style: theme.textTheme.headline5,
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 174.0, right: 206),
-                child: Button.factory(
-                  context,
-                  ButtonEnum.blue,
-                  AppLocalizations.of(context)!.forward,
-                  () {
-                    setState(() {
-                      _isWelcome = false;
-                      _isOnboarding = true;
-                    });
-                    _loadPage(animateToPage: false);
-                  },
-                  const Size(double.infinity, 48),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _onBoarding() {
-    return Align(
-      alignment: Alignment.center,
-      child: OnBoardingPopUp(
-        isNextArrow: true,
-        onNext: () {
-          setState(() {
-            // ignore: prefer-conditional-expressions
-            if (_onBoardingIndex + 1 < _onboardingContent.length) {
-              _onBoardingIndex += 1;
-              _loadPage();
+  // Отслеживает смену слайда онбординга Web и переключает на следующие этапы.
+  void _onboardingAnimationListener() {
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController
+          ..stop()
+          ..reset();
+        setState(() {
+          if (_onBoardingIndex + 1 < _onboardingContent.length) {
+            _onBoardingIndex += 1;
+            _loadOnboardingPage();
+          } else {
+            if (_isLearningCourse) {
+              setState(() {
+                _isLearningCourse = false;
+              });
             } else {
               setState(() {
                 _isOnboarding = false;
                 _isLearningCourse = true;
-                _animationController.stop();
-                _animationController.reset();
-                _animationController.duration = const Duration(seconds: 5);
-                _animationController.forward();
+                _animationController
+                  ..stop()
+                  ..reset()
+                  ..duration = const Duration(seconds: 5)
+                  ..forward();
               });
             }
-          });
-        },
-        onBack: () {
-          setState(() {
-            if (_onBoardingIndex - 1 >= 0) {
-              _onBoardingIndex -= 1;
-              _loadPage();
-            }
-          });
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 17.0,
-            bottom: 32,
-            left: 32,
-            right: 32,
-          ),
-          child: OnBoardingContentWeb(
-            animationController: _animationController,
-            pageController: _pageController,
-            content: _onboardingContent,
-            currentIndex: _onBoardingIndex,
-          ),
-        ),
-      ),
-    );
+          }
+        });
+      }
+    });
   }
 
-  Widget _learningCourse(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: OnBoardingPopUp(
-        onBack: () {
-          setState(() {
-            _isOnboarding = true;
-            _isLearningCourse = false;
-            _onBoardingIndex = _onboardingContent.length - 1;
-            _loadPage();
-          });
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 17.0,
-            bottom: 32,
-            left: 32,
-            right: 32,
-          ),
-          child: OnBoardingContentWeb(
-            animationController: _animationController,
-            pageController: _pageController,
-            isButton: true,
-            onTap: () {
-              // TODO: Отработать переход на курс
-            },
-            content: [
-              OnboardingEntity(
-                title: AppLocalizations.of(context)!.onboarding_title8,
-                description:
-                    AppLocalizations.of(context)!.onboarding_description8,
-                image: 'assets/img/onboarding/8.svg',
-              ),
-            ],
-            currentIndex: 0,
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _loadPage({
+  // Синхранизирует анимацию под нужный слайд онбординга.
+  void _loadOnboardingPage({
     bool animateToPage = true,
   }) {
-    _animationController.stop();
-    _animationController.reset();
-    _animationController.duration = _pageDuration;
-    _animationController.forward();
+    _animationController
+      ..stop()
+      ..reset()
+      ..duration = _pageDuration
+      ..forward();
 
     if (animateToPage) {
       _pageController.jumpToPage(_onBoardingIndex);

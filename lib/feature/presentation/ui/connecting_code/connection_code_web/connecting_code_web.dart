@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/what_get_with_you.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/work_mode_table.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
@@ -29,7 +29,7 @@ class ConnectingCodeWeb extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) ...[
-          const LoaderWebWidget()
+          const LoaderWebWidget(),
         ] else ...[
           const SizedBox(),
         ],
@@ -46,6 +46,7 @@ class InputCodeBlocWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUser) {
@@ -64,7 +65,7 @@ class InputCodeBlocWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 18.0),
+                padding: const EdgeInsets.only(left: 18),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -254,7 +255,7 @@ class GetCodeWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) ...[
-          const LoaderWebWidget()
+          const LoaderWebWidget(),
         ] else ...[
           const SizedBox(),
         ],
@@ -272,7 +273,7 @@ class GetCodeWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(35.0),
+                padding: const EdgeInsets.all(35),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -296,7 +297,7 @@ class GetCodeWidget extends StatelessWidget {
                           GestureDetector(
                             onTap: () => Navigator.pop(context),
                             child: const Icon(Icons.close),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 8),

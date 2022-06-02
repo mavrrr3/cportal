@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,12 +40,12 @@ class AvatarAndUserInfo extends StatelessWidget {
           ),
           SizedBox(height: 6.h),
           Text(
-            profile.phone[0].number,
+            profile.phone.first.number,
             style: theme.textTheme.headline6,
           ),
           SizedBox(height: 6.h),
           TextButton(
-            onPressed: (() => context.goNamed(NavigationRouteNames.userData)),
+            onPressed: () => context.goNamed(NavigationRouteNames.userData),
             child: Text(
               AppLocalizations.of(context)!.watchData,
               style: theme.textTheme.headline5!.copyWith(

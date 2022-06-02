@@ -1,6 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 class UserEntity extends Equatable {
+  final String id;
+  final String userName;
+  final String profileId;
+  final DateTime lastLogin;
+  final bool blocked;
+  final DateTime dateCreated;
+  final String userCreated;
+  final DateTime? dateUpdated;
+  final String userUpdated;
+  final UserTypeEntity userType;
+
   const UserEntity({
     required this.id,
     required this.userName,
@@ -13,17 +24,6 @@ class UserEntity extends Equatable {
     required this.userUpdated,
     required this.userType,
   });
-
-  final String id;
-  final String userName;
-  final String profileId;
-  final DateTime lastLogin;
-  final bool blocked;
-  final DateTime dateCreated;
-  final String userCreated;
-  final DateTime? dateUpdated;
-  final String userUpdated;
-  final UserTypeEntity userType;
 
   @override
   List<Object?> get props => [
@@ -41,13 +41,13 @@ class UserEntity extends Equatable {
 }
 
 class UserTypeEntity {
+  final String id;
+  final String code;
+  final String description;
+
   UserTypeEntity({
     required this.id,
     required this.code,
     required this.description,
   });
-
-  final String id;
-  final String code;
-  final String description;
 }

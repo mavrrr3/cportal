@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class ScrollableTabsWidget extends StatefulWidget {
+  final List<String> items;
+  final int currentIndex;
+  final Function(int) onTap;
+  final Color? activeColor;
+
   const ScrollableTabsWidget({
     Key? key,
     required this.items,
@@ -11,11 +16,6 @@ class ScrollableTabsWidget extends StatefulWidget {
     this.activeColor,
   }) : super(key: key);
 
-  final List<String> items;
-  final int currentIndex;
-  final Function(int) onTap;
-  final Color? activeColor;
-
   @override
   State<ScrollableTabsWidget> createState() => _ScrollableTabsWidgetState();
 }
@@ -23,8 +23,8 @@ class ScrollableTabsWidget extends StatefulWidget {
 class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    double width = MediaQuery.of(context).size.width;
+    final ThemeData theme = Theme.of(context);
+    final double width = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
@@ -32,7 +32,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
           padding: getHorizontalPadding(context),
           child: SizedBox(
             width: width,
-            height: 30.0,
+            height: 30,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
@@ -85,7 +85,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
                 : null,
           ),
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Text(
               text,
               style: isCurrent
