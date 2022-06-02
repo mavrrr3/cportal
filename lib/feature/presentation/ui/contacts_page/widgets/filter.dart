@@ -3,16 +3,21 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_blo
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/custom_check_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_action_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Filter extends StatefulWidget {
   final ScrollController scrollController;
+  final Function() onApply;
+  final Function() onClear;
 
   const Filter({
     Key? key,
     required this.scrollController,
+    required this.onApply,
+    required this.onClear,
   }) : super(key: key);
 
   @override
@@ -27,25 +32,40 @@ class _FilterState extends State<Filter> {
         if (state is FilterLoadedState) {
           return Padding(
             padding: const EdgeInsets.all(16),
-            child: ListView.builder(
-              controller: widget.scrollController,
-              physics: const BouncingScrollPhysics(),
-              itemCount: state.filters.length,
-              itemBuilder: (context, index) => FilterSectionItem(
-                item: state.filters[index],
-                onExpand: () {
-                  BlocProvider.of<FilterBloc>(context)
-                      .add(FilterExpandSectionEvent(index: index));
-                },
-                onSelect: (i) {
-                  BlocProvider.of<FilterBloc>(context).add(
-                    FilterSelectItemEvent(
-                      filterIndex: index,
-                      itemIndex: i,
+            child: Column(
+              children: [
+                // Контент фильтра.
+                Expanded(
+                  child: ListView.builder(
+                    controller: widget.scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: state.filters.length,
+                    itemBuilder: (context, index) => FilterSectionItem(
+                      item: state.filters[index],
+                      onExpand: () {
+                        BlocProvider.of<FilterBloc>(context)
+                            .add(FilterExpandSectionEvent(index: index));
+                      },
+                      onSelect: (i) {
+                        BlocProvider.of<FilterBloc>(context).add(
+                          FilterSelectItemEvent(
+                            filterIndex: index,
+                            itemIndex: i,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // Кнопки фильтра.
+                FilterActionButtons(
+                  width: (MediaQuery.of(context).size.width - 44) / 2,
+                  onApply: widget.onApply,
+                  onClear: widget.onClear,
+                ),
+              ],
             ),
           );
         }

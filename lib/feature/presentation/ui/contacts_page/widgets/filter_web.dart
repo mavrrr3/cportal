@@ -7,7 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilterWeb extends StatefulWidget {
-  const FilterWeb({Key? key}) : super(key: key);
+  final Function() onApply;
+  final Function() onClear;
+
+  const FilterWeb({
+    Key? key,
+    required this.onApply,
+    required this.onClear,
+  }) : super(key: key);
 
   @override
   State<FilterWeb> createState() => _FilterWebState();
@@ -63,8 +70,8 @@ class _FilterWebState extends State<FilterWeb> {
                       child: FilterActionButtons(
                         width:
                             (MediaQuery.of(context).size.width * 0.25 - 48) / 2,
-                        onApply: () {},
-                        onClear: () {},
+                        onApply: widget.onApply,
+                        onClear: widget.onClear,
                       ),
                     ),
                   ],

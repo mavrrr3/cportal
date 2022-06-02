@@ -42,3 +42,5 @@ class FilterRemoveItemEvent extends FilterEvent {
   @override
   List<Object> get props => [filterIndex, item];
 }
+
+class FilterRemoveAllEvent extends FilterEvent {}

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -32,16 +34,16 @@ class ContactsPage extends StatefulWidget {
 
 class _ContactsPageState extends State<ContactsPage> {
   late TextEditingController _searchController;
-  late bool _isShowFilterWeb;
+  late bool _isFilterOpenWeb;
   @override
   void initState() {
     _searchController = TextEditingController();
-    _isShowFilterWeb = false;
+    _isFilterOpenWeb = false;
     _contentInit();
     super.initState();
   }
 
-  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы.
+  // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false)
         .add(FetchContactsEvent());
@@ -105,33 +107,10 @@ class _ContactsPageState extends State<ContactsPage> {
                                       onTap: () async {
                                         if (!ResponsiveWrapper.of(context)
                                             .isLargerThan(MOBILE)) {
-                                          await showModalBottomSheet<void>(
-                                            context: context,
-                                            isScrollControlled: true,
-                                            backgroundColor:
-                                                theme.backgroundColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            builder: (context) =>
-                                                DraggableScrollableSheet(
-                                              expand: false,
-                                              snap: true,
-                                              initialChildSize: 0.57,
-                                              minChildSize: 0.57,
-                                              maxChildSize: 0.875,
-                                              builder:
-                                                  (context, scrollController) =>
-                                                      Filter(
-                                                scrollController:
-                                                    scrollController,
-                                              ),
-                                            ),
-                                          );
+                                          await _showFilterMobile(theme);
                                         } else {
                                           setState(() {
-                                            _isShowFilterWeb = true;
+                                            _isFilterOpenWeb = true;
                                           });
                                         }
                                       },
@@ -195,7 +174,6 @@ class _ContactsPageState extends State<ContactsPage> {
                                             context,
                                           ).isDesktop) {
                                             await _showContactProfile(
-                                              context,
                                               state,
                                               i,
                                             );
@@ -225,7 +203,6 @@ class _ContactsPageState extends State<ContactsPage> {
                                             if (ResponsiveWrapper.of(context)
                                                 .isDesktop) {
                                               await _showContactProfile(
-                                                context,
                                                 state,
                                                 i,
                                               );
@@ -253,10 +230,10 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
               ],
             ),
-            if (_isShowFilterWeb)
+            if (_isFilterOpenWeb)
               GestureDetector(
                 onTap: () => setState(() {
-                  _isShowFilterWeb = false;
+                  _isFilterOpenWeb = false;
                 }),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -266,10 +243,13 @@ class _ContactsPageState extends State<ContactsPage> {
                       : AppColors.darkOnboardingBG.withOpacity(0.8),
                 ),
               ),
-            if (_isShowFilterWeb)
-              const Align(
+            if (_isFilterOpenWeb)
+              Align(
                 alignment: Alignment.centerRight,
-                child: FilterWeb(),
+                child: FilterWeb(
+                  onApply: _onApplyFilter,
+                  onClear: _onClearFilter,
+                ),
               ),
           ],
         );
@@ -285,35 +265,78 @@ class _ContactsPageState extends State<ContactsPage> {
         NavigationRouteNames.contactProfile,
         params: {'fid': state.data.contacts[i].id},
       );
-}
 
-Future<void> _showContactProfile(
-  BuildContext context,
-  FetchContactsLoadedState state,
-  int i,
-) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      final ThemeData theme = Theme.of(context);
+  // Filter Bottom Sheet Mobile.
+  Future<void> _showFilterMobile(ThemeData theme) async {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: theme.backgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        snap: true,
+        initialChildSize: 0.57,
+        minChildSize: 0.57,
+        maxChildSize: 0.875,
+        builder: (
+          context,
+          scrollController,
+        ) =>
+            Filter(
+          scrollController: scrollController,
+          onApply: _onApplyFilter,
+          onClear: _onClearFilter,
+        ),
+      ),
+    );
+  }
 
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.3,
-              decoration: BoxDecoration(
-                color: theme.splashColor,
-                borderRadius: BorderRadius.circular(12),
+  void _onApplyFilter() {
+    if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
+      setState(() {
+        _isFilterOpenWeb = false;
+      });
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  void _onClearFilter() {
+    BlocProvider.of<FilterBloc>(
+      context,
+    ).add(FilterRemoveAllEvent());
+  }
+
+  Future<void> _showContactProfile(
+    FetchContactsLoadedState state,
+    int i,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        final ThemeData theme = Theme.of(context);
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(
+                  color: theme.splashColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: ContactProfilePopUp(user: state.data.contacts[i]),
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: ContactProfilePopUp(user: state.data.contacts[i]),
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
+            );
+          },
+        );
+      },
+    );
+  }
 }

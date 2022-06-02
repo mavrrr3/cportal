@@ -30,7 +30,7 @@ class FilterActionButtons extends StatelessWidget {
         _FilterActionButton(
           text: AppLocalizations.of(context)!.clear_all,
           width: width,
-          onTap: onApply,
+          onTap: onClear,
           isOutline: true,
         ),
       ],
