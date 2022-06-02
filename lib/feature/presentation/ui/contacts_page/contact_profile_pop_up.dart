@@ -144,7 +144,7 @@ class _ActionButton extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'Перейти в чат',
+              AppLocalizations.of(context)!.go_to_chat,
               style: theme.textTheme.headline5!.copyWith(
                 fontWeight: FontWeight.w700,
                 color: theme.brightness == Brightness.light
