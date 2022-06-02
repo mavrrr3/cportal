@@ -258,7 +258,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
                       color: theme.brightness == Brightness.light
-                          ? theme.hoverColor.withOpacity(0.2)
+                          ? AppColors.textMain.withOpacity(0.2)
                           : AppColors.darkOnboardingBG.withOpacity(0.8),
                     ),
                   ),
