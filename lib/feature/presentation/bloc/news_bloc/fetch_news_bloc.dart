@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_final_locals, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
-import 'dart:developer';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:equatable/equatable.dart';
@@ -73,11 +72,11 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         /// Создание листа со всеми вкладками.
         List<String> tabs = ['Все', ...news.response.categories!];
 
-        log(tabs.toString());
+        // log(tabs.toString());
 
         var newNews = (state as FetchNewsLoadingState).oldNews;
         newNews.response.articles.addAll(news.response.articles);
-        log(newNews.response.articles.length.toString());
+        // log(newNews.response.articles.length.toString());
         emit(FetchNewsLoadedState(news: newNews, tabs: tabs));
       },
     );
