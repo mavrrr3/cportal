@@ -1,6 +1,5 @@
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
@@ -13,14 +12,14 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/co
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites_wrap.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_view_selected_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -33,16 +32,16 @@ class ContactsPage extends StatefulWidget {
 
 class _ContactsPageState extends State<ContactsPage> {
   late TextEditingController _searchController;
-  late bool _isShowFilterWeb;
+  late bool _isFilterOpenWeb;
   @override
   void initState() {
     _searchController = TextEditingController();
-    _isShowFilterWeb = false;
+    _isFilterOpenWeb = false;
     _contentInit();
     super.initState();
   }
 
-  // Во время инициализации запускается эвент и подгружается контент в зависимости от типа страницы.
+  // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false)
         .add(FetchContactsEvent());
@@ -102,37 +101,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                     ),
 
                                     // Фильтр.
-                                    _FilterButton(
+                                    FilterButton(
                                       onTap: () async {
                                         if (!ResponsiveWrapper.of(context)
                                             .isLargerThan(MOBILE)) {
-                                          await showModalBottomSheet<void>(
-                                            context: context,
-                                            isScrollControlled: true,
-                                            backgroundColor:
-                                                theme.backgroundColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            builder: (context) =>
-                                                DraggableScrollableSheet(
-                                              expand: false,
-                                              snap: true,
-                                              initialChildSize: 0.57,
-                                              minChildSize: 0.57,
-                                              maxChildSize: 0.875,
-                                              builder:
-                                                  (context, scrollController) =>
-                                                      Filter(
-                                                scrollController:
-                                                    scrollController,
-                                              ),
-                                            ),
-                                          );
+                                          await _showFilterMobile(theme);
                                         } else {
                                           setState(() {
-                                            _isShowFilterWeb = true;
+                                            _isFilterOpenWeb = true;
                                           });
                                         }
                                       },
@@ -149,44 +125,17 @@ class _ContactsPageState extends State<ContactsPage> {
                               child: BlocBuilder<FilterBloc, FilterState>(
                                 builder: (context, state) {
                                   if (state is FilterLoadedState) {
-                                    return ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: state.filters.length,
-                                      itemBuilder: (context, index) {
-                                        // Выбран ли хоть один пункт в текущем разделе фильтра.
-                                        final bool isActive = state
-                                            .filters[index].items
-                                            .any((element) => element.isActive);
-
-                                        // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
-                                        final List<FilterItemEntity>
-                                            selectedItems = [];
-                                        if (isActive) {
-                                          for (final item
-                                              in state.filters[index].items) {
-                                            if (item.isActive) {
-                                              selectedItems.add(item);
-                                            }
-                                          }
-                                        }
-
-                                        return isActive
-                                            ? FilterViewSelectedRow(
-                                                headline: state
-                                                    .filters[index].headline,
-                                                selectedItems: selectedItems,
-                                                onClose: (item) {
-                                                  BlocProvider.of<FilterBloc>(
-                                                    context,
-                                                  ).add(
-                                                    FilterRemoveItemEvent(
-                                                      filterIndex: index,
-                                                      item: item,
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                            : const SizedBox();
+                                    return SelectedFiltersView(
+                                      state: state,
+                                      onClose: (item, i) {
+                                        BlocProvider.of<FilterBloc>(
+                                          context,
+                                        ).add(
+                                          FilterRemoveItemEvent(
+                                            filterIndex: i,
+                                            item: item,
+                                          ),
+                                        );
                                       },
                                     );
                                   }
@@ -223,7 +172,6 @@ class _ContactsPageState extends State<ContactsPage> {
                                             context,
                                           ).isDesktop) {
                                             await _showContactProfile(
-                                              context,
                                               state,
                                               i,
                                             );
@@ -253,7 +201,6 @@ class _ContactsPageState extends State<ContactsPage> {
                                             if (ResponsiveWrapper.of(context)
                                                 .isDesktop) {
                                               await _showContactProfile(
-                                                context,
                                                 state,
                                                 i,
                                               );
@@ -281,10 +228,10 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
               ],
             ),
-            if (_isShowFilterWeb)
+            if (_isFilterOpenWeb)
               GestureDetector(
                 onTap: () => setState(() {
-                  _isShowFilterWeb = false;
+                  _isFilterOpenWeb = false;
                 }),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -294,10 +241,13 @@ class _ContactsPageState extends State<ContactsPage> {
                       : AppColors.darkOnboardingBG.withOpacity(0.8),
                 ),
               ),
-            if (_isShowFilterWeb)
-              const Align(
+            if (_isFilterOpenWeb)
+              Align(
                 alignment: Alignment.centerRight,
-                child: FilterWeb(),
+                child: FilterWeb(
+                  onApply: _onApplyFilter,
+                  onClear: _onClearFilter,
+                ),
               ),
           ],
         );
@@ -313,67 +263,78 @@ class _ContactsPageState extends State<ContactsPage> {
         NavigationRouteNames.contactProfile,
         params: {'fid': state.data.contacts[i].id},
       );
-}
 
-Future<void> _showContactProfile(
-  BuildContext context,
-  FetchContactsLoadedState state,
-  int i,
-) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      final ThemeData theme = Theme.of(context);
-
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.3,
-              decoration: BoxDecoration(
-                color: theme.splashColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: ContactProfilePopUp(user: state.data.contacts[i]),
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
-}
-
-class _FilterButton extends StatelessWidget {
-  final Function()? onTap;
-
-  const _FilterButton({
-    Key? key,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: theme.splashColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: SvgPicture.asset(
-            'assets/icons/filter.svg',
-            color: theme.cardColor.withOpacity(0.68),
-          ),
+  // Filter Bottom Sheet Mobile.
+  Future<void> _showFilterMobile(ThemeData theme) async {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: theme.backgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        snap: true,
+        initialChildSize: 0.57,
+        minChildSize: 0.57,
+        maxChildSize: 0.875,
+        builder: (
+          context,
+          scrollController,
+        ) =>
+            Filter(
+          scrollController: scrollController,
+          onApply: _onApplyFilter,
+          onClear: _onClearFilter,
         ),
       ),
+    );
+  }
+
+  void _onApplyFilter() {
+    if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
+      setState(() {
+        _isFilterOpenWeb = false;
+      });
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  void _onClearFilter() {
+    BlocProvider.of<FilterBloc>(
+      context,
+    ).add(FilterRemoveAllEvent());
+  }
+
+  Future<void> _showContactProfile(
+    FetchContactsLoadedState state,
+    int i,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        final ThemeData theme = Theme.of(context);
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(
+                  color: theme.splashColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: ContactProfilePopUp(user: state.data.contacts[i]),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

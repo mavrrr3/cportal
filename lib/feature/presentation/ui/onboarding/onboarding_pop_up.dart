@@ -6,7 +6,7 @@ import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/anima
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnBoardingPopUp extends StatefulWidget {
+  class OnBoardingPopUp extends StatefulWidget {
   final bool isBackArrow;
   final bool isNextArrow;
   final Function()? onBack;

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
@@ -22,7 +21,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       _onFetch,
       transformer: bloc_concurrency.sequential(),
     );
-
     on<FilterExpandSectionEvent>(
       _onExpandSection,
       transformer: bloc_concurrency.sequential(),
@@ -33,6 +31,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     );
     on<FilterRemoveItemEvent>(
       _onRemove,
+      transformer: bloc_concurrency.sequential(),
+    );
+    on<FilterRemoveAllEvent>(
+      _onRemoveAll,
       transformer: bloc_concurrency.sequential(),
     );
   }
@@ -137,12 +139,60 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     }
   }
 
+  // Делает все выбранные пункты из стейта неактивными.
+  FutureOr<void> _onRemoveAll(
+    FilterRemoveAllEvent event,
+    Emitter emit,
+  ) async {
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+
+      // ignore: prefer-correct-identifier-length
+      for (int i = 0; i < filters.length; i++) {
+        if (filters[i].isActive) {
+          FilterEntity filter = filters[i];
+          filter = filter.copyWith(isActive: filter.changeActivity);
+
+          filters[i] = switchFilterEntityToFilterModel(filter);
+        }
+
+        for (int itemIndex = 0;
+            itemIndex < filters[i].items.length;
+            itemIndex++) {
+          final FilterEntity filter = filters[i];
+
+          final List<FilterItemEntity> unselectedItems = unselectItems(filter);
+          final FilterEntity filterWithoutSelect =
+              filter.copyWith(items: unselectedItems);
+          filters[i] = switchFilterEntityToFilterModel(filterWithoutSelect);
+        }
+      }
+
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+
+      debugPrint('Отработал эвент: $event');
+    }
+  }
+
   List<FilterItemEntity> selectItems(
     FilterEntity entity,
     FilterItemEntity filterItem,
   ) {
     return entity.items.map((item) {
       if (item.name == filterItem.name) {
+        return item.copyWith(isActive: item.changeActivity);
+      }
+
+      return item;
+    }).toList();
+  }
+
+  List<FilterItemEntity> unselectItems(
+    FilterEntity entity,
+  ) {
+    return entity.items.map((item) {
+      if (item.isActive) {
         return item.copyWith(isActive: item.changeActivity);
       }
 
