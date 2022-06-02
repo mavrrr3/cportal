@@ -55,201 +55,224 @@ class _ContactsPageState extends State<ContactsPage> {
 
     return BlocBuilder<ContactsBloc, ContactsState>(
       builder: (context, state) {
-        return Stack(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        return GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Scaffold(
+            body: Stack(
               children: [
-                ResponsiveVisibility(
-                  visible: false,
-                  visibleWhen: const [
-                    Condition<dynamic>.largerThan(name: MOBILE),
-                  ],
-                  // Меню Web.
-                  child: DesktopMenu(
-                    currentIndex: 4,
-                    onChange: (index) => changePage(context, index),
-                  ),
-                ),
-                if (state is FetchContactsLoadingState)
-                  const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                if (state is FetchContactsLoadedState)
-                  Expanded(
-                    child: SafeArea(
-                      child: SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: kIsWeb ? 12 : 7,
-                            ),
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: ResponsiveConstraints(
-                                constraint: const BoxConstraints(maxWidth: 640),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // Поиск.
-                                    SearchInput(
-                                      controller: _searchController,
-                                      onChanged: (text) {},
-                                    ),
-
-                                    // Фильтр.
-                                    FilterButton(
-                                      onTap: () async {
-                                        if (!ResponsiveWrapper.of(context)
-                                            .isLargerThan(MOBILE)) {
-                                          await _showFilterMobile(theme);
-                                        } else {
-                                          setState(() {
-                                            _isFilterOpenWeb = true;
-                                          });
-                                        }
-                                      },
-                                    ),
-                                  ],
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ResponsiveVisibility(
+                      visible: false,
+                      visibleWhen: const [
+                        Condition<dynamic>.largerThan(name: MOBILE),
+                      ],
+                      // Меню Web.
+                      child: DesktopMenu(
+                        currentIndex: 4,
+                        onChange: (index) => changePage(context, index),
+                      ),
+                    ),
+                    if (state is FetchContactsLoadingState)
+                      const Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    if (state is FetchContactsLoadedState)
+                      Expanded(
+                        child: SafeArea(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: kIsWeb ? 12 : 11,
                                 ),
-                              ),
-                            ),
-                            const SizedBox(height: 31),
-
-                            // Выбранные фильтры.
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: BlocBuilder<FilterBloc, FilterState>(
-                                builder: (context, state) {
-                                  if (state is FilterLoadedState) {
-                                    return SelectedFiltersView(
-                                      state: state,
-                                      onClose: (item, i) {
-                                        BlocProvider.of<FilterBloc>(
-                                          context,
-                                        ).add(
-                                          FilterRemoveItemEvent(
-                                            filterIndex: i,
-                                            item: item,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-
-                                  // TODO: Обработать другие стейты.
-                                  return const SizedBox();
-                                },
-                              ),
-                            ),
-
-                            // Избранные.
-                            if (state.data.favorites.isNotEmpty)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: getSingleHorizontalPadding(context),
-                                  bottom: 16,
-                                  top: 8,
-                                ),
-                                child: !ResponsiveWrapper.of(context)
-                                        .isLargerThan(TABLET)
-                                    ? SizedBox(
-                                        height: 48,
-                                        child: FavoritesRow(
-                                          items: state.data.favorites,
-                                          onTap: (i) {
-                                            _goToUserPage(state, i);
-                                          },
+                                Padding(
+                                  padding: getHorizontalPadding(context),
+                                  child: ResponsiveConstraints(
+                                    constraint:
+                                        const BoxConstraints(maxWidth: 640),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Поиск.
+                                        SearchInput(
+                                          controller: _searchController,
+                                          onChanged: (text) {},
                                         ),
-                                      )
-                                    : FavoritesWrap(
-                                        items: state.data.favorites,
-                                        onTap: (i) async {
-                                          if (ResponsiveWrapper.of(
-                                            context,
-                                          ).isDesktop) {
-                                            await _showContactProfile(
-                                              state,
-                                              i,
-                                            );
-                                          } else {
-                                            _goToUserPage(state, i);
-                                          }
-                                        },
-                                      ),
-                              ),
 
-                            // Колонка контактов.
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: !kIsWeb
-                                  ? ContactsList(
-                                      items: state.data.contacts,
-                                      onTap: (i) => _goToUserPage(state, i),
-                                    )
-                                  : Wrap(
-                                      spacing: 8,
-                                      runSpacing: 8,
-                                      children: List.generate(
-                                        state.data.contacts.length,
-                                        (i) => GestureDetector(
-                                          behavior: HitTestBehavior.translucent,
+                                        // Фильтр.
+                                        FilterButton(
                                           onTap: () async {
-                                            if (ResponsiveWrapper.of(context)
-                                                .isDesktop) {
-                                              await _showContactProfile(
-                                                state,
-                                                i,
-                                              );
+                                            if (!ResponsiveWrapper.of(context)
+                                                .isLargerThan(MOBILE)) {
+                                              await _showFilterMobile(theme);
                                             } else {
-                                              _goToUserPage(state, i);
+                                              setState(() {
+                                                _isFilterOpenWeb = true;
+                                              });
                                             }
                                           },
-                                          child: ContactCard(
-                                            item: state.data.contacts[i],
-                                            width: ResponsiveWrapper.of(context)
-                                                    .isLargerThan(MOBILE)
-                                                ? 328
-                                                : null,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                // Выбранные фильтры.
+                                Padding(
+                                  padding: getHorizontalPadding(context),
+                                  child: BlocBuilder<FilterBloc, FilterState>(
+                                    builder: (context, state) {
+                                      if (state is FilterLoadedState) {
+                                        return Column(
+                                          children: [
+                                            SizedBox(
+                                              height:
+                                                  _isAnyFilterSelected(state)
+                                                      ? 19
+                                                      : 31,
+                                            ),
+                                            SelectedFiltersView(
+                                              state: state,
+                                              onClose: (item, i) {
+                                                BlocProvider.of<FilterBloc>(
+                                                  context,
+                                                ).add(
+                                                  FilterRemoveItemEvent(
+                                                    filterIndex: i,
+                                                    item: item,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height:
+                                                  _isAnyFilterSelected(state)
+                                                      ? 8
+                                                      : 0,
+                                            ),
+                                          ],
+                                        );
+                                      }
+
+                                      // TODO: Обработать другие стейты.
+                                      return const SizedBox();
+                                    },
+                                  ),
+                                ),
+
+                                // Избранные.
+                                if (state.data.favorites.isNotEmpty)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getSingleHorizontalPadding(context),
+                                      bottom: 16,
+                                    ),
+                                    child: !ResponsiveWrapper.of(context)
+                                            .isLargerThan(TABLET)
+                                        ? SizedBox(
+                                            height: 48,
+                                            child: FavoritesRow(
+                                              items: state.data.favorites,
+                                              onTap: (i) {
+                                                _goToUserPage(state, i);
+                                              },
+                                            ),
+                                          )
+                                        : FavoritesWrap(
+                                            items: state.data.favorites,
+                                            onTap: (i) async {
+                                              if (ResponsiveWrapper.of(
+                                                context,
+                                              ).isDesktop) {
+                                                await _showContactProfile(
+                                                  state,
+                                                  i,
+                                                );
+                                              } else {
+                                                _goToUserPage(state, i);
+                                              }
+                                            },
+                                          ),
+                                  ),
+
+                                // Колонка контактов.
+                                Padding(
+                                  padding: getHorizontalPadding(context),
+                                  child: !kIsWeb
+                                      ? ContactsList(
+                                          items: state.data.contacts,
+                                          onTap: (i) => _goToUserPage(state, i),
+                                        )
+                                      : Wrap(
+                                          spacing: 8,
+                                          runSpacing: 8,
+                                          children: List.generate(
+                                            state.data.contacts.length,
+                                            (i) => GestureDetector(
+                                              behavior:
+                                                  HitTestBehavior.translucent,
+                                              onTap: () async {
+                                                if (ResponsiveWrapper.of(
+                                                  context,
+                                                ).isDesktop) {
+                                                  await _showContactProfile(
+                                                    state,
+                                                    i,
+                                                  );
+                                                } else {
+                                                  _goToUserPage(state, i);
+                                                }
+                                              },
+                                              child: ContactCard(
+                                                item: state.data.contacts[i],
+                                                width: ResponsiveWrapper.of(
+                                                  context,
+                                                ).isLargerThan(MOBILE)
+                                                    ? 328
+                                                    : null,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                            ),
+                                ),
 
-                            const SizedBox(height: 42),
-                          ],
+                                const SizedBox(height: 42),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
+                  ],
+                ),
+                if (_isFilterOpenWeb)
+                  GestureDetector(
+                    onTap: () => setState(() {
+                      _isFilterOpenWeb = false;
+                    }),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      color: theme.brightness == Brightness.light
+                          ? AppColors.textMain.withOpacity(0.2)
+                          : AppColors.darkOnboardingBG.withOpacity(0.8),
+                    ),
+                  ),
+                if (_isFilterOpenWeb)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: FilterWeb(
+                      onApply: _onApplyFilter,
+                      onClear: _onClearFilter,
                     ),
                   ),
               ],
             ),
-            if (_isFilterOpenWeb)
-              GestureDetector(
-                onTap: () => setState(() {
-                  _isFilterOpenWeb = false;
-                }),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  color: theme.brightness == Brightness.light
-                      ? theme.hoverColor.withOpacity(0.2)
-                      : AppColors.darkOnboardingBG.withOpacity(0.8),
-                ),
-              ),
-            if (_isFilterOpenWeb)
-              Align(
-                alignment: Alignment.centerRight,
-                child: FilterWeb(
-                  onApply: _onApplyFilter,
-                  onClear: _onClearFilter,
-                ),
-              ),
-          ],
+          ),
         );
       },
     );
@@ -269,9 +292,15 @@ class _ContactsPageState extends State<ContactsPage> {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: theme.backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+      backgroundColor: theme.splashColor,
+      barrierColor: theme.brightness == Brightness.light
+          ? AppColors.textMain.withOpacity(0.2)
+          : AppColors.darkOnboardingBG.withOpacity(0.8),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
       ),
       builder: (context) => DraggableScrollableSheet(
         expand: false,
@@ -336,5 +365,20 @@ class _ContactsPageState extends State<ContactsPage> {
         );
       },
     );
+  }
+
+  bool _isAnyFilterSelected(FilterLoadedState state) {
+    bool isActive = false;
+    // ignore: avoid_function_literals_in_foreach_calls
+    state.filters.forEach((filter) {
+      // ignore: avoid_function_literals_in_foreach_calls
+      filter.items.forEach((item) {
+        if (item.isActive) {
+          isActive = true;
+        }
+      });
+    });
+
+    return isActive;
   }
 }

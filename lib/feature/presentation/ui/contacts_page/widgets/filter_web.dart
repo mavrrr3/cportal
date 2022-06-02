@@ -32,7 +32,7 @@ class _FilterWebState extends State<FilterWeb> {
             duration: const Duration(milliseconds: 300),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width * 0.25,
-            decoration: BoxDecoration(color: theme.backgroundColor),
+            decoration: BoxDecoration(color: theme.splashColor),
             child: Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
