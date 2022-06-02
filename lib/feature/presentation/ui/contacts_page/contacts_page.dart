@@ -369,7 +369,9 @@ class _ContactsPageState extends State<ContactsPage> {
 
   bool _isAnyFilterSelected(FilterLoadedState state) {
     bool isActive = false;
+    // ignore: avoid_function_literals_in_foreach_calls
     state.filters.forEach((filter) {
+      // ignore: avoid_function_literals_in_foreach_calls
       filter.items.forEach((item) {
         if (item.isActive) {
           isActive = true;
