@@ -48,15 +48,12 @@ class ContactProfilePopUp extends StatelessWidget {
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 125),
-                child: Text(
-                  '${user.firstName} ${user.middleName} ${user.lastName}',
-                  style: theme.textTheme.headline4!.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                  textAlign: TextAlign.center,
+              child: Text(
+                '${user.firstName} ${user.middleName} ${user.lastName}',
+                style: theme.textTheme.headline4!.copyWith(
+                  fontWeight: FontWeight.w800,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 32),
@@ -101,7 +98,7 @@ class ContactProfilePopUp extends StatelessWidget {
             ProfileInfoSection(
               headline: AppLocalizations.of(context)!.birth_date,
               text: user.birthday,
-              bottomPadding: 18,
+              bottomPadding: 0,
             ),
 
             const SizedBox(height: 32),
