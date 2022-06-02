@@ -292,9 +292,15 @@ class _ContactsPageState extends State<ContactsPage> {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: theme.backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+      backgroundColor: theme.splashColor,
+      barrierColor: theme.brightness == Brightness.light
+          ? AppColors.textMain.withOpacity(0.2)
+          : AppColors.darkOnboardingBG.withOpacity(0.8),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
       ),
       builder: (context) => DraggableScrollableSheet(
         expand: false,
