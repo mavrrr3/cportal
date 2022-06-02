@@ -96,5 +96,8 @@
     "enter_by_qr_code": "Вход по QR-код",
     "office_phone": "Рабочий телефон",
     "self_phone": "Мобильный телефон",
-    "birth_date": "Дата рождения"
+    "birth_date": "Дата рождения",
+    "go_to_chat": "Перейти в чат",
+    "apply": "Применить",
+    "clear_all": "Очистить"
 }

@@ -2,11 +2,19 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_blo
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_action_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilterWeb extends StatefulWidget {
-  const FilterWeb({Key? key}) : super(key: key);
+  final Function() onApply;
+  final Function() onClear;
+
+  const FilterWeb({
+    Key? key,
+    required this.onApply,
+    required this.onClear,
+  }) : super(key: key);
 
   @override
   State<FilterWeb> createState() => _FilterWebState();
@@ -59,22 +67,11 @@ class _FilterWebState extends State<FilterWeb> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 32),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Применить.
-                          _ActionButton(
-                            text: 'Применить',
-                            onTap: () {},
-                          ),
-
-                          // Очистить.
-                          _ActionButton(
-                            text: 'Очистить',
-                            onTap: () {},
-                            isOutline: true,
-                          ),
-                        ],
+                      child: FilterActionButtons(
+                        width:
+                            (MediaQuery.of(context).size.width * 0.25 - 48) / 2,
+                        onApply: widget.onApply,
+                        onClear: widget.onClear,
                       ),
                     ),
                   ],
@@ -87,56 +84,6 @@ class _FilterWebState extends State<FilterWeb> {
         // TODO: Обработать другие стейты.
         return const SizedBox();
       },
-    );
-  }
-}
-
-class _ActionButton extends StatelessWidget {
-  final String text;
-  final Function() onTap;
-  final bool isOutline;
-
-  /// Кнопка фильтра [Применить, Очистить].
-  const _ActionButton({
-    Key? key,
-    required this.text,
-    required this.onTap,
-    this.isOutline = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Container(
-        width: (MediaQuery.of(context).size.width * 0.25 - 48) / 2,
-        decoration: BoxDecoration(
-          color: isOutline ? Colors.transparent : theme.primaryColor,
-          border: isOutline
-              ? Border.all(width: 2, color: theme.primaryColor)
-              : null,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Center(
-            child: Text(
-              text,
-              style: theme.textTheme.headline5!.copyWith(
-                fontWeight: FontWeight.w700,
-                color: isOutline
-                    ? theme.primaryColor
-                    : theme.brightness == Brightness.light
-                        ? Colors.white
-                        : theme.hoverColor,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
