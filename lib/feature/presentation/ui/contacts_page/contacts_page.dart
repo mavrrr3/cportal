@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
