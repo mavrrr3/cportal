@@ -28,6 +28,7 @@ class FaqRow extends StatelessWidget {
           ),
           SvgPicture.asset(
             'assets/icons/question_arrow.svg',
+            color: theme.primaryColor,
             width: 8,
           ),
         ],

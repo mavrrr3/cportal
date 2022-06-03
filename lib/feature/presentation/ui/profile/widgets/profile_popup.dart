@@ -10,7 +10,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,7 +53,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     AppLocalizations.of(context)!.turnOffNotify,
                     style: theme.textTheme.headline5,
                   ),
-                  SizedBox(height: 18.h),
+                const  SizedBox(height: 18),
                   GestureDetector(
                     onTap: () => setState(() => showToasterAboutNotify(
                           theme,
@@ -67,21 +66,21 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 24.h),
+              const    SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(height: 24.h),
+             const     SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forTwentyFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(height: 24.h),
+               const   SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forever,
                     style: theme.textTheme.headline5!.copyWith(
@@ -239,7 +238,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                         children: [
                           Container(
                             width: 350,
-                            height: 32.h,
+                            height: 32,
                             decoration: BoxDecoration(
                               color: theme.hoverColor.withOpacity(0.04),
                               borderRadius: const BorderRadius.only(
@@ -496,7 +495,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
             ),
           ),
         ),
-        SizedBox(height: 8.h),
+     const   SizedBox(height: 8),
         Container(
           width: 350,
           height: 44,
@@ -549,7 +548,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                         : Alignment.topRight,
                 child: Container(
                   width: 352 / 3,
-                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),

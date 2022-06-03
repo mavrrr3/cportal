@@ -9,7 +9,6 @@ import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/user_d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
 
@@ -55,24 +54,24 @@ class UserData extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 33.h),
+                  const  SizedBox(height: 33),
                     const PhoneBox(),
-                    SizedBox(height: 24.h),
+                  const  SizedBox(height: 24),
                     UserDataRow(
                       normalText: AppLocalizations.of(context)!.position,
                       boldText: profile.position.description,
                     ),
-                    SizedBox(height: 8.h),
+               const     SizedBox(height: 8),
                     UserDataRow(
                       normalText: AppLocalizations.of(context)!.department,
                       boldText: profile.position.department,
                     ),
-                    SizedBox(height: 8.h),
+               const     SizedBox(height: 8),
                     UserDataRow(
                       normalText: AppLocalizations.of(context)!.birthDay,
                       boldText: profile.birthday,
                     ),
-                    SizedBox(height: 8.h),
+               const     SizedBox(height: 8),
                     UserDataRow(
                       normalText: AppLocalizations.of(context)!.email,
                       boldText: profile.email,
@@ -85,7 +84,7 @@ class UserData extends StatelessWidget {
                       () {
                         // TODO раелизовать сохранение номера.
                       },
-                      Size(double.infinity, 48.h),
+                 const     Size(double.infinity, 48),
                     ),
                   ],
                 ),

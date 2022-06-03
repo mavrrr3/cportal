@@ -2,7 +2,6 @@ import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
@@ -59,12 +58,12 @@ class OnBoardingWelcome extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.0.w,
+            padding:const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
             child: Column(
               children: [
-                SizedBox(height: 87.h),
+              const  SizedBox(height: 87),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -98,7 +97,7 @@ class OnBoardingWelcome extends StatelessWidget {
                   extra: onboardingContent,
                 );
               },
-              Size(double.infinity, 48.h),
+              const Size(double.infinity, 48),
             ),
           ),
         ],

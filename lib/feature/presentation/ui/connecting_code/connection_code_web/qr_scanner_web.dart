@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -25,8 +24,8 @@ class QrScannerWeb extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.0.w,
+              padding:const EdgeInsets.symmetric(
+                horizontal: 20,
               ),
               child: BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
@@ -163,7 +162,7 @@ class HeaderTextWidget extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: 31.h),
+   const     SizedBox(height: 31),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -177,9 +176,7 @@ class HeaderTextWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 8.h,
-        ),
+     const   SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

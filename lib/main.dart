@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
@@ -80,33 +79,30 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: listOfBlocs(),
-      child: ScreenUtilInit(
-        designSize: const Size(360, 640),
-        builder: () => AdaptiveTheme(
-          light: lightTheme(),
-          dark: darkTheme(),
-          initial: AdaptiveThemeMode.light,
-          builder: (light, dark) => MaterialApp.router(
-            routerDelegate: router.routerDelegate,
-            routeInformationParser: router.routeInformationParser,
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            theme: light,
-            darkTheme: dark,
-            builder: (context, widget) => ResponsiveWrapper.builder(
-              ClampingScrollWrapper.builder(context, widget!),
-              defaultScale: true,
-              minWidth: 350,
-              defaultName: DESKTOP,
-              breakpoints: [
-                const ResponsiveBreakpoint.resize(350, name: MOBILE),
-                const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
-                const ResponsiveBreakpoint.resize(1024, name: TABLET),
-                const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
-                const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
-              ],
-            ),
+      child: AdaptiveTheme(
+        light: lightTheme(),
+        dark: darkTheme(),
+        initial: AdaptiveThemeMode.light,
+        builder: (light, dark) => MaterialApp.router(
+          routerDelegate: router.routerDelegate,
+          routeInformationParser: router.routeInformationParser,
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: light,
+          darkTheme: dark,
+          builder: (context, widget) => ResponsiveWrapper.builder(
+            ClampingScrollWrapper.builder(context, widget!),
+            defaultScale: true,
+            minWidth: 350,
+            defaultName: DESKTOP,
+            breakpoints: [
+              const ResponsiveBreakpoint.resize(350, name: MOBILE),
+              const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
+              const ResponsiveBreakpoint.resize(1024, name: TABLET),
+              const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
+              const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+            ],
           ),
         ),
       ),

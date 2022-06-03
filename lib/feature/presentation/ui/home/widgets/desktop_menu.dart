@@ -39,10 +39,8 @@ class DesktopMenu extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: SvgPicture.asset(
-                    'assets/icons/logo_grey.svg',
-                    color: theme.brightness == Brightness.dark
-                        ? theme.hoverColor
-                        : null,
+                    'assets/icons/logo.svg',
+                    color: theme.cardColor.withOpacity(0.4),
                     width: 24,
                   ),
                 ),

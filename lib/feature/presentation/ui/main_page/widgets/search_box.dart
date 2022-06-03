@@ -1,7 +1,6 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchBox extends StatelessWidget {
@@ -92,7 +91,7 @@ class _SearchBoxItem extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 16, right: 8),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: onTap,
@@ -104,7 +103,7 @@ class _SearchBoxItem extends StatelessWidget {
               style: theme.textTheme.bodyText1!
                   .copyWith(color: theme.hoverColor.withOpacity(0.68)),
             ),
-            SizedBox(height: 4.h),
+         const   SizedBox(height: 4),
             FaqRow(text: text),
           ],
         ),

@@ -24,7 +24,6 @@ class AppColors {
   static const Color iconLight = Color(0xFF999999);
 }
 
-// const kBubleLight = Color(0xFFE8E8E8);
-// const kBubleDark = Color(0xFF262629);
-// const kActiveUsersDark = Color(0xFF3B3B3B);
-// const kIndicatorBuble = Color(0xFF39B54A);
+Color getBarrierColor(ThemeData theme) => theme.brightness == Brightness.light
+    ? AppColors.textMain.withOpacity(0.2)
+    : AppColors.darkOnboardingBG.withOpacity(0.8);
