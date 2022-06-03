@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_lo
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -21,11 +22,10 @@ class NewsRepositoryMobile implements INewsRepository {
   @override
   Future<Either<Failure, NewsModel>> fetchNews(
     int page,
-    String? category,
   ) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteNews = await remoteDataSource.fetchNews(page, category);
+        final remoteNews = await remoteDataSource.fetchNews(page);
 
         return Right(remoteNews);
       } on ServerException {
@@ -36,6 +36,32 @@ class NewsRepositoryMobile implements INewsRepository {
         final localNews = await localDataSource.fetchNewsFromCache();
 
         return Right(localNews);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, NewsEntity>> fetchNewsByCategory(
+    int page,
+    String category,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteNewsByCategory =
+            await remoteDataSource.fetchNewsByCategory(page, category);
+
+        return Right(remoteNewsByCategory);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localNewsByCtegory =
+            await localDataSource.fetchNewsByCategoryFromCache(category);
+
+        return Right(localNewsByCtegory);
       } on CacheException {
         return Left(CacheFailure());
       }

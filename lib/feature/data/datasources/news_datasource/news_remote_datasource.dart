@@ -15,9 +15,14 @@ final IOClient _ioClient = IOClient(_httpClient);
 
 abstract class INewsRemoteDataSource {
   /// Обращается к эндпойнту .....
-  ///
+  /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchNews(int page, String? category);
+  Future<NewsModel> fetchNews(int page);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [NewsModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<NewsModel> fetchNewsByCategory(int page, String category);
 }
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
@@ -26,12 +31,30 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   NewsRemoteDataSource(this.localDatasource);
 
   @override
-  Future<NewsModel> fetchNews(int page, String? category) async {
+  Future<NewsModel> fetchNews(int page) async {
     // final String baseUrl = category == null
     //     ? '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page'
     //     : '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page&category=$category';
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page';
+
+    try {
+      final response = await _ioClient.get(Uri.parse(baseUrl), headers: {
+        'Content-Type': 'application/json',
+      });
+
+      return NewsModel.fromJson(
+        json.decode(response.body) as Map<String, dynamic>,
+      );
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<NewsModel> fetchNewsByCategory(int page, String category) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page&category=$category';
 
     try {
       final response = await _ioClient.get(Uri.parse(baseUrl), headers: {

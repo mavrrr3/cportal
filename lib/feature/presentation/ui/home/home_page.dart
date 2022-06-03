@@ -10,7 +10,6 @@ import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bott
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page_new.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
@@ -133,8 +132,8 @@ class _HomePageState extends State<HomePage>
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
       const MainPage(),
-      NewsPageNew(),
-      const NewsPage(pageType: NewsCodeEnum.quastion),
+      NewsPage(pageType: NewsCodeEnum.news),
+      NewsPage(pageType: NewsCodeEnum.quastion),
       const MainPage(),
       const ContactsPage(),
     ];

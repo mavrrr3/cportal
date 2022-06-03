@@ -57,7 +57,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
     final failureOrNews = await fetchNews(FetchNewsParams(
       page: page,
-      category: null,
     ));
 
     failureOrNews.fold(
@@ -72,11 +71,9 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         /// Создание листа со всеми вкладками.
         List<String> tabs = ['Все', ...news.response.categories!];
 
-        // log(tabs.toString());
-
         var newNews = (state as FetchNewsLoadingState).oldNews;
         newNews.response.articles.addAll(news.response.articles);
-        // log(newNews.response.articles.length.toString());
+
         emit(FetchNewsLoadedState(news: newNews, tabs: tabs));
       },
     );

@@ -174,7 +174,7 @@ final GoRouter router = GoRouter(
       path: '/news',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const HomePage(
+        child: HomePage(
           child: NewsPage(pageType: NewsCodeEnum.news),
           desktopMenuIndex: 1,
         ),
@@ -212,7 +212,7 @@ final GoRouter router = GoRouter(
       path: '/questions',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const HomePage(
+        child: HomePage(
           child: NewsPage(pageType: NewsCodeEnum.quastion),
           desktopMenuIndex: 2,
         ),
@@ -295,8 +295,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child:  const ContactsPage(),
-        
+        child: const ContactsPage(),
       ),
     ),
     GoRoute(

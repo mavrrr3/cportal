@@ -26,7 +26,6 @@ class FetchNewsCubit extends Cubit<NewsState> {
 
     final failureOrNews = await fetchNews(FetchNewsParams(
       page: page,
-      category: null,
     ));
 
     String _failureToMessage(Failure failure) {
@@ -46,7 +45,11 @@ class FetchNewsCubit extends Cubit<NewsState> {
       // ignore: cascade_invocations
       articles.addAll(news.response.articles);
       log('Загрузилось ${articles.length} статей');
-      emit(NewsLoaded(articles: articles));
+
+      /// Создание листа со всеми вкладками.
+      final List<String> tabs = ['Все', ...news.response.categories!];
+
+      emit(NewsLoaded(articles: articles, tabs: tabs));
     }
 
     failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
@@ -74,13 +77,15 @@ class NewsLoading extends NewsState {
 
 class NewsLoaded extends NewsState {
   final List<ArticleEntity> articles;
+  final List<String> tabs;
 
   const NewsLoaded({
     required this.articles,
+    required this.tabs,
   });
 
   @override
-  List<Object?> get props => [articles];
+  List<Object?> get props => [articles, tabs];
 }
 
 class NewsLoadingError extends NewsState {

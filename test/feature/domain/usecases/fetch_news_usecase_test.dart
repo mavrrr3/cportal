@@ -65,12 +65,11 @@ void main() {
     'Return [NewsEntity] from repository',
     () async {
       // Arrange.
-      when(() => mockNewsRepository.fetchNews(any(), any()))
+      when(() => mockNewsRepository.fetchNews(any()))
           .thenAnswer((_) async => Right<Failure, NewsEntity>(tNewsEntity));
 
       // Act..
-      final result =
-          await useCase(FetchNewsParams(category: tNewsCategory, page: 1));
+      final result = await useCase(const FetchNewsParams(page: 1));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
@@ -84,7 +83,7 @@ void main() {
       }
 
       getNewsOrFailure(result);
-      verify(() => mockNewsRepository.fetchNews(tPage, tNewsCategory));
+      verify(() => mockNewsRepository.fetchNews(tPage));
       verifyNoMoreInteractions(mockNewsRepository);
     },
   );
@@ -93,12 +92,11 @@ void main() {
     'Return [Failure] from repository',
     () async {
       // Arrange.
-      when(() => mockNewsRepository.fetchNews(any(), any()))
+      when(() => mockNewsRepository.fetchNews(any()))
           .thenAnswer((_) async => Left<Failure, NewsEntity>(tFailure));
 
       // Act..
-      final result =
-          await useCase(FetchNewsParams(category: tNewsCategory, page: 1));
+      final result = await useCase(const FetchNewsParams(page: 1));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
@@ -112,7 +110,7 @@ void main() {
       }
 
       getNewsOrFailure(result);
-      verify(() => mockNewsRepository.fetchNews(tPage, tNewsCategory));
+      verify(() => mockNewsRepository.fetchNews(tPage));
       verifyNoMoreInteractions(mockNewsRepository);
     },
   );
