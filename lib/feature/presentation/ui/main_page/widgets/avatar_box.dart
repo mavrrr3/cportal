@@ -30,7 +30,7 @@ class AvatarBox extends StatelessWidget {
           fit: BoxFit.cover,
           alignment: FractionalOffset.topCenter,
           image: ExtendedNetworkImageProvider(
-            isApiImg ? 'http://ribadi.ddns.net:88/images/$imgPath' : imgPath,
+            isApiImg ? 'http://ribadi.ddns.net:88/images//$imgPath' : imgPath,
             cache: true,
           ),
         ),

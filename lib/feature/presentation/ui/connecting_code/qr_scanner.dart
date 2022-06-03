@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -61,8 +60,8 @@ class _QrScannerState extends State<QrScanner> {
                     key: qrKey,
                     overlay: QrScannerOverlayShape(
                       borderRadius: 12,
-                      borderLength: 20.h,
-                      borderWidth: 10.w,
+                      borderLength: 20,
+                      borderWidth: 10,
                       cutOutSize: MediaQuery.of(context).size.width * 0.8,
                       borderColor: Theme.of(context).splashColor,
                     ),
@@ -71,7 +70,7 @@ class _QrScannerState extends State<QrScanner> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 84.h),
+                      padding:const EdgeInsets.only(bottom: 84),
                       child: GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () async {
@@ -100,7 +99,7 @@ class _QrScannerState extends State<QrScanner> {
                         },
                         child: SvgPicture.asset(
                           'assets/icons/flash_light.svg',
-                          width: 48.w,
+                          width: 48,
                           fit: BoxFit.cover,
                         ),
                       ),

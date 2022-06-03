@@ -4,7 +4,6 @@ import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/but
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_step_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
@@ -39,9 +38,9 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.h,
-          vertical: 17.h,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 17,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,7 +75,7 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
               () {
                 // TODO: обработать навигацию на прохождение курса.
               },
-              Size(double.infinity, 48.h),
+              const Size(double.infinity, 48),
             ),
           ],
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RowProfile extends StatelessWidget {
   final Widget firstWidget;
@@ -21,9 +20,7 @@ class RowProfile extends StatelessWidget {
     return Row(
       children: [
         firstWidget,
-        SizedBox(
-          width: 17.w,
-        ),
+        const SizedBox(width: 17),
         Text(
           text,
           style: theme.textTheme.headline5!.copyWith(

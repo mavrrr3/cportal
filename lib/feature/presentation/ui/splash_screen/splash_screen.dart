@@ -5,7 +5,6 @@ import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -56,9 +55,9 @@ class LoaderWidget extends StatelessWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const[
           Center(
-            child: SvgIcon(null, path: 'logo.svg', width: 120.w),
+            child: SvgIcon(null, path: 'logo.svg', width: 120),
           ),
         ],
       ),

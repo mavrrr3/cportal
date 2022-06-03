@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class WhatGetWithYou extends StatelessWidget {
@@ -22,12 +21,10 @@ class WhatGetWithYou extends StatelessWidget {
       children: [
         SvgPicture.asset(
           iconPath,
-          width: 24.w,
+          width: 24,
           color: color,
         ),
-        SizedBox(
-          height: 14.67.h,
-        ),
+        const SizedBox(height: 14.67),
         Text(
           text,
           style: theme.textTheme.headline5,

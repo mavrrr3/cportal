@@ -33,7 +33,7 @@ class NewsHorizontalScroll extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(
                     right: i != items.length - 1
-                        ? 8
+                        ? 16
                         : getSingleHorizontalPadding(context),
                   ),
                   child: NewsCardItem(

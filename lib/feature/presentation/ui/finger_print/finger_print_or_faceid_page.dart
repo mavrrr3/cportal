@@ -4,7 +4,6 @@ import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/but
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FingerPrintOrFaceIdPage extends StatelessWidget {
@@ -23,19 +22,19 @@ class FingerPrintOrFaceIdPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.0.w,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 48.h),
+                  const SizedBox(height: 48),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+                    children: const [
+                      SvgIcon(null, path: 'logo_grey.svg', width: 24),
                     ],
                   ),
-                  SizedBox(height: 31.h),
+                  const SizedBox(height: 31),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -50,9 +49,7 @@ class FingerPrintOrFaceIdPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -63,17 +60,17 @@ class FingerPrintOrFaceIdPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 48.h),
+                  const SizedBox(height: 48),
                   SvgIcon(
                     theme.hoverColor.withOpacity(0.1),
                     path: state.getPathIcon(route),
-                    width: 149.21.w,
+                    width: 149.21,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.0.w,
-                      right: 16.0.w,
-                      top: 62.87.h,
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 62.87,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -90,7 +87,7 @@ class FingerPrintOrFaceIdPage extends StatelessWidget {
                             log('isAuthenticated ${state.authStatus}');
                             log('Biometric list ${state.listBiometric}');
                           },
-                          Size(142.w, 48.h),
+                          const Size(142, 48),
                         ),
                         Button.factory(
                           context,
@@ -99,7 +96,7 @@ class FingerPrintOrFaceIdPage extends StatelessWidget {
                           () async {
                             // TODO Реализовать функционал кнопки Нет, спасибо.
                           },
-                          Size(142.w, 48.h),
+                          const Size(142, 48),
                         ),
                       ],
                     ),
