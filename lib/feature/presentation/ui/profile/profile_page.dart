@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -158,7 +157,9 @@ class _ProfilePageState extends State<ProfilePage> {
   void turnOnOffNotify(bool newValue) {
     setState(() {
       isNotificationTurnedOn = newValue;
-      showChooserNotification(context, Theme.of(context));
+      if (newValue) {
+        showChooserNotification(context, Theme.of(context));
+      }
     });
   }
 
@@ -194,10 +195,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 18),
                 GestureDetector(
-                  onTap: () => setState(() => showToasterAboutNotify(
-                        theme,
-                        'Оповещения выключены на 1 час',
-                      )),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    setState(() => showToasterAboutNotify(
+                          context,
+                          theme,
+                          text: 'Оповещения выключены на 1 час',
+                        ));
+                  },
                   child: Text(
                     AppLocalizations.of(context)!.forHour,
                     style: theme.textTheme.headline5!.copyWith(
@@ -258,14 +263,24 @@ Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
       ),
     );
 
-void showToasterAboutNotify(ThemeData theme, String text) {
-  Fluttertoast.showToast(
-    msg: text,
-    toastLength: Toast.LENGTH_SHORT,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
-    backgroundColor: theme.hoverColor,
-    textColor: theme.splashColor,
-    fontSize: 16,
+void showToasterAboutNotify(
+  BuildContext context,
+  ThemeData theme, {
+  required String text,
+}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: theme.cardColor,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      content: Text(
+        text,
+        style: theme.textTheme.headline6!.copyWith(
+          color: theme.brightness == Brightness.light
+              ? Colors.white
+              : AppColors.mainBgDark,
+        ),
+      ),
+    ),
   );
 }
