@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchInput extends StatelessWidget {
-  final Function(String) onChanged;
+  final Function(String)? onChanged;
   final TextEditingController controller;
   final FocusNode? focusNode;
   final Duration animationDuration;
@@ -13,7 +13,7 @@ class SearchInput extends StatelessWidget {
   const SearchInput({
     Key? key,
     required this.controller,
-    required this.onChanged,
+    this.onChanged,
     this.focusNode,
     this.animationDuration = const Duration(milliseconds: 300),
     this.isAnimation = false,
@@ -23,12 +23,9 @@ class SearchInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return AnimatedContainer(
-      duration:
-          isAnimation ? animationDuration : const Duration(milliseconds: 100),
-      width: _getContainerWidth(context),
+    return Container(
+      width: getSearchContainerWidth(context),
       height: 40,
-      curve: Curves.easeIn,
       decoration: BoxDecoration(
         color: theme.splashColor,
         borderRadius: BorderRadius.circular(12),
@@ -70,16 +67,12 @@ class SearchInput extends StatelessWidget {
       ),
     );
   }
+}
 
-  double _getContainerWidth(
-    BuildContext context,
-  ) {
-    final double width = MediaQuery.of(context).size.width;
+double getSearchContainerWidth(
+  BuildContext context,
+) {
+  final double width = MediaQuery.of(context).size.width;
 
-    return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
-        ? isAnimation
-            ? width - 32
-            : width - 84
-        : 584;
-  }
+  return ResponsiveWrapper.of(context).isSmallerThan(TABLET) ? width - 84 : 584;
 }

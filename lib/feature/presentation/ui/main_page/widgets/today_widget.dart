@@ -6,7 +6,11 @@ import 'package:responsive_framework/responsive_framework.dart';
 // Для теста, в будущем заменить на реальные данные.
 
 class TodayWidget extends StatelessWidget {
-  const TodayWidget({Key? key}) : super(key: key);
+  final Function(int) onTap;
+  const TodayWidget({
+    Key? key,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,12 @@ class TodayWidget extends StatelessWidget {
               _items.length,
               (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: _TodayItem(item: _items[index]),
+                child: GestureDetector(
+                  onTap: () {
+                    onTap(index);
+                  },
+                  child: _TodayItem(item: _items[index]),
+                ),
               ),
             ),
           )
@@ -74,6 +83,7 @@ class _TodayItem extends StatelessWidget {
                 item.title ?? AppLocalizations.of(context)!.birthDay,
                 style: theme.textTheme.headline6,
               ),
+              const SizedBox(height: 7),
               Text(
                 item.description,
                 softWrap: true,
@@ -81,7 +91,7 @@ class _TodayItem extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   if (item.post != null)
@@ -93,14 +103,17 @@ class _TodayItem extends StatelessWidget {
                     ),
                   if (item.place != null)
                     Padding(
-                      padding: const EdgeInsets.only(left: 7),
+                      padding: const EdgeInsets.only(left: 8),
                       child: Container(
                         decoration: BoxDecoration(
                           color: theme.cardColor.withOpacity(0.06),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 4,
+                          ),
                           child: Text(
                             item.place!,
                             style: theme.textTheme.bodyText1!.copyWith(

@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
   late TextEditingController _searchController;
   late FocusNode _searchFocus;
   late Duration _animationDuration;
-  late bool _isAnimation;
+  late bool _isSearchActive;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _MainPageState extends State<MainPage> {
     _searchController = TextEditingController();
     _searchFocus = FocusNode();
     _animationDuration = const Duration(milliseconds: 300);
-    _isAnimation = false;
+    _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
 
     BlocProvider.of<FetchNewsBloc>(context, listen: false)
@@ -58,11 +58,11 @@ class _MainPageState extends State<MainPage> {
   void _onFocusChange() {
     if (_searchFocus.hasFocus) {
       setState(() {
-        _isAnimation = true;
+        _isSearchActive = true;
       });
     } else {
       setState(() {
-        _isAnimation = false;
+        _isSearchActive = false;
       });
     }
   }
@@ -76,150 +76,136 @@ class _MainPageState extends State<MainPage> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Stack(
         children: [
-          if (_isAnimation && theme.brightness == Brightness.light)
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: theme.hoverColor.withOpacity(0.2),
-            ),
           SafeArea(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? 16
-                      : 13,
-                ),
-                child: ResponsiveConstraints(
-                  constraint:
-                      kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: getHorizontalPadding(context),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SearchInput(
-                              controller: _searchController,
-                              focusNode: _searchFocus,
-                              animationDuration: _animationDuration,
-                              isAnimation: _isAnimation,
-                              onChanged: (text) {
-                                log('[Search text] $text');
-                              },
-                            ),
-                            AnimatedOpacity(
-                              duration: const Duration(milliseconds: 150),
-                              opacity: !ResponsiveWrapper.of(context)
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                    ? 16
+                    : 13,
+              ),
+              child: ResponsiveConstraints(
+                constraint:
+                    kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: getHorizontalPadding(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SearchInput(
+                            controller: _searchController,
+                            focusNode: _searchFocus,
+                            onChanged: (text) {
+                              log('[Search text] $text');
+                            },
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              ResponsiveWrapper.of(context)
                                       .isLargerThan(TABLET)
-                                  ? _isAnimation
-                                      ? 0
-                                      : 1
-                                  : 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                 
-                                  ResponsiveWrapper.of(context)
-                                          .isLargerThan(TABLET)
-                                      ? showProfile(context)
-                                      : context.pushNamed(
-                                          NavigationRouteNames.profile,
-                                        );
-                                },
-                                child: AvatarBox(
-                                  // TODO:(flutfix) протестировать вариант без булевого литерала
-                                  // ignore: avoid_bool_literals_in_conditional_expressions
-                                  isAnimation: !ResponsiveWrapper.of(context)
-                                          .isLargerThan(TABLET)
-                                      ? _isAnimation
-                                      : false,
-                                  size: 40,
-                                  imgPath: '2.jpg',
-                                ),
-                              ),
+                                  ? showProfile(context)
+                                  : context.pushNamed(
+                                      NavigationRouteNames.profile,
+                                    );
+                            },
+                            child: const AvatarBox(
+                              size: 40,
+                              imgPath: '2.jpg',
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                     Expanded(
+                       child: SingleChildScrollView(
+                                   physics: const BouncingScrollPhysics(),
+                     
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16),
+                        Padding(
+                          padding: getHorizontalPadding(context),
+                          child: HorizontalListViewMain(
+                            color: _isSearchActive
+                                ? theme.brightness == Brightness.light
+                                    ? theme.splashColor.withOpacity(0.3)
+                                    : theme.splashColor
+                                : theme.splashColor,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: getHorizontalPadding(context),
-                        child: HorizontalListViewMain(
-                          color: _isAnimation
-                              ? theme.brightness == Brightness.light
-                                  ? theme.splashColor.withOpacity(0.3)
-                                  : theme.splashColor
-                              : theme.splashColor,
+                        const SizedBox(height: 24),
+                        Padding(
+                          padding: getHorizontalPadding(context),
+                          child: TodayWidget(
+                            onTap: (i) {},
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      Padding(
-                        padding: getHorizontalPadding(context),
-                        child: const TodayWidget(),
-                      ),
-                      const SizedBox(height: 24),
-                      Padding(
-                        padding: getHorizontalPadding(context),
-                        child: Text(
-                          AppLocalizations.of(context)!.news,
-                          style: theme.textTheme.headline3,
+                        const SizedBox(height: 24),
+                        Padding(
+                          padding: getHorizontalPadding(context),
+                          child: Text(
+                            AppLocalizations.of(context)!.news,
+                            style: theme.textTheme.headline3,
+                          ),
                         ),
-                      ),
-                      BlocBuilder<FetchNewsBloc, FetchNewsState>(
-                        builder: (context, state) {
-                          if (state is FetchNewsLoadingState) {
-                            const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-
-                          if (state is FetchNewsLoadedState) {
-                            return !kIsWeb
-                                ? Padding(
-                                    padding: EdgeInsets.only(
-                                      left: getSingleHorizontalPadding(context),
-                                    ),
-                                    child: NewsHorizontalScroll(
-                                      onTap: (i) => _onArticleSelected(
-                                        state.news.response.articles[i].id,
+                        BlocBuilder<FetchNewsBloc, FetchNewsState>(
+                          builder: (context, state) {
+                            if (state is FetchNewsLoadingState) {
+                              const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                                         
+                            if (state is FetchNewsLoadedState) {
+                              return !kIsWeb
+                                  ? Padding(
+                                      padding: EdgeInsets.only(
+                                        left: getSingleHorizontalPadding(context),
                                       ),
-                                      items: state.news.response.articles,
-                                    ),
-                                  )
-                                : Padding(
-                                    padding: getHorizontalPadding(context),
-                                    child: Wrap(
-                                      spacing: 16,
-                                      runSpacing: 20,
-                                      children: List.generate(
-                                        state.news.response.articles.length,
-                                        (i) => NewsCardItem(
-                                          onTap: () => _onArticleSelected(
-                                            state.news.response.articles[i].id,
+                                      child: NewsHorizontalScroll(
+                                        onTap: (i) => _onArticleSelected(
+                                          state.news.response.articles[i].id,
+                                        ),
+                                        items: state.news.response.articles,
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: getHorizontalPadding(context),
+                                      child: Wrap(
+                                        spacing: 16,
+                                        runSpacing: 20,
+                                        children: List.generate(
+                                          state.news.response.articles.length,
+                                          (i) => NewsCardItem(
+                                            onTap: () => _onArticleSelected(
+                                              state.news.response.articles[i].id,
+                                            ),
+                                            width: 312,
+                                            height: 152,
+                                            item: state.news.response.articles[i],
                                           ),
-                                          width: 312,
-                                          height: 152,
-                                          item: state.news.response.articles[i],
                                         ),
                                       ),
-                                    ),
-                                  );
-                          }
-
-                          return const SizedBox();
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      Padding(
-                        padding: getHorizontalPadding(context),
-                        child: const FaqWidget(),
-                      ),
-                    ],
-                  ),
+                                    );
+                            }
+                                         
+                            return const SizedBox();
+                          },
+                        ),
+                        const SizedBox(height: 24),
+                        Padding(
+                          padding: getHorizontalPadding(context),
+                          child: const FaqWidget(),
+                        ),
+                          ],
+                        ),
+                                         ),
+                     ),
+                  ],
                 ),
               ),
             ),
@@ -229,7 +215,7 @@ class _MainPageState extends State<MainPage> {
                 ? const BoxConstraints(maxWidth: 640)
                 : null,
             child: SearchBox(
-              isAnimation: _isAnimation,
+              isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
             ),
           ),
