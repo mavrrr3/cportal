@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserDataRow extends StatelessWidget {
   final String normalText;
@@ -24,7 +23,7 @@ class UserDataRow extends StatelessWidget {
             color: theme.hoverColor.withOpacity(0.68),
           ),
         ),
-        SizedBox(height: 4.h),
+        const SizedBox(height: 4),
         Text(
           boldText,
           style: theme.textTheme.headline5!.copyWith(

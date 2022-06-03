@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhoneBox extends StatelessWidget {
@@ -13,16 +12,16 @@ class PhoneBox extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      height: 48.h,
+      height: 48,
       decoration: BoxDecoration(
         color: theme.hoverColor.withOpacity(0.04),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(4.sp),
-          topRight: Radius.circular(4.sp),
+        borderRadius:const BorderRadius.only(
+          topLeft: Radius.circular(4),
+          topRight: Radius.circular(4),
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding:const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,

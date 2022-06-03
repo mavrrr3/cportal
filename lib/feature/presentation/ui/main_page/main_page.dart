@@ -17,7 +17,6 @@ import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -84,8 +83,7 @@ class _MainPageState extends State<MainPage> {
                     : 13,
               ),
               child: ResponsiveConstraints(
-                constraint:
-                    kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
+                constraint: kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -104,8 +102,7 @@ class _MainPageState extends State<MainPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              ResponsiveWrapper.of(context)
-                                      .isLargerThan(TABLET)
+                              ResponsiveWrapper.of(context).isLargerThan(TABLET)
                                   ? showProfile(context)
                                   : context.pushNamed(
                                       NavigationRouteNames.profile,
@@ -119,92 +116,98 @@ class _MainPageState extends State<MainPage> {
                         ],
                       ),
                     ),
-                     Expanded(
-                       child: SingleChildScrollView(
-                                   physics: const BouncingScrollPhysics(),
-                     
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 16),
-                        Padding(
-                          padding: getHorizontalPadding(context),
-                          child: HorizontalListViewMain(
-                            color: _isSearchActive
-                                ? theme.brightness == Brightness.light
-                                    ? theme.splashColor.withOpacity(0.3)
-                                    : theme.splashColor
-                                : theme.splashColor,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: getHorizontalPadding(context),
-                          child: TodayWidget(
-                            onTap: (i) {},
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: getHorizontalPadding(context),
-                          child: Text(
-                            AppLocalizations.of(context)!.news,
-                            style: theme.textTheme.headline3,
-                          ),
-                        ),
-                        BlocBuilder<FetchNewsBloc, FetchNewsState>(
-                          builder: (context, state) {
-                            if (state is FetchNewsLoadingState) {
-                              const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                                         
-                            if (state is FetchNewsLoadedState) {
-                              return !kIsWeb
-                                  ? Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getSingleHorizontalPadding(context),
-                                      ),
-                                      child: NewsHorizontalScroll(
-                                        onTap: (i) => _onArticleSelected(
-                                          state.news.response.articles[i].id,
-                                        ),
-                                        items: state.news.response.articles,
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: getHorizontalPadding(context),
-                                      child: Wrap(
-                                        spacing: 16,
-                                        runSpacing: 20,
-                                        children: List.generate(
-                                          state.news.response.articles.length,
-                                          (i) => NewsCardItem(
-                                            onTap: () => _onArticleSelected(
-                                              state.news.response.articles[i].id,
+                            Padding(
+                              padding: getHorizontalPadding(context),
+                              child: HorizontalListViewMain(
+                                color: _isSearchActive
+                                    ? theme.brightness == Brightness.light
+                                        ? theme.splashColor.withOpacity(0.3)
+                                        : theme.splashColor
+                                    : theme.splashColor,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            Padding(
+                              padding: getHorizontalPadding(context),
+                              child: TodayWidget(
+                                onTap: (i) {},
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            Padding(
+                              padding: getHorizontalPadding(context),
+                              child: Text(
+                                AppLocalizations.of(context)!.news,
+                                style: theme.textTheme.headline3,
+                              ),
+                            ),
+                            BlocBuilder<FetchNewsBloc, FetchNewsState>(
+                              builder: (context, state) {
+                                if (state is FetchNewsLoadingState) {
+                                  const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+
+                                if (state is FetchNewsLoadedState) {
+                                  return !kIsWeb
+                                      ? Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getSingleHorizontalPadding(
+                                              context,
                                             ),
-                                            width: 312,
-                                            height: 152,
-                                            item: state.news.response.articles[i],
                                           ),
-                                        ),
-                                      ),
-                                    );
-                            }
-                                         
-                            return const SizedBox();
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: getHorizontalPadding(context),
-                          child: const FaqWidget(),
-                        ),
+                                          child: NewsHorizontalScroll(
+                                            onTap: (i) => _onArticleSelected(
+                                              state
+                                                  .news.response.articles[i].id,
+                                            ),
+                                            items: state.news.response.articles,
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding:
+                                              getHorizontalPadding(context),
+                                          child: Wrap(
+                                            spacing: 16,
+                                            runSpacing: 20,
+                                            children: List.generate(
+                                              state.news.response.articles
+                                                  .length,
+                                              (i) => NewsCardItem(
+                                                onTap: () => _onArticleSelected(
+                                                  state.news.response
+                                                      .articles[i].id,
+                                                ),
+                                                width: 312,
+                                                height: 152,
+                                                item: state
+                                                    .news.response.articles[i],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                }
+
+                                return const SizedBox();
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            Padding(
+                              padding: getHorizontalPadding(context),
+                              child: const FaqWidget(),
+                            ),
                           ],
                         ),
-                                         ),
-                     ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -247,11 +250,9 @@ Future<void> showProfile(BuildContext context) {
       return StatefulBuilder(
         builder: (context, setState) {
           return Padding(
-            padding: EdgeInsets.only(
-              top: 10.h,
-              bottom: 10.h,
-              left: 100.w,
-              right: 100.w,
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 100,
             ),
             child: Container(
               decoration: BoxDecoration(

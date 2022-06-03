@@ -3,7 +3,6 @@ import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_step_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class Onboarding extends StatefulWidget {
@@ -109,7 +108,7 @@ class _OnboardingState extends State<Onboarding>
 
               // Страница онбординга.
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
                   width: width,
                   height: height * 0.85,

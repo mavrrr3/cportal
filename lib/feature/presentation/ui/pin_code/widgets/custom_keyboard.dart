@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 late int _simbolQuantity;
@@ -48,20 +47,20 @@ class CustomKeyboard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              width: 90.w,
-              child: const MaterialButton(
+         const   SizedBox(
+              width: 90,
+              child:  MaterialButton(
                 onPressed: null,
                 child: SizedBox(),
               ),
             ),
             const KeyboardNumber(number: 0),
             SizedBox(
-              width: 90.w,
+              width: 90,
               child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 60.w),
+                constraints:const BoxConstraints(minWidth: 60),
                 child: MaterialButton(
-                  height: 60.h,
+                  height: 60,
                   onPressed: () {
                     if (controller.text.isNotEmpty) {
                       controller.text = controller.text
@@ -70,8 +69,8 @@ class CustomKeyboard extends StatelessWidget {
                   },
                   child: SvgPicture.asset(
                     'assets/icons/backspace.svg',
-                    width: 48.w,
-                    height: 60.h,
+                    width: 48,
+                    height: 60,
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
                         : null,
@@ -97,15 +96,15 @@ class KeyboardNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60.w,
-      height: 60.h,
+      width: 60,
+      height: 60,
       alignment: Alignment.center,
       child: MaterialButton(
         padding: const EdgeInsets.all(8),
         onPressed: () {
           concatTextFieled(number, _codeController);
         },
-        height: 60.h,
+        height: 60,
         child: Text(
           '$number',
           textAlign: TextAlign.center,

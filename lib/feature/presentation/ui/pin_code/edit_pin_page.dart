@@ -2,7 +2,6 @@ import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -23,8 +22,8 @@ class EditPinPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20.0.w,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
           ),
           child: BlocConsumer<PinCodeBloc, PinCodeState>(
             listener: (context, state) {
@@ -45,7 +44,7 @@ class EditPinPage extends StatelessWidget {
               controller: _pinController,
               simbolQuantity: 4,
             ),
-            SizedBox(height: 52.h),
+            const SizedBox(height: 52),
           ],
         ),
       ],
@@ -79,14 +78,14 @@ class BodyWidget extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: 48.h),
+        const SizedBox(height: 48),
         HeaderText.factory(
           _changeBody(input),
           context,
         ),
-        SizedBox(height: 16.h),
+        const SizedBox(height: 16),
         const PinCodeInput(),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
       ],
     );
   }
@@ -114,8 +113,8 @@ class _PinCodeInputState extends State<PinCodeInput> {
     final theme = Theme.of(context);
     final pinCodeBloc = BlocProvider.of<PinCodeBloc>(context, listen: false);
     final defaultPinTheme = PinTheme(
-      width: 16.w,
-      height: 14.h,
+      width: 16,
+      height: 14,
       decoration: BoxDecoration(
         color: theme.hoverColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(15),
@@ -129,14 +128,14 @@ class _PinCodeInputState extends State<PinCodeInput> {
           obscuringWidget: SvgIcon(
             state.isWrongPin ? theme.errorColor : theme.primaryColor,
             path: 'obscure_symbol.svg',
-            width: 16.w,
+            width: 16,
           ),
           useNativeKeyboard: false,
           length: 4,
           controller: _pinController,
           focusNode: _pinFocusNode,
           defaultPinTheme: defaultPinTheme,
-          separator: SizedBox(width: 32.w),
+          separator: const SizedBox(width: 32),
           focusedPinTheme: defaultPinTheme,
           showCursor: false,
           onChanged: (value) {
@@ -258,7 +257,7 @@ class HeaderTextWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 31.h),
+        const SizedBox(height: 31),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -272,9 +271,7 @@ class HeaderTextWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 8.h,
-        ),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -289,7 +286,7 @@ class HeaderTextWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 66.h),
+     const   SizedBox(height: 66),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
