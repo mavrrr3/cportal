@@ -293,9 +293,7 @@ class _ContactsPageState extends State<ContactsPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: theme.splashColor,
-      barrierColor: theme.brightness == Brightness.light
-          ? AppColors.textMain.withOpacity(0.2)
-          : AppColors.darkOnboardingBG.withOpacity(0.8),
+      barrierColor: getBarrierColor(theme),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),

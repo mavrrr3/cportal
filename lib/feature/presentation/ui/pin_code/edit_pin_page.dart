@@ -249,7 +249,13 @@ class HeaderTextWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+            SvgIcon(
+              theme.brightness == Brightness.light
+                  ? theme.cardColor.withOpacity(0.4)
+                  : theme.cardColor,
+              path: 'logo_grey.svg',
+              width: 24,
+            ),
           ],
         ),
         SizedBox(height: 31.h),
