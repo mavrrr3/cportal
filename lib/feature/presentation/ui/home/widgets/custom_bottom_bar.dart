@@ -27,7 +27,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     final ThemeData theme = Theme.of(context);
 
     return Container(
-      height: 56,
       color: theme.splashColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -95,6 +94,7 @@ class _MenuItem extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 8),

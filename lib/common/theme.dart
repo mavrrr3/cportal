@@ -151,9 +151,9 @@ TextTheme _getTextTheme(Color textColor) => TextTheme(
         color: textColor,
       ),
 
-      // [9 px] BottomBar.
+      // [12 px] BottomBar.
       bodyText2: GoogleFonts.inter(
-        fontSize: 9,
+        fontSize: 12,
         fontWeight: FontWeight.w500,
         color: textColor,
       ),
