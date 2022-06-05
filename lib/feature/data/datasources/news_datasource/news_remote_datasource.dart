@@ -32,9 +32,6 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchNews(int page) async {
-    // final String baseUrl = category == null
-    //     ? '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page'
-    //     : '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page&category=$category';
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page';
 
