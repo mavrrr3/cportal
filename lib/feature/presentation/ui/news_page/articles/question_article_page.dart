@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
 
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
@@ -15,11 +15,11 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 
-void _contentInit(BuildContext context) {
-  return BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-    const FetchNewsEvent(),
-  );
-}
+// void _contentInit(BuildContext context) {
+//   return BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+//     const FetchNewsEvent(),
+//   );
+// }
 
 class QuestionArticlePage extends StatelessWidget {
   final String id;
@@ -35,11 +35,11 @@ class QuestionArticlePage extends StatelessWidget {
           _onBack(context);
         }
       },
-      child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
+      child: BlocBuilder<FetchNewsCubit, NewsState>(
         builder: (context, state) {
-          if (state is FetchNewsLoadedState) {
+          if (state is NewsLoaded) {
             ArticleEntity articlefromBloc() {
-              return state.news.response.articles
+              return state.articles
                   .where((element) => element.id == id)
                   .toList()
                   .first;
@@ -79,7 +79,7 @@ class QuestionArticlePage extends StatelessWidget {
                                     child: GestureDetector(
                                       behavior: HitTestBehavior.translucent,
                                       onTap: () {
-                                        _contentInit(context);
+                                        // _contentInit(context);.
 
                                         GoRouter.of(context).pop();
                                       },
@@ -202,11 +202,11 @@ class QuestionArticlePage extends StatelessWidget {
 
   Widget _nextQuestion(
     ArticleEntity currentItem,
-    FetchNewsLoadedState state,
+    NewsLoaded state,
     BuildContext context,
   ) {
     final List<ArticleEntity> currentTabsItems = [];
-    for (final item in state.news.response.articles) {
+    for (final item in state.articles) {
       if (item.category == currentItem.category) {
         currentTabsItems.add(item);
       }

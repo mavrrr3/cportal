@@ -3,15 +3,22 @@ import 'dart:developer';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FetchNewsCubit extends Cubit<NewsState> {
   final FetchNewsUseCase fetchNews;
-  int page = 1;
+  final FetchNewsByCategoryUseCase fetchNewsByCategory;
 
-  FetchNewsCubit({required this.fetchNews}) : super(NewsEmpty());
+  int page = 1;
+  List<String> tabs = ['Все'];
+
+  FetchNewsCubit({
+    required this.fetchNews,
+    required this.fetchNewsByCategory,
+  }) : super(NewsEmpty());
 
   Future<void> loadNews() async {
     if (state is NewsLoading) return;
@@ -47,7 +54,51 @@ class FetchNewsCubit extends Cubit<NewsState> {
       log('Загрузилось ${articles.length} статей');
 
       /// Создание листа со всеми вкладками.
-      final List<String> tabs = ['Все', ...news.response.categories!];
+      tabs.addAll(news.response.categories!);
+
+      emit(NewsLoaded(articles: articles, tabs: tabs));
+    }
+
+    failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+  }
+
+  Future<void> loadNewsByCategory(String category) async {
+    if (state is NewsLoading) return;
+
+    var oldArticles = <ArticleEntity>[];
+
+    if (state is NewsLoaded) {
+      oldArticles = (state as NewsLoaded).articles;
+    }
+
+    emit(NewsLoading(oldArticles, isFirstFetch: page == 1));
+
+    final failureOrNews = await fetchNewsByCategory(
+      FetchNewsByCategoryParams(
+        category: category,
+        page: page,
+      ),
+    );
+
+    String _failureToMessage(Failure failure) {
+      switch (failure.runtimeType) {
+        case ServerFailure:
+          return 'Ошибка на сервере';
+        case CacheFailure:
+          return 'Ошибка обработки кэша';
+        default:
+          return 'Unexpected Error';
+      }
+    }
+
+    void _loadedNewsToArticles(NewsEntity news) {
+      page++;
+      final articles = (state as NewsLoading).oldArticles;
+      // ignore: cascade_invocations
+      articles.addAll(news.response.articles);
+      log('Загрузилось ${articles.length} статей из категории $category');
+
+      /// Создание листа со всеми вкладками.
 
       emit(NewsLoaded(articles: articles, tabs: tabs));
     }

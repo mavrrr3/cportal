@@ -13,7 +13,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometr
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -124,9 +123,6 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<BiometricBloc>(
       create: (ctx) => sl<BiometricBloc>(),
-    ),
-    BlocProvider<FetchNewsBloc>(
-      create: (ctx) => sl<FetchNewsBloc>(),
     ),
     BlocProvider<FetchNewsCubit>(
       create: (ctx) => sl<FetchNewsCubit>()..loadNews(),

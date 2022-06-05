@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
 
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
@@ -42,9 +43,12 @@ class _MainPageState extends State<MainPage> {
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
 
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchNewsEvent(),
-    );
+    // BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+    //   const FetchNewsEvent(),
+    // );
+    context.read<FetchNewsCubit>().fetchNews(const FetchNewsParams(
+          page: 1,
+        ));
   }
 
   @override
@@ -148,15 +152,15 @@ class _MainPageState extends State<MainPage> {
                                 style: theme.textTheme.headline3,
                               ),
                             ),
-                            BlocBuilder<FetchNewsBloc, FetchNewsState>(
+                            BlocBuilder<FetchNewsCubit, NewsState>(
                               builder: (context, state) {
-                                if (state is FetchNewsLoadingState) {
+                                if (state is NewsLoading) {
                                   const Center(
                                     child: CircularProgressIndicator(),
                                   );
                                 }
 
-                                if (state is FetchNewsLoadedState) {
+                                if (state is NewsLoaded) {
                                   return !kIsWeb
                                       ? Padding(
                                           padding: EdgeInsets.only(
@@ -166,10 +170,9 @@ class _MainPageState extends State<MainPage> {
                                           ),
                                           child: NewsHorizontalScroll(
                                             onTap: (i) => _onArticleSelected(
-                                              state
-                                                  .news.response.articles[i].id,
+                                              state.articles[i].id,
                                             ),
-                                            items: state.news.response.articles,
+                                            items: state.articles,
                                           ),
                                         )
                                       : Padding(
@@ -179,17 +182,14 @@ class _MainPageState extends State<MainPage> {
                                             spacing: 16,
                                             runSpacing: 20,
                                             children: List.generate(
-                                              state.news.response.articles
-                                                  .length,
+                                              state.articles.length,
                                               (i) => NewsCardItem(
                                                 onTap: () => _onArticleSelected(
-                                                  state.news.response
-                                                      .articles[i].id,
+                                                  state.articles[i].id,
                                                 ),
                                                 width: 312,
                                                 height: 152,
-                                                item: state
-                                                    .news.response.articles[i],
+                                                item: state.articles[i],
                                               ),
                                             ),
                                           ),
