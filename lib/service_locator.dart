@@ -35,6 +35,7 @@ import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.da
 import 'package:cportal_flutter/feature/domain/usecases/biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
@@ -46,7 +47,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometr
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
@@ -64,8 +64,10 @@ Future<void> init() async {
   sl.registerFactory(() => AuthBloc(sl(), sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
-  sl.registerFactory(() => FetchNewsBloc(fetchNews: sl()));
-  sl.registerFactory(() => FetchNewsCubit(fetchNews: sl()));
+  sl.registerFactory(() => FetchNewsCubit(
+        fetchNews: sl(),
+        fetchNewsByCategory: sl(),
+      ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
   sl.registerFactory(() => ContactsBloc(fetchContacts: sl()));
@@ -78,6 +80,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PinCodeEnterUseCase(sl()));
   sl.registerLazySingleton(() => BiometricUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsUseCase(sl()));
+  sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
 
