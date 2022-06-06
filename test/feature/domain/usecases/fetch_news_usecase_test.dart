@@ -67,7 +67,7 @@ void main() {
           .thenAnswer((_) async => Right<Failure, NewsEntity>(tNewsEntity));
 
       // Act..
-      final result = await useCase(const FetchNewsParams(page: 1));
+      final result = await useCase(FetchNewsParams(page: tPage));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
@@ -94,7 +94,7 @@ void main() {
           .thenAnswer((_) async => Left<Failure, NewsEntity>(tFailure));
 
       // Act..
-      final result = await useCase(const FetchNewsParams(page: 1));
+      final result = await useCase(FetchNewsParams(page: tPage));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
