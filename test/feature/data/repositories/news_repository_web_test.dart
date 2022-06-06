@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
@@ -11,21 +12,24 @@ import 'package:mocktail/mocktail.dart';
 
 class MockRemoteDataSource extends Mock implements INewsRemoteDataSource {}
 
+class MockLocalDataSource extends Mock implements INewsLocalDataSource {}
+
 void main() {
   late NewsRepositoryWeb repository;
   late MockRemoteDataSource mockRemoteDataSource;
+  late MockLocalDataSource mockLocalDataSource;
 
   setUp(() {
     mockRemoteDataSource = MockRemoteDataSource();
+    mockLocalDataSource = MockLocalDataSource();
 
     repository = NewsRepositoryWeb(
       remoteDataSource: mockRemoteDataSource,
+      localDataSource: mockLocalDataSource,
     );
   });
 
   group('fetchNews()', () {
-    const String tNewsTypeCode = 'NEWS';
-
     final ArticleModel tNewsArticle = ArticleModel(
       id: 'id',
       date: DateTime.parse('2022-03-21T14:59:58.884Z'),
@@ -35,14 +39,14 @@ void main() {
         ParagraphModel(
           template: '1',
           content: 'content',
-          imagesTitle: '',
-          images: '',
+          imageTitle: '',
+          image: '',
         ),
         ParagraphModel(
           template: '2',
           content: 'content',
-          imagesTitle: '',
-          images: 'imagesTitle',
+          imageTitle: '',
+          image: 'imagesTitle',
         ),
       ],
       image:
@@ -52,6 +56,7 @@ void main() {
       response: ResponseModel(
         count: 1,
         update: 1,
+        categories: const ['Новости'],
         articles: [tNewsArticle],
       ),
     );
@@ -63,9 +68,9 @@ void main() {
         when(() => mockRemoteDataSource.fetchNews(any()))
             .thenAnswer((_) async => tNewsModel);
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(1);
         // Assert.
-        verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
+        verify(() => mockRemoteDataSource.fetchNews(1));
         expect(result, equals(Right<dynamic, NewsEntity>(tNewsModel)));
       },
     );
@@ -77,9 +82,9 @@ void main() {
         when(() => mockRemoteDataSource.fetchNews(any()))
             .thenThrow(ServerException());
         // Act..
-        final result = await repository.fetchNews(tNewsTypeCode);
+        final result = await repository.fetchNews(1);
         // Assert.
-        verify(() => mockRemoteDataSource.fetchNews(tNewsTypeCode));
+        verify(() => mockRemoteDataSource.fetchNews(1));
 
         expect(
           result,

@@ -1,81 +1,183 @@
-import 'dart:async';
 import 'dart:developer';
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
+  final FetchNewsByCategoryUseCase fetchNewsByCategory;
+  int pageAll = 1;
+  int pageByCategory = 1;
+  List<String> tabs = ['Все'];
 
-  FetchNewsBloc({required this.fetchNews}) : super(FetchNewsEmptyState()) {
-    _setupEvents();
-  }
+  FetchNewsBloc({
+    required this.fetchNews,
+    required this.fetchNewsByCategory,
+  }) : super(NewsEmptyState()) {
+    on<FetchAllNewsEvent>((event, emit) async {
+      var oldArticles = <ArticleEntity>[];
 
-  void _setupEvents() {
-    on<FetchNewsEventImpl>(
-      _onEvent,
-      transformer: bloc_concurrency.sequential(),
-    );
-  }
-
-  FutureOr _onEvent(
-    FetchNewsEventImpl event,
-    Emitter emit,
-  ) async {
-    emit(FetchNewsLoadingState());
-    log('Отработал эвент: $event');
-
-    String _mapFailureToMessage(Failure failure) {
-      switch (failure.runtimeType) {
-        case ServerFailure:
-          return 'Ошибка на сервере';
-        case CacheFailure:
-          return 'Ошибка обработки кэша';
-        default:
-          return 'Unexpected Error';
+      if (state is NewsLoaded) {
+        oldArticles = (state as NewsLoaded).articles;
       }
-    }
 
-    final failureOrNews =
-        await fetchNews(FetchNewsParams(code: newsCode(event.newsCodeEnum)));
+      emit(NewsLoading(oldArticles, tabs, isFirstFetch: pageAll == 1));
 
-    failureOrNews.fold(
-      (failure) {
-        emit(FetchNewsLoadingError(
-          message: _mapFailureToMessage(failure),
-        ));
-      },
-      (news) {
-        /// Создание листа со всеми вкладками.
-        final List<String> tabs = [];
-        if (event.newsCodeEnum == NewsCodeEnum.news) {
-          tabs.add('Все');
+      final failureOrNews = await fetchNews(FetchNewsParams(
+        page: pageAll,
+      ));
+
+      String _failureToMessage(Failure failure) {
+        switch (failure.runtimeType) {
+          case ServerFailure:
+            return 'Ошибка на сервере';
+          case CacheFailure:
+            return 'Ошибка обработки кэша';
+          default:
+            return 'Unexpected Error';
         }
-        for (final item in news.response.articles) {
-          if (!tabs.contains(item.category)) {
-            tabs.add(item.category);
+      }
+
+      if (!kIsWeb) {
+        final tabsFromCache = await fetchNews.fetchCategories();
+
+        if (tabsFromCache.isNotEmpty) {
+          for (final tab in tabsFromCache) {
+            if (!tabs.contains(tab)) {
+              tabs.add(tab);
+            }
+          }
+          log('+++++++++++tabsFromCache++ $tabsFromCache ++tabsFromCache+++++++++++++');
+        }
+      }
+      void _loadedNewsToArticles(NewsEntity news) {
+        pageAll++;
+        final articles = (state as NewsLoading).oldArticles;
+        // ignore: cascade_invocations
+        articles.addAll(news.response.articles);
+        log('Загрузилось ${articles.length} статей');
+
+        // Создание листа со всеми вкладками.
+        for (final tab in news.response.categories!) {
+          if (!tabs.contains(tab)) {
+            tabs.add(tab);
           }
         }
-        log(tabs.toString());
-        emit(FetchNewsLoadedState(news: news, tabs: tabs));
-      },
-    );
+
+        emit(NewsLoaded(articles: articles, tabs: tabs));
+      }
+
+      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+    });
+
+    on<FetchNewsEventBy>((event, emit) async {
+      if (state is NewsLoading) return;
+
+      var oldArticles = <ArticleEntity>[];
+
+      if (state is NewsLoaded) {
+        oldArticles = (state as NewsLoaded).articles;
+      }
+
+      emit(NewsLoading(oldArticles, tabs, isFirstFetch: pageByCategory == 1));
+
+      final failureOrNews = await fetchNewsByCategory(
+        FetchNewsByCategoryParams(
+          category: event.category,
+          page: pageByCategory,
+        ),
+      );
+
+      String _failureToMessage(Failure failure) {
+        switch (failure.runtimeType) {
+          case ServerFailure:
+            return 'Ошибка на сервере';
+          case CacheFailure:
+            return 'Ошибка обработки кэша';
+          default:
+            return 'Unexpected Error';
+        }
+      }
+
+      void _loadedNewsToArticles(NewsEntity news) {
+        pageByCategory++;
+        final articles = (state as NewsLoading).oldArticles;
+        // ignore: cascade_invocations
+        articles.addAll(news.response.articles);
+
+        log('Загрузилось ${articles.length} статей из категории ${event.category}');
+
+        /// Создание листа со всеми вкладками.
+
+        emit(NewsLoaded(articles: articles, tabs: tabs));
+      }
+
+      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+    });
   }
 }
 
-// Инам для выдачи NewsEntity Новости, Вопросы, Справочник.
-enum NewsCodeEnum { news, quastion, catalog }
+abstract class FetchNewsEvent extends Equatable {
+  const FetchNewsEvent();
+}
 
-String newsCode(NewsCodeEnum codeEnum) {
-  switch (codeEnum) {
-    case NewsCodeEnum.news:
-      return 'NEWS';
-    case NewsCodeEnum.quastion:
-      return 'QUASTION';
-    default:
-      return 'CATALOG';
-  }
+class FetchAllNewsEvent extends FetchNewsEvent {
+  const FetchAllNewsEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FetchNewsEventBy extends FetchNewsEvent {
+  final String category;
+  const FetchNewsEventBy(this.category);
+
+  @override
+  List<Object?> get props => [category];
+}
+
+abstract class FetchNewsState extends Equatable {
+  const FetchNewsState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class NewsEmptyState extends FetchNewsState {}
+
+class NewsLoading extends FetchNewsState {
+  final List<ArticleEntity> oldArticles;
+  final bool isFirstFetch;
+  final List<String> tabs;
+
+  const NewsLoading(this.oldArticles, this.tabs, {this.isFirstFetch = false});
+
+  @override
+  List<Object?> get props => [oldArticles, tabs, isFirstFetch];
+}
+
+class NewsLoaded extends FetchNewsState {
+  final List<ArticleEntity> articles;
+  final List<String> tabs;
+  const NewsLoaded({
+    required this.articles,
+    required this.tabs,
+  });
+
+  @override
+  List<Object?> get props => [articles, tabs];
+}
+
+class NewsLoadingError extends FetchNewsState {
+  final String message;
+
+  const NewsLoadingError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

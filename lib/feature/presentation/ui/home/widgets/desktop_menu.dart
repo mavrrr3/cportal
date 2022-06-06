@@ -1,7 +1,5 @@
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -165,8 +163,8 @@ void changePage(BuildContext context, int index) {
       GoRouter.of(context).pushNamed(NavigationRouteNames.news);
       break;
     case 2:
-      BlocProvider.of<FetchNewsBloc>(context, listen: false)
-          .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.quastion));
+      // BlocProvider.of<FetchNewsBloc>(context, listen: false)
+      //     .add(const FetchNewsEvent());
       GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
       break;
     case 4:

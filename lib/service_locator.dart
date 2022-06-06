@@ -35,6 +35,7 @@ import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.da
 import 'package:cportal_flutter/feature/domain/usecases/biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
@@ -49,6 +50,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -63,7 +65,10 @@ Future<void> init() async {
   sl.registerFactory(() => AuthBloc(sl(), sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
-  sl.registerFactory(() => FetchNewsBloc(fetchNews: sl()));
+  sl.registerFactory(() => FetchNewsBloc(
+        fetchNews: sl(),
+        fetchNewsByCategory: sl(),
+      ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
   sl.registerFactory(() => ContactsBloc(fetchContacts: sl()));
@@ -76,6 +81,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PinCodeEnterUseCase(sl()));
   sl.registerLazySingleton(() => BiometricUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsUseCase(sl()));
+  sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
 
@@ -128,6 +134,7 @@ Future<void> init() async {
     sl.registerLazySingleton<INewsRepository>(
       () => NewsRepositoryWeb(
         remoteDataSource: sl(),
+        localDataSource: sl(),
       ),
     );
   } else {
@@ -189,7 +196,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<INewsRemoteDataSource>(
-    () => NewsRemoteDataSource(sl()),
+    () => NewsRemoteDataSource(sl(), sl()),
   );
 
   sl.registerLazySingleton<INewsLocalDataSource>(
@@ -216,6 +223,7 @@ Future<void> init() async {
 
   // EXTERNAL.
   sl.registerLazySingleton(InternetConnectionChecker.new);
+  sl.registerLazySingleton(Dio.new);
   sl.registerLazySingleton(LocalAuthentication.new);
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 }
