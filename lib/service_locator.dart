@@ -50,6 +50,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -195,7 +196,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<INewsRemoteDataSource>(
-    () => NewsRemoteDataSource(sl()),
+    () => NewsRemoteDataSource(sl(), sl()),
   );
 
   sl.registerLazySingleton<INewsLocalDataSource>(
@@ -222,6 +223,7 @@ Future<void> init() async {
 
   // EXTERNAL.
   sl.registerLazySingleton(InternetConnectionChecker.new);
+  sl.registerLazySingleton(Dio.new);
   sl.registerLazySingleton(LocalAuthentication.new);
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 }

@@ -4,6 +4,7 @@ import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 
@@ -19,19 +20,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
     required this.fetchNewsByCategory,
   }) : super(NewsEmptyState()) {
     on<FetchAllNewsEvent>((event, emit) async {
-      final tabsFromCache = await fetchNews.fetchCategories();
-
-      if (tabsFromCache.isNotEmpty) {
-        for (final tab in tabsFromCache) {
-          if (!tabs.contains(tab)) {
-            tabs.add(tab);
-          }
-        }
-        log('+++++++++++tabsFromCache++ $tabsFromCache ++tabsFromCache+++++++++++++');
-      }
-
-      if (state is NewsLoading) return;
-
       var oldArticles = <ArticleEntity>[];
 
       if (state is NewsLoaded) {
@@ -55,6 +43,18 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         }
       }
 
+      if (!kIsWeb) {
+        final tabsFromCache = await fetchNews.fetchCategories();
+
+        if (tabsFromCache.isNotEmpty) {
+          for (final tab in tabsFromCache) {
+            if (!tabs.contains(tab)) {
+              tabs.add(tab);
+            }
+          }
+          log('+++++++++++tabsFromCache++ $tabsFromCache ++tabsFromCache+++++++++++++');
+        }
+      }
       void _loadedNewsToArticles(NewsEntity news) {
         pageAll++;
         final articles = (state as NewsLoading).oldArticles;

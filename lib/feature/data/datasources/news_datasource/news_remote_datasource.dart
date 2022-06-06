@@ -1,17 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:developer';
 import 'package:cportal_flutter/app_config.dart';
-import 'package:http/io_client.dart';
-
+import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
-
-const bool trustSelfSigned = true;
-final HttpClient _httpClient = HttpClient()
-  ..badCertificateCallback = ((cert, host, port) => trustSelfSigned);
-final IOClient _ioClient = IOClient(_httpClient);
 
 abstract class INewsRemoteDataSource {
   /// Обращается к эндпойнту .....
@@ -27,8 +21,9 @@ abstract class INewsRemoteDataSource {
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
   final INewsLocalDataSource localDatasource;
+  final Dio dio;
 
-  NewsRemoteDataSource(this.localDatasource);
+  NewsRemoteDataSource(this.localDatasource, this.dio);
 
   @override
   Future<NewsModel> fetchNews(int page) async {
@@ -36,11 +31,11 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page';
 
     try {
-      final response = await _ioClient.get(Uri.parse(baseUrl), headers: {
-        'Content-Type': 'application/json',
-      });
+      final response = await dio.get<String>(baseUrl);
+
+      log('NewsRemoteDataSource ${response.data}');
       final news = NewsModel.fromJson(
-        json.decode(response.body) as Map<String, dynamic>,
+        json.decode(response.data!) as Map<String, dynamic>,
       );
 
       await localDatasource.newsToCache(news);
@@ -57,11 +52,10 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page&category=$category';
 
     try {
-      final response = await _ioClient.get(Uri.parse(baseUrl), headers: {
-        'Content-Type': 'application/json',
-      });
+      final response = await dio.get<String>(baseUrl);
+
       final newsByCategory = NewsModel.fromJson(
-        json.decode(response.body) as Map<String, dynamic>,
+        json.decode(response.data!) as Map<String, dynamic>,
       );
 
       await localDatasource.newsByCategoryToCache(newsByCategory, category);
