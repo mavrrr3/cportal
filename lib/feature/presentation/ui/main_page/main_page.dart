@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
-
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,12 +41,9 @@ class _MainPageState extends State<MainPage> {
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
 
-    // BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-    //   const FetchNewsEvent(),
-    // );
-    context.read<FetchNewsCubit>().fetchNews(const FetchNewsParams(
-          page: 1,
-        ));
+    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+      const FetchAllNewsEvent(),
+    );
   }
 
   @override
@@ -152,7 +147,7 @@ class _MainPageState extends State<MainPage> {
                                 style: theme.textTheme.headline3,
                               ),
                             ),
-                            BlocBuilder<FetchNewsCubit, NewsState>(
+                            BlocBuilder<FetchNewsBloc, FetchNewsState>(
                               builder: (context, state) {
                                 if (state is NewsLoading) {
                                   const Center(

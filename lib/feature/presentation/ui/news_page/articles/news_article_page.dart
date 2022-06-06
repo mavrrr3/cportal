@@ -1,7 +1,6 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
-
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
@@ -34,7 +33,7 @@ class NewsArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FetchNewsCubit, NewsState>(
+    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         if (state is NewsLoaded) {
           ArticleEntity articlefromBloc() {
@@ -209,7 +208,7 @@ class _WebState extends State<_Web> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return BlocBuilder<FetchNewsCubit, NewsState>(
+    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         if (state is NewsLoaded) {
           List<ArticleEntity> articlesToRecomendations(String id) {

@@ -1,8 +1,7 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
-
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
@@ -35,7 +34,7 @@ class QuestionArticlePage extends StatelessWidget {
           _onBack(context);
         }
       },
-      child: BlocBuilder<FetchNewsCubit, NewsState>(
+      child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
         builder: (context, state) {
           if (state is NewsLoaded) {
             ArticleEntity articlefromBloc() {

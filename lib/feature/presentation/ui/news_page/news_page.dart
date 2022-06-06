@@ -1,9 +1,12 @@
 // ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
+
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
@@ -32,9 +35,11 @@ class NewsPage extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
     final ThemeData theme = Theme.of(context);
 
-    return BlocBuilder<FetchNewsCubit, NewsState>(
+    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         List<ArticleEntity> articles = [];
+        final List<ArticleEntity> currentTabArticles = [];
+
         List<String> tabs = [];
 
         if (state is NewsLoading && state.isFirstFetch) {
@@ -48,9 +53,27 @@ class NewsPage extends StatelessWidget {
           );
         } else if (state is NewsLoading) {
           articles = state.oldArticles;
+          if (state.tabs.isNotEmpty) tabs = state.tabs;
         } else if (state is NewsLoaded) {
           articles = state.articles;
-          tabs = state.tabs;
+          if (state.tabs.isNotEmpty) tabs = state.tabs;
+        }
+        List<Widget> getWidgets() {
+          final List<Widget> list = [];
+          int count = 0;
+          while (count < 3) {
+            list.add(Padding(
+              padding: getHorizontalPadding(context),
+              child: _Content(
+                articles: articles,
+                tabs: tabs,
+                pageType: pageType,
+              ),
+            ));
+            count++;
+          }
+
+          return list;
         }
 
         return SafeArea(
@@ -66,16 +89,6 @@ class NewsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              // if (state is NewsLoading && state.isFirstFetch) ...[
-              //   const Padding(
-              //     padding: EdgeInsets.symmetric(vertical: 60),
-              //     child: Center(
-              //       child: CircularProgressIndicator(
-              //         strokeWidth: 3,
-              //       ),
-              //     ),
-              //   ),
-              // ],
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,19 +97,28 @@ class NewsPage extends StatelessWidget {
                     ScrollableTabsWidget(
                       currentIndex: _currentIndex,
                       items: tabs,
-                      onTap: _onPageChanged,
+                      onTap: (index) =>
+                          _onPageChanged(index, context, tabs[_currentIndex]),
                     ),
 
                     Expanded(
                       child: Swipe(
                         onSwipeRight: () {
                           if (_currentIndex != 0) {
-                            _onPageChanged(_currentIndex - 1);
+                            _onPageChanged(
+                              _currentIndex - 1,
+                              context,
+                              tabs[_currentIndex],
+                            );
                           }
                         },
                         onSwipeLeft: () {
                           if (tabs.length - 1 != _currentIndex) {
-                            _onPageChanged(_currentIndex + 1);
+                            _onPageChanged(
+                              _currentIndex + 1,
+                              context,
+                              tabs[_currentIndex],
+                            );
                           }
                         },
                         child: ResponsiveConstraints(
@@ -110,61 +132,7 @@ class NewsPage extends StatelessWidget {
                                   controller: _pageController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   children: [
-                                    // Генерация страниц под все категории.
-                                    // ListView.builder(
-                                    //   shrinkWrap: true,
-                                    //   physics: const BouncingScrollPhysics(),
-                                    //   itemCount: tabs.length,
-                                    //   itemBuilder: (context, index) {
-                                    //     return Padding(
-                                    //       padding:
-                                    //           getHorizontalPadding(context),
-                                    //       child: _content(
-                                    //         context,
-                                    //         articles,
-                                    //         tabs,
-                                    //         width,
-                                    //       ),
-                                    //     );
-                                    //   },
-                                    // ),
-                                    // for (var tab in tabs)
-                                    Padding(
-                                      padding: getHorizontalPadding(context),
-                                      child: _Content(
-                                        articles: articles,
-                                        tabs: tabs,
-                                        pageType: pageType,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: getHorizontalPadding(context),
-                                      child: _Content(
-                                        articles: articles
-                                            .where((element) =>
-                                                element.category ==
-                                                tabs[_currentIndex])
-                                            .toList(),
-                                        tabs: tabs,
-                                        pageType: pageType,
-                                      ),
-                                    ),
-
-                                    // ...List.generate(
-                                    //   tabs.length,
-                                    //   (index) {
-                                    //     return Padding(
-                                    //       padding:
-                                    //           getHorizontalPadding(context),
-                                    //       child: _content(
-                                    //         context,
-                                    //         articles,
-                                    //         tabs,
-                                    //         width,
-                                    //       ),
-                                    //     );
-                                    //   },
-                                    // ),
+                                    ...getWidgets(),
                                   ],
                                 ),
                               ),
@@ -183,9 +151,14 @@ class NewsPage extends StatelessWidget {
     );
   }
 
-  void _onPageChanged(int index) {
+  void _onPageChanged(int index, BuildContext context, String category) {
     _currentIndex = index;
-
+    if (_currentIndex == 0) {
+      log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
+      context.read<FetchNewsBloc>().add(FetchAllNewsEvent());
+    } else {
+      context.read<FetchNewsBloc>().add(FetchNewsEventBy(category));
+    }
     _pageController.jumpToPage(_currentIndex);
   }
 
@@ -213,7 +186,21 @@ class _Content extends StatelessWidget {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          context.read<FetchNewsCubit>().loadNews();
+          if (_currentIndex == 0) {
+            log('_setupScrollController_setupScrollController_setupScrollController');
+            context.read<FetchNewsBloc>().add(FetchAllNewsEvent());
+          } else {
+            log('222222_setupScrollController_setupScrollController_setupScrollController');
+            context
+                .read<FetchNewsBloc>()
+                .add(FetchNewsEventBy(tabs[_currentIndex]));
+          }
+          // final isLastPage = articles.length < _page * 20;
+          // log('$_page $isLastPage');
+          // if (!isLastPage) {
+          //   _page++;
+          //   context.read<FetchNewsCubit>().loadNews();
+          // }
         }
       }
     });
@@ -225,6 +212,7 @@ class _Content extends StatelessWidget {
 
     final width = MediaQuery.of(context).size.width;
     final ThemeData theme = Theme.of(context);
+    List<ArticleEntity> currentTabArticles = [];
 
     void _onArticleSelected(String id) {
       GoRouter.of(context).pushNamed(
@@ -242,12 +230,19 @@ class _Content extends StatelessWidget {
       if (pageType == NewsCodeEnum.news) {
         // Распределение по категориям
         // [Новости]
-
-        return _NewsCard(
-          width,
-          item: articles[index],
-          onTap: () => _onArticleSelected(articles[index].id),
-        );
+        if (_currentIndex == 0) {
+          return _NewsCard(
+            width,
+            item: articles[index],
+            onTap: () => _onArticleSelected(articles[index].id),
+          );
+        } else if (articles[index].category == tabs[_currentIndex]) {
+          return _NewsCard(
+            width,
+            item: articles[index],
+            onTap: () => _onArticleSelected(articles[index].id),
+          );
+        }
       } else {
         // Распределение по категориям
         // [Вопросы]
@@ -270,6 +265,16 @@ class _Content extends StatelessWidget {
       return const SizedBox();
     }
 
+    log('================ $tabs ================================');
+    log('================ ${articles.length} статей в категории ${tabs[_currentIndex]}================================');
+
+    if (_currentIndex == 0) currentTabArticles = articles;
+    if (_currentIndex != 0) {
+      currentTabArticles = articles
+          .where((element) => element.category == tabs[_currentIndex])
+          .toList();
+    }
+
     return SingleChildScrollView(
       controller: scrollController,
       dragStartBehavior: DragStartBehavior.down,
@@ -284,10 +289,10 @@ class _Content extends StatelessWidget {
                 ? ListView.builder(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
-                    itemCount: articles.length,
+                    itemCount: currentTabArticles.length,
                     itemBuilder: (context, index) {
                       return _builderItem(
-                        articles,
+                        currentTabArticles,
                         tabs,
                         width,
                         index,
@@ -300,10 +305,10 @@ class _Content extends StatelessWidget {
                       spacing: 16,
                       runSpacing: 20,
                       children: List.generate(
-                        articles.length,
+                        currentTabArticles.length,
                         (index) {
                           return _builderItem(
-                            articles,
+                            currentTabArticles,
                             tabs,
                             312,
                             index,
@@ -316,9 +321,9 @@ class _Content extends StatelessWidget {
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: articles.length,
+              itemCount: currentTabArticles.length,
               itemBuilder: (context, index) {
-                return _builderItem(articles, tabs, width, index);
+                return _builderItem(currentTabArticles, tabs, width, index);
               },
             ),
         ],

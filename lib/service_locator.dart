@@ -47,7 +47,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometr
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_cubit.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -64,7 +64,7 @@ Future<void> init() async {
   sl.registerFactory(() => AuthBloc(sl(), sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
-  sl.registerFactory(() => FetchNewsCubit(
+  sl.registerFactory(() => FetchNewsBloc(
         fetchNews: sl(),
         fetchNewsByCategory: sl(),
       ));
@@ -133,6 +133,7 @@ Future<void> init() async {
     sl.registerLazySingleton<INewsRepository>(
       () => NewsRepositoryWeb(
         remoteDataSource: sl(),
+        localDataSource: sl(),
       ),
     );
   } else {

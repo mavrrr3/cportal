@@ -39,10 +39,13 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       final response = await _ioClient.get(Uri.parse(baseUrl), headers: {
         'Content-Type': 'application/json',
       });
-
-      return NewsModel.fromJson(
+      final news = NewsModel.fromJson(
         json.decode(response.body) as Map<String, dynamic>,
       );
+
+      await localDatasource.newsToCache(news);
+
+      return news;
     } on ServerException {
       throw ServerFailure();
     }
@@ -57,10 +60,13 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       final response = await _ioClient.get(Uri.parse(baseUrl), headers: {
         'Content-Type': 'application/json',
       });
-
-      return NewsModel.fromJson(
+      final newsByCategory = NewsModel.fromJson(
         json.decode(response.body) as Map<String, dynamic>,
       );
+
+      await localDatasource.newsByCategoryToCache(newsByCategory, category);
+
+      return newsByCategory;
     } on ServerException {
       throw ServerFailure();
     }

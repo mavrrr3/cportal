@@ -8,4 +8,5 @@ abstract class INewsRepository {
     int page,
     String category,
   );
+  Future<List<String>> fetchCategories();
 }

@@ -62,8 +62,10 @@ class ResponseModel extends ResponseEntity {
   factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
         count: json['count'] as int,
         update: json['update'] as int,
-        categories: List<String>.from(json['categories']
-            .map((dynamic x) => x as String) as Iterable<dynamic>),
+        categories: json['categories'] == null
+            ? null
+            : List<String>.from(json['categories']
+                .map((dynamic x) => x as String) as Iterable<dynamic>),
         articles: List<ArticleModel>.from(
           json['items'].map((dynamic x) =>
                   ArticleModel.fromJson(x as Map<String, dynamic>))

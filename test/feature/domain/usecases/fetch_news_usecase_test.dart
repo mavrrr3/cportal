@@ -15,7 +15,6 @@ void main() {
   late FetchNewsUseCase useCase;
   late MockINewsRepository mockNewsRepository;
   late NewsEntity tNewsEntity;
-  late String tNewsCategory;
   late int tPage;
   late Failure tFailure;
 
@@ -56,7 +55,6 @@ void main() {
       ),
     );
 
-    tNewsCategory = 'Финансы';
     tPage = 0;
     tFailure = ServerFailure();
   });

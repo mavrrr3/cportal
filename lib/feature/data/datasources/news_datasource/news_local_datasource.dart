@@ -33,11 +33,17 @@ class NewsLocalDataSource implements INewsLocalDataSource {
 
   @override
   Future<NewsModel> fetchNewsFromCache() async {
-    final box = await hive.openBox<NewsModel>('news');
+    var box = await Hive.openBox<NewsModel>('news');
+    log(Hive.isBoxOpen('news').toString());
+    if (!Hive.isBoxOpen('news')) {
+      await Hive.openBox<NewsModel>('news');
+    } else {
+      box = await Hive.openBox<NewsModel>('news');
+    }
 
     final news = box.get('news');
 
-    if (kDebugMode) log('NewsModel из кэша $news');
+    if (kDebugMode) log('NewsModel из кэша ${news!.response.count}');
 
     await Hive.box<NewsModel>('news').close();
 
@@ -48,10 +54,13 @@ class NewsLocalDataSource implements INewsLocalDataSource {
   Future<void> newsToCache(NewsModel news) async {
     // Удаляет box с диска
     // await Hive.deleteBoxFromDisk('news');
-
-    if (kDebugMode) log('NewsModel сохранил в кэш $news');
-
-    final box = await hive.openBox<NewsModel>('news');
+    var box = await Hive.openBox<NewsModel>('news');
+    if (!Hive.isBoxOpen('news')) {
+      await Hive.openBox<NewsModel>('news');
+    } else {
+      box = await Hive.openBox<NewsModel>('news');
+    }
+    log('NewsModel сохранил в кэш ${news.response.count}');
 
     await box.put('news', news);
 
@@ -60,11 +69,17 @@ class NewsLocalDataSource implements INewsLocalDataSource {
 
   @override
   Future<NewsModel> fetchNewsByCategoryFromCache(String category) async {
-    final box = await hive.openBox<NewsModel>('news');
-
+    var box = await hive.openBox<NewsModel>('news');
+    if (!Hive.isBoxOpen('news')) {
+      await Hive.openBox<NewsModel>('news');
+    } else {
+      box = await Hive.openBox<NewsModel>('news');
+    }
     final news = box.get(category);
 
-    if (kDebugMode) log('NewsModel by $category из кэша $news');
+    if (news != null) {
+      log('NewsModel by $category из кэша ${news.response.count}');
+    }
 
     await Hive.box<NewsModel>('news').close();
 
@@ -73,10 +88,14 @@ class NewsLocalDataSource implements INewsLocalDataSource {
 
   @override
   Future<void> newsByCategoryToCache(NewsModel news, String category) async {
-    if (kDebugMode) log('NewsModel by $category сохранил в кэш $news');
+    var box = await hive.openBox<NewsModel>('news');
+    if (!Hive.isBoxOpen('news')) {
+      await Hive.openBox<NewsModel>('news');
+    } else {
+      box = await Hive.openBox<NewsModel>('news');
+    }
 
-    final box = await hive.openBox<NewsModel>('news');
-
+    log('NewsModel by $category сохранил в кэш ${news.response.count} статей');
     await box.put(category, news);
 
     await Hive.box<NewsModel>('news').close();

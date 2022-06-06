@@ -36,7 +36,6 @@ void main() {
   });
 
   group('fetchNews()', () {
-    const String tNewsTypeCode = 'NEWS';
     const int tPage = 1;
     final ArticleModel tNewsArticle = ArticleModel(
       id: 'id',

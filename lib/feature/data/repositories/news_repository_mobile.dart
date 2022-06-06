@@ -67,4 +67,11 @@ class NewsRepositoryMobile implements INewsRepository {
       }
     }
   }
+
+  @override
+  Future<List<String>> fetchCategories() async {
+    final localNews = await localDataSource.fetchNewsFromCache();
+
+    return localNews.response.categories ?? [];
+  }
 }
