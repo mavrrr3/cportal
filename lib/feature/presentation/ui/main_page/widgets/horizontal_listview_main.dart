@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/card_horizontal_scroll.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -22,15 +23,22 @@ class HorizontalListViewMain extends StatelessWidget {
               shrinkWrap: true,
               itemCount: gridViewMap.length,
               itemBuilder: (context, i) {
-                return Row(
-                  children: [
-                    CardHorizontalScroll(
-                      icon: gridViewMap[i]['icon'] as IconData,
-                      text: gridViewMap[i]['text'] as String,
-                      color: color,
-                    ),
-                    const SizedBox(width: 8),
-                  ],
+                return Padding(
+                  padding: EdgeInsets.only(
+                    left: i == 0 ? getSingleHorizontalPadding(context) : 0,
+                    right: i == gridViewMap.length - 1
+                        ? getSingleHorizontalPadding(context)
+                        : 8,
+                  ),
+                  child: Row(
+                    children: [
+                      CardHorizontalScroll(
+                        icon: gridViewMap[i]['icon'] as IconData,
+                        text: gridViewMap[i]['text'] as String,
+                        color: color,
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
