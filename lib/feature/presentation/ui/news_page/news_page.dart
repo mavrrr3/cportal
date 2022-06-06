@@ -1,15 +1,7 @@
-// ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_local_variable
 
 import 'dart:developer';
-
-import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
-
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +9,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
+import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 int _currentIndex = 0;
 NewsCodeEnum _currentType = NewsCodeEnum.news;
@@ -31,14 +30,18 @@ class NewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _currentType = pageType;
-
+    if (kIsWeb) {
+      BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+        const FetchAllNewsEvent(),
+      );
+    }
     final double width = MediaQuery.of(context).size.width;
     final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         List<ArticleEntity> articles = [];
-        final List<ArticleEntity> currentTabArticles = [];
+        List<ArticleEntity> currentTabArticles = [];
 
         List<String> tabs = [];
 
@@ -58,6 +61,18 @@ class NewsPage extends StatelessWidget {
           articles = state.articles;
           if (state.tabs.isNotEmpty) tabs = state.tabs;
         }
+        if (_currentIndex == 0) currentTabArticles = articles;
+        if (_currentIndex != 0) {
+          currentTabArticles = articles
+              .where((element) => element.category == tabs[_currentIndex])
+              .toList();
+        }
+        List<ArticleEntity> sortedArticles(List<ArticleEntity> list) {
+          list.sort((a, b) => b.id.compareTo(a.id));
+
+          return list.toSet().toList();
+        }
+
         List<Widget> getWidgets() {
           final List<Widget> list = [];
           int count = 0;
@@ -65,7 +80,7 @@ class NewsPage extends StatelessWidget {
             list.add(Padding(
               padding: getHorizontalPadding(context),
               child: _Content(
-                articles: articles,
+                articles: sortedArticles(articles),
                 tabs: tabs,
                 pageType: pageType,
               ),
@@ -155,7 +170,7 @@ class NewsPage extends StatelessWidget {
     _currentIndex = index;
     if (_currentIndex == 0) {
       log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
-      context.read<FetchNewsBloc>().add(FetchAllNewsEvent());
+      context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
     } else {
       context.read<FetchNewsBloc>().add(FetchNewsEventBy(category));
     }
@@ -188,7 +203,7 @@ class _Content extends StatelessWidget {
         if (scrollController.position.pixels != 0) {
           if (_currentIndex == 0) {
             log('_setupScrollController_setupScrollController_setupScrollController');
-            context.read<FetchNewsBloc>().add(FetchAllNewsEvent());
+            context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
           } else {
             log('222222_setupScrollController_setupScrollController_setupScrollController');
             context
@@ -211,8 +226,6 @@ class _Content extends StatelessWidget {
     _setupScrollController(context);
 
     final width = MediaQuery.of(context).size.width;
-    final ThemeData theme = Theme.of(context);
-    List<ArticleEntity> currentTabArticles = [];
 
     void _onArticleSelected(String id) {
       GoRouter.of(context).pushNamed(
@@ -268,13 +281,6 @@ class _Content extends StatelessWidget {
     log('================ $tabs ================================');
     log('================ ${articles.length} статей в категории ${tabs[_currentIndex]}================================');
 
-    if (_currentIndex == 0) currentTabArticles = articles;
-    if (_currentIndex != 0) {
-      currentTabArticles = articles
-          .where((element) => element.category == tabs[_currentIndex])
-          .toList();
-    }
-
     return SingleChildScrollView(
       controller: scrollController,
       dragStartBehavior: DragStartBehavior.down,
@@ -289,10 +295,10 @@ class _Content extends StatelessWidget {
                 ? ListView.builder(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
-                    itemCount: currentTabArticles.length,
+                    itemCount: articles.length,
                     itemBuilder: (context, index) {
                       return _builderItem(
-                        currentTabArticles,
+                        articles,
                         tabs,
                         width,
                         index,
@@ -305,10 +311,10 @@ class _Content extends StatelessWidget {
                       spacing: 16,
                       runSpacing: 20,
                       children: List.generate(
-                        currentTabArticles.length,
+                        articles.length,
                         (index) {
                           return _builderItem(
-                            currentTabArticles,
+                            articles,
                             tabs,
                             312,
                             index,
@@ -321,9 +327,9 @@ class _Content extends StatelessWidget {
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: currentTabArticles.length,
+              itemCount: articles.length,
               itemBuilder: (context, index) {
-                return _builderItem(currentTabArticles, tabs, width, index);
+                return _builderItem(articles, tabs, width, index);
               },
             ),
         ],
