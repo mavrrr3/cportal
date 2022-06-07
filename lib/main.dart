@@ -146,10 +146,10 @@ void _hiveAdaptersInit() {
     ..registerAdapter(ProfileModelAdapter())
     ..registerAdapter(PositionModelAdapter())
     ..registerAdapter(PhoneModelAdapter())
+    ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(ArticleModelAdapter())
     ..registerAdapter(ParagraphModelAdapter())
     ..registerAdapter(ResponseModelAdapter())
-    ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(FilterModelAdapter())
     ..registerAdapter(FilterItemModelAdapter())
     ..registerAdapter(ContactsModelAdapter());

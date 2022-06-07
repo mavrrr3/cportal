@@ -15,7 +15,7 @@ void main() {
   late FetchNewsUseCase useCase;
   late MockINewsRepository mockNewsRepository;
   late NewsEntity tNewsEntity;
-  late String tNewsTypeCode;
+  late int tPage;
   late Failure tFailure;
 
   final ArticleModel tNewsArticle = ArticleModel(
@@ -27,14 +27,14 @@ void main() {
       ParagraphModel(
         template: '1',
         content: 'content',
-        imagesTitle: '',
-        images: '',
+        imageTitle: '',
+        image: '',
       ),
       ParagraphModel(
         template: '2',
         content: 'content',
-        imagesTitle: '',
-        images: 'imagesTitle',
+        imageTitle: '',
+        image: 'imagesTitle',
       ),
     ],
     image:
@@ -50,12 +50,12 @@ void main() {
       response: ResponseModel(
         count: 1,
         update: 1,
+        categories: const ['Новости'],
         articles: [tNewsArticle],
       ),
     );
 
-    tNewsTypeCode = 'news';
-
+    tPage = 0;
     tFailure = ServerFailure();
   });
 
@@ -67,7 +67,7 @@ void main() {
           .thenAnswer((_) async => Right<Failure, NewsEntity>(tNewsEntity));
 
       // Act..
-      final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
+      final result = await useCase(FetchNewsParams(page: tPage));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
@@ -81,7 +81,7 @@ void main() {
       }
 
       getNewsOrFailure(result);
-      verify(() => mockNewsRepository.fetchNews(tNewsTypeCode));
+      verify(() => mockNewsRepository.fetchNews(tPage));
       verifyNoMoreInteractions(mockNewsRepository);
     },
   );
@@ -94,7 +94,7 @@ void main() {
           .thenAnswer((_) async => Left<Failure, NewsEntity>(tFailure));
 
       // Act..
-      final result = await useCase(FetchNewsParams(code: tNewsTypeCode));
+      final result = await useCase(FetchNewsParams(page: tPage));
 
       // Assert.
       void getNewsOrFailure(Either<Failure, NewsEntity> either) {
@@ -108,7 +108,7 @@ void main() {
       }
 
       getNewsOrFailure(result);
-      verify(() => mockNewsRepository.fetchNews(tNewsTypeCode));
+      verify(() => mockNewsRepository.fetchNews(tPage));
       verifyNoMoreInteractions(mockNewsRepository);
     },
   );

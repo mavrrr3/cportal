@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/qr_scanner_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
@@ -174,7 +174,7 @@ final GoRouter router = GoRouter(
       path: '/news',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const HomePage(
+        child: HomePage(
           child: NewsPage(pageType: NewsCodeEnum.news),
           desktopMenuIndex: 1,
         ),
@@ -212,7 +212,7 @@ final GoRouter router = GoRouter(
       path: '/questions',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const HomePage(
+        child: HomePage(
           child: NewsPage(pageType: NewsCodeEnum.quastion),
           desktopMenuIndex: 2,
         ),
@@ -295,8 +295,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child:  const ContactsPage(),
-        
+        child: const ContactsPage(),
       ),
     ),
     GoRoute(

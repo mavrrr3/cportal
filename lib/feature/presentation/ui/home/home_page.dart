@@ -3,7 +3,7 @@ import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
@@ -132,8 +132,8 @@ class _HomePageState extends State<HomePage>
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
       const MainPage(),
-      const NewsPage(pageType: NewsCodeEnum.news),
-      const NewsPage(pageType: NewsCodeEnum.quastion),
+      NewsPage(pageType: NewsCodeEnum.news),
+      NewsPage(pageType: NewsCodeEnum.quastion),
       const MainPage(),
       const ContactsPage(),
     ];

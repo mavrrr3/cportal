@@ -23,16 +23,16 @@ class ArticleEntity extends Equatable {
 class ParagraphEntity extends Equatable {
   final String template;
   final String? content;
-  final String? imagesTitle;
-  final String? images;
+  final String? imageTitle;
+  final String? image;
 
   const ParagraphEntity({
     required this.template,
     required this.content,
-    required this.imagesTitle,
-    required this.images,
+    required this.imageTitle,
+    required this.image,
   });
 
   @override
-  List<Object?> get props => [template, content, imagesTitle, images];
+  List<Object?> get props => [template, content, imageTitle, image];
 }

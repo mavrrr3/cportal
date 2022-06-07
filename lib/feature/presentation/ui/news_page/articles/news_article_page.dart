@@ -1,9 +1,6 @@
-import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
@@ -22,10 +19,10 @@ import 'package:swipe/swipe.dart';
 
 final DateFormat _outputFormat = DateFormat('d MMMM y, H:m', 'ru');
 
-void _contentInit(BuildContext context) {
-  return BlocProvider.of<FetchNewsBloc>(context, listen: false)
-      .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
-}
+// void _contentInit(BuildContext context) {
+//   return BlocProvider.of<FetchNewsBloc>(context, listen: false)
+//       .add(const FetchNewsEvent());
+// }
 
 class NewsArticlePage extends StatelessWidget {
   final String id;
@@ -38,9 +35,9 @@ class NewsArticlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
-        if (state is FetchNewsLoadedState) {
+        if (state is NewsLoaded) {
           ArticleEntity articlefromBloc() {
-            return state.news.response.articles
+            return state.articles
                 .where((element) => element.id == id)
                 .toList()
                 .first;
@@ -74,7 +71,7 @@ class NewsArticlePage extends StatelessWidget {
 
 class _Mobile extends StatelessWidget {
   final ArticleEntity item;
-  final FetchNewsLoadedState state;
+  final NewsLoaded state;
 
   const _Mobile({
     Key? key,
@@ -115,7 +112,7 @@ class _Mobile extends StatelessWidget {
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
-                      '${AppConfig.apiUri}/images/${item.image}',
+                      'http://ribadi.ddns.net:88/images/${item.image}',
                       fit: BoxFit.cover,
                       cache: true,
                     ),
@@ -168,14 +165,14 @@ class _Mobile extends StatelessWidget {
                             left: getSingleHorizontalPadding(context),
                           ),
                           child: NewsHorizontalScroll(
-                            items: state.news.response.articles,
+                            items: state.articles,
                             currentArticle: item,
                             onTap: (index) {
                               GoRouter.of(context).pop();
                               GoRouter.of(context).pushNamed(
                                 NavigationRouteNames.newsArticlePage,
                                 params: {
-                                  'fid': state.news.response.articles[index].id,
+                                  'fid': state.articles[index].id,
                                 },
                               );
                             },
@@ -213,11 +210,9 @@ class _WebState extends State<_Web> {
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
-        if (state is FetchNewsLoadedState) {
+        if (state is NewsLoaded) {
           List<ArticleEntity> articlesToRecomendations(String id) {
-            return state.news.response.articles
-                .where((element) => element.id != id)
-                .toList();
+            return state.articles.where((element) => element.id != id).toList();
           }
 
           final ArticleEntity article = widget.item;
@@ -247,7 +242,7 @@ class _WebState extends State<_Web> {
                           GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
-                              _contentInit(context);
+                              // _contentInit(context);.
 
                               GoRouter.of(context).pop();
                             },

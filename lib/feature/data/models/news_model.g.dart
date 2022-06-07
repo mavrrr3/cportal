@@ -53,19 +53,22 @@ class ResponseModelAdapter extends TypeAdapter<ResponseModel> {
     return ResponseModel(
       count: fields[0] as int,
       update: fields[1] as int,
-      articles: (fields[2] as List).cast<ArticleModel>(),
+      categories: (fields[2] as List?)?.cast<String>(),
+      articles: (fields[3] as List).cast<ArticleModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ResponseModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.count)
       ..writeByte(1)
       ..write(obj.update)
       ..writeByte(2)
+      ..write(obj.categories)
+      ..writeByte(3)
       ..write(obj.articles);
   }
 

@@ -42,21 +42,30 @@ class ResponseModel extends ResponseEntity {
   final int update;
   @override
   @HiveField(2)
+  final List<String>? categories;
+  @override
+  @HiveField(3)
   final List<ArticleModel> articles;
 
   const ResponseModel({
     required this.count,
     required this.update,
+    required this.categories,
     required this.articles,
   }) : super(
           count: count,
           update: update,
+          categories: categories,
           articles: articles,
         );
 
   factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
         count: json['count'] as int,
         update: json['update'] as int,
+        categories: json['categories'] == null
+            ? null
+            : List<String>.from(json['categories']
+                .map((dynamic x) => x as String) as Iterable<dynamic>),
         articles: List<ArticleModel>.from(
           json['items'].map((dynamic x) =>
                   ArticleModel.fromJson(x as Map<String, dynamic>))
@@ -67,6 +76,7 @@ class ResponseModel extends ResponseEntity {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'count': count,
         'update': update,
+        'categories': categories,
         'items': List<dynamic>.from(articles.map<dynamic>((x) => x.toJson())),
       };
 }
