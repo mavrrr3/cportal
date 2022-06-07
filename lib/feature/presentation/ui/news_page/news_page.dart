@@ -244,16 +244,28 @@ class _Content extends StatelessWidget {
         // Распределение по категориям
         // [Новости]
         if (_currentIndex == 0) {
-          return _NewsCard(
-            width,
-            item: articles[index],
-            onTap: () => _onArticleSelected(articles[index].id),
+          return Padding(
+            padding: const EdgeInsets.only(
+              right: 16,
+              bottom: 20,
+            ),
+            child: _NewsCard(
+              width,
+              item: articles[index],
+              onTap: () => _onArticleSelected(articles[index].id),
+            ),
           );
         } else if (articles[index].category == tabs[_currentIndex]) {
-          return _NewsCard(
-            width,
-            item: articles[index],
-            onTap: () => _onArticleSelected(articles[index].id),
+          return Padding(
+            padding: const EdgeInsets.only(
+              right: 16,
+              bottom: 20,
+            ),
+            child: _NewsCard(
+              width,
+              item: articles[index],
+              onTap: () => _onArticleSelected(articles[index].id),
+            ),
           );
         }
       } else {
@@ -308,8 +320,6 @@ class _Content extends StatelessWidget {
                 : Padding(
                     padding: const EdgeInsets.only(right: 78),
                     child: Wrap(
-                      spacing: 16,
-                      runSpacing: 20,
                       children: List.generate(
                         articles.length,
                         (index) {

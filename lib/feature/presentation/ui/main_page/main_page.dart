@@ -122,15 +122,12 @@ class _MainPageState extends State<MainPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 16),
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: HorizontalListViewMain(
-                                color: _isSearchActive
-                                    ? theme.brightness == Brightness.light
-                                        ? theme.splashColor.withOpacity(0.3)
-                                        : theme.splashColor
-                                    : theme.splashColor,
-                              ),
+                            HorizontalListViewMain(
+                              color: _isSearchActive
+                                  ? theme.brightness == Brightness.light
+                                      ? theme.splashColor.withOpacity(0.3)
+                                      : theme.splashColor
+                                  : theme.splashColor,
                             ),
                             const SizedBox(height: 24),
                             Padding(
