@@ -99,5 +99,11 @@
     "birth_date": "Дата рождения",
     "go_to_chat": "Перейти в чат",
     "apply": "Применить",
-    "clear_all": "Очистить"
+    "clear_all": "Очистить",
+    "youHadntDeclarations": "У вас еще\nне было заявок",
+    "buisenesTripDeclaration": "Заявление\nна командировку",
+    "passDeclaration": "Заявление\nна пропуск",
+    "payListDeclaration": "Заявление\nна расчётный листок",
+    "vocationDeclaration": "Заявление\nна отпуск",
+    "supportDeclaration": "Заявление\nна техническую поддержку/IT"
 }
