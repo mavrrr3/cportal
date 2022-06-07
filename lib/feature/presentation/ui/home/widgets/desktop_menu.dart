@@ -82,7 +82,7 @@ final List<MenuButtonModel> menuItems = [
   ),
   MenuButtonModel(
     img: 'assets/icons/navbar/declaration.svg',
-    text: 'Заявки',
+    text: 'Заявления',
   ),
   MenuButtonModel(
     img: 'assets/icons/navbar/contacts.svg',
