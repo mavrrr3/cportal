@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
+
+import 'package:cportal_flutter/app_config.dart';
+import 'package:dio/dio.dart';
 
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
@@ -10,54 +14,32 @@ abstract class IContactsRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем ошибки через [ServerException]
-  Future<ContactsModel> fetchContacts();
+  Future<ContactsModel> fetchContacts(int page);
 }
 
 class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   final IContactsLocalDataSource localDatasource;
+  final Dio dio;
 
-  ContactsRemoteDataSource(this.localDatasource);
+  ContactsRemoteDataSource(this.localDatasource, this.dio);
 
   @override
-  Future<ContactsModel> fetchContacts() async {
+  Future<ContactsModel> fetchContacts(int page) async {
+    final String baseUrl =
+        'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?page=$page';
     try {
-      final List<ProfileModel> usersList = [
-        _user1,
-        _user1,
-        _user1,
-        _user1,
-        _user1,
-        _user1,
-      ];
+      final response = await dio.get<String>(baseUrl);
 
-      final remoteContacts = ContactsModel(
-        count: 10,
-        contacts: usersList,
-        favorites: usersList,
+      final contacts = ContactsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
       );
 
-      log('ContactsRemouteDataSource  ==========  $remoteContacts');
-      await localDatasource.contactsToCache(remoteContacts);
+      log('ContactsRemouteDataSource  ==========  ${contacts.contacts.length}');
+      await localDatasource.contactsToCache(contacts);
 
-      return remoteContacts;
+      return contacts;
     } on ServerException {
       throw ServerFailure();
     }
   }
 }
-
- final ProfileModel _user1 = ProfileModel(
-  id: '111',
-  fullName: 'Суханенков',
-  birthday: DateTime.now(),
-  photoLink:
-      'https://avatars.mds.yandex.net/i?id=08365f5b8db600cf8af1086fdbe51e9d-5858549-images-thumbs&n=13&exp=1',
-  position: '',
-  department: '',
-  phone: const [
-    PhoneModel(
-      type: '',
-      contact: '',
-    ),
-  ],
-);

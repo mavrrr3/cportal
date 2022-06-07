@@ -32,13 +32,13 @@ class ProfileModel extends ProfileEntity {
   final String position;
 
   @HiveField(4)
-  final DateTime birthday;
-
-  @HiveField(5)
   final String photoLink;
 
+  @HiveField(5)
+  final DateTime? birthday;
+
   @HiveField(6)
-  final List<PhoneEntity> phone;
+  final List<PhoneModel> phone;
 
   const ProfileModel({
     required this.id,
@@ -63,13 +63,17 @@ class ProfileModel extends ProfileEntity {
         fullName: json['name'] as String,
         department: json['departament'] as String,
         position: json['position'] as String,
-        birthday: DateTime.parse(json['birthdate'] as String),
         photoLink: json['photo'] as String,
-        phone: List<PhoneModel>.from(
-          json['contacts'].map(
-            (dynamic x) => PhoneModel.fromJson(x as Map<String, dynamic>),
-          ) as Iterable<dynamic>,
-        ),
+        birthday: json['birthdate'] != null
+            ? DateTime.parse(json['birthdate'] as String)
+            : null,
+        phone: json['contacts'] != null
+            ? List<PhoneModel>.from(
+                json['contacts'].map(
+                  (dynamic x) => PhoneModel.fromJson(x as Map<String, dynamic>),
+                ) as Iterable<dynamic>,
+              )
+            : [],
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{

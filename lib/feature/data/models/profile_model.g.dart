@@ -21,9 +21,9 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
       fullName: fields[1] as String,
       department: fields[2] as String,
       position: fields[3] as String,
-      birthday: fields[4] as DateTime,
-      photoLink: fields[5] as String,
-      phone: (fields[6] as List).cast<PhoneEntity>(),
+      birthday: fields[5] as DateTime?,
+      photoLink: fields[4] as String,
+      phone: (fields[6] as List).cast<PhoneModel>(),
     );
   }
 
@@ -40,9 +40,9 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
       ..writeByte(3)
       ..write(obj.position)
       ..writeByte(4)
-      ..write(obj.birthday)
-      ..writeByte(5)
       ..write(obj.photoLink)
+      ..writeByte(5)
+      ..write(obj.birthday)
       ..writeByte(6)
       ..write(obj.phone);
   }

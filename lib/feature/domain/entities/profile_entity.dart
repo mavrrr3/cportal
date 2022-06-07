@@ -9,7 +9,7 @@ class ProfileEntity extends Equatable {
   final String fullName;
   final String department;
   final String position;
-  final DateTime birthday;
+  final DateTime? birthday;
   final String photoLink;
   final List<PhoneEntity> phone;
 

@@ -11,9 +11,9 @@ class ContactsRepositoryWeb implements IContactsRepository {
   ContactsRepositoryWeb({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, ContactsModel>> fetchContacts() async {
+  Future<Either<Failure, ContactsModel>> fetchContacts(int page) async {
     try {
-      final remoteContacts = await remoteDataSource.fetchContacts();
+      final remoteContacts = await remoteDataSource.fetchContacts(page);
 
       return Right(remoteContacts);
     } on ServerException {

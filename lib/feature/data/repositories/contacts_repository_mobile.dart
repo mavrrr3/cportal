@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
@@ -18,10 +20,13 @@ class ContactsRepositoryMobile implements IContactsRepository {
     required this.networkInfo,
   });
   @override
-  Future<Either<Failure, ContactsModel>> fetchContacts() async {
+  Future<Either<Failure, ContactsModel>> fetchContacts(int page) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteContacts = await remoteDataSource.fetchContacts();
+        log('fetchContacts');
+
+        final remoteContacts = await remoteDataSource.fetchContacts(page);
+        log('fetchContacts end');
 
         return Right(remoteContacts);
       } on ServerException {

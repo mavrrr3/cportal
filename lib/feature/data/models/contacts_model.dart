@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -23,17 +25,21 @@ class ContactsModel extends ContactsEntity {
           favorites: favorites,
         );
 
-  factory ContactsModel.fromJson(Map<String, dynamic> json) => ContactsModel(
-        count: json['response']['count'] as int,
-        contacts: List<ProfileModel>.from(json['response']['items'].map(
-          (dynamic x) => ProfileModel.fromJson(x as Map<String, dynamic>),
-        ) as Iterable<dynamic>),
-        favorites: json['response']['favorites'] != null
-            ? List<ProfileModel>.from(json['response']['favorites'].map(
-                (dynamic x) => ProfileModel.fromJson(x as Map<String, dynamic>),
-              ) as Iterable<dynamic>)
-            : [],
-      );
+  factory ContactsModel.fromJson(Map<String, dynamic> json) {
+    return ContactsModel(
+      count: json['response']['count'] as int,
+      contacts: json['response']['items'] != null
+          ? List<ProfileModel>.from(json['response']['items'].map(
+              (dynamic x) => ProfileModel.fromJson(x as Map<String, dynamic>),
+            ) as Iterable<dynamic>)
+          : [],
+      favorites: json['response']['favorites'] != null
+          ? List<ProfileModel>.from(json['response']['favorites'].map(
+              (dynamic x) => ProfileModel.fromJson(x as Map<String, dynamic>),
+            ) as Iterable<dynamic>)
+          : [],
+    );
+  }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'count': count,

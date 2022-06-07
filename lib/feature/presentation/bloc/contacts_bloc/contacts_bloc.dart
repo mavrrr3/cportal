@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
@@ -39,7 +40,9 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       }
     }
 
-    final failureOrContacts = await fetchContacts();
+    final failureOrContacts =
+        await fetchContacts(const FetchContactsParams(page: 1));
+
 
     failureOrContacts.fold(
       (failure) {

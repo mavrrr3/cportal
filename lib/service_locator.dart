@@ -202,17 +202,17 @@ Future<void> init() async {
   sl.registerLazySingleton<INewsLocalDataSource>(
     () => NewsLocalDataSource(sl()),
   );
+  sl.registerLazySingleton<IContactsRemoteDataSource>(
+    () => ContactsRemoteDataSource(sl(), sl()),
+  );
+  sl.registerLazySingleton<IContactsLocalDataSource>(
+    () => ContactsLocalDataSource(sl()),
+  );
   sl.registerLazySingleton<IFilterRemoteDataSource>(
     () => FilterRemoteDataSource(sl()),
   );
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
-  );
-  sl.registerLazySingleton<IContactsRemoteDataSource>(
-    () => ContactsRemoteDataSource(sl()),
-  );
-  sl.registerLazySingleton<IContactsLocalDataSource>(
-    () => ContactsLocalDataSource(sl()),
   );
 
   // CORE.

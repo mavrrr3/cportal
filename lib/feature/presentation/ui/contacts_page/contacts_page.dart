@@ -202,7 +202,11 @@ class _ContactsPageState extends State<ContactsPage> {
 
                                 // Колонка контактов.
                                 Padding(
-                                  padding: getHorizontalPadding(context),
+                                  padding: EdgeInsets.only(
+                                    left: getSingleHorizontalPadding(context),
+                                    right: getSingleHorizontalPadding(context),
+                                    top: state.data.favorites.isEmpty ? 31 : 0,
+                                  ),
                                   child: !kIsWeb
                                       ? ContactsList(
                                           items: state.data.contacts,
