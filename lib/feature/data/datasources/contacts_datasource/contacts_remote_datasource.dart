@@ -31,6 +31,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
       ];
 
       final remoteContacts = ContactsModel(
+        count: 10,
         contacts: usersList,
         favorites: usersList,
       );
@@ -45,36 +46,18 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   }
 }
 
-final ProfileModel _user1 = ProfileModel(
+ final ProfileModel _user1 = ProfileModel(
   id: '111',
-  externalId: '111',
-  firstName: 'Суханенков',
-  middleName: 'Владимир',
-  lastName: 'Константинович',
-  birthday: 'birthday',
-  email: 'email@example.com',
+  fullName: 'Суханенков',
+  birthday: DateTime.now(),
   photoLink:
       'https://avatars.mds.yandex.net/i?id=08365f5b8db600cf8af1086fdbe51e9d-5858549-images-thumbs&n=13&exp=1',
-  active: true,
-  position: const PositionModel(
-    id: '',
-    department: 'Новосталь-М',
-    description: 'Руководитель проектов',
-  ),
+  position: '',
+  department: '',
   phone: const [
     PhoneModel(
-      number: '76-56-67',
-      suffix: '',
-      primary: false,
-    ),
-    PhoneModel(
-      number: '923 456 67 78',
-      suffix: '+7',
-      primary: false,
+      type: '',
+      contact: '',
     ),
   ],
-  userCreated: 'userCreated',
-  dateCreated: DateTime.now(),
-  userUpdate: 'userUpdate',
-  dateUpdated: DateTime.now(),
 );

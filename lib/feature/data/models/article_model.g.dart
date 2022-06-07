@@ -8,7 +8,7 @@ part of 'article_model.dart';
 
 class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
   @override
-  final int typeId = 5;
+  final int typeId = 4;
 
   @override
   ArticleModel read(BinaryReader reader) {
@@ -57,7 +57,7 @@ class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
 
 class ParagraphModelAdapter extends TypeAdapter<ParagraphModel> {
   @override
-  final int typeId = 6;
+  final int typeId = 5;
 
   @override
   ParagraphModel read(BinaryReader reader) {

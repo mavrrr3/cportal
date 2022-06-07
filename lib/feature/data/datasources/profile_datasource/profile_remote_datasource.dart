@@ -23,40 +23,32 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   @override
   Future<ProfileModel> getSingleProfile(String id) async {
     const String stringUser = '''
-                          {
-"id": "A1B2C3D4E5",
-"external_id": "8877",
-"first_name": "Александр",
-"last_name": "Дымченко",
-"middle_name": "Валерьевич",
-"birthday": "20.11.1984",
-"email": "aaa@novostal.ru",
-"photo_link": "2.jpg",
-"active": true,
-"position": {
-"id": "a1b2c3d4",
-"description": "Начальник отдела",
-"department": "Информационные технологии"
-},
-"phone": [
 {
-"number": "25-425-655",
-"suffix": "033",
-"primary": true
-},
-{
-"number": "987-65-06",
-"suffix": "033",
-"primary": false
-}
+"id": "000000002",
+"name": "Иванов Иван Иванович",
+"departament": "Отдел вэб разработки",
+"position": "Директор",
+"birthdate": "2022-06-07T12:00:00",
+"contacts": [
+    {
+        "type": "Рабочий телефон",
+        "contact": "711-543"
+    },
+    {
+        "type": "Личный номер телефона",
+        "contact": "89128231848"
+    },
+    {
+        "type": "Эл. почта",
+        "contact": "ivanov@yandex.ru"
+    }
 ],
-"user_created": "id_user_created",
-"date_created": "2022-03-21T14:37:12.068Z",
-"user_update": "id_user_updated",
-"date_updated": "2022-03-21T14:37:12.068Z"
+"photo": "1.jpg"
 }''';
 
     try {
+      print('$stringUser');
+
       // TODO реализовать получение данных от API.
       final ProfileModel localeUser = profileModelFromJson(stringUser);
       log('$localeUser');

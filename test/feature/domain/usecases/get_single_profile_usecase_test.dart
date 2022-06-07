@@ -21,27 +21,27 @@ void main() {
     mockProfileRepository = MockIProfileRepository();
     useCase = GetSingleProfileUseCase(mockProfileRepository);
 
-    tProfileEntity = ProfileModel(
-      id: 'A1B2C3D4E5',
-      firstName: 'firstName',
-      externalId: 'externalId',
-      lastName: 'lastName',
-      middleName: 'middleName',
-      birthday: 'birthday',
-      email: 'email',
-      photoLink: 'photoLink',
-      active: true,
-      position: const PositionModel(
-        id: 'id',
-        description: 'description',
-        department: 'department',
-      ),
-      phone: const [],
-      userCreated: 'userCreated',
-      dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-      userUpdate: 'userUpdate',
-      dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-    );
+    // tProfileEntity = ProfileModel(
+    //   id: 'A1B2C3D4E5',
+    //   firstName: 'firstName',
+    //   externalId: 'externalId',
+    //   lastName: 'lastName',
+    //   middleName: 'middleName',
+    //   birthday: 'birthday',
+    //   email: 'email',
+    //   photoLink: 'photoLink',
+    //   active: true,
+    //   position: const PositionModel(
+    //     id: 'id',
+    //     description: 'description',
+    //     department: 'department',
+    //   ),
+    //   phone: const [],
+    //   userCreated: 'userCreated',
+    //   dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+    //   userUpdate: 'userUpdate',
+    //   dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
+    // );
 
     tProfileId = 'A1B2C3D4E5';
     tFailure = ServerFailure();
@@ -51,8 +51,8 @@ void main() {
     'Return [ProfileEntity] from repository',
     () async {
       // Arrange.
-      when(mockProfileRepository.getSingleProfile(tProfileId))
-          .thenAnswer((_) async => Right(tProfileEntity));
+      // when(mockProfileRepository.getSingleProfile(tProfileId))
+      //     .thenAnswer((_) async => Right(tProfileEntity));
 
       // Act.
       final Either<Failure, ProfileEntity> result =

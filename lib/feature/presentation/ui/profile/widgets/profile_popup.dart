@@ -158,7 +158,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '${profile.firstName} ${profile.middleName} ${profile.lastName}',
+                              profile.fullName,
                               style: theme.textTheme.headline4!.copyWith(
                                 fontWeight: FontWeight.w800,
                               ),
@@ -169,7 +169,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              profile.externalId,
+                              profile.id,
                               style: theme.textTheme.headline6!.copyWith(),
                               softWrap: true,
                               textAlign: TextAlign.left,
@@ -191,12 +191,12 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     children: [
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.department,
-                        description: profile.position.description,
+                        description: profile.position,
                       ),
                       const SizedBox(height: 8),
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.position,
-                        description: profile.position.department,
+                        description: profile.department,
                       ),
                     ],
                   ),
@@ -204,15 +204,15 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TitleAndDescriptionRow(
-                        title: AppLocalizations.of(context)!.birthDay,
-                        description: profile.birthday,
-                      ),
+                      // TitleAndDescriptionRow(
+                      //   title: AppLocalizations.of(context)!.birthDay,
+                      //   description: profile.birthday,
+                      // ),
                       const SizedBox(height: 8),
-                      TitleAndDescriptionRow(
-                        title: AppLocalizations.of(context)!.email,
-                        description: profile.email,
-                      ),
+                      // TitleAndDescriptionRow(
+                      //   title: AppLocalizations.of(context)!.email,
+                      //   description: profile.email,
+                      // ),
                     ],
                   ),
                   const Flexible(child: SizedBox()),
@@ -223,7 +223,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 alignment: Alignment.centerLeft,
                 child: TitleAndDescriptionRow(
                   title: 'Рабочий телефон',
-                  description: profile.phone[1].number,
+                  description: profile.phone[1].contact,
                 ),
               ),
               const SizedBox(height: 32),

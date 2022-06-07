@@ -139,7 +139,7 @@ class ContactProfilePage extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${user.firstName} ${user.middleName}\n${user.lastName}',
+                                   user.fullName,
                                     textAlign: TextAlign.center,
                                     style: theme.textTheme.headline4!.copyWith(
                                       fontWeight: FontWeight.w800,
@@ -150,52 +150,52 @@ class ContactProfilePage extends StatelessWidget {
 
                                 //-- Profile info --
                                 // Post
-                                ProfileInfoSection(
-                                  headline:
-                                      AppLocalizations.of(context)!.position,
-                                  text: user.position.description,
-                                  bottomPadding: 21,
-                                ),
+                                // ProfileInfoSection(
+                                //   headline:
+                                //       AppLocalizations.of(context)!.position,
+                                //   text: user.position.description,
+                                //   bottomPadding: 21,
+                                // ),
 
-                                // Department.
-                                ProfileInfoSection(
-                                  headline:
-                                      AppLocalizations.of(context)!.department,
-                                  text: user.position.description,
-                                  bottomPadding: 21,
-                                ),
+                                // // Department.
+                                // ProfileInfoSection(
+                                //   headline:
+                                //       AppLocalizations.of(context)!.department,
+                                //   text: user.position.description,
+                                //   bottomPadding: 21,
+                                // ),
 
-                                // Office phone.
-                                ProfileInfoSection(
-                                  headline: AppLocalizations.of(context)!
-                                      .office_phone,
-                                  text: user.phone.first.number,
-                                  bottomPadding: 21,
-                                ),
+                                // // Office phone.
+                                // ProfileInfoSection(
+                                //   headline: AppLocalizations.of(context)!
+                                //       .office_phone,
+                                //   text: user.phone.first.number,
+                                //   bottomPadding: 21,
+                                // ),
 
-                                // Self phone.
-                                ProfileInfoSection(
-                                  headline:
-                                      AppLocalizations.of(context)!.self_phone,
-                                  text:
-                                      '${user.phone[1].suffix} ${user.phone[1].number}',
-                                  bottomPadding: 21,
-                                ),
+                                // // Self phone.
+                                // ProfileInfoSection(
+                                //   headline:
+                                //       AppLocalizations.of(context)!.self_phone,
+                                //   text:
+                                //       '${user.phone[1].suffix} ${user.phone[1].number}',
+                                //   bottomPadding: 21,
+                                // ),
 
                                 // Birth date.
-                                ProfileInfoSection(
-                                  headline:
-                                      AppLocalizations.of(context)!.birth_date,
-                                  text: user.birthday,
-                                  bottomPadding: 21,
-                                ),
+                                // ProfileInfoSection(
+                                //   headline:
+                                //       AppLocalizations.of(context)!.birth_date,
+                                //   text: user.birthday,
+                                //   bottomPadding: 21,
+                                // ),
 
                                 // Email.
-                                ProfileInfoSection(
-                                  headline: AppLocalizations.of(context)!.email,
-                                  text: user.email,
-                                  bottomPadding: 21,
-                                ),
+                                // ProfileInfoSection(
+                                //   headline: AppLocalizations.of(context)!.email,
+                                //   text: user.email,
+                                //   bottomPadding: 21,
+                                // ),
                               ],
                             ),
                           ),

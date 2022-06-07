@@ -54,28 +54,28 @@ class UserData extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  const  SizedBox(height: 33),
+                    const SizedBox(height: 33),
                     const PhoneBox(),
-                  const  SizedBox(height: 24),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.position,
-                      boldText: profile.position.description,
-                    ),
-               const     SizedBox(height: 8),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.department,
-                      boldText: profile.position.department,
-                    ),
-               const     SizedBox(height: 8),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.birthDay,
-                      boldText: profile.birthday,
-                    ),
-               const     SizedBox(height: 8),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.email,
-                      boldText: profile.email,
-                    ),
+                    const SizedBox(height: 24),
+                    // UserDataRow(
+                    //   normalText: AppLocalizations.of(context)!.position,
+                    //   boldText: profile.position.description,
+                    // ),
+                    //  const     SizedBox(height: 8),
+                    // UserDataRow(
+                    //   normalText: AppLocalizations.of(context)!.department,
+                    //   boldText: profile.position.department,
+                    // ),
+                    //  const     SizedBox(height: 8),
+                    // UserDataRow(
+                    //   normalText: AppLocalizations.of(context)!.birthDay,
+                    //   boldText: profile.birthday,
+                    // ),
+                    const SizedBox(height: 8),
+                    // UserDataRow(
+                    //   normalText: AppLocalizations.of(context)!.email,
+                    //   boldText: profile.email,
+                    // ),
                     const Expanded(child: SizedBox.shrink()),
                     Button.factory(
                       context,
@@ -84,7 +84,7 @@ class UserData extends StatelessWidget {
                       () {
                         // TODO раелизовать сохранение номера.
                       },
-                 const     Size(double.infinity, 48),
+                      const Size(double.infinity, 48),
                     ),
                   ],
                 ),

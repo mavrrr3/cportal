@@ -23,181 +23,90 @@ class ProfileModel extends ProfileEntity {
   final String id;
 
   @HiveField(1)
-  final String firstName;
+  final String fullName;
 
   @HiveField(2)
-  final String externalId;
+  final String department;
 
   @HiveField(3)
-  final String lastName;
+  final String position;
 
   @HiveField(4)
-  final String middleName;
+  final DateTime birthday;
 
   @HiveField(5)
-  final String email;
-
-  @HiveField(6)
   final String photoLink;
 
-  @HiveField(7)
-  final bool active;
-
-  @HiveField(8)
-  final PositionModel position;
-
-  @HiveField(9)
-  final List<PhoneModel> phone;
-
-  @HiveField(10)
-  final String userCreated;
-
-  @HiveField(11)
-  final DateTime dateCreated;
-
-  @HiveField(12)
-  final String userUpdate;
-
-  @HiveField(13)
-  final DateTime dateUpdated;
-
-  @HiveField(14)
-  final String birthday;
+  @HiveField(6)
+  final List<PhoneEntity> phone;
 
   const ProfileModel({
     required this.id,
-    required this.firstName,
-    required this.externalId,
-    required this.lastName,
-    required this.middleName,
-    required this.birthday,
-    required this.email,
-    required this.photoLink,
-    required this.active,
+    required this.fullName,
+    required this.department,
     required this.position,
+    required this.birthday,
+    required this.photoLink,
     required this.phone,
-    required this.userCreated,
-    required this.dateCreated,
-    required this.userUpdate,
-    required this.dateUpdated,
   }) : super(
           id: id,
-          externalId: externalId,
-          firstName: firstName,
-          lastName: lastName,
-          middleName: middleName,
-          birthday: birthday,
-          email: email,
-          photoLink: photoLink,
-          active: active,
+          fullName: fullName,
+          department: department,
           position: position,
+          birthday: birthday,
+          photoLink: photoLink,
           phone: phone,
-          userCreated: userCreated,
-          dateCreated: dateCreated,
-          userUpdate: userUpdate,
-          dateUpdated: dateUpdated,
         );
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
         id: json['id'] as String,
-        externalId: json['external_id'] as String,
-        firstName: json['first_name'] as String,
-        lastName: json['last_name'] as String,
-        middleName: json['middle_name'] as String,
-        birthday: json['birthday'] as String,
-        email: json['email'] as String,
-        photoLink: json['photo_link'] as String,
-        active: json['active'] as bool,
-        position:
-            PositionModel.fromJson(json['position'] as Map<String, dynamic>),
+        fullName: json['name'] as String,
+        department: json['departament'] as String,
+        position: json['position'] as String,
+        birthday: DateTime.parse(json['birthdate'] as String),
+        photoLink: json['photo'] as String,
         phone: List<PhoneModel>.from(
-          json['phone'].map(
+          json['contacts'].map(
             (dynamic x) => PhoneModel.fromJson(x as Map<String, dynamic>),
           ) as Iterable<dynamic>,
         ),
-        userCreated: json['user_created'] as String,
-        dateCreated: DateTime.parse(json['date_created'] as String),
-        userUpdate: json['user_update'] as String,
-        dateUpdated: DateTime.parse(json['date_updated'] as String),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
-        'external_id': externalId,
-        'first_name': firstName,
-        'last_name': lastName,
-        'middle_name': middleName,
+        'name': fullName,
         'birthday': birthday,
-        'email': email,
         'photo_link': photoLink,
-        'active': active,
-        'position': position.toJson(),
-        'phone': List<String>.from(
-          phone.map(phoneModelToJson).toList(),
-        ),
-        'user_created': userCreated,
-        'date_created': dateCreated.toIso8601String(),
-        'user_update': userUpdate,
-        'date_updated': dateUpdated.toIso8601String(),
+        'position': position,
+        // 'phone': List<String>.from(
+        //   phone.map(phoneModelToJson).toList(),
+        // ),
       };
 }
 
 @HiveType(typeId: 3)
-class PositionModel extends PositionEntity {
-  @HiveField(0)
-  final String id;
-  @HiveField(1)
-  final String description;
-  @HiveField(2)
-  final String department;
-
-  const PositionModel({
-    required this.id,
-    required this.description,
-    required this.department,
-  }) : super(id: id, description: description, department: department);
-
-  factory PositionModel.fromJson(Map<String, dynamic> json) => PositionModel(
-        id: json['id'] as String,
-        description: json['description'] as String,
-        department: json['department'] as String,
-      );
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'description': description,
-        'department': department,
-      };
-}
-
-@HiveType(typeId: 4)
 class PhoneModel extends PhoneEntity {
   @HiveField(0)
-  final String number;
+  final String type;
+
   @HiveField(1)
-  final String? suffix;
-  @HiveField(2)
-  final bool primary;
+  final String contact;
 
   const PhoneModel({
-    required this.number,
-    required this.suffix,
-    required this.primary,
+    required this.type,
+    required this.contact,
   }) : super(
-          number: number,
-          suffix: suffix ?? '',
-          primary: primary,
+          type: type,
+          contact: contact,
         );
 
   factory PhoneModel.fromJson(Map<String, dynamic> json) => PhoneModel(
-        number: json['number'] as String,
-        suffix: json['suffix'] as String?,
-        primary: json['primary'] as bool,
+        type: json['type'] as String,
+        contact: json['contact'] as String,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'number': number,
-        'suffix': suffix,
-        'primary': primary,
+        'type': type,
+        'contact': contact,
       };
 }

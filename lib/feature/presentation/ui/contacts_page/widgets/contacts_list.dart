@@ -74,19 +74,19 @@ class ContactCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${item.firstName} ${item.middleName} ${item.lastName}',
+                      item.fullName,
                       style: theme.textTheme.headline6!
                           .copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      item.position.description,
+                      item.position,
                       style: theme.textTheme.bodyText1!.copyWith(
                         color: theme.hoverColor.withOpacity(0.68),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TagContainer(text: item.position.department),
+                    //TagContainer(text: item.position.department),
                   ],
                 ),
               ),

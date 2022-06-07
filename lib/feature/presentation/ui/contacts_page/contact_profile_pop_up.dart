@@ -49,7 +49,7 @@ class ContactProfilePopUp extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                '${user.firstName} ${user.middleName} ${user.lastName}',
+                user.fullName,
                 style: theme.textTheme.headline4!.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
@@ -59,47 +59,47 @@ class ContactProfilePopUp extends StatelessWidget {
             const SizedBox(height: 32),
             //-- Profile info --
             // Post.
-            ProfileInfoSection(
-              headline: AppLocalizations.of(context)!.position,
-              text: user.position.description,
-              bottomPadding: 18,
-            ),
-            const SizedBox(height: 8),
+            // ProfileInfoSection(
+            //   headline: AppLocalizations.of(context)!.position,
+            //   text: user.position.description,
+            //   bottomPadding: 18,
+            // ),
+            // const SizedBox(height: 8),
 
-            // Department.
-            ProfileInfoSection(
-              headline: AppLocalizations.of(context)!.department,
-              text: user.position.description,
-              bottomPadding: 18,
-            ),
+            // // Department.
+            // ProfileInfoSection(
+            //   headline: AppLocalizations.of(context)!.department,
+            //   text: user.position.description,
+            //   bottomPadding: 18,
+            // ),
 
-            // Office phone.
-            ProfileInfoSection(
-              headline: AppLocalizations.of(context)!.office_phone,
-              text: user.phone.first.number,
-              bottomPadding: 18,
-            ),
+            // // Office phone.
+            // ProfileInfoSection(
+            //   headline: AppLocalizations.of(context)!.office_phone,
+            //   text: user.phone.first.number,
+            //   bottomPadding: 18,
+            // ),
             // Email.
-            ProfileInfoSection(
-              headline: AppLocalizations.of(context)!.email,
-              text: user.email,
-              textColor: theme.primaryColor,
-              bottomPadding: 18,
-            ),
+            // ProfileInfoSection(
+            //   headline: AppLocalizations.of(context)!.email,
+            //   text: user.email,
+            //   textColor: theme.primaryColor,
+            //   bottomPadding: 18,
+            // ),
 
             // Self phone.
-            ProfileInfoSection(
-              headline: AppLocalizations.of(context)!.self_phone,
-              text: '${user.phone[1].suffix} ${user.phone[1].number}',
-              bottomPadding: 18,
-            ),
+            // ProfileInfoSection(
+            //   headline: AppLocalizations.of(context)!.self_phone,
+            //   text: '${user.phone[1].suffix} ${user.phone[1].number}',
+            //   bottomPadding: 18,
+            // ),
 
             // Birth date.
-            ProfileInfoSection(
-              headline: AppLocalizations.of(context)!.birth_date,
-              text: user.birthday,
-              bottomPadding: 0,
-            ),
+            // ProfileInfoSection(
+            //   headline: AppLocalizations.of(context)!.birth_date,
+            //   text: user.birthday,
+            //   bottomPadding: 0,
+            // ),
 
             const SizedBox(height: 32),
             _ActionButton(
