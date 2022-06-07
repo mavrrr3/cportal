@@ -43,15 +43,18 @@ class HorizontalListViewMain extends StatelessWidget {
               },
             ),
           )
-        : Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            children: List.generate(
-              gridViewMap.length,
-              (i) => CardHorizontalScroll(
-                icon: gridViewMap[i]['icon'] as IconData,
-                text: gridViewMap[i]['text'] as String,
-                color: color,
+        : Padding(
+            padding: getHorizontalPadding(context),
+            child: Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: List.generate(
+                gridViewMap.length,
+                (i) => CardHorizontalScroll(
+                  icon: gridViewMap[i]['icon'] as IconData,
+                  text: gridViewMap[i]['text'] as String,
+                  color: color,
+                ),
               ),
             ),
           );
