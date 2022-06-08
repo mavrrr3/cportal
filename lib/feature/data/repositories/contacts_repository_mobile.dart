@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';

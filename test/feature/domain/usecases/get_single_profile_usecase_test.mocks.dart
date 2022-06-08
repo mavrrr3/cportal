@@ -35,17 +35,17 @@ class MockIProfileRepository extends _i1.Mock
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>> getSingleProfile(
-          String? id) =>
+          String? id,) =>
       (super.noSuchMethod(Invocation.method(#getSingleProfile, [id]),
           returnValue: Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>>.value(
-              _FakeEither_0<_i5.Failure, _i6.ProfileEntity>())) as _i4
+              _FakeEither_0<_i5.Failure, _i6.ProfileEntity>(),),) as _i4
           .Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>>);
   @override
   _i4.Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>> searchProfiles(
-          String? query) =>
+          String? query,) =>
       (super.noSuchMethod(Invocation.method(#searchProfiles, [query]),
           returnValue:
               Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>>.value(
-                  _FakeEither_0<_i5.Failure, List<_i6.ProfileEntity>>())) as _i4
+                  _FakeEither_0<_i5.Failure, List<_i6.ProfileEntity>>(),),) as _i4
           .Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>>);
 }

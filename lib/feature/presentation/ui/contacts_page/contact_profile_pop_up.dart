@@ -1,6 +1,5 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

@@ -47,7 +47,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
 }''';
 
     try {
-      print('$stringUser');
+      // print('$stringUser');
 
       // TODO реализовать получение данных от API.
       final ProfileModel localeUser = profileModelFromJson(stringUser);

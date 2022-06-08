@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

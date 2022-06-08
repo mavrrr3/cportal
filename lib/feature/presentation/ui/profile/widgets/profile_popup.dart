@@ -201,20 +201,20 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     ],
                   ),
                   const Expanded(child: SizedBox()),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // TitleAndDescriptionRow(
-                      //   title: AppLocalizations.of(context)!.birthDay,
-                      //   description: profile.birthday,
-                      // ),
-                      const SizedBox(height: 8),
-                      // TitleAndDescriptionRow(
-                      //   title: AppLocalizations.of(context)!.email,
-                      //   description: profile.email,
-                      // ),
-                    ],
-                  ),
+                  // Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     TitleAndDescriptionRow(
+                  //       title: AppLocalizations.of(context)!.birthDay,
+                  //       description: profile.birthday,
+                  //     ),
+                  //     const SizedBox(height: 8),
+                  //     TitleAndDescriptionRow(
+                  //       title: AppLocalizations.of(context)!.email,
+                  //       description: profile.email,
+                  //     ),
+                  //   ],
+                  // ),
                   const Flexible(child: SizedBox()),
                 ],
               ),

@@ -5,7 +5,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_p
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/phone_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/user_data_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

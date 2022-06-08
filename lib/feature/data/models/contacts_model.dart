@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
