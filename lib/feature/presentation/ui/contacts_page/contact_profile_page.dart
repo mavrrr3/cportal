@@ -4,7 +4,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContactProfilePage extends StatelessWidget {
   final String id;
@@ -25,7 +23,7 @@ class ContactProfilePage extends StatelessWidget {
 
   void _contentInit(BuildContext context) {
     return BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(FetchContactsEvent());
+        .add(const FetchContactsEvent());
   }
 
   @override
@@ -36,7 +34,7 @@ class ContactProfilePage extends StatelessWidget {
       builder: (context, navState) {
         return BlocBuilder<ContactsBloc, ContactsState>(
           builder: (context, state) {
-            if (state is FetchContactsLoadingState) {
+            if (state is ContactsLoadingState) {
               return const Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
@@ -44,8 +42,8 @@ class ContactProfilePage extends StatelessWidget {
               );
             }
 
-            if (state is FetchContactsLoadedState) {
-              final ProfileEntity user = state.data.contacts.firstWhere(
+            if (state is ContactsLoadedState) {
+              final ProfileEntity user = state.contacts.firstWhere(
                 (element) => element.id == id,
               );
 
@@ -139,7 +137,7 @@ class ContactProfilePage extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                   user.fullName,
+                                    user.fullName,
                                     textAlign: TextAlign.center,
                                     style: theme.textTheme.headline4!.copyWith(
                                       fontWeight: FontWeight.w800,

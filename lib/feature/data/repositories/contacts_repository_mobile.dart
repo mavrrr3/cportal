@@ -23,10 +23,8 @@ class ContactsRepositoryMobile implements IContactsRepository {
   Future<Either<Failure, ContactsModel>> fetchContacts(int page) async {
     if (await networkInfo.isConnected) {
       try {
-        log('fetchContacts');
 
         final remoteContacts = await remoteDataSource.fetchContacts(page);
-        log('fetchContacts end');
 
         return Right(remoteContacts);
       } on ServerException {

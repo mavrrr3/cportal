@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
@@ -31,10 +34,12 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  late ScrollController _scrollController;
   late TextEditingController _searchController;
   late bool _isFilterOpenWeb;
   @override
   void initState() {
+    _scrollController = ScrollController();
     _searchController = TextEditingController();
     _isFilterOpenWeb = false;
     _contentInit();
@@ -44,7 +49,7 @@ class _ContactsPageState extends State<ContactsPage> {
   // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(FetchContactsEvent());
+        .add(const FetchContactsEvent(isFirstFetch: true));
     BlocProvider.of<FilterBloc>(context, listen: false)
         .add(FetchFiltersEvent());
   }
@@ -52,36 +57,48 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    _setupScrollController(context);
 
-    return BlocBuilder<ContactsBloc, ContactsState>(
-      builder: (context, state) {
-        return GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Scaffold(
-            body: Stack(
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ResponsiveVisibility(
-                      visible: false,
-                      visibleWhen: const [
-                        Condition<dynamic>.largerThan(name: MOBILE),
-                      ],
-                      // Меню Web.
-                      child: DesktopMenu(
-                        currentIndex: 4,
-                        onChange: (index) => changePage(context, index),
-                      ),
-                    ),
-                    if (state is FetchContactsLoadingState)
-                      const Expanded(
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                    if (state is FetchContactsLoadedState)
-                      Expanded(
+                ResponsiveVisibility(
+                  visible: false,
+                  visibleWhen: const [
+                    Condition<dynamic>.largerThan(name: MOBILE),
+                  ],
+                  // Меню Web.
+                  child: DesktopMenu(
+                    currentIndex: 4,
+                    onChange: (index) => changePage(context, index),
+                  ),
+                ),
+                BlocBuilder<ContactsBloc, ContactsState>(
+                  builder: (context, state) {
+                    List<ProfileEntity> contacts = [];
+
+                    if (state is ContactsLoadingState && state.isFirstFetch) {
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else if (state is ContactsLoadingState) {
+                      contacts = state.oldContacts;
+                    }
+
+                    if (state is ContactsLoadedState) {
+                      contacts = state.contacts;
+
+                      return Expanded(
                         child: SafeArea(
                           child: SingleChildScrollView(
+                            controller: _scrollController,
                             physics: const BouncingScrollPhysics(),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,10 +183,12 @@ class _ContactsPageState extends State<ContactsPage> {
                                 ),
 
                                 // Избранные.
-                                if (state.data.favorites.isNotEmpty)
+                                if (state.favorites.isNotEmpty)
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      left: getSingleHorizontalPadding(context),
+                                      left: getSingleHorizontalPadding(
+                                        context,
+                                      ),
                                       bottom: 16,
                                     ),
                                     child: !ResponsiveWrapper.of(context)
@@ -177,14 +196,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                         ? SizedBox(
                                             height: 48,
                                             child: FavoritesRow(
-                                              items: state.data.favorites,
+                                              items: state.favorites,
                                               onTap: (i) {
                                                 _goToUserPage(state, i);
                                               },
                                             ),
                                           )
                                         : FavoritesWrap(
-                                            items: state.data.favorites,
+                                            items: state.favorites,
                                             onTap: (i) async {
                                               if (ResponsiveWrapper.of(
                                                 context,
@@ -205,18 +224,18 @@ class _ContactsPageState extends State<ContactsPage> {
                                   padding: EdgeInsets.only(
                                     left: getSingleHorizontalPadding(context),
                                     right: getSingleHorizontalPadding(context),
-                                    top: state.data.favorites.isEmpty ? 31 : 0,
+                                    top: state.favorites.isEmpty ? 31 : 0,
                                   ),
                                   child: !kIsWeb
                                       ? ContactsList(
-                                          items: state.data.contacts,
+                                          items: contacts,
                                           onTap: (i) => _goToUserPage(state, i),
                                         )
                                       : Wrap(
                                           spacing: 8,
                                           runSpacing: 8,
                                           children: List.generate(
-                                            state.data.contacts.length,
+                                            state.contacts.length,
                                             (i) => GestureDetector(
                                               behavior:
                                                   HitTestBehavior.translucent,
@@ -233,7 +252,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                                 }
                                               },
                                               child: ContactCard(
-                                                item: state.data.contacts[i],
+                                                item: state.contacts[i],
                                                 width: ResponsiveWrapper.of(
                                                   context,
                                                 ).isLargerThan(MOBILE)
@@ -250,43 +269,61 @@ class _ContactsPageState extends State<ContactsPage> {
                             ),
                           ),
                         ),
-                      ),
-                  ],
+                      );
+                    }
+
+                    return const SizedBox();
+                  },
                 ),
-                if (_isFilterOpenWeb)
-                  GestureDetector(
-                    onTap: () => setState(() {
-                      _isFilterOpenWeb = false;
-                    }),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      color: getBarrierColor(theme),
-                    ),
-                  ),
-                if (_isFilterOpenWeb)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: FilterWeb(
-                      onApply: _onApplyFilter,
-                      onClear: _onClearFilter,
-                    ),
-                  ),
               ],
             ),
-          ),
-        );
-      },
+            if (_isFilterOpenWeb)
+              GestureDetector(
+                onTap: () => setState(() {
+                  _isFilterOpenWeb = false;
+                }),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: getBarrierColor(theme),
+                ),
+              ),
+            if (_isFilterOpenWeb)
+              Align(
+                alignment: Alignment.centerRight,
+                child: FilterWeb(
+                  onApply: _onApplyFilter,
+                  onClear: _onClearFilter,
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 
+  // Пагинация.
+  void _setupScrollController(BuildContext context) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels != 0) {
+          log('//////////[_setupScrollController]//////////////');
+
+          BlocProvider.of<ContactsBloc>(context)
+              .add(const FetchContactsEvent());
+        }
+      }
+    });
+  }
+
+  // Навигация на страницу пользователя.
   void _goToUserPage(
-    FetchContactsLoadedState state,
+    ContactsLoadedState state,
     int i,
   ) =>
       GoRouter.of(context).pushNamed(
         NavigationRouteNames.contactProfile,
-        params: {'fid': state.data.contacts[i].id},
+        params: {'fid': state.contacts[i].id},
       );
 
   // Filter Bottom Sheet Mobile.
@@ -321,6 +358,7 @@ class _ContactsPageState extends State<ContactsPage> {
     );
   }
 
+  // Кнопка [Применить] фильтр.
   void _onApplyFilter() {
     if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
       setState(() {
@@ -331,14 +369,16 @@ class _ContactsPageState extends State<ContactsPage> {
     }
   }
 
+  // Кнопка [Очистить] фильтр.
   void _onClearFilter() {
     BlocProvider.of<FilterBloc>(
       context,
     ).add(FilterRemoveAllEvent());
   }
 
+  // Профиль пользователя для Web.
   Future<void> _showContactProfile(
-    FetchContactsLoadedState state,
+    ContactsLoadedState state,
     int i,
   ) {
     return showDialog(
@@ -357,7 +397,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(32),
-                  child: ContactProfilePopUp(user: state.data.contacts[i]),
+                  child: ContactProfilePopUp(user: state.contacts[i]),
                 ),
               ),
             );

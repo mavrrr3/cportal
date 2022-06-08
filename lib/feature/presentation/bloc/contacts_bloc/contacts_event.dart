@@ -7,4 +7,11 @@ abstract class ContactsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchContactsEvent extends ContactsEvent {}
+class FetchContactsEvent extends ContactsEvent {
+  final bool isFirstFetch;
+
+  const FetchContactsEvent({this.isFirstFetch = false});
+
+  @override
+  List<Object> get props => [isFirstFetch];
+}

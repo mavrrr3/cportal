@@ -43,8 +43,8 @@ class ContactsLocalDataSource implements IContactsLocalDataSource {
 
   @override
   Future<void> contactsToCache(ContactsModel contacts) async {
-     // Удаляет box с диска.
-    await Hive.deleteBoxFromDisk('contacts');
+    // Удаляет box с диска.
+    // await Hive.deleteBoxFromDisk('contacts');
     var box = await Hive.openBox<ContactsModel>('contacts');
     if (!Hive.isBoxOpen('contacts')) {
       await Hive.openBox<ContactsModel>('contacts');

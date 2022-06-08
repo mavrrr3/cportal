@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:cportal_flutter/app_config.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
-import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 
 abstract class IContactsRemoteDataSource {
   /// Обращается к эндпойнту .....
