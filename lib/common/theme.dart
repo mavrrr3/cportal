@@ -43,7 +43,10 @@ ThemeData lightTheme() => ThemeData.light().copyWith(
       cardColor: AppColors.textMain,
       //------
 
-      // [Other]
+      // Color in StatusBadge.
+      indicatorColor: AppColors.yellow,
+
+      // [Other].
       appBarTheme: appBarTheme.copyWith(
         backgroundColor: AppColors.appBarLight,
         titleTextStyle: const TextStyle(color: AppColors.kLightTextColor),
@@ -91,8 +94,10 @@ ThemeData darkTheme() => ThemeData.dark().copyWith(
       cardColor: AppColors.textDark,
       //------
 
-      // [Other]
+      // Color in StatusBadge.
+      indicatorColor: AppColors.yellow,
 
+      // [Other].
       appBarTheme: appBarTheme.copyWith(backgroundColor: AppColors.appBarDark),
       iconTheme: const IconThemeData(color: Colors.white),
       visualDensity: VisualDensity.adaptivePlatformDensity,

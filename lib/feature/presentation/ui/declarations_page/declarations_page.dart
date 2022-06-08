@@ -11,6 +11,8 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/fi
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/status_badge.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/foundation.dart';
@@ -48,7 +50,6 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final halfWidth = MediaQuery.of(context).size.width / 2 - 24;
 
     return BlocBuilder<ContactsBloc, ContactsState>(
       builder: (context, state) {
@@ -161,78 +162,11 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                                     },
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 55,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .youHadntDeclarations,
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          theme.textTheme.headline3!.copyWith(
-                                        color: theme.cardColor.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath:
-                                                'assets/icons/calendar.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .buisenesTripDeclaration,
-                                          ),
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath:
-                                                'assets/icons/fly_vocation.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .vocationDeclaration,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 16),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath: 'assets/icons/lock.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .passDeclaration,
-                                          ),
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath:
-                                                'assets/icons/pay_list.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .payListDeclaration,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 16),
-                                      DeclarationCard(
-                                        width: double.infinity,
-                                        svgPath: 'assets/icons/support.svg',
-                                        text: AppLocalizations.of(context)!
-                                            .supportDeclaration,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+
+                                const WithDeclarations(),
+
+                                // Если ещё нет заявлений
+                                // const EmptyDeclarations(),
                               ],
                             ),
                           ),
@@ -329,4 +263,279 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
 
     return isActive;
   }
+}
+
+class NewDeclarations extends StatelessWidget {
+  const NewDeclarations({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final halfWidth = MediaQuery.of(context).size.width / 2 - 24;
+
+    return Column(
+      children: [
+        // ! Отображать если нет заявлений.
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(
+        //     vertical: 55,
+        //   ),
+        //   child: Center(
+        //     child: Text(
+        //       AppLocalizations.of(context)!.youHadntDeclarations,
+        //       textAlign: TextAlign.center,
+        //       style: theme.textTheme.headline3!.copyWith(
+        //         color: theme.cardColor.withOpacity(0.5),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/calendar.svg',
+                    text: AppLocalizations.of(context)!.buisenesTripDeclaration,
+                  ),
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/fly_vocation.svg',
+                    text: AppLocalizations.of(context)!.vocationDeclaration,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/lock.svg',
+                    text: AppLocalizations.of(context)!.passDeclaration,
+                  ),
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/pay_list.svg',
+                    text: AppLocalizations.of(context)!.payListDeclaration,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              DeclarationCard(
+                width: double.infinity,
+                svgPath: 'assets/icons/support.svg',
+                text: AppLocalizations.of(context)!.supportDeclaration,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class WithDeclarations extends StatefulWidget {
+  const WithDeclarations({Key? key}) : super(key: key);
+
+  @override
+  State<WithDeclarations> createState() => _WithDeclarationsState();
+}
+
+class _WithDeclarationsState extends State<WithDeclarations>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TabBar(
+                      labelStyle: theme.textTheme.headline3!.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      labelColor: theme.primaryColor,
+                      unselectedLabelColor: theme.cardColor,
+                      indicatorColor: theme.primaryColor,
+                      controller: tabController,
+                      tabs: const [
+                        Tab(
+                          child: Text('Заявления'),
+                        ),
+                        Tab(
+                          child: Text('Новые'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 1,
+              color: theme.dividerColor,
+            ),
+            Expanded(
+              child: TabBarView(controller: tabController, children: const [
+                Padding(
+                  padding: EdgeInsets.only(top: 24, left: 16, right: 16),
+                  child: AllDeclarations(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 24),
+                  child: NewDeclarations(),
+                ),
+              ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AllDeclarations extends StatelessWidget {
+  const AllDeclarations({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    Widget drawBadgeByStatus(String status) {
+      switch (status) {
+        case 'одобрено':
+          return StatusBadge(
+            status,
+            theme.focusColor,
+          );
+        case 'отклонено':
+          return StatusBadge(
+            status,
+            theme.errorColor,
+          );
+        default:
+          return StatusBadge(
+            status,
+            theme.indicatorColor,
+          );
+      }
+    }
+
+    List<Widget> drawDeclarationCards() {
+      final List<Widget> list = [];
+      int count = 0;
+      while (count < declaraions.length) {
+        list.add(
+          DeclarationCardWithStatus(
+            status: drawBadgeByStatus(declaraions[count].status),
+            title: declaraions[count].title,
+            svgPath: declaraions[count].svgPath,
+            date: declaraions[count].date,
+            number: declaraions[count].number,
+          ),
+        );
+        count++;
+      }
+
+      return list;
+    }
+
+    return Column(
+      children: [
+        ...drawDeclarationCards(),
+      ],
+    );
+  }
+}
+
+final List<DeclarationEntity> declaraions = [
+  DeclarationEntity(
+    title: 'Заявление на отпуск',
+    svgPath: 'assets/icons/fly_vocation.svg',
+    date: '17 августа 2022 15:34:56',
+    number: '#И213212111',
+    status: 'обработка',
+  ),
+  DeclarationEntity(
+    title: 'Заявление на командировку',
+    svgPath: 'assets/icons/calendar.svg',
+    date: '17 августа 2022 15:34:56',
+    number: '#И213212111',
+    status: 'одобрено',
+  ),
+  DeclarationEntity(
+    title: 'Заявление на пропуск',
+    svgPath: 'assets/icons/lock.svg',
+    date: '17 августа 2022 15:34:56',
+    number: '#И213212111',
+    status: 'обработка',
+  ),
+  DeclarationEntity(
+    title: 'Заявление на расчетный листок',
+    svgPath: 'assets/icons/pay_list.svg',
+    date: '17 августа 2022 15:34:56',
+    number: '#И213212111',
+    status: 'одобрено',
+  ),
+  DeclarationEntity(
+    title: 'Заявление на тех. поддержку/IT',
+    svgPath: 'assets/icons/support.svg',
+    date: '17 августа 2022 15:34:56',
+    number: '#И213212111',
+    status: 'отклонено',
+  ),
+  DeclarationEntity(
+    title: 'Заявление на тех. поддержку/IT',
+    svgPath: 'assets/icons/support.svg',
+    date: '17 августа 2022 15:34:56',
+    number: '#И213212111',
+    status: 'одобрено',
+  ),
+];
+
+class DeclarationEntity {
+  final String title;
+  final String svgPath;
+  final String date;
+  final String number;
+  final String status;
+
+  DeclarationEntity({
+    required this.title,
+    required this.svgPath,
+    required this.date,
+    required this.number,
+    required this.status,
+  });
 }

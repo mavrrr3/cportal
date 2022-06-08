@@ -6,7 +6,7 @@ class AppColors {
   static const Color mainBgLight = Color(0xFFF0F0F0);
   static const Color kLightTextColor = Color(0xFF111315);
   static const Color lightRed = Color(0xFFEEDCDD);
-
+  static const Color yellow = Color(0xFFFFBC3B);
   static const Color red = Color(0xFFDF292F);
   static const Color redDark = Color(0xFFFF6A55);
   static const Color blue = Color(0xFF5284DA);
