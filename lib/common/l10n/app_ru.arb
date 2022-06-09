@@ -106,5 +106,6 @@
     "payListDeclaration": "Заявление\nна расчётный листок",
     "vocationDeclaration": "Заявление\nна отпуск",
     "supportDeclaration": "Заявление\nна техническую поддержку/IT",
-    "shortSupportDeclaration": "Заявление на тех. поддержку/IT"
+    "shortSupportDeclaration": "Заявление на тех. поддержку/IT",
+    "inProcess": "В процессе"
 }
