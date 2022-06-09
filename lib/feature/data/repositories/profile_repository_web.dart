@@ -14,9 +14,9 @@ class ProfileRepositoryWeb implements IProfileRepository {
   });
 
   @override
-  Future<Either<Failure, ProfileEntity>> getSingleProfile(String id) async {
+  Future<Either<Failure, ProfileEntity>> getSingleProfile(String id, bool isMyProfile) async {
     try {
-      final remoteUser = await remoteDataSource.getSingleProfile(id);
+      final remoteUser = await remoteDataSource.getSingleProfile(id, isMyProfile);
 
       return Right(remoteUser);
     } on ServerException {

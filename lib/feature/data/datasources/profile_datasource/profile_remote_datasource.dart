@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
@@ -8,7 +10,7 @@ abstract class IProfileRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем все ошибки через [ServerException]
-  Future<ProfileModel> getSingleProfile(String id);
+  Future<ProfileModel> getSingleProfile(String id, bool isMyProfile);
 
   /// Обращается к эндпойнту .....
   ///
@@ -18,11 +20,49 @@ abstract class IProfileRemoteDataSource {
 
 class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   final IProfileLocalDataSource localDataSource;
+  final Dio dio;
 
-  ProfileRemoteDataSource(this.localDataSource);
+  ProfileRemoteDataSource(this.localDataSource, this.dio);
   @override
-  Future<ProfileModel> getSingleProfile(String id) async {
-    const String stringUser = '''
+  Future<ProfileModel> getSingleProfile(String id, bool isMyProfile) async {
+    final String baseUrl =
+        'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?id=$id';
+    try {
+      log('///-$isMyProfile-///');
+      // TODO: избавиться от if, передавать эту переменную в singleProfileToCache
+      if (isMyProfile) {
+        final ProfileModel localeUser = profileModelFromJson(stringUser);
+
+        await localDataSource.singleProfileToCache(localeUser);
+
+        return localeUser;
+      } else {
+        final response = await dio.get<String>(baseUrl);
+
+        final profile = ProfileModel.fromJson(
+          json.decode(response.data!) as Map<String, dynamic>,
+        );
+
+        log('ProfileRemouteDataSource  ==========  $profile');
+        await localDataSource.singleProfileToCache(profile);
+
+        return profile;
+      }
+    } on SocketException {
+      throw ServerException();
+    } on Exception catch (e) {
+      log('Ошибка в методе ProfileRemoteDataSource: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ProfileModel>> searchProfiles(String query) {
+    throw UnimplementedError();
+  }
+}
+
+const String stringUser = '''
 {
 "id": "000000002",
 "name": "Иванов Иван Иванович",
@@ -45,27 +85,3 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
 ],
 "photo": "1.jpg"
 }''';
-
-    try {
-      // print('$stringUser');
-
-      // TODO реализовать получение данных от API.
-      final ProfileModel localeUser = profileModelFromJson(stringUser);
-      log('$localeUser');
-
-      await localDataSource.singleProfileToCache(localeUser);
-
-      return localeUser;
-    } on SocketException {
-      throw ServerException();
-    } on Exception catch (e) {
-      log('Ошибка в методе ProfileRemoteDataSource: $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<List<ProfileModel>> searchProfiles(String query) {
-    throw UnimplementedError();
-  }
-}

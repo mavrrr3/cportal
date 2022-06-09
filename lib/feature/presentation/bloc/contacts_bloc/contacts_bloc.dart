@@ -28,10 +28,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       _onFetch,
       transformer: bloc_concurrency.sequential(),
     );
-    on<FetchContactProfileEvent>(
-      _onFetchProfile,
-      transformer: bloc_concurrency.sequential(),
-    );
+
   }
 
   // Получение данных от API.
@@ -76,10 +73,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     debugPrint('Отработал эвент: $event');
   }
 
-  FutureOr<void> _onFetchProfile(
-    FetchContactProfileEvent event,
-    Emitter emit,
-  ) async {}
+
 
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {

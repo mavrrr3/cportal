@@ -1,6 +1,6 @@
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/phone_box.dart';
@@ -18,7 +18,7 @@ class UserData extends StatelessWidget {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
+    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5', isMyProfile: true,));
     final ThemeData theme = Theme.of(context);
 
     return Swipe(

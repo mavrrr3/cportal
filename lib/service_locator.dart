@@ -49,7 +49,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_blo
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -179,7 +179,7 @@ Future<void> init() async {
 
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
-    () => ProfileRemoteDataSource(sl()),
+    () => ProfileRemoteDataSource(sl(), sl()),
   );
 
   sl.registerLazySingleton<IProfileLocalDataSource>(

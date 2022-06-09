@@ -15,12 +15,3 @@ class FetchContactsEvent extends ContactsEvent {
   @override
   List<Object> get props => [isFirstFetch];
 }
-
-class FetchContactProfileEvent extends ContactsEvent {
-  final int id;
-
-  const FetchContactProfileEvent({required this.id});
-
-  @override
-  List<Object> get props => [id];
-}

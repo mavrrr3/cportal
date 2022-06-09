@@ -15,11 +15,11 @@ abstract class IContactsRemoteDataSource {
 }
 
 class ContactsRemoteDataSource implements IContactsRemoteDataSource {
-  final IContactsLocalDataSource localDatasource;
+  final IContactsLocalDataSource localDataSource;
   final Dio dio;
 
   ContactsRemoteDataSource(
-    this.localDatasource,
+    this.localDataSource,
     this.dio,
   );
 
@@ -35,7 +35,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
       );
 
       log('ContactsRemouteDataSource  ==========  ${contacts.contacts.length}');
-      await localDatasource.contactsToCache(contacts);
+      await localDataSource.contactsToCache(contacts);
 
       return contacts;
     } on ServerException {

@@ -1,5 +1,5 @@
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
@@ -33,7 +33,10 @@ class ContactProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    BlocProvider.of<GetSingleProfileBloc>(
+      context,
+      listen: false,
+    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
     final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(

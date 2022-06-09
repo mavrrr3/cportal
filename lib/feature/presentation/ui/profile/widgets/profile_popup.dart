@@ -1,5 +1,8 @@
 // ignore_for_file: unused_element
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -7,11 +10,10 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+
 
 bool _isNotificationTurnedOn = true;
 var _isFingerPrintAuth = false;
@@ -111,7 +113,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
+    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5', isMyProfile: true,));
 
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
