@@ -1,9 +1,11 @@
+import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/phone_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/user_data_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +20,10 @@ class UserData extends StatelessWidget {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5', isMyProfile: true,));
+    ).add(const GetSingleProfileEventImpl(
+      'A1B2C3D4E5',
+      isMyProfile: true,
+    ));
     final ThemeData theme = Theme.of(context);
 
     return Swipe(
@@ -41,8 +46,7 @@ class UserData extends StatelessWidget {
         body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
           builder: (context, state) {
             if (state is GetSingleProfileLoadedState) {
-              //
-              //  final ProfileEntity profile = state.profile;
+              final ProfileEntity profile = state.profile;
 
               return Padding(
                 padding: const EdgeInsets.only(
@@ -56,25 +60,26 @@ class UserData extends StatelessWidget {
                     const SizedBox(height: 33),
                     const PhoneBox(),
                     const SizedBox(height: 24),
-                    // UserDataRow(
-                    //   normalText: AppLocalizations.of(context)!.position,
-                    //   boldText: profile.position.description,
-                    // ),
-                    //  const     SizedBox(height: 8),
-                    // UserDataRow(
-                    //   normalText: AppLocalizations.of(context)!.department,
-                    //   boldText: profile.position.department,
-                    // ),
-                    //  const     SizedBox(height: 8),
-                    // UserDataRow(
-                    //   normalText: AppLocalizations.of(context)!.birthDay,
-                    //   boldText: profile.birthday,
-                    // ),
+                    UserDataRow(
+                      normalText: AppLocalizations.of(context)!.position,
+                      boldText: profile.position,
+                    ),
                     const SizedBox(height: 8),
-                    // UserDataRow(
-                    //   normalText: AppLocalizations.of(context)!.email,
-                    //   boldText: profile.email,
-                    // ),
+                    UserDataRow(
+                      normalText: AppLocalizations.of(context)!.department,
+                      boldText: profile.department,
+                    ),
+                    const SizedBox(height: 8),
+                    if (profile.birthDayToString != null)
+                      UserDataRow(
+                        normalText: AppLocalizations.of(context)!.birthDay,
+                        boldText: profile.birthDayToString!,
+                      ),
+                    const SizedBox(height: 8),
+                    UserDataRow(
+                      normalText: AppLocalizations.of(context)!.email,
+                      boldText: profile.email,
+                    ),
                     const Expanded(child: SizedBox.shrink()),
                     Button.factory(
                       context,

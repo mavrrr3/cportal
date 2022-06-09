@@ -417,16 +417,9 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void _onSearchInput(String text) {
-    if (text.isNotEmpty) {
-      BlocProvider.of<ContactsBloc>(
-        context,
-        listen: false,
-      ).add(SearchContactsEvent(query: text));
-    } else {
-      BlocProvider.of<ContactsBloc>(
-        context,
-        listen: false,
-      ).add(const FetchContactsEvent());
-    }
+    BlocProvider.of<ContactsBloc>(
+      context,
+      listen: false,
+    ).add(SearchContactsEvent(query: text));
   }
 }

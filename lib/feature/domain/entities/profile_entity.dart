@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProfileEntity extends Equatable {
   final String id;
@@ -23,15 +24,11 @@ class ProfileEntity extends Equatable {
     required this.contactInfo,
   });
 
-  @override
-  List<Object?> get props => [
-        id,
-        fullName,
-        birthday,
-        photoLink,
-        position,
-        contactInfo,
-      ];
+  String? get birthDayToString =>
+      birthday != null ? DateFormat('d.MM.y').format(birthday!) : null;
+
+  String get email =>
+      contactInfo.where((element) => element.type == 'Эл. почта').first.contact;
 
   static Color get _randomColor {
     const List<Color> colors = [
@@ -45,6 +42,16 @@ class ProfileEntity extends Equatable {
 
     return colors[random];
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        fullName,
+        birthday,
+        photoLink,
+        position,
+        contactInfo,
+      ];
 }
 
 class ContactInfoEntity extends Equatable {
