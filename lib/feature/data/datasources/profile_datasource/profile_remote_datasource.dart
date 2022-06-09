@@ -39,8 +39,9 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
       } else {
         final response = await dio.get<String>(baseUrl);
 
+        final jsonR = json.decode(response.data!) as Map<String, dynamic>;
         final profile = ProfileModel.fromJson(
-          json.decode(response.data!) as Map<String, dynamic>,
+          jsonR['response'] as Map<String, dynamic>,
         );
 
         log('ProfileRemouteDataSource  ==========  $profile');

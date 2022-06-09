@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
 
-class ContactProfilePage extends StatelessWidget {
+class ContactProfilePage extends StatefulWidget {
   final String id;
 
   const ContactProfilePage({
@@ -26,24 +27,29 @@ class ContactProfilePage extends StatelessWidget {
     required this.id,
   }) : super(key: key);
 
-  void _contentInit(BuildContext context) {
-    return BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(const FetchContactsEvent());
+  @override
+  State<ContactProfilePage> createState() => _ContactProfilePageState();
+}
+
+class _ContactProfilePageState extends State<ContactProfilePage> {
+  @override
+  void initState() {
+    BlocProvider.of<GetSingleProfileBloc>(
+      context,
+      listen: false,
+    ).add(GetSingleProfileEventImpl(widget.id));
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<GetSingleProfileBloc>(
-      context,
-      listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
     final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, navState) {
-        return BlocBuilder<ContactsBloc, ContactsState>(
+        return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
           builder: (context, state) {
-            if (state is ContactsLoadingState) {
+            if (state is GetSingleProfileLoadingState) {
               return const Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
@@ -51,15 +57,13 @@ class ContactProfilePage extends StatelessWidget {
               );
             }
 
-            if (state is ContactsLoadedState) {
-              final ProfileEntity user = state.contacts.firstWhere(
-                (element) => element.id == id,
-              );
+            if (state is GetSingleProfileLoadedState) {
+              final ProfileEntity user = state.profile;
 
               return Swipe(
                 onSwipeRight: () {
                   if (kIsWeb) {
-                    _contentInit(context);
+                    _previousContentInit(context);
                   }
                   _onBack(context);
                 },
@@ -120,7 +124,7 @@ class ContactProfilePage extends StatelessWidget {
                                     _BackButton(
                                       onTap: () {
                                         if (kIsWeb) {
-                                          _contentInit(context);
+                                          _previousContentInit(context);
                                         }
                                         _onBack(context);
                                       },
@@ -162,7 +166,7 @@ class ContactProfilePage extends StatelessWidget {
                                 const SizedBox(height: 16),
 
                                 //-- Profile info --
-                                // Post
+                                // Post.
                                 ProfileInfoSection(
                                   headline:
                                       AppLocalizations.of(context)!.position,
@@ -199,7 +203,7 @@ class ContactProfilePage extends StatelessWidget {
             }
 
             if (state is ContactsEmptyState) {
-              _contentInit(context);
+              _previousContentInit(context);
             }
 
             // TODO: Отработать другие стейты.
@@ -208,6 +212,11 @@ class ContactProfilePage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _previousContentInit(BuildContext context) {
+    return BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(const FetchContactsEvent());
   }
 
   void _onBack(BuildContext context) => context.pop();

@@ -80,12 +80,10 @@ class ProfileModel extends ProfileEntity {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'name': fullName,
-        'birthday': birthday,
-        'photo_link': photoLink,
+        'departament': department,
         'position': position,
-        // 'phone': List<String>.from(
-        //   phone.map(phoneModelToJson).toList(),
-        // ),
+        'photo': photoLink,
+        'birthdate': birthday,
       };
 }
 

@@ -5,7 +5,6 @@ import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_useca
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 
 @GenerateMocks([IProfileRepository])
 void main() {
@@ -55,7 +54,7 @@ void main() {
 
       // Act.
       // final Either<Failure, ProfileEntity> result =
-          // await useCase.call(GetSingleProfileParams(id: tProfileId, ));
+      // await useCase.call(GetSingleProfileParams(id: tProfileId, ));
 
       // Assert.
       void getProfileOrEntity(Either<Failure, ProfileEntity> either) {

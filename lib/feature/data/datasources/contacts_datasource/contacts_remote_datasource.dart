@@ -36,7 +36,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
 
       log('ContactsRemouteDataSource  ==========  ${contacts.contacts.length}');
       await localDataSource.contactsToCache(contacts);
-
+      
       return contacts;
     } on ServerException {
       throw ServerFailure();

@@ -45,7 +45,7 @@ class _ContactsPageState extends State<ContactsPage> {
     super.initState();
   }
 
-  // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
+  // Во время инициализации запускается ивент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false)
         .add(const FetchContactsEvent(isFirstFetch: true));
