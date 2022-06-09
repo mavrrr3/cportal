@@ -29,7 +29,7 @@ class ContactsList extends StatelessWidget {
             onTap(index);
           },
           child: ContactCard(
-            item: items[index],
+            user: items[index],
           ),
         ),
       ),
@@ -38,13 +38,13 @@ class ContactsList extends StatelessWidget {
 }
 
 class ContactCard extends StatelessWidget {
-  final ProfileEntity item;
+  final ProfileEntity user;
   final double? width;
 
   /// Карточка контакта.
   const ContactCard({
     Key? key,
-    required this.item,
+    required this.user,
     this.width,
   }) : super(key: key);
 
@@ -65,14 +65,14 @@ class ContactCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ignore: prefer_if_elements_to_conditional_expressions
-              item.photoLink != ''
+              user.photoLink != ''
                   ? AvatarBox(
                       size: 48,
-                      imgPath: item.photoLink,
+                      imgPath: user.photoLink,
                       borderRadius: 6,
                     )
-                  : _EmptyAvatarBox(
-                      name: _getShortName(item.fullName),
+                  : EmptyAvatarBox(
+                      user: user,
                     ),
               const SizedBox(width: 12),
               Expanded(
@@ -80,13 +80,13 @@ class ContactCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.fullName,
+                      user.fullName,
                       style: theme.textTheme.headline6!
                           .copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      item.position,
+                      user.position,
                       style: theme.textTheme.bodyText1!.copyWith(
                         color: theme.hoverColor.withOpacity(0.68),
                       ),
@@ -104,11 +104,15 @@ class ContactCard extends StatelessWidget {
   }
 }
 
-class _EmptyAvatarBox extends StatelessWidget {
-  final String name;
-  const _EmptyAvatarBox({
+class EmptyAvatarBox extends StatelessWidget {
+  final ProfileEntity user;
+  final double size;
+  final double borderRadius;
+  const EmptyAvatarBox({
     Key? key,
-    required this.name,
+    required this.user,
+    this.size = 48,
+    this.borderRadius = 6,
   }) : super(key: key);
 
   @override
@@ -116,15 +120,15 @@ class _EmptyAvatarBox extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Container(
-      width: 48,
-      height: 48,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        color: _randomColor(),
+        borderRadius: BorderRadius.circular(borderRadius),
+        color: user.color,
       ),
       child: Center(
         child: Text(
-          name,
+          getShortName(user.fullName),
           style: theme.textTheme.headline3!.copyWith(
             color: Colors.black,
             letterSpacing: -1,
@@ -135,21 +139,8 @@ class _EmptyAvatarBox extends StatelessWidget {
   }
 }
 
-String _getShortName(String name) {
+String getShortName(String name) {
   final nameList = name.split(' ');
 
   return '${nameList.first[0]} ${nameList[1][0]}';
-}
-
-Color _randomColor() {
-  const List<Color> colors = [
-    Color(0xFFB1E5FC),
-    Color(0xFFFFD88D),
-    Color(0xFFB5E4CA),
-    Color(0xFFFFBC99),
-    Color(0xFFCABDFF),
-  ];
-  final int random = Random().nextInt(colors.length);
-
-  return colors[random];
 }

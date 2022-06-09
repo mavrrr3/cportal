@@ -18,7 +18,10 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   final IContactsLocalDataSource localDatasource;
   final Dio dio;
 
-  ContactsRemoteDataSource(this.localDatasource, this.dio);
+  ContactsRemoteDataSource(
+    this.localDatasource,
+    this.dio,
+  );
 
   @override
   Future<ContactsModel> fetchContacts(int page) async {

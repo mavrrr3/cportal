@@ -53,7 +53,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     AppLocalizations.of(context)!.turnOffNotify,
                     style: theme.textTheme.headline5,
                   ),
-                const  SizedBox(height: 18),
+                  const SizedBox(height: 18),
                   GestureDetector(
                     onTap: () => setState(() => showToasterAboutNotify(
                           theme,
@@ -66,21 +66,21 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                       ),
                     ),
                   ),
-              const    SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-             const     SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forTwentyFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-               const   SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forever,
                     style: theme.textTheme.headline5!.copyWith(
@@ -223,7 +223,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 alignment: Alignment.centerLeft,
                 child: TitleAndDescriptionRow(
                   title: 'Рабочий телефон',
-                  description: profile.phone[1].contact,
+                  description: profile.contactInfo[1].contact,
                 ),
               ),
               const SizedBox(height: 32),
@@ -495,7 +495,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
             ),
           ),
         ),
-     const   SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
           width: 350,
           height: 44,

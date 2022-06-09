@@ -1,9 +1,14 @@
+import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -28,6 +33,7 @@ class ContactProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
@@ -124,12 +130,18 @@ class ContactProfilePage extends StatelessWidget {
                                 // Profile image.
                                 Align(
                                   alignment: Alignment.center,
-                                  child: AvatarBox(
-                                    size: 102,
-                                    imgPath: user.photoLink,
-                                    isApiImg: false,
-                                    borderRadius: 24,
-                                  ),
+                                  child: user.photoLink != ''
+                                      ? AvatarBox(
+                                          size: 102,
+                                          imgPath: user.photoLink,
+                                          isApiImg: false,
+                                          borderRadius: 24,
+                                        )
+                                      : EmptyAvatarBox(
+                                          size: 102,
+                                          borderRadius: 24,
+                                          user: user,
+                                        ),
                                 ),
                                 const SizedBox(height: 12),
 
@@ -148,52 +160,30 @@ class ContactProfilePage extends StatelessWidget {
 
                                 //-- Profile info --
                                 // Post
-                                // ProfileInfoSection(
-                                //   headline:
-                                //       AppLocalizations.of(context)!.position,
-                                //   text: user.position.description,
-                                //   bottomPadding: 21,
-                                // ),
+                                ProfileInfoSection(
+                                  headline:
+                                      AppLocalizations.of(context)!.position,
+                                  text: user.position,
+                                  bottomPadding: 21,
+                                ),
 
-                                // // Department.
-                                // ProfileInfoSection(
-                                //   headline:
-                                //       AppLocalizations.of(context)!.department,
-                                //   text: user.position.description,
-                                //   bottomPadding: 21,
-                                // ),
+                                // Department.
+                                ProfileInfoSection(
+                                  headline:
+                                      AppLocalizations.of(context)!.department,
+                                  text: user.department,
+                                  bottomPadding: 21,
+                                ),
 
-                                // // Office phone.
-                                // ProfileInfoSection(
-                                //   headline: AppLocalizations.of(context)!
-                                //       .office_phone,
-                                //   text: user.phone.first.number,
-                                //   bottomPadding: 21,
-                                // ),
-
-                                // // Self phone.
-                                // ProfileInfoSection(
-                                //   headline:
-                                //       AppLocalizations.of(context)!.self_phone,
-                                //   text:
-                                //       '${user.phone[1].suffix} ${user.phone[1].number}',
-                                //   bottomPadding: 21,
-                                // ),
-
-                                // Birth date.
-                                // ProfileInfoSection(
-                                //   headline:
-                                //       AppLocalizations.of(context)!.birth_date,
-                                //   text: user.birthday,
-                                //   bottomPadding: 21,
-                                // ),
-
-                                // Email.
-                                // ProfileInfoSection(
-                                //   headline: AppLocalizations.of(context)!.email,
-                                //   text: user.email,
-                                //   bottomPadding: 21,
-                                // ),
+                                // Contact info.
+                                ...List.generate(
+                                  user.contactInfo.length,
+                                  (i) => ProfileInfoSection(
+                                    headline: user.contactInfo[i].type,
+                                    text: user.contactInfo[i].contact,
+                                    bottomPadding: 21,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

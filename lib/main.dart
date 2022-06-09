@@ -144,7 +144,7 @@ void _hiveAdaptersInit() {
     ..registerAdapter(UserModelAdapter())
     ..registerAdapter(UserTypeModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
-    ..registerAdapter(PhoneModelAdapter())
+    ..registerAdapter(ContactInfoModelAdapter())
     ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(ArticleModelAdapter())
     ..registerAdapter(ParagraphModelAdapter())

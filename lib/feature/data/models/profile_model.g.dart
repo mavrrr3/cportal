@@ -23,7 +23,7 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
       position: fields[3] as String,
       birthday: fields[5] as DateTime?,
       photoLink: fields[4] as String,
-      phone: (fields[6] as List).cast<PhoneModel>(),
+      contactInfo: (fields[6] as List).cast<ContactInfoModel>(),
     );
   }
 
@@ -44,7 +44,7 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
       ..writeByte(5)
       ..write(obj.birthday)
       ..writeByte(6)
-      ..write(obj.phone);
+      ..write(obj.contactInfo);
   }
 
   @override
@@ -58,24 +58,24 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
           typeId == other.typeId;
 }
 
-class PhoneModelAdapter extends TypeAdapter<PhoneModel> {
+class ContactInfoModelAdapter extends TypeAdapter<ContactInfoModel> {
   @override
   final int typeId = 3;
 
   @override
-  PhoneModel read(BinaryReader reader) {
+  ContactInfoModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PhoneModel(
+    return ContactInfoModel(
       type: fields[0] as String,
       contact: fields[1] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PhoneModel obj) {
+  void write(BinaryWriter writer, ContactInfoModel obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -90,7 +90,7 @@ class PhoneModelAdapter extends TypeAdapter<PhoneModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PhoneModelAdapter &&
+      other is ContactInfoModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

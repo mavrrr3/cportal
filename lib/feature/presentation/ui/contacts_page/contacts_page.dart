@@ -246,7 +246,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                               }
                                             },
                                             child: ContactCard(
-                                              item: contacts[i],
+                                              user: contacts[i],
                                               width: ResponsiveWrapper.of(
                                                 context,
                                               ).isLargerThan(MOBILE)

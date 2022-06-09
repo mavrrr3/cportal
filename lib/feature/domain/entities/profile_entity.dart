@@ -1,8 +1,7 @@
-// To parse this JSON data, do
-//
-//     final profile = profileFromJson(jsonString);
+import 'dart:math';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 class ProfileEntity extends Equatable {
   final String id;
@@ -11,16 +10,17 @@ class ProfileEntity extends Equatable {
   final String position;
   final DateTime? birthday;
   final String photoLink;
-  final List<PhoneEntity> phone;
+  final List<ContactInfoEntity> contactInfo;
+  final Color color = _randomColor;
 
-  const ProfileEntity({
+  ProfileEntity({
     required this.id,
     required this.fullName,
     required this.department,
     required this.position,
     required this.birthday,
     required this.photoLink,
-    required this.phone,
+    required this.contactInfo,
   });
 
   @override
@@ -30,15 +30,28 @@ class ProfileEntity extends Equatable {
         birthday,
         photoLink,
         position,
-        phone,
+        contactInfo,
       ];
+
+  static Color get _randomColor {
+    const List<Color> colors = [
+      Color(0xFFB1E5FC),
+      Color(0xFFFFD88D),
+      Color(0xFFB5E4CA),
+      Color(0xFFFFBC99),
+      Color(0xFFCABDFF),
+    ];
+    final int random = Random().nextInt(colors.length);
+
+    return colors[random];
+  }
 }
 
-class PhoneEntity extends Equatable {
+class ContactInfoEntity extends Equatable {
   final String type;
   final String contact;
 
-  const PhoneEntity({
+  const ContactInfoEntity({
     required this.type,
     required this.contact,
   });

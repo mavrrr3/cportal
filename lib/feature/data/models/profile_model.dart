@@ -12,10 +12,10 @@ ProfileModel profileModelFromJson(String str) =>
 
 String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 
-PhoneModel phoneModelFromJson(String str) =>
-    PhoneModel.fromJson(json.decode(str) as Map<String, dynamic>);
+ContactInfoModel phoneModelFromJson(String str) =>
+    ContactInfoModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
-String phoneModelToJson(PhoneModel data) => json.encode(data.toJson());
+String phoneModelToJson(ContactInfoModel data) => json.encode(data.toJson());
 
 @HiveType(typeId: 2)
 class ProfileModel extends ProfileEntity {
@@ -38,16 +38,16 @@ class ProfileModel extends ProfileEntity {
   final DateTime? birthday;
 
   @HiveField(6)
-  final List<PhoneModel> phone;
+  final List<ContactInfoModel> contactInfo;
 
-  const ProfileModel({
+  ProfileModel({
     required this.id,
     required this.fullName,
     required this.department,
     required this.position,
     required this.birthday,
     required this.photoLink,
-    required this.phone,
+    required this.contactInfo,
   }) : super(
           id: id,
           fullName: fullName,
@@ -55,7 +55,7 @@ class ProfileModel extends ProfileEntity {
           position: position,
           birthday: birthday,
           photoLink: photoLink,
-          phone: phone,
+          contactInfo: contactInfo,
         );
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
@@ -67,10 +67,11 @@ class ProfileModel extends ProfileEntity {
         birthday: json['birthdate'] != null
             ? DateTime.parse(json['birthdate'] as String)
             : null,
-        phone: json['contacts'] != null
-            ? List<PhoneModel>.from(
+        contactInfo: json['contacts'] != null
+            ? List<ContactInfoModel>.from(
                 json['contacts'].map(
-                  (dynamic x) => PhoneModel.fromJson(x as Map<String, dynamic>),
+                  (dynamic x) =>
+                      ContactInfoModel.fromJson(x as Map<String, dynamic>),
                 ) as Iterable<dynamic>,
               )
             : [],
@@ -89,14 +90,14 @@ class ProfileModel extends ProfileEntity {
 }
 
 @HiveType(typeId: 3)
-class PhoneModel extends PhoneEntity {
+class ContactInfoModel extends ContactInfoEntity {
   @HiveField(0)
   final String type;
 
   @HiveField(1)
   final String contact;
 
-  const PhoneModel({
+  const ContactInfoModel({
     required this.type,
     required this.contact,
   }) : super(
@@ -104,7 +105,8 @@ class PhoneModel extends PhoneEntity {
           contact: contact,
         );
 
-  factory PhoneModel.fromJson(Map<String, dynamic> json) => PhoneModel(
+  factory ContactInfoModel.fromJson(Map<String, dynamic> json) =>
+      ContactInfoModel(
         type: json['type'] as String,
         contact: json['contact'] as String,
       );

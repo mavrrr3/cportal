@@ -71,7 +71,10 @@ Future<void> init() async {
       ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
-  sl.registerFactory(() => ContactsBloc(fetchContacts: sl()));
+  sl.registerFactory(() => ContactsBloc(
+        fetchContacts: sl(),
+        fetchProfile: sl(),
+      ));
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));

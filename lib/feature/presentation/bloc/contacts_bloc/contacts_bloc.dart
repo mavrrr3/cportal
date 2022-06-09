@@ -5,6 +5,7 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +13,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   final FetchContactsUseCase fetchContacts;
+  final GetSingleProfileUseCase fetchProfile;
   int page = 1;
 
-  ContactsBloc({required this.fetchContacts}) : super(ContactsEmptyState()) {
+  ContactsBloc({
+    required this.fetchContacts,
+    required this.fetchProfile,
+  }) : super(ContactsEmptyState()) {
     _setupEvents();
   }
 
   void _setupEvents() {
     on<FetchContactsEvent>(
       _onFetch,
+      transformer: bloc_concurrency.sequential(),
+    );
+    on<FetchContactProfileEvent>(
+      _onFetchProfile,
       transformer: bloc_concurrency.sequential(),
     );
   }
@@ -66,6 +75,11 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
 
     debugPrint('Отработал эвент: $event');
   }
+
+  FutureOr<void> _onFetchProfile(
+    FetchContactProfileEvent event,
+    Emitter emit,
+  ) async {}
 
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
