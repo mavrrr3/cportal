@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/in_process_title.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/status_badge.dart';
@@ -56,6 +57,7 @@ class AllDeclarations extends StatelessWidget {
           ...drawDeclarationCards(doneDeclorations),
         if (inProgressDeclorations.isNotEmpty) InProcessTitle(theme: theme),
         ...drawDeclarationCards(inProgressDeclorations),
+        ArchiveDeclarationButton(theme: theme),
       ],
     );
   }
