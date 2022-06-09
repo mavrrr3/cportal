@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
@@ -42,7 +41,8 @@ class UserData extends StatelessWidget {
         body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
           builder: (context, state) {
             if (state is GetSingleProfileLoadedState) {
-              final ProfileEntity profile = state.profile;
+              //
+              //  final ProfileEntity profile = state.profile;
 
               return Padding(
                 padding: const EdgeInsets.only(

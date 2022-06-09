@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
+
   final Function(int) onTap;
 
   /// Колонка с контактами.

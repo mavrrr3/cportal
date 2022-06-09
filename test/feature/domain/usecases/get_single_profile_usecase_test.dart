@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
@@ -13,7 +12,8 @@ import 'get_single_profile_usecase_test.mocks.dart';
 void main() {
   late GetSingleProfileUseCase useCase;
   late MockIProfileRepository mockProfileRepository;
-  late ProfileModel tProfileEntity;
+  // 
+  // late ProfileModel tProfileEntity;
   late String tProfileId;
   late Failure tFailure;
 
@@ -52,7 +52,7 @@ void main() {
     () async {
       // Arrange.
       // when(mockProfileRepository.getSingleProfile(tProfileId))
-      //     .thenAnswer((_) async => Right(tProfileEntity));
+          // .thenAnswer((_) async => Right(tProfileEntity));
 
       // Act.
       final Either<Failure, ProfileEntity> result =
