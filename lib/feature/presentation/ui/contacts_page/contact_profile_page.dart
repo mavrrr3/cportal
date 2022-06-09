@@ -141,7 +141,6 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                                       ? AvatarBox(
                                           size: 102,
                                           imgPath: user.photoLink,
-                                          isApiImg: false,
                                           borderRadius: 24,
                                         )
                                       : EmptyAvatarBox(
@@ -181,6 +180,15 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                                   text: user.department,
                                   bottomPadding: 21,
                                 ),
+
+                                // Birthday.
+                                if (user.birthDayToString != null)
+                                  ProfileInfoSection(
+                                    headline: AppLocalizations.of(context)!
+                                        .birth_date,
+                                    text: user.birthDayToString!,
+                                    bottomPadding: 21,
+                                  ),
 
                                 // Contact info.
                                 ...List.generate(
