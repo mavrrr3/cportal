@@ -15,3 +15,12 @@ class FetchContactsEvent extends ContactsEvent {
   @override
   List<Object> get props => [isFirstFetch];
 }
+
+class SearchContactsEvent extends ContactsEvent {
+  final String query;
+
+  const SearchContactsEvent({required this.query});
+
+  @override
+  List<Object> get props => [query];
+}

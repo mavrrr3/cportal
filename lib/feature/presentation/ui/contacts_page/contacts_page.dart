@@ -117,7 +117,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                       // Поиск.
                                       SearchInput(
                                         controller: _searchController,
-                                        onChanged: (text) {},
+                                        onChanged: (text) async {
+                                          _onSearchInput(text);
+                                        },
                                       ),
 
                                       // Фильтр.
@@ -296,11 +298,13 @@ class _ContactsPageState extends State<ContactsPage> {
   // Пагинация.
   void _setupScrollController(BuildContext context) {
     _scrollController.addListener(() {
-      if (_scrollController.position.atEdge) {
-        if (_scrollController.position.pixels != 0) {
-          log('//////////[_setupScrollController]//////////////');
-          BlocProvider.of<ContactsBloc>(context)
-              .add(const FetchContactsEvent());
+      if (_searchController.text.isEmpty) {
+        if (_scrollController.position.atEdge) {
+          if (_scrollController.position.pixels != 0) {
+            log('//////////[_setupScrollController]//////////////');
+            BlocProvider.of<ContactsBloc>(context)
+                .add(const FetchContactsEvent());
+          }
         }
       }
     });
@@ -410,5 +414,19 @@ class _ContactsPageState extends State<ContactsPage> {
     });
 
     return isActive;
+  }
+
+  void _onSearchInput(String text) {
+    if (text.isNotEmpty) {
+      BlocProvider.of<ContactsBloc>(
+        context,
+        listen: false,
+      ).add(SearchContactsEvent(query: text));
+    } else {
+      BlocProvider.of<ContactsBloc>(
+        context,
+        listen: false,
+      ).add(const FetchContactsEvent());
+    }
   }
 }

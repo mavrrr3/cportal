@@ -41,6 +41,7 @@ import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.da
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/pin_code_enter_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/search_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/search_profile_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
@@ -74,6 +75,7 @@ Future<void> init() async {
   sl.registerFactory(() => ContactsBloc(
         fetchContacts: sl(),
         fetchProfile: sl(),
+        searchContacts: sl(),
       ));
 
   // USECASE.
@@ -87,6 +89,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
+  sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web

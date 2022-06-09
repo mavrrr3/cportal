@@ -17,7 +17,7 @@ class GetSingleProfileUseCase
   ) async {
     return profileRepository.getSingleProfile(
       params.id,
-      params.isMyProfile,
+      isMyProfile: params.isMyProfile,
     );
   }
 }

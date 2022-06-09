@@ -12,6 +12,18 @@ class ContactsEntity extends Equatable {
     required this.favorites,
   });
 
+  ContactsEntity copyWith({
+    int? count,
+    List<ProfileEntity>? favorites,
+    List<ProfileEntity>? contacts,
+  }) {
+    return ContactsEntity(
+      count: count ?? this.count,
+      contacts: contacts ?? this.contacts,
+      favorites: favorites ?? this.favorites,
+    );
+  }
+
   @override
   List<Object?> get props => [count, contacts, favorites];
 }

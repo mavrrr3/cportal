@@ -6,6 +6,7 @@ import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/search_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   final FetchContactsUseCase fetchContacts;
   final GetSingleProfileUseCase fetchProfile;
+  final SearchContactsUseCase searchContacts;
   int page = 1;
 
   ContactsBloc({
     required this.fetchContacts,
     required this.fetchProfile,
+    required this.searchContacts,
   }) : super(ContactsEmptyState()) {
     _setupEvents();
   }
@@ -28,7 +31,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       _onFetch,
       transformer: bloc_concurrency.sequential(),
     );
-
+    on<SearchContactsEvent>(
+      _onSearchContacts,
+      transformer: bloc_concurrency.sequential(),
+    );
   }
 
   // Получение данных от API.
@@ -49,7 +55,6 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     final failureOrContacts = await fetchContacts(
       FetchContactsParams(page: page),
     );
-
     void _loadingContacts(ContactsEntity contactsEntity) {
       page++;
 
@@ -73,7 +78,24 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     debugPrint('Отработал эвент: $event');
   }
 
+  FutureOr<void> _onSearchContacts(
+    SearchContactsEvent event,
+    Emitter emit,
+  ) async {
+    if (state is ContactsLoadedState) {
+      final favorites = (state as ContactsLoadedState).favorites;
+      final failureOrContacts =
+          await searchContacts(SearchContactsParams(query: event.query));
 
+      failureOrContacts.fold(
+        _mapFailureToMessage,
+        (contacts) {
+          log('--[Search result ${contacts.length}]--');
+          emit(ContactsLoadedState(contacts: contacts, favorites: favorites));
+        },
+      );
+    }
+  }
 
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {

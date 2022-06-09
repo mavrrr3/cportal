@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cportal_flutter/core/error/server_exception.dart';
@@ -12,6 +13,11 @@ abstract class IContactsRemoteDataSource {
   ///
   /// Пробрасываем ошибки через [ServerException]
   Future<ContactsModel> fetchContacts(int page);
+
+  /// Обращается к эндпойнту .....
+  ///
+  /// Пробрасываем ошибки через [ServerException]
+  Future<List<ProfileEntity>> fetchContactsBySearch(String query);
 }
 
 class ContactsRemoteDataSource implements IContactsRemoteDataSource {
@@ -36,8 +42,27 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
 
       log('ContactsRemouteDataSource  ==========  ${contacts.contacts.length}');
       await localDataSource.contactsToCache(contacts);
-      
+
       return contacts;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<List<ProfileEntity>> fetchContactsBySearch(String query) async {
+    final String baseUrl =
+        'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?q=$query';
+    try {
+      final response = await dio.get<String>(baseUrl);
+
+      final contactsModel = ContactsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
+      );
+
+      log('ContactsRemouteDataSource  ==========  ${contactsModel.contacts.length}');
+
+      return contactsModel.contacts;
     } on ServerException {
       throw ServerFailure();
     }

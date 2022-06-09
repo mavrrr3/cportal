@@ -10,7 +10,7 @@ abstract class IProfileRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем все ошибки через [ServerException]
-  Future<ProfileModel> getSingleProfile(String id, bool isMyProfile);
+  Future<ProfileModel> getSingleProfile(String id, {bool isMyProfile = false});
 
   /// Обращается к эндпойнту .....
   ///
@@ -24,12 +24,15 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
 
   ProfileRemoteDataSource(this.localDataSource, this.dio);
   @override
-  Future<ProfileModel> getSingleProfile(String id, bool isMyProfile) async {
+  Future<ProfileModel> getSingleProfile(
+    String id, {
+    bool isMyProfile = false,
+  }) async {
     final String baseUrl =
         'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?id=$id';
     try {
       log('///-$isMyProfile-///');
-      // TODO: избавиться от if, передавать эту переменную в singleProfileToCache
+      // TODO: избавиться от if, передавать эту переменную в singleProfileToCache.
       if (isMyProfile) {
         final ProfileModel localeUser = profileModelFromJson(stringUser);
 
