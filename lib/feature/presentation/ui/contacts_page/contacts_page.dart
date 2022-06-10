@@ -180,7 +180,6 @@ class _ContactsPageState extends State<ContactsPage> {
                                   },
                                 ),
                               ),
-
                               // Избранные.
                               // if (state.favorites.isNotEmpty)
                               //   Padding(
@@ -417,9 +416,16 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void _onSearchInput(String text) {
-    BlocProvider.of<ContactsBloc>(
-      context,
-      listen: false,
-    ).add(SearchContactsEvent(query: text));
+    if (text.isEmpty) {
+      BlocProvider.of<ContactsBloc>(
+        context,
+        listen: false,
+      ).add(const FetchContactsEvent(isFirstFetch: true));
+    } else {
+      BlocProvider.of<ContactsBloc>(
+        context,
+        listen: false,
+      ).add(SearchContactsEvent(query: text));
+    }
   }
 }
