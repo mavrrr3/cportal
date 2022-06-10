@@ -31,7 +31,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     final String baseUrl =
         'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?id=$id';
     try {
-      // TODO: избавиться от if, передавать эту переменную в singleProfileToCache.
+      // TODO: Избавиться от if, передавать эту переменную в singleProfileToCache.
       if (isMyProfile) {
         final ProfileModel localeUser = profileModelFromJson(stringUser);
 
