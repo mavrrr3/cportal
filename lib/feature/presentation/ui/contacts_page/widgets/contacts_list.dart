@@ -79,6 +79,8 @@ class ContactCard extends StatelessWidget {
                   children: [
                     Text(
                       user.fullName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.headline6!
                           .copyWith(fontWeight: FontWeight.w700),
                     ),
