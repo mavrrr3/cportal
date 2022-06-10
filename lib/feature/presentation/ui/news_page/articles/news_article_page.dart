@@ -276,7 +276,8 @@ class _WebState extends State<_Web> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
                                     child: Image.network(
-                                      article.image,
+                                      article.image ??
+                                          'http://ribadi.ddns.net:88/images/1.jpg',
                                       fit: BoxFit.cover,
                                     ),
                                   ),

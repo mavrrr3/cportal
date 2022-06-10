@@ -39,7 +39,7 @@ class ResponseModel extends ResponseEntity {
   final int count;
   @override
   @HiveField(1)
-  final int update;
+  final int? update;
   @override
   @HiveField(2)
   final List<String>? categories;
@@ -61,7 +61,7 @@ class ResponseModel extends ResponseEntity {
 
   factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
         count: json['count'] as int,
-        update: json['update'] as int,
+        update: json['update'] == null ? null : json['update'] as int,
         categories: json['categories'] == null
             ? null
             : List<String>.from(json['categories']

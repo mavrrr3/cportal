@@ -52,4 +52,14 @@ class NewsRepositoryWeb implements INewsRepository {
 
     return localNews.response.categories ?? [];
   }
+
+  @override
+  Future<List<String>> fetchQuastionCategories() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, NewsEntity>> fetchQuastions(int page) {
+    throw UnimplementedError();
+  }
 }

@@ -23,7 +23,7 @@ class ArticleModel extends ArticleEntity {
   final List<ParagraphModel> content;
 
   @HiveField(5)
-  final String image;
+  final String? image;
 
   const ArticleModel({
     required this.id,
@@ -51,7 +51,7 @@ class ArticleModel extends ArticleEntity {
                   ParagraphModel.fromJson(x as Map<String, dynamic>))
               as Iterable<dynamic>,
         ),
-        image: json['image'] as String,
+        image: json['image'] == null ? null : json['image'] as String,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
