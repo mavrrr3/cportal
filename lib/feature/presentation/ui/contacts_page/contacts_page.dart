@@ -391,7 +391,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(32),
-                  child: ContactProfilePopUp(user: contacts[i]),
+                  child: ContactProfilePopUp(id: contacts[i].id),
                 ),
               ),
             );

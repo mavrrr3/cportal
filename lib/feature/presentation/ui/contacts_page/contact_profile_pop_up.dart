@@ -1,112 +1,144 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
 
-class ContactProfilePopUp extends StatelessWidget {
-  final ProfileEntity user;
+class ContactProfilePopUp extends StatefulWidget {
+  final String id;
   const ContactProfilePopUp({
     Key? key,
-    required this.user,
+    required this.id,
   }) : super(key: key);
+
+  @override
+  State<ContactProfilePopUp> createState() => _ContactProfilePopUpState();
+}
+
+class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
+  @override
+  void initState() {
+    BlocProvider.of<GetSingleProfileBloc>(
+      context,
+      listen: false,
+    ).add(GetSingleProfileEventImpl(widget.id));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Stack(
-      children: [
-        Positioned(
-          right: 0,
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.close,
-              color: theme.hoverColor,
+    return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
+      builder: (context, state) {
+        if (state is GetSingleProfileLoadingState) {
+          return const SizedBox(
+            width: 660,
+            height: 491,
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Profile Image & Full Name.
-            Align(
-              alignment: Alignment.center,
-              child: AvatarBox(
-                size: 102,
-                imgPath: user.photoLink,
-                isApiImg: false,
-                borderRadius: 24,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                user.fullName,
-                style: theme.textTheme.headline4!.copyWith(
-                  fontWeight: FontWeight.w800,
+          );
+        }
+
+        if (state is GetSingleProfileLoadedState) {
+          return Stack(
+            children: [
+              Positioned(
+                right: 0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: theme.hoverColor,
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 32),
-            //-- Profile info --
-            // Post.
-            // ProfileInfoSection(
-            //   headline: AppLocalizations.of(context)!.position,
-            //   text: user.position.description,
-            //   bottomPadding: 18,
-            // ),
-            // const SizedBox(height: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Profile Image & Full Name.
+                  Align(
+                    alignment: Alignment.center,
+                    child: state.profile.photoLink != ''
+                        ? AvatarBox(
+                            size: 102,
+                            imgPath: state.profile.photoLink,
+                            borderRadius: 24,
+                          )
+                        : EmptyAvatarBox(
+                            size: 102,
+                            borderRadius: 24,
+                            user: state.profile,
+                          ),
+                  ),
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      state.profile.fullName,
+                      style: theme.textTheme.headline4!.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // -- Profile info --
+                  // Post.
+                  ProfileInfoSection(
+                    headline: AppLocalizations.of(context)!.position,
+                    text: state.profile.position,
+                    bottomPadding: 18,
+                  ),
 
-            // // Department.
-            // ProfileInfoSection(
-            //   headline: AppLocalizations.of(context)!.department,
-            //   text: user.position.description,
-            //   bottomPadding: 18,
-            // ),
+                  // Department.
+                  ProfileInfoSection(
+                    headline: AppLocalizations.of(context)!.department,
+                    text: state.profile.department,
+                    bottomPadding: 18,
+                  ),
 
-            // // Office phone.
-            // ProfileInfoSection(
-            //   headline: AppLocalizations.of(context)!.office_phone,
-            //   text: user.phone.first.number,
-            //   bottomPadding: 18,
-            // ),
-            // Email.
-            // ProfileInfoSection(
-            //   headline: AppLocalizations.of(context)!.email,
-            //   text: user.email,
-            //   textColor: theme.primaryColor,
-            //   bottomPadding: 18,
-            // ),
+                  // Contact info.
+                  ...List.generate(
+                    state.profile.contactInfo.length,
+                    (i) => ProfileInfoSection(
+                      headline: state.profile.contactInfo[i].type,
+                      text: state.profile.contactInfo[i].contact,
+                      bottomPadding: 18,
+                    ),
+                  ),
 
-            // Self phone.
-            // ProfileInfoSection(
-            //   headline: AppLocalizations.of(context)!.self_phone,
-            //   text: '${user.phone[1].suffix} ${user.phone[1].number}',
-            //   bottomPadding: 18,
-            // ),
+                  // Birth date.
+                  if (state.profile.birthDayToString != null)
+                    ProfileInfoSection(
+                      headline: AppLocalizations.of(context)!.birth_date,
+                      text: state.profile.birthDayToString!,
+                      bottomPadding: 0,
+                    ),
 
-            // Birth date.
-            // ProfileInfoSection(
-            //   headline: AppLocalizations.of(context)!.birth_date,
-            //   text: user.birthday,
-            //   bottomPadding: 0,
-            // ),
+                  const SizedBox(height: 32),
+                  _ActionButton(
+                    onTap: () {},
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+        // TODO: Отработать другие стейты.
 
-            const SizedBox(height: 32),
-            _ActionButton(
-              onTap: () {},
-            ),
-          ],
-        ),
-      ],
+        return const SizedBox();
+      },
     );
   }
 }

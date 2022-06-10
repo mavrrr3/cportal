@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_remote_datasource.dart';
@@ -15,6 +17,7 @@ class ContactsRepositoryWeb implements IContactsRepository {
   Future<Either<Failure, ContactsModel>> fetchContacts(int page) async {
     try {
       final remoteContacts = await remoteDataSource.fetchContacts(page);
+      log('ContactsRepositoryWeb $remoteContacts');
 
       return Right(remoteContacts);
     } on ServerException {
