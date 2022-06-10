@@ -1,18 +1,18 @@
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
+// import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 
 @GenerateMocks([IProfileRepository])
 void main() {
-  late GetSingleProfileUseCase useCase;
+  // late GetSingleProfileUseCase useCase;
   // late MockIProfileRepository mockProfileRepository;
   //
   // late ProfileModel tProfileEntity;
-  late String tProfileId;
+  // late String tProfileId;
   late Failure tFailure;
 
   setUp(() {
@@ -41,7 +41,7 @@ void main() {
     //   dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
     // );
 
-    tProfileId = 'A1B2C3D4E5';
+    // tProfileId = 'A1B2C3D4E5';
     tFailure = ServerFailure();
   });
 
@@ -57,12 +57,13 @@ void main() {
       // await useCase.call(GetSingleProfileParams(id: tProfileId, ));
 
       // Assert.
+      // ignore: unused_element
       void getProfileOrEntity(Either<Failure, ProfileEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
           expect(tFailure, failure);
         } else {
-          final ProfileEntity profileEntity = either.asRight();
+          // final ProfileEntity profileEntity = either.asRight();
           // expect(result, equals(Right<dynamic, ProfileEntity>(profileEntity)));
         }
       }
@@ -85,12 +86,13 @@ void main() {
       //     await useCase.call(GetSingleProfileParams(id: tProfileId));
 
       // Assert.
+      // ignore: unused_element
       void getProfileOrEntity(Either<Failure, ProfileEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
           expect(tFailure, failure);
         } else {
-          final ProfileEntity profileEntity = either.asRight();
+          // final ProfileEntity profileEntity = either.asRight();
           // expect(result, equals(Right<dynamic, ProfileEntity>(profileEntity)));
         }
       }

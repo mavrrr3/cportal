@@ -30,6 +30,11 @@ class ProfileEntity extends Equatable {
   String get email =>
       contactInfo.where((element) => element.type == 'Эл. почта').first.contact;
 
+  String get officePhone => contactInfo
+      .where((element) => element.type == 'Рабочий телефон')
+      .first
+      .contact;
+
   static Color get _randomColor {
     const List<Color> colors = [
       Color(0xFFB1E5FC),

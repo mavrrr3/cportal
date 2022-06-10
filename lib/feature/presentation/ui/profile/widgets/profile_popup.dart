@@ -14,7 +14,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-
 bool _isNotificationTurnedOn = true;
 var _isFingerPrintAuth = false;
 
@@ -113,7 +112,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5', isMyProfile: true,));
+    ).add(const GetSingleProfileEventImpl(
+      'A1B2C3D4E5',
+      isMyProfile: true,
+    ));
 
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
@@ -203,20 +205,21 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     ],
                   ),
                   const Expanded(child: SizedBox()),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     TitleAndDescriptionRow(
-                  //       title: AppLocalizations.of(context)!.birthDay,
-                  //       description: profile.birthday,
-                  //     ),
-                  //     const SizedBox(height: 8),
-                  //     TitleAndDescriptionRow(
-                  //       title: AppLocalizations.of(context)!.email,
-                  //       description: profile.email,
-                  //     ),
-                  //   ],
-                  // ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (profile.birthday != null)
+                        TitleAndDescriptionRow(
+                          title: AppLocalizations.of(context)!.birthDay,
+                          description: profile.birthDayToString!,
+                        ),
+                      const SizedBox(height: 8),
+                      TitleAndDescriptionRow(
+                        title: AppLocalizations.of(context)!.email,
+                        description: profile.email,
+                      ),
+                    ],
+                  ),
                   const Flexible(child: SizedBox()),
                 ],
               ),
@@ -225,7 +228,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 alignment: Alignment.centerLeft,
                 child: TitleAndDescriptionRow(
                   title: 'Рабочий телефон',
-                  description: profile.contactInfo[1].contact,
+                  description: profile.officePhone,
                 ),
               ),
               const SizedBox(height: 32),
@@ -240,7 +243,6 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                         children: [
                           Container(
                             width: 350,
-                            height: 32,
                             decoration: BoxDecoration(
                               color: theme.hoverColor.withOpacity(0.04),
                               borderRadius: const BorderRadius.only(
@@ -249,8 +251,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                               ),
                             ),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 4,
+                              ),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
