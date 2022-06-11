@@ -135,7 +135,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as QaustionsLoaded).articles;
       }
 
-      emit(QaustionsLoading(
+      emit(QuastionsLoading(
         oldArticles,
         quastionTabs,
         isFirstFetch: pageAll == 1,
@@ -170,7 +170,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       }
       void _loadedNewsToArticles(NewsEntity quastions) {
         pageAll++;
-        final articles = (state as QaustionsLoading).oldArticles;
+        final articles = (state as QuastionsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(quastions.response.articles);
         log('Загрузилось ${articles.length} статей');
@@ -190,7 +190,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
     });
 
     on<FetchQaustionsEventBy>((event, emit) async {
-      if (state is QaustionsLoading) return;
+      if (state is QuastionsLoading) return;
 
       var oldArticles = <ArticleEntity>[];
 
@@ -198,7 +198,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as QaustionsLoaded).articles;
       }
 
-      emit(QaustionsLoading(
+      emit(QuastionsLoading(
         oldArticles,
         quastionTabs,
         isFirstFetch: pageByCategory == 1,
@@ -224,7 +224,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
       void _loadedNewsToArticles(NewsEntity news) {
         pageByCategory++;
-        final articles = (state as QaustionsLoading).oldArticles;
+        final articles = (state as QuastionsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);
 
@@ -315,12 +315,12 @@ class NewsLoadingError extends FetchNewsState {
   List<Object?> get props => [message];
 }
 
-class QaustionsLoading extends FetchNewsState {
+class QuastionsLoading extends FetchNewsState {
   final List<ArticleEntity> oldArticles;
   final bool isFirstFetch;
   final List<String> tabs;
 
-  const QaustionsLoading(
+  const QuastionsLoading(
     this.oldArticles,
     this.tabs, {
     this.isFirstFetch = false,

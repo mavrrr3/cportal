@@ -44,7 +44,7 @@ class QuastionsPage extends StatelessWidget {
 
         List<String> tabs = [];
 
-        if (state is QaustionsLoading && state.isFirstFetch) {
+        if (state is QuastionsLoading && state.isFirstFetch) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 60),
             child: Center(
@@ -53,7 +53,7 @@ class QuastionsPage extends StatelessWidget {
               ),
             ),
           );
-        } else if (state is QaustionsLoading) {
+        } else if (state is QuastionsLoading) {
           articles = state.oldArticles;
           tabs = state.tabs;
         } else if (state is QaustionsLoaded) {
@@ -232,61 +232,29 @@ class _Content extends StatelessWidget {
     Widget _builderItem(
       List<ArticleEntity> articles,
       List<String> tabs,
-      double width,
       int index,
     ) {
-      if (pageType == NewsCodeEnum.news) {
-        // Распределение по категориям
-        // [Новости]
-        if (_currentIndex == 0) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              right: 16,
-              bottom: 20,
-            ),
-            child: _NewsCard(
-              width,
-              item: articles[index],
-              onTap: () => _onArticleSelected(articles[index].id),
-            ),
-          );
-        } else if (articles[index].category == tabs[_currentIndex]) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              right: 16,
-              bottom: 20,
-            ),
-            child: _NewsCard(
-              width,
-              item: articles[index],
-              onTap: () => _onArticleSelected(articles[index].id),
-            ),
-          );
-        }
-      } else {
-        // Распределение по категориям
-        // [Вопросы]
-        if (articles[index].category == tabs[_currentIndex]) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 30),
-            child: FaqRow(
-              text: articles[index].header,
-              onTap: () {
-                GoRouter.of(context).pushNamed(
-                  NavigationRouteNames.questionArticlePage,
-                  params: {'fid': articles[index].id},
-                );
-              },
-            ),
-          );
-        }
+      // Распределение по категориям
+      // [Вопросы]
+      if (articles[index].category == tabs[_currentIndex]) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 30),
+          child: FaqRow(
+            text: articles[index].header,
+            onTap: () {
+              GoRouter.of(context).pushNamed(
+                NavigationRouteNames.questionArticlePage,
+                params: {'fid': articles[index].id},
+              );
+            },
+          ),
+        );
       }
 
       return const SizedBox();
     }
 
     log('================ $tabs ================================');
-    log('================ ${articles.length} статей в категории ${tabs[_currentIndex]}================================');
 
     return SingleChildScrollView(
       controller: scrollController,
@@ -307,7 +275,6 @@ class _Content extends StatelessWidget {
                       return _builderItem(
                         articles,
                         tabs,
-                        width,
                         index,
                       );
                     },
@@ -321,7 +288,6 @@ class _Content extends StatelessWidget {
                           return _builderItem(
                             articles,
                             tabs,
-                            312,
                             index,
                           );
                         },
@@ -334,7 +300,7 @@ class _Content extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemCount: articles.length,
               itemBuilder: (context, index) {
-                return _builderItem(articles, tabs, width, index);
+                return _builderItem(articles, tabs, index);
               },
             ),
         ],
