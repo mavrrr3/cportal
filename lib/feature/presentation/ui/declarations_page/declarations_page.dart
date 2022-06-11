@@ -42,7 +42,7 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
   // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(FetchContactsEvent());
+        .add(const FetchContactsEvent());
     BlocProvider.of<FilterBloc>(context, listen: false)
         .add(FetchFiltersEvent());
   }
@@ -72,11 +72,11 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                         onChange: (index) => changePage(context, index),
                       ),
                     ),
-                    if (state is FetchContactsLoadingState)
+                    if (state is ContactsLoadingState)
                       const Expanded(
                         child: Center(child: CircularProgressIndicator()),
                       ),
-                    if (state is FetchContactsLoadedState)
+                    if (state is ContactsLoadedState)
                       Expanded(
                         child: SafeArea(
                           child: SingleChildScrollView(

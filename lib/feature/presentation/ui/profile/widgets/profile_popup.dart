@@ -1,5 +1,8 @@
 // ignore_for_file: unused_element
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -7,9 +10,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -53,7 +54,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     AppLocalizations.of(context)!.turnOffNotify,
                     style: theme.textTheme.headline5,
                   ),
-                const  SizedBox(height: 18),
+                  const SizedBox(height: 18),
                   GestureDetector(
                     onTap: () => setState(() => showToasterAboutNotify(
                           theme,
@@ -66,21 +67,21 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                       ),
                     ),
                   ),
-              const    SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-             const     SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forTwentyFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-               const   SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forever,
                     style: theme.textTheme.headline5!.copyWith(
@@ -111,7 +112,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
+    ).add(const GetSingleProfileEventImpl(
+      'A1B2C3D4E5',
+      isMyProfile: true,
+    ));
 
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
@@ -158,7 +162,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '${profile.firstName} ${profile.middleName} ${profile.lastName}',
+                              profile.fullName,
                               style: theme.textTheme.headline4!.copyWith(
                                 fontWeight: FontWeight.w800,
                               ),
@@ -169,7 +173,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              profile.externalId,
+                              profile.id,
                               style: theme.textTheme.headline6!.copyWith(),
                               softWrap: true,
                               textAlign: TextAlign.left,
@@ -191,12 +195,12 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     children: [
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.department,
-                        description: profile.position.description,
+                        description: profile.position,
                       ),
                       const SizedBox(height: 8),
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.position,
-                        description: profile.position.department,
+                        description: profile.department,
                       ),
                     ],
                   ),
@@ -204,10 +208,11 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TitleAndDescriptionRow(
-                        title: AppLocalizations.of(context)!.birthDay,
-                        description: profile.birthday,
-                      ),
+                      if (profile.birthday != null)
+                        TitleAndDescriptionRow(
+                          title: AppLocalizations.of(context)!.birthDay,
+                          description: profile.birthDayToString!,
+                        ),
                       const SizedBox(height: 8),
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.email,
@@ -223,7 +228,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 alignment: Alignment.centerLeft,
                 child: TitleAndDescriptionRow(
                   title: 'Рабочий телефон',
-                  description: profile.phone[1].number,
+                  description: profile.officePhone,
                 ),
               ),
               const SizedBox(height: 32),
@@ -238,7 +243,6 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                         children: [
                           Container(
                             width: 350,
-                            height: 32,
                             decoration: BoxDecoration(
                               color: theme.hoverColor.withOpacity(0.04),
                               borderRadius: const BorderRadius.only(
@@ -247,8 +251,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                               ),
                             ),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 4,
+                              ),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -495,7 +501,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
             ),
           ),
         ),
-     const   SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
           width: 350,
           height: 44,

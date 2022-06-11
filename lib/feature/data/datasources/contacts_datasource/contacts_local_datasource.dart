@@ -23,7 +23,14 @@ class ContactsLocalDataSource implements IContactsLocalDataSource {
 
   @override
   Future<ContactsModel> fetchContactsFromCache() async {
-    final box = await hive.openBox<ContactsModel>('contacts');
+    var box = await hive.openBox<ContactsModel>('contacts');
+    log(Hive.isBoxOpen('contacts').toString());
+
+    if (!Hive.isBoxOpen('contacts')) {
+      await Hive.openBox<ContactsModel>('contacts');
+    } else {
+      box = await Hive.openBox<ContactsModel>('contacts');
+    }
 
     final contacts = box.get('contacts');
 
@@ -36,11 +43,16 @@ class ContactsLocalDataSource implements IContactsLocalDataSource {
 
   @override
   Future<void> contactsToCache(ContactsModel contacts) async {
-    if (kDebugMode) {
-      log('Contacts сохранил в кэш');
+    // Удаляет box с диска.
+    // await Hive.deleteBoxFromDisk('contacts');
+    var box = await Hive.openBox<ContactsModel>('contacts');
+    if (!Hive.isBoxOpen('contacts')) {
+      await Hive.openBox<ContactsModel>('contacts');
+    } else {
+      box = await Hive.openBox<ContactsModel>('contacts');
     }
 
-    final box = await hive.openBox<ContactsModel>('contacts');
+    log('ContactsModel сохранил в кэш ${contacts.count}');
 
     await box.put('contacts', contacts);
 

@@ -36,11 +36,16 @@ class FilterLocalDataSource implements IFilterLocalDataSource {
 
   @override
   Future<void> filtersToCache(List<FilterModel> filters) async {
-    if (kDebugMode) {
-      log('List<FilterModel> сохранил в кэш');
+    // Удаляет box с диска.
+    // await Hive.deleteBoxFromDisk('filters');
+    var box = await Hive.openBox<List<FilterModel>>('filters');
+    if (!Hive.isBoxOpen('filters')) {
+      await Hive.openBox<List<FilterModel>>('filters');
+    } else {
+      box = await Hive.openBox<List<FilterModel>>('filters');
     }
 
-    final box = await hive.openBox<List<FilterModel>>('filters');
+    log('List<FilterModel> сохранил в кэш ${filters.length}');
 
     await box.put('filters', filters);
 

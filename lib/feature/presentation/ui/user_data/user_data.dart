@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/phone_box.dart';
@@ -20,7 +20,10 @@ class UserData extends StatelessWidget {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
+    ).add(const GetSingleProfileEventImpl(
+      'A1B2C3D4E5',
+      isMyProfile: true,
+    ));
     final ThemeData theme = Theme.of(context);
 
     return Swipe(
@@ -54,24 +57,25 @@ class UserData extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  const  SizedBox(height: 33),
+                    const SizedBox(height: 33),
                     const PhoneBox(),
-                  const  SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     UserDataRow(
                       normalText: AppLocalizations.of(context)!.position,
-                      boldText: profile.position.description,
+                      boldText: profile.position,
                     ),
-               const     SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     UserDataRow(
                       normalText: AppLocalizations.of(context)!.department,
-                      boldText: profile.position.department,
+                      boldText: profile.department,
                     ),
-               const     SizedBox(height: 8),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.birthDay,
-                      boldText: profile.birthday,
-                    ),
-               const     SizedBox(height: 8),
+                    const SizedBox(height: 8),
+                    if (profile.birthDayToString != null)
+                      UserDataRow(
+                        normalText: AppLocalizations.of(context)!.birthDay,
+                        boldText: profile.birthDayToString!,
+                      ),
+                    const SizedBox(height: 8),
                     UserDataRow(
                       normalText: AppLocalizations.of(context)!.email,
                       boldText: profile.email,
@@ -84,7 +88,7 @@ class UserData extends StatelessWidget {
                       () {
                         // TODO раелизовать сохранение номера.
                       },
-                 const     Size(double.infinity, 48),
+                      const Size(double.infinity, 48),
                     ),
                   ],
                 ),

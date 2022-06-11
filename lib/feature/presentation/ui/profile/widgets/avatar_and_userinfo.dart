@@ -30,7 +30,7 @@ class AvatarAndUserInfo extends StatelessWidget {
           SizedBox(
             width: 250,
             child: Text(
-              '${profile.firstName} ${profile.middleName} ${profile.lastName}',
+              profile.fullName,
               style: theme.textTheme.headline4!.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -40,7 +40,7 @@ class AvatarAndUserInfo extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            profile.phone.first.number,
+            profile.contactInfo.first.contact,
             style: theme.textTheme.headline6,
           ),
           const SizedBox(height: 16),

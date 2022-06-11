@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 class GetSingleProfileBloc
@@ -41,7 +42,7 @@ class GetSingleProfileBloc
     }
 
     final failureOrUser = await getSingleProfile(
-      GetSingleProfileParams(id: event.id),
+      GetSingleProfileParams(id: event.id, isMyProfile: event.isMyProfile),
     );
 
     failureOrUser.fold(
