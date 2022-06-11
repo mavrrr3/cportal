@@ -36,7 +36,7 @@ class ContactProfilePage extends StatelessWidget {
       builder: (context, navState) {
         return BlocBuilder<ContactsBloc, ContactsState>(
           builder: (context, state) {
-            if (state is FetchContactsLoadingState) {
+            if (state is ContactsLoadingState) {
               return const Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
@@ -44,7 +44,7 @@ class ContactProfilePage extends StatelessWidget {
               );
             }
 
-            if (state is FetchContactsLoadedState) {
+            if (state is ContactsLoadedState) {
               final ProfileEntity user = state.data.contacts.firstWhere(
                 (element) => element.id == id,
               );

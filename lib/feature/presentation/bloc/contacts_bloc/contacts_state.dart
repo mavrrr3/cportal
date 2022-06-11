@@ -10,12 +10,12 @@ abstract class ContactsState extends Equatable {
 
 class ContactsEmptyState extends ContactsState {}
 
-class FetchContactsLoadingState extends ContactsState {}
+class ContactsLoadingState extends ContactsState {}
 
-class FetchContactsLoadedState extends ContactsState {
+class ContactsLoadedState extends ContactsState {
   final ContactsEntity data;
 
-  const FetchContactsLoadedState({required this.data});
+  const ContactsLoadedState({required this.data});
 
   @override
   List<Object?> get props => [data];

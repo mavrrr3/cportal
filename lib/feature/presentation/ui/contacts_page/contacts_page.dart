@@ -74,11 +74,11 @@ class _ContactsPageState extends State<ContactsPage> {
                         onChange: (index) => changePage(context, index),
                       ),
                     ),
-                    if (state is FetchContactsLoadingState)
+                    if (state is ContactsLoadingState)
                       const Expanded(
                         child: Center(child: CircularProgressIndicator()),
                       ),
-                    if (state is FetchContactsLoadedState)
+                    if (state is ContactsLoadedState)
                       Expanded(
                         child: SafeArea(
                           child: SingleChildScrollView(
@@ -277,7 +277,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void _goToUserPage(
-    FetchContactsLoadedState state,
+    ContactsLoadedState state,
     int i,
   ) =>
       GoRouter.of(context).pushNamed(
@@ -334,7 +334,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   Future<void> _showContactProfile(
-    FetchContactsLoadedState state,
+    ContactsLoadedState state,
     int i,
   ) {
     return showDialog(

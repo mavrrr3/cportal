@@ -72,11 +72,11 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                         onChange: (index) => changePage(context, index),
                       ),
                     ),
-                    if (state is FetchContactsLoadingState)
+                    if (state is ContactsLoadingState)
                       const Expanded(
                         child: Center(child: CircularProgressIndicator()),
                       ),
-                    if (state is FetchContactsLoadedState)
+                    if (state is ContactsLoadedState)
                       Expanded(
                         child: SafeArea(
                           child: SingleChildScrollView(
