@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecti
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/finger_print_or_faceid_page.dart';
@@ -52,6 +53,7 @@ abstract class NavigationRouteNames {
   static const onboardingEnd = 'onboarding_end';
   static const contacts = 'contacts';
   static const contactProfile = 'contact_profile';
+  static const declarations = 'declarations';
 }
 
 final GoRouter router = GoRouter(
@@ -296,6 +298,16 @@ final GoRouter router = GoRouter(
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
         child: const ContactsPage(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.declarations,
+      path: '/declarations',
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
+        key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        child: const DeclarationsPage(),
       ),
     ),
     GoRoute(

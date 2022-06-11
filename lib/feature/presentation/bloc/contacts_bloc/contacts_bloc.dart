@@ -26,7 +26,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     FetchContactsEvent event,
     Emitter emit,
   ) async {
-    emit(FetchContactsLoadingState());
+    emit(ContactsLoadingState());
 
     String _mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
@@ -48,7 +48,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         ));
       },
       (contacts) {
-        emit(FetchContactsLoadedState(data: contacts));
+        emit(ContactsLoadedState(data: contacts));
       },
     );
 
