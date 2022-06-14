@@ -23,10 +23,10 @@ class FaqWidget extends StatelessWidget {
           itemCount: faqList.length,
           itemBuilder: (context, i) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: 24.0),
+              padding: const EdgeInsets.only(bottom: 24),
               child: FaqRow(
                 text: faqList[i],
-                // onTap: () {},
+                // OnTap: () {},.
               ),
             );
           },

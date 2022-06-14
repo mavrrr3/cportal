@@ -1,22 +1,29 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
-import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/favorites.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_view_selected_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/selected_filters_view.dart.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
-final List<ProfileEntity> _contacts = Mocks.contacts;
+import 'package:responsive_framework/responsive_framework.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({Key? key}) : super(key: key);
@@ -26,183 +33,399 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  late ScrollController _scrollController;
   late TextEditingController _searchController;
-
+  late bool _isFilterOpenWeb;
   @override
   void initState() {
+    _scrollController = ScrollController();
     _searchController = TextEditingController();
+    _isFilterOpenWeb = false;
+    _contentInit();
+    super.initState();
+  }
+
+  // Во время инициализации запускается ивент и подгружаются контакты и фильтры.
+  void _contentInit() {
+    BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(const FetchContactsEvent(isFirstFetch: true));
     BlocProvider.of<FilterBloc>(context, listen: false)
         .add(FetchFiltersEvent());
-
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            const SizedBox(height: 7),
-            Padding(
-              padding: getHorizontalPadding(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Поиск
-                  SearchInput(
-                    controller: _searchController,
-                    onChanged: (text) {},
-                  ),
+    final ThemeData theme = Theme.of(context);
+    _setupScrollController(context);
 
-                  // Фильтр
-                  _FilterButton(
-                    onTap: () async {
-                      await showModalBottomSheet<void>(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        builder: (context) => DraggableScrollableSheet(
-                          expand: false,
-                          snap: true,
-                          initialChildSize: 0.57,
-                          minChildSize: 0.57,
-                          maxChildSize: 0.875,
-                          builder: (context, scrollController) => Filter(
-                            scrollController: scrollController,
-                          ),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ResponsiveVisibility(
+                  visible: false,
+                  visibleWhen: const [
+                    Condition<dynamic>.largerThan(name: MOBILE),
+                  ],
+                  // Меню Web.
+                  child: DesktopMenu(
+                    currentIndex: 4,
+                    onChange: (index) => changePage(context, index),
+                  ),
+                ),
+                BlocBuilder<ContactsBloc, ContactsState>(
+                  builder: (context, state) {
+                    List<ProfileEntity> contacts = [];
+                    if (state is ContactsLoadingState && state.isFirstFetch) {
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
                       );
-                      setState(() {});
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 31),
+                    } else if (state is ContactsLoadingState) {
+                      contacts = state.oldContacts;
+                    }
 
-            // Выбранные фильтры
-            Padding(
-              padding: getHorizontalPadding(context),
-              child: BlocBuilder<FilterBloc, FilterState>(
-                builder: (context, state) {
-                  if (state is FilterLoadedState) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.filters.length,
-                      itemBuilder: ((context, index) {
-                        // Выбран ли хоть один пункт в текущем разделе фильтра
-                        final bool isActive = state.filters[index].items
-                            .any((element) => element.isActive);
+                    if (state is ContactsLoadedState) {
+                      contacts = state.contacts;
+                    }
 
-                        // если isActive - создаем список только с выбранными пунктами в текущем разделе
-                        List<FilterItemEntity> selectedItems = [];
-                        if (isActive) {
-                          for (var item in state.filters[index].items) {
-                            if (item.isActive) {
-                              selectedItems.add(item);
-                            }
-                          }
-                        }
-
-                        // Рендеринг
-                        return isActive
-                            ? FilterViewSelectedRow(
-                                headline: state.filters[index].headline,
-                                selectedItems: selectedItems,
-                                onClose: (item) {
-                                  setState(() {
-                                    BlocProvider.of<FilterBloc>(context).add(
-                                      FilterRemoveItemEvent(
-                                        filterIndex: index,
-                                        item: item,
+                    return Expanded(
+                      child: SafeArea(
+                        child: SingleChildScrollView(
+                          controller: _scrollController,
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: kIsWeb ? 12 : 11,
+                              ),
+                              Padding(
+                                padding: getHorizontalPadding(context),
+                                child: ResponsiveConstraints(
+                                  constraint:
+                                      const BoxConstraints(maxWidth: 640),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // Поиск.
+                                      SearchInput(
+                                        controller: _searchController,
+                                        onChanged: (text) async {
+                                          _onSearchInput(text);
+                                        },
                                       ),
-                                    );
-                                  });
-                                },
-                              )
-                            : const SizedBox();
-                      }),
+
+                                      // Фильтр.
+                                      FilterButton(
+                                        onTap: () async {
+                                          if (!ResponsiveWrapper.of(context)
+                                              .isLargerThan(MOBILE)) {
+                                            await _showFilterMobile(theme);
+                                          } else {
+                                            setState(() {
+                                              _isFilterOpenWeb = true;
+                                            });
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              // Выбранные фильтры.
+                              Padding(
+                                padding: getHorizontalPadding(context),
+                                child: BlocBuilder<FilterBloc, FilterState>(
+                                  builder: (context, state) {
+                                    if (state is FilterLoadedState) {
+                                      return Column(
+                                        children: [
+                                          SizedBox(
+                                            height: _isAnyFilterSelected(state)
+                                                ? 19
+                                                : 31,
+                                          ),
+                                          SelectedFiltersView(
+                                            state: state,
+                                            onClose: (item, i) {
+                                              BlocProvider.of<FilterBloc>(
+                                                context,
+                                              ).add(
+                                                FilterRemoveItemEvent(
+                                                  filterIndex: i,
+                                                  item: item,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          SizedBox(
+                                            height: _isAnyFilterSelected(state)
+                                                ? 8
+                                                : 0,
+                                          ),
+                                        ],
+                                      );
+                                    }
+
+                                    // TODO: Обработать другие стейты.
+                                    return const SizedBox();
+                                  },
+                                ),
+                              ),
+                              // Избранные.
+                              // if (state.favorites.isNotEmpty)
+                              //   Padding(
+                              //     padding: EdgeInsets.only(
+                              //       left: getSingleHorizontalPadding(
+                              //         context,
+                              //       ),
+                              //       bottom: 16,
+                              //     ),
+                              //     child: !ResponsiveWrapper.of(context)
+                              //             .isLargerThan(TABLET)
+                              //         ? SizedBox(
+                              //             height: 48,
+                              //             child: FavoritesRow(
+                              //               items: state.favorites,
+                              //               onTap: (i) {
+                              //                 _goToUserPage(state, i);
+                              //               },
+                              //             ),
+                              //           )
+                              //         : FavoritesWrap(
+                              //             items: state.favorites,
+                              //             onTap: (i) async {
+                              //               if (ResponsiveWrapper.of(
+                              //                 context,
+                              //               ).isDesktop) {
+                              //                 await _showContactProfile(
+                              //                   state,
+                              //                   i,
+                              //                 );
+                              //               } else {
+                              //                 _goToUserPage(state, i);
+                              //               }
+                              //             },
+                              //           ),
+                              //   ),
+
+                              // Колонка контактов.
+                              Padding(
+                                padding: getHorizontalPadding(context),
+                                child: !kIsWeb
+                                    ? ContactsList(
+                                        items: contacts,
+                                        onTap: (i) =>
+                                            _goToUserPage(contacts, i),
+                                      )
+                                    : Wrap(
+                                        spacing: 8,
+                                        runSpacing: 8,
+                                        children: List.generate(
+                                          contacts.length,
+                                          (i) => GestureDetector(
+                                            behavior:
+                                                HitTestBehavior.translucent,
+                                            onTap: () async {
+                                              if (ResponsiveWrapper.of(
+                                                context,
+                                              ).isDesktop) {
+                                                await _showContactProfile(
+                                                  contacts,
+                                                  i,
+                                                );
+                                              } else {
+                                                _goToUserPage(contacts, i);
+                                              }
+                                            },
+                                            child: ContactCard(
+                                              user: contacts[i],
+                                              width: ResponsiveWrapper.of(
+                                                context,
+                                              ).isLargerThan(MOBILE)
+                                                  ? 328
+                                                  : null,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                              ),
+
+                              const SizedBox(height: 42),
+                            ],
+                          ),
+                        ),
+                      ),
                     );
-                  }
-
-                  // TODO: Обработать другие стейты
-                  return const SizedBox();
-                },
-              ),
-            ),
-
-            // Избранные
-            if (_contacts.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  bottom: 16,
-                  top: 8,
+                  },
                 ),
-                child: SizedBox(
-                  height: 48,
-                  child: FavoritesRow(
-                    items: _contacts,
-                    onTap: (i) => _goToUserPage(i),
-                  ),
+              ],
+            ),
+            if (_isFilterOpenWeb)
+              GestureDetector(
+                onTap: () => setState(() {
+                  _isFilterOpenWeb = false;
+                }),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: getBarrierColor(theme),
                 ),
               ),
-
-            // Колонка контактов
-            Padding(
-              padding: getHorizontalPadding(context),
-              child: ContactsList(
-                items: _contacts,
-                onTap: (i) => _goToUserPage(i),
+            if (_isFilterOpenWeb)
+              Align(
+                alignment: Alignment.centerRight,
+                child: FilterWeb(
+                  onApply: _onApplyFilter,
+                  onClear: _onClearFilter,
+                ),
               ),
-            ),
-
-            const SizedBox(height: 42),
           ],
         ),
       ),
     );
   }
 
-  void _goToUserPage(int i) => GoRouter.of(context).pushNamed(
+  // Пагинация.
+  void _setupScrollController(BuildContext context) {
+    _scrollController.addListener(() {
+      if (_searchController.text.isEmpty) {
+        if (_scrollController.position.atEdge) {
+          if (_scrollController.position.pixels != 0) {
+            log('//////////[_setupScrollController]//////////////');
+            BlocProvider.of<ContactsBloc>(context)
+                .add(const FetchContactsEvent());
+          }
+        }
+      }
+    });
+  }
+
+  // Навигация на страницу пользователя.
+  void _goToUserPage(
+    List<ProfileEntity> contacts,
+    int i,
+  ) =>
+      GoRouter.of(context).pushNamed(
         NavigationRouteNames.contactProfile,
-        params: {'fid': _contacts[i].id},
-        extra: _contacts[i],
+        params: {'fid': contacts[i].id},
       );
-}
 
-class _FilterButton extends StatelessWidget {
-  const _FilterButton({
-    Key? key,
-    this.onTap,
-  }) : super(key: key);
-
-  final Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: theme.splashColor,
-          borderRadius: BorderRadius.circular(8),
+  // Filter Bottom Sheet Mobile.
+  Future<void> _showFilterMobile(ThemeData theme) async {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: theme.splashColor,
+      barrierColor: getBarrierColor(theme),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SvgPicture.asset(
-            'assets/icons/filter.svg',
-            color: theme.cardColor.withOpacity(0.68),
-          ),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        snap: true,
+        initialChildSize: 0.57,
+        minChildSize: 0.57,
+        maxChildSize: 0.875,
+        builder: (
+          context,
+          scrollController,
+        ) =>
+            Filter(
+          scrollController: scrollController,
+          onApply: _onApplyFilter,
+          onClear: _onClearFilter,
         ),
       ),
     );
+  }
+
+  // Кнопка [Применить] фильтр.
+  void _onApplyFilter() {
+    if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
+      setState(() {
+        _isFilterOpenWeb = false;
+      });
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  // Кнопка [Очистить] фильтр.
+  void _onClearFilter() {
+    BlocProvider.of<FilterBloc>(
+      context,
+    ).add(FilterRemoveAllEvent());
+  }
+
+  // Профиль пользователя для Web.
+  Future<void> _showContactProfile(
+    List<ProfileEntity> contacts,
+    int i,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        final ThemeData theme = Theme.of(context);
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(
+                  color: theme.splashColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: ContactProfilePopUp(id: contacts[i].id),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  bool _isAnyFilterSelected(FilterLoadedState state) {
+    bool isActive = false;
+    // ignore: avoid_function_literals_in_foreach_calls
+    state.filters.forEach((filter) {
+      // ignore: avoid_function_literals_in_foreach_calls
+      filter.items.forEach((item) {
+        if (item.isActive) {
+          isActive = true;
+        }
+      });
+    });
+
+    return isActive;
+  }
+
+  void _onSearchInput(String text) {
+    if (text.isEmpty) {
+      BlocProvider.of<ContactsBloc>(
+        context,
+        listen: false,
+      ).add(const FetchContactsEvent(isFirstFetch: true));
+    } else {
+      BlocProvider.of<ContactsBloc>(
+        context,
+        listen: false,
+      ).add(SearchContactsEvent(query: text));
+    }
   }
 }

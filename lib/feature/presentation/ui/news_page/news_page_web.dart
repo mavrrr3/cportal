@@ -1,285 +1,284 @@
-import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+// import 'package:cportal_flutter/common/util/padding.dart';
+// import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+// import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 
-int _currentIndex = 0;
+// import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+// import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:go_router/go_router.dart';
+// import 'package:responsive_framework/responsive_framework.dart';
 
-void _contentInit(BuildContext context) {
-  return BlocProvider.of<FetchNewsBloc>(context, listen: false)
-      .add(const FetchNewsEventImpl(newsCodeEnum: NewsCodeEnum.news));
-}
+// int _currentIndex = 0;
 
-class NewsPageWeb extends StatefulWidget {
-  const NewsPageWeb({Key? key}) : super(key: key);
+// void _contentInit(BuildContext context) {
+//   return BlocProvider.of<FetchNewsBloc>(context, listen: false)
+//       .add(const FetchNewsEvent());
+// }
 
-  @override
-  State<NewsPageWeb> createState() => _NewsPageWebState();
-}
+// class NewsPageWeb extends StatefulWidget {
+//   const NewsPageWeb({Key? key}) : super(key: key);
 
-class _NewsPageWebState extends State<NewsPageWeb> {
-  @override
-  void initState() {
-    super.initState();
-    _contentInit(context);
-  }
+//   @override
+//   State<NewsPageWeb> createState() => _NewsPageWebState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+// class _NewsPageWebState extends State<NewsPageWeb> {
+//   @override
+//   void initState() {
+//     super.initState();
+//     _contentInit(context);
+//   }
 
-    _contentInit(context);
+//   @override
+//   Widget build(BuildContext context) {
+//     final double width = MediaQuery.of(context).size.width;
 
-    void _onPageChanged(int index) {
-      setState(() {
-        _currentIndex = index;
-        _contentInit(context);
-      });
-    }
+//     _contentInit(context);
 
-    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: PreferredSize(
-            child: TabBarWidget(
-              title: AppLocalizations.of(context)!.news,
-              categoryTitle: [
-                if (state is FetchNewsLoadedState) ...state.tabs,
-              ],
-              currentIndex: _currentIndex,
-              onTap: (index) => _onPageChanged(index),
-            ),
-            preferredSize: Size(width, 114),
-          ),
-          body: Padding(
-            padding: getHorizontalPadding(context),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  if (state is FetchNewsLoadedState)
-                    _ContentPage(blocState: state),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
+//     void _onPageChanged(int index) {
+//       setState(() {
+//         _currentIndex = index;
+//         _contentInit(context);
+//       });
+//     }
 
-class _ContentPage extends StatelessWidget {
-  final FetchNewsLoadedState blocState;
-  const _ContentPage({
-    Key? key,
-    required this.blocState,
-  }) : super(key: key);
+//     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
+//       builder: (context, state) {
+//         return Scaffold(
+//           appBar: PreferredSize(
+//             child: TabBarWidget(
+//               title: AppLocalizations.of(context)!.news,
+//               categoryTitle: [
+//                 if (state is FetchNewsLoadedState) ...state.tabs,
+//               ],
+//               currentIndex: _currentIndex,
+//               onTap: _onPageChanged,
+//             ),
+//             preferredSize: Size(width, 114),
+//           ),
+//           body: Padding(
+//             padding: getHorizontalPadding(context),
+//             child: SingleChildScrollView(
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   const SizedBox(height: 20),
+//                   if (state is FetchNewsLoadedState)
+//                     _ContentPage(blocState: state),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    List<ArticleEntity> articles = blocState.news.article;
-    final double width = MediaQuery.of(context).size.width;
+// class _ContentPage extends StatelessWidget {
+//   final FetchNewsLoadedState blocState;
+//   const _ContentPage({
+//     Key? key,
+//     required this.blocState,
+//   }) : super(key: key);
 
-    void _onArticleSelected(String id) {
-      GoRouter.of(context).pushNamed(
-        NavigationRouteNames.newsArticlePage,
-        params: {'fid': id},
-      );
-    }
+//   @override
+//   Widget build(BuildContext context) {
+//     final List<ArticleEntity> articles = blocState.news.response.articles;
+//     final double width = MediaQuery.of(context).size.width;
 
-    Widget _builderItem(
-      FetchNewsLoadedState state,
-      double width,
-      int index,
-    ) {
-      List<ArticleEntity> articles = state.news.article;
+//     void _onArticleSelected(String id) {
+//       GoRouter.of(context).pushNamed(
+//         NavigationRouteNames.newsArticlePage,
+//         params: {'fid': id},
+//       );
+//     }
 
-      Widget _newsCard() {
-        return _NewsCard(
-          width,
-          item: articles[index],
-          onTap: () => _onArticleSelected(articles[index].id),
-        );
-      }
+//     Widget _builderItem(
+//       FetchNewsLoadedState state,
+//       double width,
+//       int index,
+//     ) {
+//       final List<ArticleEntity> articles = state.news.response.articles;
 
-      if (_currentIndex == 0) {
-        return _newsCard();
-      } else if (articles[index].category == state.tabs[_currentIndex]) {
-        return _newsCard();
-      }
+//       Widget _newsCard() {
+//         return _NewsCard(
+//           width,
+//           item: articles[index],
+//           onTap: () => _onArticleSelected(articles[index].id),
+//         );
+//       }
 
-      return const SizedBox();
-    }
+//       if (_currentIndex == 0) {
+//         return _newsCard();
+//       } else if (articles[index].category == state.tabs[_currentIndex]) {
+//         return _newsCard();
+//       }
 
-    return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
-        ? Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: articles.length,
-              itemBuilder: (context, index) {
-                return _builderItem(blocState, width, index);
-              },
-            ),
-          )
-        : Padding(
-            padding: const EdgeInsets.only(right: 78.0),
-            child: Wrap(
-              spacing: 16,
-              runSpacing: 20,
-              children: List.generate(
-                articles.length,
-                (index) {
-                  return _builderItem(blocState, 312, index);
-                },
-              ),
-            ),
-          );
-  }
-}
+//       return const SizedBox();
+//     }
 
-class _NewsCard extends StatelessWidget {
-  final double width;
-  final ArticleEntity item;
-  final Function() onTap;
-  const _NewsCard(
-    this.width, {
-    Key? key,
-    required this.item,
-    required this.onTap,
-  }) : super(key: key);
+//     return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
+//         ? Expanded(
+//             child: ListView.builder(
+//               physics: const BouncingScrollPhysics(),
+//               itemCount: articles.length,
+//               itemBuilder: (context, index) {
+//                 return _builderItem(blocState, width, index);
+//               },
+//             ),
+//           )
+//         : Padding(
+//             padding: const EdgeInsets.only(right: 78),
+//             child: Wrap(
+//               spacing: 16,
+//               runSpacing: 20,
+//               children: List.generate(
+//                 articles.length,
+//                 (index) {
+//                   return _builderItem(blocState, 312, index);
+//                 },
+//               ),
+//             ),
+//           );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: NewsCardItem(
-        onTap: onTap,
-        width: width,
-        height: 160,
-        fontSize: 17,
-        item: item,
-      ),
-    );
-  }
-}
+// class _NewsCard extends StatelessWidget {
+//   final double width;
+//   final ArticleEntity item;
+//   final Function() onTap;
+//   const _NewsCard(
+//     this.width, {
+//     Key? key,
+//     required this.item,
+//     required this.onTap,
+//   }) : super(key: key);
 
-class TabBarWidget extends StatefulWidget {
-  final String title;
-  final List<String> categoryTitle;
-  final int currentIndex;
-  final Function(int) onTap;
-  const TabBarWidget({
-    Key? key,
-    required this.title,
-    required this.categoryTitle,
-    required this.currentIndex,
-    required this.onTap,
-  }) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(bottom: 20),
+//       child: NewsCardItem(
+//         onTap: onTap,
+//         width: width,
+//         height: 160,
+//         fontSize: 17,
+//         item: item,
+//       ),
+//     );
+//   }
+// }
 
-  @override
-  State<TabBarWidget> createState() => _TabBarWidgetState();
-}
+// class TabBarWidget extends StatefulWidget {
+//   final String title;
+//   final List<String> categoryTitle;
+//   final int currentIndex;
+//   final Function(int) onTap;
+//   const TabBarWidget({
+//     Key? key,
+//     required this.title,
+//     required this.categoryTitle,
+//     required this.currentIndex,
+//     required this.onTap,
+//   }) : super(key: key);
 
-class _TabBarWidgetState extends State<TabBarWidget> {
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final double width = MediaQuery.of(context).size.width;
+//   @override
+//   State<TabBarWidget> createState() => _TabBarWidgetState();
+// }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 12),
-        Padding(
-          padding: getHorizontalPadding(context),
-          child: Text(
-            widget.title,
-            style: theme.textTheme.headline2,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: getHorizontalPadding(context),
-          child: SizedBox(
-            width: width,
-            height: 30.0,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget.categoryTitle.length,
-              itemBuilder: (context, index) {
-                return _textButton(
-                  theme,
-                  text: widget.categoryTitle[index],
-                  onTap: () {
-                    widget.onTap(index);
-                  },
-                  isCurrent: widget.currentIndex == index,
-                );
-              },
-            ),
-          ),
-        ),
-        Container(
-          height: 1,
-          color: theme.dividerColor,
-        ),
-      ],
-    );
-  }
+// class _TabBarWidgetState extends State<TabBarWidget> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final ThemeData theme = Theme.of(context);
+//     final double width = MediaQuery.of(context).size.width;
 
-  Widget _textButton(
-    ThemeData theme, {
-    required String text,
-    required bool isCurrent,
-    Function()? onTap,
-  }) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.only(
-          right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
-        ),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          curve: Curves.easeIn,
-          decoration: BoxDecoration(
-            border: isCurrent
-                ? Border(
-                    bottom: BorderSide(
-                      width: 2.5,
-                      color: theme.primaryColor,
-                    ),
-                  )
-                : null,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Text(
-              text,
-              style: isCurrent
-                  ? theme.textTheme.headline5!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: theme.primaryColor,
-                    )
-                  : theme.textTheme.headline5!.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SizedBox(height: 12),
+//         Padding(
+//           padding: getHorizontalPadding(context),
+//           child: Text(
+//             widget.title,
+//             style: theme.textTheme.headline2,
+//           ),
+//         ),
+//         const SizedBox(height: 16),
+//         Padding(
+//           padding: getHorizontalPadding(context),
+//           child: SizedBox(
+//             width: width,
+//             height: 30,
+//             child: ListView.builder(
+//               scrollDirection: Axis.horizontal,
+//               physics: const BouncingScrollPhysics(),
+//               itemCount: widget.categoryTitle.length,
+//               itemBuilder: (context, index) {
+//                 return _textButton(
+//                   theme,
+//                   text: widget.categoryTitle[index],
+//                   onTap: () {
+//                     widget.onTap(index);
+//                   },
+//                   isCurrent: widget.currentIndex == index,
+//                 );
+//               },
+//             ),
+//           ),
+//         ),
+//         Container(
+//           height: 1,
+//           color: theme.dividerColor,
+//         ),
+//       ],
+//     );
+//   }
+
+//   Widget _textButton(
+//     ThemeData theme, {
+//     required String text,
+//     required bool isCurrent,
+//     Function()? onTap,
+//   }) {
+//     return GestureDetector(
+//       behavior: HitTestBehavior.translucent,
+//       onTap: onTap,
+//       child: Padding(
+//         padding: EdgeInsets.only(
+//           right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
+//         ),
+//         child: AnimatedContainer(
+//           duration: const Duration(milliseconds: 150),
+//           curve: Curves.easeIn,
+//           decoration: BoxDecoration(
+//             border: isCurrent
+//                 ? Border(
+//                     bottom: BorderSide(
+//                       width: 2.5,
+//                       color: theme.primaryColor,
+//                     ),
+//                   )
+//                 : null,
+//           ),
+//           child: Padding(
+//             padding: const EdgeInsets.only(bottom: 10),
+//             child: Text(
+//               text,
+//               style: isCurrent
+//                   ? theme.textTheme.headline5!.copyWith(
+//                       fontWeight: FontWeight.w700,
+//                       color: theme.primaryColor,
+//                     )
+//                   : theme.textTheme.headline5!.copyWith(
+//                       fontWeight: FontWeight.w700,
+//                     ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

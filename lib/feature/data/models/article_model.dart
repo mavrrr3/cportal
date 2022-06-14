@@ -1,142 +1,107 @@
-// To parse this JSON data, do
-//
-//     final articleModel = articleModelFromJson(jsonString);
-
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'dart:convert';
 import 'package:hive/hive.dart';
 
 part 'article_model.g.dart';
 
-ArticleModel articleModelFromJson(String str) =>
-    ArticleModel.fromJson(json.decode(str) as Map<String, dynamic>);
-
-String articleModelToJson(ArticleModel data) => json.encode(data.toJson());
-// ignore_for_file: annotate_overrides, overridden_fields
-
-@HiveType(typeId: 5)
+// ignore_for_file: overridden_fields
+// ignore_for_file: annotate_overrides
+@HiveType(typeId: 4)
 class ArticleModel extends ArticleEntity {
   @HiveField(0)
   final String id;
+
   @HiveField(1)
-  final ArticleTypeEntity articleType;
+  final DateTime date;
+
   @HiveField(2)
-  final String header;
-  @HiveField(3)
-  final String description;
-  @HiveField(4)
-  final String image;
-  @HiveField(5)
-  final DateTime dateShow;
-  @HiveField(6)
-  final String externalLink;
-  @HiveField(7)
-  final bool show;
-  @HiveField(8)
-  final String userCreated;
-  @HiveField(9)
-  final DateTime dateCreated;
-  @HiveField(10)
-  final String userUpdate;
-  @HiveField(11)
-  final DateTime dateUpdated;
-  @HiveField(12)
   final String category;
 
+  @HiveField(3)
+  final String header;
+
+  @HiveField(4)
+  final List<ParagraphModel> content;
+
+  @HiveField(5)
+  final String image;
+
   const ArticleModel({
-    required final this.id,
-    required final this.articleType,
-    required final this.header,
-    required final this.category,
-    required final this.description,
-    required final this.image,
-    required final this.dateShow,
-    required final this.externalLink,
-    required final this.show,
-    required final this.userCreated,
-    required final this.dateCreated,
-    required final this.userUpdate,
-    required final this.dateUpdated,
+    required this.id,
+    required this.date,
+    required this.category,
+    required this.header,
+    required this.content,
+    required this.image,
   }) : super(
           id: id,
-          articleType: articleType,
-          header: header,
+          date: date,
           category: category,
-          description: description,
+          header: header,
+          content: content,
           image: image,
-          dateShow: dateShow,
-          externalLink: externalLink,
-          show: show,
-          userCreated: userCreated,
-          dateCreated: dateCreated,
-          userUpdate: userUpdate,
-          dateUpdated: dateUpdated,
         );
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) => ArticleModel(
         id: json['id'] as String,
-        articleType: ArticleTypeModel.fromJson(
-          json['article_type'] as Map<String, dynamic>,
-        ),
-        header: json['header'] as String,
+        date: DateTime.parse(json['date'] as String),
         category: json['category'] as String,
-        description: json['description'] as String,
+        header: json['header'] as String,
+        content: List<ParagraphModel>.from(
+          json['Content'].map((dynamic x) =>
+                  ParagraphModel.fromJson(x as Map<String, dynamic>))
+              as Iterable<dynamic>,
+        ),
         image: json['image'] as String,
-        dateShow: DateTime.parse(json['date_show'] as String),
-        externalLink: json['external_link'] as String,
-        show: json['show'] as bool,
-        userCreated: json['user_created'] as String,
-        dateCreated: DateTime.parse(json['date_created'] as String),
-        userUpdate: json['user_update'] as String,
-        dateUpdated: DateTime.parse(json['date_updated'] as String),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
-        'article_type': (articleType as ArticleTypeModel).toJson(),
-        'header': header,
+        'date': date.toIso8601String(),
         'category': category,
-        'description': description,
+        'header': header,
+        'Content': List<dynamic>.from(content.map<dynamic>((x) => x.toJson())),
         'image': image,
-        'date_show': dateShow.toIso8601String(),
-        'external_link': externalLink,
-        'show': show,
-        'user_created': userCreated,
-        'date_created': dateCreated.toIso8601String(),
-        'user_update': userUpdate,
-        'date_updated': dateUpdated.toIso8601String(),
       };
 }
 
-@HiveType(typeId: 6)
-class ArticleTypeModel extends ArticleTypeEntity {
+@HiveType(typeId: 5)
+class ParagraphModel extends ParagraphEntity {
+  @override
   @HiveField(0)
-  final String id;
+  final String template;
+  @override
   @HiveField(1)
-  final String code;
+  final String? content;
+  @override
   @HiveField(2)
-  final String description;
+  final String? imageTitle;
+  @override
+  @HiveField(3)
+  final String? image;
 
-  const ArticleTypeModel({
-    required final this.id,
-    required final this.code,
-    required final this.description,
+  const ParagraphModel({
+    required this.template,
+    required this.content,
+    required this.imageTitle,
+    required this.image,
   }) : super(
-          id: id,
-          code: code,
-          description: description,
+          template: template,
+          content: content ?? '',
+          imageTitle: imageTitle ?? '',
+          image: image ?? '',
         );
 
-  factory ArticleTypeModel.fromJson(Map<String, dynamic> json) =>
-      ArticleTypeModel(
-        id: json['id'] as String,
-        code: json['code'] as String,
-        description: json['description'] as String,
+  factory ParagraphModel.fromJson(Map<String, dynamic> json) => ParagraphModel(
+        template: json['template'] as String,
+        content: json['content'] as String?,
+        imageTitle: json['image_title'] as String?,
+        image: json['image'] as String?,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'code': code,
-        'description': description,
+        'template': template,
+        'content': content,
+        'image_title': imageTitle,
+        'image': image,
       };
 }

@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class CardHorizontalScroll extends StatelessWidget {
   final IconData icon;
   final String text;
+  final Color? color;
+
   const CardHorizontalScroll({
     Key? key,
     required this.icon,
     required this.text,
     this.color,
   }) : super(key: key);
-  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class CardHorizontalScroll extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -35,7 +36,7 @@ class CardHorizontalScroll extends StatelessWidget {
             ),
             Text(
               text,
-              style: theme.textTheme.headline6,
+              style: theme.textTheme.headline6!.copyWith(height: 1.5),
             ),
           ],
         ),

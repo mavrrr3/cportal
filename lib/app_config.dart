@@ -3,13 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConfig {
+  static final AppConfig _singleton = AppConfig._();
+
   factory AppConfig() {
     return _singleton;
   }
 
   AppConfig._();
-
-  static final AppConfig _singleton = AppConfig._();
 
   static bool get isProduction =>
       kReleaseMode || environment.toLowerCase().startsWith('prod');

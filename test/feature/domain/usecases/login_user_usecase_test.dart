@@ -2,7 +2,7 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/user_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/login_user_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -44,15 +44,15 @@ void main() {
   test(
     'Return [ProfileEntity] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockUserRepository.login(any()))
           .thenAnswer((_) async => Right<Failure, UserEntity>(tUserModel));
 
-      //act
+      // Act..
       final result =
           await useCase.call(LoginUserParams(connectingCode: tConnectingCode));
 
-      //assert
+      // Assert.
       void getUserOrFailure(Either<Failure, UserEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();
@@ -72,15 +72,15 @@ void main() {
   test(
     'Return [Failure] from repository',
     () async {
-      //arrange
+      // Arrange.
       when(() => mockUserRepository.login(any()))
           .thenAnswer((_) async => Left<Failure, UserEntity>(tFailure));
 
-      //act
+      // Act..
       final result =
           await useCase.call(LoginUserParams(connectingCode: tConnectingCode));
 
-      //assert
+      // Assert.
       void getUserOrFailure(Either<Failure, UserEntity> either) {
         if (either.isLeft()) {
           final Failure failure = either.asLeft();

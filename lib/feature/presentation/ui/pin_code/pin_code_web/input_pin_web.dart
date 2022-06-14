@@ -1,9 +1,8 @@
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -27,20 +26,20 @@ class InputPinWeb extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.0.w,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
               ),
               child: BlocConsumer<PinCodeBloc, PinCodeState>(
-                listener: ((context, state) {
+                listener: (context, state) {
                   if (state.status == PinCodeInputEnum.done) {
                     // Если ПИН код из базе Hive совпадает с
                     // введеным ПИНом, то редирект на страницу [/main_page]
                     context.goNamed(NavigationRouteNames.mainPage);
                   }
-                }),
-                builder: ((context, state) {
+                },
+                builder: (context, state) {
                   return BodyWidget(input: state.status);
-                }),
+                },
               ),
             ),
           ],
@@ -234,7 +233,7 @@ class HeaderTextWidget extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: 31.h),
+        const SizedBox(height: 31),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -248,9 +247,7 @@ class HeaderTextWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 8.h,
-        ),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

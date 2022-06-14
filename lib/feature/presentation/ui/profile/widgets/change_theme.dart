@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
@@ -28,7 +27,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
   }
 
   Future<void> _initVibrate() async {
-    bool canVibrate = await Vibrate.canVibrate;
+    final bool canVibrate = await Vibrate.canVibrate;
     setState(() {
       _canVibrate = canVibrate;
     });
@@ -58,10 +57,10 @@ class _ChangeThemeState extends State<ChangeTheme> {
             ),
           ),
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
         Container(
           width: double.infinity,
-          height: 36.h,
+          height: 36,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
@@ -114,7 +113,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                         : Alignment.topRight,
                 child: Container(
                   width: (width - 44) / 3,
-                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
@@ -156,27 +155,28 @@ class _ChangeThemeState extends State<ChangeTheme> {
     }
   }
 
-  /// Вибрация по нажатию
+  /// Вибрация по нажатию.
   void _vibrate(bool canVibrate) {
     try {
       if (canVibrate) {
         Vibrate.feedback(FeedbackType.light);
       }
-    } catch (e) {
-      log('Device can`t vibrate');
+    } on Exception catch (e) {
+      log('Device can`t vibrate error: $e');
     }
   }
 }
 
 class _BuildButton extends StatelessWidget {
-  /// Кнопка для смены темы
+  final String text;
+  final Function() onTap;
+
+  /// Кнопка для смены темы.
   const _BuildButton({
     Key? key,
     required this.text,
     required this.onTap,
   }) : super(key: key);
-  final String text;
-  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -187,9 +187,9 @@ class _BuildButton extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: SizedBox(
-          width: (width - 34.w) / 3,
+          width: (width - 34) / 3,
           child: Align(
             alignment: Alignment.center,
             child: Text(

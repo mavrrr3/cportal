@@ -4,8 +4,17 @@ import 'package:hive/hive.dart';
 part 'filter_model.g.dart';
 
 // ignore_for_file: annotate_overrides, overridden_fields
-@HiveType(typeId: 8)
+@HiveType(typeId: 7)
 class FilterModel extends FilterEntity {
+  @HiveField(0)
+  final String headline;
+
+  @HiveField(1)
+  final bool isActive;
+
+  @HiveField(2)
+  final List<FilterItemModel> items;
+
   const FilterModel({
     required this.headline,
     required this.items,
@@ -15,19 +24,15 @@ class FilterModel extends FilterEntity {
           items: items,
           isActive: isActive,
         );
+}
 
+@HiveType(typeId: 8)
+class FilterItemModel extends FilterItemEntity {
   @HiveField(0)
-  final String headline;
-
+  final String name;
   @HiveField(1)
   final bool isActive;
 
-  @HiveField(2)
-  final List<FilterItemEntity> items;
-}
-
-@HiveType(typeId: 9)
-class FilterItemModel extends FilterItemEntity {
   const FilterItemModel({
     required this.name,
     this.isActive = false,
@@ -36,8 +41,15 @@ class FilterItemModel extends FilterItemEntity {
           isActive: isActive,
         );
 
-  @HiveField(0)
-  final String name;
-  @HiveField(1)
-  final bool isActive;
+  // FilterItemModel copyWith({
+  //   String? name,
+  //   bool? isActive,
+  // }) {
+  //   return FilterItemModel(
+  //     name: name ?? this.name,
+  //     isActive: isActive ?? this.isActive,
+  //   );
+  // }
+
+  // bool get changeActivity => !isActive;
 }

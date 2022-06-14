@@ -6,7 +6,7 @@ class AppColors {
   static const Color mainBgLight = Color(0xFFF0F0F0);
   static const Color kLightTextColor = Color(0xFF111315);
   static const Color lightRed = Color(0xFFEEDCDD);
-
+  static const Color yellow = Color(0xFFFFBC3B);
   static const Color red = Color(0xFFDF292F);
   static const Color redDark = Color(0xFFFF6A55);
   static const Color blue = Color(0xFF5284DA);
@@ -24,7 +24,6 @@ class AppColors {
   static const Color iconLight = Color(0xFF999999);
 }
 
-// const kBubleLight = Color(0xFFE8E8E8);
-// const kBubleDark = Color(0xFF262629);
-// const kActiveUsersDark = Color(0xFF3B3B3B);
-// const kIndicatorBuble = Color(0xFF39B54A);
+Color getBarrierColor(ThemeData theme) => theme.brightness == Brightness.light
+    ? AppColors.textMain.withOpacity(0.2)
+    : AppColors.darkOnboardingBG.withOpacity(0.8);

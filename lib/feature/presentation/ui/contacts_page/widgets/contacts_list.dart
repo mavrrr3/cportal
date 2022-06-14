@@ -1,18 +1,18 @@
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/tag_container.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
-  /// Колонка с контактами
+  final List<ProfileEntity> items;
+
+  final Function(int) onTap;
+
+  /// Колонка с контактами.
   const ContactsList({
     Key? key,
     required this.items,
     required this.onTap,
   }) : super(key: key);
-
-  final List<ProfileEntity> items;
-  final Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,13 @@ class ContactsList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 8),
         child: GestureDetector(
           onTap: () {
             onTap(index);
           },
-          child: _ContactItem(
-            item: items[index],
+          child: ContactCard(
+            user: items[index],
           ),
         ),
       ),
@@ -35,14 +35,16 @@ class ContactsList extends StatelessWidget {
   }
 }
 
-class _ContactItem extends StatelessWidget {
-  /// Карточка контакта
-  const _ContactItem({
-    Key? key,
-    required this.item,
-  }) : super(key: key);
+class ContactCard extends StatelessWidget {
+  final ProfileEntity user;
+  final double? width;
 
-  final ProfileEntity item;
+  /// Карточка контакта.
+  const ContactCard({
+    Key? key,
+    required this.user,
+    this.width,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,39 +52,49 @@ class _ContactItem extends StatelessWidget {
 
     return GestureDetector(
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: width ?? MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: theme.splashColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AvatarBox(
-                size: 48,
-                imgPath: item.photoLink,
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${item.firstName} ${item.middleName} ${item.lastName}',
-                    style: theme.textTheme.headline6!
-                        .copyWith(fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.position.description,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.hoverColor.withOpacity(0.68),
+              // ignore: prefer_if_elements_to_conditional_expressions
+              user.photoLink != ''
+                  ? AvatarBox(
+                      size: 48,
+                      imgPath: user.photoLink,
+                      borderRadius: 6,
+                    )
+                  : EmptyAvatarBox(
+                      user: user,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  TagContainer(text: item.position.department),
-                ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.fullName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.headline6!
+                          .copyWith(fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      user.position,
+                      style: theme.textTheme.bodyText1!.copyWith(
+                        color: theme.hoverColor.withOpacity(0.68),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    // TagContainer(text: item.position.department),.
+                  ],
+                ),
               ),
             ],
           ),
@@ -90,4 +102,45 @@ class _ContactItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class EmptyAvatarBox extends StatelessWidget {
+  final ProfileEntity user;
+  final double size;
+  final double borderRadius;
+  const EmptyAvatarBox({
+    Key? key,
+    required this.user,
+    this.size = 48,
+    this.borderRadius = 6,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+        color: user.color,
+      ),
+      child: Center(
+        child: Text(
+          getShortName(user.fullName),
+          style: theme.textTheme.headline3!.copyWith(
+            color: Colors.black,
+            letterSpacing: -1,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+String getShortName(String name) {
+  final nameList = name.split(' ');
+
+  return '${nameList.first[0]} ${nameList[1][0]}';
 }

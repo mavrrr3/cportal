@@ -3,50 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-//для теста, в будущем заменить на реальные данные
-class TodayItemModel {
-  final String image;
-  final String? title;
-  final String description;
-  final String? post;
-  final String? place;
-
-  TodayItemModel({
-    required this.image,
-    this.title,
-    required this.description,
-    this.post,
-    this.place,
-  });
-}
-
-final List<TodayItemModel> _items = [
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-  TodayItemModel(
-    image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-    description: 'Романова Алексея Игоревича',
-    post: 'Охранник',
-    place: 'Новосталь-М',
-  ),
-];
+// Для теста, в будущем заменить на реальные данные.
 
 class TodayWidget extends StatelessWidget {
-  const TodayWidget({Key? key}) : super(key: key);
+  final Function(int) onTap;
+  const TodayWidget({
+    Key? key,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,37 +24,44 @@ class TodayWidget extends StatelessWidget {
           style: theme.textTheme.headline3,
         ),
         const SizedBox(height: 12),
-        !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  _items.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: _TodayItem(item: _items[index]),
-                  ),
-                ),
-              )
-            : Wrap(
-                spacing: 51,
-                runSpacing: 16,
-                children: List.generate(
-                  _items.length,
-                  (index) => _TodayItem(item: _items[index]),
+        if (!ResponsiveWrapper.of(context).isLargerThan(TABLET))
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              _items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: GestureDetector(
+                  onTap: () {
+                    onTap(index);
+                  },
+                  child: _TodayItem(item: _items[index]),
                 ),
               ),
+            ),
+          )
+        else
+          Wrap(
+            spacing: 51,
+            runSpacing: 16,
+            children: List.generate(
+              _items.length,
+              (index) => _TodayItem(item: _items[index]),
+            ),
+          ),
       ],
     );
   }
 }
 
 class _TodayItem extends StatelessWidget {
+  final TodayItemModel item;
+
   const _TodayItem({
     Key? key,
     required this.item,
   }) : super(key: key);
-  final TodayItemModel item;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -112,6 +83,7 @@ class _TodayItem extends StatelessWidget {
                 item.title ?? AppLocalizations.of(context)!.birthDay,
                 style: theme.textTheme.headline6,
               ),
+              const SizedBox(height: 7),
               Text(
                 item.description,
                 softWrap: true,
@@ -119,7 +91,7 @@ class _TodayItem extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   if (item.post != null)
@@ -131,14 +103,17 @@ class _TodayItem extends StatelessWidget {
                     ),
                   if (item.place != null)
                     Padding(
-                      padding: const EdgeInsets.only(left: 7),
+                      padding: const EdgeInsets.only(left: 8),
                       child: Container(
                         decoration: BoxDecoration(
                           color: theme.cardColor.withOpacity(0.06),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 4,
+                          ),
                           child: Text(
                             item.place!,
                             style: theme.textTheme.bodyText1!.copyWith(
@@ -157,3 +132,44 @@ class _TodayItem extends StatelessWidget {
     );
   }
 }
+
+class TodayItemModel {
+  final String image;
+  final String? title;
+  final String description;
+  final String? post;
+  final String? place;
+
+  TodayItemModel({
+    required this.image,
+    this.title,
+    required this.description,
+    this.post,
+    this.place,
+  });
+}
+
+final List<TodayItemModel> _items = [
+  TodayItemModel(
+    image: '1.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '2.jpg',
+    description: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '1.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '2.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+];

@@ -7,9 +7,9 @@ class WorkModeTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    var locale = AppLocalizations.of(context)!;
+    final locale = AppLocalizations.of(context)!;
 
-    var workModeMap = [
+    final workModeMap = [
       {
         'day': locale.monday,
         'time': locale.workTime,

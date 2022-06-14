@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/what_get_with_you.dart';
@@ -9,7 +9,6 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,12 +42,12 @@ class ConnectingCodePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.0.w,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
             child: Column(
               children: [
-                SizedBox(height: 48.h),
+                const SizedBox(height: 48),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -57,7 +56,7 @@ class ConnectingCodePage extends StatelessWidget {
                           ? theme.hoverColor
                           : null,
                       path: 'logo_grey.svg',
-                      width: 24.0.w,
+                      width: 24,
                     ),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
@@ -66,12 +65,12 @@ class ConnectingCodePage extends StatelessWidget {
                       child: SvgIcon(
                         theme.primaryColor,
                         path: 'qr_code.svg',
-                        width: 24.0.w,
+                        width: 24,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 31.h),
+                const SizedBox(height: 31),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -85,9 +84,7 @@ class ConnectingCodePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 8.h,
-                ),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -102,9 +99,9 @@ class ConnectingCodePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 27.h),
+                const SizedBox(height: 27),
                 const CellCodeInput(),
-                SizedBox(height: 8.h),
+                const SizedBox(height: 8),
                 if (_isWrongCode) ...[
                   Align(
                     alignment: Alignment.centerLeft,
@@ -139,7 +136,7 @@ class ConnectingCodePage extends StatelessWidget {
                 controller: _codeController,
                 simbolQuantity: 6,
               ),
-              SizedBox(height: 52.h),
+              const SizedBox(height: 52),
             ],
           ),
         ],
@@ -184,8 +181,8 @@ class _CellCodeInputState extends State<CellCodeInput> {
 
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       final defaultPinTheme = PinTheme(
-        width: 44.w,
-        height: 52.h,
+        width: 44,
+        height: 52,
         textStyle: isWrongCode(state)
             ? theme.textTheme.headline5!.copyWith(color: theme.errorColor)
             : theme.textTheme.headline5,
@@ -202,14 +199,13 @@ class _CellCodeInputState extends State<CellCodeInput> {
         controller: _codeController,
         focusNode: _codeFocusNode,
         defaultPinTheme: defaultPinTheme,
-        separator: SizedBox(width: 11.w),
+        separator: const SizedBox(width: 11),
         errorPinTheme: defaultPinTheme.copyWith(
           decoration: BoxDecoration(color: theme.hintColor),
         ),
-        // errorBuilder: ,
         focusedPinTheme: PinTheme(
-          width: 52.w,
-          height: 62.h,
+          width: 52,
+          height: 62,
           decoration: BoxDecoration(
             color: isWrongCode(state) ? theme.hintColor : theme.splashColor,
             borderRadius: BorderRadius.circular(8),
@@ -224,6 +220,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
           ),
         ),
         showCursor: false,
+        // ignore: format-comment
         // cursor: cursor,
         onChanged: (value) =>
             context.read<AuthBloc>().add(ChangeAuthCode(value)),
@@ -243,19 +240,19 @@ bool isWrongCode(AuthState state) {
 }
 
 Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
-  bool _isShow = false;
+  bool isShow = false;
 
   return showDialog(
     context: context,
     useRootNavigator: true,
     barrierDismissible: true,
-    builder: (BuildContext context) {
+    builder: (context) {
       final ThemeData theme = Theme.of(context);
 
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            contentPadding: EdgeInsets.fromLTRB(16.0.w, 8.0.h, 16.0.w, 28.0.h),
+            contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
             backgroundColor: theme.splashColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -272,14 +269,12 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       style: theme.textTheme.headline3,
                     ),
                   ),
-                  SizedBox(
-                    height: 8.sp,
-                  ),
+                  const SizedBox(height: 8),
                   Text(
                     AppLocalizations.of(context)!.howToGetCodeText,
                     style: theme.textTheme.headline6,
                   ),
-                  SizedBox(height: 16.h),
+                  const SizedBox(height: 16),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: colorText(
@@ -288,7 +283,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       'grey',
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -298,7 +293,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.w),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -310,22 +305,22 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            _isShow = !_isShow;
+                            isShow = !isShow;
                           });
                         },
                         icon: Icon(
                           Icons.keyboard_arrow_down_outlined,
-                          size: 26.sp,
+                          size: 26,
                           color: theme.primaryColor,
                         ),
                       ),
                     ],
                   ),
                   Visibility(
-                    visible: _isShow,
+                    visible: isShow,
                     child: const WorkModeTable(),
                   ),
-                  SizedBox(height: 10.w),
+                  const SizedBox(height: 10),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: colorText(
@@ -334,7 +329,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       'grey',
                     ),
                   ),
-                  SizedBox(height: 10.h),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -349,7 +344,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.h),
+                  const SizedBox(height: 16),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: colorText(
@@ -358,7 +353,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       'grey',
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  const SizedBox(height: 8),
                   phoneButton(theme),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -373,11 +368,10 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
             ),
             actions: [
               Padding(
-                padding:
-                    EdgeInsets.only(left: 8.0.w, right: 8.0.w, bottom: 8.0.w),
+                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 48.h),
+                    minimumSize: const Size(double.infinity, 48),
                     primary: theme.primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -404,7 +398,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
 Widget phoneButton(ThemeData theme) {
   return Container(
     width: double.infinity,
-    height: 46.h,
+    height: 46,
     decoration: BoxDecoration(
       color: theme.backgroundColor,
       borderRadius: BorderRadius.circular(12),
@@ -414,7 +408,7 @@ Widget phoneButton(ThemeData theme) {
       children: [
         Icon(
           Icons.phone,
-          size: 26.sp,
+          size: 26,
           color: theme.hoverColor,
         ),
         Text(
@@ -422,9 +416,7 @@ Widget phoneButton(ThemeData theme) {
           style:
               theme.textTheme.headline5!.copyWith(fontWeight: FontWeight.w700),
         ),
-        SizedBox(
-          width: 40.w,
-        ),
+        const SizedBox(width: 40),
       ],
     ),
   );

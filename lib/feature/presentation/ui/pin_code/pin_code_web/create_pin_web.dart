@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_text.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,16 +26,16 @@ class CreatePinWeb extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             BlocConsumer<PinCodeBloc, PinCodeState>(
-              listener: ((context, state) {
+              listener: (context, state) {
                 if (state.status == PinCodeInputEnum.done) {
                   // Если ПИН код из базы Hive совпадает с
                   // введеным ПИНом, то редирект на страницу [/main_page]
                   context.goNamed(NavigationRouteNames.mainPage);
                 }
-              }),
-              builder: ((context, state) {
+              },
+              builder: (context, state) {
                 return BodyWidget(input: state.status);
-              }),
+              },
             ),
           ],
         ),
@@ -62,9 +62,10 @@ class BodyWidget extends StatelessWidget {
           input,
           context,
         ),
-        input == PinCodeInputEnum.repeat
-            ? const PinCodeRepeat()
-            : const PinCodeInput(),
+        if (input == PinCodeInputEnum.repeat)
+          const PinCodeRepeat()
+        else
+          const PinCodeInput(),
       ],
     );
   }
@@ -114,7 +115,7 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    PinCodeBloc pinCodeBloc =
+    final PinCodeBloc pinCodeBloc =
         BlocProvider.of<PinCodeBloc>(context, listen: false);
     final ThemeData theme = Theme.of(context);
 
@@ -195,13 +196,13 @@ class _PinCodeRepeatState extends State<PinCodeRepeat> {
   @override
   void dispose() {
     _pinRepeatController.dispose();
-    // _pinFocusNode.dispose();
+    // _pinFocusNode.dispose();.
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    PinCodeBloc pinCodeBloc =
+    final PinCodeBloc pinCodeBloc =
         BlocProvider.of<PinCodeBloc>(context, listen: false);
     final ThemeData theme = Theme.of(context);
 

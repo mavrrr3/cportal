@@ -21,7 +21,7 @@ class NewsCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat _outputFormat = DateFormat('d MMMM y, H:m', 'ru');
+    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
     final ThemeData theme = Theme.of(context);
 
     return GestureDetector(
@@ -39,7 +39,7 @@ class NewsCardItem extends StatelessWidget {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  item.image,
+                  'http://ribadi.ddns.net:88/images/${item.image}',
                   cache: true,
                 ),
               ),
@@ -62,7 +62,7 @@ class NewsCardItem extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      _outputFormat.format(item.dateShow),
+                      outputFormat.format(item.date),
                       style: theme.textTheme.bodyText1,
                     ),
                   ],

@@ -96,5 +96,16 @@
     "enter_by_qr_code": "Вход по QR-код",
     "office_phone": "Рабочий телефон",
     "self_phone": "Мобильный телефон",
-    "birth_date": "Дата рождения"
+    "birth_date": "Дата рождения",
+    "go_to_chat": "Перейти в чат",
+    "apply": "Применить",
+    "clear_all": "Очистить",
+    "youHadntDeclarations": "У вас еще\nне было заявок",
+    "buisenesTripDeclaration": "Заявление\nна командировку",
+    "passDeclaration": "Заявление\nна пропуск",
+    "payListDeclaration": "Заявление\nна расчётный листок",
+    "vocationDeclaration": "Заявление\nна отпуск",
+    "supportDeclaration": "Заявление\nна техническую поддержку/IT",
+    "shortSupportDeclaration": "Заявление на тех. поддержку/IT",
+    "inProcess": "В процессе"
 }

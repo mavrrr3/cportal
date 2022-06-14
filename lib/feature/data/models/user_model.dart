@@ -48,16 +48,16 @@ class UserModel extends UserEntity {
   final UserTypeModel userType;
 
   const UserModel({
-    required final this.id,
-    required final this.userName,
-    required final this.profileId,
-    required final this.lastLogin,
-    required final this.blocked,
-    required final this.dateCreated,
-    required final this.userCreated,
-    required final this.dateUpdated,
-    required final this.userUpdated,
-    required final this.userType,
+    required this.id,
+    required this.userName,
+    required this.profileId,
+    required this.lastLogin,
+    required this.blocked,
+    required this.dateCreated,
+    required this.userCreated,
+    required this.dateUpdated,
+    required this.userUpdated,
+    required this.userType,
   }) : super(
           id: id,
           userName: userName,
@@ -109,9 +109,9 @@ class UserTypeModel extends UserTypeEntity {
   final String description;
 
   UserTypeModel({
-    required final this.id,
-    required final this.code,
-    required final this.description,
+    required this.id,
+    required this.code,
+    required this.description,
   }) : super(
           id: id,
           code: code,

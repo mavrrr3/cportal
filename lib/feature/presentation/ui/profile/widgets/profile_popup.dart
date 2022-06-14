@@ -1,16 +1,16 @@
 // ignore_for_file: unused_element
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -28,7 +28,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    Color iconColor = theme.hoverColor.withOpacity(0.64);
+    final Color iconColor = theme.hoverColor.withOpacity(0.64);
     late ProfileEntity profile;
 
     void showChooserNotification(BuildContext context, ThemeData theme) {
@@ -36,16 +36,16 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
         backgroundColor: theme.splashColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12.0),
-            topRight: Radius.circular(12.0),
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
           ),
         ),
         isScrollControlled: true,
         context: context,
-        builder: (BuildContext context) {
+        builder: (context) {
           return SizedBox(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,12 +54,12 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     AppLocalizations.of(context)!.turnOffNotify,
                     style: theme.textTheme.headline5,
                   ),
-                  SizedBox(height: 18.h),
+                  const SizedBox(height: 18),
                   GestureDetector(
-                    onTap: (() => setState(() => showToasterAboutNotify(
+                    onTap: () => setState(() => showToasterAboutNotify(
                           theme,
                           'Оповещения выключены на 1 час',
-                        ))),
+                        )),
                     child: Text(
                       AppLocalizations.of(context)!.forHour,
                       style: theme.textTheme.headline5!.copyWith(
@@ -67,21 +67,21 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 24.h),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(height: 24.h),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forTwentyFourHour,
                     style: theme.textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(height: 24.h),
+                  const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forever,
                     style: theme.textTheme.headline5!.copyWith(
@@ -96,8 +96,8 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
       );
     }
 
-    bool isNotificationTurnedOn = true;
-    bool isFingerPrintAuth = false;
+    const bool isNotificationTurnedOn = true;
+    const bool isFingerPrintAuth = false;
     void turnOnOffNotify(bool newValue) {
       setState(() {
         _isNotificationTurnedOn = newValue;
@@ -112,7 +112,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5'));
+    ).add(const GetSingleProfileEventImpl(
+      'A1B2C3D4E5',
+      isMyProfile: true,
+    ));
 
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
@@ -159,7 +162,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '${profile.firstName} ${profile.middleName} ${profile.lastName}',
+                              profile.fullName,
                               style: theme.textTheme.headline4!.copyWith(
                                 fontWeight: FontWeight.w800,
                               ),
@@ -170,7 +173,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              profile.externalId,
+                              profile.id,
                               style: theme.textTheme.headline6!.copyWith(),
                               softWrap: true,
                               textAlign: TextAlign.left,
@@ -192,12 +195,12 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     children: [
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.department,
-                        description: profile.position.description,
+                        description: profile.position,
                       ),
                       const SizedBox(height: 8),
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.position,
-                        description: profile.position.department,
+                        description: profile.department,
                       ),
                     ],
                   ),
@@ -205,10 +208,11 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TitleAndDescriptionRow(
-                        title: AppLocalizations.of(context)!.birthDay,
-                        description: profile.birthday,
-                      ),
+                      if (profile.birthday != null)
+                        TitleAndDescriptionRow(
+                          title: AppLocalizations.of(context)!.birthDay,
+                          description: profile.birthDayToString!,
+                        ),
                       const SizedBox(height: 8),
                       TitleAndDescriptionRow(
                         title: AppLocalizations.of(context)!.email,
@@ -224,7 +228,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 alignment: Alignment.centerLeft,
                 child: TitleAndDescriptionRow(
                   title: 'Рабочий телефон',
-                  description: profile.phone[1].number,
+                  description: profile.officePhone,
                 ),
               ),
               const SizedBox(height: 32),
@@ -239,7 +243,6 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                         children: [
                           Container(
                             width: 350,
-                            height: 32.h,
                             decoration: BoxDecoration(
                               color: theme.hoverColor.withOpacity(0.04),
                               borderRadius: const BorderRadius.only(
@@ -248,8 +251,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                               ),
                             ),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 4,
+                              ),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -369,7 +374,7 @@ class TitleAndDescriptionRow extends StatelessWidget {
       children: [
         Text(
           title,
-          style: theme.textTheme.headline6!,
+          style: theme.textTheme.headline6,
         ),
         const SizedBox(height: 4),
         Text(
@@ -437,7 +442,7 @@ Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
       activeTrackColor: theme.primaryColor.withOpacity(0.38),
       activeColor: theme.primaryColor,
       hoverColor: Colors.transparent,
-      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9
+      // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9.
       inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
       inactiveThumbColor: theme.splashColor,
       value: val,
@@ -452,7 +457,7 @@ void showToasterAboutNotify(ThemeData theme, String text) {
     timeInSecForIosWeb: 1,
     backgroundColor: theme.hoverColor,
     textColor: theme.splashColor,
-    fontSize: 16.0,
+    fontSize: 16,
   );
 }
 
@@ -496,7 +501,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
             ),
           ),
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
         Container(
           width: 350,
           height: 44,
@@ -549,7 +554,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                         : Alignment.topRight,
                 child: Container(
                   width: 352 / 3,
-                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
@@ -593,19 +598,19 @@ class _ChangeThemeState extends State<ChangeTheme> {
 }
 
 class _BuildButtonChangeTheme extends StatelessWidget {
-  /// Кнопка для смены темы
+  final String text;
+  final Function() onTap;
+
+  /// Кнопка для смены темы.
   const _BuildButtonChangeTheme({
     Key? key,
     required this.text,
     required this.onTap,
   }) : super(key: key);
-  final String text;
-  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    // final double width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,

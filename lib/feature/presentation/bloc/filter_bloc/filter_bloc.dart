@@ -1,10 +1,9 @@
 import 'dart:async';
-
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/mocks/mocks.dart';
+import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/domain/usecases/users_usecases/filter_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       _onFetch,
       transformer: bloc_concurrency.sequential(),
     );
-
     on<FilterExpandSectionEvent>(
       _onExpandSection,
       transformer: bloc_concurrency.sequential(),
@@ -35,9 +33,13 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       _onRemove,
       transformer: bloc_concurrency.sequential(),
     );
+    on<FilterRemoveAllEvent>(
+      _onRemoveAll,
+      transformer: bloc_concurrency.sequential(),
+    );
   }
 
-  // Получение данных от API
+  // Получение данных от API.
   FutureOr<void> _onFetch(
     FetchFiltersEvent event,
     Emitter emit,
@@ -64,74 +66,113 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         ));
       },
       (filters) {
-        // log('||| ${filters} ***');
-        // emit(FilterLoadedState(filters: filters));
-        emit(FilterLoadedState(filters: Mocks.filter));
+        emit(FilterLoadedState(filters: filters));
       },
     );
 
-    debugPrint('Отработал эвент: ' + event.toString());
+    debugPrint('Отработал эвент: $event');
   }
 
-  // Обработка раскрытия раздела в фильтре
+  // Обработка раскрытия раздела в фильтре.
   FutureOr<void> _onExpandSection(
     FilterExpandSectionEvent event,
     Emitter emit,
   ) async {
-    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
-    FilterEntity _filter = _filters[event.index];
-    _filter = _filter.copyWith(isActive: _filter.changeActivity);
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+      FilterEntity filter = filters[event.index];
+      filter = filter.copyWith(isActive: filter.changeActivity);
 
-    // log('*** ${_filters[event.index]} ***');
-    // log('=== ${_filter}');
+      filters[event.index] = switchFilterEntityToFilterModel(filter);
 
-    _filters[event.index] = _filter;
-    // log('///');
-
-    emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: _filters));
-
-    debugPrint('Отработал эвент: ' + event.toString());
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+    }
   }
 
-  // Обработка выбора пункта в фильтре
+  // Обработка выбора пункта в фильтре.
   FutureOr<void> _onSelect(
     FilterSelectItemEvent event,
     Emitter emit,
   ) {
-    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
-    FilterEntity _filter = _filters[event.filterIndex];
-    FilterItemEntity _filterItem =
-        _filters[event.filterIndex].items[event.itemIndex];
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+      final FilterEntity filter = filters[event.filterIndex];
+      final FilterItemEntity filterItem =
+          filters[event.filterIndex].items[event.itemIndex];
 
-    List<FilterItemEntity> itemsWithSelect = selectItems(_filter, _filterItem);
-    FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
-    _filters[event.filterIndex] = filterWithSelect;
+      final List<FilterItemEntity> itemsWithSelect =
+          selectItems(filter, filterItem);
+      final FilterEntity filterWithSelect =
+          filter.copyWith(items: itemsWithSelect);
+      filters[event.filterIndex] =
+          switchFilterEntityToFilterModel(filterWithSelect);
 
-    // log(filterWithSelect.toString());
-
-    emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: _filters));
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+    }
   }
 
+  // Обработка удаления пункта фильтра из вью выбранных.
   FutureOr<void> _onRemove(
     FilterRemoveItemEvent event,
     Emitter emit,
   ) async {
-    List<FilterEntity> _filters = (state as FilterLoadedState).filters;
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
 
-    final int itemIndex = _filters[event.filterIndex].items.indexOf(event.item);
-    FilterEntity _filter = _filters[event.filterIndex];
-    FilterItemEntity _filterItem = _filters[event.filterIndex].items[itemIndex];
+      final int itemIndex =
+          filters[event.filterIndex].items.indexOf(event.item);
+      final FilterEntity filter = filters[event.filterIndex];
+      final FilterItemEntity filterItem =
+          filters[event.filterIndex].items[itemIndex];
 
-    List<FilterItemEntity> itemsWithSelect = selectItems(_filter, _filterItem);
-    FilterEntity filterWithSelect = _filter.copyWith(items: itemsWithSelect);
-    _filters[event.filterIndex] = filterWithSelect;
+      final List<FilterItemEntity> itemsWithSelect =
+          selectItems(filter, filterItem);
+      final FilterEntity filterWithSelect =
+          filter.copyWith(items: itemsWithSelect);
+      filters[event.filterIndex] =
+          switchFilterEntityToFilterModel(filterWithSelect);
 
-    emit(FilterLoadingState());
-    emit(FilterLoadedState(filters: _filters));
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+    }
+  }
 
-    debugPrint('Отработал эвент: ' + event.toString());
+  // Делает все выбранные пункты из стейта неактивными.
+  FutureOr<void> _onRemoveAll(
+    FilterRemoveAllEvent event,
+    Emitter emit,
+  ) async {
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).filters;
+
+      // ignore: prefer-correct-identifier-length
+      for (int i = 0; i < filters.length; i++) {
+        if (filters[i].isActive) {
+          FilterEntity filter = filters[i];
+          filter = filter.copyWith(isActive: filter.changeActivity);
+
+          filters[i] = switchFilterEntityToFilterModel(filter);
+        }
+
+        for (int itemIndex = 0;
+            itemIndex < filters[i].items.length;
+            itemIndex++) {
+          final FilterEntity filter = filters[i];
+
+          final List<FilterItemEntity> unselectedItems = unselectItems(filter);
+          final FilterEntity filterWithoutSelect =
+              filter.copyWith(items: unselectedItems);
+          filters[i] = switchFilterEntityToFilterModel(filterWithoutSelect);
+        }
+      }
+
+      emit(FilterLoadingState());
+      emit(FilterLoadedState(filters: filters));
+
+      debugPrint('Отработал эвент: $event');
+    }
   }
 
   List<FilterItemEntity> selectItems(
@@ -145,5 +186,39 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
       return item;
     }).toList();
+  }
+
+  List<FilterItemEntity> unselectItems(
+    FilterEntity entity,
+  ) {
+    return entity.items.map((item) {
+      if (item.isActive) {
+        return item.copyWith(isActive: item.changeActivity);
+      }
+
+      return item;
+    }).toList();
+  }
+
+  FilterModel switchFilterEntityToFilterModel(FilterEntity filterEntity) {
+    return FilterModel(
+      headline: filterEntity.headline,
+      items: switchFilterItemsEntityToFilterItemsModel(filterEntity.items),
+      isActive: filterEntity.isActive,
+    );
+  }
+
+  List<FilterItemModel> switchFilterItemsEntityToFilterItemsModel(
+    List<FilterItemEntity> itemsEntityList,
+  ) {
+    final List<FilterItemModel> itemsModel = [];
+    for (final FilterItemEntity item in itemsEntityList) {
+      itemsModel.add(FilterItemModel(
+        name: item.name,
+        isActive: item.isActive,
+      ));
+    }
+
+    return itemsModel;
   }
 }

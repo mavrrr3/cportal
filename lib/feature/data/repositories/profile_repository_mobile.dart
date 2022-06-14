@@ -1,5 +1,6 @@
-import 'package:cportal_flutter/core/error/exception.dart';
-import 'package:cportal_flutter/core/platform/network_info.dart';
+import 'package:cportal_flutter/core/error/cache_exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
+import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
@@ -19,10 +20,16 @@ class ProfileRepositoryMobile implements IProfileRepository {
   });
 
   @override
-  Future<Either<Failure, ProfileModel>> getSingleProfile(String id) async {
+  Future<Either<Failure, ProfileModel>> getSingleProfile(
+    String id, {
+    bool isMyProfile = false,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteUser = await remoteDataSource.getSingleProfile(id);
+        final remoteUser = await remoteDataSource.getSingleProfile(
+          id,
+          isMyProfile: isMyProfile,
+        );
 
         return Right(remoteUser);
       } on ServerException {

@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/core/platform/biometric_info.dart';
+import 'package:cportal_flutter/core/platform/i_biometric_info.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
@@ -30,11 +30,11 @@ void main() {
   test(
     'should return [bool] when the call autheticate()',
     () async {
-      //arrange
+      // Arrange.
       when(() => biometricInfo.autheticate()).thenAnswer((_) async => tIsAuth);
-      //act
+      // Act..
       final result = await repository.autheticate();
-      //assert
+      // Assert.
       verify(() => biometricInfo.autheticate());
       expect(result, equals(Right<Failure, bool>(tIsAuth)));
     },
@@ -43,12 +43,12 @@ void main() {
   test(
     'should return [Failure] when the call autheticate()',
     () async {
-      //arrange
+      // Arrange.
       when(() => biometricInfo.autheticate())
           .thenThrow(PlatformException(code: 'error'));
-      //act
+      // Act..
       final result = await repository.autheticate();
-      //assert
+      // Assert.
       verify(() => biometricInfo.autheticate());
       expect(result, equals(Left<Failure, bool>(tFailure)));
     },
@@ -56,12 +56,12 @@ void main() {
   test(
     'should return [List<BiometricType>] when the call getBiometrics()',
     () async {
-      //arrange
+      // Arrange.
       when(() => biometricInfo.getBiometrics())
           .thenAnswer((_) async => tListBiometricType);
-      //act
+      // Act..
       final result = await repository.getBiometrics();
-      //assert
+      // Assert.
       verify(() => biometricInfo.getBiometrics());
       expect(
         result,
@@ -73,12 +73,12 @@ void main() {
   test(
     'should return [Failure] when the call getBiometrics()',
     () async {
-      //arrange
+      // Arrange.
       when(() => biometricInfo.getBiometrics())
           .thenThrow(PlatformException(code: 'error'));
-      //act
+      // Act..
       final result = await repository.getBiometrics();
-      //assert
+      // Assert.
       verify(() => biometricInfo.getBiometrics());
       expect(
         result,

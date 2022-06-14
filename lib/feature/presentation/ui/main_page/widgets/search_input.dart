@@ -4,30 +4,28 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchInput extends StatelessWidget {
-  const SearchInput({
-    Key? key,
-    required this.controller,
-    required this.onChanged,
-    this.focusNode,
-    this.animationDuration = const Duration(milliseconds: 300),
-    this.isAnimation = false,
-  }) : super(key: key);
-  final Function(String) onChanged;
+  final Function(String)? onChanged;
   final TextEditingController controller;
   final FocusNode? focusNode;
   final Duration animationDuration;
   final bool isAnimation;
 
+  const SearchInput({
+    Key? key,
+    required this.controller,
+    this.onChanged,
+    this.focusNode,
+    this.animationDuration = const Duration(milliseconds: 300),
+    this.isAnimation = false,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return AnimatedContainer(
-      duration:
-          isAnimation ? animationDuration : const Duration(milliseconds: 100),
-      width: _getContainerWidth(context),
+    return Container(
+      width: getSearchContainerWidth(context),
       height: 40,
-      curve: Curves.easeIn,
       decoration: BoxDecoration(
         color: theme.splashColor,
         borderRadius: BorderRadius.circular(12),
@@ -36,7 +34,7 @@ class SearchInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             child: SvgIcon(
               theme.brightness == Brightness.dark ? theme.hoverColor : null,
               path: 'search.svg',
@@ -51,9 +49,7 @@ class SearchInput extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               textInputAction: TextInputAction.search,
-              onChanged: (text) {
-                onChanged(text);
-              },
+              onChanged: onChanged,
               style: theme.textTheme.headline6!.copyWith(
                 color: theme.hoverColor.withOpacity(0.68),
               ),
@@ -71,13 +67,12 @@ class SearchInput extends StatelessWidget {
       ),
     );
   }
+}
 
-  double _getContainerWidth(
-    BuildContext context,
-  ) {
-    final double width = MediaQuery.of(context).size.width;
+double getSearchContainerWidth(
+  BuildContext context,
+) {
+  final double width = MediaQuery.of(context).size.width;
 
-  
-    return ResponsiveWrapper.of(context).isSmallerThan(TABLET) ? isAnimation ? width - 32 : width - 84 : 584;
-  }
+  return ResponsiveWrapper.of(context).isSmallerThan(TABLET) ? width - 84 : 584;
 }

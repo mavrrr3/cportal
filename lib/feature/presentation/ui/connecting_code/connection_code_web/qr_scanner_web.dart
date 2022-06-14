@@ -1,12 +1,11 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -15,7 +14,7 @@ class QrScannerWeb extends StatelessWidget {
   const QrScannerWeb({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool _isWrongCode = false;
+    bool isWrongCode = false;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,11 +24,11 @@ class QrScannerWeb extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.0.w,
+              padding:const EdgeInsets.symmetric(
+                horizontal: 20,
               ),
               child: BlocConsumer<AuthBloc, AuthState>(
-                listener: ((context, state) {
+                listener: (context, state) {
                   if (state is AuthUser) {
                     const String nextScreen = kIsWeb
                         ? NavigationRouteNames.createPinWeb
@@ -37,11 +36,11 @@ class QrScannerWeb extends StatelessWidget {
 
                     context.goNamed(nextScreen);
                   }
-                  if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
-                }),
-                builder: ((context, state) {
+                  if (state is ErrorAuthState) isWrongCode = !isWrongCode;
+                },
+                builder: (context, state) {
                   return const BodyWidget();
-                }),
+                },
               ),
             ),
           ],
@@ -62,7 +61,7 @@ class BodyWidget extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 260),
-        // TODO Реализовать получение QR кода из БД
+        // TODO Реализовать получение QR кода из БД.
         QrImage(
           data: 'data',
           size: 206,
@@ -163,7 +162,7 @@ class HeaderTextWidget extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: 31.h),
+   const     SizedBox(height: 31),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -177,9 +176,7 @@ class HeaderTextWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 8.h,
-        ),
+     const   SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
