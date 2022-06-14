@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class CardHorizontalScroll extends StatelessWidget {
@@ -14,13 +15,13 @@ class CardHorizontalScroll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       width: 148,
       height: 92,
       decoration: BoxDecoration(
-        color: color ?? theme.splashColor,
+        color: color ?? theme.cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -32,11 +33,11 @@ class CardHorizontalScroll extends StatelessWidget {
             Icon(
               icon,
               size: 20,
-              color: theme.hoverColor.withOpacity(0.68),
+              color: theme.textLight,
             ),
             Text(
               text,
-              style: theme.textTheme.headline6!.copyWith(height: 1.5),
+              style: theme.textTheme.px14.copyWith(height: 1.5),
             ),
           ],
         ),
