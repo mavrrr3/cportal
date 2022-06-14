@@ -15,14 +15,22 @@ class GetSingleProfileUseCase
   Future<Either<Failure, ProfileEntity>> call(
     GetSingleProfileParams params,
   ) async {
-    return profileRepository.getSingleProfile(params.id);
+    return profileRepository.getSingleProfile(
+      params.id,
+      isMyProfile: params.isMyProfile,
+    );
   }
 }
 
 class GetSingleProfileParams extends Equatable {
   final String id;
+  final bool isMyProfile;
 
-  const GetSingleProfileParams({required this.id});
+  const GetSingleProfileParams({
+    required this.id,
+    required this.isMyProfile,
+  });
+
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, isMyProfile];
 }

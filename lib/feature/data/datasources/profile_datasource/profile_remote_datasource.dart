@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
@@ -8,7 +10,7 @@ abstract class IProfileRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем все ошибки через [ServerException]
-  Future<ProfileModel> getSingleProfile(String id);
+  Future<ProfileModel> getSingleProfile(String id, {bool isMyProfile = false});
 
   /// Обращается к эндпойнту .....
   ///
@@ -18,52 +20,37 @@ abstract class IProfileRemoteDataSource {
 
 class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   final IProfileLocalDataSource localDataSource;
+  final Dio dio;
 
-  ProfileRemoteDataSource(this.localDataSource);
+  ProfileRemoteDataSource(this.localDataSource, this.dio);
   @override
-  Future<ProfileModel> getSingleProfile(String id) async {
-    const String stringUser = '''
-                          {
-"id": "A1B2C3D4E5",
-"external_id": "8877",
-"first_name": "Александр",
-"last_name": "Дымченко",
-"middle_name": "Валерьевич",
-"birthday": "20.11.1984",
-"email": "aaa@novostal.ru",
-"photo_link": "2.jpg",
-"active": true,
-"position": {
-"id": "a1b2c3d4",
-"description": "Начальник отдела",
-"department": "Информационные технологии"
-},
-"phone": [
-{
-"number": "25-425-655",
-"suffix": "033",
-"primary": true
-},
-{
-"number": "987-65-06",
-"suffix": "033",
-"primary": false
-}
-],
-"user_created": "id_user_created",
-"date_created": "2022-03-21T14:37:12.068Z",
-"user_update": "id_user_updated",
-"date_updated": "2022-03-21T14:37:12.068Z"
-}''';
-
+  Future<ProfileModel> getSingleProfile(
+    String id, {
+    bool isMyProfile = false,
+  }) async {
+    final String baseUrl =
+        'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?id=$id';
     try {
-      // TODO реализовать получение данных от API.
-      final ProfileModel localeUser = profileModelFromJson(stringUser);
-      log('$localeUser');
+      // TODO: Избавиться от if, передавать эту переменную в singleProfileToCache.
+      if (isMyProfile) {
+        final ProfileModel localeUser = profileModelFromJson(stringUser);
 
-      await localDataSource.singleProfileToCache(localeUser);
+        await localDataSource.singleProfileToCache(localeUser);
 
-      return localeUser;
+        return localeUser;
+      } else {
+        final response = await dio.get<String>(baseUrl);
+
+        final jsonR = json.decode(response.data!) as Map<String, dynamic>;
+        final profile = ProfileModel.fromJson(
+          jsonR['response'] as Map<String, dynamic>,
+        );
+
+        log('ProfileRemouteDataSource  ==========  $profile');
+        await localDataSource.singleProfileToCache(profile);
+
+        return profile;
+      }
     } on SocketException {
       throw ServerException();
     } on Exception catch (e) {
@@ -77,3 +64,27 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     throw UnimplementedError();
   }
 }
+
+const String stringUser = '''
+{
+"id": "000000002",
+"name": "Иванов Иван Иванович",
+"departament": "Отдел вэб разработки",
+"position": "Директор",
+"birthdate": "2022-06-07T12:00:00",
+"contacts": [
+    {
+        "type": "Рабочий телефон",
+        "contact": "711-543"
+    },
+    {
+        "type": "Личный номер телефона",
+        "contact": "89128231848"
+    },
+    {
+        "type": "Эл. почта",
+        "contact": "ivanov@yandex.ru"
+    }
+],
+"photo": "1.jpg"
+}''';

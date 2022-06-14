@@ -8,7 +8,7 @@ part of 'contacts_model.dart';
 
 class ContactsModelAdapter extends TypeAdapter<ContactsModel> {
   @override
-  final int typeId = 10;
+  final int typeId = 9;
 
   @override
   ContactsModel read(BinaryReader reader) {
@@ -17,7 +17,8 @@ class ContactsModelAdapter extends TypeAdapter<ContactsModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ContactsModel(
-      contacts: (fields[1] as List).cast<ProfileModel>(),
+      contacts: (fields[2] as List).cast<ProfileModel>(),
+      count: fields[1] as int,
       favorites: (fields[0] as List).cast<ProfileModel>(),
     );
   }
@@ -25,10 +26,12 @@ class ContactsModelAdapter extends TypeAdapter<ContactsModel> {
   @override
   void write(BinaryWriter writer, ContactsModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.favorites)
       ..writeByte(1)
+      ..write(obj.count)
+      ..writeByte(2)
       ..write(obj.contacts);
   }
 

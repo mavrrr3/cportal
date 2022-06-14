@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ContactsState extends Equatable {
@@ -10,21 +10,36 @@ abstract class ContactsState extends Equatable {
 
 class ContactsEmptyState extends ContactsState {}
 
-class FetchContactsLoadingState extends ContactsState {}
+class ContactsLoadingState extends ContactsState {
+  final List<ProfileEntity> oldContacts;
+  final bool isFirstFetch;
 
-class FetchContactsLoadedState extends ContactsState {
-  final ContactsEntity data;
-
-  const FetchContactsLoadedState({required this.data});
+  const ContactsLoadingState(
+    this.oldContacts, {
+    this.isFirstFetch = false,
+  });
 
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [oldContacts, isFirstFetch];
 }
 
-class FetchContactsFetchErrorState extends ContactsState {
+class ContactsLoadedState extends ContactsState {
+  final List<ProfileEntity> contacts;
+  final List<ProfileEntity> favorites;
+
+  const ContactsLoadedState({
+    required this.contacts,
+    required this.favorites,
+  });
+
+  @override
+  List<Object?> get props => [contacts, favorites];
+}
+
+class ContactsFetchErrorState extends ContactsState {
   final String message;
 
-  const FetchContactsFetchErrorState({required this.message});
+  const ContactsFetchErrorState({required this.message});
 
   @override
   List<Object?> get props => [message];
