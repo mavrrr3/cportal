@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
@@ -48,13 +49,13 @@ class ContactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       child: Container(
         width: width ?? MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: theme.splashColor,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -81,14 +82,14 @@ class ContactCard extends StatelessWidget {
                       user.fullName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.headline6!
+                      style: theme.textTheme.px14
                           .copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       user.position,
-                      style: theme.textTheme.bodyText1!.copyWith(
-                        color: theme.hoverColor.withOpacity(0.68),
+                      style: theme.textTheme.px12.copyWith(
+                        color: theme.textLight,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -117,7 +118,7 @@ class EmptyAvatarBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       width: size,
@@ -129,7 +130,7 @@ class EmptyAvatarBox extends StatelessWidget {
       child: Center(
         child: Text(
           getShortName(user.fullName),
-          style: theme.textTheme.headline3!.copyWith(
+          style: theme.textTheme.px22.copyWith(
             color: Colors.black,
             letterSpacing: -1,
           ),
