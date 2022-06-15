@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class Button {
@@ -9,14 +10,14 @@ class Button {
     Function function,
     Size size,
   ) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     switch (type) {
       case ButtonEnum.blue:
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: size,
-            primary: theme.primaryColor,
+            primary: theme.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -24,16 +25,14 @@ class Button {
           onPressed: () => function(),
           child: _TextForButton(
             text,
-            theme.brightness == Brightness.light
-                ? theme.splashColor
-                : theme.hoverColor,
+            theme.brightness == Brightness.light ? theme.cardColor : theme.text,
           ),
         );
       case ButtonEnum.outlined:
         return OutlinedButton(
           style: OutlinedButton.styleFrom(
             side: BorderSide(
-              color: theme.primaryColor,
+              color: theme.primary!,
               width: 2,
             ),
             minimumSize: size,
@@ -75,13 +74,13 @@ class _TextForButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Text(
       text!,
-      style: theme.textTheme.headline5!.copyWith(
+      style: theme.textTheme.px16.copyWith(
         fontWeight: FontWeight.w700,
-        color: color ?? theme.primaryColor,
+        color: color ?? theme.primary,
       ),
     );
   }

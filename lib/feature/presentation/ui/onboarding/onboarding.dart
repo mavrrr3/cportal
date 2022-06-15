@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_step_page.dart';
@@ -58,10 +59,11 @@ class _OnboardingState extends State<Onboarding>
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.cardColor,
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: (details) => _onTapDown(details, _onboardingContent),

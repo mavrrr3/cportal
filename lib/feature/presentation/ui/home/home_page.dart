@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
@@ -128,20 +128,22 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
-      const DeclarationsPage(),
       const MainPage(),
       NewsPage(pageType: NewsCodeEnum.news),
       NewsPage(pageType: NewsCodeEnum.quastion),
+      const DeclarationsPage(),
       const ContactsPage(),
     ];
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: theme.background,
           body: Stack(
             children: [
               Row(
@@ -180,9 +182,7 @@ class _HomePageState extends State<HomePage>
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  color: theme.brightness == Brightness.light
-                      ? theme.hoverColor.withOpacity(0.2)
-                      : AppColors.darkOnboardingBG.withOpacity(0.95),
+                  color: theme.barrierColor,
                 ),
 
               // Закрыть онбординг.

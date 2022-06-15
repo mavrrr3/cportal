@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class TagContainer extends StatelessWidget {
@@ -14,7 +15,7 @@ class TagContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -22,7 +23,7 @@ class TagContainer extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: theme.hoverColor.withOpacity(0.06),
+          color: theme.text!.withOpacity(0.06),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
@@ -31,15 +32,15 @@ class TagContainer extends StatelessWidget {
             children: [
               Text(
                 text,
-                style: theme.textTheme.bodyText1!.copyWith(
-                  color: theme.hoverColor.withOpacity(0.68),
+                style: theme.textTheme.px12.copyWith(
+                  color: theme.textLight,
                 ),
               ),
               if (isCloseAction) const SizedBox(width: 4),
               if (isCloseAction)
                 Icon(
                   Icons.close,
-                  color: theme.cardColor.withOpacity(0.68),
+                  color: theme.text!.withOpacity(0.68),
                   size: 14,
                 ),
             ],

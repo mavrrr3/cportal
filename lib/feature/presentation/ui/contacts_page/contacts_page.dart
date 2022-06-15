@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -55,12 +55,13 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     _setupScrollController(context);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        backgroundColor: theme.background,
         body: Stack(
           children: [
             Row(
@@ -277,7 +278,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  color: getBarrierColor(theme),
+                  color: theme.barrierColor,
                 ),
               ),
             if (_isFilterOpenWeb)
@@ -320,12 +321,12 @@ class _ContactsPageState extends State<ContactsPage> {
       );
 
   // Filter Bottom Sheet Mobile.
-  Future<void> _showFilterMobile(ThemeData theme) async {
+  Future<void> _showFilterMobile(CustomTheme theme) async {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: theme.splashColor,
-      barrierColor: getBarrierColor(theme),
+      backgroundColor: theme.cardColor,
+      barrierColor: theme.barrierColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
@@ -377,7 +378,7 @@ class _ContactsPageState extends State<ContactsPage> {
     return showDialog(
       context: context,
       builder: (context) {
-        final ThemeData theme = Theme.of(context);
+        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
         return StatefulBuilder(
           builder: (context, setState) {
@@ -385,7 +386,7 @@ class _ContactsPageState extends State<ContactsPage> {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.3,
                 decoration: BoxDecoration(
-                  color: theme.splashColor,
+                  color: theme.cardColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(

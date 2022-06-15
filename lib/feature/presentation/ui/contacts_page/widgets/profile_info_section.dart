@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class ProfileInfoSection extends StatelessWidget {
@@ -15,7 +16,7 @@ class ProfileInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Padding(
       padding: EdgeInsets.only(bottom: bottomPadding ?? 8),
@@ -24,14 +25,14 @@ class ProfileInfoSection extends StatelessWidget {
         children: [
           Text(
             headline,
-            style: theme.textTheme.headline6,
+            style: theme.textTheme.px14,
           ),
           const SizedBox(height: 8),
           Text(
             text,
-            style: theme.textTheme.headline5!.copyWith(
+            style: theme.textTheme.px16.copyWith(
               fontWeight: FontWeight.w700,
-              color: textColor ?? theme.cardColor,
+              color: textColor ?? theme.text,
             ),
           ),
         ],

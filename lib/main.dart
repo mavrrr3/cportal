@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
@@ -80,8 +80,16 @@ class Main extends StatelessWidget {
     return MultiBlocProvider(
       providers: listOfBlocs(),
       child: AdaptiveTheme(
-        light: lightTheme(),
-        dark: darkTheme(),
+        light: ThemeData.light().copyWith(
+          extensions: <ThemeExtension<dynamic>>[
+            light,
+          ],
+        ),
+        dark: ThemeData.light().copyWith(
+          extensions: <ThemeExtension<dynamic>>[
+            dark,
+          ],
+        ),
         initial: AdaptiveThemeMode.light,
         builder: (light, dark) => MaterialApp.router(
           routerDelegate: router.routerDelegate,

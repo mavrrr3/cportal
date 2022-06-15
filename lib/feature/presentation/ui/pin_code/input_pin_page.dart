@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,37 +18,41 @@ class InputPinPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
         .add(EditPinCodeCheckEvent());
+                                 final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          child: BlocConsumer<PinCodeBloc, PinCodeState>(
-            listener: (context, state) {
-              if (state.status == PinCodeInputEnum.done) {
-                // Если ПИН код из базе Hive совпадает с
-                // введеным ПИНом, то редирект на страницу [/main_page]
-                context.goNamed(NavigationRouteNames.mainPage);
-              }
-            },
-            builder: (context, state) {
-              return BodyWidget(input: state.status);
-            },
-          ),
-        ),
-        Column(
-          children: [
-            CustomKeyboard(
-              controller: _pinController,
-              simbolQuantity: 4,
+    return Scaffold(
+      backgroundColor: theme.background,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
-            const SizedBox(height: 52),
-          ],
-        ),
-      ],
+            child: BlocConsumer<PinCodeBloc, PinCodeState>(
+              listener: (context, state) {
+                if (state.status == PinCodeInputEnum.done) {
+                  // Если ПИН код из базе Hive совпадает с
+                  // введеным ПИНом, то редирект на страницу [/main_page]
+                  context.goNamed(NavigationRouteNames.mainPage);
+                }
+              },
+              builder: (context, state) {
+                return BodyWidget(input: state.status);
+              },
+            ),
+          ),
+          Column(
+            children: [
+              CustomKeyboard(
+                controller: _pinController,
+                simbolQuantity: 4,
+              ),
+              const SizedBox(height: 52),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -231,7 +236,8 @@ class HeaderTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       children: [
@@ -244,7 +250,7 @@ class HeaderTextWidget extends StatelessWidget {
               width: 24,
             ),
             SvgIcon(
-              theme.primaryColor,
+              theme.primary,
               path: 'finger_print.svg',
               width: 24,
             ),
@@ -258,7 +264,7 @@ class HeaderTextWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: theme.textTheme.headline2,
+                  style: theme.textTheme.header,
                 ),
               ],
             ),
@@ -270,11 +276,11 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               secondText,
-              style: theme.textTheme.headline6!.copyWith(
+              style: theme.textTheme.px14.copyWith(
                 color: secondText ==
                         AppLocalizations.of(context)!.itWillBeNeedToEnter
-                    ? theme.hoverColor
-                    : theme.primaryColor,
+                    ? theme.textLight
+                    : theme.primary,
               ),
             ),
           ],
@@ -286,7 +292,7 @@ class HeaderTextWidget extends StatelessWidget {
             Text(
               error ?? '',
               style:
-                  theme.textTheme.headline6!.copyWith(color: theme.errorColor),
+                  theme.textTheme.px14.copyWith(color: theme.red),
             ),
           ],
         ),

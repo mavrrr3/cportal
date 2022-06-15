@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
@@ -33,10 +34,11 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                 final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.cardColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 16,

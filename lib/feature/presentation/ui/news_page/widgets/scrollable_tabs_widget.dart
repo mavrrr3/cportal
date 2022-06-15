@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -23,7 +24,8 @@ class ScrollableTabsWidget extends StatefulWidget {
 class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     final double width = MediaQuery.of(context).size.width;
 
     return Column(
@@ -52,14 +54,14 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
         ),
         Container(
           height: 1,
-          color: theme.dividerColor,
+          color: theme.divider,
         ),
       ],
     );
   }
 
   Widget _textButton(
-    ThemeData theme, {
+    CustomTheme theme, {
     required String text,
     required bool isCurrent,
     Function()? onTap,
@@ -79,7 +81,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
                 ? Border(
                     bottom: BorderSide(
                       width: 2.5,
-                      color: widget.activeColor ?? theme.primaryColor,
+                      color: widget.activeColor ?? theme.primary!,
                     ),
                   )
                 : null,
@@ -89,11 +91,11 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
             child: Text(
               text,
               style: isCurrent
-                  ? theme.textTheme.headline5!.copyWith(
+                  ? theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: widget.activeColor ?? theme.primaryColor,
+                      color: widget.activeColor ?? theme.primary!,
                     )
-                  : theme.textTheme.headline5!.copyWith(
+                  : theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
             ),

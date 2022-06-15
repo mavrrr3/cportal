@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -18,7 +19,7 @@ class CustomCheckBox extends StatefulWidget {
 class _CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -31,11 +32,11 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: widget.isActive
-                ? theme.primaryColor
-                : theme.hoverColor.withOpacity(0.34),
+                ? theme.primary!
+                : theme.text!.withOpacity(0.34),
             width: 2,
           ),
-          color: widget.isActive ? theme.primaryColor : Colors.transparent,
+          color: widget.isActive ? theme.primary! : Colors.transparent,
         ),
         child: widget.isActive
             ? SvgPicture.asset(

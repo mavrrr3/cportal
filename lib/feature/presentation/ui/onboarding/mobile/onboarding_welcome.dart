@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
@@ -10,7 +11,8 @@ class OnBoardingWelcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     // Контент страниц онбординга.
     final List<OnboardingEntity> onboardingContent = [
@@ -53,7 +55,7 @@ class OnBoardingWelcome extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.cardColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -71,12 +73,12 @@ class OnBoardingWelcome extends StatelessWidget {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.welcome,
-                          style: theme.textTheme.headline2,
+                          style: theme.textTheme.header,
                         ),
                         Text(
                           AppLocalizations.of(context)!
                               .findImportantInformation,
-                          style: theme.textTheme.headline5,
+                          style: theme.textTheme.px16,
                         ),
                       ],
                     ),
