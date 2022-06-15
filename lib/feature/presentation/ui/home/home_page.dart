@@ -134,10 +134,10 @@ class _HomePageState extends State<HomePage>
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
-      const DeclarationsPage(),
       const MainPage(),
       NewsPage(pageType: NewsCodeEnum.news),
       NewsPage(pageType: NewsCodeEnum.quastion),
+      const DeclarationsPage(),
       const ContactsPage(),
     ];
 

@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +13,15 @@ class NewsTemplate {
     ParagraphEntity paragraph,
   ) {
     final width = MediaQuery.of(context).size.width;
-    final theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     log(paragraph.toString());
 
     switch (paragraph.template) {
       case '1':
         return Text(
           paragraph.content ?? '',
-          style: theme.textTheme.headline6,
+          style: theme.textTheme.px14,
         );
       case '2':
         return Padding(
@@ -35,7 +37,7 @@ class NewsTemplate {
               const SizedBox(height: 12),
               Text(
                 paragraph.imageTitle ?? '',
-                style: theme.textTheme.bodyText1,
+                style: theme.textTheme.px12,
               ),
             ],
           ),

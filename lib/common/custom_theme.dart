@@ -123,7 +123,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
 
 class CustomTextTheme {
   final TextStyle header;
-  final TextStyle px28;
+  final TextStyle px32;
   final TextStyle px22;
   final TextStyle px17;
   final TextStyle px16;
@@ -133,7 +133,7 @@ class CustomTextTheme {
 
   CustomTextTheme({
     required this.header,
-    required this.px28,
+    required this.px32,
     required this.px22,
     required this.px17,
     required this.px16,
@@ -144,49 +144,49 @@ class CustomTextTheme {
 }
 
 CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
-      // [32 px].
-      header: GoogleFonts.roboto(
-        fontSize: 32,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // [28 px].
-      px28: GoogleFonts.russoOne(
+      // 2 [28 px]. 
+      header: GoogleFonts.russoOne(
         fontSize: 28,
         fontWeight: FontWeight.w400,
         color: textColor,
       ),
 
-      // [22 px].
+      // 1 [32 px].
+      px32: GoogleFonts.roboto(
+        fontSize: 32,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // 3 [22 px].
       px22: GoogleFonts.roboto(
         fontSize: 22,
         fontWeight: FontWeight.w400,
         color: textColor,
       ),
 
-      // [17 px].
+      // 4 [17 px].
       px17: GoogleFonts.roboto(
         fontSize: 17,
         fontWeight: FontWeight.w400,
         color: textColor,
       ),
 
-      // [16 px].
+      // 5 [16 px].
       px16: GoogleFonts.roboto(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: textColor,
       ),
 
-      // [14 px].
+      // 6 [14 px].
       px14: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: textColor,
       ),
 
-      // [12 px].
+      // Body 1 [12 px].
       px12: GoogleFonts.roboto(
         fontSize: 12,
         fontWeight: FontWeight.w400,
@@ -229,7 +229,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
 //       dividerColor: AppColors.dividerColor.withOpacity(0.08),
 
 //       // [Light Text, also for icons with custom opacity].
-//       hoverColor: AppColors.kLightTextColor,
+      // hoverColor: AppColors.kLightTextColor,
 
 //       // [Text].
 //       cardColor: AppColors.textMain,

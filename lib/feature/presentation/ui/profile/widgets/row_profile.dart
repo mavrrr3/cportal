@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class RowProfile extends StatelessWidget {
@@ -15,7 +16,7 @@ class RowProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Row(
       children: [
@@ -23,7 +24,7 @@ class RowProfile extends StatelessWidget {
         const SizedBox(width: 17),
         Text(
           text,
-          style: theme.textTheme.headline5!.copyWith(
+          style: theme.textTheme.px16.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,7 +20,7 @@ class DeclarationCardWithStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -30,7 +31,7 @@ class DeclarationCardWithStatus extends StatelessWidget {
             width: double.infinity,
             height: 90,
             decoration: BoxDecoration(
-              color: theme.backgroundColor,
+              color: theme.cardColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Padding(
@@ -44,28 +45,28 @@ class DeclarationCardWithStatus extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: theme.textTheme.headline6!.copyWith(
-                          color: theme.cardColor,
+                        style: theme.textTheme.px14.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       SvgPicture.asset(
                         svgPath,
+                        color: theme.textLight,
                         width: 20,
                       ),
                     ],
                   ),
                   Text(
                     date,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.cardColor.withOpacity(0.68),
+                    style: theme.textTheme.px12.copyWith(
+                      color: theme.textLight,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     number,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.cardColor.withOpacity(0.68),
+                    style: theme.textTheme.px12.copyWith(
+                      color: theme.textLight,
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
@@ -28,13 +29,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final Color iconColor = theme.hoverColor.withOpacity(0.64);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    final Color? iconColor = theme.textLight;
 
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl('A1B2C3D4E5', isMyProfile: true,));
+    ).add(const GetSingleProfileEventImpl(
+      'A1B2C3D4E5',
+      isMyProfile: true,
+    ));
 
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
@@ -45,6 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
           profile = state.profile;
 
           return Scaffold(
+            backgroundColor: theme.background,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               leading: GestureDetector(
@@ -54,13 +60,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 child: Icon(
                   Icons.close,
-                  color: theme.hoverColor,
+                  color: theme.text,
                 ),
               ),
               centerTitle: false,
               title: Text(
                 AppLocalizations.of(context)!.profile,
-                style: theme.textTheme.headline2,
+                style: theme.textTheme.header,
               ),
             ),
             body: SingleChildScrollView(
@@ -79,10 +85,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       decoration: BoxDecoration(
                         border: Border(
                           top: BorderSide(
-                            color: theme.hoverColor.withOpacity(0.08),
+                            color: theme.text!.withOpacity(0.08),
                           ),
                           bottom: BorderSide(
-                            color: theme.hoverColor.withOpacity(0.08),
+                            color: theme.text!.withOpacity(0.08),
                           ),
                         ),
                       ),
@@ -155,10 +161,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void turnOnOffNotify(bool newValue) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     setState(() {
       isNotificationTurnedOn = newValue;
       if (newValue) {
-        showChooserNotification(context, Theme.of(context));
+        showChooserNotification(context, theme);
       }
     });
   }
@@ -169,10 +177,10 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => isFingerPrintAuth = newValue);
   }
 
-  void showChooserNotification(BuildContext context, ThemeData theme) {
+  void showChooserNotification(BuildContext context, CustomTheme theme) {
     showModalBottomSheet<void>(
-      backgroundColor: theme.splashColor,
-      barrierColor: getBarrierColor(theme),
+      backgroundColor: theme.cardColor,
+      barrierColor: theme.barrierColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
@@ -191,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Text(
                   AppLocalizations.of(context)!.turnOffNotify,
-                  style: theme.textTheme.headline5,
+                  style: theme.textTheme.px16,
                 ),
                 const SizedBox(height: 18),
                 GestureDetector(
@@ -205,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: Text(
                     AppLocalizations.of(context)!.forHour,
-                    style: theme.textTheme.headline5!.copyWith(
+                    style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -213,21 +221,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 24),
                 Text(
                   AppLocalizations.of(context)!.forFourHour,
-                  style: theme.textTheme.headline5!.copyWith(
+                  style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
                   AppLocalizations.of(context)!.forTwentyFourHour,
-                  style: theme.textTheme.headline5!.copyWith(
+                  style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
                   AppLocalizations.of(context)!.forever,
-                  style: theme.textTheme.headline5!.copyWith(
+                  style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -240,24 +248,24 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-Widget getBlueArrow(ThemeData theme) {
+Widget getBlueArrow(CustomTheme theme) {
   return SvgPicture.asset(
     'assets/icons/question_arrow.svg',
-    color: theme.primaryColor,
+    color: theme.primary,
     width: 8.5,
   );
 }
 
-Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
+Widget customSwitch(CustomTheme theme, bool val, Function onChangeMethod) =>
     SizedBox(
       height: 20,
       width: 34,
       child: Switch(
-        activeTrackColor: theme.primaryColor.withOpacity(0.38),
-        activeColor: theme.primaryColor,
+        activeTrackColor: theme.primary?.withOpacity(0.38),
+        activeColor: theme.primary,
         // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9.
-        inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
-        inactiveThumbColor: theme.splashColor,
+        inactiveTrackColor: theme.text?.withOpacity(0.08),
+        inactiveThumbColor: theme.cardColor,
         value: val,
         onChanged: (newValue) => onChangeMethod(newValue),
       ),
@@ -265,7 +273,7 @@ Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
 
 void showToasterAboutNotify(
   BuildContext context,
-  ThemeData theme, {
+  CustomTheme theme, {
   required String text,
 }) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -275,10 +283,10 @@ void showToasterAboutNotify(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       content: Text(
         text,
-        style: theme.textTheme.headline6!.copyWith(
+        style: theme.textTheme.px14.copyWith(
           color: theme.brightness == Brightness.light
-              ? Colors.white
-              : AppColors.mainBgDark,
+              ? theme.cardColor
+              : theme.background,
         ),
       ),
     ),
