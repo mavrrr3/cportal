@@ -115,7 +115,8 @@ class _MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -123,8 +124,8 @@ class _MenuItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         color: isActive
             ? theme.brightness == Brightness.light
-                ? theme.scaffoldBackgroundColor
-                : theme.scaffoldBackgroundColor.withOpacity(0.34)
+                ? theme.background
+                : theme.background?.withOpacity(0.34)
             : Colors.transparent,
       ),
       child: Padding(
@@ -135,14 +136,14 @@ class _MenuItem extends StatelessWidget {
               item.img,
               width: 24,
               color: isActive
-                  ? theme.primaryColor
-                  : theme.cardColor.withOpacity(0.48),
+                  ? theme.primary
+                  : theme.text?.withOpacity(0.48),
             ),
             const SizedBox(width: 16),
             Text(
               item.text,
-              style: theme.textTheme.headline5!.copyWith(
-                color: isActive ? theme.primaryColor : theme.cardColor,
+              style: theme.textTheme.px16.copyWith(
+                color: isActive ? theme.primary : theme.text,
                 fontWeight: FontWeight.w700,
               ),
             ),

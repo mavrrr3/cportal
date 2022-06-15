@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
@@ -45,7 +46,8 @@ class InputCodeBlocWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                  final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -72,7 +74,7 @@ class InputCodeBlocWidget extends StatelessWidget {
                     const SizedBox(height: 260),
                     Text(
                       AppLocalizations.of(context)!.inputConnectingCode,
-                      style: theme.textTheme.headline2,
+                      style: theme.textTheme.header,
                     ),
                     const SizedBox(
                       height: 8,
@@ -89,8 +91,8 @@ class InputCodeBlocWidget extends StatelessWidget {
                           child: Text(
                             AppLocalizations.of(context)!
                                 .howToGetConnectingCode,
-                            style: theme.textTheme.headline6!.copyWith(
-                              color: theme.primaryColor,
+                            style: theme.textTheme.px14.copyWith(
+                              color: theme.primary,
                             ),
                           ),
                         ),
@@ -133,9 +135,9 @@ class InputCodeBlocWidget extends StatelessWidget {
           ),
           Text(
             AppLocalizations.of(context)!.enter_by_qr_code,
-            style: theme.textTheme.headline5!.copyWith(
+            style: theme.textTheme.px16.copyWith(
               fontWeight: FontWeight.w700,
-              color: theme.primaryColor,
+              color: theme.primary,
             ),
           ),
         ],
@@ -161,7 +163,8 @@ class _CellCodeInputState extends State<CellCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     // Курсор, оставил код на случай если дизайнеры решат его всё таки сделать
     //
@@ -183,10 +186,10 @@ class _CellCodeInputState extends State<CellCodeInput> {
         width: 44,
         height: 52,
         textStyle: isWrongCode(state)
-            ? theme.textTheme.headline5!.copyWith(color: theme.errorColor)
-            : theme.textTheme.headline5,
+            ? theme.textTheme.px16.copyWith(color: theme.red)
+            : theme.textTheme.px16,
         decoration: BoxDecoration(
-          color: isWrongCode(state) ? theme.hintColor : theme.splashColor,
+          color: isWrongCode(state) ? theme.lightRedPIN : theme.cardColor,
           borderRadius: BorderRadius.circular(8),
         ),
       );
@@ -201,13 +204,13 @@ class _CellCodeInputState extends State<CellCodeInput> {
         defaultPinTheme: defaultPinTheme,
         separator: const SizedBox(width: 11),
         errorPinTheme: defaultPinTheme.copyWith(
-          decoration: BoxDecoration(color: theme.hintColor),
+          decoration: BoxDecoration(color: theme.lightRedPIN),
         ),
         focusedPinTheme: PinTheme(
           width: 52,
           height: 62,
           decoration: BoxDecoration(
-            color: isWrongCode(state) ? theme.hintColor : theme.splashColor,
+            color: isWrongCode(state) ? theme.lightRedPIN : theme.cardColor,
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
               BoxShadow(
@@ -243,7 +246,8 @@ class GetCodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
@@ -269,7 +273,7 @@ class GetCodeWidget extends StatelessWidget {
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: theme.splashColor,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
@@ -289,7 +293,7 @@ class GetCodeWidget extends StatelessWidget {
                               child: Text(
                                 AppLocalizations.of(context)!
                                     .howToGetCodeTitleWeb,
-                                style: theme.textTheme.headline3,
+                                style: theme.textTheme.px22,
                                 softWrap: true,
                               ),
                             ),
@@ -307,7 +311,7 @@ class GetCodeWidget extends StatelessWidget {
                           width: contWidth * 0.86,
                           child: Text(
                             AppLocalizations.of(context)!.howToGetCodeText,
-                            style: theme.textTheme.headline6,
+                            style: theme.textTheme.px14,
                             softWrap: true,
                           ),
                         ),
@@ -326,8 +330,8 @@ class GetCodeWidget extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppLocalizations.of(context)!.addressForCode,
-                          style: theme.textTheme.headline6!.copyWith(
-                            color: theme.hoverColor,
+                          style: theme.textTheme.px14.copyWith(
+                            color: theme.textLight,
                           ),
                         ),
                       ),
@@ -363,7 +367,7 @@ class GetCodeWidget extends StatelessWidget {
                               WhatGetWithYouWeb(
                                 iconPath: 'assets/icons/what_get_icon.svg',
                                 text: AppLocalizations.of(context)!.pass,
-                                color: theme.primaryColor,
+                                color: theme.primary,
                               ),
                             ],
                           ),
@@ -386,7 +390,7 @@ class GetCodeWidget extends StatelessWidget {
                             width: contWidth * 0.52,
                             height: 46,
                             decoration: BoxDecoration(
-                              color: theme.scaffoldBackgroundColor,
+                              color: theme.background,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
@@ -394,7 +398,7 @@ class GetCodeWidget extends StatelessWidget {
                               children: [
                                 Text(
                                   '+7 495 487 34 66',
-                                  style: theme.textTheme.headline5!
+                                  style: theme.textTheme.px16
                                       .copyWith(fontWeight: FontWeight.w700),
                                 ),
                               ],
@@ -425,16 +429,16 @@ class GetCodeWidget extends StatelessWidget {
 }
 
 Text colorText(
-  ThemeData theme,
+  CustomTheme theme,
   String text,
   String color,
 ) {
   return Text(
     text,
-    style: theme.textTheme.headline6!.copyWith(
+    style: theme.textTheme.px14.copyWith(
       color: color == 'red'
-          ? theme.errorColor.withOpacity(0.6)
-          : theme.hoverColor.withOpacity(0.6),
+          ? theme.red?.withOpacity(0.6)
+          : theme.text?.withOpacity(0.6),
     ),
   );
 }

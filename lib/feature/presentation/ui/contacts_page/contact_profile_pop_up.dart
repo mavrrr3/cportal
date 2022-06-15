@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
@@ -34,7 +35,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
@@ -62,7 +63,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                     },
                     child: Icon(
                       Icons.close,
-                      color: theme.hoverColor,
+                      color: theme.textLight,
                     ),
                   ),
                 ),
@@ -93,7 +94,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                           alignment: Alignment.center,
                           child: Text(
                             state.profile.fullName,
-                            style: theme.textTheme.headline4!.copyWith(
+                            style: theme.textTheme.px17.copyWith(
                               fontWeight: FontWeight.w800,
                             ),
                             textAlign: TextAlign.center,
@@ -174,7 +175,7 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       child: FocusableActionDetector(
@@ -184,7 +185,7 @@ class _ActionButton extends StatelessWidget {
           curve: Curves.easeOut,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: isAnimation ? theme.splashColor : theme.primaryColor,
+            color: isAnimation ? theme.cardColor : theme.primary,
             boxShadow: isAnimation
                 ? [
                     BoxShadow(
@@ -195,7 +196,7 @@ class _ActionButton extends StatelessWidget {
                   ]
                 : null,
             border: isAnimation
-                ? Border.all(color: theme.primaryColor, width: 2)
+                ? Border.all(color: theme.primary!, width: 2)
                 : null,
           ),
           child: Padding(
@@ -211,7 +212,7 @@ class _ActionButton extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   AppLocalizations.of(context)!.go_to_chat,
-                  style: theme.textTheme.headline5!.copyWith(
+                  style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                     color: _getTextColor(theme, isAnimation),
                   ),
@@ -224,12 +225,12 @@ class _ActionButton extends StatelessWidget {
     );
   }
 
-  Color _getTextColor(ThemeData theme, bool isAnimation) {
+  Color _getTextColor(CustomTheme theme, bool isAnimation) {
     // ignore: prefer-conditional-expressions
     if (theme.brightness == Brightness.light) {
-      return isAnimation ? theme.primaryColor : theme.splashColor;
+      return isAnimation ? theme.primary! : theme.cardColor!;
     } else {
-      return isAnimation ? theme.primaryColor : theme.hoverColor;
+      return isAnimation ? theme.primary! : theme.textLight!;
     }
   }
 }

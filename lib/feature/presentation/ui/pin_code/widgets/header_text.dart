@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,8 @@ class HeaderTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                 final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       children: [
@@ -81,7 +83,7 @@ class HeaderTextWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: theme.textTheme.headline2,
+                  style: theme.textTheme.header,
                 ),
               ],
             ),
@@ -93,11 +95,11 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               secondText,
-              style: theme.textTheme.bodyText1!.copyWith(
+              style: theme.textTheme.px12.copyWith(
                 color: secondText ==
                         AppLocalizations.of(context)!.itWillBeNeedToEnter
-                    ? theme.hoverColor
-                    : theme.primaryColor,
+                    ? theme.textLight
+                    : theme.primary,
               ),
             ),
           ],
@@ -108,8 +110,8 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               error ?? '',
-              style: theme.textTheme.bodyText1!.copyWith(
-                color: theme.errorColor,
+              style: theme.textTheme.px12.copyWith(
+                color: theme.red,
               ),
             ),
           ],

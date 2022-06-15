@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_text.dart';
 import 'package:flutter/material.dart';
@@ -18,37 +19,41 @@ class CreatePinPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
         .add(PinCodeCheckEvent());
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          child: BlocConsumer<PinCodeBloc, PinCodeState>(
-            listener: (context, state) {
-              if (state.status == PinCodeInputEnum.done) {
-                // Если ПИН код из базы Hive совпадает с
-                // введеным ПИНом, то редирект на страницу [/main_page]
-                context.goNamed(NavigationRouteNames.mainPage);
-              }
-            },
-            builder: (context, state) {
-              return BodyWidget(input: state.status);
-            },
-          ),
-        ),
-        Column(
-          children: [
-            CustomKeyboard(
-              controller: _pinController,
-              simbolQuantity: 4,
+    return Scaffold(
+      backgroundColor: theme.background,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
-            const SizedBox(height: 52),
-          ],
-        ),
-      ],
+            child: BlocConsumer<PinCodeBloc, PinCodeState>(
+              listener: (context, state) {
+                if (state.status == PinCodeInputEnum.done) {
+                  // Если ПИН код из базы Hive совпадает с
+                  // введеным ПИНом, то редирект на страницу [/main_page]
+                  context.goNamed(NavigationRouteNames.mainPage);
+                }
+              },
+              builder: (context, state) {
+                return BodyWidget(input: state.status);
+              },
+            ),
+          ),
+          Column(
+            children: [
+              CustomKeyboard(
+                controller: _pinController,
+                simbolQuantity: 4,
+              ),
+              const SizedBox(height: 52),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -98,15 +103,15 @@ class _PinCodeInputState extends State<PinCodeInput> {
   Widget build(BuildContext context) {
     final PinCodeBloc pinCodeBloc =
         BlocProvider.of<PinCodeBloc>(context, listen: false);
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     final defaultPinTheme = PinTheme(
       width: 16,
       height: 14,
       decoration: BoxDecoration(
         color: theme.brightness == Brightness.light
-            ? AppColors.kLightTextColor.withOpacity(0.2)
-            : theme.backgroundColor,
+            ? theme.textLight?.withOpacity(0.2)
+            : theme.background,
         borderRadius: BorderRadius.circular(15),
       ),
     );

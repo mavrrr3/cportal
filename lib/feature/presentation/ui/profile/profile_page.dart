@@ -44,7 +44,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
         if (state is GetSingleProfileLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return Scaffold(
+            backgroundColor: theme.background,
+            body: const Center(child: CircularProgressIndicator()),
+          );
         }
         if (state is GetSingleProfileLoadedState) {
           profile = state.profile;
