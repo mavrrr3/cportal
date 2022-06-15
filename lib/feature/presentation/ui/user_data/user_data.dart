@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
@@ -24,23 +25,24 @@ class UserData extends StatelessWidget {
       'A1B2C3D4E5',
       isMyProfile: true,
     ));
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Swipe(
       onSwipeRight: () => context.goNamed(NavigationRouteNames.profile),
       child: Scaffold(
+        backgroundColor: theme.background,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: IconButton(
             onPressed: () => context.goNamed(NavigationRouteNames.profile),
             icon: Icon(
               Icons.arrow_back,
-              color: theme.hoverColor,
+              color: theme.text,
             ),
           ),
           title: Text(
             AppLocalizations.of(context)!.yourData,
-            style: theme.textTheme.headline2,
+            style: theme.textTheme.header,
           ),
         ),
         body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(

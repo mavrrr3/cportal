@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class UserDataRow extends StatelessWidget {
@@ -12,21 +13,22 @@ class UserDataRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           normalText,
-          style: theme.textTheme.headline6!.copyWith(
-            color: theme.hoverColor.withOpacity(0.68),
+          style: theme.textTheme.px14.copyWith(
+            color: theme.textLight,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           boldText,
-          style: theme.textTheme.headline5!.copyWith(
+          style: theme.textTheme.px16.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
