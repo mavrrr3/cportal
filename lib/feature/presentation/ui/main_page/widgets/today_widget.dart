@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,14 +15,14 @@ class TodayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.today,
-          style: theme.textTheme.headline3,
+          style: theme.textTheme.px22,
         ),
         const SizedBox(height: 12),
         if (!ResponsiveWrapper.of(context).isLargerThan(TABLET))
@@ -64,7 +65,7 @@ class _TodayItem extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,13 +82,13 @@ class _TodayItem extends StatelessWidget {
             children: [
               Text(
                 item.title ?? AppLocalizations.of(context)!.birthDay,
-                style: theme.textTheme.headline6,
+                style: theme.textTheme.px14,
               ),
               const SizedBox(height: 7),
               Text(
                 item.description,
                 softWrap: true,
-                style: theme.textTheme.headline6!.copyWith(
+                style: theme.textTheme.px14.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -97,8 +98,8 @@ class _TodayItem extends StatelessWidget {
                   if (item.post != null)
                     Text(
                       item.post!,
-                      style: theme.textTheme.bodyText1!.copyWith(
-                        color: theme.hoverColor.withOpacity(0.68),
+                      style: theme.textTheme.px12.copyWith(
+                        color: theme.textLight,
                       ),
                     ),
                   if (item.place != null)
@@ -106,7 +107,7 @@ class _TodayItem extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: theme.cardColor.withOpacity(0.06),
+                          color: theme.text!.withOpacity(0.06),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
@@ -116,8 +117,8 @@ class _TodayItem extends StatelessWidget {
                           ),
                           child: Text(
                             item.place!,
-                            style: theme.textTheme.bodyText1!.copyWith(
-                              color: theme.hoverColor.withOpacity(0.68),
+                            style: theme.textTheme.px12.copyWith(
+                              color: theme.textLight,
                             ),
                           ),
                         ),

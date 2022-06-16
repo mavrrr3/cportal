@@ -20,11 +20,19 @@ class ProfileLocalDataSource implements IProfileLocalDataSource {
   @override
   Future<void> singleProfileToCache(ProfileModel profile) async {
     // ignore: format-comment
-    // Await Hive.deleteBoxFromDisk('single_profile');
-    log(profile.toString());
-    final box = await Hive.openBox<ProfileModel>('single_profile');
+    await Hive.deleteBoxFromDisk('single_profile');
+    var box = await Hive.openBox<ProfileModel>('single_profile');
+    if (!Hive.isBoxOpen('single_profile')) {
+      await Hive.openBox<ProfileModel>('single_profile');
+    } else {
+      box = await Hive.openBox<ProfileModel>('single_profile');
+    }
 
-    await box.put(profile.id, profile);
+    log('ProfileModel сохранил в кэш $profile');
+
+    await box.put('single_profile', profile);
+
+    await Hive.box<ProfileModel>('single_profile').close();
   }
 
   @override

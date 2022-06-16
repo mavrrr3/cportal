@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
@@ -25,7 +25,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -80,8 +80,16 @@ class Main extends StatelessWidget {
     return MultiBlocProvider(
       providers: listOfBlocs(),
       child: AdaptiveTheme(
-        light: lightTheme(),
-        dark: darkTheme(),
+        light: ThemeData.light().copyWith(
+          extensions: <ThemeExtension<dynamic>>[
+            light,
+          ],
+        ),
+        dark: ThemeData.light().copyWith(
+          extensions: <ThemeExtension<dynamic>>[
+            dark,
+          ],
+        ),
         initial: AdaptiveThemeMode.light,
         builder: (light, dark) => MaterialApp.router(
           routerDelegate: router.routerDelegate,
@@ -144,8 +152,7 @@ void _hiveAdaptersInit() {
     ..registerAdapter(UserModelAdapter())
     ..registerAdapter(UserTypeModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
-    ..registerAdapter(PositionModelAdapter())
-    ..registerAdapter(PhoneModelAdapter())
+    ..registerAdapter(ContactInfoModelAdapter())
     ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(ArticleModelAdapter())
     ..registerAdapter(ParagraphModelAdapter())

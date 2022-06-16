@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:developer';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class NewsPage extends StatelessWidget {
       );
     }
     final double width = MediaQuery.of(context).size.width;
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
@@ -100,7 +101,7 @@ class NewsPage extends StatelessWidget {
                 padding: getHorizontalPadding(context),
                 child: Text(
                   _getPageTitle(context, _currentType),
-                  style: theme.textTheme.headline2,
+                  style: theme.textTheme.header,
                 ),
               ),
               const SizedBox(height: 16),

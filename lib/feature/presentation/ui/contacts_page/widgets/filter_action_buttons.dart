@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +55,7 @@ class _FilterActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -62,10 +63,9 @@ class _FilterActionButton extends StatelessWidget {
       child: Container(
         width: width,
         decoration: BoxDecoration(
-          color: isOutline ? Colors.transparent : theme.primaryColor,
-          border: isOutline
-              ? Border.all(width: 2, color: theme.primaryColor)
-              : null,
+          color: isOutline ? Colors.transparent : theme.primary,
+          border:
+              isOutline ? Border.all(width: 2, color: theme.primary!) : null,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -73,13 +73,9 @@ class _FilterActionButton extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: theme.textTheme.headline5!.copyWith(
+              style: theme.textTheme.px16.copyWith(
                 fontWeight: FontWeight.w700,
-                color: isOutline
-                    ? theme.primaryColor
-                    : theme.brightness == Brightness.light
-                        ? Colors.white
-                        : theme.hoverColor,
+                color: isOutline ? theme.primary : theme.white,
               ),
             ),
           ),

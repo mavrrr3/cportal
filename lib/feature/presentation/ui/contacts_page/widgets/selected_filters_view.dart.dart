@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -73,7 +74,7 @@ class FilterViewSelectedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,8 +83,8 @@ class FilterViewSelectedRow extends StatelessWidget {
           padding: const EdgeInsets.only(top: 6),
           child: Text(
             headline,
-            style: theme.textTheme.bodyText1!.copyWith(
-              color: theme.cardColor.withOpacity(0.68),
+            style: theme.textTheme.px12.copyWith(
+              color: theme.textLight,
             ),
           ),
         ),

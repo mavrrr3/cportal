@@ -1,10 +1,11 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/tag_container.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
+
   final Function(int) onTap;
 
   /// Колонка с контактами.
@@ -27,7 +28,7 @@ class ContactsList extends StatelessWidget {
             onTap(index);
           },
           child: ContactCard(
-            item: items[index],
+            user: items[index],
           ),
         ),
       ),
@@ -36,25 +37,25 @@ class ContactsList extends StatelessWidget {
 }
 
 class ContactCard extends StatelessWidget {
-  final ProfileEntity item;
+  final ProfileEntity user;
   final double? width;
 
   /// Карточка контакта.
   const ContactCard({
     Key? key,
-    required this.item,
+    required this.user,
     this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       child: Container(
         width: width ?? MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: theme.splashColor,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -62,31 +63,37 @@ class ContactCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AvatarBox(
-                size: 48,
-                imgPath: item.photoLink,
-                isApiImg: false,
-                borderRadius: 10.38,
-              ),
+              // ignore: prefer_if_elements_to_conditional_expressions
+              user.photoLink != ''
+                  ? AvatarBox(
+                      size: 48,
+                      imgPath: user.photoLink,
+                      borderRadius: 6,
+                    )
+                  : EmptyAvatarBox(
+                      user: user,
+                    ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${item.firstName} ${item.middleName} ${item.lastName}',
-                      style: theme.textTheme.headline6!
+                      user.fullName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.px14
                           .copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      item.position.description,
-                      style: theme.textTheme.bodyText1!.copyWith(
-                        color: theme.hoverColor.withOpacity(0.68),
+                      user.position,
+                      style: theme.textTheme.px12.copyWith(
+                        color: theme.textLight,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TagContainer(text: item.position.department),
+                    // TagContainer(text: item.position.department),.
                   ],
                 ),
               ),
@@ -96,4 +103,45 @@ class ContactCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class EmptyAvatarBox extends StatelessWidget {
+  final ProfileEntity user;
+  final double size;
+  final double borderRadius;
+  const EmptyAvatarBox({
+    Key? key,
+    required this.user,
+    this.size = 48,
+    this.borderRadius = 6,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+        color: user.color,
+      ),
+      child: Center(
+        child: Text(
+          getShortName(user.fullName),
+          style: theme.textTheme.px22.copyWith(
+            color: Colors.black,
+            letterSpacing: -1,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+String getShortName(String name) {
+  final nameList = name.split(' ');
+
+  return '${nameList.first[0]} ${nameList[1][0]}';
 }

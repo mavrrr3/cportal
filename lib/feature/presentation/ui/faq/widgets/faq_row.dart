@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,7 +14,7 @@ class FaqRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -23,12 +24,11 @@ class FaqRow extends StatelessWidget {
         children: [
           Text(
             text,
-            style: theme.textTheme.headline5!
-                .copyWith(fontWeight: FontWeight.w700),
+            style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
           ),
           SvgPicture.asset(
             'assets/icons/question_arrow.svg',
-            color: theme.primaryColor,
+            color: theme.primary,
             width: 8,
           ),
         ],

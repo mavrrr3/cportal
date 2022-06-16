@@ -1,7 +1,8 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class ArchiveDeclarationButton extends StatelessWidget {
-  final ThemeData theme;
+  final CustomTheme theme;
 
   const ArchiveDeclarationButton({
     Key? key,
@@ -16,7 +17,7 @@ class ArchiveDeclarationButton extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.transparent,
-          border: Border.all(width: 2, color: theme.primaryColor),
+          border: Border.all(width: 2, color: theme.primary!),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -24,9 +25,9 @@ class ArchiveDeclarationButton extends StatelessWidget {
           child: Center(
             child: Text(
               'Архив заявлений',
-              style: theme.textTheme.headline5!.copyWith(
+              style: theme.textTheme.px16.copyWith(
                 fontWeight: FontWeight.w700,
-                color: theme.primaryColor,
+                color: theme.primary,
               ),
             ),
           ),

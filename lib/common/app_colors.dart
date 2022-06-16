@@ -23,7 +23,3 @@ class AppColors {
   static const Color appBarDark = Color(0xFF111111);
   static const Color iconLight = Color(0xFF999999);
 }
-
-Color getBarrierColor(ThemeData theme) => theme.brightness == Brightness.light
-    ? AppColors.textMain.withOpacity(0.2)
-    : AppColors.darkOnboardingBG.withOpacity(0.8);

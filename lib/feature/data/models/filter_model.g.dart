@@ -8,7 +8,7 @@ part of 'filter_model.dart';
 
 class FilterModelAdapter extends TypeAdapter<FilterModel> {
   @override
-  final int typeId = 8;
+  final int typeId = 7;
 
   @override
   FilterModel read(BinaryReader reader) {
@@ -48,7 +48,7 @@ class FilterModelAdapter extends TypeAdapter<FilterModel> {
 
 class FilterItemModelAdapter extends TypeAdapter<FilterItemModel> {
   @override
-  final int typeId = 9;
+  final int typeId = 8;
 
   @override
   FilterItemModel read(BinaryReader reader) {

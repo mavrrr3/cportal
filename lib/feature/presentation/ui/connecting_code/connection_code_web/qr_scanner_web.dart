@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -56,7 +57,8 @@ class BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                   final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       children: [
@@ -65,24 +67,24 @@ class BodyWidget extends StatelessWidget {
         QrImage(
           data: 'data',
           size: 206,
-          backgroundColor: theme.splashColor,
+          backgroundColor: theme.cardColor!,
         ),
         const SizedBox(height: 16),
         Text(
           AppLocalizations.of(context)!.scan_qr_by_phone,
-          style: theme.textTheme.headline1,
+          style: theme.textTheme.px32,
         ),
         const SizedBox(height: 24),
         Text(
           AppLocalizations.of(context)!.qr_code_connect_descript,
-          style: theme.textTheme.headline3,
+          style: theme.textTheme.px22,
         ),
         const SizedBox(height: 96),
         Text(
           AppLocalizations.of(context)!.enter_by_connecting_code,
-          style: theme.textTheme.headline5!.copyWith(
+          style: theme.textTheme.px16.copyWith(
             fontWeight: FontWeight.w700,
-            color: theme.primaryColor,
+            color: theme.primary,
           ),
         ),
       ],
@@ -158,7 +160,8 @@ class HeaderTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       children: [
@@ -170,7 +173,7 @@ class HeaderTextWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: theme.textTheme.headline2,
+                  style: theme.textTheme.header,
                 ),
               ],
             ),
@@ -182,11 +185,11 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               secondText,
-              style: theme.textTheme.headline6!.copyWith(
+              style: theme.textTheme.px14.copyWith(
                 color: secondText ==
                         AppLocalizations.of(context)!.itWillBeNeedToEnter
-                    ? theme.hoverColor
-                    : theme.primaryColor,
+                    ? theme.textLight
+                    : theme.primary,
               ),
             ),
           ],
@@ -198,7 +201,7 @@ class HeaderTextWidget extends StatelessWidget {
             Text(
               error ?? '',
               style:
-                  theme.textTheme.headline6!.copyWith(color: theme.errorColor),
+                  theme.textTheme.px14.copyWith(color: theme.red),
             ),
           ],
         ),

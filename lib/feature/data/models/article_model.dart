@@ -5,7 +5,7 @@ part 'article_model.g.dart';
 
 // ignore_for_file: overridden_fields
 // ignore_for_file: annotate_overrides
-@HiveType(typeId: 5)
+@HiveType(typeId: 4)
 class ArticleModel extends ArticleEntity {
   @HiveField(0)
   final String id;
@@ -64,7 +64,7 @@ class ArticleModel extends ArticleEntity {
       };
 }
 
-@HiveType(typeId: 6)
+@HiveType(typeId: 5)
 class ParagraphModel extends ParagraphEntity {
   @override
   @HiveField(0)
