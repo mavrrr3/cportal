@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
@@ -26,7 +27,7 @@ class QuestionArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Swipe(
       onSwipeRight: () {
@@ -47,6 +48,7 @@ class QuestionArticlePage extends StatelessWidget {
             return BlocBuilder<NavigationBarBloc, NavigationBarState>(
               builder: (context, navState) {
                 return Scaffold(
+                  backgroundColor: theme.background,
                   body: SafeArea(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
@@ -87,15 +89,15 @@ class QuestionArticlePage extends StatelessWidget {
                                           SvgPicture.asset(
                                             'assets/icons/back_arrow.svg',
                                             width: 16,
-                                            color: theme.primaryColor,
+                                            color: theme.primary,
                                           ),
                                           const SizedBox(width: 6),
                                           Text(
                                             AppLocalizations.of(context)!
                                                 .questions,
-                                            style: theme.textTheme.headline5!
-                                                .copyWith(
-                                              color: theme.primaryColor,
+                                            style:
+                                                theme.textTheme.px16.copyWith(
+                                              color: theme.primary,
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
@@ -160,14 +162,14 @@ class QuestionArticlePage extends StatelessWidget {
                                           children: [
                                             Text(
                                               articlefromBloc().header,
-                                              style: theme.textTheme.headline1,
+                                              style: theme.textTheme.header,
                                             ),
                                             const SizedBox(height: 20),
                                             Text(
                                               articlefromBloc()
                                                   .content
                                                   .toString(),
-                                              style: theme.textTheme.headline5,
+                                              style: theme.textTheme.px14,
                                             ),
                                             const SizedBox(height: 24),
                                             _nextQuestion(

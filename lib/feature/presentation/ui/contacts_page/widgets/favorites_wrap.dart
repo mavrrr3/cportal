@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,8 @@ class FavoritesWrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Wrap(
       spacing: 12,
@@ -32,7 +34,7 @@ class FavoritesWrap extends StatelessWidget {
               backgroundImage: NetworkImage(
                 items[i].photoLink,
               ),
-              backgroundColor: theme.hoverColor.withOpacity(0.38),
+              backgroundColor: theme.text?.withOpacity(0.38),
             ),
           ),
         ),

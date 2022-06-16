@@ -1,5 +1,6 @@
 // ignore_for_file: unused_element
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
@@ -27,13 +28,16 @@ class ProfilePopUp extends StatefulWidget {
 class _ProfilePopUpState extends State<ProfilePopUp> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final Color iconColor = theme.hoverColor.withOpacity(0.64);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    final Color? iconColor = theme.textLight;
     late ProfileEntity profile;
 
-    void showChooserNotification(BuildContext context, ThemeData theme) {
+    void showChooserNotification(BuildContext context) {
+      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
       showModalBottomSheet<void>(
-        backgroundColor: theme.splashColor,
+        backgroundColor: theme.cardColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
@@ -52,7 +56,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.turnOffNotify,
-                    style: theme.textTheme.headline5,
+                    style: theme.textTheme.px16,
                   ),
                   const SizedBox(height: 18),
                   GestureDetector(
@@ -62,7 +66,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                         )),
                     child: Text(
                       AppLocalizations.of(context)!.forHour,
-                      style: theme.textTheme.headline5!.copyWith(
+                      style: theme.textTheme.px16.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -70,21 +74,21 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                   const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forFourHour,
-                    style: theme.textTheme.headline5!.copyWith(
+                    style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forTwentyFourHour,
-                    style: theme.textTheme.headline5!.copyWith(
+                    style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 24),
                   Text(
                     AppLocalizations.of(context)!.forever,
-                    style: theme.textTheme.headline5!.copyWith(
+                    style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -101,7 +105,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     void turnOnOffNotify(bool newValue) {
       setState(() {
         _isNotificationTurnedOn = newValue;
-        showChooserNotification(context, Theme.of(context));
+        showChooserNotification(context);
       });
     }
 
@@ -132,7 +136,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.profile,
-                    style: theme.textTheme.headline2,
+                    style: theme.textTheme.header,
                   ),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
@@ -141,7 +145,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                     },
                     child: Icon(
                       Icons.close,
-                      color: theme.hoverColor,
+                      color: theme.textLight,
                     ),
                   ),
                 ],
@@ -163,7 +167,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               profile.fullName,
-                              style: theme.textTheme.headline4!.copyWith(
+                              style: theme.textTheme.px17.copyWith(
                                 fontWeight: FontWeight.w800,
                               ),
                               softWrap: true,
@@ -174,7 +178,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               profile.id,
-                              style: theme.textTheme.headline6!.copyWith(),
+                              style: theme.textTheme.px14.copyWith(),
                               softWrap: true,
                               textAlign: TextAlign.left,
                             ),
@@ -244,7 +248,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           Container(
                             width: 350,
                             decoration: BoxDecoration(
-                              color: theme.hoverColor.withOpacity(0.04),
+                              color: theme.text!.withOpacity(0.04),
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(4),
                                 topRight: Radius.circular(4),
@@ -263,13 +267,13 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                   Text(
                                     AppLocalizations.of(context)!
                                         .yourPhoneNumber,
-                                    style: theme.textTheme.bodyText1!.copyWith(
-                                      color: theme.hoverColor.withOpacity(0.68),
+                                    style: theme.textTheme.px12.copyWith(
+                                      color: theme.textLight,
                                     ),
                                   ),
                                   Text(
                                     '+7 923 456 78 91',
-                                    style: theme.textTheme.headline5,
+                                    style: theme.textTheme.px16,
                                   ),
                                 ],
                               ),
@@ -279,7 +283,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: theme.hoverColor.withOpacity(0.08),
+                                  color: theme.text!.withOpacity(0.08),
                                 ),
                               ),
                             ),
@@ -367,19 +371,19 @@ class TitleAndDescriptionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: theme.textTheme.headline6,
+          style: theme.textTheme.px14,
         ),
         const SizedBox(height: 4),
         Text(
           description,
-          style: theme.textTheme.headline5!.copyWith(
+          style: theme.textTheme.px16.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -403,7 +407,7 @@ class RowProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Row(
       children: [
@@ -413,7 +417,7 @@ class RowProfile extends StatelessWidget {
         ),
         Text(
           text,
-          style: theme.textTheme.headline5!.copyWith(
+          style: theme.textTheme.px16.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -429,34 +433,34 @@ class RowProfile extends StatelessWidget {
   }
 }
 
-Widget getBlueArrow(ThemeData theme) {
+Widget getBlueArrow(CustomTheme theme) {
   return Icon(
     Icons.arrow_forward_ios_sharp,
-    color: theme.primaryColor,
+    color: theme.primary,
     size: 18,
   );
 }
 
-Widget customSwitch(ThemeData theme, bool val, Function onChangeMethod) =>
+Widget customSwitch(CustomTheme theme, bool val, Function onChangeMethod) =>
     Switch(
-      activeTrackColor: theme.primaryColor.withOpacity(0.38),
-      activeColor: theme.primaryColor,
+      activeTrackColor: theme.primary?.withOpacity(0.38),
+      activeColor: theme.primary,
       hoverColor: Colors.transparent,
       // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9.
-      inactiveTrackColor: theme.hoverColor.withOpacity(0.08),
-      inactiveThumbColor: theme.splashColor,
+      inactiveTrackColor: theme.text?.withOpacity(0.08),
+      inactiveThumbColor: theme.cardColor,
       value: val,
       onChanged: (newValue) => onChangeMethod(newValue),
     );
 
-void showToasterAboutNotify(ThemeData theme, String text) {
+void showToasterAboutNotify(CustomTheme theme, String text) {
   Fluttertoast.showToast(
     msg: text,
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
-    backgroundColor: theme.hoverColor,
-    textColor: theme.splashColor,
+    backgroundColor: theme.text,
+    textColor: theme.cardColor,
     fontSize: 16,
   );
 }
@@ -482,7 +486,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light
         ? _index = 0
@@ -496,8 +500,8 @@ class _ChangeThemeState extends State<ChangeTheme> {
           alignment: Alignment.centerLeft,
           child: Text(
             AppLocalizations.of(context)!.appTheme,
-            style: theme.textTheme.bodyText1!.copyWith(
-              color: theme.hoverColor.withOpacity(0.68),
+            style: theme.textTheme.px12.copyWith(
+              color: theme.textLight,
             ),
           ),
         ),
@@ -508,7 +512,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: theme.hoverColor.withOpacity(0.08),
+              color: theme.text!.withOpacity(0.08),
             ),
           ),
           child: Stack(
@@ -558,7 +562,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
-                    color: theme.primaryColor,
+                    color: theme.primary,
                     boxShadow: [
                       BoxShadow(
                         blurRadius: 4,
@@ -568,10 +572,10 @@ class _ChangeThemeState extends State<ChangeTheme> {
                   ),
                   child: Text(
                     _setTextButtonChangeTheme(_index),
-                    style: theme.textTheme.bodyText1!.copyWith(
+                    style: theme.textTheme.px12.copyWith(
                       color: theme.brightness == Brightness.light
-                          ? theme.splashColor
-                          : theme.hoverColor,
+                          ? theme.cardColor
+                          : theme.textLight,
                     ),
                   ),
                 ),
@@ -610,7 +614,7 @@ class _BuildButtonChangeTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -623,8 +627,8 @@ class _BuildButtonChangeTheme extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               text,
-              style: theme.textTheme.bodyText1!.copyWith(
-                color: theme.hoverColor,
+              style: theme.textTheme.px12.copyWith(
+                color: theme.textLight,
               ),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -35,7 +36,8 @@ class _ChangeThemeState extends State<ChangeTheme> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     final double width = MediaQuery.of(context).size.width;
 
     if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light) {
@@ -52,8 +54,8 @@ class _ChangeThemeState extends State<ChangeTheme> {
           alignment: Alignment.centerLeft,
           child: Text(
             AppLocalizations.of(context)!.appTheme,
-            style: theme.textTheme.bodyText1!.copyWith(
-              color: theme.hoverColor.withOpacity(0.68),
+            style: theme.textTheme.px12.copyWith(
+              color: theme.textLight,
             ),
           ),
         ),
@@ -64,7 +66,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: theme.hoverColor.withOpacity(0.08),
+              color: theme.text!.withOpacity(0.08),
             ),
           ),
           child: Stack(
@@ -117,7 +119,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
-                    color: theme.primaryColor,
+                    color: theme.primary,
                     boxShadow: [
                       BoxShadow(
                         blurRadius: 4,
@@ -127,10 +129,10 @@ class _ChangeThemeState extends State<ChangeTheme> {
                   ),
                   child: Text(
                     _getTextForContainer(_index),
-                    style: theme.textTheme.bodyText1!.copyWith(
+                    style: theme.textTheme.px12.copyWith(
                       color: theme.brightness == Brightness.light
-                          ? theme.splashColor
-                          : theme.hoverColor,
+                          ? theme.cardColor
+                          : theme.text,
                     ),
                   ),
                 ),
@@ -180,7 +182,8 @@ class _BuildButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     final double width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
@@ -194,8 +197,8 @@ class _BuildButton extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               text,
-              style: theme.textTheme.bodyText1!.copyWith(
-                color: theme.hoverColor,
+              style: theme.textTheme.px12.copyWith(
+                color: theme.text,
               ),
             ),
           ),

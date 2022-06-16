@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
@@ -34,7 +35,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
       builder: (context, state) {
@@ -49,99 +50,101 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
         }
 
         if (state is GetSingleProfileLoadedState) {
-          return SizedBox(
-            height: 660,
-            child: Stack(
-              children: [
-                Positioned(
-                  right: 0,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.close,
-                      color: theme.hoverColor,
+          return Material(
+            child: SizedBox(
+              height: 660,
+              child: Stack(
+                children: [
+                  Positioned(
+                    right: 0,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: theme.textLight,
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Profile Image & Full Name.
-                        Align(
-                          alignment: Alignment.center,
-                          child: state.profile.photoLink != ''
-                              ? AvatarBox(
-                                  size: 102,
-                                  imgPath: state.profile.photoLink,
-                                  borderRadius: 24,
-                                )
-                              : EmptyAvatarBox(
-                                  size: 102,
-                                  borderRadius: 24,
-                                  user: state.profile,
-                                ),
-                        ),
-                        const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            state.profile.fullName,
-                            style: theme.textTheme.headline4!.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                            textAlign: TextAlign.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Profile Image & Full Name.
+                          Align(
+                            alignment: Alignment.center,
+                            child: state.profile.photoLink != ''
+                                ? AvatarBox(
+                                    size: 102,
+                                    imgPath: state.profile.photoLink,
+                                    borderRadius: 24,
+                                  )
+                                : EmptyAvatarBox(
+                                    size: 102,
+                                    borderRadius: 24,
+                                    user: state.profile,
+                                  ),
                           ),
-                        ),
-                        const SizedBox(height: 32),
-                        // -- Profile info --
-                        // Post.
-                        ProfileInfoSection(
-                          headline: AppLocalizations.of(context)!.position,
-                          text: state.profile.position,
-                          bottomPadding: 18,
-                        ),
-
-                        // Department.
-                        ProfileInfoSection(
-                          headline: AppLocalizations.of(context)!.department,
-                          text: state.profile.department,
-                          bottomPadding: 18,
-                        ),
-
-                        // Contact info.
-                        ...List.generate(
-                          state.profile.contactInfo.length,
-                          (i) => ProfileInfoSection(
-                            headline: state.profile.contactInfo[i].type,
-                            text: state.profile.contactInfo[i].contact,
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              state.profile.fullName,
+                              style: theme.textTheme.px17.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          // -- Profile info --
+                          // Post.
+                          ProfileInfoSection(
+                            headline: AppLocalizations.of(context)!.position,
+                            text: state.profile.position,
                             bottomPadding: 18,
                           ),
-                        ),
-
-                        // Birth date.
-                        if (state.profile.birthDayToString != null)
+          
+                          // Department.
                           ProfileInfoSection(
-                            headline: AppLocalizations.of(context)!.birth_date,
-                            text: state.profile.birthDayToString!,
-                            bottomPadding: 0,
+                            headline: AppLocalizations.of(context)!.department,
+                            text: state.profile.department,
+                            bottomPadding: 18,
                           ),
-                      ],
-                    ),
-                    _ActionButton(
-                      onTap: () {},
-                      onHover: _handleHoveHighlight,
-                      isAnimation: _isButtonHover,
-                    ),
-                  ],
-                ),
-              ],
+          
+                          // Contact info.
+                          ...List.generate(
+                            state.profile.contactInfo.length,
+                            (i) => ProfileInfoSection(
+                              headline: state.profile.contactInfo[i].type,
+                              text: state.profile.contactInfo[i].contact,
+                              bottomPadding: 18,
+                            ),
+                          ),
+          
+                          // Birth date.
+                          if (state.profile.birthDayToString != null)
+                            ProfileInfoSection(
+                              headline: AppLocalizations.of(context)!.birth_date,
+                              text: state.profile.birthDayToString!,
+                              bottomPadding: 0,
+                            ),
+                        ],
+                      ),
+                      _ActionButton(
+                        onTap: () {},
+                        onHover: _handleHoveHighlight,
+                        isAnimation: _isButtonHover,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         }
@@ -174,7 +177,7 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       child: FocusableActionDetector(
@@ -184,7 +187,7 @@ class _ActionButton extends StatelessWidget {
           curve: Curves.easeOut,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: isAnimation ? theme.splashColor : theme.primaryColor,
+            color: isAnimation ? theme.cardColor : theme.primary,
             boxShadow: isAnimation
                 ? [
                     BoxShadow(
@@ -195,7 +198,7 @@ class _ActionButton extends StatelessWidget {
                   ]
                 : null,
             border: isAnimation
-                ? Border.all(color: theme.primaryColor, width: 2)
+                ? Border.all(color: theme.primary!, width: 2)
                 : null,
           ),
           child: Padding(
@@ -211,7 +214,7 @@ class _ActionButton extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   AppLocalizations.of(context)!.go_to_chat,
-                  style: theme.textTheme.headline5!.copyWith(
+                  style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                     color: _getTextColor(theme, isAnimation),
                   ),
@@ -224,12 +227,12 @@ class _ActionButton extends StatelessWidget {
     );
   }
 
-  Color _getTextColor(ThemeData theme, bool isAnimation) {
+  Color _getTextColor(CustomTheme theme, bool isAnimation) {
     // ignore: prefer-conditional-expressions
     if (theme.brightness == Brightness.light) {
-      return isAnimation ? theme.primaryColor : theme.splashColor;
+      return isAnimation ? theme.primary! : theme.cardColor!;
     } else {
-      return isAnimation ? theme.primaryColor : theme.hoverColor;
+      return isAnimation ? theme.primary! : theme.textLight!;
     }
   }
 }

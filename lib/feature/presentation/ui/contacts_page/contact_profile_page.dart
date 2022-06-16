@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
@@ -43,7 +44,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, navState) {
@@ -68,6 +69,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                   _onBack(context);
                 },
                 child: Scaffold(
+                  backgroundColor: theme.background,
                   bottomNavigationBar: !kIsWeb
                       ? CustomBottomBar(
                           state: navState,
@@ -76,38 +78,6 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                       : null,
                   body: Stack(
                     children: [
-                      // Action buttons.
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Call.
-                              _ActionButton(
-                                img: 'assets/icons/phone.svg',
-                                onTap: () {},
-                              ),
-                              const SizedBox(width: 16),
-
-                              // Message.
-                              _ActionButton(
-                                img: 'assets/icons/message.svg',
-                                onTap: () {},
-                              ),
-                              const SizedBox(width: 16),
-
-                              // Send email.
-                              _ActionButton(
-                                img: 'assets/icons/email.svg',
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
                       // Content.
                       SingleChildScrollView(
                         child: SafeArea(
@@ -157,7 +127,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                                   child: Text(
                                     user.fullName,
                                     textAlign: TextAlign.center,
-                                    style: theme.textTheme.headline4!.copyWith(
+                                    style: theme.textTheme.px17.copyWith(
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
@@ -204,6 +174,37 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                           ),
                         ),
                       ),
+                      // Action buttons.
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Call.
+                              _ActionButton(
+                                img: 'assets/icons/phone.svg',
+                                onTap: () {},
+                              ),
+                              const SizedBox(width: 16),
+
+                              // Message.
+                              _ActionButton(
+                                img: 'assets/icons/message.svg',
+                                onTap: () {},
+                              ),
+                              const SizedBox(width: 16),
+
+                              // Send email.
+                              _ActionButton(
+                                img: 'assets/icons/email.svg',
+                                onTap: () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -240,7 +241,7 @@ class _BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -249,7 +250,7 @@ class _BackButton extends StatelessWidget {
         children: [
           SvgPicture.asset(
             'assets/icons/back_arrow.svg',
-            color: theme.cardColor,
+            color: theme.text,
             width: 16,
           ),
           const SizedBox(
@@ -275,11 +276,11 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.primaryColor,
+        color: theme.primary,
         borderRadius: BorderRadius.circular(16.8),
         boxShadow: [
           BoxShadow(

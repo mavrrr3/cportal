@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,13 +15,13 @@ class DeclarationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       width: width,
       height: 92,
       decoration: BoxDecoration(
-        color: theme.backgroundColor,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -33,6 +34,7 @@ class DeclarationCard extends StatelessWidget {
             ),
             child: SvgPicture.asset(
               svgPath,
+              color: theme.textLight,
               width: 20,
             ),
           ),
@@ -45,8 +47,8 @@ class DeclarationCard extends StatelessWidget {
             ),
             child: Text(
               text,
-              style: theme.textTheme.headline6!.copyWith(
-                color: theme.cardColor,
+              style: theme.textTheme.px14.copyWith(
+                color: theme.text,
               ),
             ),
           ),

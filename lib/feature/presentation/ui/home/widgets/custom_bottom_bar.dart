@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
@@ -24,10 +25,10 @@ class CustomBottomBar extends StatefulWidget {
 class _CustomBottomBarState extends State<CustomBottomBar> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
-      color: theme.splashColor,
+      color: theme.cardColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(
@@ -68,14 +69,13 @@ class _MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final Color nonActiveColor = theme.brightness == Brightness.light
-        ? theme.hoverColor.withOpacity(0.48)
-        : theme.cardColor.withOpacity(0.48);
-    final Color activeColor = theme.primaryColor;
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    final Color nonActiveColor = theme.text!.withOpacity(0.48);
+    final Color activeColor = theme.primary!;
 
     Color _textColor(int index, NavigationBarState state) {
-      final ThemeData theme = Theme.of(context);
+      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
       return theme.brightness == Brightness.light
           ? state.currentIndex == index
@@ -106,7 +106,7 @@ class _MenuItem extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             item.text,
-            style: theme.textTheme.bodyText2!.copyWith(
+            style: theme.textTheme.bottomBar.copyWith(
               color: _textColor(index, state),
             ),
           ),

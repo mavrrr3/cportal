@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
@@ -25,7 +26,7 @@ class ConnectingCodePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -38,108 +39,111 @@ class ConnectingCodePage extends StatelessWidget {
         }
         if (state is ErrorAuthState) _isWrongCode = !_isWrongCode;
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 48),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgIcon(
-                      theme.brightness == Brightness.dark
-                          ? theme.hoverColor
-                          : null,
-                      path: 'logo_grey.svg',
-                      width: 24,
-                    ),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () => GoRouter.of(context)
-                          .pushNamed(NavigationRouteNames.qrScanner),
-                      child: SvgIcon(
-                        theme.primaryColor,
-                        path: 'qr_code.svg',
+      child: Scaffold(
+        backgroundColor: theme.background,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 48),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SvgIcon(
+                        theme.brightness == Brightness.dark
+                            ? theme.textLight
+                            : null,
+                        path: 'logo_grey.svg',
                         width: 24,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 31),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.inputConnectingCode,
-                          style: theme.textTheme.headline2,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => _showHowToGetCOnnectingCode(context),
-                      child: Text(
-                        AppLocalizations.of(context)!.howToGetConnectingCode,
-                        style: theme.textTheme.headline6!.copyWith(
-                          color: theme.primaryColor,
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => GoRouter.of(context)
+                            .pushNamed(NavigationRouteNames.qrScanner),
+                        child: SvgIcon(
+                          theme.primary,
+                          path: 'qr_code.svg',
+                          width: 24,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 27),
-                const CellCodeInput(),
-                const SizedBox(height: 8),
-                if (_isWrongCode) ...[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Opacity(
-                      opacity: 0.6,
-                      child: colorText(
-                        theme,
-                        AppLocalizations.of(context)!.wrongConnectingCode,
-                        'red',
-                      ),
-                    ),
+                    ],
                   ),
-                  // Вывод текста Повторите попытку через 30 секунд
-                  // Align(
-                  //   alignment: Alignment.centerLeft,
-                  //   child: Text(
-                  //     AppLocalizations.of(context)!
-                  //         .tryToRepeatAfter30sec,
-                  //     style: kMainTextRoboto.copyWith(
-                  //       fontSize: 14.sp,
-                  //       color: AppColors.kLightTextColor,
-                  //     ),
-                  //   ),
-                  // ),
+                  const SizedBox(height: 31),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.inputConnectingCode,
+                            style: theme.textTheme.header,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () => _showHowToGetCOnnectingCode(context),
+                        child: Text(
+                          AppLocalizations.of(context)!.howToGetConnectingCode,
+                          style: theme.textTheme.px14.copyWith(
+                            color: theme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 27),
+                  const CellCodeInput(),
+                  const SizedBox(height: 8),
+                  if (_isWrongCode) ...[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Opacity(
+                        opacity: 0.6,
+                        child: colorText(
+                          theme,
+                          AppLocalizations.of(context)!.wrongConnectingCode,
+                          'red',
+                        ),
+                      ),
+                    ),
+                    // Вывод текста Повторите попытку через 30 секунд
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Text(
+                    //     AppLocalizations.of(context)!
+                    //         .tryToRepeatAfter30sec,
+                    //     style: kMainTextRoboto.copyWith(
+                    //       fontSize: 14.sp,
+                    //       color: AppColors.kLightTextColor,
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
                 ],
+              ),
+            ),
+            Column(
+              children: [
+                CustomKeyboard(
+                  controller: _codeController,
+                  simbolQuantity: 6,
+                ),
+                const SizedBox(height: 52),
               ],
             ),
-          ),
-          Column(
-            children: [
-              CustomKeyboard(
-                controller: _codeController,
-                simbolQuantity: 6,
-              ),
-              const SizedBox(height: 52),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -162,7 +166,7 @@ class _CellCodeInputState extends State<CellCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     // Курсор, оставил код на случай если дизайнеры решат его всё таки сделать
     //
@@ -184,10 +188,10 @@ class _CellCodeInputState extends State<CellCodeInput> {
         width: 44,
         height: 52,
         textStyle: isWrongCode(state)
-            ? theme.textTheme.headline5!.copyWith(color: theme.errorColor)
-            : theme.textTheme.headline5,
+            ? theme.textTheme.px16.copyWith(color: theme.red)
+            : theme.textTheme.px16,
         decoration: BoxDecoration(
-          color: isWrongCode(state) ? theme.hintColor : theme.splashColor,
+          color: isWrongCode(state) ? theme.lightRedPIN : theme.cardColor,
           borderRadius: BorderRadius.circular(8),
         ),
       );
@@ -201,13 +205,13 @@ class _CellCodeInputState extends State<CellCodeInput> {
         defaultPinTheme: defaultPinTheme,
         separator: const SizedBox(width: 11),
         errorPinTheme: defaultPinTheme.copyWith(
-          decoration: BoxDecoration(color: theme.hintColor),
+          decoration: BoxDecoration(color: theme.lightRedPIN),
         ),
         focusedPinTheme: PinTheme(
           width: 52,
           height: 62,
           decoration: BoxDecoration(
-            color: isWrongCode(state) ? theme.hintColor : theme.splashColor,
+            color: isWrongCode(state) ? theme.lightRedPIN : theme.cardColor,
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
               BoxShadow(
@@ -247,13 +251,13 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
     useRootNavigator: true,
     barrierDismissible: true,
     builder: (context) {
-      final ThemeData theme = Theme.of(context);
+      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
             contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
-            backgroundColor: theme.splashColor,
+            backgroundColor: theme.cardColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -266,13 +270,13 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppLocalizations.of(context)!.howToGetCodeTitle,
-                      style: theme.textTheme.headline3,
+                      style: theme.textTheme.px22,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     AppLocalizations.of(context)!.howToGetCodeText,
-                    style: theme.textTheme.headline6,
+                    style: theme.textTheme.px14,
                   ),
                   const SizedBox(height: 16),
                   Align(
@@ -288,8 +292,8 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppLocalizations.of(context)!.addressForCode,
-                      style: theme.textTheme.headline6!.copyWith(
-                        color: theme.hoverColor,
+                      style: theme.textTheme.px14.copyWith(
+                        color: theme.textLight,
                       ),
                     ),
                   ),
@@ -311,7 +315,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                         icon: Icon(
                           Icons.keyboard_arrow_down_outlined,
                           size: 26,
-                          color: theme.primaryColor,
+                          color: theme.primary,
                         ),
                       ),
                     ],
@@ -340,7 +344,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                       WhatGetWithYou(
                         iconPath: 'assets/icons/what_get_icon.svg',
                         text: AppLocalizations.of(context)!.pass,
-                        color: theme.primaryColor,
+                        color: theme.primary,
                       ),
                     ],
                   ),
@@ -372,7 +376,7 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
-                    primary: theme.primaryColor,
+                    primary: theme.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -380,9 +384,9 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     AppLocalizations.of(context)!.close,
-                    style: theme.textTheme.headline5!.copyWith(
+                    style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: theme.splashColor,
+                      color: theme.cardColor,
                     ),
                   ),
                 ),
@@ -395,12 +399,12 @@ Future<void> _showHowToGetCOnnectingCode(BuildContext context) {
   );
 }
 
-Widget phoneButton(ThemeData theme) {
+Widget phoneButton(CustomTheme theme) {
   return Container(
     width: double.infinity,
     height: 46,
     decoration: BoxDecoration(
-      color: theme.backgroundColor,
+      color: theme.background,
       borderRadius: BorderRadius.circular(12),
     ),
     child: Row(
@@ -409,12 +413,11 @@ Widget phoneButton(ThemeData theme) {
         Icon(
           Icons.phone,
           size: 26,
-          color: theme.hoverColor,
+          color: theme.textLight,
         ),
         Text(
           '+7 495 487 34 66',
-          style:
-              theme.textTheme.headline5!.copyWith(fontWeight: FontWeight.w700),
+          style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(width: 40),
       ],
@@ -423,16 +426,16 @@ Widget phoneButton(ThemeData theme) {
 }
 
 Text colorText(
-  ThemeData theme,
+  CustomTheme theme,
   String text,
   String color,
 ) {
   return Text(
     text,
-    style: theme.textTheme.headline6!.copyWith(
+    style: theme.textTheme.px14.copyWith(
       color: color == 'red'
-          ? theme.errorColor.withOpacity(0.6)
-          : theme.hoverColor.withOpacity(0.6),
+          ? theme.red?.withOpacity(0.6)
+          : theme.text?.withOpacity(0.6),
     ),
   );
 }

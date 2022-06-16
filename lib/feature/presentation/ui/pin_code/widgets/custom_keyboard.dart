@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -15,6 +16,8 @@ class CustomKeyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     _simbolQuantity = simbolQuantity;
     _codeController = controller;
 
@@ -47,9 +50,9 @@ class CustomKeyboard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-         const   SizedBox(
+            const SizedBox(
               width: 90,
-              child:  MaterialButton(
+              child: MaterialButton(
                 onPressed: null,
                 child: SizedBox(),
               ),
@@ -58,7 +61,7 @@ class CustomKeyboard extends StatelessWidget {
             SizedBox(
               width: 90,
               child: ConstrainedBox(
-                constraints:const BoxConstraints(minWidth: 60),
+                constraints: const BoxConstraints(minWidth: 60),
                 child: MaterialButton(
                   height: 60,
                   onPressed: () {
@@ -71,7 +74,7 @@ class CustomKeyboard extends StatelessWidget {
                     'assets/icons/backspace.svg',
                     width: 48,
                     height: 60,
-                    color: Theme.of(context).brightness == Brightness.dark
+                    color: theme.brightness == Brightness.dark
                         ? Colors.white
                         : null,
                   ),
@@ -95,6 +98,8 @@ class KeyboardNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     return Container(
       width: 60,
       height: 60,
@@ -108,9 +113,9 @@ class KeyboardNumber extends StatelessWidget {
         child: Text(
           '$number',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline1!.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+          style: theme.textTheme.px32.copyWith(
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );

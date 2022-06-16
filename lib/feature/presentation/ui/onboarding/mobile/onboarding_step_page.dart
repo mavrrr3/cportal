@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,7 +13,8 @@ class OnBoardingStepPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,12 +23,12 @@ class OnBoardingStepPage extends StatelessWidget {
         const SizedBox(height: 68),
         Text(
           content.title,
-          style: theme.textTheme.headline2,
+          style: theme.textTheme.header,
         ),
         const SizedBox(height: 8),
         Text(
           content.description,
-          style: theme.textTheme.headline5,
+          style: theme.textTheme.px16,
         ),
         const SizedBox(height: 64),
         Align(

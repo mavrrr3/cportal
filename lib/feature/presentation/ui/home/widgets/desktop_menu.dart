@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -20,12 +21,13 @@ class DesktopMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                   final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Container(
       width: 256,
       height: MediaQuery.of(context).size.height,
-      color: theme.splashColor,
+      color: theme.cardColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
@@ -38,7 +40,7 @@ class DesktopMenu extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 12),
                   child: SvgPicture.asset(
                     'assets/icons/logo.svg',
-                    color: theme.cardColor.withOpacity(0.4),
+                    color: theme.text!.withOpacity(0.4),
                     width: 24,
                   ),
                 ),
@@ -113,7 +115,8 @@ class _MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -121,8 +124,8 @@ class _MenuItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         color: isActive
             ? theme.brightness == Brightness.light
-                ? theme.scaffoldBackgroundColor
-                : theme.scaffoldBackgroundColor.withOpacity(0.34)
+                ? theme.background
+                : theme.background?.withOpacity(0.34)
             : Colors.transparent,
       ),
       child: Padding(
@@ -133,14 +136,14 @@ class _MenuItem extends StatelessWidget {
               item.img,
               width: 24,
               color: isActive
-                  ? theme.primaryColor
-                  : theme.cardColor.withOpacity(0.48),
+                  ? theme.primary
+                  : theme.text?.withOpacity(0.48),
             ),
             const SizedBox(width: 16),
             Text(
               item.text,
-              style: theme.textTheme.headline5!.copyWith(
-                color: isActive ? theme.primaryColor : theme.cardColor,
+              style: theme.textTheme.px16.copyWith(
+                color: isActive ? theme.primary : theme.text,
                 fontWeight: FontWeight.w700,
               ),
             ),

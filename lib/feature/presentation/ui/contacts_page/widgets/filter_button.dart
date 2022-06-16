@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -11,21 +12,21 @@ class FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: theme.splashColor,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: SvgPicture.asset(
             'assets/icons/filter.svg',
-            color: theme.cardColor.withOpacity(0.68),
+            color: theme.textLight,
           ),
         ),
       ),

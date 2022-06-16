@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -33,6 +34,8 @@ class NewsArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         if (state is NewsLoaded) {
@@ -50,6 +53,7 @@ class NewsArticlePage extends StatelessWidget {
               }
             },
             child: Scaffold(
+              backgroundColor: theme.background,
               body: !kIsWeb
                   ? _Mobile(
                       item: articlefromBloc(),
@@ -81,7 +85,7 @@ class _Mobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +103,7 @@ class _Mobile extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverAppBar(
-                  backgroundColor: theme.backgroundColor,
+                  backgroundColor: theme.background,
                   expandedHeight: 176,
                   automaticallyImplyLeading: false,
                   leading: IconButton(
@@ -133,14 +137,14 @@ class _Mobile extends StatelessWidget {
                             children: [
                               Text(
                                 item.header,
-                                style: theme.textTheme.headline3,
+                                style: theme.textTheme.px22,
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 _outputFormat.format(
                                   item.date,
                                 ),
-                                style: theme.textTheme.bodyText1,
+                                style: theme.textTheme.px12,
                               ),
                               const SizedBox(height: 20),
                               Column(
@@ -206,7 +210,7 @@ class _Web extends StatefulWidget {
 class _WebState extends State<_Web> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
@@ -251,13 +255,13 @@ class _WebState extends State<_Web> {
                                 SvgPicture.asset(
                                   'assets/icons/back_arrow.svg',
                                   width: 16,
-                                  color: theme.primaryColor,
+                                  color: theme.primary,
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
                                   AppLocalizations.of(context)!.news,
-                                  style: theme.textTheme.headline5!.copyWith(
-                                    color: theme.primaryColor,
+                                  style: theme.textTheme.px14.copyWith(
+                                    color: theme.primary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -284,19 +288,19 @@ class _WebState extends State<_Web> {
                                 const SizedBox(height: 24),
                                 Text(
                                   article.header,
-                                  style: theme.textTheme.headline3,
+                                  style: theme.textTheme.px22,
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
                                   _outputFormat.format(
                                     widget.item.date,
                                   ),
-                                  style: theme.textTheme.bodyText1,
+                                  style: theme.textTheme.px12,
                                 ),
                                 const SizedBox(height: 24),
                                 Text(
                                   article.content.toString(),
-                                  style: theme.textTheme.headline6,
+                                  style: theme.textTheme.px14,
                                 ),
                                 const SizedBox(height: 40),
                                 Wrap(
