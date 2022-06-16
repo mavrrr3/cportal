@@ -5,7 +5,7 @@ import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_po
 class OnBoardingStepWeb extends StatelessWidget {
   final AnimationController animationController;
   final PageController pageController;
-  final List<OnboardingEntity> content;
+  final List<OnboardingItemEntity> content;
   final int currentIndex;
   final Function() onNext;
   final Function() onBack;

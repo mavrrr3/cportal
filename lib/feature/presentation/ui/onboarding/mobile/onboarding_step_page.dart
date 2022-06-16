@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingStepPage extends StatelessWidget {
-  final OnboardingEntity content;
+  final OnboardingItemEntity content;
 
   const OnBoardingStepPage({
     Key? key,
@@ -13,8 +13,7 @@ class OnBoardingStepPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,7 +21,7 @@ class OnBoardingStepPage extends StatelessWidget {
       children: [
         const SizedBox(height: 68),
         Text(
-          content.title,
+          content.header,
           style: theme.textTheme.header,
         ),
         const SizedBox(height: 8),

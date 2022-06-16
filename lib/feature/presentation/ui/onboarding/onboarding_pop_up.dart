@@ -68,7 +68,7 @@ class _OnBoardingPopUpState extends State<OnBoardingPopUp> {
 }
 
 class OnBoardingContentWeb extends StatefulWidget {
-  final List<OnboardingEntity> content;
+  final List<OnboardingItemEntity> content;
   final int currentIndex;
   final PageController pageController;
   final AnimationController animationController;
@@ -128,7 +128,7 @@ class _OnBoardingContentWebState extends State<OnBoardingContentWeb> {
               children: [
                 const SizedBox(height: 39),
                 Text(
-                  widget.content[i].title,
+                  widget.content[i].header,
                   style: theme.textTheme.header,
                 ),
                 const SizedBox(height: 8),

@@ -21,45 +21,45 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-const List<OnboardingEntity> _onboardingContent = [
-  OnboardingEntity(
-    title: 'Как общаться с коллегами?',
+const List<OnboardingItemEntity> _onboardingContent = [
+  OnboardingItemEntity(
+    header: 'Как общаться с коллегами?',
     description:
         'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
     image: 'assets/img/onboarding/1.svg',
   ),
-  OnboardingEntity(
-    title: 'Обязательно для ознакомления!',
+  OnboardingItemEntity(
+    header: 'Обязательно для ознакомления!',
     description:
         'Сегодня Вам будет назначен курс «Обучение по информационной безопасности», который Вам будет необходимо пройти в течение 2-х\nнедель с даты приема.',
     image: 'assets/img/onboarding/2.svg',
   ),
-  OnboardingEntity(
-    title: 'Любите читать?',
+  OnboardingItemEntity(
+    header: 'Любите читать?',
     description:
         'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
     image: 'assets/img/onboarding/3.svg',
   ),
-  OnboardingEntity(
-    title: 'Изучайте иностранные языки',
+  OnboardingItemEntity(
+    header: 'Изучайте иностранные языки',
     description:
         'В нашей компании проходят курсы по английскому и испанскому языкам. Вы можете присоединиться  к коллегам, изучающих иностранные языки,  для этого Вам нужно обратиться к сотруднику HR. Обучение языкам проходит за счет компании.',
     image: 'assets/img/onboarding/4.svg',
   ),
-  OnboardingEntity(
-    title: 'Голодным не останетесь',
+  OnboardingItemEntity(
+    header: 'Голодным не останетесь',
     description: 'Компания предоставляет сотрудникам бесплатные обеды.',
     image: 'assets/img/onboarding/5.svg',
   ),
-  OnboardingEntity(
-    title: 'Как получить ДМС?',
+  OnboardingItemEntity(
+    header: 'Как получить ДМС?',
     description:
         'После прохождения испытательного срока Вам будет оформлен полис ДМС и направлен страховой компанией на почту.',
     image: 'assets/img/onboarding/6.png',
     isVector: false,
   ),
-  OnboardingEntity(
-    title: 'Всегда рады ответить на вопросы',
+  OnboardingItemEntity(
+    header: 'Всегда рады ответить на вопросы',
     description: 'Дирекция по управлению персоналом',
     image: 'assets/img/onboarding/7.svg',
   ),

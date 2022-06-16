@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
+import 'package:cportal_flutter/feature/data/models/onboarding_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/onboarding_bloc/onboarding_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
@@ -144,6 +146,9 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<ContactsBloc>(
       create: (ctx) => sl<ContactsBloc>(),
     ),
+    BlocProvider<OnboardingBloc>(
+      create: (ctx) => sl<OnboardingBloc>(),
+    ),
   ];
 }
 
@@ -159,5 +164,7 @@ void _hiveAdaptersInit() {
     ..registerAdapter(ResponseModelAdapter())
     ..registerAdapter(FilterModelAdapter())
     ..registerAdapter(FilterItemModelAdapter())
-    ..registerAdapter(ContactsModelAdapter());
+    ..registerAdapter(ContactsModelAdapter())
+    ..registerAdapter(OnboardingModelAdapter())
+    ..registerAdapter(OnboardingItemModelAdapter());
 }

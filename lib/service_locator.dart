@@ -8,6 +8,8 @@ import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filte
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/onboarding_datasource/onboarding_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/onboarding_datasource/onboarding_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/pin_code_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
@@ -20,6 +22,8 @@ import 'package:cportal_flutter/feature/data/repositories/filter_repository_mobi
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_web.dart';
+import 'package:cportal_flutter/feature/data/repositories/onboarding_repository_mobile.dart';
+import 'package:cportal_flutter/feature/data/repositories/onboarding_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/pin_code_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/profile_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/profile_repository_web.dart';
@@ -29,6 +33,7 @@ import 'package:cportal_flutter/feature/domain/repositories/i_biometric_reposito
 import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_onboarding_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
@@ -38,6 +43,7 @@ import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.d
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_onboarding_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/pin_code_enter_usecase.dart';
@@ -49,6 +55,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/onboarding_bloc/onboarding_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:dio/dio.dart';
@@ -78,6 +85,8 @@ Future<void> init() async {
         searchContacts: sl(),
       ));
 
+  sl.registerFactory(() => OnboardingBloc(fetchOnboarding: sl()));
+
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
   sl.registerLazySingleton(() => SearchProfileUseCase(sl()));
@@ -90,6 +99,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
   sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
+  sl.registerLazySingleton(() => FetchOnboardingUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -179,6 +189,19 @@ Future<void> init() async {
       ),
     );
   }
+  if (kIsWeb) {
+    sl.registerLazySingleton<IOnboardingRepository>(
+      () => OnboardingRepositoryWeb(remoteDataSource: sl()),
+    );
+  } else {
+    sl.registerLazySingleton<IOnboardingRepository>(
+      () => OnboardingRepositoryMobile(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ),
+    );
+  }
 
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
@@ -219,6 +242,12 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
+  );
+  sl.registerLazySingleton<IOnboardingRemoteDataSource>(
+    () => OnboardingRemoteDataSource(sl(), sl()),
+  );
+  sl.registerLazySingleton<IOnboardingLocalDataSource>(
+    () => OnboardingLocalDataSource(sl()),
   );
 
   // CORE.

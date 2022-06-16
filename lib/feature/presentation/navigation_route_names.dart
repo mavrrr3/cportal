@@ -265,7 +265,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        child: Onboarding(content: state.extra! as List<OnboardingEntity>),
+        child: Onboarding(content: state.extra! as List<OnboardingItemEntity>),
       ),
     ),
     GoRoute(

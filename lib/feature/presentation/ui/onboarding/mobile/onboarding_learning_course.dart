@@ -34,8 +34,7 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
 
   @override
   Widget build(BuildContext context) {
-                                 final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Scaffold(
       backgroundColor: theme.cardColor,
@@ -60,8 +59,8 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
                     ],
                   ),
                   OnBoardingStepPage(
-                    content: OnboardingEntity(
-                      title: AppLocalizations.of(context)!.onboarding_title8,
+                    content: OnboardingItemEntity(
+                      header: AppLocalizations.of(context)!.onboarding_title8,
                       description:
                           AppLocalizations.of(context)!.onboarding_description8,
                       image: 'assets/img/onboarding/8.svg',

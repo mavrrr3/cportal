@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class Onboarding extends StatefulWidget {
-  final List<OnboardingEntity> content;
+  final List<OnboardingItemEntity> content;
 
   const Onboarding({
     Key? key,
@@ -23,7 +23,7 @@ class _OnboardingState extends State<Onboarding>
   late int _currentIndex;
   late PageController _pageController;
   late AnimationController _animationController;
-  late List<OnboardingEntity> _onboardingContent;
+  late List<OnboardingItemEntity> _onboardingContent;
   late Duration _pageDuration;
 
   @override
@@ -59,8 +59,7 @@ class _OnboardingState extends State<Onboarding>
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Scaffold(
       backgroundColor: theme.cardColor,
@@ -132,7 +131,7 @@ class _OnboardingState extends State<Onboarding>
 
   void _onTapDown(
     TapDownDetails details,
-    List<OnboardingEntity> pages,
+    List<OnboardingItemEntity> pages,
   ) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double dx = details.globalPosition.dx;

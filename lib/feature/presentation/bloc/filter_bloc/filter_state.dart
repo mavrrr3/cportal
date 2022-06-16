@@ -30,12 +30,3 @@ class FilterLoadedState extends FilterState {
   @override
   List<Object?> get props => [filters];
 }
-
-class FilterFetchErrorState extends FilterState {
-  final String message;
-
-  const FilterFetchErrorState({required this.message});
-
-  @override
-  List<Object?> get props => [message];
-}

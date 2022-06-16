@@ -36,8 +36,8 @@ class OnBoardingLearningCourseWeb extends StatelessWidget {
               // TODO: Отработать переход на курс.
             },
             content: [
-              OnboardingEntity(
-                title: AppLocalizations.of(context)!.onboarding_title8,
+              OnboardingItemEntity(
+                header: AppLocalizations.of(context)!.onboarding_title8,
                 description:
                     AppLocalizations.of(context)!.onboarding_description8,
                 image: 'assets/img/onboarding/8.svg',
