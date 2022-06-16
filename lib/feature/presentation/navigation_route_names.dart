@@ -86,7 +86,7 @@ final GoRouter router = GoRouter(
       path: '/connecting_code',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: ConnectingCodePage()),
+        child: const ConnectingCodePage(),
       ),
     ),
     GoRoute(
@@ -102,9 +102,7 @@ final GoRouter router = GoRouter(
       path: '/create_pin',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(
-          body: CreatePinPage(),
-        ),
+        child: const CreatePinPage(),
       ),
     ),
     GoRoute(
@@ -122,9 +120,7 @@ final GoRouter router = GoRouter(
       path: '/edit_pin',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(
-          body: EditPinPage(),
-        ),
+        child: const EditPinPage(),
       ),
     ),
     GoRoute(
@@ -132,9 +128,7 @@ final GoRouter router = GoRouter(
       path: '/input_pin',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(
-          body: InputPinPage(),
-        ),
+        child: const InputPinPage(),
       ),
     ),
     GoRoute(
@@ -142,9 +136,7 @@ final GoRouter router = GoRouter(
       path: '/input_pin_web',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(
-          body: InputPinWeb(),
-        ),
+        child: const InputPinWeb(),
       ),
     ),
     GoRoute(
@@ -152,10 +144,8 @@ final GoRouter router = GoRouter(
       path: '/finger_print',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(
-          body: FingerPrintOrFaceIdPage(
-            route: NavigationRouteNames.fingerPrint,
-          ),
+        child: const FingerPrintOrFaceIdPage(
+          route: NavigationRouteNames.fingerPrint,
         ),
       ),
     ),
@@ -164,10 +154,8 @@ final GoRouter router = GoRouter(
       path: '/face_id',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(
-          body: FingerPrintOrFaceIdPage(
-            route: NavigationRouteNames.faceId,
-          ),
+        child: const FingerPrintOrFaceIdPage(
+          route: NavigationRouteNames.faceId,
         ),
       ),
     ),
@@ -235,7 +223,7 @@ final GoRouter router = GoRouter(
       path: '/profile',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: ProfilePage()),
+        child: const ProfilePage(),
       ),
     ),
     GoRoute(
@@ -243,7 +231,7 @@ final GoRouter router = GoRouter(
       path: '/user_data',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const Scaffold(body: UserData()),
+        child: const UserData(),
       ),
     ),
     GoRoute(

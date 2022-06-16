@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,13 +24,14 @@ class SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    log('${theme.brightness}');
 
     return Container(
       width: getSearchContainerWidth(context),
       height: 40,
       decoration: BoxDecoration(
-        color: theme.splashColor,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -36,7 +40,7 @@ class SearchInput extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10),
             child: SvgIcon(
-              theme.brightness == Brightness.dark ? theme.hoverColor : null,
+              theme.brightness == Brightness.dark ? theme.white : null,
               path: 'search.svg',
               width: 20,
             ),
@@ -50,14 +54,14 @@ class SearchInput extends StatelessWidget {
               focusNode: focusNode,
               textInputAction: TextInputAction.search,
               onChanged: onChanged,
-              style: theme.textTheme.headline6!.copyWith(
-                color: theme.hoverColor.withOpacity(0.68),
+              style: theme.textTheme.px14.copyWith(
+                color: theme.textLight,
               ),
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.only(bottom: 8),
                 hintText: AppLocalizations.of(context)!.enterRequest,
-                hintStyle: theme.textTheme.headline6!.copyWith(
-                  color: theme.hoverColor.withOpacity(0.68),
+                hintStyle: theme.textTheme.px14.copyWith(
+                  color: theme.textLight,
                 ),
                 border: InputBorder.none,
               ),

@@ -9,8 +9,12 @@ abstract class GetSingleProfileEvent extends Equatable {
 
 class GetSingleProfileEventImpl extends GetSingleProfileEvent {
   final String id;
+  final bool isMyProfile;
 
-  const GetSingleProfileEventImpl(this.id);
+  const GetSingleProfileEventImpl(
+    this.id, {
+    this.isMyProfile = false,
+  });
 
   @override
   List<Object> get props => [id];

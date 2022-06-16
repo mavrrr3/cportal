@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
@@ -15,7 +16,8 @@ class AvatarAndUserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                             final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Center(
       child: Column(
@@ -30,8 +32,8 @@ class AvatarAndUserInfo extends StatelessWidget {
           SizedBox(
             width: 250,
             child: Text(
-              '${profile.firstName} ${profile.middleName} ${profile.lastName}',
-              style: theme.textTheme.headline4!.copyWith(
+              profile.fullName,
+              style: theme.textTheme.px17.copyWith(
                 fontWeight: FontWeight.w800,
               ),
               softWrap: true,
@@ -40,8 +42,8 @@ class AvatarAndUserInfo extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            profile.phone.first.number,
-            style: theme.textTheme.headline6,
+            profile.contactInfo.first.contact,
+            style: theme.textTheme.px16,
           ),
           const SizedBox(height: 16),
           GestureDetector(
@@ -49,9 +51,9 @@ class AvatarAndUserInfo extends StatelessWidget {
             onTap: () => context.goNamed(NavigationRouteNames.userData),
             child: Text(
               AppLocalizations.of(context)!.watchData,
-              style: theme.textTheme.headline5!.copyWith(
+              style: theme.textTheme.px16.copyWith(
                 fontWeight: FontWeight.w800,
-                color: theme.primaryColor,
+                color: theme.primary,
               ),
             ),
           ),

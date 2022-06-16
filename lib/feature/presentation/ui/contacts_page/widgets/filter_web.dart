@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
@@ -23,7 +24,8 @@ class FilterWeb extends StatefulWidget {
 class _FilterWebState extends State<FilterWeb> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return BlocBuilder<FilterBloc, FilterState>(
       builder: (context, state) {
@@ -32,7 +34,7 @@ class _FilterWebState extends State<FilterWeb> {
             duration: const Duration(milliseconds: 300),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width * 0.25,
-            decoration: BoxDecoration(color: theme.splashColor),
+            decoration: BoxDecoration(color: theme.cardColor),
             child: Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(

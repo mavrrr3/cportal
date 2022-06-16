@@ -1,8 +1,9 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class StatusBadge extends StatelessWidget {
   final String text;
-  final Color color;
+  final Color? color;
   const StatusBadge(
     this.text,
     this.color, {
@@ -11,7 +12,8 @@ class StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Container(
       height: 19,
@@ -24,8 +26,8 @@ class StatusBadge extends StatelessWidget {
         child: Center(
           child: Text(
             capitalize(text),
-            style: theme.textTheme.bodyText1!.copyWith(
-              color: theme.splashColor,
+            style: theme.textTheme.px12.copyWith(
+              color: theme.text,
             ),
           ),
         ),

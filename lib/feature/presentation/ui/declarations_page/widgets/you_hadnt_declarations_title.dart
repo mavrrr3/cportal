@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -8,7 +9,8 @@ class YouHadntDeclarationsTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                            final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -18,8 +20,8 @@ class YouHadntDeclarationsTitle extends StatelessWidget {
         child: Text(
           AppLocalizations.of(context)!.youHadntDeclarations,
           textAlign: TextAlign.center,
-          style: theme.textTheme.headline3!.copyWith(
-            color: theme.cardColor.withOpacity(0.5),
+          style: theme.textTheme.px22.copyWith(
+            color: theme.text!.withOpacity(0.5),
           ),
         ),
       ),

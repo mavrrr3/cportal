@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -99,7 +100,7 @@ class FilterSectionItem extends StatefulWidget {
 class _FilterSectionItemState extends State<FilterSectionItem> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -119,16 +120,16 @@ class _FilterSectionItemState extends State<FilterSectionItem> {
                       (MediaQuery.of(context).size.width - 80),
                   decoration: BoxDecoration(
                     color: theme.brightness == Brightness.light
-                        ? theme.scaffoldBackgroundColor
-                        : theme.scaffoldBackgroundColor.withOpacity(0.34),
+                        ? theme.background
+                        : theme.background!.withOpacity(0.34),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
                       widget.item.headline,
-                      style: theme.textTheme.headline6!.copyWith(
-                        color: theme.hoverColor.withOpacity(0.68),
+                      style: theme.textTheme.px14.copyWith(
+                        color: theme.textLight,
                       ),
                     ),
                   ),
@@ -139,7 +140,7 @@ class _FilterSectionItemState extends State<FilterSectionItem> {
                       ? 'assets/icons/arrow_up.svg'
                       : 'assets/icons/arrow_down.svg',
                   width: 24,
-                  color: theme.primaryColor,
+                  color: theme.primary,
                 ),
               ],
             ),
@@ -175,7 +176,7 @@ class _FilterSectionItemState extends State<FilterSectionItem> {
                         Expanded(
                           child: Text(
                             widget.item.items[index].name,
-                            style: theme.textTheme.headline6,
+                            style: theme.textTheme.px14,
                           ),
                         ),
                       ],

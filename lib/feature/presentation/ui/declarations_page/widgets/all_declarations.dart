@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/in_process_title.dart';
@@ -9,24 +10,25 @@ class AllDeclarations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     Widget drawBadgeByStatus(String status) {
       switch (status) {
         case 'одобрено':
           return StatusBadge(
             status,
-            theme.focusColor,
+            theme.green,
           );
         case 'отклонено':
           return StatusBadge(
             status,
-            theme.errorColor,
+            theme.red,
           );
         default:
           return StatusBadge(
             status,
-            theme.indicatorColor,
+            theme.yellow,
           );
       }
     }

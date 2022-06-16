@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,14 +8,15 @@ class FaqWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                   final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.faq,
-          style: theme.textTheme.headline3,
+          style: theme.textTheme.px22,
         ),
         const SizedBox(height: 16),
         ListView.builder(

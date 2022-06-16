@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
@@ -42,20 +42,21 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
   // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(FetchContactsEvent());
+        .add(const FetchContactsEvent());
     BlocProvider.of<FilterBloc>(context, listen: false)
         .add(FetchFiltersEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<ContactsBloc, ContactsState>(
       builder: (context, state) {
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
+            backgroundColor: theme.background,
             body: Stack(
               children: [
                 Row(
@@ -72,11 +73,11 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                         onChange: (index) => changePage(context, index),
                       ),
                     ),
-                    if (state is FetchContactsLoadingState)
+                    if (state is ContactsLoadingState)
                       const Expanded(
                         child: Center(child: CircularProgressIndicator()),
                       ),
-                    if (state is FetchContactsLoadedState)
+                    if (state is ContactsLoadedState)
                       Expanded(
                         child: SafeArea(
                           child: SingleChildScrollView(
@@ -182,7 +183,7 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      color: getBarrierColor(theme),
+                      color: theme.barrierColor,
                     ),
                   ),
                 if (_isFilterOpenWeb)
@@ -202,12 +203,12 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
   }
 
   // Filter Bottom Sheet Mobile.
-  Future<void> _showFilterMobile(ThemeData theme) async {
+  Future<void> _showFilterMobile(CustomTheme theme) async {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: theme.splashColor,
-      barrierColor: getBarrierColor(theme),
+      backgroundColor: theme.cardColor,
+      barrierColor: theme.barrierColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
@@ -291,6 +292,7 @@ class NewDeclarations extends StatelessWidget {
                   DeclarationCard(
                     width: halfWidth,
                     svgPath: 'assets/icons/calendar.svg',
+                    
                     text: AppLocalizations.of(context)!.buisenesTripDeclaration,
                   ),
                   DeclarationCard(
@@ -355,7 +357,7 @@ class _WithDeclarationsState extends State<WithDeclarations>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return SingleChildScrollView(
       child: SizedBox(
@@ -369,19 +371,27 @@ class _WithDeclarationsState extends State<WithDeclarations>
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: TabBar(
-                      labelStyle: theme.textTheme.headline3!.copyWith(
+                      labelStyle: theme.textTheme.px22.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
-                      labelColor: theme.primaryColor,
+                      labelColor: theme.primary,
                       unselectedLabelColor: theme.cardColor,
-                      indicatorColor: theme.primaryColor,
+                      indicatorColor: theme.primary,
                       controller: tabController,
-                      tabs: const [
+                      tabs: [
                         Tab(
-                          child: Text('Заявления'),
+                          child: Text(
+                            'Заявления',
+                            style: theme.textTheme.px16
+                                .copyWith(fontWeight: FontWeight.w700),
+                          ),
                         ),
                         Tab(
-                          child: Text('Новые'),
+                          child: Text(
+                            'Новые',
+                            style: theme.textTheme.px16
+                                .copyWith(fontWeight: FontWeight.w700),
+                          ),
                         ),
                       ],
                     ),
@@ -391,7 +401,7 @@ class _WithDeclarationsState extends State<WithDeclarations>
             ),
             Container(
               height: 1,
-              color: theme.dividerColor,
+              color: theme.divider,
             ),
             Expanded(
               child: TabBarView(controller: tabController, children: const [

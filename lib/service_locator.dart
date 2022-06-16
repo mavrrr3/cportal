@@ -43,6 +43,7 @@ import 'package:cportal_flutter/feature/domain/usecases/fetch_quastions_usecase.
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/pin_code_enter_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/search_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/search_profile_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
@@ -51,7 +52,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_blo
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -75,7 +76,11 @@ Future<void> init() async {
       ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
-  sl.registerFactory(() => ContactsBloc(fetchContacts: sl()));
+  sl.registerFactory(() => ContactsBloc(
+        fetchContacts: sl(),
+        fetchProfile: sl(),
+        searchContacts: sl(),
+      ));
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
@@ -90,6 +95,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchQuastionsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
+  sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -182,7 +188,7 @@ Future<void> init() async {
 
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
-    () => ProfileRemoteDataSource(sl()),
+    () => ProfileRemoteDataSource(sl(), sl()),
   );
 
   sl.registerLazySingleton<IProfileLocalDataSource>(
@@ -208,17 +214,17 @@ Future<void> init() async {
   sl.registerLazySingleton<INewsLocalDataSource>(
     () => NewsLocalDataSource(sl()),
   );
+  sl.registerLazySingleton<IContactsRemoteDataSource>(
+    () => ContactsRemoteDataSource(sl(), sl()),
+  );
+  sl.registerLazySingleton<IContactsLocalDataSource>(
+    () => ContactsLocalDataSource(sl()),
+  );
   sl.registerLazySingleton<IFilterRemoteDataSource>(
     () => FilterRemoteDataSource(sl()),
   );
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
-  );
-  sl.registerLazySingleton<IContactsRemoteDataSource>(
-    () => ContactsRemoteDataSource(sl()),
-  );
-  sl.registerLazySingleton<IContactsLocalDataSource>(
-    () => ContactsLocalDataSource(sl()),
   );
 
   // CORE.

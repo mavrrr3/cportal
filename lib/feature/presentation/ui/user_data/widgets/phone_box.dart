@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -8,13 +9,14 @@ class PhoneBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                  final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Container(
       width: double.infinity,
       height: 48,
       decoration: BoxDecoration(
-        color: theme.hoverColor.withOpacity(0.04),
+        color: theme.text?.withOpacity(0.04),
         borderRadius:const BorderRadius.only(
           topLeft: Radius.circular(4),
           topRight: Radius.circular(4),
@@ -28,12 +30,12 @@ class PhoneBox extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.yourPhoneNumber,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(color: theme.hoverColor.withOpacity(0.68)),
+              style: theme.textTheme.px12
+                  .copyWith(color: theme.textLight),
             ),
             Text(
               '+7 923 456 78 91',
-              style: theme.textTheme.headline5,
+              style: theme.textTheme.px16,
             ),
           ],
         ),

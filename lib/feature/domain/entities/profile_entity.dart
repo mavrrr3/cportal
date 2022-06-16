@@ -1,90 +1,73 @@
-// To parse this JSON data, do
-//
-//     final profile = profileFromJson(jsonString);
+import 'dart:math';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProfileEntity extends Equatable {
   final String id;
-  final String externalId;
-  final String firstName;
-  final String lastName;
-  final String middleName;
-  final String birthday;
-  final String email;
+  final String fullName;
+  final String department;
+  final String position;
+  final DateTime? birthday;
   final String photoLink;
-  final bool active;
-  final PositionEntity position;
-  final List<PhoneEntity> phone;
-  final String userCreated;
-  final DateTime dateCreated;
-  final String userUpdate;
-  final DateTime dateUpdated;
+  final List<ContactInfoEntity> contactInfo;
+  final Color color = _randomColor;
 
-  const ProfileEntity({
+  ProfileEntity({
     required this.id,
-    required this.externalId,
-    required this.firstName,
-    required this.lastName,
-    required this.middleName,
-    required this.birthday,
-    required this.email,
-    required this.photoLink,
-    required this.active,
+    required this.fullName,
+    required this.department,
     required this.position,
-    required this.phone,
-    required this.userCreated,
-    required this.dateCreated,
-    required this.userUpdate,
-    required this.dateUpdated,
+    required this.birthday,
+    required this.photoLink,
+    required this.contactInfo,
   });
+
+  String? get birthDayToString =>
+      birthday != null ? DateFormat('d.MM.y').format(birthday!) : null;
+
+  String get email =>
+      contactInfo.where((element) => element.type == 'Эл. почта').first.contact;
+
+  String get officePhone => contactInfo
+      .where((element) => element.type == 'Рабочий телефон')
+      .first
+      .contact;
+
+  static Color get _randomColor {
+    const List<Color> colors = [
+      Color(0xFFB1E5FC),
+      Color(0xFFFFD88D),
+      Color(0xFFB5E4CA),
+      Color(0xFFFFBC99),
+      Color(0xFFCABDFF),
+    ];
+    final int random = Random().nextInt(colors.length);
+
+    return colors[random];
+  }
 
   @override
   List<Object?> get props => [
         id,
-        externalId,
-        firstName,
-        lastName,
-        middleName,
+        fullName,
         birthday,
-        email,
         photoLink,
-        active,
         position,
-        phone,
-        userCreated,
-        dateCreated,
-        userUpdate,
-        dateUpdated,
+        contactInfo,
       ];
 }
 
-class PhoneEntity extends Equatable {
-  final String number;
-  final String? suffix;
-  final bool primary;
+class ContactInfoEntity extends Equatable {
+  final String type;
+  final String contact;
 
-  const PhoneEntity({
-    required this.number,
-    required this.suffix,
-    required this.primary,
+  const ContactInfoEntity({
+    required this.type,
+    required this.contact,
   });
 
   @override
-  List<Object?> get props => [number, suffix, primary];
-}
-
-class PositionEntity extends Equatable {
-  final String id;
-  final String description;
-  final String department;
-
-  const PositionEntity({
-    required this.id,
-    required this.description,
-    required this.department,
-  });
-
-  @override
-  List<Object?> get props => [id, description, department];
+  List<Object?> get props => [type, contact];
 }

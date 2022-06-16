@@ -11,7 +11,7 @@ part 'news_model.g.dart';
 
 // String newsModelToJson(NewsModel data) => json.encode(data.toJson());
 
-@HiveType(typeId: 7)
+@HiveType(typeId: 6)
 class NewsModel extends NewsEntity {
   @override
   @HiveField(0)
@@ -32,7 +32,7 @@ class NewsModel extends NewsEntity {
       };
 }
 
-@HiveType(typeId: 11)
+@HiveType(typeId: 10)
 class ResponseModel extends ResponseEntity {
   @override
   @HiveField(0)
