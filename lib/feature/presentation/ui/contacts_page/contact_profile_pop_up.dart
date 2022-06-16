@@ -50,99 +50,101 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
         }
 
         if (state is GetSingleProfileLoadedState) {
-          return SizedBox(
-            height: 660,
-            child: Stack(
-              children: [
-                Positioned(
-                  right: 0,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.close,
-                      color: theme.textLight,
+          return Material(
+            child: SizedBox(
+              height: 660,
+              child: Stack(
+                children: [
+                  Positioned(
+                    right: 0,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: theme.textLight,
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Profile Image & Full Name.
-                        Align(
-                          alignment: Alignment.center,
-                          child: state.profile.photoLink != ''
-                              ? AvatarBox(
-                                  size: 102,
-                                  imgPath: state.profile.photoLink,
-                                  borderRadius: 24,
-                                )
-                              : EmptyAvatarBox(
-                                  size: 102,
-                                  borderRadius: 24,
-                                  user: state.profile,
-                                ),
-                        ),
-                        const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            state.profile.fullName,
-                            style: theme.textTheme.px17.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                            textAlign: TextAlign.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Profile Image & Full Name.
+                          Align(
+                            alignment: Alignment.center,
+                            child: state.profile.photoLink != ''
+                                ? AvatarBox(
+                                    size: 102,
+                                    imgPath: state.profile.photoLink,
+                                    borderRadius: 24,
+                                  )
+                                : EmptyAvatarBox(
+                                    size: 102,
+                                    borderRadius: 24,
+                                    user: state.profile,
+                                  ),
                           ),
-                        ),
-                        const SizedBox(height: 32),
-                        // -- Profile info --
-                        // Post.
-                        ProfileInfoSection(
-                          headline: AppLocalizations.of(context)!.position,
-                          text: state.profile.position,
-                          bottomPadding: 18,
-                        ),
-
-                        // Department.
-                        ProfileInfoSection(
-                          headline: AppLocalizations.of(context)!.department,
-                          text: state.profile.department,
-                          bottomPadding: 18,
-                        ),
-
-                        // Contact info.
-                        ...List.generate(
-                          state.profile.contactInfo.length,
-                          (i) => ProfileInfoSection(
-                            headline: state.profile.contactInfo[i].type,
-                            text: state.profile.contactInfo[i].contact,
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              state.profile.fullName,
+                              style: theme.textTheme.px17.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          // -- Profile info --
+                          // Post.
+                          ProfileInfoSection(
+                            headline: AppLocalizations.of(context)!.position,
+                            text: state.profile.position,
                             bottomPadding: 18,
                           ),
-                        ),
-
-                        // Birth date.
-                        if (state.profile.birthDayToString != null)
+          
+                          // Department.
                           ProfileInfoSection(
-                            headline: AppLocalizations.of(context)!.birth_date,
-                            text: state.profile.birthDayToString!,
-                            bottomPadding: 0,
+                            headline: AppLocalizations.of(context)!.department,
+                            text: state.profile.department,
+                            bottomPadding: 18,
                           ),
-                      ],
-                    ),
-                    _ActionButton(
-                      onTap: () {},
-                      onHover: _handleHoveHighlight,
-                      isAnimation: _isButtonHover,
-                    ),
-                  ],
-                ),
-              ],
+          
+                          // Contact info.
+                          ...List.generate(
+                            state.profile.contactInfo.length,
+                            (i) => ProfileInfoSection(
+                              headline: state.profile.contactInfo[i].type,
+                              text: state.profile.contactInfo[i].contact,
+                              bottomPadding: 18,
+                            ),
+                          ),
+          
+                          // Birth date.
+                          if (state.profile.birthDayToString != null)
+                            ProfileInfoSection(
+                              headline: AppLocalizations.of(context)!.birth_date,
+                              text: state.profile.birthDayToString!,
+                              bottomPadding: 0,
+                            ),
+                        ],
+                      ),
+                      _ActionButton(
+                        onTap: () {},
+                        onHover: _handleHoveHighlight,
+                        isAnimation: _isButtonHover,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         }
