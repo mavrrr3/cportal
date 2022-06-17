@@ -32,7 +32,8 @@ class UserData extends StatelessWidget {
       child: Scaffold(
         backgroundColor: theme.background,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: theme.background,
+          elevation: 0,
           leading: IconButton(
             onPressed: () => context.goNamed(NavigationRouteNames.profile),
             icon: Icon(

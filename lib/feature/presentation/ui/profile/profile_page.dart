@@ -54,7 +54,8 @@ class _ProfilePageState extends State<ProfilePage> {
           return Scaffold(
             backgroundColor: theme.background,
             appBar: AppBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: theme.background,
+              elevation: 0,
               leading: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
