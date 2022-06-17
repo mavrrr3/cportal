@@ -14,11 +14,9 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 int _currentIndex = 0;
-NewsCodeEnum _currentType = NewsCodeEnum.news;
 
 class QuastionsPage extends StatelessWidget {
   final NewsCodeEnum pageType;
@@ -28,8 +26,6 @@ class QuastionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _currentType = pageType;
-
     BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
       const FetchQaustionsEvent(),
     );
@@ -66,6 +62,7 @@ class QuastionsPage extends StatelessWidget {
               .where((element) => element.category == tabs[_currentIndex])
               .toList();
         }
+        log('_currentIndex: $_currentIndex');
         List<ArticleEntity> sortedArticles(List<ArticleEntity> list) {
           list.sort((a, b) => b.id.compareTo(a.id));
 
@@ -98,7 +95,7 @@ class QuastionsPage extends StatelessWidget {
               Padding(
                 padding: getHorizontalPadding(context),
                 child: Text(
-                  _getPageTitle(context, _currentType),
+                  AppLocalizations.of(context)!.questions,
                   style: theme.textTheme.headline2,
                 ),
               ),
@@ -112,28 +109,24 @@ class QuastionsPage extends StatelessWidget {
                       currentIndex: _currentIndex,
                       items: tabs,
                       onTap: (index) =>
-                          _onPageChanged(index, context, tabs[_currentIndex]),
+                          _onPageChanged(index, context, tabs[index]),
                     ),
 
                     Expanded(
                       child: Swipe(
                         onSwipeRight: () {
-                          if (_currentIndex != 0) {
-                            _onPageChanged(
-                              _currentIndex - 1,
-                              context,
-                              tabs[_currentIndex],
-                            );
-                          }
+                          _onPageChanged(
+                            _currentIndex - 1,
+                            context,
+                            tabs[_currentIndex],
+                          );
                         },
                         onSwipeLeft: () {
-                          if (tabs.length - 1 != _currentIndex) {
-                            _onPageChanged(
-                              _currentIndex + 1,
-                              context,
-                              tabs[_currentIndex],
-                            );
-                          }
+                          _onPageChanged(
+                            _currentIndex + 1,
+                            context,
+                            tabs[_currentIndex],
+                          );
                         },
                         child: ResponsiveConstraints(
                           constraint: pageType == NewsCodeEnum.quastion
@@ -166,16 +159,20 @@ class QuastionsPage extends StatelessWidget {
   }
 
   void _onPageChanged(int index, BuildContext context, String category) {
-    BlocProvider.of<FetchNewsBloc>(context, listen: false)
-        .add(FetchQaustionsEventBy(category));
+    log('category $category');
+
+    _currentIndex = index;
+    if (_currentIndex == 0) {
+      log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
+      context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
+    } else {
+      context.read<FetchNewsBloc>().add(FetchQaustionsEventBy(category));
+    }
+
+    // BlocProvider.of<FetchNewsBloc>(context, listen: false)
+    //     .add(FetchQaustionsEventBy(category));
 
     _pageController.jumpToPage(index);
-  }
-
-  String _getPageTitle(BuildContext context, NewsCodeEnum pageType) {
-    return pageType == NewsCodeEnum.quastion
-        ? AppLocalizations.of(context)!.questions
-        : AppLocalizations.of(context)!.news;
   }
 }
 
@@ -198,11 +195,11 @@ class _Content extends StatelessWidget {
         if (scrollController.position.pixels != 0) {
           if (_currentIndex == 0) {
             log('_setupScrollController_setupScrollController_setupScrollController');
-            BlocProvider.of<FetchNewsBloc>(context, listen: false)
-                .add(const FetchQaustionsEvent());
+            context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
           } else {
             log('222222_setupScrollController_setupScrollController_setupScrollController');
-            BlocProvider.of<FetchNewsBloc>(context, listen: false)
+            context
+                .read<FetchNewsBloc>()
                 .add(FetchQaustionsEventBy(tabs[_currentIndex]));
           }
           // final isLastPage = articles.length < _page * 20;
@@ -221,13 +218,6 @@ class _Content extends StatelessWidget {
     _setupScrollController(context);
 
     final width = MediaQuery.of(context).size.width;
-
-    void _onArticleSelected(String id) {
-      GoRouter.of(context).pushNamed(
-        NavigationRouteNames.newsArticlePage,
-        params: {'fid': id},
-      );
-    }
 
     Widget _builderItem(
       List<ArticleEntity> articles,
@@ -304,35 +294,6 @@ class _Content extends StatelessWidget {
               },
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _NewsCard extends StatelessWidget {
-  final double width;
-  final ArticleEntity item;
-  final Function() onTap;
-  const _NewsCard(
-    this.width, {
-    Key? key,
-    required this.item,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: onTap,
-        child: NewsCardItem(
-          width: width,
-          height: 160,
-          fontSize: 17,
-          item: item,
-        ),
       ),
     );
   }

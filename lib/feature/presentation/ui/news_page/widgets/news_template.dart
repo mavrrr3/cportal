@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
@@ -30,7 +31,7 @@ class NewsTemplate {
             children: [
               Image(
                 image: ExtendedNetworkImageProvider(
-                  'http://ribadi.ddns.net:88/images/${paragraph.image}',
+                  '${AppConfig.apiUri}/images/${paragraph.image}',
                   cache: true,
                 ),
               ),
@@ -52,7 +53,7 @@ class NewsTemplate {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  'http://ribadi.ddns.net:88/images/${paragraph.image}',
+                  'http://${AppConfig.apiUri}/images/${paragraph.image}',
                   cache: true,
                 ),
               ),

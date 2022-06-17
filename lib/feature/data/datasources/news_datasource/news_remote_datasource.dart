@@ -38,7 +38,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   @override
   Future<NewsModel> fetchNews(int page) async {
     final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page';
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -59,7 +59,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   @override
   Future<NewsModel> fetchNewsByCategory(int page, String category) async {
     final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page&category=$category';
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -79,12 +79,11 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   @override
   Future<NewsModel> fetchQuastions(int page) async {
     final String baseUrl =
-        'http://ribadi.ddns.net:88/cportal/hs/api/faq/1.0/?page=$page';
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
 
-      log('fetchQuastions ${response.data}');
       final news = NewsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
       );
@@ -100,7 +99,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   @override
   Future<NewsModel> fetchQuastionsByCategory(int page, String category) async {
     final String baseUrl =
-        'http://ribadi.ddns.net:88/cportal/hs/api/news/1.0/?page=$page&category=$category';
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+    log('baseUrl $baseUrl');
 
     try {
       final response = await dio.get<String>(baseUrl);

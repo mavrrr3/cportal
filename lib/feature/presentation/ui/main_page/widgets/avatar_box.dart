@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,7 @@ class AvatarBox extends StatelessWidget {
           fit: BoxFit.cover,
           alignment: FractionalOffset.topCenter,
           image: ExtendedNetworkImageProvider(
-            isApiImg ? 'http://ribadi.ddns.net:88/images/$imgPath' : imgPath,
+            isApiImg ? '${AppConfig.apiUri}/images/$imgPath' : imgPath,
             cache: true,
           ),
         ),

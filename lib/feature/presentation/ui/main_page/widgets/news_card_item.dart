@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
@@ -23,8 +24,7 @@ class NewsCardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
-                   final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -41,7 +41,7 @@ class NewsCardItem extends StatelessWidget {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  'http://ribadi.ddns.net:88/images/${item.image}',
+                  '${AppConfig.apiUri}/images/${item.image}',
                   cache: true,
                 ),
               ),

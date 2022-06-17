@@ -60,7 +60,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
               tabs.add(tab);
             }
           }
-          log('+++++++++++tabsFromCache++ $tabsFromCache ++tabsFromCache+++++++++++++');
+          log('+++++++++++News tabs из КеШа++ $tabsFromCache ++News tabs из КеШа+++++++++++++');
         }
       }
       void _loadedNewsToArticles(NewsEntity news) {
@@ -165,7 +165,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
               quastionTabs.add(tab);
             }
           }
-          log('+++++++++++tabsFromCache++ $tabsFromCache ++tabsFromCache+++++++++++++');
+          log('+++++++++++Quastions tabs из КеШа++ $tabsFromCache ++Quastions tabs из КеШа+++++++++++++');
         }
       }
       void _loadedNewsToArticles(NewsEntity quastions) {
@@ -203,7 +203,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         quastionTabs,
         isFirstFetch: pageByCategory == 1,
       ));
-
+      log('+++++ event.category ${event.category} +++++');
       final failureOrNews = await fetchQuastionsByCategory(
         FetchQuastionsByCategoryParams(
           category: event.category,

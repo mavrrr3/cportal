@@ -2,7 +2,6 @@
 
 import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +19,6 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_c
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 int _currentIndex = 0;
-NewsCodeEnum _currentType = NewsCodeEnum.news;
 
 class NewsPage extends StatelessWidget {
   final NewsCodeEnum pageType;
@@ -30,12 +28,10 @@ class NewsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _currentType = pageType;
-    if (kIsWeb) {
-      BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-        const FetchAllNewsEvent(),
-      );
-    }
+    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+      const FetchAllNewsEvent(),
+    );
+
     final double width = MediaQuery.of(context).size.width;
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
@@ -100,7 +96,7 @@ class NewsPage extends StatelessWidget {
               Padding(
                 padding: getHorizontalPadding(context),
                 child: Text(
-                  _getPageTitle(context, _currentType),
+                  AppLocalizations.of(context)!.news,
                   style: theme.textTheme.header,
                 ),
               ),
@@ -176,12 +172,6 @@ class NewsPage extends StatelessWidget {
       context.read<FetchNewsBloc>().add(FetchNewsEventBy(category));
     }
     _pageController.jumpToPage(_currentIndex);
-  }
-
-  String _getPageTitle(BuildContext context, NewsCodeEnum pageType) {
-    return pageType == NewsCodeEnum.quastion
-        ? AppLocalizations.of(context)!.questions
-        : AppLocalizations.of(context)!.news;
   }
 }
 
@@ -292,7 +282,6 @@ class _Content extends StatelessWidget {
     }
 
     log('================ $tabs ================================');
-    log('================ ${articles.length} статей в категории ${tabs[_currentIndex]}================================');
 
     return SingleChildScrollView(
       controller: scrollController,
