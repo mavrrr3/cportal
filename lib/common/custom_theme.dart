@@ -175,7 +175,26 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     ThemeExtension<CustomTheme>? other,
     double t,
   ) {
-    throw UnimplementedError();
+    if (other is! CustomTheme) {
+      return this;
+    }
+
+    return CustomTheme(
+      background: Color.lerp(background, other.background, t),
+      white: Color.lerp(white, other.white, t),
+      primary: Color.lerp(primary, other.primary, t),
+      red: Color.lerp(red, other.red, t),
+      green: Color.lerp(green, other.green, t),
+      yellow: Color.lerp(yellow, other.yellow, t),
+      lightRedPIN: Color.lerp(lightRedPIN, other.lightRedPIN, t),
+      cardColor: Color.lerp(cardColor, other.cardColor, t),
+      divider: Color.lerp(divider, other.divider, t),
+      text: Color.lerp(text, other.text, t),
+      textLight: Color.lerp(textLight, other.textLight, t),
+      onBoarding: Color.lerp(onBoarding, other.onBoarding, t),
+      barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
+      textTheme: textTheme,
+    );
   }
 }
 
