@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -67,7 +68,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -125,9 +126,9 @@ class _MainPageState extends State<MainPage> {
                             HorizontalListViewMain(
                               color: _isSearchActive
                                   ? theme.brightness == Brightness.light
-                                      ? theme.splashColor.withOpacity(0.3)
-                                      : theme.splashColor
-                                  : theme.splashColor,
+                                      ? theme.cardColor!.withOpacity(0.3)
+                                      : theme.cardColor!
+                                  : theme.cardColor!,
                             ),
                             const SizedBox(height: 24),
                             Padding(
@@ -141,7 +142,7 @@ class _MainPageState extends State<MainPage> {
                               padding: getHorizontalPadding(context),
                               child: Text(
                                 AppLocalizations.of(context)!.news,
-                                style: theme.textTheme.headline3,
+                                style: theme.textTheme.px22,
                               ),
                             ),
                             BlocBuilder<FetchNewsBloc, FetchNewsState>(
@@ -233,7 +234,7 @@ Future<void> showProfile(BuildContext context) {
     useRootNavigator: true,
     barrierDismissible: true,
     builder: (context) {
-      final ThemeData theme = Theme.of(context);
+      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
       // final double width = MediaQuery.of(context).size.width;
       // var horizontalPading = width * 0.28;
@@ -248,7 +249,7 @@ Future<void> showProfile(BuildContext context) {
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: theme.splashColor,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Padding(

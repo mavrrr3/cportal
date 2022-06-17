@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class SearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return SafeArea(
       child: Padding(
@@ -39,7 +40,7 @@ class SearchBox extends StatelessWidget {
               height: isAnimation ? 216 : 0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: theme.splashColor,
+                color: theme.cardColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -88,7 +89,7 @@ class _SearchBoxItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16, right: 8),
@@ -100,10 +101,9 @@ class _SearchBoxItem extends StatelessWidget {
           children: [
             Text(
               category,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(color: theme.hoverColor.withOpacity(0.68)),
+              style: theme.textTheme.px12.copyWith(color: theme.textLight),
             ),
-         const   SizedBox(height: 4),
+            const SizedBox(height: 4),
             FaqRow(text: text),
           ],
         ),

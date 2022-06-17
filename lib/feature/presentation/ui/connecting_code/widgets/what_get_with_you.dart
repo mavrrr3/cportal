@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,7 +15,8 @@ class WhatGetWithYou extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -27,7 +29,7 @@ class WhatGetWithYou extends StatelessWidget {
         const SizedBox(height: 14.67),
         Text(
           text,
-          style: theme.textTheme.headline5,
+          style: theme.textTheme.px16,
         ),
       ],
     );
@@ -47,7 +49,8 @@ class WhatGetWithYouWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+                                  final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +63,7 @@ class WhatGetWithYouWeb extends StatelessWidget {
         const SizedBox(height: 14.67),
         Text(
           text,
-          style: theme.textTheme.headline5,
+          style: theme.textTheme.px16,
         ),
       ],
     );

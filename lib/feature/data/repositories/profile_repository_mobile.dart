@@ -20,10 +20,16 @@ class ProfileRepositoryMobile implements IProfileRepository {
   });
 
   @override
-  Future<Either<Failure, ProfileModel>> getSingleProfile(String id) async {
+  Future<Either<Failure, ProfileModel>> getSingleProfile(
+    String id, {
+    bool isMyProfile = false,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteUser = await remoteDataSource.getSingleProfile(id);
+        final remoteUser = await remoteDataSource.getSingleProfile(
+          id,
+          isMyProfile: isMyProfile,
+        );
 
         return Right(remoteUser);
       } on ServerException {

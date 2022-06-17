@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
@@ -10,7 +10,9 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/fi
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/all_declarations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/you_hadnt_declarations_title.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/foundation.dart';
@@ -40,21 +42,21 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
   // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(FetchContactsEvent());
+        .add(const FetchContactsEvent());
     BlocProvider.of<FilterBloc>(context, listen: false)
         .add(FetchFiltersEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final halfWidth = MediaQuery.of(context).size.width / 2 - 24;
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<ContactsBloc, ContactsState>(
       builder: (context, state) {
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
+            backgroundColor: theme.background,
             body: Stack(
               children: [
                 Row(
@@ -71,11 +73,11 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                         onChange: (index) => changePage(context, index),
                       ),
                     ),
-                    if (state is FetchContactsLoadingState)
+                    if (state is ContactsLoadingState)
                       const Expanded(
                         child: Center(child: CircularProgressIndicator()),
                       ),
-                    if (state is FetchContactsLoadedState)
+                    if (state is ContactsLoadedState)
                       Expanded(
                         child: SafeArea(
                           child: SingleChildScrollView(
@@ -161,78 +163,11 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                                     },
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 55,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .youHadntDeclarations,
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          theme.textTheme.headline3!.copyWith(
-                                        color: theme.cardColor.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath:
-                                                'assets/icons/calendar.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .buisenesTripDeclaration,
-                                          ),
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath:
-                                                'assets/icons/fly_vocation.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .vocationDeclaration,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 16),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath: 'assets/icons/lock.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .passDeclaration,
-                                          ),
-                                          DeclarationCard(
-                                            width: halfWidth,
-                                            svgPath:
-                                                'assets/icons/pay_list.svg',
-                                            text: AppLocalizations.of(context)!
-                                                .payListDeclaration,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 16),
-                                      DeclarationCard(
-                                        width: double.infinity,
-                                        svgPath: 'assets/icons/support.svg',
-                                        text: AppLocalizations.of(context)!
-                                            .supportDeclaration,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+
+                                const WithDeclarations(),
+
+                                // Если ещё нет заявлений
+                                // const EmptyDeclarations(),
                               ],
                             ),
                           ),
@@ -248,7 +183,7 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      color: getBarrierColor(theme),
+                      color: theme.barrierColor,
                     ),
                   ),
                 if (_isFilterOpenWeb)
@@ -268,12 +203,12 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
   }
 
   // Filter Bottom Sheet Mobile.
-  Future<void> _showFilterMobile(ThemeData theme) async {
+  Future<void> _showFilterMobile(CustomTheme theme) async {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: theme.splashColor,
-      barrierColor: getBarrierColor(theme),
+      backgroundColor: theme.cardColor,
+      barrierColor: theme.barrierColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
@@ -328,5 +263,161 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
     });
 
     return isActive;
+  }
+}
+
+class NewDeclarations extends StatelessWidget {
+  const NewDeclarations({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final halfWidth = MediaQuery.of(context).size.width / 2 - 24;
+
+    return Column(
+      children: [
+        // ! Отображать если нет заявлений.
+        const YouHadntDeclarationsTitle(),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/calendar.svg',
+                    
+                    text: AppLocalizations.of(context)!.buisenesTripDeclaration,
+                  ),
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/fly_vocation.svg',
+                    text: AppLocalizations.of(context)!.vocationDeclaration,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/lock.svg',
+                    text: AppLocalizations.of(context)!.passDeclaration,
+                  ),
+                  DeclarationCard(
+                    width: halfWidth,
+                    svgPath: 'assets/icons/pay_list.svg',
+                    text: AppLocalizations.of(context)!.payListDeclaration,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              DeclarationCard(
+                width: double.infinity,
+                svgPath: 'assets/icons/support.svg',
+                text: AppLocalizations.of(context)!.supportDeclaration,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class WithDeclarations extends StatefulWidget {
+  const WithDeclarations({Key? key}) : super(key: key);
+
+  @override
+  State<WithDeclarations> createState() => _WithDeclarationsState();
+}
+
+class _WithDeclarationsState extends State<WithDeclarations>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TabBar(
+                      labelStyle: theme.textTheme.px22.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      labelColor: theme.primary,
+                      unselectedLabelColor: theme.cardColor,
+                      indicatorColor: theme.primary,
+                      controller: tabController,
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            'Заявления',
+                            style: theme.textTheme.px16
+                                .copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'Новые',
+                            style: theme.textTheme.px16
+                                .copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 1,
+              color: theme.divider,
+            ),
+            Expanded(
+              child: TabBarView(controller: tabController, children: const [
+                Padding(
+                  padding: EdgeInsets.only(top: 24, left: 16, right: 16),
+                  child: AllDeclarations(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 24),
+                  child: NewDeclarations(),
+                ),
+              ]),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
