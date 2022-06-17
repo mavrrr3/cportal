@@ -19,12 +19,12 @@ class NewsTemplate {
     log(paragraph.toString());
 
     switch (paragraph.template) {
-      case '1':
+      case 'Текст':
         return Text(
           paragraph.content ?? '',
           style: theme.textTheme.px14,
         );
-      case '2':
+      case 'Изображение с подписью':
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Column(
@@ -43,7 +43,7 @@ class NewsTemplate {
             ],
           ),
         );
-      case '3':
+      case 'Изображение без подписи':
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Container(
