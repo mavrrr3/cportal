@@ -1,7 +1,6 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:developer';
-import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,25 +14,24 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 int _currentIndex = 0;
 
-class NewsPage extends StatelessWidget {
+class QuastionsPage extends StatelessWidget {
   final NewsCodeEnum pageType;
   final PageController _pageController = PageController();
 
-  NewsPage({Key? key, required this.pageType}) : super(key: key);
+  QuastionsPage({Key? key, required this.pageType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchAllNewsEvent(),
+      const FetchQaustionsEvent(),
     );
 
     final double width = MediaQuery.of(context).size.width;
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
@@ -42,7 +40,7 @@ class NewsPage extends StatelessWidget {
 
         List<String> tabs = [];
 
-        if (state is NewsLoading && state.isFirstFetch) {
+        if (state is QuastionsLoading && state.isFirstFetch) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 60),
             child: Center(
@@ -51,12 +49,12 @@ class NewsPage extends StatelessWidget {
               ),
             ),
           );
-        } else if (state is NewsLoading) {
+        } else if (state is QuastionsLoading) {
           articles = state.oldArticles;
-          if (state.tabs.isNotEmpty) tabs = state.tabs;
-        } else if (state is NewsLoaded) {
+          tabs = state.tabs;
+        } else if (state is QaustionsLoaded) {
           articles = state.articles;
-          if (state.tabs.isNotEmpty) tabs = state.tabs;
+          tabs = state.tabs;
         }
         if (_currentIndex == 0) currentTabArticles = articles;
         if (_currentIndex != 0) {
@@ -64,6 +62,7 @@ class NewsPage extends StatelessWidget {
               .where((element) => element.category == tabs[_currentIndex])
               .toList();
         }
+        log('_currentIndex: $_currentIndex');
         List<ArticleEntity> sortedArticles(List<ArticleEntity> list) {
           list.sort((a, b) => b.id.compareTo(a.id));
 
@@ -96,8 +95,8 @@ class NewsPage extends StatelessWidget {
               Padding(
                 padding: getHorizontalPadding(context),
                 child: Text(
-                  AppLocalizations.of(context)!.news,
-                  style: theme.textTheme.header,
+                  AppLocalizations.of(context)!.questions,
+                  style: theme.textTheme.headline2,
                 ),
               ),
               const SizedBox(height: 16),
@@ -110,28 +109,24 @@ class NewsPage extends StatelessWidget {
                       currentIndex: _currentIndex,
                       items: tabs,
                       onTap: (index) =>
-                          _onPageChanged(index, context, tabs[_currentIndex]),
+                          _onPageChanged(index, context, tabs[index]),
                     ),
 
                     Expanded(
                       child: Swipe(
                         onSwipeRight: () {
-                          if (_currentIndex != 0) {
-                            _onPageChanged(
-                              _currentIndex - 1,
-                              context,
-                              tabs[_currentIndex],
-                            );
-                          }
+                          _onPageChanged(
+                            _currentIndex - 1,
+                            context,
+                            tabs[_currentIndex],
+                          );
                         },
                         onSwipeLeft: () {
-                          if (tabs.length - 1 != _currentIndex) {
-                            _onPageChanged(
-                              _currentIndex + 1,
-                              context,
-                              tabs[_currentIndex],
-                            );
-                          }
+                          _onPageChanged(
+                            _currentIndex + 1,
+                            context,
+                            tabs[_currentIndex],
+                          );
                         },
                         child: ResponsiveConstraints(
                           constraint: pageType == NewsCodeEnum.quastion
@@ -164,14 +159,20 @@ class NewsPage extends StatelessWidget {
   }
 
   void _onPageChanged(int index, BuildContext context, String category) {
+    log('category $category');
+
     _currentIndex = index;
     if (_currentIndex == 0) {
       log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
-      context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
+      context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
     } else {
-      context.read<FetchNewsBloc>().add(FetchNewsEventBy(category));
+      context.read<FetchNewsBloc>().add(FetchQaustionsEventBy(category));
     }
-    _pageController.jumpToPage(_currentIndex);
+
+    // BlocProvider.of<FetchNewsBloc>(context, listen: false)
+    //     .add(FetchQaustionsEventBy(category));
+
+    _pageController.jumpToPage(index);
   }
 }
 
@@ -194,12 +195,12 @@ class _Content extends StatelessWidget {
         if (scrollController.position.pixels != 0) {
           if (_currentIndex == 0) {
             log('_setupScrollController_setupScrollController_setupScrollController');
-            context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
+            context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
           } else {
             log('222222_setupScrollController_setupScrollController_setupScrollController');
             context
                 .read<FetchNewsBloc>()
-                .add(FetchNewsEventBy(tabs[_currentIndex]));
+                .add(FetchQaustionsEventBy(tabs[_currentIndex]));
           }
           // final isLastPage = articles.length < _page * 20;
           // log('$_page $isLastPage');
@@ -218,64 +219,26 @@ class _Content extends StatelessWidget {
 
     final width = MediaQuery.of(context).size.width;
 
-    void _onArticleSelected(String id) {
-      GoRouter.of(context).pushNamed(
-        NavigationRouteNames.newsArticlePage,
-        params: {'fid': id},
-      );
-    }
-
     Widget _builderItem(
       List<ArticleEntity> articles,
       List<String> tabs,
-      double width,
       int index,
     ) {
-      if (pageType == NewsCodeEnum.news) {
-        // Распределение по категориям
-        // [Новости]
-        if (_currentIndex == 0) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              right: 16,
-              bottom: 20,
-            ),
-            child: _NewsCard(
-              width,
-              item: articles[index],
-              onTap: () => _onArticleSelected(articles[index].id),
-            ),
-          );
-        } else if (articles[index].category == tabs[_currentIndex]) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              right: 16,
-              bottom: 20,
-            ),
-            child: _NewsCard(
-              width,
-              item: articles[index],
-              onTap: () => _onArticleSelected(articles[index].id),
-            ),
-          );
-        }
-      } else {
-        // Распределение по категориям
-        // [Вопросы]
-        if (articles[index].category == tabs[_currentIndex]) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 30),
-            child: FaqRow(
-              text: articles[index].header,
-              onTap: () {
-                GoRouter.of(context).pushNamed(
-                  NavigationRouteNames.questionArticlePage,
-                  params: {'fid': articles[index].id},
-                );
-              },
-            ),
-          );
-        }
+      // Распределение по категориям
+      // [Вопросы]
+      if (articles[index].category == tabs[_currentIndex]) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 30),
+          child: FaqRow(
+            text: articles[index].header,
+            onTap: () {
+              GoRouter.of(context).pushNamed(
+                NavigationRouteNames.questionArticlePage,
+                params: {'fid': articles[index].id},
+              );
+            },
+          ),
+        );
       }
 
       return const SizedBox();
@@ -302,7 +265,6 @@ class _Content extends StatelessWidget {
                       return _builderItem(
                         articles,
                         tabs,
-                        width,
                         index,
                       );
                     },
@@ -316,7 +278,6 @@ class _Content extends StatelessWidget {
                           return _builderItem(
                             articles,
                             tabs,
-                            312,
                             index,
                           );
                         },
@@ -329,39 +290,10 @@ class _Content extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemCount: articles.length,
               itemBuilder: (context, index) {
-                return _builderItem(articles, tabs, width, index);
+                return _builderItem(articles, tabs, index);
               },
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _NewsCard extends StatelessWidget {
-  final double width;
-  final ArticleEntity item;
-  final Function() onTap;
-  const _NewsCard(
-    this.width, {
-    Key? key,
-    required this.item,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: onTap,
-        child: NewsCardItem(
-          width: width,
-          height: 160,
-          fontSize: 17,
-          item: item,
-        ),
       ),
     );
   }

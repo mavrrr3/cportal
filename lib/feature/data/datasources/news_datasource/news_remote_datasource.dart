@@ -17,6 +17,16 @@ abstract class INewsRemoteDataSource {
   /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
   Future<NewsModel> fetchNewsByCategory(int page, String category);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [NewsModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<NewsModel> fetchQuastions(int page);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [NewsModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<NewsModel> fetchQuastionsByCategory(int page, String category);
 }
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
@@ -28,12 +38,12 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   @override
   Future<NewsModel> fetchNews(int page) async {
     final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page';
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
 
-      log('NewsRemoteDataSource ${response.data}');
+      // Log('NewsRemoteDataSource ${response.data}');.
       final news = NewsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
       );
@@ -49,7 +59,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   @override
   Future<NewsModel> fetchNewsByCategory(int page, String category) async {
     final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.1/?page=$page&category=$category';
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -59,6 +69,48 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       );
 
       await localDatasource.newsByCategoryToCache(newsByCategory, category);
+
+      return newsByCategory;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<NewsModel> fetchQuastions(int page) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
+
+    try {
+      final response = await dio.get<String>(baseUrl);
+
+      final news = NewsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
+      );
+
+      await localDatasource.newsToCache(news);
+
+      return news;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<NewsModel> fetchQuastionsByCategory(int page, String category) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+    log('baseUrl $baseUrl');
+
+    try {
+      final response = await dio.get<String>(baseUrl);
+
+      final newsByCategory = NewsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
+      );
+
+      await localDatasource.newsByCategoryToCache(newsByCategory, category);
+      log(newsByCategory.toString());
 
       return newsByCategory;
     } on ServerException {

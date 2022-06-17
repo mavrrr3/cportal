@@ -24,6 +24,16 @@ abstract class INewsLocalDataSource {
   ///
   /// Пробрасывает все ошибки через [CacheException]
   Future<void> newsByCategoryToCache(NewsModel news, String category);
+
+  /// Извлекает [NewsModel] из кеша
+  /// Возвращает [NewsModel]
+  /// Пробрасываем все ошибки через [CacheException]
+  Future<NewsModel> fetchQuastionsFromCache();
+
+  /// Сохраняет [NewsModel] в кэш
+  ///
+  /// Пробрасывает все ошибки через [CacheException]
+  Future<void> quastionsToCache(NewsModel news);
 }
 
 class NewsLocalDataSource implements INewsLocalDataSource {
@@ -52,7 +62,7 @@ class NewsLocalDataSource implements INewsLocalDataSource {
 
   @override
   Future<void> newsToCache(NewsModel news) async {
-    // Удаляет box с диска
+    // Удаляет box с диска.
     // await Hive.deleteBoxFromDisk('news');
     var box = await Hive.openBox<NewsModel>('news');
     if (!Hive.isBoxOpen('news')) {
@@ -99,5 +109,15 @@ class NewsLocalDataSource implements INewsLocalDataSource {
     await box.put(category, news);
 
     await Hive.box<NewsModel>('news').close();
+  }
+
+  @override
+  Future<NewsModel> fetchQuastionsFromCache() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> quastionsToCache(NewsModel news) {
+    throw UnimplementedError();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:dio/dio.dart';
 
@@ -32,7 +33,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   @override
   Future<ContactsModel> fetchContacts(int page) async {
     final String baseUrl =
-        'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?page=$page';
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
     try {
       final response = await dio.get<String>(baseUrl);
 
@@ -52,7 +53,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   @override
   Future<List<ProfileEntity>> fetchContactsBySearch(String query) async {
     final String baseUrl =
-        'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?q=$query';
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
     try {
       final response = await dio.get<String>(baseUrl);
 

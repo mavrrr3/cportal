@@ -38,6 +38,8 @@ import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.d
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_quastions_by_category_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_quastions_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/pin_code_enter_usecase.dart';
@@ -69,6 +71,8 @@ Future<void> init() async {
   sl.registerFactory(() => FetchNewsBloc(
         fetchNews: sl(),
         fetchNewsByCategory: sl(),
+        fetchQaustions: sl(),
+        fetchQuastionsByCategory: sl(),
       ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
@@ -86,7 +90,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PinCodeEnterUseCase(sl()));
   sl.registerLazySingleton(() => BiometricUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsUseCase(sl()));
+  sl.registerLazySingleton(() => FetchQuastionsUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => FetchQuastionsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
   sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
