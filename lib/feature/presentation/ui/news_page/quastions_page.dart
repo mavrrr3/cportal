@@ -11,7 +11,6 @@ import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
@@ -19,10 +18,9 @@ import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scroll
 int _currentIndex = 0;
 
 class QuastionsPage extends StatelessWidget {
-  final NewsCodeEnum pageType;
   final PageController _pageController = PageController();
 
-  QuastionsPage({Key? key, required this.pageType}) : super(key: key);
+  QuastionsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +76,6 @@ class QuastionsPage extends StatelessWidget {
               child: _Content(
                 articles: sortedArticles(articles),
                 tabs: tabs,
-                pageType: pageType,
               ),
             ));
             count++;
@@ -129,9 +126,7 @@ class QuastionsPage extends StatelessWidget {
                           );
                         },
                         child: ResponsiveConstraints(
-                          constraint: pageType == NewsCodeEnum.quastion
-                              ? const BoxConstraints(maxWidth: 720)
-                              : null,
+                          constraint: const BoxConstraints(maxWidth: 720),
                           child: Column(
                             children: [
                               Expanded(
@@ -179,14 +174,13 @@ class QuastionsPage extends StatelessWidget {
 class _Content extends StatelessWidget {
   final List<ArticleEntity> articles;
   final List<String> tabs;
-  final NewsCodeEnum pageType;
+
   final scrollController = ScrollController();
 
   _Content({
     Key? key,
     required this.articles,
     required this.tabs,
-    required this.pageType,
   }) : super(key: key);
 
   void _setupScrollController(BuildContext context) {
@@ -253,46 +247,14 @@ class _Content extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-
-          // Контент.
-          if (pageType == NewsCodeEnum.news)
-            !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: articles.length,
-                    itemBuilder: (context, index) {
-                      return _builderItem(
-                        articles,
-                        tabs,
-                        index,
-                      );
-                    },
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(right: 78),
-                    child: Wrap(
-                      children: List.generate(
-                        articles.length,
-                        (index) {
-                          return _builderItem(
-                            articles,
-                            tabs,
-                            index,
-                          );
-                        },
-                      ),
-                    ),
-                  )
-          else
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemCount: articles.length,
-              itemBuilder: (context, index) {
-                return _builderItem(articles, tabs, index);
-              },
-            ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            itemCount: articles.length,
+            itemBuilder: (context, index) {
+              return _builderItem(articles, tabs, index);
+            },
+          ),
         ],
       ),
     );
