@@ -13,6 +13,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/quastions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_welcome.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
@@ -203,7 +204,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: HomePage(
-          child: NewsPage(pageType: NewsCodeEnum.quastion),
+          child: QuastionsPage(),
           desktopMenuIndex: 2,
         ),
       ),

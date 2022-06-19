@@ -87,5 +87,5 @@ const String stringUser = '''
         "contact": "ivanov@yandex.ru"
     }
 ],
-"photo": "1.jpg"
+"photo": "20220616/285831712_340931151553303_8302347002848994819_n.jpg"
 }''';

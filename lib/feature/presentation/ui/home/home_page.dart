@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage>
     final List<Widget> listPages = <Widget>[
       const MainPage(),
       NewsPage(pageType: NewsCodeEnum.news),
-      QuastionsPage(pageType: NewsCodeEnum.quastion),
+      QuastionsPage(),
       const ContactsPage(),
     ];
 
