@@ -65,7 +65,7 @@ dependencies:
   # flutter_web_auth: ^0.4.1
 
   # Image Cache package
-  extended_image: ^6.1.0
+  extended_image: ^6.2.1
   responsive_framework: ^0.1.8
   qr_flutter: ^4.0.0
   bloc_test: ^9.0.3
