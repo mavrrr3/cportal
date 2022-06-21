@@ -105,7 +105,7 @@ class Main extends StatelessWidget {
             minWidth: 350,
             defaultName: DESKTOP,
             breakpoints: [
-              const ResponsiveBreakpoint.resize(350, name: MOBILE),
+              const ResponsiveBreakpoint.resize(350, name: MOBILE), 
               const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
               const ResponsiveBreakpoint.resize(1024, name: TABLET),
               const ResponsiveBreakpoint.resize(1080, name: DESKTOP),

@@ -13,7 +13,7 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/fi
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/all_declarations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/you_hadnt_declarations_title.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

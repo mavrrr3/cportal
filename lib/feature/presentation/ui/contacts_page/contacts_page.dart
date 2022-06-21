@@ -17,7 +17,7 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/fi
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
