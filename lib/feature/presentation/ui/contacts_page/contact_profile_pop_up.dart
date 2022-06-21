@@ -4,7 +4,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_blo
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

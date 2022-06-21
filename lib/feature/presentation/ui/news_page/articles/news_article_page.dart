@@ -4,7 +4,7 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
