@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
@@ -116,7 +117,7 @@ class _Mobile extends StatelessWidget {
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
-                      'http://ribadi.ddns.net:88/images/${item.image}',
+                      '${AppConfig.apiUri}/images/${item.image}',
                       fit: BoxFit.cover,
                       cache: true,
                     ),
@@ -280,7 +281,8 @@ class _WebState extends State<_Web> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
                                     child: Image.network(
-                                      article.image,
+                                      article.image ??
+                                          'http://${AppConfig.apiUri}/images/1.jpg',
                                       fit: BoxFit.cover,
                                     ),
                                   ),

@@ -39,6 +39,64 @@ final dark = CustomTheme(
   textTheme: _getTextTheme(textColor: const Color(0xFFFCFCFC)),
 );
 
+CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
+      // [28 px] Header.
+      header: GoogleFonts.russoOne(
+        fontSize: 28,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [32 px].
+      px32: GoogleFonts.roboto(
+        fontSize: 32,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [22 px].
+      px22: GoogleFonts.roboto(
+        fontSize: 22,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [17 px].
+      px17: GoogleFonts.roboto(
+        fontSize: 17,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [16 px].
+      px16: GoogleFonts.roboto(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [14 px].
+      px14: GoogleFonts.roboto(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [12 px].
+      px12: GoogleFonts.roboto(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [12 px] BottomBar.
+      bottomBar: GoogleFonts.inter(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: textColor,
+      ),
+    );
+
 class CustomTheme extends ThemeExtension<CustomTheme> {
   final Brightness? brightness;
   final Color? background;
@@ -117,7 +175,26 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     ThemeExtension<CustomTheme>? other,
     double t,
   ) {
-    throw UnimplementedError();
+    if (other is! CustomTheme) {
+      return this;
+    }
+
+    return CustomTheme(
+      background: Color.lerp(background, other.background, t),
+      white: Color.lerp(white, other.white, t),
+      primary: Color.lerp(primary, other.primary, t),
+      red: Color.lerp(red, other.red, t),
+      green: Color.lerp(green, other.green, t),
+      yellow: Color.lerp(yellow, other.yellow, t),
+      lightRedPIN: Color.lerp(lightRedPIN, other.lightRedPIN, t),
+      cardColor: Color.lerp(cardColor, other.cardColor, t),
+      divider: Color.lerp(divider, other.divider, t),
+      text: Color.lerp(text, other.text, t),
+      textLight: Color.lerp(textLight, other.textLight, t),
+      onBoarding: Color.lerp(onBoarding, other.onBoarding, t),
+      barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
+      textTheme: textTheme,
+    );
   }
 }
 
@@ -143,63 +220,6 @@ class CustomTextTheme {
   });
 }
 
-CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
-      // 2 [28 px]. 
-      header: GoogleFonts.russoOne(
-        fontSize: 28,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 1 [32 px].
-      px32: GoogleFonts.roboto(
-        fontSize: 32,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 3 [22 px].
-      px22: GoogleFonts.roboto(
-        fontSize: 22,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 4 [17 px].
-      px17: GoogleFonts.roboto(
-        fontSize: 17,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 5 [16 px].
-      px16: GoogleFonts.roboto(
-        fontSize: 16,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 6 [14 px].
-      px14: GoogleFonts.roboto(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // Body 1 [12 px].
-      px12: GoogleFonts.roboto(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // [12 px] BottomBar.
-      bottomBar: GoogleFonts.inter(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: textColor,
-      ),
-    );
 // // *---* [Light Theme] *---*
 // //
 // ThemeData lightTheme() => ThemeData.light().copyWith(
@@ -229,7 +249,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
 //       dividerColor: AppColors.dividerColor.withOpacity(0.08),
 
 //       // [Light Text, also for icons with custom opacity].
-      // hoverColor: AppColors.kLightTextColor,
+// hoverColor: AppColors.kLightTextColor,
 
 //       // [Text].
 //       cardColor: AppColors.textMain,

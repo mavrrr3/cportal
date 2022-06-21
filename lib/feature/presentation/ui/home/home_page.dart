@@ -6,11 +6,11 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/quastions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
@@ -135,8 +135,7 @@ class _HomePageState extends State<HomePage>
     final List<Widget> listPages = <Widget>[
       const MainPage(),
       NewsPage(pageType: NewsCodeEnum.news),
-      NewsPage(pageType: NewsCodeEnum.quastion),
-      const DeclarationsPage(),
+      QuastionsPage(),
       const ContactsPage(),
     ];
 

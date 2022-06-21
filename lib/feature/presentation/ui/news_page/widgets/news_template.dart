@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
@@ -18,19 +19,19 @@ class NewsTemplate {
     log(paragraph.toString());
 
     switch (paragraph.template) {
-      case '1':
+      case 'Текст':
         return Text(
           paragraph.content ?? '',
           style: theme.textTheme.px14,
         );
-      case '2':
+      case 'Изображение с подписью':
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Column(
             children: [
               Image(
                 image: ExtendedNetworkImageProvider(
-                  'http://ribadi.ddns.net:88/images/${paragraph.image}',
+                  '${AppConfig.apiUri}/images/${paragraph.image}',
                   cache: true,
                 ),
               ),
@@ -42,7 +43,7 @@ class NewsTemplate {
             ],
           ),
         );
-      case '3':
+      case 'Изображение без подписи':
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Container(
@@ -52,7 +53,7 @@ class NewsTemplate {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  'http://ribadi.ddns.net:88/images/${paragraph.image}',
+                  'http://${AppConfig.apiUri}/images/${paragraph.image}',
                   cache: true,
                 ),
               ),

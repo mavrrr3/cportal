@@ -152,23 +152,23 @@ class TodayItemModel {
 
 final List<TodayItemModel> _items = [
   TodayItemModel(
-    image: '1.jpg',
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
     description: 'Романова Алексея Игоревича',
     post: 'Охранник',
     place: 'Новосталь-М',
   ),
   TodayItemModel(
-    image: '2.jpg',
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
     description: 'Новосталь-М',
   ),
   TodayItemModel(
-    image: '1.jpg',
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
     description: 'Романова Алексея Игоревича',
     post: 'Охранник',
     place: 'Новосталь-М',
   ),
   TodayItemModel(
-    image: '2.jpg',
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
     description: 'Романова Алексея Игоревича',
     post: 'Охранник',
     place: 'Новосталь-М',

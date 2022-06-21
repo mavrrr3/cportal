@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:cportal_flutter/app_config.dart';
 import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
@@ -29,7 +30,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     bool isMyProfile = false,
   }) async {
     final String baseUrl =
-        'http://ribadi.ddns.net:88/cportal/hs/api/contacts/1.0/?id=$id';
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?id=$id';
     try {
       // TODO: Избавиться от if, передавать эту переменную в singleProfileToCache.
       if (isMyProfile) {
@@ -86,5 +87,5 @@ const String stringUser = '''
         "contact": "ivanov@yandex.ru"
     }
 ],
-"photo": "1.jpg"
+"photo": "20220616/285831712_340931151553303_8302347002848994819_n.jpg"
 }''';

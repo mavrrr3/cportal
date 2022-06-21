@@ -12,7 +12,7 @@ class NewsEntity extends Equatable {
 
 class ResponseEntity extends Equatable {
   final int count;
-  final int update;
+  final int? update;
   final List<String>? categories;
   final List<ArticleEntity> articles;
 

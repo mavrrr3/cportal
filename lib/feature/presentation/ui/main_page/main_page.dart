@@ -110,7 +110,8 @@ class _MainPageState extends State<MainPage> {
                             },
                             child: const AvatarBox(
                               size: 40,
-                              imgPath: '2.jpg',
+                              imgPath:
+                                  '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
                             ),
                           ),
                         ],
