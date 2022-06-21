@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
