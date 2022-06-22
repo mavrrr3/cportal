@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_text.dart';
-import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -16,13 +16,12 @@ class CreatePinWeb extends StatelessWidget {
   const CreatePinWeb({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PinCodeBloc>(context, listen: false)
-        .add(PinCodeCheckEvent());
+    BlocProvider.of<PinCodeBloc>(context, listen: false).add(PinCodeCheckEvent());
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const LoaderWebWidget(),
+        const SplashWidget.desktop(),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,10 +62,7 @@ class BodyWidget extends StatelessWidget {
           input,
           context,
         ),
-        if (input == PinCodeInputEnum.repeat)
-          const PinCodeRepeat()
-        else
-          const PinCodeInput(),
+        if (input == PinCodeInputEnum.repeat) const PinCodeRepeat() else const PinCodeInput(),
       ],
     );
   }
@@ -79,7 +75,7 @@ class RepeatePinWeb extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const LoaderWebWidget(),
+        const SplashWidget.desktop(),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [
@@ -116,18 +112,14 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    final PinCodeBloc pinCodeBloc =
-        BlocProvider.of<PinCodeBloc>(context, listen: false);
-                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final PinCodeBloc pinCodeBloc = BlocProvider.of<PinCodeBloc>(context, listen: false);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     final defaultPinTheme = PinTheme(
       width: 16,
       height: 16,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.light
-            ? theme.textLight?.withOpacity(0.2)
-            : theme.background,
+        color: theme.brightness == Brightness.light ? theme.textLight?.withOpacity(0.2) : theme.background,
         borderRadius: BorderRadius.circular(15),
       ),
     );
@@ -204,18 +196,14 @@ class _PinCodeRepeatState extends State<PinCodeRepeat> {
 
   @override
   Widget build(BuildContext context) {
-    final PinCodeBloc pinCodeBloc =
-        BlocProvider.of<PinCodeBloc>(context, listen: false);
-                                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final PinCodeBloc pinCodeBloc = BlocProvider.of<PinCodeBloc>(context, listen: false);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     final defaultPinTheme = PinTheme(
       width: 16,
       height: 16,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.light
-            ? theme.textLight?.withOpacity(0.2)
-            : theme.background,
+        color: theme.brightness == Brightness.light ? theme.textLight?.withOpacity(0.2) : theme.background,
         borderRadius: BorderRadius.circular(15),
       ),
     );
