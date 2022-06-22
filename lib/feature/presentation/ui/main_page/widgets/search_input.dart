@@ -50,6 +50,7 @@ class SearchInput extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               textInputAction: TextInputAction.search,
+              autocorrect: false,
               onChanged: onChanged,
               style: theme.textTheme.px14.copyWith(
                 color: theme.textLight,
