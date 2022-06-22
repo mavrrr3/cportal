@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
             child: Padding(
               padding: EdgeInsets.only(
                 top: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                    ? 16
+                    ? 10
                     : 13,
               ),
               child: ResponsiveConstraints(
