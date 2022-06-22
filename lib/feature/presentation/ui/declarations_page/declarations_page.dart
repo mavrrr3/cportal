@@ -6,10 +6,11 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/selected_filters_view.dart.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/open_filter_button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/all_declarations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/you_hadnt_declarations_title.dart';
@@ -88,80 +89,37 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                                 const SizedBox(
                                   height: kIsWeb ? 12 : 11,
                                 ),
-                                Padding(
-                                  padding: getHorizontalPadding(context),
-                                  child: ResponsiveConstraints(
-                                    constraint:
-                                        const BoxConstraints(maxWidth: 640),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        // Поиск.
-                                        SearchInput(
-                                          controller: _searchController,
-                                          onChanged: (text) {},
-                                        ),
-
-                                        // Фильтр.
-                                        FilterButton(
-                                          onTap: () async {
-                                            if (!ResponsiveWrapper.of(context)
-                                                .isLargerThan(MOBILE)) {
-                                              await _showFilterMobile(theme);
-                                            } else {
-                                              setState(() {
-                                                _isFilterOpenWeb = true;
-                                              });
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                SearchWithFilter(
+                                  searchController: _searchController,
+                                  onSearch: (text) {},
+                                  onFilterTap: () async {
+                                    if (!ResponsiveWrapper.of(context)
+                                        .isLargerThan(MOBILE)) {
+                                      await showFilterMobile(
+                                        context,
+                                        theme,
+                                        onApply: _onApplyFilter,
+                                        onClear: _onClearFilter,
+                                      );
+                                    } else {
+                                      setState(() {
+                                        _isFilterOpenWeb = true;
+                                      });
+                                    }
+                                  },
                                 ),
-
                                 // Выбранные фильтры.
-                                Padding(
-                                  padding: getHorizontalPadding(context),
-                                  child: BlocBuilder<FilterBloc, FilterState>(
-                                    builder: (context, state) {
-                                      if (state is FilterLoadedState) {
-                                        return Column(
-                                          children: [
-                                            SizedBox(
-                                              height:
-                                                  _isAnyFilterSelected(state)
-                                                      ? 19
-                                                      : 31,
-                                            ),
-                                            SelectedFiltersView(
-                                              state: state,
-                                              onClose: (item, i) {
-                                                BlocProvider.of<FilterBloc>(
-                                                  context,
-                                                ).add(
-                                                  FilterRemoveItemEvent(
-                                                    filterIndex: i,
-                                                    item: item,
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                            SizedBox(
-                                              height:
-                                                  _isAnyFilterSelected(state)
-                                                      ? 8
-                                                      : 0,
-                                            ),
-                                          ],
-                                        );
-                                      }
-
-                                      // TODO: Обработать другие стейты.
-                                      return const SizedBox();
-                                    },
-                                  ),
+                                SelectedFiltersView(
+                                  onRemove: (item, i) {
+                                    BlocProvider.of<FilterBloc>(
+                                      context,
+                                    ).add(
+                                      FilterRemoveItemEvent(
+                                        filterIndex: i,
+                                        item: item,
+                                      ),
+                                    );
+                                  },
                                 ),
 
                                 const WithDeclarations(),
@@ -199,38 +157,6 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
           ),
         );
       },
-    );
-  }
-
-  // Filter Bottom Sheet Mobile.
-  Future<void> _showFilterMobile(CustomTheme theme) async {
-    return showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: theme.cardColor,
-      barrierColor: theme.barrierColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
-        ),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        expand: false,
-        snap: true,
-        initialChildSize: 0.57,
-        minChildSize: 0.57,
-        maxChildSize: 0.875,
-        builder: (
-          context,
-          scrollController,
-        ) =>
-            Filter(
-          scrollController: scrollController,
-          onApply: _onApplyFilter,
-          onClear: _onClearFilter,
-        ),
-      ),
     );
   }
 
@@ -292,7 +218,6 @@ class NewDeclarations extends StatelessWidget {
                   DeclarationCard(
                     width: halfWidth,
                     svgPath: 'assets/icons/calendar.svg',
-                    
                     text: AppLocalizations.of(context)!.buisenesTripDeclaration,
                   ),
                   DeclarationCard(

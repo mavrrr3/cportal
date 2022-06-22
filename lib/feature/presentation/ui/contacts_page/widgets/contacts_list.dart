@@ -1,40 +1,96 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
-
   final Function(int) onTap;
 
-  /// Колонка с контактами.
   const ContactsList({
     Key? key,
     required this.items,
     required this.onTap,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: items.length,
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: GestureDetector(
-          onTap: () {
-            onTap(index);
-          },
-          child: ContactCard(
-            user: items[index],
-          ),
-        ),
-      ),
+    return Padding(
+      padding: getHorizontalPadding(context),
+      child: !kIsWeb
+          ? ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: items.length,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: GestureDetector(
+                  onTap: () {
+                    onTap(index);
+                  },
+                  child: ContactCard(
+                    user: items[index],
+                  ),
+                ),
+              ),
+            )
+          : Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: List.generate(
+                items.length,
+                (i) => GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () async {},
+                  child: ContactCard(
+                    user: items[i],
+                    width: ResponsiveWrapper.of(
+                      context,
+                    ).isLargerThan(MOBILE)
+                        ? 328
+                        : null,
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }
+
+// class ContactsList extends StatelessWidget {
+//   final List<ProfileEntity> items;
+
+//   final Function(int) onTap;
+
+//   /// Колонка с контактами.
+//   const ContactsList({
+//     Key? key,
+//     required this.items,
+//     required this.onTap,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       shrinkWrap: true,
+//       physics: const NeverScrollableScrollPhysics(),
+//       itemCount: items.length,
+//       itemBuilder: (context, index) => Padding(
+//         padding: const EdgeInsets.only(bottom: 8),
+//         child: GestureDetector(
+//           onTap: () {
+//             onTap(index);
+//           },
+//           child: ContactCard(
+//             user: items[index],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class ContactCard extends StatelessWidget {
   final ProfileEntity user;

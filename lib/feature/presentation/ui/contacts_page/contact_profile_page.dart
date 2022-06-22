@@ -2,7 +2,8 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/profile_info_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -51,8 +52,9 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
         return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
           builder: (context, state) {
             if (state is GetSingleProfileLoadingState) {
-              return const Scaffold(
-                body: Center(
+              return Scaffold(
+                backgroundColor: theme.background,
+                body: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
@@ -105,20 +107,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                                 const SizedBox(height: 41),
 
                                 // Profile image.
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: user.photoLink != ''
-                                      ? AvatarBox(
-                                          size: 102,
-                                          imgPath: user.photoLink,
-                                          borderRadius: 24,
-                                        )
-                                      : EmptyAvatarBox(
-                                          size: 102,
-                                          borderRadius: 24,
-                                          user: user,
-                                        ),
-                                ),
+                                ProfileImage(user: user),
                                 const SizedBox(height: 12),
 
                                 // Full name.

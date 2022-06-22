@@ -3,18 +3,58 @@ import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/custom_check_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/filter_action_buttons.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/custom_check_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_action_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Filter extends StatefulWidget {
+// Filter Bottom Sheet Mobile.
+Future<void> showFilterMobile(
+  BuildContext context,
+  CustomTheme theme, {
+  required Function() onApply,
+  required Function() onClear,
+}) async {
+  return showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: theme.cardColor,
+    barrierColor: theme.barrierColor,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(12),
+        topRight: Radius.circular(12),
+      ),
+    ),
+    builder: (context) => DraggableScrollableSheet(
+      expand: false,
+      snap: true,
+      initialChildSize: 0.57,
+      minChildSize: 0.57,
+      maxChildSize: 0.875,
+      builder: (
+        context,
+        scrollController,
+      ) =>
+          FilterMobile(
+        scrollController: scrollController,
+        onApply: onApply,
+        onClear: onClear,
+      ),
+    ),
+  );
+}
+
+
+
+
+class FilterMobile extends StatefulWidget {
   final ScrollController scrollController;
   final Function() onApply;
   final Function() onClear;
 
-  const Filter({
+  const FilterMobile({
     Key? key,
     required this.scrollController,
     required this.onApply,
@@ -22,10 +62,10 @@ class Filter extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Filter> createState() => _FilterState();
+  State<FilterMobile> createState() => _FilterMobileState();
 }
 
-class _FilterState extends State<Filter> {
+class _FilterMobileState extends State<FilterMobile> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FilterBloc, FilterState>(

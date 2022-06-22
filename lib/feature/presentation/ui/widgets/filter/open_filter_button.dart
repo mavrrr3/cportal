@@ -2,10 +2,10 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class FilterButton extends StatelessWidget {
+class OpenFilterButton extends StatelessWidget {
   final Function()? onTap;
 
-  const FilterButton({
+  const OpenFilterButton({
     Key? key,
     this.onTap,
   }) : super(key: key);

@@ -25,7 +25,6 @@ class SearchInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    log('${theme.brightness}');
 
     return Container(
       width: getSearchContainerWidth(context),
