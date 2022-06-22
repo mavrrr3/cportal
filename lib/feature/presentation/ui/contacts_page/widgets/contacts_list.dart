@@ -43,7 +43,9 @@ class ContactsList extends StatelessWidget {
                 items.length,
                 (i) => GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: () async {},
+                  onTap: () {
+                    onTap(i);
+                  },
                   child: ContactCard(
                     user: items[i],
                     width: ResponsiveWrapper.of(

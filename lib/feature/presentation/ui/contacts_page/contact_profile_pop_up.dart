@@ -50,6 +50,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
 
         if (state is GetSingleProfileLoadedState) {
           return Material(
+            color: theme.cardColor,
             child: SizedBox(
               height: 660,
               child: Stack(

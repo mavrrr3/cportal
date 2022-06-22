@@ -95,6 +95,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     return Expanded(
                       child: SafeArea(
                         child: Column(
+                          crossAxisAlignment:  CrossAxisAlignment.start,
                           children: [
                             const SizedBox(
                               height: kIsWeb ? 12 : 11,
@@ -274,6 +275,7 @@ class _ContactsPageState extends State<ContactsPage> {
   ) {
     return showDialog(
       context: context,
+      
       builder: (context) {
         final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
