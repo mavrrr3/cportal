@@ -77,8 +77,8 @@ class _MainPageState extends State<MainPage> {
         children: [
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+              padding: EdgeInsets.only(
+                top: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                     ? 16
                     : 13,
               ),
