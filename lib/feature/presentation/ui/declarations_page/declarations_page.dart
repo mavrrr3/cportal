@@ -1,13 +1,10 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/open_filter_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
@@ -15,7 +12,6 @@ import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widget
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/you_hadnt_declarations_title.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -174,21 +170,6 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
     BlocProvider.of<FilterBloc>(
       context,
     ).add(FilterRemoveAllEvent());
-  }
-
-  bool _isAnyFilterSelected(FilterLoadedState state) {
-    bool isActive = false;
-    // ignore: avoid_function_literals_in_foreach_calls
-    state.filters.forEach((filter) {
-      // ignore: avoid_function_literals_in_foreach_calls
-      filter.items.forEach((item) {
-        if (item.isActive) {
-          isActive = true;
-        }
-      });
-    });
-
-    return isActive;
   }
 }
 
