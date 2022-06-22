@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_card_item.dart';
 import 'package:flutter/material.dart';
 
 class NewsHorizontalScroll extends StatelessWidget {

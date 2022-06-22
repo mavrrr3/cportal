@@ -7,7 +7,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart'
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';

@@ -15,7 +15,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_card_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 int _currentIndex = 0;
