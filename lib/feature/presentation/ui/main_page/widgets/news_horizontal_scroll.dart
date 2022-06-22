@@ -18,7 +18,7 @@ class NewsHorizontalScroll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 220,
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
