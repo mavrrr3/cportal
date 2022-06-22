@@ -107,11 +107,18 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                           // Contact info.
                           ...List.generate(
                             state.profile.contactInfo.length,
-                            (i) => ProfileInfoSection(
+                            (i){
+                            return
+                            
+                             ProfileInfoSection(
                               headline: state.profile.contactInfo[i].type,
                               text: state.profile.contactInfo[i].contact,
                               bottomPadding: 18,
-                            ),
+                              isEmail: state.profile.contactInfo[i].type == 'Эл. почта',
+                            ) ;
+
+                            } ,
+                            
                           ),
 
                           // Birth date.
