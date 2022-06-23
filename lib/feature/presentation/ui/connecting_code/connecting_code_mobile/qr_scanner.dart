@@ -70,7 +70,7 @@ class _QrScannerState extends State<QrScanner> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding:const EdgeInsets.only(bottom: 84),
+                      padding: const EdgeInsets.only(bottom: 84),
                       child: GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () async {
@@ -80,14 +80,12 @@ class _QrScannerState extends State<QrScanner> {
                               log('[Camera Controller');
                             }
                             if (_isFlashLight) {
-                              await _cameraController
-                                  .setFlashMode(FlashMode.off);
+                              await _cameraController.setFlashMode(FlashMode.off);
                               setState(() {
                                 _isFlashLight = false;
                               });
                             } else {
-                              await _cameraController
-                                  .setFlashMode(FlashMode.torch);
+                              await _cameraController.setFlashMode(FlashMode.torch);
                               setState(() {
                                 _isFlashLight = true;
                               });

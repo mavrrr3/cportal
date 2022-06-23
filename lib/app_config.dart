@@ -18,6 +18,8 @@ class AppConfig {
 
   static String get apiUri => dotenv.env['API_URI'] ?? '';
 
+  static String get imagesUrl => dotenv.env['IMAGES_URL'] ?? '';
+
   static Future<void> load() async {
     await dotenv.load(fileName: 'assets/.env');
     log('======================================================');
