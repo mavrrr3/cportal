@@ -45,13 +45,22 @@ class SingleNewsArticleMobile extends StatelessWidget {
                   backgroundColor: theme.background,
                   expandedHeight: 176,
                   automaticallyImplyLeading: false,
-                  leading: IconButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    enableFeedback: false,
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 24,
-                    onPressed: () => GoRouter.of(context).pop(),
+                  leading: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: theme.black!.withOpacity(0.42),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: IconButton(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        enableFeedback: false,
+                        icon: const Icon(Icons.arrow_back),
+                        iconSize: 24,
+                        onPressed: () => GoRouter.of(context).pop(),
+                      ),
+                    ),
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
