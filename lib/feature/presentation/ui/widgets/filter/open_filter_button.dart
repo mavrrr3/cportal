@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class OpenFilterButton extends StatelessWidget {
   final Function()? onTap;
 
+  /// Кнопка, которая открывает фильтр.
   const OpenFilterButton({
     Key? key,
     this.onTap,
