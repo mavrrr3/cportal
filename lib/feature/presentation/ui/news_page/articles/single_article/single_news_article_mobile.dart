@@ -55,7 +55,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
-                      '${AppConfig.imagesUrl}${article.image}',
+                      '${AppConfig.imagesUrl}/${article.image}',
                       fit: BoxFit.cover,
                       cache: true,
                     ),
