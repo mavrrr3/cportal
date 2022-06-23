@@ -41,7 +41,7 @@ class NewsCardItem extends StatelessWidget {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  '${AppConfig.apiUri}/images/${item.image}',
+                  '${AppConfig.imagesUrl}/${item.image}',
                   cache: true,
                 ),
               ),

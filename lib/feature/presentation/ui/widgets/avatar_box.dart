@@ -31,7 +31,7 @@ class AvatarBox extends StatelessWidget {
           fit: BoxFit.cover,
           alignment: FractionalOffset.topCenter,
           image: ExtendedNetworkImageProvider(
-            isApiImg ? '${AppConfig.apiUri}images/$imgPath' : imgPath,
+            isApiImg ? '${AppConfig.imagesUrl}/$imgPath' : imgPath,
             cache: true,
           ),
         ),
