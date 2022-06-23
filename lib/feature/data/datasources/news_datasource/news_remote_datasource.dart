@@ -1,184 +1,120 @@
+import 'dart:convert';
 import 'dart:developer';
-
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/app_config.dart';
+import 'package:dio/dio.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
-import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
-import 'package:flutter/foundation.dart';
 
 abstract class INewsRemoteDataSource {
   /// Обращается к эндпойнту .....
-  ///
+  /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchNews(String code);
+  Future<NewsModel> fetchNews(int page);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [NewsModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<NewsModel> fetchNewsByCategory(int page, String category);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [NewsModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<NewsModel> fetchQuastions(int page);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [NewsModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<NewsModel> fetchQuastionsByCategory(int page, String category);
 }
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
   final INewsLocalDataSource localDatasource;
+  final Dio dio;
 
-  NewsRemoteDataSource(this.localDatasource);
+  NewsRemoteDataSource(this.localDatasource, this.dio);
 
   @override
-  Future<NewsModel> fetchNews(String code) async {
+  Future<NewsModel> fetchNews(int page) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
+
     try {
-      final remoteNews = NewsModel(
-        show: true,
-        article: [
-          newsArticle,
-          quastion,
-          newsArticle2,
-          newsArticle3,
-          quastion3,
-          quastion,
-          quastion,
-          quastion,
-          quastion2,
-          quastion2,
-        ],
+      final response = await dio.get<String>(baseUrl);
+
+      // Log('NewsRemoteDataSource ${response.data}');.
+      final news = NewsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
       );
 
-      if (kDebugMode) log(remoteNews.toString());
-      await localDatasource.newsToCache(remoteNews);
-
-      List<ArticleModel> articlesWithCode = remoteNews.article
-          .where((article) => article.articleType.code == code)
-          .toList();
-      NewsModel news = NewsModel(
-        show: true,
-        article: [...articlesWithCode],
-      );
+      await localDatasource.newsToCache(news);
 
       return news;
     } on ServerException {
       throw ServerFailure();
     }
   }
+
+  @override
+  Future<NewsModel> fetchNewsByCategory(int page, String category) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+
+    try {
+      final response = await dio.get<String>(baseUrl);
+
+      final newsByCategory = NewsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
+      );
+
+      await localDatasource.newsByCategoryToCache(newsByCategory, category);
+
+      return newsByCategory;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<NewsModel> fetchQuastions(int page) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
+
+    try {
+      final response = await dio.get<String>(baseUrl);
+
+      final news = NewsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
+      );
+
+      await localDatasource.newsToCache(news);
+
+      return news;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<NewsModel> fetchQuastionsByCategory(int page, String category) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+    log('baseUrl $baseUrl');
+
+    try {
+      final response = await dio.get<String>(baseUrl);
+
+      final newsByCategory = NewsModel.fromJson(
+        json.decode(response.data!) as Map<String, dynamic>,
+      );
+
+      await localDatasource.newsByCategoryToCache(newsByCategory, category);
+      log(newsByCategory.toString());
+
+      return newsByCategory;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
 }
-
-final ArticleModel newsArticle = ArticleModel(
-  id: 'id',
-  articleType: const ArticleTypeModel(
-    id: 'id',
-    code: 'NEWS',
-    description: 'description',
-  ),
-  header: 'header',
-  category: 'Новосталь-М',
-  description: 'description',
-  image:
-      'https://img3.goodfon.ru/original/1152x864/e/2c/wyoming-grand-teton-national.jpg',
-  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  externalLink: 'externalLink',
-  show: true,
-  userCreated: 'userCreated',
-  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  userUpdate: 'userUpdate',
-  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-);
-
-final ArticleModel newsArticle2 = ArticleModel(
-  id: 'id',
-  articleType: const ArticleTypeModel(
-    id: 'id',
-    code: 'NEWS',
-    description: 'description',
-  ),
-  header: 'Rick and Morty',
-  category: 'Новосталь-М',
-  description: 'description',
-  image: 'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
-  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  externalLink: 'externalLink',
-  show: true,
-  userCreated: 'userCreated',
-  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  userUpdate: 'userUpdate',
-  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-);
-final ArticleModel newsArticle3 = ArticleModel(
-  id: 'id',
-  articleType: const ArticleTypeModel(
-    id: 'id',
-    code: 'NEWS',
-    description: 'description',
-  ),
-  header: 'Header',
-  category: 'Новосталь-М',
-  description: 'description',
-  image:
-      'https://get.wallhere.com/photo/1920x1080-px-Morty-Smith-Rick-and-Morty-Rick-Sanchez-TV-1481007.jpg',
-  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  externalLink: 'externalLink',
-  show: true,
-  userCreated: 'userCreated',
-  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  userUpdate: 'userUpdate',
-  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-);
-
-final ArticleModel quastion = ArticleModel(
-  id: 'id',
-  articleType: const ArticleTypeModel(
-    id: 'id',
-    code: 'QUASTION',
-    description: 'description',
-  ),
-  header: 'Компенсация занятий спортом',
-  category: 'Кадры',
-  description:
-      'И нет сомнений, что базовые сценарии поведения пользователей представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.\n\nПо требованию собственника компенсация требует депозитный суд, хотя законодательством может быть установлено иное. Наследование своевременно исполняет закон. Пленум Высшего Арбитражного Суда неоднократно разъяснял, как доверенность противоречиво арендует правомерный сервитут. Оферта императивна. Страховой полис объективно опровергает международный индоссамент.\n\nАкционерное общество поручает конфиденциальный взаимозачет, исключая принцип презумпции невиновности. Перестрахование своевременно исполняет императивный сервитут, что не имеет аналогов в англо-саксонской правовой системе. Конституция, как бы это ни казалось парадоксальным, акцептована.',
-  image:
-      'https://img3.goodfon.ru/original/1152x864/e/2c/wyoming-grand-teton-national.jpg',
-  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  externalLink: 'externalLink',
-  show: true,
-  userCreated: 'userCreated',
-  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  userUpdate: 'userUpdate',
-  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-);
-
-final ArticleModel quastion2 = ArticleModel(
-  id: 'id',
-  articleType: const ArticleTypeModel(
-    id: 'id',
-    code: 'QUASTION',
-    description: 'description',
-  ),
-  header: 'Из чего составляется ваш KPI',
-  category: 'Продуктивность',
-  description:
-      'И нет сомнений, что базовые сценарии поведения пользователей представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.\n\nПо требованию собственника компенсация требует депозитный суд, хотя законодательством может быть установлено иное. Наследование своевременно исполняет закон. Пленум Высшего Арбитражного Суда неоднократно разъяснял, как доверенность противоречиво арендует правомерный сервитут. Оферта императивна. Страховой полис объективно опровергает международный индоссамент.\n\nАкционерное общество поручает конфиденциальный взаимозачет, исключая принцип презумпции невиновности. Перестрахование своевременно исполняет императивный сервитут, что не имеет аналогов в англо-саксонской правовой системе. Конституция, как бы это ни казалось парадоксальным, акцептована.',
-  image:
-      'https://img3.goodfon.ru/original/1152x864/e/2c/wyoming-grand-teton-national.jpg',
-  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  externalLink: 'externalLink',
-  show: true,
-  userCreated: 'userCreated',
-  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  userUpdate: 'userUpdate',
-  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-);
-
-final ArticleModel quastion3 = ArticleModel(
-  id: 'id',
-  articleType: const ArticleTypeModel(
-    id: 'id',
-    code: 'QUASTION',
-    description: 'description',
-  ),
-  header: 'Как взять отпуск?',
-  category: 'Кадры',
-  description:
-      'И нет сомнений, что базовые сценарии поведения пользователей представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть смешаны с не уникальными данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.\n\nПо требованию собственника компенсация требует депозитный суд, хотя законодательством может быть установлено иное. Наследование своевременно исполняет закон. Пленум Высшего Арбитражного Суда неоднократно разъяснял, как доверенность противоречиво арендует правомерный сервитут. Оферта императивна. Страховой полис объективно опровергает международный индоссамент.\n\nАкционерное общество поручает конфиденциальный взаимозачет, исключая принцип презумпции невиновности. Перестрахование своевременно исполняет императивный сервитут, что не имеет аналогов в англо-саксонской правовой системе. Конституция, как бы это ни казалось парадоксальным, акцептована.',
-  image:
-      'https://img3.goodfon.ru/original/1152x864/e/2c/wyoming-grand-teton-national.jpg',
-  dateShow: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  externalLink: 'externalLink',
-  show: true,
-  userCreated: 'userCreated',
-  dateCreated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-  userUpdate: 'userUpdate',
-  dateUpdated: DateTime.parse('2022-03-21T14:59:58.884Z'),
-);

@@ -1,7 +1,5 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserDataRow extends StatelessWidget {
   final String normalText;
@@ -15,21 +13,22 @@ class UserDataRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           normalText,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 14.sp,
-            color: AppColors.kLightTextColor.withOpacity(0.68),
+          style: theme.textTheme.px14.copyWith(
+            color: theme.textLight,
           ),
         ),
-        SizedBox(height: 4.h),
+        const SizedBox(height: 4),
         Text(
           boldText,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 16.sp,
+          style: theme.textTheme.px16.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),

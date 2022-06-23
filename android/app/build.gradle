@@ -44,7 +44,8 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.cportal_flutter"
-        minSdkVersion 19
+        minSdkVersion 21
+        multiDexEnabled true
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -59,6 +60,7 @@ android {
     }
 
     flavorDimensions "cportal_app"
+    
 
     productFlavors {
         dev {
@@ -68,7 +70,7 @@ android {
             versionNameSuffix ".dev"
         }
         prod {
-            dimension "starter_app"
+            dimension "cportal_app"
             resValue "string", "app_name", "Cportal"
         }
     }

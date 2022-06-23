@@ -1,51 +1,230 @@
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
+import 'dart:developer';
+import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
-
+  const MainPage({
+    Key? key,
+  }) : super(key: key);
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
+  late TextEditingController _searchController;
+  late FocusNode _searchFocus;
+  late Duration _animationDuration;
+  late bool _isSearchActive;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    _searchFocus = FocusNode();
+    _animationDuration = const Duration(milliseconds: 300);
+    _isSearchActive = false;
+    _searchFocus.addListener(_onFocusChange);
+
+    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+      const FetchAllNewsEvent(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchFocus.removeListener(_onFocusChange);
+    super.dispose();
+  }
+
+  /// Анимация при нажатии на поиск.
+  void _onFocusChange() {
+    if (_searchFocus.hasFocus) {
+      setState(() {
+        _isSearchActive = true;
+      });
+    } else {
+      setState(() {
+        _isSearchActive = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 36.h),
-            Row(
-              children: [
-                const SearchBoxMain(),
-                SizedBox(width: 12.w),
-                const AvatarBox(
-                  size: 40,
-                  imgPath:
-                      'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Stack(
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                    ? 10
+                    : 13,
+              ),
+              child: ResponsiveConstraints(
+                constraint: kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: getHorizontalPadding(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SearchInput(
+                            controller: _searchController,
+                            focusNode: _searchFocus,
+                            onChanged: (text) {
+                              log('[Search text] $text');
+                            },
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                                  ? showProfile(context)
+                                  : context.pushNamed(
+                                      NavigationRouteNames.profile,
+                                    );
+                            },
+                            child: const AvatarBox(
+                              size: 40,
+                              imgPath:
+                                  '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16),
+                            HorizontalListViewMain(
+                              color: _isSearchActive
+                                  ? theme.brightness == Brightness.light
+                                      ? theme.cardColor!.withOpacity(0.3)
+                                      : theme.cardColor!
+                                  : theme.cardColor!,
+                            ),
+                            const SizedBox(height: 24),
+                            Padding(
+                              padding: getHorizontalPadding(context),
+                              child: TodayWidget(
+                                onTap: (i) {},
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            Padding(
+                              padding: getHorizontalPadding(context),
+                              child: Text(
+                                AppLocalizations.of(context)!.news,
+                                style: theme.textTheme.px22,
+                              ),
+                            ),
+                            BlocBuilder<FetchNewsBloc, FetchNewsState>(
+                              builder: (context, state) {
+                                if (state is NewsLoading) {
+                                  const Center(
+                                    child: PlatformProgressIndicator(),
+                                  );
+                                }
+
+                                if (state is NewsLoaded) {
+                                  final articles = state.articles;
+
+                                  return kIsWeb
+                                      ? NewsMainWeb(articles: articles)
+                                      : NewsMainMobile(articles: articles);
+                                }
+
+                                return const SizedBox();
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            const FaqWidget(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-            SizedBox(height: 16.h),
-            const HorizontalListViewMain(),
-            SizedBox(height: 24.h),
-            const TodayWidget(),
-            SizedBox(height: 24.h),
-            const NewsHorizontalScroll(),
-            SizedBox(height: 24.h),
-            const FaqWidget(),
-          ],
-        ),
+          ),
+          ResponsiveConstraints(
+            constraint: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                ? const BoxConstraints(maxWidth: 640)
+                : null,
+            child: SearchBox(
+              isAnimation: _isSearchActive,
+              animationDuration: _animationDuration,
+            ),
+          ),
+        ],
       ),
     );
   }
+}
+
+Future<void> showProfile(BuildContext context) {
+  return showDialog(
+    context: context,
+    useRootNavigator: true,
+    barrierDismissible: true,
+    builder: (context) {
+      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 100,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: theme.cardColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.only(
+                  left: 32,
+                  right: 32,
+                  bottom: 32,
+                  top: 32,
+                ),
+                child: ProfilePopUp(),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
 }

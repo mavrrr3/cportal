@@ -1,6 +1,5 @@
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RowProfile extends StatelessWidget {
   final Widget firstWidget;
@@ -17,22 +16,21 @@ class RowProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     return Row(
       children: [
         firstWidget,
-        SizedBox(
-          width: 17.w,
-        ),
+        const SizedBox(width: 17),
         Text(
           text,
-          style: kMainTextRoboto.copyWith(
-            fontSize: 16,
+          style: theme.textTheme.px16.copyWith(
             fontWeight: FontWeight.w700,
           ),
         ),
         const Expanded(child: SizedBox.shrink()),
         GestureDetector(
-          onTap: () => call,
+          onTap: () => call != null ? call!() : debugPrint('call = null'),
           child: secondWidget,
         ),
       ],

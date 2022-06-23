@@ -34,6 +34,28 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "Flutter for web HTML render",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+              "-d",
+              "chrome",
+              "--web-renderer", 
+              "html"
+            ]
+        },
+        {
+            "name": "Flutter for web Canvas render",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+              "-d",
+              "chrome"
+            ]
         }
     ]
 }

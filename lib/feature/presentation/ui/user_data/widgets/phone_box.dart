@@ -1,7 +1,5 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhoneBox extends StatelessWidget {
@@ -11,34 +9,33 @@ class PhoneBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                                  final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+
     return Container(
       width: double.infinity,
-      height: 48.h,
+      height: 48,
       decoration: BoxDecoration(
-        color: AppColors.kLightTextColor.withOpacity(0.04),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(4.sp),
-          topRight: Radius.circular(4.sp),
+        color: theme.text?.withOpacity(0.04),
+        borderRadius:const BorderRadius.only(
+          topLeft: Radius.circular(4),
+          topRight: Radius.circular(4),
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding:const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               AppLocalizations.of(context)!.yourPhoneNumber,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.kLightTextColor.withOpacity(0.68),
-              ),
+              style: theme.textTheme.px12
+                  .copyWith(color: theme.textLight),
             ),
             Text(
               '+7 923 456 78 91',
-              style: kMainTextRoboto.copyWith(
-                fontSize: 16.sp,
-              ),
+              style: theme.textTheme.px16,
             ),
           ],
         ),
