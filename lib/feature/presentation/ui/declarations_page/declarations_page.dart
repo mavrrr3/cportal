@@ -124,6 +124,7 @@ class _DeclarationsPageState extends State<DeclarationsPage>  with SingleTickerP
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: TabBar(
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
                   labelStyle: theme.textTheme.px22.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
