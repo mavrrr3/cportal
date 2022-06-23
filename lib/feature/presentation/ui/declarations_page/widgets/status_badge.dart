@@ -27,7 +27,7 @@ class StatusBadge extends StatelessWidget {
           child: Text(
             capitalize(text),
             style: theme.textTheme.px12.copyWith(
-              color: theme.text,
+              color: theme.white,
             ),
           ),
         ),
