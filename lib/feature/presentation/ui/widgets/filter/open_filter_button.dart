@@ -1,11 +1,13 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class FilterButton extends StatelessWidget {
+class OpenFilterButton extends StatelessWidget {
   final Function()? onTap;
 
-  const FilterButton({
+  /// Кнопка, которая открывает фильтр.
+  const OpenFilterButton({
     Key? key,
     this.onTap,
   }) : super(key: key);
@@ -25,7 +27,7 @@ class FilterButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: SvgPicture.asset(
-            'assets/icons/filter.svg',
+            ImageAssets.filter,
             color: theme.textLight,
           ),
         ),
