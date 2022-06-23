@@ -3,12 +3,13 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
@@ -77,9 +78,9 @@ class _MainPageState extends State<MainPage> {
         children: [
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                    ? 16
+              padding: EdgeInsets.only(
+                top: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                    ? 10
                     : 13,
               ),
               child: ResponsiveConstraints(
@@ -150,54 +151,23 @@ class _MainPageState extends State<MainPage> {
                               builder: (context, state) {
                                 if (state is NewsLoading) {
                                   const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: PlatformProgressIndicator(),
                                   );
                                 }
 
                                 if (state is NewsLoaded) {
-                                  return !kIsWeb
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                            left: getSingleHorizontalPadding(
-                                              context,
-                                            ),
-                                          ),
-                                          child: NewsHorizontalScroll(
-                                            onTap: (i) => _onArticleSelected(
-                                              state.articles[i].id,
-                                            ),
-                                            items: state.articles,
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding:
-                                              getHorizontalPadding(context),
-                                          child: Wrap(
-                                            spacing: 16,
-                                            runSpacing: 20,
-                                            children: List.generate(
-                                              state.articles.length,
-                                              (i) => NewsCardItem(
-                                                onTap: () => _onArticleSelected(
-                                                  state.articles[i].id,
-                                                ),
-                                                width: 312,
-                                                height: 152,
-                                                item: state.articles[i],
-                                              ),
-                                            ),
-                                          ),
-                                        );
+                                  final articles = state.articles;
+
+                                  return kIsWeb
+                                      ? NewsMainWeb(articles: articles)
+                                      : NewsMainMobile(articles: articles);
                                 }
 
                                 return const SizedBox();
                               },
                             ),
                             const SizedBox(height: 24),
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: const FaqWidget(),
-                            ),
+                            const FaqWidget(),
                           ],
                         ),
                       ),
@@ -220,13 +190,6 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-
-  void _onArticleSelected(String id) {
-    GoRouter.of(context).pushNamed(
-      NavigationRouteNames.newsArticlePage,
-      params: {'fid': id},
-    );
-  }
 }
 
 Future<void> showProfile(BuildContext context) {
@@ -236,10 +199,6 @@ Future<void> showProfile(BuildContext context) {
     barrierDismissible: true,
     builder: (context) {
       final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-      // final double width = MediaQuery.of(context).size.width;
-      // var horizontalPading = width * 0.28;
-      // log(horizontalPading.toString());
 
       return StatefulBuilder(
         builder: (context, setState) {

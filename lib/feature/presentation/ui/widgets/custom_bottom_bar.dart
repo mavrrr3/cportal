@@ -29,23 +29,25 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
     return Container(
       color: theme.cardColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(
-          widget.state.menuItems.length,
-          (index) => _MenuItem(
-            item: widget.state.menuItems[index],
-            state: widget.state,
-            index: index,
-            onTap: () {
-              if (widget.isNestedNavigation) {
-                context.pop();
-              }
-              setState(
-                () => BlocProvider.of<NavigationBarBloc>(context)
-                    .add(NavigationBarEventImpl(index: index)),
-              );
-            },
+      child: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(
+            widget.state.menuItems.length,
+            (index) => _MenuItem(
+              item: widget.state.menuItems[index],
+              state: widget.state,
+              index: index,
+              onTap: () {
+                if (widget.isNestedNavigation) {
+                  context.pop();
+                }
+                setState(
+                  () => BlocProvider.of<NavigationBarBloc>(context)
+                      .add(NavigationBarEventImpl(index: index)),
+                );
+              },
+            ),
           ),
         ),
       ),
