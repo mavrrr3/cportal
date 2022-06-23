@@ -25,12 +25,15 @@ class DeclarationsPage extends StatefulWidget {
   State<DeclarationsPage> createState() => _DeclarationsPageState();
 }
 
-class _DeclarationsPageState extends State<DeclarationsPage> {
+class _DeclarationsPageState extends State<DeclarationsPage>  with SingleTickerProviderStateMixin{
   late TextEditingController _searchController;
+    late TabController _tabController;
   late bool _isFilterOpenWeb;
   @override
   void initState() {
     _searchController = TextEditingController();
+    _tabController = TabController(length: 2, vsync: this);
+   
     _isFilterOpenWeb = false;
     _contentInit();
     super.initState();
@@ -77,11 +80,9 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                     if (state is ContactsLoadedState)
                       Expanded(
                         child: SafeArea(
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                                 const SizedBox(
                                   height: kIsWeb ? 12 : 11,
                                 ),
@@ -104,26 +105,61 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
                                     }
                                   },
                                 ),
-                                // Выбранные фильтры.
-                                SelectedFiltersView(
-                                  onRemove: (item, i) {
-                                    BlocProvider.of<FilterBloc>(
-                                      context,
-                                    ).add(
-                                      FilterRemoveItemEvent(
-                                        filterIndex: i,
-                                        item: item,
-                                      ),
-                                    );
-                                  },
-                                ),
+                              // Выбранные фильтры.
+                              SelectedFiltersView(
+                                onRemove: (item, i) {
+                                  BlocProvider.of<FilterBloc>(
+                                    context,
+                                  ).add(
+                                    FilterRemoveItemEvent(
+                                      filterIndex: i,
+                                      item: item,
+                                    ),
+                                  );
+                                },
+                              ),
 
-                                const WithDeclarations(),
-
-                                // Если ещё нет заявлений
-                                // const EmptyDeclarations(),
-                              ],
-                            ),
+                               SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: TabBar(
+                  labelStyle: theme.textTheme.px22.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                  labelColor: theme.primary,
+                  unselectedLabelColor: theme.cardColor,
+                  indicatorColor: theme.primary,
+                  controller: _tabController,
+                  tabs: [
+                    Tab(
+                      child: Text(
+                        'Заявления',
+                        style: theme.textTheme.px16
+                            .copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        'Новые',
+                        style: theme.textTheme.px16
+                            .copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              height: 1,
+              color: theme.divider,
+            ),
+                          
+                               WithDeclarations(tabController: _tabController,),
+                          
+                              // Если ещё нет заявлений
+                              // const EmptyDeclarations(),
+                            ],
                           ),
                         ),
                       ),
@@ -238,90 +274,34 @@ class NewDeclarations extends StatelessWidget {
   }
 }
 
-class WithDeclarations extends StatefulWidget {
-  const WithDeclarations({Key? key}) : super(key: key);
+class WithDeclarations extends StatelessWidget {
+  final TabController tabController;
 
-  @override
-  State<WithDeclarations> createState() => _WithDeclarationsState();
-}
-
-class _WithDeclarationsState extends State<WithDeclarations>
-    with SingleTickerProviderStateMixin {
-  late TabController tabController;
-
-  @override
-  void initState() {
-    tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
+  const WithDeclarations({Key? key, required this.tabController,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
+    return Expanded(
+      child: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+             
+              Expanded(
+                child: TabBarView(controller: tabController, children: const [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: TabBar(
-                      labelStyle: theme.textTheme.px22.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                      labelColor: theme.primary,
-                      unselectedLabelColor: theme.cardColor,
-                      indicatorColor: theme.primary,
-                      controller: tabController,
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            'Заявления',
-                            style: theme.textTheme.px16
-                                .copyWith(fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'Новые',
-                            style: theme.textTheme.px16
-                                .copyWith(fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
+                    padding: EdgeInsets.only(top: 24, left: 16, right: 16),
+                    child: AllDeclarations(),
                   ),
-                ],
+                  Padding(
+                    padding: EdgeInsets.only(top: 24),
+                    child: NewDeclarations(),
+                  ),
+                ]),
               ),
-            ),
-            Container(
-              height: 1,
-              color: theme.divider,
-            ),
-            Expanded(
-              child: TabBarView(controller: tabController, children: const [
-                Padding(
-                  padding: EdgeInsets.only(top: 24, left: 16, right: 16),
-                  child: AllDeclarations(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 24),
-                  child: NewDeclarations(),
-                ),
-              ]),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
