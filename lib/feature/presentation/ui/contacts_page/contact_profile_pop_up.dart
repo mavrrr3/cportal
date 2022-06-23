@@ -115,7 +115,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                               headline: state.profile.contactInfo[i].type,
                               text: state.profile.contactInfo[i].contact,
                               bottomPadding: 18,
-                              isEmail: state.profile.contactInfo[i].type == 'Эл. почта',
+                              hasEmail: state.profile.contactInfo[i].type == 'Эл. почта',
                             ) ;
 
                             } ,

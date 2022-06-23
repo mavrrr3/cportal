@@ -6,14 +6,14 @@ class ProfileInfoSection extends StatelessWidget {
   final String text;
   final Color? textColor;
   final double? bottomPadding;
-  final bool isEmail;
+  final bool hasEmail;
   const ProfileInfoSection({
     Key? key,
     required this.headline,
     required this.text,
     this.textColor,
     this.bottomPadding,
-    this.isEmail = false,
+    this.hasEmail = false,
   }) : super(key: key);
 
   @override
@@ -34,8 +34,8 @@ class ProfileInfoSection extends StatelessWidget {
             text,
             style: theme.textTheme.px16.copyWith(
               fontWeight: FontWeight.w700,
-              color: isEmail ? theme.primary :  textColor ?? theme.text,
-              decoration: isEmail ? TextDecoration.underline : null,
+              color: hasEmail ? theme.primary :  textColor ?? theme.text,
+              decoration: hasEmail ? TextDecoration.underline : null,
             ),
           ),
         ],
