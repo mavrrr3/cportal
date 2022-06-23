@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/app_config.dart';
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -63,7 +64,7 @@ class SingleNewsArticleWeb extends StatelessWidget {
                             child: Row(
                               children: [
                                 SvgPicture.asset(
-                                  'assets/icons/back_arrow.svg',
+                                  ImageAssets.backArrow,
                                   width: 16,
                                   color: theme.primary,
                                 ),
@@ -90,8 +91,7 @@ class SingleNewsArticleWeb extends StatelessWidget {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
                                     child: Image.network(
-                                      article.image ??
-                                          'http://${AppConfig.apiUri}/images/${article.image}',
+                                      '${AppConfig.imagesUrl}/${article.image}',
                                       fit: BoxFit.cover,
                                     ),
                                   ),
