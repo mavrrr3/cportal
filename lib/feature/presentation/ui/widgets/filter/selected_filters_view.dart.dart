@@ -24,7 +24,7 @@ class SelectedFiltersView extends StatelessWidget {
             return Column(
               children: [
                 SizedBox(
-                  height: _isAnyFilterSelected(state) ? 19 : 31,
+                  height: _isAnyFilterSelected(state.filters) ? 19 : 31,
                 ),
                 ListView.builder(
                   shrinkWrap: true,
@@ -57,7 +57,7 @@ class SelectedFiltersView extends StatelessWidget {
                   },
                 ),
                 SizedBox(
-                  height: _isAnyFilterSelected(state) ? 8 : 0,
+                  height: _isAnyFilterSelected(state.filters) ? 8 : 0,
                 ),
               ],
             );
@@ -70,10 +70,10 @@ class SelectedFiltersView extends StatelessWidget {
     );
   }
 
-  bool _isAnyFilterSelected(FilterLoadedState state) {
+  bool _isAnyFilterSelected(List<FilterEntity> filters) {
     bool isActive = false;
     // ignore: avoid_function_literals_in_foreach_calls
-    state.filters.forEach((filter) {
+    filters.forEach((filter) {
       // ignore: avoid_function_literals_in_foreach_calls
       filter.items.forEach((item) {
         if (item.isActive) {
