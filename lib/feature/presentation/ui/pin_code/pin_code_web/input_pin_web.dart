@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,16 +16,15 @@ class InputPinWeb extends StatelessWidget {
   const InputPinWeb({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PinCodeBloc>(context, listen: false)
-        .add(EditPinCodeCheckEvent());
-                                 final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    BlocProvider.of<PinCodeBloc>(context, listen: false).add(EditPinCodeCheckEvent());
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Scaffold(
       backgroundColor: theme.background,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const LoaderWebWidget(),
+          const SplashWidget.desktop(),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -196,9 +195,7 @@ class HeaderText {
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: '',
-          error: _pinController.text.length == 4
-              ? AppLocalizations.of(context)!.pinNotCorrect
-              : '',
+          error: _pinController.text.length == 4 ? AppLocalizations.of(context)!.pinNotCorrect : '',
         );
       case PinCodeInputEnum.input:
         return HeaderTextWidget(
@@ -234,8 +231,7 @@ class HeaderTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       children: [
@@ -260,10 +256,8 @@ class HeaderTextWidget extends StatelessWidget {
             Text(
               secondText,
               style: theme.textTheme.px14.copyWith(
-                color: secondText ==
-                        AppLocalizations.of(context)!.itWillBeNeedToEnter
-                    ? theme.textLight
-                    : theme.primary,
+                color:
+                    secondText == AppLocalizations.of(context)!.itWillBeNeedToEnter ? theme.textLight : theme.primary,
               ),
             ),
           ],
@@ -274,8 +268,7 @@ class HeaderTextWidget extends StatelessWidget {
           children: [
             Text(
               error ?? '',
-              style:
-                  theme.textTheme.px14.copyWith(color: theme.red),
+              style: theme.textTheme.px14.copyWith(color: theme.red),
             ),
           ],
         ),
