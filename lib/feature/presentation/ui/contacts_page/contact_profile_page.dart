@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
@@ -171,21 +172,21 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             children: [
                               // Call.
                               _ActionButton(
-                                img: 'assets/icons/phone.svg',
+                                img: ImageAssets.phone,
                                 onTap: () {},
                               ),
                               const SizedBox(width: 16),
 
                               // Message.
                               _ActionButton(
-                                img: 'assets/icons/message.svg',
+                                img: ImageAssets.message,
                                 onTap: () {},
                               ),
                               const SizedBox(width: 16),
 
                               // Send email.
                               _ActionButton(
-                                img: 'assets/icons/email.svg',
+                                img: ImageAssets.email,
                                 onTap: () {},
                               ),
                             ],
@@ -236,7 +237,7 @@ class _BackButton extends StatelessWidget {
       child: Stack(
         children: [
           SvgPicture.asset(
-            'assets/icons/back_arrow.svg',
+            ImageAssets.backArrow,
             color: theme.text,
             width: 16,
           ),

@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/open_filter_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
