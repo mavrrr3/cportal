@@ -53,14 +53,12 @@ class NewsCardItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
+                Text(
                   overflow: TextOverflow.ellipsis,
                   maxLines: 4,
-                  text: TextSpan(
-                    text: item.header,
-                    style: theme.textTheme.px14.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                  item.header,
+                  style: theme.textTheme.px14.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 4),
