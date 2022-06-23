@@ -76,7 +76,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Profile Image & Full Name.
-                          ProfileImage(user: state.profile),
+                          ProfileImage(user: state.profile, size: 102, borderRadius: 24,),
                           const SizedBox(height: 12),
                           Align(
                             alignment: Alignment.center,
