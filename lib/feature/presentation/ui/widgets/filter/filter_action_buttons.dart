@@ -17,24 +17,26 @@ class FilterActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Применить.
-        _FilterActionButton(
-          text: AppLocalizations.of(context)!.apply,
-          width: width,
-          onTap: onApply,
-        ),
-
-        // Очистить.
-        _FilterActionButton(
-          text: AppLocalizations.of(context)!.clear_all,
-          width: width,
-          onTap: onClear,
-          isOutline: true,
-        ),
-      ],
+    return SafeArea(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Применить.
+          _FilterActionButton(
+            text: AppLocalizations.of(context)!.apply,
+            width: width,
+            onTap: onApply,
+          ),
+    
+          // Очистить.
+          _FilterActionButton(
+            text: AppLocalizations.of(context)!.clear_all,
+            width: width,
+            onTap: onClear,
+            isOutline: true,
+          ),
+        ],
+      ),
     );
   }
 }
