@@ -11,11 +11,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // Filter Bottom Sheet Mobile.
 Future<void> showFilterMobile(
-  BuildContext context,
-  CustomTheme theme, {
+  BuildContext context, {
   required Function() onApply,
   required Function() onClear,
 }) async {
+  final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -45,9 +46,6 @@ Future<void> showFilterMobile(
     ),
   );
 }
-
-
-
 
 class FilterMobile extends StatefulWidget {
   final ScrollController scrollController;

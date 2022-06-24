@@ -107,5 +107,6 @@
     "vocationDeclaration": "Заявление\nна отпуск",
     "supportDeclaration": "Заявление\nна техническую поддержку/IT",
     "shortSupportDeclaration": "Заявление на тех. поддержку/IT",
-    "inProcess": "В процессе"
+    "inProcess": "В процессе",
+    "declarationsArchive": "Архив заявлений"
 }

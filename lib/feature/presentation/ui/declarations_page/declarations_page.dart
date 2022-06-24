@@ -4,19 +4,17 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tab_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tabs_content.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/all_declarations.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/you_hadnt_declarations_title.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeclarationsPage extends StatefulWidget {
   const DeclarationsPage({Key? key}) : super(key: key);
@@ -25,15 +23,11 @@ class DeclarationsPage extends StatefulWidget {
   State<DeclarationsPage> createState() => _DeclarationsPageState();
 }
 
-class _DeclarationsPageState extends State<DeclarationsPage>  with SingleTickerProviderStateMixin{
-  late TextEditingController _searchController;
-    late TabController _tabController;
+class _DeclarationsPageState extends State<DeclarationsPage> {
   late bool _isFilterOpenWeb;
+
   @override
   void initState() {
-    _searchController = TextEditingController();
-    _tabController = TabController(length: 2, vsync: this);
-   
     _isFilterOpenWeb = false;
     _contentInit();
     super.initState();
@@ -78,91 +72,21 @@ class _DeclarationsPageState extends State<DeclarationsPage>  with SingleTickerP
                         child: Center(child: CircularProgressIndicator()),
                       ),
                     if (state is ContactsLoadedState)
-                      Expanded(
-                        child: SafeArea(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                const SizedBox(
-                                  height: kIsWeb ? 12 : 11,
-                                ),
-                                SearchWithFilter(
-                                  searchController: _searchController,
-                                  onSearch: (text) {},
-                                  onFilterTap: () async {
-                                    if (!ResponsiveWrapper.of(context)
-                                        .isLargerThan(MOBILE)) {
-                                      await showFilterMobile(
-                                        context,
-                                        theme,
-                                        onApply: _onApplyFilter,
-                                        onClear: _onClearFilter,
-                                      );
-                                    } else {
-                                      setState(() {
-                                        _isFilterOpenWeb = true;
-                                      });
-                                    }
-                                  },
-                                ),
-                              // Выбранные фильтры.
-                              SelectedFiltersView(
-                                onRemove: (item, i) {
-                                  BlocProvider.of<FilterBloc>(
-                                    context,
-                                  ).add(
-                                    FilterRemoveItemEvent(
-                                      filterIndex: i,
-                                      item: item,
-                                    ),
-                                  );
-                                },
-                              ),
-
-                               SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: TabBar(
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  labelStyle: theme.textTheme.px22.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                  labelColor: theme.primary,
-                  unselectedLabelColor: theme.cardColor,
-                  indicatorColor: theme.primary,
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        'Заявления',
-                        style: theme.textTheme.px16
-                            .copyWith(fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        'Новые',
-                        style: theme.textTheme.px16
-                            .copyWith(fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: 1,
-              color: theme.divider,
-            ),
-                          
-                               WithDeclarations(tabController: _tabController,),
-                          
-                              // Если ещё нет заявлений
-                              // const EmptyDeclarations(),
-                            ],
-                          ),
-                        ),
+                      _DeclarationsPageContent(
+                        onFilterTap: () async {
+                          if (!ResponsiveWrapper.of(context)
+                              .isLargerThan(MOBILE)) {
+                            await showFilterMobile(
+                              context,
+                              onApply: _onApplyFilter,
+                              onClear: _onClearFilter,
+                            );
+                          } else {
+                            setState(() {
+                              _isFilterOpenWeb = true;
+                            });
+                          }
+                        },
                       ),
                   ],
                 ),
@@ -210,101 +134,82 @@ class _DeclarationsPageState extends State<DeclarationsPage>  with SingleTickerP
   }
 }
 
-class NewDeclarations extends StatelessWidget {
-  const NewDeclarations({
+class _DeclarationsPageContent extends StatefulWidget {
+  final Function() onFilterTap;
+
+  const _DeclarationsPageContent({
     Key? key,
+    required this.onFilterTap,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final halfWidth = MediaQuery.of(context).size.width / 2 - 24;
-
-    return Column(
-      children: [
-        // ! Отображать если нет заявлений.
-        const YouHadntDeclarationsTitle(),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DeclarationCard(
-                    width: halfWidth,
-                    svgPath: 'assets/icons/calendar.svg',
-                    text: AppLocalizations.of(context)!.buisenesTripDeclaration,
-                  ),
-                  DeclarationCard(
-                    width: halfWidth,
-                    svgPath: 'assets/icons/fly_vocation.svg',
-                    text: AppLocalizations.of(context)!.vocationDeclaration,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DeclarationCard(
-                    width: halfWidth,
-                    svgPath: 'assets/icons/lock.svg',
-                    text: AppLocalizations.of(context)!.passDeclaration,
-                  ),
-                  DeclarationCard(
-                    width: halfWidth,
-                    svgPath: 'assets/icons/pay_list.svg',
-                    text: AppLocalizations.of(context)!.payListDeclaration,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              DeclarationCard(
-                width: double.infinity,
-                svgPath: 'assets/icons/support.svg',
-                text: AppLocalizations.of(context)!.supportDeclaration,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  State<_DeclarationsPageContent> createState() =>
+      _DeclarationsPageContentState();
 }
 
-class WithDeclarations extends StatelessWidget {
-  final TabController tabController;
+class _DeclarationsPageContentState extends State<_DeclarationsPageContent>
+    with SingleTickerProviderStateMixin {
+  late TextEditingController _searchController;
+  late TabController _tabController;
 
-  const WithDeclarations({Key? key, required this.tabController,}) : super(key: key);
+  @override
+  void initState() {
+    _searchController = TextEditingController();
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-             
-              Expanded(
-                child: TabBarView(controller: tabController, children: const [
-                  Padding(
-                    padding: EdgeInsets.only(top: 24, left: 16, right: 16),
-                    child: AllDeclarations(),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: kIsWeb ? 12 : 11,
+            ),
+
+            // Строка с поиском.
+            SearchWithFilter(
+              searchController: _searchController,
+              onSearch: (text) {},
+              onFilterTap: widget.onFilterTap,
+            ),
+
+            // Выбранные фильтры.
+            SelectedFiltersView(
+              onRemove: (item, i) {
+                BlocProvider.of<FilterBloc>(
+                  context,
+                ).add(
+                  FilterRemoveItemEvent(
+                    filterIndex: i,
+                    item: item,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 24),
-                    child: NewDeclarations(),
-                  ),
-                ]),
-              ),
-            ],
-          ),
+                );
+              },
+            ),
+
+            // Заголовки вкладок.
+            DeclarationsTabBar(
+              tabController: _tabController,
+            ),
+
+            // Контент вкладок.
+            DeclarationsTabsContent(
+              tabController: _tabController,
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+    _tabController.dispose();
   }
 }

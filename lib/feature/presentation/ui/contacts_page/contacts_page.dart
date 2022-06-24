@@ -15,7 +15,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mo
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,7 +111,6 @@ class _ContactsPageState extends State<ContactsPage> {
                                     .isLargerThan(MOBILE)) {
                                   await showFilterMobile(
                                     context,
-                                    theme,
                                     onApply: _onApplyFilter,
                                     onClear: _onClearFilter,
                                   );
