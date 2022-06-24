@@ -119,7 +119,7 @@ class SingleNewsArticleWeb extends StatelessWidget {
                                   runSpacing: 16,
                                   spacing: 16,
                                   children: List.generate(
-                                    articlesToRecomendations(article.id).length,
+                                    AppConfig.numberRecomendedArticlesWeb,
                                     (i) {
                                       return GestureDetector(
                                         onTap: () =>
