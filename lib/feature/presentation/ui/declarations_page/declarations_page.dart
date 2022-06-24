@@ -38,7 +38,7 @@ class _DeclarationsPageState extends State<DeclarationsPage> {
     BlocProvider.of<ContactsBloc>(context, listen: false)
         .add(const FetchContactsEvent());
     BlocProvider.of<FilterBloc>(context, listen: false)
-        .add(FetchFiltersEvent());
+        .add(const FetchFiltersEvent(endPoint: 'declarations'));
   }
 
   @override

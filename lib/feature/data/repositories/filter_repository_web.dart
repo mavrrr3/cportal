@@ -11,9 +11,9 @@ class FilterRepositoryWeb implements IFilterRepository {
   FilterRepositoryWeb({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<FilterModel>>> fetchFilters() async {
+  Future<Either<Failure, FilterResponseModel>> fetchFilters(String endpoint) async {
     try {
-      final remoteFilters = await remoteDataSource.fetchFilters();
+      final remoteFilters = await remoteDataSource.fetchFilters(endpoint);
 
       return Right(remoteFilters);
     } on ServerException {

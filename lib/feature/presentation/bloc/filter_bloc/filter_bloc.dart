@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
@@ -57,7 +59,9 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       }
     }
 
-    final failureOrFilters = await fetchFilters();
+    final failureOrFilters = await fetchFilters(
+      FetchFiltersParams(endPoint: event.endPoint),
+    );
 
     failureOrFilters.fold(
       (failure) {
@@ -65,7 +69,12 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           message: _mapFailureToMessage(failure),
         ));
       },
-      (filters) {
+      (response) {
+        final List<FilterEntity> filters = [];
+        // ignore: unnecessary_lambdas
+        response.filters.forEach((element) {
+          filters.add(element);
+        });
         emit(FilterLoadedState(filters: filters));
       },
     );

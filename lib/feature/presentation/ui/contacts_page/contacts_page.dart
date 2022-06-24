@@ -47,7 +47,7 @@ class _ContactsPageState extends State<ContactsPage> {
     BlocProvider.of<ContactsBloc>(context, listen: false)
         .add(const FetchContactsEvent(isFirstFetch: true));
     BlocProvider.of<FilterBloc>(context, listen: false)
-        .add(FetchFiltersEvent());
+        .add(const FetchFiltersEvent(endPoint: 'contacts'));
   }
 
   @override

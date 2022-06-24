@@ -8,12 +8,12 @@ abstract class IFilterLocalDataSource {
   /// Извлекаем [List<FilterModel>] из кеша
   ///
   /// Пробрасываем все ошибки через [CacheException]
-  Future<List<FilterModel>> fetchFiltersFromCache();
+  Future<FilterResponseModel> fetchFiltersFromCache();
 
   /// Сохраняем [List<FilterModel>] в кэш
   ///
   /// Пробрасываем все ошибки через [CacheException]
-  Future<void> filtersToCache(List<FilterModel> filters);
+  Future<void> filtersToCache(FilterResponseModel filters, String endpoint);
 }
 
 class FilterLocalDataSource implements IFilterLocalDataSource {
@@ -22,33 +22,36 @@ class FilterLocalDataSource implements IFilterLocalDataSource {
   FilterLocalDataSource(this.hive);
 
   @override
-  Future<List<FilterModel>> fetchFiltersFromCache() async {
-    final box = await hive.openBox<List<FilterModel>>('filters');
+  Future<FilterResponseModel> fetchFiltersFromCache() async {
+    final box = await hive.openBox<FilterResponseModel>('filters');
 
     final filters = box.get('filters');
 
     if (kDebugMode) log('List<FilterModel> из кэша $filters');
 
-    await Hive.box<List<FilterModel>>('filters').close();
+    await Hive.box<FilterResponseModel>('filters').close();
 
     return filters!;
   }
 
   @override
-  Future<void> filtersToCache(List<FilterModel> filters) async {
+  Future<void> filtersToCache(
+    FilterResponseModel filters,
+    String endPoint,
+  ) async {
     // Удаляет box с диска.
-    // await Hive.deleteBoxFromDisk('filters');
-    var box = await Hive.openBox<List<FilterModel>>('filters');
-    if (!Hive.isBoxOpen('filters')) {
-      await Hive.openBox<List<FilterModel>>('filters');
+    await Hive.deleteBoxFromDisk('filters_$endPoint');
+    var box = await Hive.openBox<FilterResponseModel>('filters_$endPoint');
+    if (!Hive.isBoxOpen('filters_$endPoint')) {
+      await Hive.openBox<FilterResponseModel>('filters_$endPoint');
     } else {
-      box = await Hive.openBox<List<FilterModel>>('filters');
+      box = await Hive.openBox<FilterResponseModel>('filters_$endPoint');
     }
 
-    log('List<FilterModel> сохранил в кэш ${filters.length}');
+    log('FilterResponseModel сохранил в кэш ${filters.filters.length}');
 
-    await box.put('filters', filters);
+    await box.put('filters_$endPoint', filters);
 
-    await Hive.box<List<FilterModel>>('filters').close();
+    await Hive.box<FilterResponseModel>('filters_$endPoint').close();
   }
 }

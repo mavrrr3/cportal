@@ -9,7 +9,7 @@ abstract class IFilterRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем ошибки через [ServerException]
-  Future<List<FilterModel>> fetchFilters();
+  Future<FilterResponseModel> fetchFilters(String endpoint);
 }
 
 class FilterRemoteDataSource implements IFilterRemoteDataSource {
@@ -18,15 +18,18 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   FilterRemoteDataSource(this.localDatasource);
 
   @override
-  Future<List<FilterModel>> fetchFilters() async {
+  Future<FilterResponseModel> fetchFilters(String endpoint) async {
     try {
-      final remoteFilters = [
-        _filter1,
-        _filter2,
-      ];
+      late FilterResponseModel remoteFilters;
+      // ignore: prefer-conditional-expressions
+      if (endpoint == 'contacts') {
+        remoteFilters = _filter1;
+      } else {
+        remoteFilters = _filter2;
+      }
 
       log('FilterRemouteDataSource  ==========  $remoteFilters');
-      await localDatasource.filtersToCache(remoteFilters);
+      await localDatasource.filtersToCache(remoteFilters, endpoint);
 
       return remoteFilters;
     } on ServerException {
@@ -35,26 +38,54 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   }
 }
 
-const FilterModel _filter1 = FilterModel(
-  headline: 'Компания',
-  items: [
-    FilterItemModel(name: 'АЭМ3'),
-    FilterItemModel(name: 'Новосталь-М'),
-    FilterItemModel(name: 'Демедия'),
+/// Контакты.
+/// // ignore: prefer_const_constructors
+// ignore: prefer_const_constructors
+const FilterResponseModel _filter1 = FilterResponseModel(
+  filters: [
+    FilterModel(
+      headline: 'Компания',
+      items: [
+        FilterItemModel(name: 'АЭМ3'),
+        FilterItemModel(name: 'Новосталь-М'),
+        FilterItemModel(name: 'Демедия'),
+      ],
+    ),
+    FilterModel(
+      headline: 'Отдел',
+      items: [
+        FilterItemModel(name: 'Информационные технологии'),
+        FilterItemModel(name: 'Отдел кадров'),
+        FilterItemModel(name: 'Служба безопасности'),
+        FilterItemModel(name: 'Менеджеры по документообороту'),
+        FilterItemModel(name: 'Отдел мобильной разработки'),
+        FilterItemModel(name: 'Отдел продаж'),
+        FilterItemModel(name: 'Производственный отдел'),
+        FilterItemModel(name: 'Отдел сбыта'),
+        FilterItemModel(name: 'Администрация'),
+      ],
+    ),
   ],
 );
 
-const FilterModel _filter2 = FilterModel(
-  headline: 'Отдел',
-  items: [
-    FilterItemModel(name: 'Информационные технологии'),
-    FilterItemModel(name: 'Отдел кадров'),
-    FilterItemModel(name: 'Служба безопасности'),
-    FilterItemModel(name: 'Менеджеры по документообороту'),
-    FilterItemModel(name: 'Отдел мобильной разработки'),
-    FilterItemModel(name: 'Отдел продаж'),
-    FilterItemModel(name: 'Производственный отдел'),
-    FilterItemModel(name: 'Отдел сбыта'),
-    FilterItemModel(name: 'Администрация'),
+/// Заявления.
+const FilterResponseModel _filter2 = FilterResponseModel(
+  filters: [
+    FilterModel(
+      headline: 'Статус',
+      items: [
+        FilterItemModel(name: 'Одобрено'),
+        FilterItemModel(name: 'Отклонено'),
+        FilterItemModel(name: 'Обработка'),
+      ],
+    ),
+    FilterModel(
+      headline: 'Категория',
+      items: [
+        FilterItemModel(name: 'Отдел кадров'),
+        FilterItemModel(name: 'Служба безопасности'),
+        FilterItemModel(name: 'Информационные технологии'),
+      ],
+    ),
   ],
 );

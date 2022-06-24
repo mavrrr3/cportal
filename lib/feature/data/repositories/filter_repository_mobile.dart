@@ -18,10 +18,12 @@ class FilterRepositoryMobile implements IFilterRepository {
     required this.networkInfo,
   });
   @override
-  Future<Either<Failure, List<FilterModel>>> fetchFilters() async {
+  Future<Either<Failure, FilterResponseModel>> fetchFilters(
+    String endpoint,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteFilters = await remoteDataSource.fetchFilters();
+        final remoteFilters = await remoteDataSource.fetchFilters(endpoint);
 
         return Right(remoteFilters);
       } on ServerException {
