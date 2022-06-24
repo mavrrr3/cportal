@@ -13,8 +13,23 @@ class HorizontalListViewMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-        ? SizedBox(
+    return ResponsiveWrapper.of(context).isLargerThan(TABLET)
+        ? Padding(
+            padding: getHorizontalPadding(context),
+            child: Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: List.generate(
+                gridViewMap.length,
+                (i) => CardHorizontalScroll(
+                  icon: gridViewMap[i]['icon'] as IconData,
+                  text: gridViewMap[i]['text'] as String,
+                  color: color,
+                ),
+              ),
+            ),
+          )
+        : SizedBox(
             height: 92,
             width: double.infinity,
             child: ListView.builder(
@@ -41,21 +56,6 @@ class HorizontalListViewMain extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          )
-        : Padding(
-            padding: getHorizontalPadding(context),
-            child: Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: List.generate(
-                gridViewMap.length,
-                (i) => CardHorizontalScroll(
-                  icon: gridViewMap[i]['icon'] as IconData,
-                  text: gridViewMap[i]['text'] as String,
-                  color: color,
-                ),
-              ),
             ),
           );
   }
