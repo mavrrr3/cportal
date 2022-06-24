@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -17,7 +18,7 @@ class NewsMainWeb extends StatelessWidget {
         spacing: 16,
         runSpacing: 20,
         children: List.generate(
-          6,
+          AppConfig.numberNewsArticlesOnMain,
           (i) => NewsCardSimilarItem(
             onTap: () => GoRouter.of(context).pushNamed(
               NavigationRouteNames.newsArticlePage,

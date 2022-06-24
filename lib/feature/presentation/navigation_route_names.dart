@@ -61,7 +61,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/splash_screen',
+  initialLocation: '/',
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -89,7 +89,9 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,

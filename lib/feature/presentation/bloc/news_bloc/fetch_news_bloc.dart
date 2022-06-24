@@ -60,7 +60,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
               tabs.add(tab);
             }
           }
-          log('+++++++++++News tabs из КеШа++ $tabsFromCache ++News tabs из КеШа+++++++++++++');
         }
       }
       void _loadedNewsToArticles(NewsEntity news) {
@@ -68,7 +67,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         final articles = (state as NewsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);
-        log('Загрузилось ${articles.length} статей');
 
         // Создание листа со всеми вкладками.
         for (final tab in news.response.categories!) {
@@ -117,8 +115,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         final articles = (state as NewsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);
-
-        log('Загрузилось ${articles.length} статей из категории ${event.category}');
 
         /// Создание листа со всеми вкладками.
 

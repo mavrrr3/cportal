@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/news_card_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_card_similar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,7 +42,7 @@ class NewsMainMobile extends StatelessWidget {
                           ? 16
                           : getSingleHorizontalPadding(context),
                     ),
-                    child: NewsCardItem(
+                    child: NewsCardSimilarItem(
                       item: articles[i],
                       onTap: () => GoRouter.of(context).pushNamed(
                         NavigationRouteNames.newsArticlePage,
