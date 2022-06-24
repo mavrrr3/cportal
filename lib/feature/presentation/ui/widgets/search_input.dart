@@ -1,9 +1,8 @@
-import 'dart:developer';
-
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchInput extends StatelessWidget {
@@ -25,7 +24,6 @@ class SearchInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    log('${theme.brightness}');
 
     return Container(
       width: getSearchContainerWidth(context),
@@ -39,11 +37,9 @@ class SearchInput extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(10),
-            child: SvgIcon(
-              theme.brightness == Brightness.dark ? theme.white : null,
-              path: 'search.svg',
-              width: 20,
-            ),
+            child: 
+            SvgPicture.asset(ImageAssets.search, color: theme.brightness == Brightness.dark ? theme.white : null,width: 20,),
+           
           ),
           SizedBox(
             width:
@@ -53,6 +49,7 @@ class SearchInput extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               textInputAction: TextInputAction.search,
+              autocorrect: false,
               onChanged: onChanged,
               style: theme.textTheme.px14.copyWith(
                 color: theme.textLight,

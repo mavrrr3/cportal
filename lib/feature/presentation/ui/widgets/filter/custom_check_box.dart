@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,7 +41,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
         ),
         child: widget.isActive
             ? SvgPicture.asset(
-                'assets/icons/check_mark.svg',
+                ImageAssets.checkmark,
                 width: 12,
               )
             : const SizedBox(),

@@ -1,10 +1,10 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/profile_info_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -51,6 +51,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
 
         if (state is GetSingleProfileLoadedState) {
           return Material(
+            color: theme.cardColor,
             child: SizedBox(
               height: 660,
               child: Stack(
@@ -76,20 +77,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Profile Image & Full Name.
-                          Align(
-                            alignment: Alignment.center,
-                            child: state.profile.photoLink != ''
-                                ? AvatarBox(
-                                    size: 102,
-                                    imgPath: state.profile.photoLink,
-                                    borderRadius: 24,
-                                  )
-                                : EmptyAvatarBox(
-                                    size: 102,
-                                    borderRadius: 24,
-                                    user: state.profile,
-                                  ),
-                          ),
+                          ProfileImage(user: state.profile, size: 102, borderRadius: 24,),
                           const SizedBox(height: 12),
                           Align(
                             alignment: Alignment.center,
@@ -109,28 +97,36 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                             text: state.profile.position,
                             bottomPadding: 18,
                           ),
-          
+
                           // Department.
                           ProfileInfoSection(
                             headline: AppLocalizations.of(context)!.department,
                             text: state.profile.department,
                             bottomPadding: 18,
                           ),
-          
+
                           // Contact info.
                           ...List.generate(
                             state.profile.contactInfo.length,
-                            (i) => ProfileInfoSection(
+                            (i){
+                            return
+                            
+                             ProfileInfoSection(
                               headline: state.profile.contactInfo[i].type,
                               text: state.profile.contactInfo[i].contact,
                               bottomPadding: 18,
-                            ),
+                              hasEmail: state.profile.contactInfo[i].type == 'Эл. почта',
+                            ) ;
+
+                            } ,
+                            
                           ),
-          
+
                           // Birth date.
                           if (state.profile.birthDayToString != null)
                             ProfileInfoSection(
-                              headline: AppLocalizations.of(context)!.birth_date,
+                              headline:
+                                  AppLocalizations.of(context)!.birth_date,
                               text: state.profile.birthDayToString!,
                               bottomPadding: 0,
                             ),
@@ -207,7 +203,7 @@ class _ActionButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SvgPicture.asset(
-                  'assets/icons/message.svg',
+                  ImageAssets.message,
                   width: 24,
                   color: _getTextColor(theme, isAnimation),
                 ),
