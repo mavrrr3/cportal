@@ -1,14 +1,14 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_text.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 
 final _pinController = TextEditingController();
 
@@ -16,7 +16,8 @@ class CreatePinWeb extends StatelessWidget {
   const CreatePinWeb({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PinCodeBloc>(context, listen: false).add(PinCodeCheckEvent());
+    BlocProvider.of<PinCodeBloc>(context, listen: false)
+        .add(PinCodeCheckEvent());
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,7 +63,10 @@ class BodyWidget extends StatelessWidget {
           input,
           context,
         ),
-        if (input == PinCodeInputEnum.repeat) const PinCodeRepeat() else const PinCodeInput(),
+        if (input == PinCodeInputEnum.repeat)
+          const PinCodeRepeat()
+        else
+          const PinCodeInput(),
       ],
     );
   }
@@ -112,14 +116,17 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    final PinCodeBloc pinCodeBloc = BlocProvider.of<PinCodeBloc>(context, listen: false);
+    final PinCodeBloc pinCodeBloc =
+        BlocProvider.of<PinCodeBloc>(context, listen: false);
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     final defaultPinTheme = PinTheme(
       width: 16,
       height: 16,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.light ? theme.textLight?.withOpacity(0.2) : theme.background,
+        color: theme.brightness == Brightness.light
+            ? theme.textLight?.withOpacity(0.2)
+            : theme.background,
         borderRadius: BorderRadius.circular(15),
       ),
     );
@@ -129,9 +136,9 @@ class _PinCodeInputState extends State<PinCodeInput> {
         return Pinput(
           autofocus: true,
           obscureText: true,
-          obscuringWidget: SvgIcon(
-            state.isWrongPin ? AppColors.red : AppColors.blue,
-            path: 'obscure_symbol.svg',
+          obscuringWidget: SvgPicture.asset(
+            ImageAssets.obscureSymbol,
+            color: state.isWrongPin ? theme.red : theme.primary,
             width: 16,
           ),
           useNativeKeyboard: true,
@@ -196,14 +203,17 @@ class _PinCodeRepeatState extends State<PinCodeRepeat> {
 
   @override
   Widget build(BuildContext context) {
-    final PinCodeBloc pinCodeBloc = BlocProvider.of<PinCodeBloc>(context, listen: false);
+    final PinCodeBloc pinCodeBloc =
+        BlocProvider.of<PinCodeBloc>(context, listen: false);
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     final defaultPinTheme = PinTheme(
       width: 16,
       height: 16,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.light ? theme.textLight?.withOpacity(0.2) : theme.background,
+        color: theme.brightness == Brightness.light
+            ? theme.textLight?.withOpacity(0.2)
+            : theme.background,
         borderRadius: BorderRadius.circular(15),
       ),
     );
@@ -213,9 +223,9 @@ class _PinCodeRepeatState extends State<PinCodeRepeat> {
         return Pinput(
           autofocus: true,
           obscureText: true,
-          obscuringWidget: SvgIcon(
-            state.isWrongPin ? AppColors.red : AppColors.blue,
-            path: 'obscure_symbol.svg',
+          obscuringWidget: SvgPicture.asset(
+            ImageAssets.obscureSymbol,
+            color: state.isWrongPin ? theme.red : theme.primary,
             width: 16,
           ),
           useNativeKeyboard: true,

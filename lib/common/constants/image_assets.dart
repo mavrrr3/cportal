@@ -16,4 +16,5 @@ abstract class ImageAssets {
   static const lock = '$iconsPath/lock.svg';
   static const payList = '$iconsPath/pay_list.svg';
   static const support = '$iconsPath/support.svg';
+  static const obscureSymbol = '$iconsPath/obscure_symbol.svg';
 }
