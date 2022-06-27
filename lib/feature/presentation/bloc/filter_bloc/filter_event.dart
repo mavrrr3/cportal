@@ -8,14 +8,7 @@ abstract class FilterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchFiltersEvent extends FilterEvent {
-  final String endPoint;
-
-  const FetchFiltersEvent({required this.endPoint});
-
-  @override
-  List<Object> get props => [endPoint];
-}
+class FetchFiltersEvent extends FilterEvent {}
 
 class FilterExpandSectionEvent extends FilterEvent {
   final int index;

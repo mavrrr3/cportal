@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'dart:async';
+import 'dart:developer';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
@@ -46,6 +47,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
     FetchFiltersEvent event,
     Emitter emit,
   ) async {
+    final oldState = state;
     emit(FilterLoadingState());
 
     String _mapFailureToMessage(Failure failure) {
@@ -75,7 +77,13 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
         response.filters.forEach((element) {
           filters.add(element);
         });
-        emit(ContactsFiltersLoadedState(filters: filters));
+
+        FilterLoadedState? newState;
+        if (oldState is FilterLoadedState) {
+          newState = oldState.copyWith(contactsFilters: filters);
+        }
+
+        emit(newState ?? FilterLoadedState(contactsFilters: filters));
       },
     );
 
@@ -87,15 +95,16 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
     FilterExpandSectionEvent event,
     Emitter emit,
   ) async {
-    if (state is ContactsFiltersLoadedState) {
-      final List<FilterEntity> filters = (state as ContactsFiltersLoadedState).filters;
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).contactsFilters;
       FilterEntity filter = filters[event.index];
       filter = filter.copyWith(isActive: filter.changeActivity);
 
       filters[event.index] = switchFilterEntityToFilterModel(filter);
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: filters);
 
       emit(FilterLoadingState());
-      emit(ContactsFiltersLoadedState(filters: filters));
+      emit(newState);
     }
   }
 
@@ -104,17 +113,18 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
     FilterSelectItemEvent event,
     Emitter emit,
   ) {
-    if (state is ContactsFiltersLoadedState) {
-      final List<FilterEntity> filters = (state as ContactsFiltersLoadedState).filters;
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).contactsFilters;
       final FilterEntity filter = filters[event.filterIndex];
       final FilterItemEntity filterItem = filters[event.filterIndex].items[event.itemIndex];
 
       final List<FilterItemEntity> itemsWithSelect = selectItems(filter, filterItem);
       final FilterEntity filterWithSelect = filter.copyWith(items: itemsWithSelect);
       filters[event.filterIndex] = switchFilterEntityToFilterModel(filterWithSelect);
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: filters);
 
       emit(FilterLoadingState());
-      emit(ContactsFiltersLoadedState(filters: filters));
+      emit(newState);
     }
   }
 
@@ -123,8 +133,8 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
     FilterRemoveItemEvent event,
     Emitter emit,
   ) async {
-    if (state is ContactsFiltersLoadedState) {
-      final List<FilterEntity> filters = (state as ContactsFiltersLoadedState).filters;
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).contactsFilters;
 
       final int itemIndex = filters[event.filterIndex].items.indexOf(event.item);
       final FilterEntity filter = filters[event.filterIndex];
@@ -133,9 +143,10 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
       final List<FilterItemEntity> itemsWithSelect = selectItems(filter, filterItem);
       final FilterEntity filterWithSelect = filter.copyWith(items: itemsWithSelect);
       filters[event.filterIndex] = switchFilterEntityToFilterModel(filterWithSelect);
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: filters);
 
       emit(FilterLoadingState());
-      emit(ContactsFiltersLoadedState(filters: filters));
+      emit(newState);
     }
   }
 
@@ -144,8 +155,8 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
     FilterRemoveAllEvent event,
     Emitter emit,
   ) async {
-    if (state is ContactsFiltersLoadedState) {
-      final List<FilterEntity> filters = (state as ContactsFiltersLoadedState).filters;
+    if (state is FilterLoadedState) {
+      final List<FilterEntity> filters = (state as FilterLoadedState).contactsFilters;
 
       // ignore: prefer-correct-identifier-length
       for (int i = 0; i < filters.length; i++) {
@@ -164,9 +175,10 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
           filters[i] = switchFilterEntityToFilterModel(filterWithoutSelect);
         }
       }
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: filters);
 
       emit(FilterLoadingState());
-      emit(ContactsFiltersLoadedState(filters: filters));
+      emit(newState);
 
       debugPrint('Отработал эвент: $event');
     }

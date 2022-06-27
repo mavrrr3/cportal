@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_view_row.dart';
 
 class SelectedFiltersView extends StatelessWidget {
+  final List<FilterEntity> filters;
   final Function(FilterItemEntity, int) onRemove;
 
   /// Рендеринг всех выбранных фильтров.
   const SelectedFiltersView({
     Key? key,
+    required this.filters,
     required this.onRemove,
   }) : super(key: key);
 
@@ -19,53 +18,44 @@ class SelectedFiltersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: getHorizontalPadding(context),
-      child: BlocBuilder<FilterContactsBloc, FilterState>(
-        builder: (context, state) {
-          if (state is ContactsFiltersLoadedState) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: _isAnyFilterSelected(state.filters) ? 19 : 31,
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.filters.length,
-                  itemBuilder: (context, index) {
-                    // Выбран ли хоть один пункт в текущем разделе фильтра.
-                    final bool isActive = state.filters[index].items.any((element) => element.isActive);
+      child: Column(
+        children: [
+          SizedBox(
+            height: _isAnyFilterSelected(filters) ? 19 : 31,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: filters.length,
+            itemBuilder: (context, index) {
+              // Выбран ли хоть один пункт в текущем разделе фильтра.
+              final bool isActive = filters[index].items.any((element) => element.isActive);
 
-                    // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
-                    final List<FilterItemEntity> selectedItems = [];
-                    if (isActive) {
-                      for (final item in state.filters[index].items) {
-                        if (item.isActive) {
-                          selectedItems.add(item);
-                        }
-                      }
-                    }
+              // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
+              final List<FilterItemEntity> selectedItems = [];
+              if (isActive) {
+                for (final item in filters[index].items) {
+                  if (item.isActive) {
+                    selectedItems.add(item);
+                  }
+                }
+              }
 
-                    return isActive
-                        ? Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: FilterViewRow(
-                              headline: state.filters[index].headline,
-                              selectedItems: selectedItems,
-                              onClose: onRemove,
-                            ),
-                          )
-                        : const SizedBox();
-                  },
-                ),
-                SizedBox(
-                  height: _isAnyFilterSelected(state.filters) ? 8 : 0,
-                ),
-              ],
-            );
-          }
-
-          // TODO: Обработать другие стейты.
-          return const SizedBox();
-        },
+              return isActive
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: FilterViewRow(
+                        headline: filters[index].headline,
+                        selectedItems: selectedItems,
+                        onClose: onRemove,
+                      ),
+                    )
+                  : const SizedBox();
+            },
+          ),
+          SizedBox(
+            height: _isAnyFilterSelected(filters) ? 8 : 0,
+          ),
+        ],
       ),
     );
   }

@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list.dart';
@@ -45,7 +47,7 @@ class _ContactsPageState extends State<ContactsPage> {
   // Во время инициализации запускается ивент и подгружаются контакты и фильтры.
   void _contentInit() {
     BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent(isFirstFetch: true));
-    BlocProvider.of<FilterContactsBloc>(context, listen: false).add(const FetchFiltersEvent(endPoint: 'contacts'));
+    BlocProvider.of<FilterContactsBloc>(context, listen: false).add(FetchFiltersEvent());
   }
 
   @override
@@ -110,6 +112,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                     context,
                                     onApply: _onApplyFilter,
                                     onClear: _onClearFilter,
+                                    type: FilterType.contacts,
                                   );
                                 } else {
                                   setState(() {
@@ -127,16 +130,27 @@ class _ContactsPageState extends State<ContactsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Выбранные фильтры.
-                                    SelectedFiltersView(
-                                      onRemove: (item, i) {
-                                        BlocProvider.of<FilterContactsBloc>(
-                                          context,
-                                        ).add(
-                                          FilterRemoveItemEvent(
-                                            filterIndex: i,
-                                            item: item,
-                                          ),
-                                        );
+
+                                    BlocBuilder<FilterContactsBloc, FilterState>(
+                                      builder: (context, state) {
+                                        if (state is FilterLoadedState) {
+                                          return SelectedFiltersView(
+                                            filters: state.contactsFilters,
+                                            onRemove: (item, i) {
+                                              BlocProvider.of<FilterContactsBloc>(
+                                                context,
+                                              ).add(
+                                                FilterRemoveItemEvent(
+                                                  filterIndex: i,
+                                                  item: item,
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }
+
+                                        // TODO: отработать другие стейты.
+                                        return const SizedBox();
                                       },
                                     ),
 

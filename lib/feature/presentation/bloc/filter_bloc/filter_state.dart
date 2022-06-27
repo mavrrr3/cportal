@@ -20,35 +20,28 @@ class FilterLoadingErrorState extends FilterState {
   List<Object?> get props => [message];
 }
 
-class FilterFetchErrorState extends FilterState {
-  final String message;
+class FilterLoadedState extends FilterState {
+  final List<FilterEntity> contactsFilters;
+  final List<FilterEntity> declarationsFilters;
 
-  const FilterFetchErrorState({required this.message});
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class ContactsFiltersLoadedState extends FilterState {
-  final List<FilterEntity> filters;
-
-  /// Стейт для раздела [Контакты].
-  const ContactsFiltersLoadedState({
-    required this.filters,
+  const FilterLoadedState({
+    this.contactsFilters = const [],
+    this.declarationsFilters = const [],
   });
 
-  @override
-  List<Object?> get props => [filters];
-}
-
-class DeclarationsFiltersLoadedState extends FilterState {
-  final List<FilterEntity> filters;
-
-  /// Стейт для раздела [Заявления].
-  const DeclarationsFiltersLoadedState({
-    required this.filters,
-  });
+  FilterLoadedState copyWith({
+    List<FilterEntity>? contactsFilters,
+    List<FilterEntity>? declarationsFilters,
+  }) {
+    return FilterLoadedState(
+      contactsFilters: contactsFilters ?? this.contactsFilters,
+      declarationsFilters: declarationsFilters ?? this.declarationsFilters,
+    );
+  }
 
   @override
-  List<Object?> get props => [filters];
+  List<Object?> get props => [
+        contactsFilters,
+        declarationsFilters,
+      ];
 }

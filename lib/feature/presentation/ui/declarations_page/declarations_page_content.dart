@@ -1,5 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_declarations_bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tab_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tabs_content.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
@@ -50,16 +52,26 @@ class _DeclarationsPageContentState extends State<DeclarationsPageContent> with 
             ),
 
             // Выбранные фильтры.
-            SelectedFiltersView(
-              onRemove: (item, i) {
-                BlocProvider.of<FilterContactsBloc>(
-                  context,
-                ).add(
-                  FilterRemoveItemEvent(
-                    filterIndex: i,
-                    item: item,
-                  ),
-                );
+            BlocBuilder<FilterDeclarationsBloc, FilterState>(
+              builder: (context, state) {
+                if (state is FilterLoadedState) {
+                  return SelectedFiltersView(
+                    filters: state.declarationsFilters,
+                    onRemove: (item, i) {
+                      BlocProvider.of<FilterDeclarationsBloc>(
+                        context,
+                      ).add(
+                        FilterRemoveItemEvent(
+                          filterIndex: i,
+                          item: item,
+                        ),
+                      );
+                    },
+                  );
+                }
+
+                // TODO: отработать другие стейты.
+                return const SizedBox();
               },
             ),
 

@@ -2,8 +2,8 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_action_buttons.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,7 +28,7 @@ class _FilterWebState extends State<FilterWeb> {
 
     return BlocBuilder<FilterContactsBloc, FilterState>(
       builder: (context, state) {
-        if (state is ContactsFiltersLoadedState) {
+        if (state is FilterLoadedState) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: MediaQuery.of(context).size.height,
@@ -45,10 +45,10 @@ class _FilterWebState extends State<FilterWeb> {
                     Expanded(
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
-                        itemCount: state.filters.length,
-                        itemBuilder: (context, index) => FilterSectionItem(
+                        itemCount: state.contactsFilters.length,
+                        itemBuilder: (context, index) => FilterSection(
                           sectionWidth: MediaQuery.of(context).size.width * 0.25 - 80,
-                          item: state.filters[index],
+                          item: state.contactsFilters[index],
                           onExpand: () {
                             BlocProvider.of<FilterContactsBloc>(context).add(
                               FilterExpandSectionEvent(index: index),
