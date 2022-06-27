@@ -9,13 +9,10 @@ import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 class NewsPage extends StatefulWidget {
-  final NewsCodeEnum pageType;
-
-  const NewsPage({Key? key, required this.pageType}) : super(key: key);
+  const NewsPage({Key? key}) : super(key: key);
 
   @override
   State<NewsPage> createState() => _NewsPageState();
