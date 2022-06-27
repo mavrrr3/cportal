@@ -50,7 +50,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: theme.black!.withOpacity(0.42),
-                        borderRadius: BorderRadius.circular(100),
+                        shape: BoxShape.circle,
                       ),
                       child: IconButton(
                         highlightColor: Colors.transparent,
