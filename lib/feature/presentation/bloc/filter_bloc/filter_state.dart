@@ -20,17 +20,6 @@ class FilterLoadingErrorState extends FilterState {
   List<Object?> get props => [message];
 }
 
-class FilterLoadedState extends FilterState {
-  final List<FilterEntity> filters;
-
-  const FilterLoadedState({
-    required this.filters,
-  });
-
-  @override
-  List<Object?> get props => [filters];
-}
-
 class FilterFetchErrorState extends FilterState {
   final String message;
 
@@ -38,4 +27,28 @@ class FilterFetchErrorState extends FilterState {
 
   @override
   List<Object?> get props => [message];
+}
+
+class ContactsFiltersLoadedState extends FilterState {
+  final List<FilterEntity> filters;
+
+  /// Стейт для раздела [Контакты].
+  const ContactsFiltersLoadedState({
+    required this.filters,
+  });
+
+  @override
+  List<Object?> get props => [filters];
+}
+
+class DeclarationsFiltersLoadedState extends FilterState {
+  final List<FilterEntity> filters;
+
+  /// Стейт для раздела [Заявления].
+  const DeclarationsFiltersLoadedState({
+    required this.filters,
+  });
+
+  @override
+  List<Object?> get props => [filters];
 }

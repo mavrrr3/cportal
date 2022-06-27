@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class DeclarationsTabBar extends StatelessWidget {
@@ -32,7 +33,7 @@ class DeclarationsTabBar extends StatelessWidget {
               tabs: [
                 Tab(
                   child: Text(
-                    'Заявления',
+                    AppLocalizations.of(context)!.declarations,
                     style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -40,7 +41,7 @@ class DeclarationsTabBar extends StatelessWidget {
                 ),
                 Tab(
                   child: Text(
-                    'Новые',
+                    AppLocalizations.of(context)!.newDeclarations,
                     style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),

@@ -5,21 +5,17 @@ import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class FetchFiltersUseCase
-    extends IUseCase<FilterResponseEntity, FetchFiltersParams> {
+class FetchContactsFiltersUseCase extends IUseCase<FilterResponseEntity, FetchFiltersParams> {
   final IFilterRepository filterRepository;
 
-  FetchFiltersUseCase(this.filterRepository);
+  FetchContactsFiltersUseCase(this.filterRepository);
 
   @override
   Future<Either<Failure, FilterResponseEntity>> call(FetchFiltersParams params) async =>
-      filterRepository.fetchFilters(params.endPoint);
+      filterRepository.fetchContactsFilters();
 }
 
 class FetchFiltersParams extends Equatable {
-  final String endPoint;
-
-  const FetchFiltersParams({required this.endPoint});
   @override
-  List<Object?> get props => [endPoint];
+  List<Object?> get props => [];
 }

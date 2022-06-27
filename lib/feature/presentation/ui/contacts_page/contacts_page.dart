@@ -6,7 +6,7 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
@@ -44,10 +44,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
   // Во время инициализации запускается ивент и подгружаются контакты и фильтры.
   void _contentInit() {
-    BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(const FetchContactsEvent(isFirstFetch: true));
-    BlocProvider.of<FilterBloc>(context, listen: false)
-        .add(const FetchFiltersEvent(endPoint: 'contacts'));
+    BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent(isFirstFetch: true));
+    BlocProvider.of<FilterContactsBloc>(context, listen: false).add(const FetchFiltersEvent(endPoint: 'contacts'));
   }
 
   @override
@@ -95,7 +93,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     return Expanded(
                       child: SafeArea(
                         child: Column(
-                          crossAxisAlignment:  CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(
                               height: kIsWeb ? 12 : 11,
@@ -107,8 +105,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 _onSearchInput(text);
                               },
                               onFilterTap: () async {
-                                if (!ResponsiveWrapper.of(context)
-                                    .isLargerThan(MOBILE)) {
+                                if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
                                   await showFilterMobile(
                                     context,
                                     onApply: _onApplyFilter,
@@ -132,7 +129,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                     // Выбранные фильтры.
                                     SelectedFiltersView(
                                       onRemove: (item, i) {
-                                        BlocProvider.of<FilterBloc>(
+                                        BlocProvider.of<FilterContactsBloc>(
                                           context,
                                         ).add(
                                           FilterRemoveItemEvent(
@@ -226,8 +223,7 @@ class _ContactsPageState extends State<ContactsPage> {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
             log('//////////[_setupScrollController]//////////////');
-            BlocProvider.of<ContactsBloc>(context)
-                .add(const FetchContactsEvent());
+            BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
           }
         }
       }
@@ -262,7 +258,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   // Кнопка [Очистить] фильтр.
   void _onClearFilter() {
-    BlocProvider.of<FilterBloc>(
+    BlocProvider.of<FilterContactsBloc>(
       context,
     ).add(FilterRemoveAllEvent());
   }
@@ -274,7 +270,6 @@ class _ContactsPageState extends State<ContactsPage> {
   ) {
     return showDialog(
       context: context,
-      
       builder: (context) {
         final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
@@ -301,8 +296,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
   void _onSearchInput(String text) {
     BlocProvider.of<ContactsBloc>(
-        context,
-        listen: false,
-      ).add(SearchContactsEvent(query: text));
+      context,
+      listen: false,
+    ).add(SearchContactsEvent(query: text));
   }
 }

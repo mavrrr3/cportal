@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_view_row.dart';
 
 class SelectedFiltersView extends StatelessWidget {
-  final Function(FilterItemEntity, int) onRemove
-  ;
+  final Function(FilterItemEntity, int) onRemove;
 
   /// Рендеринг всех выбранных фильтров.
   const SelectedFiltersView({
@@ -20,9 +19,9 @@ class SelectedFiltersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: getHorizontalPadding(context),
-      child: BlocBuilder<FilterBloc, FilterState>(
+      child: BlocBuilder<FilterContactsBloc, FilterState>(
         builder: (context, state) {
-          if (state is FilterLoadedState) {
+          if (state is ContactsFiltersLoadedState) {
             return Column(
               children: [
                 SizedBox(
@@ -33,8 +32,7 @@ class SelectedFiltersView extends StatelessWidget {
                   itemCount: state.filters.length,
                   itemBuilder: (context, index) {
                     // Выбран ли хоть один пункт в текущем разделе фильтра.
-                    final bool isActive = state.filters[index].items
-                        .any((element) => element.isActive);
+                    final bool isActive = state.filters[index].items.any((element) => element.isActive);
 
                     // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
                     final List<FilterItemEntity> selectedItems = [];

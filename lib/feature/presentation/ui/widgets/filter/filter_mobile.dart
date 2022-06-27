@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/custom_check_box.dart';
@@ -66,9 +66,9 @@ class FilterMobile extends StatefulWidget {
 class _FilterMobileState extends State<FilterMobile> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FilterBloc, FilterState>(
+    return BlocBuilder<FilterContactsBloc, FilterState>(
       builder: (context, state) {
-        if (state is FilterLoadedState) {
+        if (state is ContactsFiltersLoadedState) {
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -82,11 +82,10 @@ class _FilterMobileState extends State<FilterMobile> {
                     itemBuilder: (context, index) => FilterSectionItem(
                       item: state.filters[index],
                       onExpand: () {
-                        BlocProvider.of<FilterBloc>(context)
-                            .add(FilterExpandSectionEvent(index: index));
+                        BlocProvider.of<FilterContactsBloc>(context).add(FilterExpandSectionEvent(index: index));
                       },
                       onSelect: (i) {
-                        BlocProvider.of<FilterBloc>(context).add(
+                        BlocProvider.of<FilterContactsBloc>(context).add(
                           FilterSelectItemEvent(
                             filterIndex: index,
                             itemIndex: i,
@@ -154,12 +153,10 @@ class _FilterSectionItemState extends State<FilterSectionItem> {
             child: Row(
               children: [
                 Container(
-                  width: widget.sectionWidth ??
-                      (MediaQuery.of(context).size.width - 80),
+                  width: widget.sectionWidth ?? (MediaQuery.of(context).size.width - 80),
                   decoration: BoxDecoration(
-                    color: theme.brightness == Brightness.light
-                        ? theme.background
-                        : theme.background!.withOpacity(0.34),
+                    color:
+                        theme.brightness == Brightness.light ? theme.background : theme.background!.withOpacity(0.34),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
@@ -174,9 +171,7 @@ class _FilterSectionItemState extends State<FilterSectionItem> {
                 ),
                 const SizedBox(width: 24),
                 SvgPicture.asset(
-                  widget.item.isActive
-                      ? 'assets/icons/arrow_up.svg'
-                      : 'assets/icons/arrow_down.svg',
+                  widget.item.isActive ? 'assets/icons/arrow_up.svg' : 'assets/icons/arrow_down.svg',
                   width: 24,
                   color: theme.primary,
                 ),

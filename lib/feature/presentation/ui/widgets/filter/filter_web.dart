@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
@@ -24,12 +24,11 @@ class FilterWeb extends StatefulWidget {
 class _FilterWebState extends State<FilterWeb> {
   @override
   Widget build(BuildContext context) {
-                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-
-    return BlocBuilder<FilterBloc, FilterState>(
+    return BlocBuilder<FilterContactsBloc, FilterState>(
       builder: (context, state) {
-        if (state is FilterLoadedState) {
+        if (state is ContactsFiltersLoadedState) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: MediaQuery.of(context).size.height,
@@ -48,16 +47,15 @@ class _FilterWebState extends State<FilterWeb> {
                         physics: const BouncingScrollPhysics(),
                         itemCount: state.filters.length,
                         itemBuilder: (context, index) => FilterSectionItem(
-                          sectionWidth:
-                              MediaQuery.of(context).size.width * 0.25 - 80,
+                          sectionWidth: MediaQuery.of(context).size.width * 0.25 - 80,
                           item: state.filters[index],
                           onExpand: () {
-                            BlocProvider.of<FilterBloc>(context).add(
+                            BlocProvider.of<FilterContactsBloc>(context).add(
                               FilterExpandSectionEvent(index: index),
                             );
                           },
                           onSelect: (i) {
-                            BlocProvider.of<FilterBloc>(context).add(
+                            BlocProvider.of<FilterContactsBloc>(context).add(
                               FilterSelectItemEvent(
                                 filterIndex: index,
                                 itemIndex: i,
@@ -70,8 +68,7 @@ class _FilterWebState extends State<FilterWeb> {
                     Padding(
                       padding: const EdgeInsets.only(top: 32),
                       child: FilterActionButtons(
-                        width:
-                            (MediaQuery.of(context).size.width * 0.25 - 48) / 2,
+                        width: (MediaQuery.of(context).size.width * 0.25 - 48) / 2,
                         onApply: widget.onApply,
                         onClear: widget.onClear,
                       ),

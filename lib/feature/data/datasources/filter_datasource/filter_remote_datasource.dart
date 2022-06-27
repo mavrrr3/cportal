@@ -6,10 +6,11 @@ import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filte
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 
 abstract class IFilterRemoteDataSource {
-  /// Обращается к эндпойнту .....
-  ///
-  /// Пробрасываем ошибки через [ServerException]
-  Future<FilterResponseModel> fetchFilters(String endpoint);
+  // Пробрасываем ошибки через [ServerException].
+  Future<FilterResponseModel> fetchContactsFilters();
+
+  // Пробрасываем ошибки через [ServerException].
+  Future<FilterResponseModel> fetchDeclarationsFilters();
 }
 
 class FilterRemoteDataSource implements IFilterRemoteDataSource {
@@ -18,18 +19,29 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   FilterRemoteDataSource(this.localDatasource);
 
   @override
-  Future<FilterResponseModel> fetchFilters(String endpoint) async {
+  Future<FilterResponseModel> fetchContactsFilters() async {
     try {
       late FilterResponseModel remoteFilters;
-      // ignore: prefer-conditional-expressions
-      if (endpoint == 'contacts') {
-        remoteFilters = _filter1;
-      } else {
-        remoteFilters = _filter2;
-      }
+      remoteFilters = _contactsFilter;
 
       log('FilterRemouteDataSource  ==========  $remoteFilters');
-      await localDatasource.filtersToCache(remoteFilters, endpoint);
+      await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
+
+      return remoteFilters;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<FilterResponseModel> fetchDeclarationsFilters() async {
+    try {
+      late FilterResponseModel remoteFilters;
+
+      remoteFilters = _declarationsFilter;
+
+      log('FilterRemouteDataSource  ==========  $remoteFilters');
+      await localDatasource.filtersToCache(remoteFilters, FilterType.declarations);
 
       return remoteFilters;
     } on ServerException {
@@ -38,10 +50,10 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   }
 }
 
-/// Контакты.
+/// Mock фильтров для раздела "Контакты".
 /// // ignore: prefer_const_constructors
 // ignore: prefer_const_constructors
-const FilterResponseModel _filter1 = FilterResponseModel(
+const FilterResponseModel _contactsFilter = FilterResponseModel(
   filters: [
     FilterModel(
       headline: 'Компания',
@@ -68,8 +80,8 @@ const FilterResponseModel _filter1 = FilterResponseModel(
   ],
 );
 
-/// Заявления.
-const FilterResponseModel _filter2 = FilterResponseModel(
+/// Mock фильтров для раздела "Заявления".
+const FilterResponseModel _declarationsFilter = FilterResponseModel(
   filters: [
     FilterModel(
       headline: 'Статус',

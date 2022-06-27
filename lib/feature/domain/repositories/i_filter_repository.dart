@@ -3,5 +3,6 @@ import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class IFilterRepository {
-  Future<Either<Failure, FilterResponseEntity>> fetchFilters(String endpoint);
+  Future<Either<Failure, FilterResponseEntity>> fetchContactsFilters();
+  Future<Either<Failure, FilterResponseEntity>> fetchDeclarationsFilters();
 }

@@ -4,16 +4,18 @@ import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
-abstract class IFilterLocalDataSource {
-  /// Извлекаем [List<FilterModel>] из кеша
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<FilterResponseModel> fetchFiltersFromCache();
+enum FilterType { contacts, declarations }
 
-  /// Сохраняем [List<FilterModel>] в кэш
+abstract class IFilterLocalDataSource {
+  /// Извлекаем [FilterResponseModel] из кеша
   ///
   /// Пробрасываем все ошибки через [CacheException]
-  Future<void> filtersToCache(FilterResponseModel filters, String endpoint);
+  Future<FilterResponseModel> fetchFiltersFromCache(FilterType type);
+
+  /// Сохраняем [FilterResponseModel] в кэш
+  ///
+  /// Пробрасываем все ошибки через [CacheException]
+  Future<void> filtersToCache(FilterResponseModel filters, FilterType type);
 }
 
 class FilterLocalDataSource implements IFilterLocalDataSource {
@@ -22,14 +24,16 @@ class FilterLocalDataSource implements IFilterLocalDataSource {
   FilterLocalDataSource(this.hive);
 
   @override
-  Future<FilterResponseModel> fetchFiltersFromCache() async {
-    final box = await hive.openBox<FilterResponseModel>('filters');
+  Future<FilterResponseModel> fetchFiltersFromCache(
+    FilterType type,
+  ) async {
+    final box = await hive.openBox<FilterResponseModel>('filters_$type');
 
-    final filters = box.get('filters');
+    final filters = box.get('filters_$type');
 
-    if (kDebugMode) log('List<FilterModel> из кэша $filters');
+    if (kDebugMode) log('FilterResponseModel из кэша $filters');
 
-    await Hive.box<FilterResponseModel>('filters').close();
+    await Hive.box<FilterResponseModel>('filters_$type').close();
 
     return filters!;
   }
@@ -37,21 +41,21 @@ class FilterLocalDataSource implements IFilterLocalDataSource {
   @override
   Future<void> filtersToCache(
     FilterResponseModel filters,
-    String endPoint,
+    FilterType type,
   ) async {
     // Удаляет box с диска.
-    await Hive.deleteBoxFromDisk('filters_$endPoint');
-    var box = await Hive.openBox<FilterResponseModel>('filters_$endPoint');
-    if (!Hive.isBoxOpen('filters_$endPoint')) {
-      await Hive.openBox<FilterResponseModel>('filters_$endPoint');
+    await Hive.deleteBoxFromDisk('filters_$type');
+    var box = await Hive.openBox<FilterResponseModel>('filters_$type');
+    if (!Hive.isBoxOpen('filters_$type')) {
+      await Hive.openBox<FilterResponseModel>('filters_$type');
     } else {
-      box = await Hive.openBox<FilterResponseModel>('filters_$endPoint');
+      box = await Hive.openBox<FilterResponseModel>('filters_$type');
     }
 
     log('FilterResponseModel сохранил в кэш ${filters.filters.length}');
 
-    await box.put('filters_$endPoint', filters);
+    await box.put('filters_$type', filters);
 
-    await Hive.box<FilterResponseModel>('filters_$endPoint').close();
+    await Hive.box<FilterResponseModel>('filters_$type').close();
   }
 }
