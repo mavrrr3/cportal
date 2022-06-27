@@ -58,7 +58,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
                         enableFeedback: false,
                         icon: const Icon(Icons.arrow_back),
                         iconSize: 24,
-                        onPressed: () => GoRouter.of(context).pop(),
+                        onPressed: () => context.pop(),
                       ),
                     ),
                   ),
