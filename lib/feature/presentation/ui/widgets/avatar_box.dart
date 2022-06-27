@@ -7,7 +7,7 @@ class AvatarBox extends StatelessWidget {
   final String imgPath;
   final Duration duration;
   final bool isAnimation;
-  final bool isApiImg;
+  final bool hasApiImg;
   final double borderRadius;
   const AvatarBox({
     Key? key,
@@ -15,7 +15,7 @@ class AvatarBox extends StatelessWidget {
     required this.imgPath,
     this.duration = const Duration(milliseconds: 200),
     this.isAnimation = false,
-    this.isApiImg = true,
+    this.hasApiImg = true,
     this.borderRadius = 12,
   }) : super(key: key);
 
@@ -31,7 +31,7 @@ class AvatarBox extends StatelessWidget {
           fit: BoxFit.cover,
           alignment: FractionalOffset.topCenter,
           image: ExtendedNetworkImageProvider(
-            isApiImg ? '${AppConfig.apiUri}images/$imgPath' : imgPath,
+            hasApiImg ? '${AppConfig.imagesUrl}/$imgPath' : imgPath,
             cache: true,
           ),
         ),

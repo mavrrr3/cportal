@@ -41,7 +41,7 @@ class NewsCardItem extends StatelessWidget {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  '${AppConfig.apiUri}/images/${item.image}',
+                  '${AppConfig.imagesUrl}/${item.image}',
                   cache: true,
                 ),
               ),
@@ -49,7 +49,7 @@ class NewsCardItem extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           SizedBox(
-            width: 220,
+            width: width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -57,8 +57,8 @@ class NewsCardItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 4,
                   item.header,
-                  style: theme.textTheme.px14.copyWith(
-                    fontWeight: FontWeight.w700,
+                  style: theme.textTheme.px17.copyWith(
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
                 const SizedBox(height: 4),

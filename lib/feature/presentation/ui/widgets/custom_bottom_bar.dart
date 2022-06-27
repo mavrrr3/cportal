@@ -30,6 +30,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     return Container(
       color: theme.cardColor,
       child: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
@@ -112,7 +113,6 @@ class _MenuItem extends StatelessWidget {
               color: _textColor(index, state),
             ),
           ),
-          const SizedBox(height: 8),
         ],
       ),
     );

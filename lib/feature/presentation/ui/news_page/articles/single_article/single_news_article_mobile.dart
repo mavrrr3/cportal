@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
@@ -9,7 +10,6 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
 
 class SingleNewsArticleMobile extends StatelessWidget {
   final ArticleEntity article;
@@ -29,7 +29,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
+        if (isLargerThenMobile(context))
           DesktopMenu(
             currentIndex: 1,
             onChange: (index) {
@@ -45,17 +45,26 @@ class SingleNewsArticleMobile extends StatelessWidget {
                   backgroundColor: theme.background,
                   expandedHeight: 176,
                   automaticallyImplyLeading: false,
-                  leading: IconButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    enableFeedback: false,
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 24,
-                    onPressed: () => GoRouter.of(context).pop(),
+                  leading: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: theme.black!.withOpacity(0.42),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        enableFeedback: false,
+                        icon: const Icon(Icons.arrow_back),
+                        iconSize: 24,
+                        onPressed: () => context.pop(),
+                      ),
+                    ),
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     background: ExtendedImage.network(
-                      '${AppConfig.imagesUrl}${article.image}',
+                      '${AppConfig.imagesUrl}/${article.image}',
                       fit: BoxFit.cover,
                       cache: true,
                     ),
