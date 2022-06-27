@@ -4,7 +4,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/faq_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

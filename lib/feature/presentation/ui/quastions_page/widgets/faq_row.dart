@@ -15,6 +15,7 @@ class FaqRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final double width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -22,9 +23,13 @@ class FaqRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            text,
-            style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
+          SizedBox(
+            width: width - 60,
+            child: Text(
+              text,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
+            ),
           ),
           SvgPicture.asset(
             'assets/icons/question_arrow.svg',

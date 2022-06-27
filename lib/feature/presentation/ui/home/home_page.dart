@@ -10,7 +10,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/custom_bottom_ba
 import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/quastions_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/quastions_page/quastions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';

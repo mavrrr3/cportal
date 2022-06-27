@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/faq_row.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
