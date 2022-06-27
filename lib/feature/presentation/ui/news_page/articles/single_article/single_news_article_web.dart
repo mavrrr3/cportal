@@ -5,7 +5,8 @@ import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/news_card_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_card_similar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,7 +60,7 @@ class SingleNewsArticleWeb extends StatelessWidget {
                           GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
-                              GoRouter.of(context).pop();
+                              context.pop();
                             },
                             child: Row(
                               children: [
@@ -109,16 +110,16 @@ class SingleNewsArticleWeb extends StatelessWidget {
                                   style: theme.textTheme.px12,
                                 ),
                                 const SizedBox(height: 24),
-                                Text(
-                                  article.content.toString(),
-                                  style: theme.textTheme.px14,
+                                NewsTemplate.factory(
+                                  context,
+                                  article.content.first,
                                 ),
                                 const SizedBox(height: 40),
                                 Wrap(
                                   runSpacing: 16,
                                   spacing: 16,
                                   children: List.generate(
-                                    articlesToRecomendations(article.id).length,
+                                    AppConfig.numberRecomendedArticlesWeb,
                                     (i) {
                                       return GestureDetector(
                                         onTap: () =>
@@ -131,7 +132,7 @@ class SingleNewsArticleWeb extends StatelessWidget {
                                                 .id,
                                           },
                                         ),
-                                        child: NewsCardItem(
+                                        child: NewsCardSimilarItem(
                                           width: 312,
                                           height: 152,
                                           item: articlesToRecomendations(

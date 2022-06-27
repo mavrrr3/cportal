@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/connecting_code_info_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_screen.dart';
@@ -61,7 +60,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/splash_screen',
+  initialLocation: '/',
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -89,7 +88,9 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -202,8 +203,8 @@ final GoRouter router = GoRouter(
       path: '/news',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: HomePage(
-          child: NewsPage(pageType: NewsCodeEnum.news),
+        child: const HomePage(
+          child: NewsPage(),
           desktopMenuIndex: 1,
         ),
       ),

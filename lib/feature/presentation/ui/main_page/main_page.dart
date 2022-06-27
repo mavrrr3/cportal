@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -79,12 +80,11 @@ class _MainPageState extends State<MainPage> {
           SafeArea(
             child: Padding(
               padding: EdgeInsets.only(
-                top: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                    ? 10
-                    : 13,
+                top: isLargerThenMobile(context) ? 10 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
+                constraint:
+                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -103,7 +103,7 @@ class _MainPageState extends State<MainPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                              isLargerThenTablet(context)
                                   ? showProfile(context)
                                   : context.pushNamed(
                                       NavigationRouteNames.profile,
@@ -178,7 +178,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+            constraint: isLargerThenTablet(context)
                 ? const BoxConstraints(maxWidth: 640)
                 : null,
             child: SearchBox(

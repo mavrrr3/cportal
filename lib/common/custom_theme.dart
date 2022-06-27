@@ -6,6 +6,7 @@ final light = CustomTheme(
   brightness: Brightness.light,
   background: const Color(0xFFF0F0F0),
   white: const Color(0xFFFFFFFF),
+  black: const Color(0xFF000000),
   primary: const Color(0xFF5284DA),
   red: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
@@ -25,6 +26,7 @@ final dark = CustomTheme(
   brightness: Brightness.dark,
   background: const Color(0xFF111315),
   white: const Color(0xFFFFFFFF),
+  black: const Color(0xFF000000),
   primary: const Color(0xFF2A85FF),
   red: const Color(0xFFFF6A55),
   green: const Color(0xFF559935),
@@ -101,6 +103,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Brightness? brightness;
   final Color? background;
   final Color? white;
+  final Color? black;
   final Color? primary;
   final Color? red;
   final Color? green;
@@ -118,6 +121,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.brightness,
     this.background,
     this.white,
+    this.black,
     this.primary,
     this.red,
     this.green,
