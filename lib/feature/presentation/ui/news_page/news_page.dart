@@ -144,9 +144,7 @@ class NewsPage extends StatelessWidget {
                               child: PageView(
                                 controller: pageController,
                                 physics: const NeverScrollableScrollPhysics(),
-                                children: [
-                                  ...getWidgets(),
-                                ],
+                                children: getWidgets(),
                               ),
                             ),
                           ],
