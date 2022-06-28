@@ -2,21 +2,16 @@
 
 import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:flutter/gestures.dart';
+import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastions_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastion_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
-
-int _currentIndex = 0;
 
 class QuastionsPage extends StatefulWidget {
   const QuastionsPage({Key? key}) : super(key: key);
@@ -27,6 +22,7 @@ class QuastionsPage extends StatefulWidget {
 
 class _QuastionsPageState extends State<QuastionsPage> {
   late PageController pageController;
+  int currentIndex = 0;
 
   @override
   void initState() {
@@ -73,13 +69,13 @@ class _QuastionsPageState extends State<QuastionsPage> {
           articles = state.articles;
           categories = state.tabs;
         }
-        if (_currentIndex == 0) currentTabArticles = articles;
-        if (_currentIndex != 0) {
+        if (currentIndex == 0) currentTabArticles = articles;
+        if (currentIndex != 0) {
           currentTabArticles = articles
-              .where((element) => element.category == categories[_currentIndex])
+              .where((element) => element.category == categories[currentIndex])
               .toList();
         }
-        log('_currentIndex: $_currentIndex');
+        log('_currentIndex: $currentIndex');
         List<ArticleEntity> sortedArticles(List<ArticleEntity> list) {
           list.sort((a, b) => b.id.compareTo(a.id));
 
@@ -92,9 +88,10 @@ class _QuastionsPageState extends State<QuastionsPage> {
           while (count < categories.length) {
             list.add(Padding(
               padding: getHorizontalPadding(context),
-              child: _Content(
+              child: QuastionsContent(
                 articles: sortedArticles(articles),
                 tabs: categories,
+                currentIndex: currentIndex,
               ),
             ));
             count++;
@@ -122,7 +119,7 @@ class _QuastionsPageState extends State<QuastionsPage> {
                   children: [
                     // Категории.
                     ScrollableTabsWidget(
-                      currentIndex: _currentIndex,
+                      currentIndex: currentIndex,
                       items: categories,
                       onTap: (index) =>
                           _onPageChanged(index, context, categories[index]),
@@ -132,16 +129,16 @@ class _QuastionsPageState extends State<QuastionsPage> {
                       child: Swipe(
                         onSwipeRight: () {
                           _onPageChanged(
-                            _currentIndex - 1,
+                            currentIndex - 1,
                             context,
-                            categories[_currentIndex],
+                            categories[currentIndex],
                           );
                         },
                         onSwipeLeft: () {
                           _onPageChanged(
-                            _currentIndex + 1,
+                            currentIndex + 1,
                             context,
-                            categories[_currentIndex],
+                            categories[currentIndex],
                           );
                         },
                         child: ResponsiveConstraints(
@@ -173,8 +170,8 @@ class _QuastionsPageState extends State<QuastionsPage> {
   void _onPageChanged(int index, BuildContext context, String category) {
     log('category $category');
 
-    _currentIndex = index;
-    if (_currentIndex == 0) {
+    currentIndex = index;
+    if (currentIndex == 0) {
       log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
       context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
     } else {
@@ -182,87 +179,5 @@ class _QuastionsPageState extends State<QuastionsPage> {
     }
 
     pageController.jumpToPage(index);
-  }
-}
-
-class _Content extends StatelessWidget {
-  final List<ArticleEntity> articles;
-  final List<String> tabs;
-
-  final scrollController = ScrollController();
-
-  _Content({
-    Key? key,
-    required this.articles,
-    required this.tabs,
-  }) : super(key: key);
-
-  void _setupScrollController(BuildContext context) {
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels != 0) {
-          if (_currentIndex == 0) {
-            log('_setupScrollController_setupScrollController_setupScrollController');
-            context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
-          } else {
-            log('222222_setupScrollController_setupScrollController_setupScrollController');
-            context
-                .read<FetchNewsBloc>()
-                .add(FetchQaustionsEventBy(tabs[_currentIndex]));
-          }
-        }
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _setupScrollController(context);
-
-    final width = MediaQuery.of(context).size.width;
-
-    Widget _builderItem(
-      List<ArticleEntity> articles,
-      List<String> tabs,
-      int index,
-    ) {
-      if (articles[index].category == tabs[_currentIndex]) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 30),
-          child: QuastionRow(
-            text: articles[index].header,
-            onTap: () {
-              GoRouter.of(context).pushNamed(
-                NavigationRouteNames.questionArticlePage,
-                params: {'fid': articles[index].id},
-              );
-            },
-          ),
-        );
-      }
-
-      return const SizedBox();
-    }
-
-    log('================ $tabs ================================');
-
-    return SingleChildScrollView(
-      controller: scrollController,
-      dragStartBehavior: DragStartBehavior.down,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: articles.length,
-            itemBuilder: (context, index) {
-              return _builderItem(articles, tabs, index);
-            },
-          ),
-        ],
-      ),
-    );
   }
 }
