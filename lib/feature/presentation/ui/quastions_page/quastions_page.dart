@@ -122,20 +122,20 @@ class _QuastionsPageState extends State<QuastionsPage> {
                       currentIndex: currentIndex,
                       items: categories,
                       onTap: (index) =>
-                          _onPageChanged(index, context, categories[index]),
+                          onPageChanged(index, context, categories[index]),
                     ),
 
                     Expanded(
                       child: Swipe(
                         onSwipeRight: () {
-                          _onPageChanged(
+                          onPageChanged(
                             currentIndex - 1,
                             context,
                             categories[currentIndex],
                           );
                         },
                         onSwipeLeft: () {
-                          _onPageChanged(
+                          onPageChanged(
                             currentIndex + 1,
                             context,
                             categories[currentIndex],
@@ -167,7 +167,7 @@ class _QuastionsPageState extends State<QuastionsPage> {
     );
   }
 
-  void _onPageChanged(int index, BuildContext context, String category) {
+  void onPageChanged(int index, BuildContext context, String category) {
     log('category $category');
 
     currentIndex = index;
