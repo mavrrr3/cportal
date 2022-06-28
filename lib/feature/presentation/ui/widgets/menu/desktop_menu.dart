@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
@@ -21,8 +22,7 @@ class DesktopMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                   final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       width: 256,
@@ -39,7 +39,7 @@ class DesktopMenu extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: SvgPicture.asset(
-                    'assets/icons/logo.svg',
+                    ImageAssets.logo,
                     color: theme.text!.withOpacity(0.4),
                     width: 24,
                   ),
@@ -115,8 +115,7 @@ class _MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -135,9 +134,7 @@ class _MenuItem extends StatelessWidget {
             SvgPicture.asset(
               item.img,
               width: 24,
-              color: isActive
-                  ? theme.primary
-                  : theme.text?.withOpacity(0.48),
+              color: isActive ? theme.primary : theme.text?.withOpacity(0.48),
             ),
             const SizedBox(width: 16),
             Text(
@@ -166,10 +163,11 @@ void changePage(BuildContext context, int index) {
       GoRouter.of(context).pushNamed(NavigationRouteNames.news);
       break;
     case 2:
-      // BlocProvider.of<FetchNewsBloc>(context, listen: false)
-      //     .add(const FetchNewsEvent());
       GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
       break;
+    // case 3:
+    //   GoRouter.of(context).pushNamed(NavigationRouteNames.declarations);
+    //   break;
     case 4:
       GoRouter.of(context).pushNamed(NavigationRouteNames.contacts);
       break;

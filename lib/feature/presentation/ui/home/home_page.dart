@@ -6,8 +6,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/custom_bottom_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/quastions_page/quastions_page.dart';

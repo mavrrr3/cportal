@@ -21,21 +21,27 @@ class FilterLoadingErrorState extends FilterState {
 }
 
 class FilterLoadedState extends FilterState {
-  final List<FilterEntity> filters;
+  final List<FilterEntity> contactsFilters;
+  final List<FilterEntity> declarationsFilters;
 
   const FilterLoadedState({
-    required this.filters,
+    this.contactsFilters = const [],
+    this.declarationsFilters = const [],
   });
 
+  FilterLoadedState copyWith({
+    List<FilterEntity>? contactsFilters,
+    List<FilterEntity>? declarationsFilters,
+  }) {
+    return FilterLoadedState(
+      contactsFilters: contactsFilters ?? this.contactsFilters,
+      declarationsFilters: declarationsFilters ?? this.declarationsFilters,
+    );
+  }
+
   @override
-  List<Object?> get props => [filters];
-}
-
-class FilterFetchErrorState extends FilterState {
-  final String message;
-
-  const FilterFetchErrorState({required this.message});
-
-  @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [
+        contactsFilters,
+        declarationsFilters,
+      ];
 }

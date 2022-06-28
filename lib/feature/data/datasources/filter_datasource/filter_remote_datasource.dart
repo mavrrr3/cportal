@@ -6,10 +6,11 @@ import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filte
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 
 abstract class IFilterRemoteDataSource {
-  /// Обращается к эндпойнту .....
-  ///
-  /// Пробрасываем ошибки через [ServerException]
-  Future<List<FilterModel>> fetchFilters();
+  // Пробрасываем ошибки через [ServerException].
+  Future<FilterResponseModel> fetchContactsFilters();
+
+  // Пробрасываем ошибки через [ServerException].
+  Future<FilterResponseModel> fetchDeclarationsFilters();
 }
 
 class FilterRemoteDataSource implements IFilterRemoteDataSource {
@@ -18,15 +19,29 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   FilterRemoteDataSource(this.localDatasource);
 
   @override
-  Future<List<FilterModel>> fetchFilters() async {
+  Future<FilterResponseModel> fetchContactsFilters() async {
     try {
-      final remoteFilters = [
-        _filter1,
-        _filter2,
-      ];
+      late FilterResponseModel remoteFilters;
+      remoteFilters = _contactsFilter;
 
       log('FilterRemouteDataSource  ==========  $remoteFilters');
-      await localDatasource.filtersToCache(remoteFilters);
+      await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
+
+      return remoteFilters;
+    } on ServerException {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<FilterResponseModel> fetchDeclarationsFilters() async {
+    try {
+      late FilterResponseModel remoteFilters;
+
+      remoteFilters = _declarationsFilter;
+
+      log('FilterRemouteDataSource  ==========  $remoteFilters');
+      await localDatasource.filtersToCache(remoteFilters, FilterType.declarations);
 
       return remoteFilters;
     } on ServerException {
@@ -35,26 +50,54 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   }
 }
 
-const FilterModel _filter1 = FilterModel(
-  headline: 'Компания',
-  items: [
-    FilterItemModel(name: 'АЭМ3'),
-    FilterItemModel(name: 'Новосталь-М'),
-    FilterItemModel(name: 'Демедия'),
+/// Mock фильтров для раздела "Контакты".
+/// // ignore: prefer_const_constructors
+// ignore: prefer_const_constructors
+const FilterResponseModel _contactsFilter = FilterResponseModel(
+  filters: [
+    FilterModel(
+      headline: 'Компания',
+      items: [
+        FilterItemModel(name: 'АЭМ3'),
+        FilterItemModel(name: 'Новосталь-М'),
+        FilterItemModel(name: 'Демедия'),
+      ],
+    ),
+    FilterModel(
+      headline: 'Отдел',
+      items: [
+        FilterItemModel(name: 'Информационные технологии'),
+        FilterItemModel(name: 'Отдел кадров'),
+        FilterItemModel(name: 'Служба безопасности'),
+        FilterItemModel(name: 'Менеджеры по документообороту'),
+        FilterItemModel(name: 'Отдел мобильной разработки'),
+        FilterItemModel(name: 'Отдел продаж'),
+        FilterItemModel(name: 'Производственный отдел'),
+        FilterItemModel(name: 'Отдел сбыта'),
+        FilterItemModel(name: 'Администрация'),
+      ],
+    ),
   ],
 );
 
-const FilterModel _filter2 = FilterModel(
-  headline: 'Отдел',
-  items: [
-    FilterItemModel(name: 'Информационные технологии'),
-    FilterItemModel(name: 'Отдел кадров'),
-    FilterItemModel(name: 'Служба безопасности'),
-    FilterItemModel(name: 'Менеджеры по документообороту'),
-    FilterItemModel(name: 'Отдел мобильной разработки'),
-    FilterItemModel(name: 'Отдел продаж'),
-    FilterItemModel(name: 'Производственный отдел'),
-    FilterItemModel(name: 'Отдел сбыта'),
-    FilterItemModel(name: 'Администрация'),
+/// Mock фильтров для раздела "Заявления".
+const FilterResponseModel _declarationsFilter = FilterResponseModel(
+  filters: [
+    FilterModel(
+      headline: 'Статус',
+      items: [
+        FilterItemModel(name: 'Одобрено'),
+        FilterItemModel(name: 'Отклонено'),
+        FilterItemModel(name: 'Обработка'),
+      ],
+    ),
+    FilterModel(
+      headline: 'Категория',
+      items: [
+        FilterItemModel(name: 'Отдел кадров'),
+        FilterItemModel(name: 'Служба безопасности'),
+        FilterItemModel(name: 'Информационные технологии'),
+      ],
+    ),
   ],
 );

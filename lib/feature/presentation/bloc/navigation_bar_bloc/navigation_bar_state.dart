@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 
 class NavigationBarState {
   final int currentIndex;
