@@ -2,15 +2,14 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class YouHadntDeclarationsTitle extends StatelessWidget {
-  const YouHadntDeclarationsTitle({
+class EmptyDeclarationsTitle extends StatelessWidget {
+  const EmptyDeclarationsTitle({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-                            final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Padding(
       padding: const EdgeInsets.symmetric(

@@ -35,9 +35,10 @@ import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.da
 import 'package:cportal_flutter/feature/domain/usecases/biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_declarations_filters_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_filters_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_quastions_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_quastions_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
@@ -48,7 +49,8 @@ import 'package:cportal_flutter/feature/domain/usecases/search_profile_usecase.d
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_declarations_bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -75,7 +77,8 @@ Future<void> init() async {
         fetchQuastionsByCategory: sl(),
       ));
   sl.registerFactory(NavigationBarBloc.new);
-  sl.registerFactory(() => FilterBloc(fetchFilters: sl()));
+  sl.registerFactory(() => FilterContactsBloc(fetchFilters: sl()));
+  sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
   sl.registerFactory(() => ContactsBloc(
         fetchContacts: sl(),
         fetchProfile: sl(),
@@ -93,7 +96,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchQuastionsUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchQuastionsByCategoryUseCase(sl()));
-  sl.registerLazySingleton(() => FetchFiltersUseCase(sl()));
+  sl.registerLazySingleton(() => FetchContactsFiltersUseCase(sl()));
+  sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
   sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
 

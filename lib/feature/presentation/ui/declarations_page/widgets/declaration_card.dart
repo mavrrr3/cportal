@@ -47,6 +47,8 @@ class DeclarationCard extends StatelessWidget {
             ),
             child: Text(
               text,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.px14.copyWith(
                 color: theme.text,
               ),

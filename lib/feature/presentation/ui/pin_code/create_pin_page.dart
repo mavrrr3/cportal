@@ -1,14 +1,14 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 
 final _pinController = TextEditingController();
 final _pinFocusNode = FocusNode();
@@ -120,9 +120,9 @@ class _PinCodeInputState extends State<PinCodeInput> {
       builder: (context, state) {
         return Pinput(
           obscureText: true,
-          obscuringWidget: SvgIcon(
-            state.isWrongPin ? AppColors.red : AppColors.blue,
-            path: 'obscure_symbol.svg',
+          obscuringWidget: SvgPicture.asset(
+            ImageAssets.obscureSymbol,
+            color: state.isWrongPin ? theme.red : theme.primary,
             width: 16,
           ),
           useNativeKeyboard: false,

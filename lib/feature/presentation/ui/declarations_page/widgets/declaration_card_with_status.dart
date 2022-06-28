@@ -29,7 +29,6 @@ class DeclarationCardWithStatus extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: 90,
             decoration: BoxDecoration(
               color: theme.cardColor,
               borderRadius: BorderRadius.circular(12),
@@ -43,10 +42,14 @@ class DeclarationCardWithStatus extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: theme.textTheme.px14.copyWith(
-                          fontWeight: FontWeight.w700,
+                      Expanded(
+                        child: Text(
+                          title,
+                          maxLines: 2, 
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.px14.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                       SvgPicture.asset(
