@@ -3,7 +3,6 @@ import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_declarations_bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declarations_content_mobile.dart';
@@ -35,7 +34,7 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
     _contentInit();
   }
 
-  // Во время инициализации запускается эвент и подгружаются контакты и фильтры.
+  // Во время инициализации запускается ивент и подгружаются заявления и фильтры.
   void _contentInit() {
     BlocProvider.of<DeclarationsBloc>(context, listen: false).add(const FetchDeclarationsEvent());
     BlocProvider.of<FilterDeclarationsBloc>(context, listen: false).add(FetchFiltersEvent());
@@ -126,7 +125,7 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
   }
 
   void _onClearFilter() {
-    BlocProvider.of<FilterContactsBloc>(
+    BlocProvider.of<FilterDeclarationsBloc>(
       context,
     ).add(FilterRemoveAllEvent());
   }
