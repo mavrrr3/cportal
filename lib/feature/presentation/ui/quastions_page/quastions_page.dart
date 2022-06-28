@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:developer';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,15 +13,32 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/faq_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastion_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 int _currentIndex = 0;
 
-class QuastionsPage extends StatelessWidget {
-  final PageController _pageController = PageController();
+class QuastionsPage extends StatefulWidget {
+  const QuastionsPage({Key? key}) : super(key: key);
 
-  QuastionsPage({Key? key}) : super(key: key);
+  @override
+  State<QuastionsPage> createState() => _QuastionsPageState();
+}
+
+class _QuastionsPageState extends State<QuastionsPage> {
+  late PageController pageController;
+
+  @override
+  void initState() {
+    pageController = PageController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +47,15 @@ class QuastionsPage extends StatelessWidget {
     );
 
     final double width = MediaQuery.of(context).size.width;
-    final ThemeData theme = Theme.of(context);
+
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         List<ArticleEntity> articles = [];
         List<ArticleEntity> currentTabArticles = [];
 
-        List<String> tabs = [];
+        List<String> categories = [];
 
         if (state is QuastionsLoading && state.isFirstFetch) {
           return const Padding(
@@ -49,15 +68,15 @@ class QuastionsPage extends StatelessWidget {
           );
         } else if (state is QuastionsLoading) {
           articles = state.oldArticles;
-          tabs = state.tabs;
+          categories = state.tabs;
         } else if (state is QaustionsLoaded) {
           articles = state.articles;
-          tabs = state.tabs;
+          categories = state.tabs;
         }
         if (_currentIndex == 0) currentTabArticles = articles;
         if (_currentIndex != 0) {
           currentTabArticles = articles
-              .where((element) => element.category == tabs[_currentIndex])
+              .where((element) => element.category == categories[_currentIndex])
               .toList();
         }
         log('_currentIndex: $_currentIndex');
@@ -70,12 +89,12 @@ class QuastionsPage extends StatelessWidget {
         List<Widget> getWidgets() {
           final List<Widget> list = [];
           int count = 0;
-          while (count < 3) {
+          while (count < categories.length) {
             list.add(Padding(
               padding: getHorizontalPadding(context),
               child: _Content(
                 articles: sortedArticles(articles),
-                tabs: tabs,
+                tabs: categories,
               ),
             ));
             count++;
@@ -93,7 +112,7 @@ class QuastionsPage extends StatelessWidget {
                 padding: getHorizontalPadding(context),
                 child: Text(
                   AppLocalizations.of(context)!.questions,
-                  style: theme.textTheme.headline2,
+                  style: theme.textTheme.header,
                 ),
               ),
               const SizedBox(height: 16),
@@ -104,9 +123,9 @@ class QuastionsPage extends StatelessWidget {
                     // Категории.
                     ScrollableTabsWidget(
                       currentIndex: _currentIndex,
-                      items: tabs,
+                      items: categories,
                       onTap: (index) =>
-                          _onPageChanged(index, context, tabs[index]),
+                          _onPageChanged(index, context, categories[index]),
                     ),
 
                     Expanded(
@@ -115,14 +134,14 @@ class QuastionsPage extends StatelessWidget {
                           _onPageChanged(
                             _currentIndex - 1,
                             context,
-                            tabs[_currentIndex],
+                            categories[_currentIndex],
                           );
                         },
                         onSwipeLeft: () {
                           _onPageChanged(
                             _currentIndex + 1,
                             context,
-                            tabs[_currentIndex],
+                            categories[_currentIndex],
                           );
                         },
                         child: ResponsiveConstraints(
@@ -131,11 +150,9 @@ class QuastionsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: PageView(
-                                  controller: _pageController,
+                                  controller: pageController,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  children: [
-                                    ...getWidgets(),
-                                  ],
+                                  children: getWidgets(),
                                 ),
                               ),
                             ],
@@ -164,10 +181,7 @@ class QuastionsPage extends StatelessWidget {
       context.read<FetchNewsBloc>().add(FetchQaustionsEventBy(category));
     }
 
-    // BlocProvider.of<FetchNewsBloc>(context, listen: false)
-    //     .add(FetchQaustionsEventBy(category));
-
-    _pageController.jumpToPage(index);
+    pageController.jumpToPage(index);
   }
 }
 
@@ -196,12 +210,6 @@ class _Content extends StatelessWidget {
                 .read<FetchNewsBloc>()
                 .add(FetchQaustionsEventBy(tabs[_currentIndex]));
           }
-          // final isLastPage = articles.length < _page * 20;
-          // log('$_page $isLastPage');
-          // if (!isLastPage) {
-          //   _page++;
-          //   context.read<FetchNewsCubit>().loadNews();
-          // }
         }
       }
     });
@@ -218,12 +226,10 @@ class _Content extends StatelessWidget {
       List<String> tabs,
       int index,
     ) {
-      // Распределение по категориям
-      // [Вопросы]
       if (articles[index].category == tabs[_currentIndex]) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 30),
-          child: FaqRow(
+          child: QuastionRow(
             text: articles[index].header,
             onTap: () {
               GoRouter.of(context).pushNamed(
