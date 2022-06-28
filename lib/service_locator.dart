@@ -49,6 +49,7 @@ import 'package:cportal_flutter/feature/domain/usecases/search_profile_usecase.d
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_declarations_bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
@@ -78,12 +79,14 @@ Future<void> init() async {
       ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterContactsBloc(fetchFilters: sl()));
-  sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
   sl.registerFactory(() => ContactsBloc(
         fetchContacts: sl(),
         fetchProfile: sl(),
         searchContacts: sl(),
       ));
+  sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
+  // ignore: unnecessary_lambdas
+  sl.registerFactory(() => DeclarationsBloc());
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
