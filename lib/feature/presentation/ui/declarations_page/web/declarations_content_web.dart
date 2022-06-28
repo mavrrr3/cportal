@@ -68,84 +68,88 @@ class DeclarationsContentWeb extends StatelessWidget {
             child: SafeArea(
               child: Padding(
                 padding: getHorizontalPadding(context),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 12,
-                    ),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 12,
+                      ),
 
-                    // Строка с поиском.
-                    SearchWithFilter(
-                      searchController: searchController,
-                      onSearch: (text) {},
-                      onFilterTap: onFilterTap,
-                      padding: EdgeInsets.zero,
-                    ),
+                      // Строка с поиском.
+                      SearchWithFilter(
+                        searchController: searchController,
+                        onSearch: (text) {},
+                        onFilterTap: onFilterTap,
+                        padding: EdgeInsets.zero,
+                      ),
 
-                    // Выбранные фильтры.
-                    BlocBuilder<FilterDeclarationsBloc, FilterState>(
-                      builder: (context, state) {
-                        if (state is FilterLoadedState) {
-                          return SelectedFiltersView(
-                            filters: state.declarationsFilters,
-                            onRemove: (item, i) {
-                              BlocProvider.of<FilterDeclarationsBloc>(
-                                context,
-                              ).add(
-                                FilterRemoveItemEvent(
-                                  filterIndex: i,
-                                  item: item,
-                                ),
-                              );
-                            },
-                          );
-                        }
+                      // Выбранные фильтры.
+                      BlocBuilder<FilterDeclarationsBloc, FilterState>(
+                        builder: (context, state) {
+                          if (state is FilterLoadedState) {
+                            return SelectedFiltersView(
+                              filters: state.declarationsFilters,
+                              onRemove: (item, i) {
+                                BlocProvider.of<FilterDeclarationsBloc>(
+                                  context,
+                                ).add(
+                                  FilterRemoveItemEvent(
+                                    filterIndex: i,
+                                    item: item,
+                                  ),
+                                );
+                              },
+                              padding: EdgeInsets.zero,
+                            );
+                          }
 
-                        // TODO: отработать другие стейты.
-                        return const SizedBox();
-                      },
-                    ),
+                          // TODO: отработать другие стейты.
+                          return const SizedBox();
+                        },
+                      ),
 
-                    // Создать заявление.
-                    CreateDeclaration(items: newDeclaration, onTap: (i) {}),
+                      // Создать заявление.
+                      CreateDeclaration(items: newDeclaration, onTap: (i) {}),
 
-                    // История завершенных заявлений.
-                    const SizedBox(height: 55),
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 8,
-                      children: List.generate(
-                        state.doneDeclarations.length,
-                        (index) => DeclarationCardWithStatus(
-                          item: state.doneDeclarations[index],
-                          width: 328,
+                      // История завершенных заявлений.
+                      const SizedBox(height: 55),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 8,
+                        children: List.generate(
+                          state.doneDeclarations.length,
+                          (index) => DeclarationCardWithStatus(
+                            item: state.doneDeclarations[index],
+                            width: 328,
+                          ),
                         ),
                       ),
-                    ),
 
-                    // Заявления, которые в процессе.
-                    const SizedBox(height: 32),
-                    const InProcessTitle(bottomPadding: 24),
+                      // Заявления, которые в процессе.
+                      const SizedBox(height: 32),
+                      const InProcessTitle(bottomPadding: 24),
 
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 8,
-                      children: List.generate(
-                        state.inProgressDeclarations.length,
-                        (index) => DeclarationCardWithStatus(
-                          item: state.inProgressDeclarations[index],
-                          width: 328,
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 8,
+                        children: List.generate(
+                          state.inProgressDeclarations.length,
+                          (index) => DeclarationCardWithStatus(
+                            item: state.inProgressDeclarations[index],
+                            width: 328,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 32),
-                    ArchiveDeclarationButton(
-                      theme: theme,
-                      onTap: () {},
-                      width: 169,
-                    ),
-                  ],
+                      const SizedBox(height: 32),
+                      ArchiveDeclarationButton(
+                        theme: theme,
+                        onTap: () {},
+                        width: 169,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

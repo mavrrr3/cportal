@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_declarations_bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
