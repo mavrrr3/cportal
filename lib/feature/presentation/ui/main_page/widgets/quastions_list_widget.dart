@@ -1,11 +1,11 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/faq_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastion_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class FaqWidget extends StatelessWidget {
-  const FaqWidget({Key? key}) : super(key: key);
+class QuastionsListWidget extends StatelessWidget {
+  const QuastionsListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class FaqWidget extends StatelessWidget {
             itemBuilder: (context, i) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 24),
-                child: FaqRow(
+                child: QuastionRow(
                   text: faqList[i],
                   // OnTap: () {},.
                 ),

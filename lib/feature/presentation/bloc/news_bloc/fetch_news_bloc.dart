@@ -40,7 +40,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         page: pageAll,
       ));
 
-      String _failureToMessage(Failure failure) {
+      String failureToMessage(Failure failure) {
         switch (failure.runtimeType) {
           case ServerFailure:
             return 'Ошибка на сервере';
@@ -62,7 +62,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
           }
         }
       }
-      void _loadedNewsToArticles(NewsEntity news) {
+      void loadedNewsToArticles(NewsEntity news) {
         pageAll++;
         final articles = (state as NewsLoading).oldArticles;
         // ignore: cascade_invocations
@@ -78,7 +78,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(NewsLoaded(articles: articles, tabs: tabs));
       }
 
-      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
     });
 
     on<FetchNewsEventBy>((event, emit) async {
@@ -99,7 +99,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         ),
       );
 
-      String _failureToMessage(Failure failure) {
+      String failureToMessage(Failure failure) {
         switch (failure.runtimeType) {
           case ServerFailure:
             return 'Ошибка на сервере';
@@ -110,7 +110,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         }
       }
 
-      void _loadedNewsToArticles(NewsEntity news) {
+      void loadedNewsToArticles(NewsEntity news) {
         pageByCategory++;
         final articles = (state as NewsLoading).oldArticles;
         // ignore: cascade_invocations
@@ -121,7 +121,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(NewsLoaded(articles: articles, tabs: tabs));
       }
 
-      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
     });
 
     on<FetchQaustionsEvent>((event, emit) async {
@@ -141,7 +141,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         page: pageAll,
       ));
 
-      String _failureToMessage(Failure failure) {
+      String failureToMessage(Failure failure) {
         switch (failure.runtimeType) {
           case ServerFailure:
             return 'Ошибка на сервере';
@@ -164,7 +164,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
           log('+++++++++++Quastions tabs из КеШа++ $tabsFromCache ++Quastions tabs из КеШа+++++++++++++');
         }
       }
-      void _loadedNewsToArticles(NewsEntity quastions) {
+      void loadedNewsToArticles(NewsEntity quastions) {
         pageAll++;
         final articles = (state as QuastionsLoading).oldArticles;
         // ignore: cascade_invocations
@@ -182,7 +182,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(QaustionsLoaded(articles: articles, tabs: quastionTabs));
       }
 
-      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
     });
 
     on<FetchQaustionsEventBy>((event, emit) async {
@@ -207,7 +207,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         ),
       );
 
-      String _failureToMessage(Failure failure) {
+      String failureToMessage(Failure failure) {
         switch (failure.runtimeType) {
           case ServerFailure:
             return 'Ошибка на сервере';
@@ -218,7 +218,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         }
       }
 
-      void _loadedNewsToArticles(NewsEntity news) {
+      void loadedNewsToArticles(NewsEntity news) {
         pageByCategory++;
         final articles = (state as QuastionsLoading).oldArticles;
         // ignore: cascade_invocations
@@ -231,7 +231,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(QaustionsLoaded(articles: articles, tabs: quastionTabs));
       }
 
-      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
     });
   }
 }

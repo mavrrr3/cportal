@@ -241,7 +241,7 @@ final GoRouter router = GoRouter(
       path: '/questions',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: HomePage(
+        child: const HomePage(
           child: QuastionsPage(),
           desktopMenuIndex: 2,
         ),

@@ -8,7 +8,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_m
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/quastions_list_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
@@ -167,7 +167,7 @@ class _MainPageState extends State<MainPage> {
                               },
                             ),
                             const SizedBox(height: 24),
-                            const FaqWidget(),
+                            const QuastionsListWidget(),
                           ],
                         ),
                       ),
