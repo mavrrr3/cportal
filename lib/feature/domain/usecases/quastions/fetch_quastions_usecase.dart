@@ -6,16 +6,16 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:equatable/equatable.dart';
 
 class FetchQuastionsUseCase extends IUseCase<NewsEntity, FetchQuastionsParams> {
-  final INewsRepository newsRepository;
+  final INewsRepository quastionsRepository;
 
-  FetchQuastionsUseCase(this.newsRepository);
+  FetchQuastionsUseCase(this.quastionsRepository);
 
   @override
   Future<Either<Failure, NewsEntity>> call(FetchQuastionsParams params) =>
-      newsRepository.fetchQuastions(params.page);
+      quastionsRepository.fetchQuastions(params.page);
 
   Future<List<String>> fetchQuastionCategories() async {
-    return newsRepository.fetchCategories();
+    return quastionsRepository.fetchCategories();
   }
 }
 

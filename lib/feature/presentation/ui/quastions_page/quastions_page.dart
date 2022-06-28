@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/quastions_bloc/fetch_quastions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastions_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,6 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
 class QuastionsPage extends StatefulWidget {
@@ -38,7 +38,7 @@ class _QuastionsPageState extends State<QuastionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+    BlocProvider.of<FetchQuastionsBloc>(context, listen: false).add(
       const FetchQaustionsEvent(),
     );
 
@@ -46,7 +46,7 @@ class _QuastionsPageState extends State<QuastionsPage> {
 
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
+    return BlocBuilder<FetchQuastionsBloc, FetchQuastionsState>(
       builder: (context, state) {
         List<ArticleEntity> articles = [];
         List<ArticleEntity> currentTabArticles = [];
@@ -122,7 +122,7 @@ class _QuastionsPageState extends State<QuastionsPage> {
                       currentIndex: currentIndex,
                       items: categories,
                       onTap: (index) =>
-                          onPageChanged(index, context, categories[index]),
+                          onPageChanged(index, context, categories),
                     ),
 
                     Expanded(
@@ -131,14 +131,14 @@ class _QuastionsPageState extends State<QuastionsPage> {
                           onPageChanged(
                             currentIndex - 1,
                             context,
-                            categories[currentIndex],
+                            categories,
                           );
                         },
                         onSwipeLeft: () {
                           onPageChanged(
                             currentIndex + 1,
                             context,
-                            categories[currentIndex],
+                            categories,
                           );
                         },
                         child: ResponsiveConstraints(
@@ -167,15 +167,21 @@ class _QuastionsPageState extends State<QuastionsPage> {
     );
   }
 
-  void onPageChanged(int index, BuildContext context, String category) {
-    log('category $category');
+  void onPageChanged(
+    int index,
+    BuildContext context,
+    List<String> categories,
+  ) {
+    log('category $categories');
 
     currentIndex = index;
-    if (currentIndex == 0) {
+    if (index == 0) {
       log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
-      context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
+      context.read<FetchQuastionsBloc>().add(const FetchQaustionsEvent());
     } else {
-      context.read<FetchNewsBloc>().add(FetchQaustionsEventBy(category));
+      context
+          .read<FetchQuastionsBloc>()
+          .add(FetchQaustionsEventBy(categories[index]));
     }
 
     pageController.jumpToPage(index);

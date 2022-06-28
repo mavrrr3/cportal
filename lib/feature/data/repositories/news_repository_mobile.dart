@@ -100,4 +100,30 @@ class NewsRepositoryMobile implements INewsRepository {
   Future<List<String>> fetchQuastionCategories() {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, NewsEntity>> fetchQuastionsByCategory(
+    int page,
+    String category,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteQuastionsByCategory =
+            await remoteDataSource.fetchQuastionsByCategory(page, category);
+
+        return Right(remoteQuastionsByCategory);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localNewsByCtegory =
+            await localDataSource.fetchNewsByCategoryFromCache(category);
+
+        return Right(localNewsByCtegory);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
 }

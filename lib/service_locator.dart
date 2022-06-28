@@ -35,11 +35,11 @@ import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.da
 import 'package:cportal_flutter/feature/domain/usecases/biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_filters_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_quastions_by_category_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_quastions_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/quastions/fetch_quastions_by_category_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/quastions/fetch_quastions_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/pin_code_enter_usecase.dart';
@@ -53,6 +53,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/quastions_bloc/fetch_quastions_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -71,6 +72,8 @@ Future<void> init() async {
   sl.registerFactory(() => FetchNewsBloc(
         fetchNews: sl(),
         fetchNewsByCategory: sl(),
+      ));
+  sl.registerFactory(() => FetchQuastionsBloc(
         fetchQaustions: sl(),
         fetchQuastionsByCategory: sl(),
       ));

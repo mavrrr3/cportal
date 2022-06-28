@@ -15,7 +15,7 @@ class FetchQuastionsByCategoryUseCase
   Future<Either<Failure, NewsEntity>> call(
     FetchQuastionsByCategoryParams params,
   ) =>
-      newsRepository.fetchNewsByCategory(params.page, params.category);
+      newsRepository.fetchQuastionsByCategory(params.page, params.category);
 }
 
 class FetchQuastionsByCategoryParams extends Equatable {

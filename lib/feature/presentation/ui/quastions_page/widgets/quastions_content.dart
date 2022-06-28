@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/quastions_bloc/fetch_quastions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastion_row.dart';
 import 'package:flutter/gestures.dart';
@@ -23,17 +23,17 @@ class QuastionsContent extends StatelessWidget {
     required this.currentIndex,
   }) : super(key: key);
 
-  void _setupScrollController(BuildContext context) {
+  void setupScrollController(BuildContext context) {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
           if (currentIndex == 0) {
             log('_setupScrollController_setupScrollController_setupScrollController');
-            context.read<FetchNewsBloc>().add(const FetchQaustionsEvent());
+            context.read<FetchQuastionsBloc>().add(const FetchQaustionsEvent());
           } else {
             log('222222_setupScrollController_setupScrollController_setupScrollController');
             context
-                .read<FetchNewsBloc>()
+                .read<FetchQuastionsBloc>()
                 .add(FetchQaustionsEventBy(tabs[currentIndex]));
           }
         }
@@ -43,11 +43,9 @@ class QuastionsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _setupScrollController(context);
+    setupScrollController(context);
 
-    final width = MediaQuery.of(context).size.width;
-
-    Widget _builderItem(
+    Widget builderItem(
       List<ArticleEntity> articles,
       List<String> tabs,
       int index,
@@ -84,7 +82,7 @@ class QuastionsContent extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             itemCount: articles.length,
             itemBuilder: (context, index) {
-              return _builderItem(articles, tabs, index);
+              return builderItem(articles, tabs, index);
             },
           ),
         ],

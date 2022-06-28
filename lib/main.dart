@@ -15,6 +15,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_blo
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/quastions_bloc/fetch_quastions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -105,7 +106,7 @@ class Main extends StatelessWidget {
             minWidth: 350,
             defaultName: DESKTOP,
             breakpoints: [
-              const ResponsiveBreakpoint.resize(350, name: MOBILE), 
+              const ResponsiveBreakpoint.resize(350, name: MOBILE),
               const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
               const ResponsiveBreakpoint.resize(1024, name: TABLET),
               const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
@@ -134,6 +135,9 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<FetchNewsBloc>(
       create: (ctx) => sl<FetchNewsBloc>(),
+    ),
+    BlocProvider<FetchQuastionsBloc>(
+      create: (ctx) => sl<FetchQuastionsBloc>(),
     ),
     BlocProvider<NavigationBarBloc>(
       create: (ctx) => sl<NavigationBarBloc>(),

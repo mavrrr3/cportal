@@ -99,8 +99,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   @override
   Future<NewsModel> fetchQuastionsByCategory(int page, String category) async {
     final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
-    log('baseUrl $baseUrl');
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page&category=$category';
+    log('page=$page category=$category baseUrl $baseUrl');
 
     try {
       final response = await dio.get<String>(baseUrl);
