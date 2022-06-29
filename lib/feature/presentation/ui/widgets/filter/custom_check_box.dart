@@ -9,7 +9,7 @@ class CustomCheckBox extends StatefulWidget {
 
   const CustomCheckBox({
     Key? key,
-     this.onTap,
+    this.onTap,
     required this.isActive,
   }) : super(key: key);
 
@@ -40,9 +40,12 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
           color: widget.isActive ? theme.primary! : Colors.transparent,
         ),
         child: widget.isActive
-            ? SvgPicture.asset(
-                ImageAssets.checkmark,
-                width: 12,
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Image.asset(
+                  ImageAssets.checkmark,
+                  width: 12,
+                ),
               )
             : const SizedBox(),
       ),
