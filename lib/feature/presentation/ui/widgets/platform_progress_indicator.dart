@@ -6,8 +6,12 @@ class PlatformProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme.of(context).platform == TargetPlatform.android
-        ? const CircularProgressIndicator()
-        : const CupertinoActivityIndicator();
+    return Theme.of(context).platform != TargetPlatform.iOS
+        ? const CircularProgressIndicator(
+            strokeWidth: 3,
+          )
+        : const CupertinoActivityIndicator(
+            radius: 15,
+          );
   }
 }
