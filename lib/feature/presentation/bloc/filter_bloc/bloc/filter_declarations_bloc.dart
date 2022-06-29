@@ -49,9 +49,7 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> {
     final oldState = state;
     emit(FilterLoadingState());
 
-    final failureOrFilters = await fetchFilters(
-      FetchFiltersParams(),
-    );
+    final failureOrFilters = await fetchFilters();
 
     failureOrFilters.fold(
       (failure) {
@@ -138,7 +136,7 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> {
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-        final updatedFilters = onRemoveAll(filters: (state as FilterLoadedState).declarationsFilters);
+      final updatedFilters = onRemoveAll(filters: (state as FilterLoadedState).declarationsFilters);
       final newState = (state as FilterLoadedState).copyWith(declarationsFilters: updatedFilters);
 
       emit(FilterLoadingState());

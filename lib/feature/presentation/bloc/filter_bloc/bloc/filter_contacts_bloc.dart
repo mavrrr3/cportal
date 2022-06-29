@@ -49,9 +49,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
     final oldState = state;
     emit(FilterLoadingState());
 
-    final failureOrFilters = await fetchFilters(
-      FetchFiltersParams(),
-    );
+    final failureOrFilters = await fetchFilters();
 
     failureOrFilters.fold(
       (failure) {
@@ -101,13 +99,12 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
     Emitter emit,
   ) {
     if (state is FilterLoadedState) {
-       final updatedFilters = onSelect(
+      final updatedFilters = onSelect(
         filters: (state as FilterLoadedState).contactsFilters,
         filterIndex: event.filterIndex,
         itemIndex: event.itemIndex,
       );
       final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
-
 
       emit(FilterLoadingState());
       emit(newState);
@@ -126,7 +123,6 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> {
         item: event.item,
       );
       final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
-
 
       emit(FilterLoadingState());
       emit(newState);

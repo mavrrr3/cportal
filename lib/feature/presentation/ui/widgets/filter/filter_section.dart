@@ -90,9 +90,6 @@ class _FilterSectionState extends State<FilterSection> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CustomCheckBox(
-                          onTap: () {
-                            widget.onSelect(index);
-                          },
                           isActive: widget.item.items[index].isActive,
                         ),
                         const SizedBox(width: 8),
