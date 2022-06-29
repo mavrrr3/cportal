@@ -48,7 +48,7 @@ class SelectedFiltersView extends StatelessWidget {
                       child: FilterViewRow(
                         headline: filters[index].headline,
                         selectedItems: selectedItems,
-                        onClose: onRemove,
+                        onClose: (item) => onRemove(item, index),
                       ),
                     )
                   : const SizedBox();
