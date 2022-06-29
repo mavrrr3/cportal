@@ -69,8 +69,10 @@ class DeclarationsContentMobile extends StatelessWidget {
             ),
 
             // Контент вкладок.
-            DeclarationsTabsContent(
-              tabController: tabController,
+            Expanded(
+              child: DeclarationsTabsContent(
+                tabController: tabController,
+              ),
             ),
           ],
         ),

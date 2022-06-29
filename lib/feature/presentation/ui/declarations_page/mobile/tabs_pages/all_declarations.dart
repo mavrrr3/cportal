@@ -33,27 +33,36 @@ class AllDeclarations extends StatelessWidget {
     return BlocBuilder<DeclarationsBloc, DeclarationsState>(
       builder: (context, state) {
         if (state is DeclarationsLoadingState) {
-          return const Expanded(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         }
         if (state is DeclarationsLoadedState) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (state.doneDeclarations.isNotEmpty) ...drawDeclarationCards(state.doneDeclarations),
-              if (state.inProgressDeclarations.isNotEmpty) const InProcessTitle(bottomPadding: 16),
-              ...drawDeclarationCards(state.inProgressDeclarations),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: ArchiveDeclarationButton(
-                  theme: theme,
-                  onTap: () {},
-                ),
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 24,
+                horizontal: 16,
               ),
-            ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (state.doneDeclarations.isNotEmpty)
+                    ...drawDeclarationCards(state.doneDeclarations),
+                  if (state.inProgressDeclarations.isNotEmpty)
+                    const InProcessTitle(bottomPadding: 16),
+                  ...drawDeclarationCards(state.inProgressDeclarations),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: ArchiveDeclarationButton(
+                      theme: theme,
+                      onTap: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         }
 

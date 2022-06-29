@@ -14,58 +14,65 @@ class NewDeclarations extends StatelessWidget {
   Widget build(BuildContext context) {
     final halfWidth = MediaQuery.of(context).size.width / 2 - 24;
 
-    return Column(
-      children: [
-        // ! Отображать если нет заявлений.
-        const EmptyDeclarationsTitle(),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: Column(
+          children: [
+            // ! Отображать если нет заявлений.
+            const EmptyDeclarationsTitle(),
 
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: Column(
                 children: [
-                  DeclarationCard(
-                    width: halfWidth,
-                    svgPath: ImageAssets.calendar,
-                    text: AppLocalizations.of(context)!.buisenesTripDeclaration,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DeclarationCard(
+                        width: halfWidth,
+                        svgPath: ImageAssets.calendar,
+                        text: AppLocalizations.of(context)!
+                            .buisenesTripDeclaration,
+                      ),
+                      DeclarationCard(
+                        width: halfWidth,
+                        svgPath: ImageAssets.flyVocation,
+                        text: AppLocalizations.of(context)!.vocationDeclaration,
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DeclarationCard(
+                        width: halfWidth,
+                        svgPath: ImageAssets.lock,
+                        text: AppLocalizations.of(context)!.passDeclaration,
+                      ),
+                      DeclarationCard(
+                        width: halfWidth,
+                        svgPath: ImageAssets.payList,
+                        text: AppLocalizations.of(context)!.payListDeclaration,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                   DeclarationCard(
-                    width: halfWidth,
-                    svgPath: ImageAssets.flyVocation,
-                    text: AppLocalizations.of(context)!.vocationDeclaration,
+                    width: double.infinity,
+                    svgPath: ImageAssets.support,
+                    text: AppLocalizations.of(context)!.supportDeclaration,
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DeclarationCard(
-                    width: halfWidth,
-                    svgPath: ImageAssets.lock,
-                    text: AppLocalizations.of(context)!.passDeclaration,
-                  ),
-                  DeclarationCard(
-                    width: halfWidth,
-                    svgPath: ImageAssets.payList,
-                    text: AppLocalizations.of(context)!.payListDeclaration,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              DeclarationCard(
-                width: double.infinity,
-                svgPath: ImageAssets.support,
-                text: AppLocalizations.of(context)!.supportDeclaration,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
