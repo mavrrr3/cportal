@@ -3,8 +3,8 @@ import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/quastions/fetch_quastions_by_category_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/quastions/fetch_quastions_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_questions_by_category_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_questions_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,20 +12,20 @@ import 'package:cportal_flutter/core/error/failure.dart';
 
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
-  final FetchQuastionsUseCase fetchQaustions;
+  final FetchQuestionsUseCase fetchQuestions;
   final FetchNewsByCategoryUseCase fetchNewsByCategory;
-  final FetchQuastionsByCategoryUseCase fetchQuastionsByCategory;
+  final FetchQuestionsByCategoryUseCase fetchQuestionsByCategory;
 
   int pageAll = 1;
   int pageByCategory = 1;
   List<String> tabs = ['Все'];
-  List<String> quastionTabs = [];
+  List<String> questionTabs = [];
 
   FetchNewsBloc({
     required this.fetchNews,
     required this.fetchNewsByCategory,
-    required this.fetchQaustions,
-    required this.fetchQuastionsByCategory,
+    required this.fetchQuestions,
+    required this.fetchQuestionsByCategory,
   }) : super(NewsEmptyState()) {
     on<FetchAllNewsEvent>((event, emit) async {
       var oldArticles = <ArticleEntity>[];
@@ -131,13 +131,13 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as QaustionsLoaded).articles;
       }
 
-      emit(QuastionsLoading(
+      emit(QuestionsLoading(
         oldArticles,
-        quastionTabs,
+        questionTabs,
         isFirstFetch: pageAll == 1,
       ));
 
-      final failureOrNews = await fetchQaustions(FetchQuastionsParams(
+      final failureOrNews = await fetchQuestions(FetchQuestionsParams(
         page: pageAll,
       ));
 
@@ -157,36 +157,36 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
         if (tabsFromCache.isNotEmpty) {
           for (final tab in tabsFromCache) {
-            if (!quastionTabs.contains(tab)) {
-              quastionTabs.add(tab);
+            if (!questionTabs.contains(tab)) {
+              questionTabs.add(tab);
             }
           }
-          log('+++++++++++Quastions tabs из КеШа++ $tabsFromCache ++Quastions tabs из КеШа+++++++++++++');
+          log('+++++++++++Questions tabs из КеШа++ $tabsFromCache ++Questions tabs из КеШа+++++++++++++');
         }
       }
-      void loadedNewsToArticles(NewsEntity quastions) {
+      void loadedNewsToArticles(NewsEntity questions) {
         pageAll++;
-        final articles = (state as QuastionsLoading).oldArticles;
+        final articles = (state as QuestionsLoading).oldArticles;
         // ignore: cascade_invocations
-        articles.addAll(quastions.response.articles);
+        articles.addAll(questions.response.articles);
         log('Загрузилось ${articles.length} статей');
-        log('Загрузилось ${quastions.response.categories!} статей');
+        log('Загрузилось ${questions.response.categories!} статей');
 
         // Создание листа со всеми вкладками.
-        for (final tab in quastions.response.categories!) {
-          if (!quastionTabs.contains(tab)) {
-            quastionTabs.add(tab);
+        for (final tab in questions.response.categories!) {
+          if (!questionTabs.contains(tab)) {
+            questionTabs.add(tab);
           }
         }
 
-        emit(QaustionsLoaded(articles: articles, tabs: quastionTabs));
+        emit(QaustionsLoaded(articles: articles, tabs: questionTabs));
       }
 
       failureOrNews.fold(failureToMessage, loadedNewsToArticles);
     });
 
     on<FetchQaustionsEventBy>((event, emit) async {
-      if (state is QuastionsLoading) return;
+      if (state is QuestionsLoading) return;
 
       var oldArticles = <ArticleEntity>[];
 
@@ -194,14 +194,14 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as QaustionsLoaded).articles;
       }
 
-      emit(QuastionsLoading(
+      emit(QuestionsLoading(
         oldArticles,
-        quastionTabs,
+        questionTabs,
         isFirstFetch: pageByCategory == 1,
       ));
       log('+++++ event.category ${event.category} +++++');
-      final failureOrNews = await fetchQuastionsByCategory(
-        FetchQuastionsByCategoryParams(
+      final failureOrNews = await fetchQuestionsByCategory(
+        FetchQuestionsByCategoryParams(
           category: event.category,
           page: pageByCategory,
         ),
@@ -220,7 +220,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
       void loadedNewsToArticles(NewsEntity news) {
         pageByCategory++;
-        final articles = (state as QuastionsLoading).oldArticles;
+        final articles = (state as QuestionsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);
 
@@ -228,7 +228,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
         /// Создание листа со всеми вкладками.
 
-        emit(QaustionsLoaded(articles: articles, tabs: quastionTabs));
+        emit(QaustionsLoaded(articles: articles, tabs: questionTabs));
       }
 
       failureOrNews.fold(failureToMessage, loadedNewsToArticles);
@@ -311,12 +311,12 @@ class NewsLoadingError extends FetchNewsState {
   List<Object?> get props => [message];
 }
 
-class QuastionsLoading extends FetchNewsState {
+class QuestionsLoading extends FetchNewsState {
   final List<ArticleEntity> oldArticles;
   final bool isFirstFetch;
   final List<String> tabs;
 
-  const QuastionsLoading(
+  const QuestionsLoading(
     this.oldArticles,
     this.tabs, {
     this.isFirstFetch = false,

@@ -10,7 +10,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bott
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/quastions_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage>
     final List<Widget> listPages = <Widget>[
       const MainPage(),
       const NewsPage(),
-      const QuastionsPage(),
+      const QuestionsPage(),
       const DeclarationsPage(),
       const ContactsPage(),
     ];

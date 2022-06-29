@@ -2,8 +2,9 @@
 
 import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/quastions_bloc/fetch_quastions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastions_content.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_content.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,14 +14,14 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/scrollable_tabs_widget.dart';
 
-class QuastionsPage extends StatefulWidget {
-  const QuastionsPage({Key? key}) : super(key: key);
+class QuestionsPage extends StatefulWidget {
+  const QuestionsPage({Key? key}) : super(key: key);
 
   @override
-  State<QuastionsPage> createState() => _QuastionsPageState();
+  State<QuestionsPage> createState() => _QuestionsPageState();
 }
 
-class _QuastionsPageState extends State<QuastionsPage> {
+class _QuestionsPageState extends State<QuestionsPage> {
   late PageController pageController;
   int currentIndex = 0;
 
@@ -38,7 +39,7 @@ class _QuastionsPageState extends State<QuastionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<FetchQuastionsBloc>(context, listen: false).add(
+    BlocProvider.of<FetchQuestionsBloc>(context, listen: false).add(
       const FetchQaustionsEvent(),
     );
 
@@ -46,23 +47,21 @@ class _QuastionsPageState extends State<QuastionsPage> {
 
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return BlocBuilder<FetchQuastionsBloc, FetchQuastionsState>(
+    return BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
       builder: (context, state) {
         List<ArticleEntity> articles = [];
         List<ArticleEntity> currentTabArticles = [];
 
         List<String> categories = [];
 
-        if (state is QuastionsLoading && state.isFirstFetch) {
+        if (state is QuestionsLoading && state.isFirstFetch) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 60),
             child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-              ),
+              child: PlatformProgressIndicator(),
             ),
           );
-        } else if (state is QuastionsLoading) {
+        } else if (state is QuestionsLoading) {
           articles = state.oldArticles;
           categories = state.tabs;
         } else if (state is QaustionsLoaded) {
@@ -88,7 +87,7 @@ class _QuastionsPageState extends State<QuastionsPage> {
           while (count < categories.length) {
             list.add(Padding(
               padding: getHorizontalPadding(context),
-              child: QuastionsContent(
+              child: QuestionsContent(
                 articles: sortedArticles(articles),
                 tabs: categories,
                 currentIndex: currentIndex,
@@ -177,10 +176,10 @@ class _QuastionsPageState extends State<QuastionsPage> {
     currentIndex = index;
     if (index == 0) {
       log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
-      context.read<FetchQuastionsBloc>().add(const FetchQaustionsEvent());
+      context.read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
     } else {
       context
-          .read<FetchQuastionsBloc>()
+          .read<FetchQuestionsBloc>()
           .add(FetchQaustionsEventBy(categories[index]));
     }
 

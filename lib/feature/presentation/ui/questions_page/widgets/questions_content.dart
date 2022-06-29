@@ -1,40 +1,57 @@
 import 'dart:developer';
 
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/quastions_bloc/fetch_quastions_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastion_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class QuastionsContent extends StatelessWidget {
+class QuestionsContent extends StatefulWidget {
   final List<ArticleEntity> articles;
   final List<String> tabs;
   final int currentIndex;
 
-  final scrollController = ScrollController();
-
-  QuastionsContent({
+  const QuestionsContent({
     Key? key,
     required this.articles,
     required this.tabs,
     required this.currentIndex,
   }) : super(key: key);
 
+  @override
+  State<QuestionsContent> createState() => _QuestionsContentState();
+}
+
+class _QuestionsContentState extends State<QuestionsContent> {
+  late final ScrollController scrollController;
+
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   void setupScrollController(BuildContext context) {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          if (currentIndex == 0) {
-            log('_setupScrollController_setupScrollController_setupScrollController');
-            context.read<FetchQuastionsBloc>().add(const FetchQaustionsEvent());
+          if (widget.currentIndex == 0) {
+            log('_!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!_');
+            context.read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
           } else {
             log('222222_setupScrollController_setupScrollController_setupScrollController');
             context
-                .read<FetchQuastionsBloc>()
-                .add(FetchQaustionsEventBy(tabs[currentIndex]));
+                .read<FetchQuestionsBloc>()
+                .add(FetchQaustionsEventBy(widget.tabs[widget.currentIndex]));
           }
         }
       }
@@ -50,10 +67,10 @@ class QuastionsContent extends StatelessWidget {
       List<String> tabs,
       int index,
     ) {
-      if (articles[index].category == tabs[currentIndex]) {
+      if (articles[index].category == tabs[widget.currentIndex]) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 30),
-          child: QuastionRow(
+          child: QuestionRow(
             text: articles[index].header,
             onTap: () {
               GoRouter.of(context).pushNamed(
@@ -68,7 +85,7 @@ class QuastionsContent extends StatelessWidget {
       return const SizedBox();
     }
 
-    log('================ $tabs ================================');
+    log('================ ${widget.tabs} ================================');
 
     return SingleChildScrollView(
       controller: scrollController,
@@ -80,9 +97,9 @@ class QuastionsContent extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
-            itemCount: articles.length,
+            itemCount: widget.articles.length,
             itemBuilder: (context, index) {
-              return builderItem(articles, tabs, index);
+              return builderItem(widget.articles, widget.tabs, index);
             },
           ),
         ],

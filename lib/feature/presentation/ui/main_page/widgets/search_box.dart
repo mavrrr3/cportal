@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastion_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -104,7 +104,7 @@ class _SearchBoxItem extends StatelessWidget {
               style: theme.textTheme.px12.copyWith(color: theme.textLight),
             ),
             const SizedBox(height: 4),
-            QuastionRow(text: text),
+            QuestionRow(text: text),
           ],
         ),
       ),

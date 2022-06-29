@@ -1,10 +1,11 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/quastions_page/widgets/quastion_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,7 +33,7 @@ class QuestionArticlePage extends StatelessWidget {
     return Swipe(
       onSwipeRight: () {
         if (!kIsWeb) {
-          _onBack(context);
+          onBack(context);
         }
       },
       child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
@@ -70,8 +71,7 @@ class QuestionArticlePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Кнопка назад для Web.
-                                if (ResponsiveWrapper.of(context)
-                                    .isLargerThan(TABLET))
+                                if (isLargerThenTablet(context))
                                   Padding(
                                     padding: const EdgeInsets.only(
                                       left: 7,
@@ -109,14 +109,11 @@ class QuestionArticlePage extends StatelessWidget {
                                   const SizedBox(),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET)
-                                        ? 32
-                                        : 20.0,
+                                    horizontal:
+                                        isLargerThenTablet(context) ? 32 : 20.0,
                                   ),
                                   child: ResponsiveConstraints(
-                                    constraint: ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET)
+                                    constraint: isLargerThenTablet(context)
                                         ? const BoxConstraints(maxWidth: 640)
                                         : null,
                                     child: Column(
@@ -124,18 +121,18 @@ class QuestionArticlePage extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
-                                          height: ResponsiveWrapper.of(context)
-                                                  .isLargerThan(TABLET)
+                                          height: isLargerThenTablet(context)
                                               ? 4
                                               : 19,
                                         ),
                                         // Кнопка назад mobile.
-                                        if (!ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET))
+                                        if (isLargerThenTablet(context))
+                                          const SizedBox()
+                                        else
                                           GestureDetector(
                                             behavior:
                                                 HitTestBehavior.translucent,
-                                            onTap: () => _onBack(context),
+                                            onTap: () => onBack(context),
                                             child: Stack(
                                               children: [
                                                 const SizedBox(
@@ -148,14 +145,11 @@ class QuestionArticlePage extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
-                                          )
+                                          ),
+                                        if (isLargerThenTablet(context))
+                                          const SizedBox()
                                         else
-                                          const SizedBox(),
-                                        if (!ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET))
-                                          const SizedBox(height: 19)
-                                        else
-                                          const SizedBox(),
+                                          const SizedBox(height: 19),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -172,7 +166,7 @@ class QuestionArticlePage extends StatelessWidget {
                                               style: theme.textTheme.px14,
                                             ),
                                             const SizedBox(height: 24),
-                                            _nextQuestion(
+                                            nextQuestion(
                                               articlefromBloc(),
                                               state,
                                               context,
@@ -201,7 +195,7 @@ class QuestionArticlePage extends StatelessWidget {
     );
   }
 
-  Widget _nextQuestion(
+  Widget nextQuestion(
     ArticleEntity currentItem,
     NewsLoaded state,
     BuildContext context,
@@ -220,7 +214,7 @@ class QuestionArticlePage extends StatelessWidget {
                 .indexWhere((element) => element.id == currentItem.id)
         ? Padding(
             padding: const EdgeInsets.only(bottom: 32),
-            child: QuastionRow(
+            child: QuestionRow(
               text: currentTabsItems[currentIndex + 1].header,
               onTap: () {
                 GoRouter.of(context).pop();
@@ -236,5 +230,5 @@ class QuestionArticlePage extends StatelessWidget {
         : const SizedBox();
   }
 
-  void _onBack(BuildContext context) => GoRouter.of(context).pop();
+  void onBack(BuildContext context) => context.pop();
 }

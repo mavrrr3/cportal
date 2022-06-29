@@ -21,12 +21,12 @@ abstract class INewsRemoteDataSource {
   /// Обращается к эндпойнту .....
   /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchQuastions(int page);
+  Future<NewsModel> fetchQuestions(int page);
 
   /// Обращается к эндпойнту .....
   /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchQuastionsByCategory(int page, String category);
+  Future<NewsModel> fetchQuestionsByCategory(int page, String category);
 }
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
@@ -77,13 +77,13 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   }
 
   @override
-  Future<NewsModel> fetchQuastions(int page) async {
+  Future<NewsModel> fetchQuestions(int page) async {
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
-
+      log(response.data.toString());
       final news = NewsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
       );
@@ -97,7 +97,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   }
 
   @override
-  Future<NewsModel> fetchQuastionsByCategory(int page, String category) async {
+  Future<NewsModel> fetchQuestionsByCategory(int page, String category) async {
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page&category=$category';
     log('page=$page category=$category baseUrl $baseUrl');

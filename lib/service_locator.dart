@@ -37,8 +37,8 @@ import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart'
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/quastions/fetch_quastions_by_category_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/quastions/fetch_quastions_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_questions_by_category_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_questions_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_declarations_filters_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_filters_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
@@ -55,7 +55,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/quastions_bloc/fetch_quastions_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -75,9 +75,9 @@ Future<void> init() async {
         fetchNews: sl(),
         fetchNewsByCategory: sl(),
       ));
-  sl.registerFactory(() => FetchQuastionsBloc(
+  sl.registerFactory(() => FetchQuestionsBloc(
         fetchQaustions: sl(),
-        fetchQuastionsByCategory: sl(),
+        fetchQuestionsByCategory: sl(),
       ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterContactsBloc(fetchFilters: sl()));
@@ -96,9 +96,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PinCodeEnterUseCase(sl()));
   sl.registerLazySingleton(() => BiometricUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsUseCase(sl()));
-  sl.registerLazySingleton(() => FetchQuastionsUseCase(sl()));
+  sl.registerLazySingleton(() => FetchQuestionsUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
-  sl.registerLazySingleton(() => FetchQuastionsByCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => FetchQuestionsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));

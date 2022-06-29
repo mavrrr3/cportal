@@ -14,7 +14,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
   int pageAll = 1;
   List<String> tabs = ['Все'];
-  List<String> quastionTabs = [];
+  List<String> questionTabs = [];
 
   FetchNewsBloc({
     required this.fetchNews,

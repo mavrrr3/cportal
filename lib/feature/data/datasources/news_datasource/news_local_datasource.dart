@@ -28,12 +28,12 @@ abstract class INewsLocalDataSource {
   /// Извлекает [NewsModel] из кеша
   /// Возвращает [NewsModel]
   /// Пробрасываем все ошибки через [CacheException]
-  Future<NewsModel> fetchQuastionsFromCache();
+  Future<NewsModel> fetchQuestionsFromCache();
 
   /// Сохраняет [NewsModel] в кэш
   ///
   /// Пробрасывает все ошибки через [CacheException]
-  Future<void> quastionsToCache(NewsModel news);
+  Future<void> questionsToCache(NewsModel news);
 }
 
 class NewsLocalDataSource implements INewsLocalDataSource {
@@ -112,12 +112,12 @@ class NewsLocalDataSource implements INewsLocalDataSource {
   }
 
   @override
-  Future<NewsModel> fetchQuastionsFromCache() {
+  Future<NewsModel> fetchQuestionsFromCache() {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> quastionsToCache(NewsModel news) {
+  Future<void> questionsToCache(NewsModel news) {
     throw UnimplementedError();
   }
 }

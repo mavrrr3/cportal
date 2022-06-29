@@ -2,11 +2,11 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class QuastionRow extends StatelessWidget {
+class QuestionRow extends StatelessWidget {
   final String text;
   final Function()? onTap;
 
-  const QuastionRow({
+  const QuestionRow({
     Key? key,
     required this.text,
     this.onTap,
