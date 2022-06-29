@@ -128,12 +128,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.mainPage,
       path: '/',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
           child: MainPage(),
           desktopMenuIndex: 0,
         ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
       ),
     ),
     GoRoute(
@@ -201,8 +203,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.news,
       path: '/news',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
         child: const HomePage(
           child: NewsPage(),
           desktopMenuIndex: 1,
@@ -239,8 +243,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.questions,
       path: '/questions',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
         child: HomePage(
           child: QuastionsPage(),
           desktopMenuIndex: 2,
@@ -260,9 +266,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.profile,
       path: '/profile',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
         child: const ProfilePage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
       ),
     ),
     GoRoute(
