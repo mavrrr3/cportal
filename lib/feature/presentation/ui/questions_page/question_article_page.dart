@@ -3,8 +3,9 @@ import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/foundation.dart';
@@ -36,9 +37,9 @@ class QuestionArticlePage extends StatelessWidget {
           onBack(context);
         }
       },
-      child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
+      child: BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
         builder: (context, state) {
-          if (state is NewsLoaded) {
+          if (state is QaustionsLoaded) {
             ArticleEntity articlefromBloc() {
               return state.articles
                   .where((element) => element.id == id)
@@ -70,7 +71,7 @@ class QuestionArticlePage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Кнопка назад для Web.
+                                // Кнопка назад для Tablet/Web.
                                 if (isLargerThenTablet(context))
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -80,9 +81,7 @@ class QuestionArticlePage extends StatelessWidget {
                                     child: GestureDetector(
                                       behavior: HitTestBehavior.translucent,
                                       onTap: () {
-                                        // _contentInit(context);.
-
-                                        GoRouter.of(context).pop();
+                                        context.pop();
                                       },
                                       child: Row(
                                         children: [
@@ -159,11 +158,21 @@ class QuestionArticlePage extends StatelessWidget {
                                               style: theme.textTheme.header,
                                             ),
                                             const SizedBox(height: 20),
-                                            Text(
-                                              articlefromBloc()
-                                                  .content
-                                                  .toString(),
-                                              style: theme.textTheme.px14,
+                                            Column(
+                                              children: [
+                                                ...List.generate(
+                                                  articlefromBloc()
+                                                      .content
+                                                      .length,
+                                                  (index) {
+                                                    return NewsTemplate.factory(
+                                                      context,
+                                                      articlefromBloc()
+                                                          .content[index],
+                                                    );
+                                                  },
+                                                ),
+                                              ],
                                             ),
                                             const SizedBox(height: 24),
                                             nextQuestion(
@@ -197,7 +206,7 @@ class QuestionArticlePage extends StatelessWidget {
 
   Widget nextQuestion(
     ArticleEntity currentItem,
-    NewsLoaded state,
+    QaustionsLoaded state,
     BuildContext context,
   ) {
     final List<ArticleEntity> currentTabsItems = [];

@@ -82,11 +82,12 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
 
     try {
+      log('Такой эндпойнт $baseUrl');
       final response = await dio.get<String>(baseUrl);
-      log(response.data.toString());
       final news = NewsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
       );
+      log('загрузилось статей ${news.response.articles.length}');
 
       await localDatasource.newsToCache(news);
 
@@ -110,7 +111,6 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       );
 
       await localDatasource.newsByCategoryToCache(newsByCategory, category);
-      log(newsByCategory.toString());
 
       return newsByCategory;
     } on ServerException {

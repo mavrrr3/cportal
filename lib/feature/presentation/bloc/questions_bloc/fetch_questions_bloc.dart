@@ -13,6 +13,7 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
   final FetchQuestionsByCategoryUseCase fetchQuestionsByCategory;
 
   int pageAll = 1;
+  Map pageByCategory = <String, int>{};
 
   List<String> questionTabs = [];
 
@@ -74,6 +75,11 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
             questionTabs.add(tab);
           }
         }
+        for (int count = 0; count < questionTabs.length; count++) {
+          if (pageByCategory.length != questionTabs.length) {
+            pageByCategory.addAll(<String, int>{questionTabs[count]: 1});
+          }
+        }
 
         emit(QaustionsLoaded(articles: articles, tabs: questionTabs));
       }
@@ -82,8 +88,6 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
     });
 
     on<FetchQaustionsEventBy>((event, emit) async {
-      int pageByCategory = 1;
-
       if (state is QuestionsLoading) return;
 
       var oldArticles = <ArticleEntity>[];
@@ -95,13 +99,13 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
       emit(QuestionsLoading(
         oldArticles,
         questionTabs,
-        isFirstFetch: pageByCategory == 1,
+        isFirstFetch: pageByCategory[event.category] == 1,
       ));
       log('+++++ event.category ${event.category} +++++');
       final failureOrNews = await fetchQuestionsByCategory(
         FetchQuestionsByCategoryParams(
           category: event.category,
-          page: pageByCategory,
+          page: pageByCategory[event.category] as int,
         ),
       );
 
@@ -117,7 +121,8 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
       }
 
       void loadedNewsToArticles(NewsEntity news) {
-        pageByCategory++;
+        pageByCategory[event.category]++;
+
         final articles = (state as QuestionsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);

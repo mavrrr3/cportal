@@ -30,8 +30,10 @@ class _QuestionsContentState extends State<QuestionsContent> {
 
   @override
   void initState() {
-    scrollController = ScrollController();
     super.initState();
+
+    scrollController = ScrollController();
+    setupScrollController(context);
   }
 
   @override
@@ -45,10 +47,8 @@ class _QuestionsContentState extends State<QuestionsContent> {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
           if (widget.currentIndex == 0) {
-            log('_!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!_');
             context.read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
           } else {
-            log('222222_setupScrollController_setupScrollController_setupScrollController');
             context
                 .read<FetchQuestionsBloc>()
                 .add(FetchQaustionsEventBy(widget.tabs[widget.currentIndex]));
@@ -60,8 +60,6 @@ class _QuestionsContentState extends State<QuestionsContent> {
 
   @override
   Widget build(BuildContext context) {
-    setupScrollController(context);
-
     Widget builderItem(
       List<ArticleEntity> articles,
       List<String> tabs,
@@ -73,6 +71,7 @@ class _QuestionsContentState extends State<QuestionsContent> {
           child: QuestionRow(
             text: articles[index].header,
             onTap: () {
+              log(articles[index].toString());
               GoRouter.of(context).pushNamed(
                 NavigationRouteNames.questionArticlePage,
                 params: {'fid': articles[index].id},
