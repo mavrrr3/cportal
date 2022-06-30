@@ -1,20 +1,9 @@
 import 'dart:developer';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_pin_code_local_datasource.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-abstract class IPinCodeDataSource {
-  /// Записывает [String] в кэш
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<String> writePin(String pinCode);
-
-  /// Запрашивает есть ли ПИН в кэше
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<String?> getPin();
-}
-
-class PinCodeDataSource implements IPinCodeDataSource {
+class PinCodeDataSource implements IPinCodeLocalDataSource {
   @override
   Future<String> writePin(String pinCode) async {
     // await Hive.deleteBoxFromDisk('pin_code');

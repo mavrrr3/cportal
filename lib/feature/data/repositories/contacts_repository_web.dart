@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
-import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_contacts_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repository.dart';

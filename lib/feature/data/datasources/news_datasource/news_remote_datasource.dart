@@ -1,33 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:cportal_flutter/app_config.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
-
-abstract class INewsRemoteDataSource {
-  /// Обращается к эндпойнту .....
-  /// Возвращает [NewsModel]
-  /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchNews(int page);
-
-  /// Обращается к эндпойнту .....
-  /// Возвращает [NewsModel]
-  /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchNewsByCategory(int page, String category);
-
-  /// Обращается к эндпойнту .....
-  /// Возвращает [NewsModel]
-  /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchQuastions(int page);
-
-  /// Обращается к эндпойнту .....
-  /// Возвращает [NewsModel]
-  /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchQuastionsByCategory(int page, String category);
-}
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
   final INewsLocalDataSource localDatasource;
@@ -37,8 +16,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchNews(int page) async {
-    final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -58,8 +36,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchNewsByCategory(int page, String category) async {
-    final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -78,8 +55,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchQuastions(int page) async {
-    final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -98,8 +74,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchQuastionsByCategory(int page, String category) async {
-    final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
     log('baseUrl $baseUrl');
 
     try {

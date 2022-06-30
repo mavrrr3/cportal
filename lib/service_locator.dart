@@ -13,6 +13,17 @@ import 'package:cportal_flutter/feature/data/datasources/profile_datasource/prof
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_contacts_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_pin_code_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_contacts_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_profile_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_user_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_web.dart';
@@ -210,7 +221,7 @@ Future<void> init() async {
     UserLocalDataSource.new,
   );
 
-  sl.registerLazySingleton<IPinCodeDataSource>(
+  sl.registerLazySingleton<IPinCodeLocalDataSource>(
     PinCodeDataSource.new,
   );
 

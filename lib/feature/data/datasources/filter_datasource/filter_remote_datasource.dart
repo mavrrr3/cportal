@@ -2,17 +2,10 @@ import 'dart:developer';
 
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-
-abstract class IFilterRemoteDataSource {
-  // Пробрасываем ошибки через [ServerException].
-  Future<FilterResponseModel> fetchContactsFilters();
-
-  // Пробрасываем ошибки через [ServerException].
-  Future<FilterResponseModel> fetchDeclarationsFilters();
-}
 
 class FilterRemoteDataSource implements IFilterRemoteDataSource {
   final IFilterLocalDataSource localDatasource;
