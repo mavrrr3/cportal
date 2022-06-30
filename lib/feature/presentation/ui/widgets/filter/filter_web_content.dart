@@ -23,11 +23,12 @@ class FilterWebContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final double width = MediaQuery.of(context).size.width;
+    
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width * 0.25,
+      width: width * 0.25,
       decoration: BoxDecoration(color: theme.cardColor),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -41,7 +42,7 @@ class FilterWebContent extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 itemCount: filters.length,
                 itemBuilder: (context, index) => FilterSection(
-                  sectionWidth: MediaQuery.of(context).size.width * 0.25 - 80,
+                  sectionWidth: width * 0.25 - 80,
                   item: filters[index],
                   onExpand: () => onExpand(index),
                   onSelect: (i) => onSelect(index, i),
@@ -51,7 +52,7 @@ class FilterWebContent extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 32),
               child: FilterActionButtons(
-                width: (MediaQuery.of(context).size.width * 0.25 - 48) / 2,
+                width: (width * 0.25 - 48) / 2,
                 onApply: onApply,
                 onClear: onClear,
               ),

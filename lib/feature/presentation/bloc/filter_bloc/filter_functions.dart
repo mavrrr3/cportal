@@ -1,77 +1,83 @@
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 
-// Обработка раскрытия раздела в фильтре.
-List<FilterEntity> filterExpandSection({
-  required List<FilterEntity> filters,
-  required int index,
-}) {
-  FilterEntity filter = filters[index];
-  filter = filter.copyWith(isActive: filter.changeActivity);
-  filters[index] = _switchFilterEntityToFilterModel(filter);
+class FilterFunctions {
+  // Обработка раскрытия раздела в фильтре.
+  static List<FilterEntity> expandSection({
+    required List<FilterEntity> filters,
+    required int index,
+  }) {
+    FilterEntity filter = filters[index];
+    filter = filter.copyWith(isActive: filter.changeActivity);
+    filters[index] = _switchFilterEntityToFilterModel(filter);
 
-  return filters;
-}
-
-// Обработка выбора пункта в фильтре.
-List<FilterEntity> filterSelect({
-  required List<FilterEntity> filters,
-  required int filterIndex,
-  required int itemIndex,
-}) {
-  final FilterEntity filter = filters[filterIndex];
-  final FilterItemEntity filterItem = filters[filterIndex].items[itemIndex];
-
-  final List<FilterItemEntity> itemsWithSelect =
-      _selectItems(filter, filterItem);
-  final FilterEntity filterWithSelect = filter.copyWith(items: itemsWithSelect);
-  filters[filterIndex] = _switchFilterEntityToFilterModel(filterWithSelect);
-
-  return filters;
-}
-
-// Обработка удаления пункта фильтра из вью выбранных.
-List<FilterEntity> filterRemove({
-  required List<FilterEntity> filters,
-  required int filterIndex,
-  required FilterItemEntity item,
-}) {
-  final int itemIndex = filters[filterIndex].items.indexOf(item);
-  final FilterEntity filter = filters[filterIndex];
-  final FilterItemEntity filterItem = filters[filterIndex].items[itemIndex];
-
-  final List<FilterItemEntity> itemsWithSelect =
-      _selectItems(filter, filterItem);
-  final FilterEntity filterWithSelect = filter.copyWith(items: itemsWithSelect);
-  filters[filterIndex] = _switchFilterEntityToFilterModel(filterWithSelect);
-
-  return filters;
-}
-
-// Делает все выбранные пункты из стейта неактивными.
-List<FilterEntity> filterRemoveAll({
-  required List<FilterEntity> filters,
-}) {
-  // ignore: prefer-correct-identifier-length
-  for (int i = 0; i < filters.length; i++) {
-    if (filters[i].isActive) {
-      FilterEntity filter = filters[i];
-      filter = filter.copyWith(isActive: filter.changeActivity);
-
-      filters[i] = _switchFilterEntityToFilterModel(filter);
-    }
-
-    for (int itemIndex = 0; itemIndex < filters[i].items.length; itemIndex++) {
-      final FilterEntity filter = filters[i];
-
-      final List<FilterItemEntity> unselectedItems = _unselectItems(filter);
-      final FilterEntity filterWithoutSelect =
-          filter.copyWith(items: unselectedItems);
-      filters[i] = _switchFilterEntityToFilterModel(filterWithoutSelect);
-    }
+    return filters;
   }
 
-  return filters;
+  // Обработка выбора пункта в фильтре.
+  static List<FilterEntity> select({
+    required List<FilterEntity> filters,
+    required int filterIndex,
+    required int itemIndex,
+  }) {
+    final FilterEntity filter = filters[filterIndex];
+    final FilterItemEntity filterItem = filters[filterIndex].items[itemIndex];
+
+    final List<FilterItemEntity> itemsWithSelect =
+        _selectItems(filter, filterItem);
+    final FilterEntity filterWithSelect =
+        filter.copyWith(items: itemsWithSelect);
+    filters[filterIndex] = _switchFilterEntityToFilterModel(filterWithSelect);
+
+    return filters;
+  }
+
+  // Обработка удаления пункта фильтра из вью выбранных.
+  static List<FilterEntity> remove({
+    required List<FilterEntity> filters,
+    required int filterIndex,
+    required FilterItemEntity item,
+  }) {
+    final int itemIndex = filters[filterIndex].items.indexOf(item);
+    final FilterEntity filter = filters[filterIndex];
+    final FilterItemEntity filterItem = filters[filterIndex].items[itemIndex];
+
+    final List<FilterItemEntity> itemsWithSelect =
+        _selectItems(filter, filterItem);
+    final FilterEntity filterWithSelect =
+        filter.copyWith(items: itemsWithSelect);
+    filters[filterIndex] = _switchFilterEntityToFilterModel(filterWithSelect);
+
+    return filters;
+  }
+
+  // Делает все выбранные пункты из стейта неактивными.
+  static List<FilterEntity> removeAll({
+    required List<FilterEntity> filters,
+  }) {
+    // ignore: prefer-correct-identifier-length
+    for (int i = 0; i < filters.length; i++) {
+      if (filters[i].isActive) {
+        FilterEntity filter = filters[i];
+        filter = filter.copyWith(isActive: filter.changeActivity);
+
+        filters[i] = _switchFilterEntityToFilterModel(filter);
+      }
+
+      for (int itemIndex = 0;
+          itemIndex < filters[i].items.length;
+          itemIndex++) {
+        final FilterEntity filter = filters[i];
+
+        final List<FilterItemEntity> unselectedItems = _unselectItems(filter);
+        final FilterEntity filterWithoutSelect =
+            filter.copyWith(items: unselectedItems);
+        filters[i] = _switchFilterEntityToFilterModel(filterWithoutSelect);
+      }
+    }
+
+    return filters;
+  }
 }
 
 //-- Вспомогательные функции

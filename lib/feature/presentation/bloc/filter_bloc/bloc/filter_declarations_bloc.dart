@@ -12,7 +12,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_sta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> implements IFilterBLoc {
+class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState>
+    implements IFilterBLoc {
   final FetchDeclarationsFiltersUseCase fetchFilters;
 
   FilterDeclarationsBloc({required this.fetchFilters})
@@ -44,7 +45,7 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> implements I
   }
 
   // Получение данных от API.
-   @override
+  @override
   FutureOr<void> onFetch(
     FetchFiltersEvent event,
     Emitter emit,
@@ -80,13 +81,13 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> implements I
   }
 
   // Обработка раскрытия раздела в фильтре.
-   @override
+  @override
   FutureOr<void> onExpandSection(
     FilterExpandSectionEvent event,
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterExpandSection(
+      final updatedFilters = FilterFunctions.expandSection(
         filters: (state as FilterLoadedState).declarationsFilters,
         index: event.index,
       );
@@ -100,13 +101,13 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> implements I
   }
 
   // Обработка выбора пункта в фильтре.
-   @override
+  @override
   FutureOr<void> onSelect(
     FilterSelectItemEvent event,
     Emitter emit,
   ) {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterSelect(
+      final updatedFilters = FilterFunctions.select(
         filters: (state as FilterLoadedState).declarationsFilters,
         filterIndex: event.filterIndex,
         itemIndex: event.itemIndex,
@@ -120,13 +121,13 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> implements I
   }
 
   // Обработка удаления пункта фильтра из вью выбранных.
-   @override
+  @override
   FutureOr<void> onRemove(
     FilterRemoveItemEvent event,
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterRemove(
+      final updatedFilters = FilterFunctions.remove(
         filters: (state as FilterLoadedState).declarationsFilters,
         filterIndex: event.filterIndex,
         item: event.item,
@@ -140,13 +141,13 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> implements I
   }
 
   // Делает все выбранные пункты из стейта неактивными.
-   @override
+  @override
   FutureOr<void> onRemoveAll(
     FilterRemoveAllEvent event,
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterRemoveAll(
+      final updatedFilters = FilterFunctions.removeAll(
         filters: (state as FilterLoadedState).declarationsFilters,
       );
       final newState = (state as FilterLoadedState)

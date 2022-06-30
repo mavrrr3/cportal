@@ -22,8 +22,7 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   @override
   Future<FilterResponseModel> fetchContactsFilters() async {
     try {
-      late FilterResponseModel remoteFilters;
-      remoteFilters = _contactsFilter;
+      const FilterResponseModel remoteFilters = _contactsFilter;
 
       log('FilterRemouteDataSource  ==========  $remoteFilters');
       await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
@@ -37,12 +36,13 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   @override
   Future<FilterResponseModel> fetchDeclarationsFilters() async {
     try {
-      late FilterResponseModel remoteFilters;
-
-      remoteFilters = _declarationsFilter;
+      const FilterResponseModel remoteFilters = _declarationsFilter;
 
       log('FilterRemouteDataSource  ==========  $remoteFilters');
-      await localDatasource.filtersToCache(remoteFilters, FilterType.declarations);
+      await localDatasource.filtersToCache(
+        remoteFilters,
+        FilterType.declarations,
+      );
 
       return remoteFilters;
     } on ServerException {

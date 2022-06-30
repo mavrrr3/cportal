@@ -15,21 +15,6 @@ class AllDeclarations extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    List<Widget> drawDeclarationCards(List<DeclarationEntity> declarations) {
-      final List<Widget> list = [];
-      int count = 0;
-      while (count < declarations.length) {
-        list.add(
-          DeclarationCardWithStatus(
-            item: declarations[count],
-          ),
-        );
-        count++;
-      }
-
-      return list;
-    }
-
     return BlocBuilder<DeclarationsBloc, DeclarationsState>(
       builder: (context, state) {
         if (state is DeclarationsLoadingState) {
@@ -49,10 +34,10 @@ class AllDeclarations extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (state.doneDeclarations.isNotEmpty)
-                    ...drawDeclarationCards(state.doneDeclarations),
+                    ..._drawDeclarationCards(state.doneDeclarations),
                   if (state.inProgressDeclarations.isNotEmpty)
                     const InProcessTitle(bottomPadding: 16),
-                  ...drawDeclarationCards(state.inProgressDeclarations),
+                  ..._drawDeclarationCards(state.inProgressDeclarations),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: ArchiveDeclarationButton(
@@ -70,4 +55,19 @@ class AllDeclarations extends StatelessWidget {
       },
     );
   }
+}
+
+List<Widget> _drawDeclarationCards(List<DeclarationEntity> declarations) {
+  final List<Widget> list = [];
+  int count = 0;
+  while (count < declarations.length) {
+    list.add(
+      DeclarationCardWithStatus(
+        item: declarations[count],
+      ),
+    );
+    count++;
+  }
+
+  return list;
 }

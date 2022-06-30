@@ -86,7 +86,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
     Emitter emit,
   ) {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterExpandSection(
+      final updatedFilters = FilterFunctions.expandSection(
         filters: (state as FilterLoadedState).contactsFilters,
         index: event.index,
       );
@@ -105,7 +105,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
     Emitter emit,
   ) {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterSelect(
+      final updatedFilters = FilterFunctions.select(
         filters: (state as FilterLoadedState).contactsFilters,
         filterIndex: event.filterIndex,
         itemIndex: event.itemIndex,
@@ -125,7 +125,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterRemove(
+      final updatedFilters = FilterFunctions.remove(
         filters: (state as FilterLoadedState).contactsFilters,
         filterIndex: event.filterIndex,
         item: event.item,
@@ -145,7 +145,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = filterRemoveAll(
+      final updatedFilters = FilterFunctions.removeAll(
         filters: (state as FilterLoadedState).contactsFilters,
       );
       final newState = (state as FilterLoadedState)
