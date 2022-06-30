@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -71,7 +69,6 @@ class _QuestionsContentState extends State<QuestionsContent> {
           child: QuestionRow(
             text: articles[index].header,
             onTap: () {
-              log(articles[index].toString());
               GoRouter.of(context).pushNamed(
                 NavigationRouteNames.questionArticlePage,
                 params: {'fid': articles[index].id},
@@ -83,8 +80,6 @@ class _QuestionsContentState extends State<QuestionsContent> {
 
       return const SizedBox();
     }
-
-    log('================ ${widget.tabs} ================================');
 
     return SingleChildScrollView(
       controller: scrollController,

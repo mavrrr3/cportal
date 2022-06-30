@@ -17,12 +17,6 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
 
-// void _contentInit(BuildContext context) {
-//   return BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-//     const FetchNewsEvent(),
-//   );
-// }
-
 class QuestionArticlePage extends StatelessWidget {
   final String id;
   const QuestionArticlePage({Key? key, required this.id}) : super(key: key);
@@ -39,7 +33,7 @@ class QuestionArticlePage extends StatelessWidget {
       },
       child: BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
         builder: (context, state) {
-          if (state is QaustionsLoaded) {
+          if (state is QuestionsLoaded) {
             ArticleEntity articlefromBloc() {
               return state.articles
                   .where((element) => element.id == id)
@@ -206,7 +200,7 @@ class QuestionArticlePage extends StatelessWidget {
 
   Widget nextQuestion(
     ArticleEntity currentItem,
-    QaustionsLoaded state,
+    QuestionsLoaded state,
     BuildContext context,
   ) {
     final List<ArticleEntity> currentTabsItems = [];

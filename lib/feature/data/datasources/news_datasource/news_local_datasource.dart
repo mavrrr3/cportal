@@ -112,12 +112,38 @@ class NewsLocalDataSource implements INewsLocalDataSource {
   }
 
   @override
-  Future<NewsModel> fetchQuestionsFromCache() {
-    throw UnimplementedError();
+  Future<NewsModel> fetchQuestionsFromCache() async {
+    var box = await Hive.openBox<NewsModel>('questions');
+    log(Hive.isBoxOpen('questions').toString());
+    if (!Hive.isBoxOpen('questions')) {
+      await Hive.openBox<NewsModel>('questions');
+    } else {
+      box = await Hive.openBox<NewsModel>('questions');
+    }
+
+    final questions = box.get('questions');
+
+    if (kDebugMode) log('questions из кэша ${questions!.response.count}');
+
+    await Hive.box<NewsModel>('questions').close();
+
+    return questions!;
   }
 
   @override
-  Future<void> questionsToCache(NewsModel news) {
-    throw UnimplementedError();
+  Future<void> questionsToCache(NewsModel questions) async {
+    // Удаляет box с диска.
+    // await Hive.deleteBoxFromDisk('questions');
+    var box = await Hive.openBox<NewsModel>('questions');
+    if (!Hive.isBoxOpen('questions')) {
+      await Hive.openBox<NewsModel>('questions');
+    } else {
+      box = await Hive.openBox<NewsModel>('questions');
+    }
+    log('questions сохранил в кэш ${questions.response.count}');
+
+    await box.put('questions', questions);
+
+    await Hive.box<NewsModel>('questions').close();
   }
 }

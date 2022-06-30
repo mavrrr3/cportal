@@ -24,8 +24,8 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
     on<FetchQaustionsEvent>((event, emit) async {
       var oldArticles = <ArticleEntity>[];
 
-      if (state is QaustionsLoaded) {
-        oldArticles = (state as QaustionsLoaded).articles;
+      if (state is QuestionsLoaded) {
+        oldArticles = (state as QuestionsLoaded).articles;
       }
 
       emit(QuestionsLoading(
@@ -66,8 +66,8 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
         final articles = (state as QuestionsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(questions.response.articles);
-        log('Загрузилось ${articles.length} статей');
-        log('Загрузилось ${questions.response.categories!} статей');
+        log('Загрузилось ${articles.length} вопросов');
+        log('Загрузилось ${questions.response.categories!} вопросов');
 
         // Создание листа со всеми вкладками.
         for (final tab in questions.response.categories!) {
@@ -81,7 +81,7 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
           }
         }
 
-        emit(QaustionsLoaded(articles: articles, tabs: questionTabs));
+        emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
       }
 
       failureOrQuestions.fold(failureToMessage, loadedNewsToArticles);
@@ -92,8 +92,8 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
 
       var oldArticles = <ArticleEntity>[];
 
-      if (state is QaustionsLoaded) {
-        oldArticles = (state as QaustionsLoaded).articles;
+      if (state is QuestionsLoaded) {
+        oldArticles = (state as QuestionsLoaded).articles;
       }
 
       emit(QuestionsLoading(
@@ -131,7 +131,7 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
 
         /// Создание листа со всеми вкладками.
 
-        emit(QaustionsLoaded(articles: articles, tabs: questionTabs));
+        emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
       }
 
       failureOrNews.fold(failureToMessage, loadedNewsToArticles);
@@ -182,10 +182,10 @@ class QuestionsLoading extends FetchQuestionsState {
   List<Object?> get props => [oldArticles, tabs, isFirstFetch];
 }
 
-class QaustionsLoaded extends FetchQuestionsState {
+class QuestionsLoaded extends FetchQuestionsState {
   final List<ArticleEntity> articles;
   final List<String> tabs;
-  const QaustionsLoaded({
+  const QuestionsLoaded({
     required this.articles,
     required this.tabs,
   });

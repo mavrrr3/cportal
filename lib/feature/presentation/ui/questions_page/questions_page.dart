@@ -64,7 +64,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
         } else if (state is QuestionsLoading) {
           articles = state.oldArticles;
           categories = state.tabs;
-        } else if (state is QaustionsLoaded) {
+        } else if (state is QuestionsLoaded) {
           articles = state.articles;
           categories = state.tabs;
         }
@@ -175,7 +175,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     currentIndex = index;
     if (index == 0) {
-      log('onPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChangedonPageChanged');
       context.read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
     } else {
       context
