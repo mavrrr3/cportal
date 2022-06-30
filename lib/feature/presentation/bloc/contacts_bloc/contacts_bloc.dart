@@ -51,7 +51,6 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     }
 
     emit(ContactsLoadingState(oldContacts, isFirstFetch: event.isFirstFetch));
-    log('Page $page');
     final failureOrContacts = await fetchContacts(
       FetchContactsParams(page: page),
     );
@@ -90,7 +89,6 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       failureOrContacts.fold(
         _mapFailureToMessage,
         (contacts) {
-          log('--[Search result ${contacts.length}]--');
           emit(ContactsLoadedState(contacts: contacts, favorites: favorites));
         },
       );

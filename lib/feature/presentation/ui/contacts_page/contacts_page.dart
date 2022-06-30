@@ -237,7 +237,6 @@ class _ContactsPageState extends State<ContactsPage> {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            log('//////////[_setupScrollController]//////////////');
             BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
           }
         }

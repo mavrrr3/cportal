@@ -81,7 +81,6 @@ class _FilterMobileState extends State<FilterMobile> {
                 scrollController: widget.scrollController,
                 filters: state.contactsFilters,
                 onExpand: (i) {
-                  log('rfe');
                   BlocProvider.of<FilterContactsBloc>(context).add(FilterExpandSectionEvent(index: i));
                 },
                 onSelect: (filterIndex, itemIndex) {

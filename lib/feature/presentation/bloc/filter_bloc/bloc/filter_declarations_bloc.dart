@@ -5,44 +5,47 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_declarations_filters_usecase.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/i_filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_functions.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> {
+class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> implements IFilterBLoc {
   final FetchDeclarationsFiltersUseCase fetchFilters;
 
-  FilterDeclarationsBloc({required this.fetchFilters}) : super(FilterEmptyState()) {
+  FilterDeclarationsBloc({required this.fetchFilters})
+      : super(FilterEmptyState()) {
     _setupEvents();
   }
 
   void _setupEvents() {
     on<FetchFiltersEvent>(
-      _onFetch,
+      onFetch,
       transformer: bloc_concurrency.sequential(),
     );
     on<FilterExpandSectionEvent>(
-      _onExpandSection,
+      onExpandSection,
       transformer: bloc_concurrency.sequential(),
     );
     on<FilterSelectItemEvent>(
-      _onSelect,
+      onSelect,
       transformer: bloc_concurrency.sequential(),
     );
     on<FilterRemoveItemEvent>(
-      _onRemove,
+      onRemove,
       transformer: bloc_concurrency.sequential(),
     );
     on<FilterRemoveAllEvent>(
-      _onRemoveAll,
+      onRemoveAll,
       transformer: bloc_concurrency.sequential(),
     );
   }
 
   // Получение данных от API.
-  FutureOr<void> _onFetch(
+   @override
+  FutureOr<void> onFetch(
     FetchFiltersEvent event,
     Emitter emit,
   ) async {
@@ -77,17 +80,19 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> {
   }
 
   // Обработка раскрытия раздела в фильтре.
-  FutureOr<void> _onExpandSection(
+   @override
+  FutureOr<void> onExpandSection(
     FilterExpandSectionEvent event,
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = onExpandSection(
+      final updatedFilters = filterExpandSection(
         filters: (state as FilterLoadedState).declarationsFilters,
         index: event.index,
       );
 
-      final newState = (state as FilterLoadedState).copyWith(declarationsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState)
+          .copyWith(declarationsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -95,17 +100,19 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> {
   }
 
   // Обработка выбора пункта в фильтре.
-  FutureOr<void> _onSelect(
+   @override
+  FutureOr<void> onSelect(
     FilterSelectItemEvent event,
     Emitter emit,
   ) {
     if (state is FilterLoadedState) {
-      final updatedFilters = onSelect(
+      final updatedFilters = filterSelect(
         filters: (state as FilterLoadedState).declarationsFilters,
         filterIndex: event.filterIndex,
         itemIndex: event.itemIndex,
       );
-      final newState = (state as FilterLoadedState).copyWith(declarationsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState)
+          .copyWith(declarationsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -113,17 +120,19 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> {
   }
 
   // Обработка удаления пункта фильтра из вью выбранных.
-  FutureOr<void> _onRemove(
+   @override
+  FutureOr<void> onRemove(
     FilterRemoveItemEvent event,
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = onRemove(
+      final updatedFilters = filterRemove(
         filters: (state as FilterLoadedState).declarationsFilters,
         filterIndex: event.filterIndex,
         item: event.item,
       );
-      final newState = (state as FilterLoadedState).copyWith(declarationsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState)
+          .copyWith(declarationsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -131,13 +140,17 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState> {
   }
 
   // Делает все выбранные пункты из стейта неактивными.
-  FutureOr<void> _onRemoveAll(
+   @override
+  FutureOr<void> onRemoveAll(
     FilterRemoveAllEvent event,
     Emitter emit,
   ) async {
     if (state is FilterLoadedState) {
-      final updatedFilters = onRemoveAll(filters: (state as FilterLoadedState).declarationsFilters);
-      final newState = (state as FilterLoadedState).copyWith(declarationsFilters: updatedFilters);
+      final updatedFilters = filterRemoveAll(
+        filters: (state as FilterLoadedState).declarationsFilters,
+      );
+      final newState = (state as FilterLoadedState)
+          .copyWith(declarationsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
