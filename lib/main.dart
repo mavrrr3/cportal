@@ -8,8 +8,8 @@ import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
-import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
@@ -105,7 +105,7 @@ class Main extends StatelessWidget {
             minWidth: 350,
             defaultName: DESKTOP,
             breakpoints: [
-              const ResponsiveBreakpoint.resize(350, name: MOBILE), 
+              const ResponsiveBreakpoint.resize(350, name: MOBILE),
               const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
               const ResponsiveBreakpoint.resize(1024, name: TABLET),
               const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
@@ -125,6 +125,9 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<AuthBloc>(
       create: (ctx) => sl<AuthBloc>(),
+    ),
+    BlocProvider<ConnectingCodeBloc>(
+      create: (ctx) => sl<ConnectingCodeBloc>(),
     ),
     BlocProvider<PinCodeBloc>(
       create: (ctx) => sl<PinCodeBloc>(),
@@ -149,8 +152,6 @@ List<BlocProvider> listOfBlocs() {
 
 void _hiveAdaptersInit() {
   Hive
-    ..registerAdapter(UserModelAdapter())
-    ..registerAdapter(UserTypeModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
     ..registerAdapter(ContactInfoModelAdapter())
     ..registerAdapter(NewsModelAdapter())

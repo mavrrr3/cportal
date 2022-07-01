@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {
@@ -7,18 +8,30 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthEventImpl extends AuthEvent {
-  final String connectingCode;
-
-  const AuthEventImpl(this.connectingCode);
+class CheckLogin extends AuthEvent {
+  const CheckLogin();
 }
 
-class ChangeAuthCode extends AuthEvent {
-  final String connectingCode;
+class LogInWithUser extends AuthEvent {
+  final UserEntity user;
 
-  const ChangeAuthCode(this.connectingCode);
+  const LogInWithUser(this.user);
+
+  @override
+  List<Object> get props => [user];
 }
 
-class CheckAuth extends AuthEvent {
-  const CheckAuth();
+class LogInWithPinCode extends AuthEvent {
+  final String pinCode;
+
+  const LogInWithPinCode(this.pinCode);
+
+  @override
+  List<Object> get props => [pinCode];
+}
+
+class LogInWithBiometrics extends AuthEvent {
+  final String localizedReason;
+
+  const LogInWithBiometrics(this.localizedReason);
 }

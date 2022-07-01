@@ -3,7 +3,7 @@
     "appTitle": "Заголовок",
     "inputConnectingCode": "Введите \nкод связывания",
     "howToGetConnectingCode": "Как получить код связывания?",
-    "wrongConnectingCode": "Введенный вами код не верен",
+    "wrongConnectingCode": "Введенный вами код неверен",
     "tryToRepeatAfter30sec": "Повторите попытку через 30 секунд",
     "howToGetCodeTitle": "Как получить код \nсвязывания",
     "howToGetCodeTitleWeb": "Как получить код связывания",
@@ -32,7 +32,7 @@
     "inputPinCode": "Введите ПИН",
     "repeatPinCode": "Подтвердите ПИН",
     "enterNewPinCode": "Введите новый ПИН",
-    "itWillBeNeedToEnter": "Он будет использоваться для входа",
+    "itWillBeNeedToEnter": "Он будет использоваться для входа.",
     "pinNotCorrect": "ПИН не совпадает",
     "forgetPin": "Забыли ПИН?",
     "errorPinCode": "Введенный вами ПИН неверен",
@@ -107,5 +107,6 @@
     "vocationDeclaration": "Заявление\nна отпуск",
     "supportDeclaration": "Заявление\nна техническую поддержку/IT",
     "shortSupportDeclaration": "Заявление на тех. поддержку/IT",
-    "inProcess": "В процессе"
+    "inProcess": "В процессе", 
+    "logInToContinue": "Авторизуйтесь для продолжения"
 }
