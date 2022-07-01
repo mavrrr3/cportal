@@ -6,6 +6,7 @@ final light = CustomTheme(
   brightness: Brightness.light,
   background: const Color(0xFFF0F0F0),
   white: const Color(0xFFFFFFFF),
+  black: const Color(0xFF000000),
   primary: const Color(0xFF5284DA),
   red: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
@@ -25,6 +26,7 @@ final dark = CustomTheme(
   brightness: Brightness.dark,
   background: const Color(0xFF111315),
   white: const Color(0xFFFFFFFF),
+  black: const Color(0xFF000000),
   primary: const Color(0xFF2A85FF),
   red: const Color(0xFFFF6A55),
   green: const Color(0xFF559935),
@@ -101,6 +103,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Brightness? brightness;
   final Color? background;
   final Color? white;
+  final Color? black;
   final Color? primary;
   final Color? red;
   final Color? green;
@@ -118,6 +121,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.brightness,
     this.background,
     this.white,
+    this.black,
     this.primary,
     this.red,
     this.green,
@@ -219,209 +223,3 @@ class CustomTextTheme {
     required this.bottomBar,
   });
 }
-
-// // *---* [Light Theme] *---*
-// //
-// ThemeData lightTheme() => ThemeData.light().copyWith(
-//       brightness: Brightness.light,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: Colors.white,
-//       scaffoldBackgroundColor: AppColors.mainBgLight,
-
-//       // [White].
-//       splashColor: Colors.white,
-
-//       // [Blue].
-//       primaryColor: AppColors.blue,
-
-//       // [Red].
-//       errorColor: AppColors.red,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: AppColors.lightRed,
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-// hoverColor: AppColors.kLightTextColor,
-
-//       // [Text].
-//       cardColor: AppColors.textMain,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(
-//         backgroundColor: AppColors.appBarLight,
-//         titleTextStyle: const TextStyle(color: AppColors.kLightTextColor),
-//       ),
-//       iconTheme: const IconThemeData(color: Colors.black),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-
-//       // textTheme: _getTextTheme(AppColors.textMain),
-//     );
-
-// // *---* [Dark Theme] *---*
-// //
-// ThemeData darkTheme() => ThemeData.dark().copyWith(
-//       brightness: Brightness.dark,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: AppColors.secondBgDark,
-//       scaffoldBackgroundColor: AppColors.mainBgDark,
-
-//       // [White].
-//       splashColor: const Color(0xFF33383F),
-
-//       // [Blue].
-//       primaryColor: AppColors.blueDark,
-
-//       // [Red].
-//       errorColor: AppColors.redDark,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: const Color(0xFFFF6A55).withOpacity(0.17),
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-//       hoverColor: AppColors.textDark,
-
-//       // [Text].
-//       cardColor: AppColors.textDark,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(backgroundColor: AppColors.appBarDark),
-//       iconTheme: const IconThemeData(color: Colors.white),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-//       // textTheme: _getTextTheme(AppColors.textDark),
-//     );
-
-// const appBarTheme = AppBarTheme(
-//   centerTitle: true,
-//   elevation: 0,
-//   backgroundColor: Colors.white,
-// );// // *---* [Light Theme] *---*
-// //
-// ThemeData lightTheme() => ThemeData.light().copyWith(
-//       brightness: Brightness.light,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: Colors.white,
-//       scaffoldBackgroundColor: AppColors.mainBgLight,
-
-//       // [White].
-//       splashColor: Colors.white,
-
-//       // [Blue].
-//       primaryColor: AppColors.blue,
-
-//       // [Red].
-//       errorColor: AppColors.red,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: AppColors.lightRed,
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-//       hoverColor: AppColors.kLightTextColor,
-
-//       // [Text].
-//       cardColor: AppColors.textMain,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(
-//         backgroundColor: AppColors.appBarLight,
-//         titleTextStyle: const TextStyle(color: AppColors.kLightTextColor),
-//       ),
-//       iconTheme: const IconThemeData(color: Colors.black),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-
-//       // textTheme: _getTextTheme(AppColors.textMain),
-//     );
-
-// // *---* [Dark Theme] *---*
-// //
-// ThemeData darkTheme() => ThemeData.dark().copyWith(
-//       brightness: Brightness.dark,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: AppColors.secondBgDark,
-//       scaffoldBackgroundColor: AppColors.mainBgDark,
-
-//       // [White].
-//       splashColor: const Color(0xFF33383F),
-
-//       // [Blue].
-//       primaryColor: AppColors.blueDark,
-
-//       // [Red].
-//       errorColor: AppColors.redDark,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: const Color(0xFFFF6A55).withOpacity(0.17),
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-//       hoverColor: AppColors.textDark,
-
-//       // [Text].
-//       cardColor: AppColors.textDark,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(backgroundColor: AppColors.appBarDark),
-//       iconTheme: const IconThemeData(color: Colors.white),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-//       // textTheme: _getTextTheme(AppColors.textDark),
-//     );
-
-// const appBarTheme = AppBarTheme(
-//   centerTitle: true,
-//   elevation: 0,
-//   backgroundColor: Colors.white,
-// );

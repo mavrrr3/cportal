@@ -40,16 +40,16 @@ class FilterItemModel extends FilterItemEntity {
           name: name,
           isActive: isActive,
         );
+}
 
-  // FilterItemModel copyWith({
-  //   String? name,
-  //   bool? isActive,
-  // }) {
-  //   return FilterItemModel(
-  //     name: name ?? this.name,
-  //     isActive: isActive ?? this.isActive,
-  //   );
-  // }
+@HiveType(typeId: 11)
+class FilterResponseModel extends FilterResponseEntity {
+  @HiveField(0)
+  final List<FilterModel> filters;
 
-  // bool get changeActivity => !isActive;
+  const FilterResponseModel({
+    required this.filters,
+  }) : super(
+          filters: filters,
+        );
 }

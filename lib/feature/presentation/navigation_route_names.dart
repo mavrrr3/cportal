@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/connecting_code_info_popup.dart';
@@ -168,8 +167,8 @@ final GoRouter router = GoRouter(
       path: '/news',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: HomePage(
-          child: NewsPage(pageType: NewsCodeEnum.news),
+        child: const HomePage(
+          child: NewsPage(),
           desktopMenuIndex: 1,
         ),
       ),

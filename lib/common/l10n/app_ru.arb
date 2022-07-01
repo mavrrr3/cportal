@@ -108,5 +108,8 @@
     "supportDeclaration": "Заявление\nна техническую поддержку/IT",
     "shortSupportDeclaration": "Заявление на тех. поддержку/IT",
     "inProcess": "В процессе", 
-    "logInToContinue": "Авторизуйтесь для продолжения"
+    "logInToContinue": "Авторизуйтесь для продолжения",
+    "declarationsArchive": "Архив заявлений",
+    "declarations": "Заявления",
+    "newDeclarations": "Новые"
 }

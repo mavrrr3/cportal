@@ -31,7 +31,7 @@ class NewsTemplate {
             children: [
               Image(
                 image: ExtendedNetworkImageProvider(
-                  '${AppConfig.apiUri}/images/${paragraph.image}',
+                  '${AppConfig.imagesUrl}/${paragraph.image}',
                   cache: true,
                 ),
               ),
@@ -53,7 +53,7 @@ class NewsTemplate {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  'http://${AppConfig.apiUri}/images/${paragraph.image}',
+                  'http://${AppConfig.imagesUrl}/${paragraph.image}',
                   cache: true,
                 ),
               ),

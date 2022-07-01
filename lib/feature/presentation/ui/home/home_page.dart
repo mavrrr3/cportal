@@ -3,11 +3,10 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/custom_bottom_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/quastions_page.dart';
@@ -130,7 +129,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
       const MainPage(),
-      NewsPage(pageType: NewsCodeEnum.news),
+      const NewsPage(),
       QuastionsPage(),
       const DeclarationsPage(),
       const ContactsPage(),

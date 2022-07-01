@@ -39,7 +39,9 @@ class MockIProfileRepository extends _i1.Mock implements _i3.IProfileRepository 
         Invocation.method(
           #getSingleProfile,
           [id],
-          {#isMyProfile: isMyProfile},
+          {
+            #isMyProfile: isMyProfile,
+          },
         ),
         returnValue: Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>>.value(
           _FakeEither_0<_i5.Failure, _i6.ProfileEntity>(),

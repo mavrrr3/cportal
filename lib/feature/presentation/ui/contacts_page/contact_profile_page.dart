@@ -1,8 +1,10 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/profile_info_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -10,9 +12,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/custom_bottom_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,8 +51,9 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
         return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
           builder: (context, state) {
             if (state is GetSingleProfileLoadingState) {
-              return const Scaffold(
-                body: Center(
+              return Scaffold(
+                backgroundColor: theme.background,
+                body: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
@@ -105,20 +106,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                                 const SizedBox(height: 41),
 
                                 // Profile image.
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: user.photoLink != ''
-                                      ? AvatarBox(
-                                          size: 102,
-                                          imgPath: user.photoLink,
-                                          borderRadius: 24,
-                                        )
-                                      : EmptyAvatarBox(
-                                          size: 102,
-                                          borderRadius: 24,
-                                          user: user,
-                                        ),
-                                ),
+                                ProfileImage(user: user, size: 102,borderRadius: 24,),
                                 const SizedBox(height: 12),
 
                                 // Full name.
@@ -184,21 +172,21 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             children: [
                               // Call.
                               _ActionButton(
-                                img: 'assets/icons/phone.svg',
+                                img: ImageAssets.phone,
                                 onTap: () {},
                               ),
                               const SizedBox(width: 16),
 
                               // Message.
                               _ActionButton(
-                                img: 'assets/icons/message.svg',
+                                img: ImageAssets.message,
                                 onTap: () {},
                               ),
                               const SizedBox(width: 16),
 
                               // Send email.
                               _ActionButton(
-                                img: 'assets/icons/email.svg',
+                                img: ImageAssets.email,
                                 onTap: () {},
                               ),
                             ],
@@ -249,7 +237,7 @@ class _BackButton extends StatelessWidget {
       child: Stack(
         children: [
           SvgPicture.asset(
-            'assets/icons/back_arrow.svg',
+            ImageAssets.backArrow,
             color: theme.text,
             width: 16,
           ),
