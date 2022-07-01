@@ -2,22 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:cportal_flutter/app_config.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_profile_remote_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
-import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
-
-abstract class IProfileRemoteDataSource {
-  /// Обращается к эндпойнту .....
-  ///
-  /// Пробрасываем все ошибки через [ServerException]
-  Future<ProfileModel> getSingleProfile(String id, {bool isMyProfile = false});
-
-  /// Обращается к эндпойнту .....
-  ///
-  /// Пробрасываем все ошибки через [ServerException]
-  Future<List<ProfileModel>> searchProfiles(String query);
-}
 
 class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   final IProfileLocalDataSource localDataSource;
@@ -29,8 +18,7 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     String id, {
     bool isMyProfile = false,
   }) async {
-    final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?id=$id';
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?id=$id';
     try {
       // TODO: Избавиться от if, передавать эту переменную в singleProfileToCache.
       if (isMyProfile) {

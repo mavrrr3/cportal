@@ -1,9 +1,9 @@
-import 'package:cportal_flutter/feature/data/datasources/pin_code_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_pin_code_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/pin_code_repository.dart';
 import 'package:test/test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockLocalDataSource extends Mock implements IPinCodeDataSource {}
+class MockLocalDataSource extends Mock implements IPinCodeLocalDataSource {}
 
 void main() {
   late PinCodeRepository repository;

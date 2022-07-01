@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class FilterViewRow extends StatelessWidget {
   final String headline;
   final List<FilterItemEntity> selectedItems;
-  final Function(FilterItemEntity, int) onClose;
+  final Function(FilterItemEntity) onClose;
 
   /// Выбранная категория фильтра.
   const FilterViewRow({
@@ -43,7 +43,7 @@ class FilterViewRow extends StatelessWidget {
                 text: selectedItems[index].name,
                 isCloseAction: true,
                 onTap: () {
-                  onClose(selectedItems[index], index);
+                  onClose(selectedItems[index]);
                 },
               ),
             ),

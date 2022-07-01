@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -213,6 +211,7 @@ class _ContactsPageState extends State<ContactsPage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: FilterWeb(
+                  type: FilterType.contacts,
                   onApply: _onApplyFilter,
                   onClear: _onClearFilter,
                 ),
@@ -236,7 +235,6 @@ class _ContactsPageState extends State<ContactsPage> {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            log('//////////[_setupScrollController]//////////////');
             BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
           }
         }
