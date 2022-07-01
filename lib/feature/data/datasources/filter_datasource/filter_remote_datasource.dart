@@ -2,16 +2,10 @@ import 'dart:developer';
 
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
-
-abstract class IFilterRemoteDataSource {
-  // Пробрасываем ошибки через [ServerException].
-  Future<FilterResponseModel> fetchContactsFilters();
-
-  // Пробрасываем ошибки через [ServerException].
-  Future<FilterResponseModel> fetchDeclarationsFilters();
-}
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 
 class FilterRemoteDataSource implements IFilterRemoteDataSource {
   final IFilterLocalDataSource localDatasource;
@@ -21,8 +15,7 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   @override
   Future<FilterResponseModel> fetchContactsFilters() async {
     try {
-      late FilterResponseModel remoteFilters;
-      remoteFilters = _contactsFilter;
+      const FilterResponseModel remoteFilters = _contactsFilter;
 
       log('FilterRemouteDataSource  ==========  $remoteFilters');
       await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
@@ -36,12 +29,13 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
   @override
   Future<FilterResponseModel> fetchDeclarationsFilters() async {
     try {
-      late FilterResponseModel remoteFilters;
-
-      remoteFilters = _declarationsFilter;
+      const FilterResponseModel remoteFilters = _declarationsFilter;
 
       log('FilterRemouteDataSource  ==========  $remoteFilters');
-      await localDatasource.filtersToCache(remoteFilters, FilterType.declarations);
+      await localDatasource.filtersToCache(
+        remoteFilters,
+        FilterType.declarations,
+      );
 
       return remoteFilters;
     } on ServerException {

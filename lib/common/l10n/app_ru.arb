@@ -110,5 +110,6 @@
     "inProcess": "В процессе",
     "declarationsArchive": "Архив заявлений",
     "declarations": "Заявления",
-    "newDeclarations": "Новые"
+    "newDeclarations": "Новые",
+    "createDeclaration": "Создать заявление"
 }

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:cportal_flutter/app_config.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 
 abstract class INewsRemoteDataSource {

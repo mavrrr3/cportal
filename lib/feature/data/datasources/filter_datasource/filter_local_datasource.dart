@@ -1,22 +1,10 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-
-enum FilterType { contacts, declarations }
-
-abstract class IFilterLocalDataSource {
-  /// Извлекаем [FilterResponseModel] из кеша
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<FilterResponseModel> fetchFiltersFromCache(FilterType type);
-
-  /// Сохраняем [FilterResponseModel] в кэш
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<void> filtersToCache(FilterResponseModel filters, FilterType type);
-}
 
 class FilterLocalDataSource implements IFilterLocalDataSource {
   final HiveInterface hive;

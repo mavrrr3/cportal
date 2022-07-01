@@ -8,18 +8,20 @@ class SearchWithFilter extends StatelessWidget {
   final TextEditingController searchController;
   final Function(String) onSearch;
   final Function() onFilterTap;
+  final EdgeInsetsGeometry? padding;
 
   const SearchWithFilter({
     Key? key,
     required this.searchController,
     required this.onSearch,
     required this.onFilterTap,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: getHorizontalPadding(context),
+      padding: padding ?? getHorizontalPadding(context),
       child: ResponsiveConstraints(
         constraint: const BoxConstraints(maxWidth: 640),
         child: Row(

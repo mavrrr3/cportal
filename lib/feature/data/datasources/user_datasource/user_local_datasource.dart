@@ -1,19 +1,8 @@
 import 'dart:developer';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-abstract class IUserLocalDataSource {
-  /// Сохраняем [UserModel] в кэш
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<void> currentUserToCache(UserModel user);
-
-  /// Извлекаем [UserModel] из кеша
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<UserModel?> getCurrentUserFromCache();
-}
 
 class UserLocalDataSource implements IUserLocalDataSource {
   @override

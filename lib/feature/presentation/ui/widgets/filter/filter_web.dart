@@ -1,18 +1,20 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_action_buttons.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_section.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilterWeb extends StatefulWidget {
+  final FilterType type;
   final Function() onApply;
   final Function() onClear;
 
   const FilterWeb({
     Key? key,
+    required this.type,
     required this.onApply,
     required this.onClear,
   }) : super(key: key);
@@ -22,67 +24,65 @@ class FilterWeb extends StatefulWidget {
 }
 
 class _FilterWebState extends State<FilterWeb> {
+
+
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    return BlocBuilder<FilterContactsBloc, FilterState>(
-      builder: (context, state) {
-        if (state is FilterLoadedState) {
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width * 0.25,
-            decoration: BoxDecoration(color: theme.cardColor),
-            child: Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 32,
-                  horizontal: 16,
+    switch (widget.type) {
+      // Web версия фильтра для раздела "Контакты".
+      case FilterType.contacts:
+        return BlocBuilder<FilterContactsBloc, FilterState>(
+          builder: (context, state) {
+            if (state is FilterLoadedState) {
+              return FilterWebContent(
+                filters: state.contactsFilters,
+                onApply: widget.onApply,
+                onClear: widget.onClear,
+                onExpand: (i) => BlocProvider.of<FilterContactsBloc>(context).add(
+                  FilterExpandSectionEvent(index: i),
                 ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: state.contactsFilters.length,
-                        itemBuilder: (context, index) => FilterSection(
-                          sectionWidth: MediaQuery.of(context).size.width * 0.25 - 80,
-                          item: state.contactsFilters[index],
-                          onExpand: () {
-                            BlocProvider.of<FilterContactsBloc>(context).add(
-                              FilterExpandSectionEvent(index: index),
-                            );
-                          },
-                          onSelect: (i) {
-                            BlocProvider.of<FilterContactsBloc>(context).add(
-                              FilterSelectItemEvent(
-                                filterIndex: index,
-                                itemIndex: i,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 32),
-                      child: FilterActionButtons(
-                        width: (MediaQuery.of(context).size.width * 0.25 - 48) / 2,
-                        onApply: widget.onApply,
-                        onClear: widget.onClear,
-                      ),
-                    ),
-                  ],
+                onSelect: (filterIndex, itemIndex) => BlocProvider.of<FilterContactsBloc>(context).add(
+                  FilterSelectItemEvent(
+                    filterIndex: filterIndex,
+                    itemIndex: itemIndex,
+                  ),
                 ),
-              ),
-            ),
-          );
-        }
+              );
+            }
 
-        // TODO: Обработать другие стейты.
+            // TODO: Обработать другие стейты.
+            return const SizedBox();
+          },
+        );
+
+      // Web версия фильтра для раздела "Заявления".
+      case FilterType.declarations:
+        return BlocBuilder<FilterDeclarationsBloc, FilterState>(
+          builder: (context, state) {
+            if (state is FilterLoadedState) {
+              return FilterWebContent(
+                filters: state.declarationsFilters,
+                onApply: widget.onApply,
+                onClear: widget.onClear,
+                onExpand: (i) => BlocProvider.of<FilterDeclarationsBloc>(context).add(
+                  FilterExpandSectionEvent(index: i),
+                ),
+                onSelect: (filterIndex, itemIndex) => BlocProvider.of<FilterDeclarationsBloc>(context).add(
+                  FilterSelectItemEvent(
+                    filterIndex: filterIndex,
+                    itemIndex: itemIndex,
+                  ),
+                ),
+              );
+            }
+
+            // TODO: Обработать другие стейты.
+            return const SizedBox();
+          },
+        );
+
+      default:
         return const SizedBox();
-      },
-    );
+    }
   }
 }
