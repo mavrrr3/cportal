@@ -8,8 +8,8 @@ import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
-import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
@@ -128,6 +128,9 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<AuthBloc>(
       create: (ctx) => sl<AuthBloc>(),
     ),
+    BlocProvider<ConnectingCodeBloc>(
+      create: (ctx) => sl<ConnectingCodeBloc>(),
+    ),
     BlocProvider<PinCodeBloc>(
       create: (ctx) => sl<PinCodeBloc>(),
     ),
@@ -157,8 +160,6 @@ List<BlocProvider> listOfBlocs() {
 
 void _hiveAdaptersInit() {
   Hive
-    ..registerAdapter(UserModelAdapter())
-    ..registerAdapter(UserTypeModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
     ..registerAdapter(ContactInfoModelAdapter())
     ..registerAdapter(NewsModelAdapter())
