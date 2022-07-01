@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
@@ -33,6 +34,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late TextEditingController _searchController;
+  late ScrollController _questionController;
   late FocusNode _searchFocus;
   late Duration _animationDuration;
   late bool _isSearchActive;
@@ -41,6 +43,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _questionController = ScrollController();
     _searchFocus = FocusNode();
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
@@ -203,10 +206,12 @@ class _MainPageState extends State<MainPage> {
                                         final articles = state.articles;
 
                                         return ListView.builder(
+                                          controller: _questionController,
                                           physics:
                                               const BouncingScrollPhysics(),
                                           shrinkWrap: true,
-                                          itemCount: 5,
+                                          itemCount: AppConfig
+                                              .numberNewsArticlesOnMain,
                                           itemBuilder: (context, i) {
                                             return Padding(
                                               padding: const EdgeInsets.only(
