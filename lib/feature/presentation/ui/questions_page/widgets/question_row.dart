@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,7 +26,11 @@ class QuestionRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: isLargerThenMobile(context) ? width - 400 : width - 60,
+            width: kIsWeb
+                ? width * 0.4
+                : isLargerThenMobile(context)
+                    ? width - 400
+                    : width - 60,
             child: Text(
               text,
               overflow: TextOverflow.ellipsis,

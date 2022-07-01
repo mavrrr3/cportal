@@ -141,7 +141,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                           );
                         },
                         child: ResponsiveConstraints(
-                          constraint: const BoxConstraints(maxWidth: 720),
+                          constraint: const BoxConstraints(maxWidth: 1046),
                           child: Column(
                             children: [
                               Expanded(

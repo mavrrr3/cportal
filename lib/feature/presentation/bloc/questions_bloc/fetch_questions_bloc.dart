@@ -23,6 +23,7 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
   }) : super(QuestionsEmptyState()) {
     on<FetchQaustionsEvent>((event, emit) async {
       var oldArticles = <ArticleEntity>[];
+      if (state is QuestionsLoading) return;
 
       if (state is QuestionsLoaded) {
         oldArticles = (state as QuestionsLoaded).articles;

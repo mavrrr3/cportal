@@ -107,7 +107,7 @@ class QuestionArticlePage extends StatelessWidget {
                                   ),
                                   child: ResponsiveConstraints(
                                     constraint: isLargerThenTablet(context)
-                                        ? const BoxConstraints(maxWidth: 640)
+                                        ? const BoxConstraints(maxWidth: 1046)
                                         : null,
                                     child: Column(
                                       crossAxisAlignment:

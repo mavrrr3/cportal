@@ -13,8 +13,8 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsByCategoryUseCase fetchNewsByCategory;
 
   int pageAll = 1;
+  Map pageByCategory = <String, int>{};
   List<String> tabs = ['Все'];
-  List<String> questionTabs = [];
 
   FetchNewsBloc({
     required this.fetchNews,
@@ -22,6 +22,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   }) : super(NewsEmptyState()) {
     on<FetchAllNewsEvent>((event, emit) async {
       var oldArticles = <ArticleEntity>[];
+      if (state is NewsLoading) return;
 
       if (state is NewsLoaded) {
         oldArticles = (state as NewsLoaded).articles;
@@ -67,6 +68,11 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
             tabs.add(tab);
           }
         }
+        for (int count = 0; count < tabs.length; count++) {
+          if (pageByCategory.length != tabs.length) {
+            pageByCategory.addAll(<String, int>{tabs[count]: 1});
+          }
+        }
 
         emit(NewsLoaded(articles: articles, tabs: tabs));
       }
@@ -75,8 +81,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
     });
 
     on<FetchNewsEventBy>((event, emit) async {
-      int pageByCategory = 1;
-
       if (state is NewsLoading) return;
 
       var oldArticles = <ArticleEntity>[];
@@ -85,12 +89,16 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as NewsLoaded).articles;
       }
 
-      emit(NewsLoading(oldArticles, tabs, isFirstFetch: pageByCategory == 1));
+      emit(NewsLoading(
+        oldArticles,
+        tabs,
+        isFirstFetch: pageByCategory[event.category] == 1,
+      ));
 
       final failureOrNews = await fetchNewsByCategory(
         FetchNewsByCategoryParams(
           category: event.category,
-          page: pageByCategory,
+          page: pageByCategory[event.category] as int,
         ),
       );
 
@@ -106,7 +114,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       }
 
       void loadedNewsToArticles(NewsEntity news) {
-        pageByCategory++;
+        pageByCategory[event.category]++;
         final articles = (state as NewsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);

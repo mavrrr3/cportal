@@ -8,30 +8,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class NewsContent extends StatelessWidget {
+class NewsContent extends StatefulWidget {
   final List<ArticleEntity> articles;
   final List<String> tabs;
   final int currentIndex;
 
-  final scrollController = ScrollController();
-
-  NewsContent({
+  const NewsContent({
     Key? key,
     required this.articles,
     required this.tabs,
     required this.currentIndex,
   }) : super(key: key);
 
+  @override
+  State<NewsContent> createState() => _NewsContentState();
+}
+
+class _NewsContentState extends State<NewsContent> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController();
+
+    _setupScrollController(context);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _setupScrollController(BuildContext context) {
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels != 0) {
-          if (currentIndex == 0) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels != 0) {
+          if (widget.currentIndex == 0) {
             context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
           } else {
             context
                 .read<FetchNewsBloc>()
-                .add(FetchNewsEventBy(tabs[currentIndex]));
+                .add(FetchNewsEventBy(widget.tabs[widget.currentIndex]));
           }
         }
       }
@@ -40,8 +60,6 @@ class NewsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _setupScrollController(context);
-
     final width = MediaQuery.of(context).size.width;
 
     void _onArticleSelected(String id) {
@@ -59,13 +77,13 @@ class NewsContent extends StatelessWidget {
     ) {
       final article = articles[index];
 
-      if (currentIndex == 0) {
+      if (widget.currentIndex == 0) {
         return NewsCard(
           width,
           item: article,
           onTap: () => _onArticleSelected(article.id),
         );
-      } else if (article.category == tabs[currentIndex]) {
+      } else if (article.category == tabs[widget.currentIndex]) {
         return NewsCard(
           width,
           item: article,
@@ -77,7 +95,7 @@ class NewsContent extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      controller: scrollController,
+      controller: _scrollController,
       dragStartBehavior: DragStartBehavior.down,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,11 +104,11 @@ class NewsContent extends StatelessWidget {
           if (isLargerThenMobile(context))
             Wrap(
               children: List.generate(
-                articles.length,
+                widget.articles.length,
                 (index) {
                   return _builderItem(
-                    articles,
-                    tabs,
+                    widget.articles,
+                    widget.tabs,
                     312,
                     index,
                   );
@@ -101,11 +119,11 @@ class NewsContent extends StatelessWidget {
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: articles.length,
+              itemCount: widget.articles.length,
               itemBuilder: (context, index) {
                 return _builderItem(
-                  articles,
-                  tabs,
+                  widget.articles,
+                  widget.tabs,
                   width,
                   index,
                 );
