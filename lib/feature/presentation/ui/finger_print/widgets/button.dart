@@ -1,38 +1,38 @@
-import 'package:cportal_flutter/common/app_colors.dart';
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
-enum ButtonEnum {
-  blue,
-  outlined,
-  text,
-}
-
 class Button {
+  // ignore: long-parameter-list
   static ButtonStyleButton factory(
+    BuildContext context,
     ButtonEnum type,
     String text,
     Function function,
     Size size,
   ) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     switch (type) {
       case ButtonEnum.blue:
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: size,
-            primary: AppColors.blue,
+            primary: theme.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           onPressed: () => function(),
-          child: _TextForButton(text, Colors.white),
+          child: _TextForButton(
+            text,
+            theme.brightness == Brightness.light ? theme.cardColor : theme.text,
+          ),
         );
       case ButtonEnum.outlined:
         return OutlinedButton(
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(
-              color: AppColors.blue,
+            side: BorderSide(
+              color: theme.primary!,
               width: 2,
             ),
             minimumSize: size,
@@ -57,6 +57,12 @@ class Button {
   }
 }
 
+enum ButtonEnum {
+  blue,
+  outlined,
+  text,
+}
+
 class _TextForButton extends StatelessWidget {
   final String? text;
   final Color? color;
@@ -68,11 +74,13 @@ class _TextForButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     return Text(
       text!,
-      style: kMainTextRoboto.copyWith(
+      style: theme.textTheme.px16.copyWith(
         fontWeight: FontWeight.w700,
-        color: color ?? AppColors.blue,
+        color: color ?? theme.primary,
       ),
     );
   }

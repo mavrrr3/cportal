@@ -1,45 +1,82 @@
+// ignore_for_file: overridden_fields
+// import 'dart:convert';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
-import 'dart:convert';
 import 'package:hive/hive.dart';
 
 part 'news_model.g.dart';
 
-// ignore_for_file: annotate_overrides, overridden_fields
+// NewsModel newsModelFromJson(String str) =>
+//     NewsModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
-NewsModel newsFromJson(String str) =>
-    NewsModel.fromJson(json.decode(str) as Map<String, dynamic>);
+// String newsModelToJson(NewsModel data) => json.encode(data.toJson());
 
-String newsToJson(NewsModel data) => json.encode(data.toJson());
-
-@HiveType(typeId: 7)
+@HiveType(typeId: 6)
 class NewsModel extends NewsEntity {
+  @override
   @HiveField(0)
-  final bool show;
-
-  @HiveField(1)
-  final List<ArticleModel> article;
-  NewsModel({
-    required final this.show,
-    required final this.article,
+  final ResponseModel response;
+  const NewsModel({
+    required this.response,
   }) : super(
-          show: show,
-          article: article,
+          response: response,
         );
 
   factory NewsModel.fromJson(Map<String, dynamic> json) => NewsModel(
-        show: json['show'] as bool,
-        article: List<ArticleModel>.from(
-          json['article'].map((dynamic x) =>
+        response:
+            ResponseModel.fromJson(json['response'] as Map<String, dynamic>),
+      );
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'response': response.toJson(),
+      };
+}
+
+@HiveType(typeId: 10)
+class ResponseModel extends ResponseEntity {
+  @override
+  @HiveField(0)
+  final int count;
+  @override
+  @HiveField(1)
+  final int? update;
+  @override
+  @HiveField(2)
+  final List<String>? categories;
+  @override
+  @HiveField(3)
+  final List<ArticleModel> articles;
+
+  const ResponseModel({
+    required this.count,
+    required this.update,
+    required this.categories,
+    required this.articles,
+  }) : super(
+          count: count,
+          update: update,
+          categories: categories,
+          articles: articles,
+        );
+
+  factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
+        count: json['count'] as int,
+        update: json['update'] == null ? null : json['update'] as int,
+        categories: json['categories'] == null
+            ? null
+            : List<String>.from(json['categories']
+                .map((dynamic x) => x as String) as Iterable<dynamic>),
+        articles: List<ArticleModel>.from(
+          json['items'].map((dynamic x) =>
                   ArticleModel.fromJson(x as Map<String, dynamic>))
-              as Iterable<ArticleModel>,
+              as Iterable<dynamic>,
         ),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'show': show,
-        'article': List<ArticleModel>.from(
-          (article).map((x) => x.toJson()) as Iterable<ArticleModel>,
-        ),
+        'count': count,
+        'update': update,
+        'categories': categories,
+        'items': List<dynamic>.from(articles.map<dynamic>((x) => x.toJson())),
       };
 }

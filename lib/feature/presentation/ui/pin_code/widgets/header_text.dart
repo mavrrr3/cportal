@@ -1,10 +1,9 @@
-import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/common/theme.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class HeaderText {
   static HeaderTextWidget factory(
@@ -29,7 +28,7 @@ class HeaderText {
           secondText: AppLocalizations.of(context)!.forgetPin,
           error: AppLocalizations.of(context)!.errorPinCode,
         );
-      case PinCodeInputEnum.wrongRepeat:
+      case PinCodeInputEnum.wrong:
         return HeaderTextWidget(
           title: AppLocalizations.of(context)!.repeatPinCode,
           secondText: '',
@@ -60,15 +59,23 @@ class HeaderTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+                                 final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SvgIcon(null, path: 'logo_grey.svg', width: 24.0.w),
+        ResponsiveVisibility(
+          hiddenWhen: const [
+            Condition<dynamic>.largerThan(name: TABLET),
           ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              SvgIcon(null, path: 'logo_grey.svg', width: 24),
+            ],
+          ),
         ),
-        SizedBox(height: 31.h),
+        const SizedBox(height: 31),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -76,41 +83,35 @@ class HeaderTextWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: kMainTextRusso.copyWith(
-                    fontSize: 28.sp,
-                  ),
+                  style: theme.textTheme.header,
                 ),
               ],
             ),
           ],
         ),
-        SizedBox(
-          height: 8.h,
-        ),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               secondText,
-              style: kMainTextRoboto.copyWith(
-                fontSize: 14.sp,
+              style: theme.textTheme.px12.copyWith(
                 color: secondText ==
                         AppLocalizations.of(context)!.itWillBeNeedToEnter
-                    ? AppColors.kLightTextColor
-                    : AppColors.blue,
+                    ? theme.textLight
+                    : theme.primary,
               ),
             ),
           ],
         ),
-        SizedBox(height: 66.h),
+        const SizedBox(height: 66),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               error ?? '',
-              style: kMainTextRoboto.copyWith(
-                fontSize: 14.sp,
-                color: AppColors.red,
+              style: theme.textTheme.px12.copyWith(
+                color: theme.red,
               ),
             ),
           ],

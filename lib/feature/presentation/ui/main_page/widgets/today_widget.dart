@@ -1,79 +1,130 @@
-import 'package:cportal_flutter/common/theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
+// Для теста, в будущем заменить на реальные данные.
 
 class TodayWidget extends StatelessWidget {
-  const TodayWidget({Key? key}) : super(key: key);
+  final Function(int) onTap;
+  const TodayWidget({
+    Key? key,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           AppLocalizations.of(context)!.today,
-          style: kMainTextRoboto.copyWith(fontSize: 22.sp),
+          style: theme.textTheme.px22,
+        ),
+        const SizedBox(height: 12),
+        if (!ResponsiveWrapper.of(context).isLargerThan(TABLET))
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              _items.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: GestureDetector(
+                  onTap: () {
+                    onTap(index);
+                  },
+                  child: _TodayItem(item: _items[index]),
+                ),
+              ),
+            ),
+          )
+        else
+          Wrap(
+            spacing: 51,
+            runSpacing: 16,
+            children: List.generate(
+              _items.length,
+              (index) => _TodayItem(item: _items[index]),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _TodayItem extends StatelessWidget {
+  final TodayItemModel item;
+
+  const _TodayItem({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AvatarBox(
+          size: 69,
+          imgPath: item.image,
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 14.0),
-          child: Row(
+          padding: const EdgeInsets.only(left: 15.5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AvatarBox(
-                size: 69,
-                imgPath:
-                    'https://avatarko.ru/img/kartinka/9/muzhchina_shlyapa_8746.jpg',
+              Text(
+                item.title ?? AppLocalizations.of(context)!.birthDay,
+                style: theme.textTheme.px14,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.5),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width - 120.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.birthDay,
-                        style: kMainTextRoboto.copyWith(fontSize: 14.sp),
+              const SizedBox(height: 7),
+              Text(
+                item.description,
+                softWrap: true,
+                style: theme.textTheme.px14.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  if (item.post != null)
+                    Text(
+                      item.post!,
+                      style: theme.textTheme.px12.copyWith(
+                        color: theme.textLight,
                       ),
-                      Text(
-                        'Романова Алексея Игоревича',
-                        softWrap: true,
-                        style: kMainTextRoboto.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
+                    ),
+                  if (item.place != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: theme.text!.withOpacity(0.06),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Text(
-                            'Охранник',
-                            style: kMainTextRoboto.copyWith(fontSize: 12.sp),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 4,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 7),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.06),
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 6.0),
-                                child: Text(
-                                  'Новосталь-М',
-                                  style:
-                                      kMainTextRoboto.copyWith(fontSize: 12.sp),
-                                ),
-                              ),
+                          child: Text(
+                            item.place!,
+                            style: theme.textTheme.px12.copyWith(
+                              color: theme.textLight,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                ],
               ),
             ],
           ),
@@ -82,3 +133,44 @@ class TodayWidget extends StatelessWidget {
     );
   }
 }
+
+class TodayItemModel {
+  final String image;
+  final String? title;
+  final String description;
+  final String? post;
+  final String? place;
+
+  TodayItemModel({
+    required this.image,
+    this.title,
+    required this.description,
+    this.post,
+    this.place,
+  });
+}
+
+final List<TodayItemModel> _items = [
+  TodayItemModel(
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+    description: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+  TodayItemModel(
+    image: '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+    description: 'Романова Алексея Игоревича',
+    post: 'Охранник',
+    place: 'Новосталь-М',
+  ),
+];

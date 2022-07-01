@@ -1,14 +1,8 @@
-import 'package:cportal_flutter/core/error/exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_user_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/user_model.dart';
-
-abstract class IUserRemoteDataSource {
-  /// Обращается к эндпойнту .....
-  ///
-  /// Пробрасываем все ошибки через [ServerException]
-  Future<UserModel> login(String connectongCode);
-}
 
 class UserRemoteDataSource implements IUserRemoteDataSource {
   final IUserLocalDataSource localDatasource;
@@ -30,8 +24,8 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
         userUpdated: 'userUpdated',
         userType: UserTypeModel(id: '1', code: 'ddd', description: 'ddd'),
       );
-      // log(remoteUser.toString());
-      await localDatasource.singleUserToCache(remoteUser);
+
+      await localDatasource.currentUserToCache(remoteUser);
 
       return remoteUser;
     } on ServerException {

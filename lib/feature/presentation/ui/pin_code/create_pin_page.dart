@@ -1,14 +1,14 @@
-import 'package:cportal_flutter/feature/presentation/go_navigation.dart';
+import 'package:cportal_flutter/common/constants/image_assets.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/header_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/custom_keyboard.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 
 final _pinController = TextEditingController();
 final _pinFocusNode = FocusNode();
@@ -19,54 +19,41 @@ class CreatePinPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<PinCodeBloc>(context, listen: false)
         .add(PinCodeCheckEvent());
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20.0.w,
-          ),
-          child: BlocConsumer<PinCodeBloc, PinCodeState>(
-            listener: ((context, state) {
-              if (state.status == PinCodeInputEnum.done) {
-                // Если ПИН код из базы Hive совпадает с
-                // введеным ПИНом, то редирект на страницу [/main_page]
-                context.goNamed(NavigationRouteNames.mainPage);
-              }
-            }),
-            builder: ((context, state) {
-              switch (state.status) {
-                case PinCodeInputEnum.create:
-                case PinCodeInputEnum.creating:
-                  return const BodyWidget(input: PinCodeInputEnum.create);
-                case PinCodeInputEnum.repeat:
-                case PinCodeInputEnum.repeating:
-                  return const BodyWidget(input: PinCodeInputEnum.repeat);
-
-                case PinCodeInputEnum.wrongRepeat:
-                  return const BodyWidget(
-                    input: PinCodeInputEnum.wrongRepeat,
-                  );
-                case PinCodeInputEnum.error:
-                  return const BodyWidget(input: PinCodeInputEnum.error);
-
-                default:
-                  return const Center(child: CircularProgressIndicator());
-              }
-            }),
-          ),
-        ),
-        Column(
-          children: [
-            CustomKeyboard(
-              controller: _pinController,
-              simbolQuantity: 4,
+    return Scaffold(
+      backgroundColor: theme.background,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
-            SizedBox(height: 52.h),
-          ],
-        ),
-      ],
+            child: BlocConsumer<PinCodeBloc, PinCodeState>(
+              listener: (context, state) {
+                if (state.status == PinCodeInputEnum.done) {
+                  // Если ПИН код из базы Hive совпадает с
+                  // введеным ПИНом, то редирект на страницу [/main_page]
+                  context.goNamed(NavigationRouteNames.mainPage);
+                }
+              },
+              builder: (context, state) {
+                return BodyWidget(input: state.status);
+              },
+            ),
+          ),
+          Column(
+            children: [
+              CustomKeyboard(
+                controller: _pinController,
+                simbolQuantity: 4,
+              ),
+              const SizedBox(height: 52),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -82,24 +69,23 @@ class BodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 48.h),
+        const SizedBox(height: 48),
         HeaderText.factory(
           _pinController,
           input,
           context,
         ),
-        SizedBox(height: 16.h),
-        const PinCodeInput(),
-        SizedBox(height: 8.h),
+        const Padding(
+          padding: EdgeInsets.only(top: 16, bottom: 8),
+          child: PinCodeInput(),
+        ),
       ],
     );
   }
 }
 
 class PinCodeInput extends StatefulWidget {
-  const PinCodeInput({
-    Key? key,
-  }) : super(key: key);
+  const PinCodeInput({Key? key}) : super(key: key);
 
   @override
   _PinCodeInputState createState() => _PinCodeInputState();
@@ -115,11 +101,17 @@ class _PinCodeInputState extends State<PinCodeInput> {
 
   @override
   Widget build(BuildContext context) {
+    final PinCodeBloc pinCodeBloc =
+        BlocProvider.of<PinCodeBloc>(context, listen: false);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     final defaultPinTheme = PinTheme(
-      width: 16.w,
-      height: 14.h,
+      width: 16,
+      height: 14,
       decoration: BoxDecoration(
-        color: AppColors.kLightTextColor.withOpacity(0.2),
+        color: theme.brightness == Brightness.light
+            ? theme.textLight?.withOpacity(0.2)
+            : theme.background,
         borderRadius: BorderRadius.circular(15),
       ),
     );
@@ -128,21 +120,21 @@ class _PinCodeInputState extends State<PinCodeInput> {
       builder: (context, state) {
         return Pinput(
           obscureText: true,
-          obscuringWidget: SvgIcon(
-            state.isWrongPin ? AppColors.red : AppColors.blue,
-            path: 'obscure_symbol.svg',
-            width: 16.w,
+          obscuringWidget: SvgPicture.asset(
+            ImageAssets.obscureSymbol,
+            color: state.isWrongPin ? theme.red : theme.primary,
+            width: 16,
           ),
           useNativeKeyboard: false,
           length: 4,
           controller: _pinController,
           focusNode: _pinFocusNode,
           defaultPinTheme: defaultPinTheme,
-          separator: SizedBox(width: 32.w),
+          separator: const SizedBox(width: 32),
           focusedPinTheme: defaultPinTheme,
           showCursor: false,
           onChanged: (value) {
-            BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+            pinCodeBloc.add(
               ChangedPinCode(
                 status: state.status,
                 pinCode: value,
@@ -150,18 +142,14 @@ class _PinCodeInputState extends State<PinCodeInput> {
             );
           },
           onCompleted: (value) {
-            BlocProvider.of<PinCodeBloc>(context, listen: false).add(
+            pinCodeBloc.add(
               CreatePinCodeSubmit(
                 pinCode: value,
                 status: state.status,
               ),
             );
-            if (state.doesItNeedToClean) {
-              Future.delayed(
-                const Duration(milliseconds: 600),
-                () => _pinController.text = '',
-              );
-            }
+
+            state.cleanField(_pinController);
           },
         );
       },

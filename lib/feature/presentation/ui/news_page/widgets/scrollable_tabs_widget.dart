@@ -1,8 +1,14 @@
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class ScrollableTabsWidget extends StatefulWidget {
+  final List<String> items;
+  final int currentIndex;
+  final Function(int) onTap;
+  final Color? activeColor;
+
   const ScrollableTabsWidget({
     Key? key,
     required this.items,
@@ -11,11 +17,6 @@ class ScrollableTabsWidget extends StatefulWidget {
     this.activeColor,
   }) : super(key: key);
 
-  final List<String> items;
-  final int currentIndex;
-  final Function(int) onTap;
-  final Color? activeColor;
-
   @override
   State<ScrollableTabsWidget> createState() => _ScrollableTabsWidgetState();
 }
@@ -23,16 +24,17 @@ class ScrollableTabsWidget extends StatefulWidget {
 class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    double width = MediaQuery.of(context).size.width;
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    final double width = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+          padding: getHorizontalPadding(context),
           child: SizedBox(
             width: width,
-            height: 28.0.h,
+            height: 30,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
@@ -52,14 +54,14 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
         ),
         Container(
           height: 1,
-          color: theme.dividerColor,
+          color: theme.divider,
         ),
       ],
     );
   }
 
   Widget _textButton(
-    ThemeData theme, {
+    CustomTheme theme, {
     required String text,
     required bool isCurrent,
     Function()? onTap,
@@ -68,7 +70,9 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(right: 8.0.w),
+        padding: EdgeInsets.only(
+          right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
+        ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           curve: Curves.easeIn,
@@ -77,21 +81,23 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
                 ? Border(
                     bottom: BorderSide(
                       width: 2.5,
-                      color: widget.activeColor ?? theme.colorScheme.secondary,
+                      color: widget.activeColor ?? theme.primary!,
                     ),
                   )
                 : null,
           ),
           child: Padding(
-            padding: EdgeInsets.only(bottom: 10.0.h),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Text(
               text,
               style: isCurrent
-                  ? kMainTextRoboto.copyWith(
+                  ? theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: widget.activeColor ?? theme.colorScheme.secondary,
+                      color: widget.activeColor ?? theme.primary!,
                     )
-                  : kMainTextRoboto.copyWith(fontWeight: FontWeight.w700),
+                  : theme.textTheme.px16.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
             ),
           ),
         ),
