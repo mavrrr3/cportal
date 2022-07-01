@@ -41,6 +41,7 @@ class _NewsContentState extends State<NewsContent> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _newsController.dispose();
     super.dispose();
   }
 
