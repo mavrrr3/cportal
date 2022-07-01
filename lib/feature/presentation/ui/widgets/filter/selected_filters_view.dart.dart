@@ -6,18 +6,20 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_vi
 class SelectedFiltersView extends StatelessWidget {
   final List<FilterEntity> filters;
   final Function(FilterItemEntity, int) onRemove;
+  final EdgeInsetsGeometry? padding;
 
   /// Рендеринг всех выбранных фильтров.
   const SelectedFiltersView({
     Key? key,
     required this.filters,
     required this.onRemove,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: getHorizontalPadding(context),
+      padding: padding ?? getHorizontalPadding(context),
       child: Column(
         children: [
           SizedBox(
@@ -46,7 +48,7 @@ class SelectedFiltersView extends StatelessWidget {
                       child: FilterViewRow(
                         headline: filters[index].headline,
                         selectedItems: selectedItems,
-                        onClose: onRemove,
+                        onClose: (item) => onRemove(item, index),
                       ),
                     )
                   : const SizedBox();

@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_declarations_bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tab_bar.dart';
@@ -9,28 +9,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DeclarationsPageContent extends StatefulWidget {
+class DeclarationsContentMobile extends StatelessWidget {
+  final TextEditingController searchController;
+  final TabController tabController;
   final Function() onFilterTap;
 
-  const DeclarationsPageContent({
+  const DeclarationsContentMobile({
     Key? key,
+    required this.searchController,
+    required this.tabController,
     required this.onFilterTap,
   }) : super(key: key);
-
-  @override
-  State<DeclarationsPageContent> createState() => _DeclarationsPageContentState();
-}
-
-class _DeclarationsPageContentState extends State<DeclarationsPageContent> with SingleTickerProviderStateMixin {
-  late TextEditingController _searchController;
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    _searchController = TextEditingController();
-    _tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +34,9 @@ class _DeclarationsPageContentState extends State<DeclarationsPageContent> with 
 
             // Строка с поиском.
             SearchWithFilter(
-              searchController: _searchController,
+              searchController: searchController,
               onSearch: (text) {},
-              onFilterTap: widget.onFilterTap,
+              onFilterTap: onFilterTap,
             ),
 
             // Выбранные фильтры.
@@ -76,23 +65,18 @@ class _DeclarationsPageContentState extends State<DeclarationsPageContent> with 
 
             // Заголовки вкладок.
             DeclarationsTabBar(
-              tabController: _tabController,
+              tabController: tabController,
             ),
 
             // Контент вкладок.
-            DeclarationsTabsContent(
-              tabController: _tabController,
+            Expanded(
+              child: DeclarationsTabsContent(
+                tabController: tabController,
+              ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _searchController.dispose();
-    _tabController.dispose();
   }
 }

@@ -152,8 +152,7 @@ class _MenuItem extends StatelessWidget {
 }
 
 void changePage(BuildContext context, int index) {
-  BlocProvider.of<NavigationBarBloc>(context)
-      .add(NavigationBarEventImpl(index: index));
+  BlocProvider.of<NavigationBarBloc>(context).add(NavigationBarEventImpl(index: index));
 
   switch (index) {
     case 0:
@@ -165,9 +164,9 @@ void changePage(BuildContext context, int index) {
     case 2:
       GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
       break;
-    // case 3:
-    //   GoRouter.of(context).pushNamed(NavigationRouteNames.declarations);
-    //   break;
+    case 3:
+      GoRouter.of(context).pushNamed(NavigationRouteNames.declarations);
+      break;
     case 4:
       GoRouter.of(context).pushNamed(NavigationRouteNames.contacts);
       break;

@@ -9,6 +9,14 @@ import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_lo
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_contacts_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_contacts_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_web.dart';
@@ -42,8 +50,9 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.d
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_contacts_bloc/filter_contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_declarations_bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -72,12 +81,14 @@ Future<void> init() async {
       ));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterContactsBloc(fetchFilters: sl()));
-  sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
   sl.registerFactory(() => ContactsBloc(
         fetchContacts: sl(),
         fetchProfile: sl(),
         searchContacts: sl(),
       ));
+  sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
+  // ignore: unnecessary_lambdas
+  sl.registerFactory(() => DeclarationsBloc());
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
@@ -190,6 +201,7 @@ Future<void> init() async {
   sl.registerLazySingleton<IProfileLocalDataSource>(
     ProfileLocalDataSource.new,
   );
+
   sl.registerLazySingleton<INewsRemoteDataSource>(
     () => NewsRemoteDataSource(sl(), sl()),
   );

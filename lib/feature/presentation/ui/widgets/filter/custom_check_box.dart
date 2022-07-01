@@ -1,15 +1,14 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomCheckBox extends StatefulWidget {
-  final Function() onTap;
+  final Function()? onTap;
   final bool isActive;
 
   const CustomCheckBox({
     Key? key,
-    required this.onTap,
+    this.onTap,
     required this.isActive,
   }) : super(key: key);
 
@@ -40,9 +39,12 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
           color: widget.isActive ? theme.primary! : Colors.transparent,
         ),
         child: widget.isActive
-            ? SvgPicture.asset(
-                ImageAssets.checkmark,
-                width: 12,
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Image.asset(
+                  ImageAssets.checkmark,
+                  width: 12,
+                ),
               )
             : const SizedBox(),
       ),

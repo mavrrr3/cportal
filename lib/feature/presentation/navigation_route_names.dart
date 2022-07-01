@@ -61,7 +61,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.splashScreen,
       path: '/splash_screen',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const Scaffold(body: SplashScreen()),
       ),
@@ -69,7 +69,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.connectingCode,
       path: '/connecting_code',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const ConnectingCodeScreen(),
       ),
@@ -96,7 +96,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: NavigationRouteNames.connectingCodeInfo,
           path: 'info',
-          pageBuilder: (context, state) => MaterialPage(
+          pageBuilder: (context, state) => NoTransitionPage<void>(
             key: state.pageKey,
             child: const ConnectingCodeInfoScreen(),
           ),
@@ -106,7 +106,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.qrScanner,
       path: '/qr_scanner',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const QrScanner(),
       ),
@@ -122,7 +122,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.createPin,
       path: '/create_pin',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const CreatePinCodeScreen(),
       ),
@@ -165,45 +165,26 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.news,
       path: '/news',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
           child: NewsPage(),
           desktopMenuIndex: 1,
         ),
       ),
-
-      // redirect: (state) {
-      //   if (kIsWeb) return '/news';
-
-      //   return null;
-      // },
     ),
-    // GoRoute(
-    //   name: NavigationRouteNames.newsWeb,
-    //   path: '/news',
-    //   pageBuilder: (BuildContext context, GoRouterState state) => MaterialPage(
-    //     key: state.pageKey,
-    //     child: const HomePage(
-    //       child: NewsPageWeb(),
-    //       desktopMenuIndex: 1,
-    //     ),
-    //   ),
-    // ),
     GoRoute(
       name: NavigationRouteNames.newsArticlePage,
       path: '/news/:fid',
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
         child: NewsArticlePage(id: state.params['fid']!),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.questions,
       path: '/questions',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: HomePage(
           child: QuastionsPage(),
@@ -214,17 +195,15 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.questionArticlePage,
       path: '/questions/:fid',
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: QuestionArticlePage(id: state.params['fid']!),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.profile,
       path: '/profile',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const ProfilePage(),
       ),
@@ -232,7 +211,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.userData,
       path: '/user_data',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const UserData(),
       ),
@@ -240,7 +219,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.onBoardingStart,
       path: '/onboarding_start',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const OnBoardingWelcome(),
       ),
@@ -248,57 +227,47 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.onboarding,
       path: '/onboarding',
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
         child: Onboarding(content: state.extra! as List<OnboardingEntity>),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.onboardingEnd,
       path: '/onboarding_end',
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
         child: const OnBoardingLearningCourse(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.contacts,
       path: '/contacts',
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
         child: const ContactsPage(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.declarations,
       path: '/declarations',
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
         child: const DeclarationsPage(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.contactProfile,
       path: '/users/profile/:fid',
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
         child: ContactProfilePage(
           id: state.params['fid']!,
         ),
       ),
     ),
   ],
-  errorPageBuilder: (context, state) => MaterialPage(
+  errorPageBuilder: (context, state) => NoTransitionPage<void>(
     key: state.pageKey,
     child: Center(
       child: Text(state.error.toString()),

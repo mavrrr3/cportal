@@ -15,7 +15,7 @@ abstract class ImageAssets {
   static const phone = '$iconsPath/phone.svg';
   static const message = '$iconsPath/message.svg';
   static const email = '$iconsPath/email.svg';
-  static const checkmark = '$iconsPath/check_mark.svg';
+  static const checkmark = '$iconsPath/check_mark.png';
   static const calendar = '$iconsPath/calendar.svg';
   static const flyVocation = '$iconsPath/fly_vocation.svg';
   static const lock = '$iconsPath/lock.svg';

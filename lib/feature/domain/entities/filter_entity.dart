@@ -62,3 +62,5 @@ class FilterResponseEntity extends Equatable {
   @override
   List<Object?> get props => [filters];
 }
+
+enum FilterType { contacts, declarations }
