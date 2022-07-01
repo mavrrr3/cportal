@@ -26,12 +26,14 @@ class NewsContent extends StatefulWidget {
 
 class _NewsContentState extends State<NewsContent> {
   late final ScrollController _scrollController;
+  late final ScrollController _newsController;
 
   @override
   void initState() {
     super.initState();
 
     _scrollController = ScrollController();
+    _newsController = ScrollController();
 
     _setupScrollController(context);
   }
@@ -117,6 +119,7 @@ class _NewsContentState extends State<NewsContent> {
             )
           else
             ListView.builder(
+              controller: _newsController,
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               itemCount: widget.articles.length,

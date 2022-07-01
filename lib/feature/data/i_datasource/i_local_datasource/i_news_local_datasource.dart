@@ -24,7 +24,7 @@ abstract class INewsLocalDataSource {
   /// Извлекает [NewsModel] из кеша
   /// Возвращает [NewsModel]
   /// Пробрасываем все ошибки через [CacheException]
-  Future<NewsModel> fetchQuastionsFromCache();
+  Future<NewsModel> fetchQuestionsFromCache();
 
   /// Сохраняет [NewsModel] в кэш
   ///

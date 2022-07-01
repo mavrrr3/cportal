@@ -99,8 +99,8 @@ Future<void> init() async {
         searchContacts: sl(),
       ));
   sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
-  // ignore: unnecessary_lambdas
-  sl.registerFactory(() => DeclarationsBloc());
+
+  sl.registerFactory(DeclarationsBloc.new);
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
