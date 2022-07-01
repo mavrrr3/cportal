@@ -29,5 +29,5 @@ abstract class INewsLocalDataSource {
   /// Сохраняет [NewsModel] в кэш
   ///
   /// Пробрасывает все ошибки через [CacheException]
-  Future<void> quastionsToCache(NewsModel news);
+  Future<void> questionsToCache(NewsModel news);
 }
