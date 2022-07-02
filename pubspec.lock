@@ -829,7 +829,7 @@ packages:
     source: hosted
     version: "0.1.8"
   shared_preferences:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
