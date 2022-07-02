@@ -41,7 +41,6 @@ dependencies:
   flutter_svg: ^1.0.3
   google_fonts: ^2.3.1
   pinput: ^2.2.9
-  pixel_perfect: ^1.1.1
 
   # State management for realisation bisness logic
   bloc_concurrency: ^0.2.0
