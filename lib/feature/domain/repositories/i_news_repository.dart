@@ -8,7 +8,7 @@ abstract class INewsRepository {
     int page,
     String category,
   );
-  Future<List<String>> fetchCategories();
+  Future<List<String>> fetchNewsCategories();
   Future<Either<Failure, NewsEntity>> fetchQuestions(int page);
   Future<List<String>> fetchQuestionCategories();
   Future<Either<Failure, NewsEntity>> fetchQuestionsByCategory(
