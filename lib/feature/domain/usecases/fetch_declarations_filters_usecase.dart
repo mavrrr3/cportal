@@ -8,5 +8,6 @@ class FetchDeclarationsFiltersUseCase {
 
   FetchDeclarationsFiltersUseCase(this.filterRepository);
 
-  Future<Either<Failure, FilterResponseEntity>> call() async => filterRepository.fetchDeclarationsFilters();
+  Future<Either<Failure, FilterResponseEntity>> call() async =>
+      filterRepository.fetchDeclarationsFilters();
 }

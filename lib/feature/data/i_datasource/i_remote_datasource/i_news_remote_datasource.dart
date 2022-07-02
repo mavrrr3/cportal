@@ -14,10 +14,10 @@ abstract class INewsRemoteDataSource {
   /// Обращается к эндпойнту .....
   /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchQuastions(int page);
+  Future<NewsModel> fetchQuestions(int page);
 
   /// Обращается к эндпойнту .....
   /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
-  Future<NewsModel> fetchQuastionsByCategory(int page, String category);
+  Future<NewsModel> fetchQuestionsByCategory(int page, String category);
 }

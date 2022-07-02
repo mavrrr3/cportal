@@ -5,24 +5,24 @@ import 'package:dartz/dartz.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:equatable/equatable.dart';
 
-class FetchQuastionsByCategoryUseCase
-    extends IUseCase<NewsEntity, FetchQuastionsByCategoryParams> {
+class FetchQuestionsByCategoryUseCase
+    extends IUseCase<NewsEntity, FetchQuestionsByCategoryParams> {
   final INewsRepository newsRepository;
 
-  FetchQuastionsByCategoryUseCase(this.newsRepository);
+  FetchQuestionsByCategoryUseCase(this.newsRepository);
 
   @override
   Future<Either<Failure, NewsEntity>> call(
-    FetchQuastionsByCategoryParams params,
+    FetchQuestionsByCategoryParams params,
   ) =>
-      newsRepository.fetchNewsByCategory(params.page, params.category);
+      newsRepository.fetchQuestionsByCategory(params.page, params.category);
 }
 
-class FetchQuastionsByCategoryParams extends Equatable {
+class FetchQuestionsByCategoryParams extends Equatable {
   final int page;
   final String category;
 
-  const FetchQuastionsByCategoryParams({
+  const FetchQuestionsByCategoryParams({
     required this.page,
     required this.category,
   });

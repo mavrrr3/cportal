@@ -1,7 +1,5 @@
 // ignore_for_file: unnecessary_cast
 
-import 'dart:developer';
-
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
@@ -15,8 +13,6 @@ class NewsTemplate {
   ) {
     final width = MediaQuery.of(context).size.width;
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    log(paragraph.toString());
 
     switch (paragraph.template) {
       case 'Текст':

@@ -1,10 +1,12 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,12 +16,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:swipe/swipe.dart';
-
-// void _contentInit(BuildContext context) {
-//   return BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-//     const FetchNewsEvent(),
-//   );
-// }
 
 class QuestionArticlePage extends StatelessWidget {
   final String id;
@@ -32,12 +28,12 @@ class QuestionArticlePage extends StatelessWidget {
     return Swipe(
       onSwipeRight: () {
         if (!kIsWeb) {
-          _onBack(context);
+          onBack(context);
         }
       },
-      child: BlocBuilder<FetchNewsBloc, FetchNewsState>(
+      child: BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
         builder: (context, state) {
-          if (state is NewsLoaded) {
+          if (state is QuestionsLoaded) {
             ArticleEntity articlefromBloc() {
               return state.articles
                   .where((element) => element.id == id)
@@ -69,9 +65,8 @@ class QuestionArticlePage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Кнопка назад для Web.
-                                if (ResponsiveWrapper.of(context)
-                                    .isLargerThan(TABLET))
+                                // Кнопка назад для Tablet/Web.
+                                if (isLargerThenTablet(context))
                                   Padding(
                                     padding: const EdgeInsets.only(
                                       left: 7,
@@ -80,9 +75,7 @@ class QuestionArticlePage extends StatelessWidget {
                                     child: GestureDetector(
                                       behavior: HitTestBehavior.translucent,
                                       onTap: () {
-                                        // _contentInit(context);.
-
-                                        GoRouter.of(context).pop();
+                                        context.pop();
                                       },
                                       child: Row(
                                         children: [
@@ -109,33 +102,30 @@ class QuestionArticlePage extends StatelessWidget {
                                   const SizedBox(),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET)
-                                        ? 32
-                                        : 20.0,
+                                    horizontal:
+                                        isLargerThenTablet(context) ? 32 : 20.0,
                                   ),
                                   child: ResponsiveConstraints(
-                                    constraint: ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET)
-                                        ? const BoxConstraints(maxWidth: 640)
+                                    constraint: isLargerThenTablet(context)
+                                        ? const BoxConstraints(maxWidth: 1046)
                                         : null,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
-                                          height: ResponsiveWrapper.of(context)
-                                                  .isLargerThan(TABLET)
+                                          height: isLargerThenTablet(context)
                                               ? 4
                                               : 19,
                                         ),
                                         // Кнопка назад mobile.
-                                        if (!ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET))
+                                        if (isLargerThenTablet(context))
+                                          const SizedBox()
+                                        else
                                           GestureDetector(
                                             behavior:
                                                 HitTestBehavior.translucent,
-                                            onTap: () => _onBack(context),
+                                            onTap: () => onBack(context),
                                             child: Stack(
                                               children: [
                                                 const SizedBox(
@@ -148,14 +138,11 @@ class QuestionArticlePage extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
-                                          )
+                                          ),
+                                        if (isLargerThenTablet(context))
+                                          const SizedBox()
                                         else
-                                          const SizedBox(),
-                                        if (!ResponsiveWrapper.of(context)
-                                            .isLargerThan(TABLET))
-                                          const SizedBox(height: 19)
-                                        else
-                                          const SizedBox(),
+                                          const SizedBox(height: 19),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -165,14 +152,24 @@ class QuestionArticlePage extends StatelessWidget {
                                               style: theme.textTheme.header,
                                             ),
                                             const SizedBox(height: 20),
-                                            Text(
-                                              articlefromBloc()
-                                                  .content
-                                                  .toString(),
-                                              style: theme.textTheme.px14,
+                                            Column(
+                                              children: [
+                                                ...List.generate(
+                                                  articlefromBloc()
+                                                      .content
+                                                      .length,
+                                                  (index) {
+                                                    return NewsTemplate.factory(
+                                                      context,
+                                                      articlefromBloc()
+                                                          .content[index],
+                                                    );
+                                                  },
+                                                ),
+                                              ],
                                             ),
                                             const SizedBox(height: 24),
-                                            _nextQuestion(
+                                            nextQuestion(
                                               articlefromBloc(),
                                               state,
                                               context,
@@ -201,9 +198,9 @@ class QuestionArticlePage extends StatelessWidget {
     );
   }
 
-  Widget _nextQuestion(
+  Widget nextQuestion(
     ArticleEntity currentItem,
-    NewsLoaded state,
+    QuestionsLoaded state,
     BuildContext context,
   ) {
     final List<ArticleEntity> currentTabsItems = [];
@@ -220,7 +217,7 @@ class QuestionArticlePage extends StatelessWidget {
                 .indexWhere((element) => element.id == currentItem.id)
         ? Padding(
             padding: const EdgeInsets.only(bottom: 32),
-            child: FaqRow(
+            child: QuestionRow(
               text: currentTabsItems[currentIndex + 1].header,
               onTap: () {
                 GoRouter.of(context).pop();
@@ -236,5 +233,5 @@ class QuestionArticlePage extends StatelessWidget {
         : const SizedBox();
   }
 
-  void _onBack(BuildContext context) => GoRouter.of(context).pop();
+  void onBack(BuildContext context) => context.pop();
 }

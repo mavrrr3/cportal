@@ -17,6 +17,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -139,6 +140,9 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<FetchNewsBloc>(
       create: (ctx) => sl<FetchNewsBloc>(),
+    ),
+    BlocProvider<FetchQuestionsBloc>(
+      create: (ctx) => sl<FetchQuestionsBloc>(),
     ),
     BlocProvider<NavigationBarBloc>(
       create: (ctx) => sl<NavigationBarBloc>(),

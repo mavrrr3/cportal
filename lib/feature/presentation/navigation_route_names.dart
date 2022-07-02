@@ -13,9 +13,9 @@ import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/question_article_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/quastions_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_welcome.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
@@ -186,8 +186,8 @@ final GoRouter router = GoRouter(
       path: '/questions',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: HomePage(
-          child: QuastionsPage(),
+        child: const HomePage(
+          child: QuestionsPage(),
           desktopMenuIndex: 2,
         ),
       ),
