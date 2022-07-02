@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/splash_widget.dart';
@@ -12,16 +11,13 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AuthBloc>().add(const CheckAuth());
-
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is Authenticated) {
-            final nextScreen = state.isAuth ? NavigationRouteNames.mainPage : NavigationRouteNames.connectingCode;
+          final nextScreen =
+              state is HasAuthCredentials ? NavigationRouteNames.login : NavigationRouteNames.connectingCode;
 
-            context.goNamed(nextScreen);
-          }
+          context.goNamed(nextScreen);
         },
         child: const SplashWidget.mobile(),
       ),

@@ -16,7 +16,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchNews(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -36,7 +37,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchNewsByCategory(int page, String category) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -54,28 +56,30 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
   }
 
   @override
-  Future<NewsModel> fetchQuastions(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
+  Future<NewsModel> fetchQuestions(int page) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
 
     try {
       final response = await dio.get<String>(baseUrl);
-
-      final news = NewsModel.fromJson(
+      final questions = NewsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
       );
+      log('загрузилось вопросов ${questions.response.articles.length}');
 
-      await localDatasource.newsToCache(news);
+      await localDatasource.questionsToCache(questions);
 
-      return news;
+      return questions;
     } on ServerException {
       throw ServerFailure();
     }
   }
 
   @override
-  Future<NewsModel> fetchQuastionsByCategory(int page, String category) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
-    log('baseUrl $baseUrl');
+  Future<NewsModel> fetchQuestionsByCategory(int page, String category) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page&category=$category';
+    log('page=$page category=$category baseUrl $baseUrl');
 
     try {
       final response = await dio.get<String>(baseUrl);
@@ -85,7 +89,6 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       );
 
       await localDatasource.newsByCategoryToCache(newsByCategory, category);
-      log(newsByCategory.toString());
 
       return newsByCategory;
     } on ServerException {

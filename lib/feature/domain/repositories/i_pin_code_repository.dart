@@ -1,7 +1,7 @@
-import 'package:dartz/dartz.dart';
-import 'package:cportal_flutter/core/error/failure.dart';
-
 abstract class IPinCodeRepository {
-  Future<Either<Failure, String>> writePin(String pinCode);
-  Future<String?> getPin();
+  Future<void> savePin(String pinCode);
+
+  Future<bool> hasPinCode();
+
+  Future<bool> pinIsMatched(String pinCode);
 }

@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashWidget extends StatelessWidget {
   final bool isDesktop;
@@ -23,12 +23,8 @@ class SplashWidget extends StatelessWidget {
           ),
         ),
       ),
-      child: const Center(
-        child: SvgIcon(
-          null,
-          path: 'logo.svg',
-          width: 120,
-        ),
+      child: Center(
+        child: SvgPicture.asset(ImageAssets.logo),
       ),
     );
   }

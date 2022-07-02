@@ -8,5 +8,6 @@ class FetchContactsFiltersUseCase {
 
   FetchContactsFiltersUseCase(this.filterRepository);
 
-  Future<Either<Failure, FilterResponseEntity>> call() async => filterRepository.fetchContactsFilters();
+  Future<Either<Failure, FilterResponseEntity>> call() async =>
+      filterRepository.fetchContactsFilters();
 }

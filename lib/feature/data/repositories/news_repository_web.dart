@@ -54,12 +54,33 @@ class NewsRepositoryWeb implements INewsRepository {
   }
 
   @override
-  Future<List<String>> fetchQuastionCategories() {
+  Future<List<String>> fetchQuestionCategories() {
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, NewsEntity>> fetchQuastions(int page) {
-    throw UnimplementedError();
+  Future<Either<Failure, NewsEntity>> fetchQuestions(int page) async {
+    try {
+      final remoteQuestions = await remoteDataSource.fetchQuestions(page);
+
+      return Right(remoteQuestions);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, NewsEntity>> fetchQuestionsByCategory(
+    int page,
+    String category,
+  ) async {
+    try {
+      final remoteQuestionsByCategory =
+          await remoteDataSource.fetchQuestionsByCategory(page, category);
+
+      return Right(remoteQuestionsByCategory);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }

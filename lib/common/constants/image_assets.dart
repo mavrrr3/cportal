@@ -2,6 +2,11 @@ abstract class ImageAssets {
   static const splash = 'assets/img/bg_splash.png';
 
   static const iconsPath = 'assets/icons';
+
+  static const backspace = '$iconsPath/backspace.svg';
+  static const qrCode = '$iconsPath/qr_code.svg';
+  static const faceId = '$iconsPath/face_id.svg';
+  static const fingerPrint = '$iconsPath/finger_print.svg';
   static const logo = '$iconsPath/logo.svg';
   static const document = '$iconsPath/what_get_icon.svg';
   static const backArrow = '$iconsPath/back_arrow.svg';

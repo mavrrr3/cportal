@@ -76,20 +76,20 @@ class NewsRepositoryMobile implements INewsRepository {
   }
 
   @override
-  Future<Either<Failure, NewsEntity>> fetchQuastions(int page) async {
+  Future<Either<Failure, NewsEntity>> fetchQuestions(int page) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteQuastions = await remoteDataSource.fetchQuastions(page);
+        final remoteQuestions = await remoteDataSource.fetchQuestions(page);
 
-        return Right(remoteQuastions);
+        return Right(remoteQuestions);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        final localQuastions = await localDataSource.fetchQuastionsFromCache();
+        final localQuestions = await localDataSource.fetchQuestionsFromCache();
 
-        return Right(localQuastions);
+        return Right(localQuestions);
       } on CacheException {
         return Left(CacheFailure());
       }
@@ -97,7 +97,33 @@ class NewsRepositoryMobile implements INewsRepository {
   }
 
   @override
-  Future<List<String>> fetchQuastionCategories() {
+  Future<List<String>> fetchQuestionCategories() {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, NewsEntity>> fetchQuestionsByCategory(
+    int page,
+    String category,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteQuestionsByCategory =
+            await remoteDataSource.fetchQuestionsByCategory(page, category);
+
+        return Right(remoteQuestionsByCategory);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localNewsByCtegory =
+            await localDataSource.fetchNewsByCategoryFromCache(category);
+
+        return Right(localNewsByCtegory);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
   }
 }
