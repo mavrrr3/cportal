@@ -137,15 +137,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 26),
-                    RowProfile(
-                      firstWidget: SvgIcon(
-                        iconColor,
-                        path: 'profile/lock.svg',
-                        width: 20,
+                    GestureDetector(
+                      onTap: () =>
+                          context.goNamed(NavigationRouteNames.editPin),
+                      child: RowProfile(
+                        firstWidget: SvgIcon(
+                          iconColor,
+                          path: 'profile/lock.svg',
+                          width: 20,
+                        ),
+                        text: AppLocalizations.of(context)!.changePin,
+                        secondWidget: getBlueArrow(theme),
                       ),
-                      text: AppLocalizations.of(context)!.changePin,
-                      secondWidget: getBlueArrow(theme),
-                      call: () => context.goNamed(NavigationRouteNames.editPin),
                     ),
                     const SizedBox(height: 28),
                     const ChangeTheme(),
