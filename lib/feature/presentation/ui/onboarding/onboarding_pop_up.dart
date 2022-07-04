@@ -1,12 +1,13 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-  class OnBoardingPopUp extends StatefulWidget {
+class OnBoardingPopUp extends StatefulWidget {
   final bool isBackArrow;
   final bool isNextArrow;
   final Function()? onBack;
@@ -29,7 +30,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class _OnBoardingPopUpState extends State<OnBoardingPopUp> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -47,7 +48,7 @@ class _OnBoardingPopUpState extends State<OnBoardingPopUp> {
           width: 844,
           height: 601,
           decoration: BoxDecoration(
-            color: theme.splashColor,
+            color: theme.cardColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: widget.child,
@@ -91,7 +92,7 @@ class OnBoardingContentWeb extends StatefulWidget {
 class _OnBoardingContentWebState extends State<OnBoardingContentWeb> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,12 +129,12 @@ class _OnBoardingContentWebState extends State<OnBoardingContentWeb> {
                 const SizedBox(height: 39),
                 Text(
                   widget.content[i].title,
-                  style: theme.textTheme.headline2,
+                  style: theme.textTheme.header,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   widget.content[i].description,
-                  style: theme.textTheme.headline5,
+                  style: theme.textTheme.px16,
                 ),
                 const SizedBox(height: 110),
                 Align(

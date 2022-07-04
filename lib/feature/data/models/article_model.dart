@@ -5,7 +5,7 @@ part 'article_model.g.dart';
 
 // ignore_for_file: overridden_fields
 // ignore_for_file: annotate_overrides
-@HiveType(typeId: 5)
+@HiveType(typeId: 4)
 class ArticleModel extends ArticleEntity {
   @HiveField(0)
   final String id;
@@ -23,7 +23,7 @@ class ArticleModel extends ArticleEntity {
   final List<ParagraphModel> content;
 
   @HiveField(5)
-  final String image;
+  final String? image;
 
   const ArticleModel({
     required this.id,
@@ -51,7 +51,7 @@ class ArticleModel extends ArticleEntity {
                   ParagraphModel.fromJson(x as Map<String, dynamic>))
               as Iterable<dynamic>,
         ),
-        image: json['image'] as String,
+        image: json['image'] == null ? 'https://toto-school.ru/800/600/https/www.caruanacini.com/images/patterns/1995/cromato.jpg' : json['image'] as String,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -64,7 +64,7 @@ class ArticleModel extends ArticleEntity {
       };
 }
 
-@HiveType(typeId: 6)
+@HiveType(typeId: 5)
 class ParagraphModel extends ParagraphEntity {
   @override
   @HiveField(0)

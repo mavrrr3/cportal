@@ -1,6 +1,6 @@
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
 
 class TabBarWidget extends StatefulWidget {
   final String title;
@@ -78,7 +78,7 @@ class _TabBarWidgetState extends State<TabBarWidget> {
       onTap: onTap,
       child: Padding(
         padding: EdgeInsets.only(
-          right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
+          right: isLargerThenTablet(context) ? 19 : 8,
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),

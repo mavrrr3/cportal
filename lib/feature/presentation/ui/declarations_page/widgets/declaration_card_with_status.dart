@@ -1,25 +1,22 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/domain/entities/declaration_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DeclarationCardWithStatus extends StatelessWidget {
-  final Widget status;
-  final String title;
-  final String svgPath;
-  final String date;
-  final String number;
+  final DeclarationEntity item;
+  final double? width;
 
   const DeclarationCardWithStatus({
     Key? key,
-    required this.status,
-    required this.title,
-    required this.svgPath,
-    required this.date,
-    required this.number,
+    required this.item,
+     this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -27,10 +24,9 @@ class DeclarationCardWithStatus extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Container(
-            width: double.infinity,
-            height: 90,
+            width: width ?? double.infinity,
             decoration: BoxDecoration(
-              color: theme.backgroundColor,
+              color: theme.cardColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Padding(
@@ -42,30 +38,34 @@ class DeclarationCardWithStatus extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: theme.textTheme.headline6!.copyWith(
-                          color: theme.cardColor,
-                          fontWeight: FontWeight.w700,
+                      Expanded(
+                        child: Text(
+                          item.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.px14.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                       SvgPicture.asset(
-                        svgPath,
+                        item.svgPath,
+                        color: theme.textLight,
                         width: 20,
                       ),
                     ],
                   ),
                   Text(
-                    date,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.cardColor.withOpacity(0.68),
+                    item.date,
+                    style: theme.textTheme.px12.copyWith(
+                      color: theme.textLight,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    number,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.cardColor.withOpacity(0.68),
+                    item.number,
+                    style: theme.textTheme.px12.copyWith(
+                      color: theme.textLight,
                     ),
                   ),
                 ],
@@ -77,10 +77,30 @@ class DeclarationCardWithStatus extends StatelessWidget {
           Positioned(
             left: 12,
             top: -9,
-            child: status,
+            child: _drawBadgeByStatus(theme, item.status),
           ),
         ],
       ),
     );
+  }
+}
+
+Widget _drawBadgeByStatus(CustomTheme theme, String status) {
+  switch (status) {
+    case 'одобрено':
+      return StatusBadge(
+        status,
+        theme.green,
+      );
+    case 'отклонено':
+      return StatusBadge(
+        status,
+        theme.red,
+      );
+    default:
+      return StatusBadge(
+        status,
+        theme.yellow,
+      );
   }
 }

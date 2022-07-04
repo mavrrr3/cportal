@@ -1,15 +1,21 @@
 import 'dart:developer';
+import 'package:cportal_flutter/app_config.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
 import 'package:flutter/foundation.dart';
@@ -28,6 +34,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late TextEditingController _searchController;
+  late ScrollController _questionController;
   late FocusNode _searchFocus;
   late Duration _animationDuration;
   late bool _isSearchActive;
@@ -36,6 +43,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _questionController = ScrollController();
     _searchFocus = FocusNode();
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
@@ -44,11 +52,14 @@ class _MainPageState extends State<MainPage> {
     BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
       const FetchAllNewsEvent(),
     );
+    BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
+        .add(const FetchQaustionsEvent());
   }
 
   @override
   void dispose() {
     _searchFocus.removeListener(_onFocusChange);
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -67,7 +78,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    List<ArticleEntity> articles;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -76,13 +88,12 @@ class _MainPageState extends State<MainPage> {
         children: [
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                    ? 16
-                    : 13,
+              padding: EdgeInsets.only(
+                top: isLargerThenMobile(context) ? 10 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
+                constraint:
+                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -101,7 +112,7 @@ class _MainPageState extends State<MainPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                              isLargerThenTablet(context)
                                   ? showProfile(context)
                                   : context.pushNamed(
                                       NavigationRouteNames.profile,
@@ -109,7 +120,8 @@ class _MainPageState extends State<MainPage> {
                             },
                             child: const AvatarBox(
                               size: 40,
-                              imgPath: '2.jpg',
+                              imgPath:
+                                  '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
                             ),
                           ),
                         ],
@@ -125,9 +137,9 @@ class _MainPageState extends State<MainPage> {
                             HorizontalListViewMain(
                               color: _isSearchActive
                                   ? theme.brightness == Brightness.light
-                                      ? theme.splashColor.withOpacity(0.3)
-                                      : theme.splashColor
-                                  : theme.splashColor,
+                                      ? theme.cardColor!.withOpacity(0.3)
+                                      : theme.cardColor!
+                                  : theme.cardColor!,
                             ),
                             const SizedBox(height: 24),
                             Padding(
@@ -141,51 +153,23 @@ class _MainPageState extends State<MainPage> {
                               padding: getHorizontalPadding(context),
                               child: Text(
                                 AppLocalizations.of(context)!.news,
-                                style: theme.textTheme.headline3,
+                                style: theme.textTheme.px22,
                               ),
                             ),
                             BlocBuilder<FetchNewsBloc, FetchNewsState>(
                               builder: (context, state) {
                                 if (state is NewsLoading) {
                                   const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: PlatformProgressIndicator(),
                                   );
                                 }
 
                                 if (state is NewsLoaded) {
-                                  return !kIsWeb
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                            left: getSingleHorizontalPadding(
-                                              context,
-                                            ),
-                                          ),
-                                          child: NewsHorizontalScroll(
-                                            onTap: (i) => _onArticleSelected(
-                                              state.articles[i].id,
-                                            ),
-                                            items: state.articles,
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding:
-                                              getHorizontalPadding(context),
-                                          child: Wrap(
-                                            spacing: 16,
-                                            runSpacing: 20,
-                                            children: List.generate(
-                                              state.articles.length,
-                                              (i) => NewsCardItem(
-                                                onTap: () => _onArticleSelected(
-                                                  state.articles[i].id,
-                                                ),
-                                                width: 312,
-                                                height: 152,
-                                                item: state.articles[i],
-                                              ),
-                                            ),
-                                          ),
-                                        );
+                                  final articles = state.articles;
+
+                                  return kIsWeb
+                                      ? NewsMainWeb(articles: articles)
+                                      : NewsMainMobile(articles: articles);
                                 }
 
                                 return const SizedBox();
@@ -194,7 +178,68 @@ class _MainPageState extends State<MainPage> {
                             const SizedBox(height: 24),
                             Padding(
                               padding: getHorizontalPadding(context),
-                              child: const FaqWidget(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.faq,
+                                    style: theme.textTheme.px22,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  BlocBuilder<FetchQuestionsBloc,
+                                      FetchQuestionsState>(
+                                    builder: (context, state) {
+                                      if (state is QuestionsLoading &&
+                                          state.isFirstFetch) {
+                                        return const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 60,
+                                          ),
+                                          child: Center(
+                                            child: PlatformProgressIndicator(),
+                                          ),
+                                        );
+                                      } else if (state is QuestionsLoading) {
+                                        articles = state.oldArticles;
+                                        log(articles.toString());
+                                      } else if (state is QuestionsLoaded) {
+                                        final articles = state.articles;
+
+                                        return ListView.builder(
+                                          controller: _questionController,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: AppConfig
+                                              .numberNewsArticlesOnMain,
+                                          itemBuilder: (context, i) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                bottom: 24,
+                                              ),
+                                              child: QuestionRow(
+                                                text: articles[i].header,
+                                                onTap: () {
+                                                  GoRouter.of(context)
+                                                      .pushNamed(
+                                                    NavigationRouteNames
+                                                        .questionArticlePage,
+                                                    params: {
+                                                      'fid': articles[i].id,
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+
+                                      return const SizedBox();
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -206,7 +251,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+            constraint: isLargerThenTablet(context)
                 ? const BoxConstraints(maxWidth: 640)
                 : null,
             child: SearchBox(
@@ -218,13 +263,6 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-
-  void _onArticleSelected(String id) {
-    GoRouter.of(context).pushNamed(
-      NavigationRouteNames.newsArticlePage,
-      params: {'fid': id},
-    );
-  }
 }
 
 Future<void> showProfile(BuildContext context) {
@@ -233,11 +271,7 @@ Future<void> showProfile(BuildContext context) {
     useRootNavigator: true,
     barrierDismissible: true,
     builder: (context) {
-      final ThemeData theme = Theme.of(context);
-
-      // final double width = MediaQuery.of(context).size.width;
-      // var horizontalPading = width * 0.28;
-      // log(horizontalPading.toString());
+      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
       return StatefulBuilder(
         builder: (context, setState) {
@@ -248,7 +282,7 @@ Future<void> showProfile(BuildContext context) {
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: theme.splashColor,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Padding(

@@ -1,20 +1,9 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-
-abstract class IContactsLocalDataSource {
-  /// Извлекаем [ContactsModel] из кеша
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<ContactsModel> fetchContactsFromCache();
-
-  /// Сохраняем [ContactsModel] в кэш
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<void> contactsToCache(ContactsModel contacts);
-}
 
 class ContactsLocalDataSource implements IContactsLocalDataSource {
   final HiveInterface hive;
@@ -23,7 +12,14 @@ class ContactsLocalDataSource implements IContactsLocalDataSource {
 
   @override
   Future<ContactsModel> fetchContactsFromCache() async {
-    final box = await hive.openBox<ContactsModel>('contacts');
+    var box = await hive.openBox<ContactsModel>('contacts');
+    log(Hive.isBoxOpen('contacts').toString());
+
+    if (!Hive.isBoxOpen('contacts')) {
+      await Hive.openBox<ContactsModel>('contacts');
+    } else {
+      box = await Hive.openBox<ContactsModel>('contacts');
+    }
 
     final contacts = box.get('contacts');
 
@@ -36,11 +32,16 @@ class ContactsLocalDataSource implements IContactsLocalDataSource {
 
   @override
   Future<void> contactsToCache(ContactsModel contacts) async {
-    if (kDebugMode) {
-      log('Contacts сохранил в кэш');
+    // Удаляет box с диска.
+    // await Hive.deleteBoxFromDisk('contacts');
+    var box = await Hive.openBox<ContactsModel>('contacts');
+    if (!Hive.isBoxOpen('contacts')) {
+      await Hive.openBox<ContactsModel>('contacts');
+    } else {
+      box = await Hive.openBox<ContactsModel>('contacts');
     }
 
-    final box = await hive.openBox<ContactsModel>('contacts');
+    log('ContactsModel сохранил в кэш ${contacts.count}');
 
     await box.put('contacts', contacts);
 

@@ -8,7 +8,7 @@ part of 'filter_model.dart';
 
 class FilterModelAdapter extends TypeAdapter<FilterModel> {
   @override
-  final int typeId = 8;
+  final int typeId = 7;
 
   @override
   FilterModel read(BinaryReader reader) {
@@ -48,7 +48,7 @@ class FilterModelAdapter extends TypeAdapter<FilterModel> {
 
 class FilterItemModelAdapter extends TypeAdapter<FilterItemModel> {
   @override
-  final int typeId = 9;
+  final int typeId = 8;
 
   @override
   FilterItemModel read(BinaryReader reader) {
@@ -79,6 +79,40 @@ class FilterItemModelAdapter extends TypeAdapter<FilterItemModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FilterItemModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class FilterResponseModelAdapter extends TypeAdapter<FilterResponseModel> {
+  @override
+  final int typeId = 11;
+
+  @override
+  FilterResponseModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return FilterResponseModel(
+      filters: (fields[0] as List).cast<FilterModel>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, FilterResponseModel obj) {
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.filters);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FilterResponseModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

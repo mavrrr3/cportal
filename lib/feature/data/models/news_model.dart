@@ -11,7 +11,7 @@ part 'news_model.g.dart';
 
 // String newsModelToJson(NewsModel data) => json.encode(data.toJson());
 
-@HiveType(typeId: 7)
+@HiveType(typeId: 6)
 class NewsModel extends NewsEntity {
   @override
   @HiveField(0)
@@ -32,14 +32,14 @@ class NewsModel extends NewsEntity {
       };
 }
 
-@HiveType(typeId: 11)
+@HiveType(typeId: 10)
 class ResponseModel extends ResponseEntity {
   @override
   @HiveField(0)
   final int count;
   @override
   @HiveField(1)
-  final int update;
+  final int? update;
   @override
   @HiveField(2)
   final List<String>? categories;
@@ -61,7 +61,7 @@ class ResponseModel extends ResponseEntity {
 
   factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
         count: json['count'] as int,
-        update: json['update'] as int,
+        update: json['update'] == null ? null : json['update'] as int,
         categories: json['categories'] == null
             ? null
             : List<String>.from(json['categories']

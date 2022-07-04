@@ -2,20 +2,23 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/app_bloc_observer.dart';
-import 'package:cportal_flutter/common/theme.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
-import 'package:cportal_flutter/feature/data/models/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -26,7 +29,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/user_bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -81,8 +84,16 @@ class Main extends StatelessWidget {
     return MultiBlocProvider(
       providers: listOfBlocs(),
       child: AdaptiveTheme(
-        light: lightTheme(),
-        dark: darkTheme(),
+        light: ThemeData.light().copyWith(
+          extensions: <ThemeExtension<dynamic>>[
+            light,
+          ],
+        ),
+        dark: ThemeData.light().copyWith(
+          extensions: <ThemeExtension<dynamic>>[
+            dark,
+          ],
+        ),
         initial: AdaptiveThemeMode.light,
         builder: (light, dark) => MaterialApp.router(
           routerDelegate: router.routerDelegate,
@@ -119,6 +130,9 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<AuthBloc>(
       create: (ctx) => sl<AuthBloc>(),
     ),
+    BlocProvider<ConnectingCodeBloc>(
+      create: (ctx) => sl<ConnectingCodeBloc>(),
+    ),
     BlocProvider<PinCodeBloc>(
       create: (ctx) => sl<PinCodeBloc>(),
     ),
@@ -128,25 +142,31 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<FetchNewsBloc>(
       create: (ctx) => sl<FetchNewsBloc>(),
     ),
+    BlocProvider<FetchQuestionsBloc>(
+      create: (ctx) => sl<FetchQuestionsBloc>(),
+    ),
     BlocProvider<NavigationBarBloc>(
       create: (ctx) => sl<NavigationBarBloc>(),
     ),
-    BlocProvider<FilterBloc>(
-      create: (ctx) => sl<FilterBloc>(),
+    BlocProvider<FilterContactsBloc>(
+      create: (ctx) => sl<FilterContactsBloc>(),
     ),
     BlocProvider<ContactsBloc>(
       create: (ctx) => sl<ContactsBloc>(),
+    ),
+    BlocProvider<FilterDeclarationsBloc>(
+      create: (ctx) => sl<FilterDeclarationsBloc>(),
+    ),
+    BlocProvider<DeclarationsBloc>(
+      create: (ctx) => sl<DeclarationsBloc>(),
     ),
   ];
 }
 
 void _hiveAdaptersInit() {
   Hive
-    ..registerAdapter(UserModelAdapter())
-    ..registerAdapter(UserTypeModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
-    ..registerAdapter(PositionModelAdapter())
-    ..registerAdapter(PhoneModelAdapter())
+    ..registerAdapter(ContactInfoModelAdapter())
     ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(ArticleModelAdapter())
     ..registerAdapter(ParagraphModelAdapter())
@@ -154,5 +174,6 @@ void _hiveAdaptersInit() {
     ..registerAdapter(FilterModelAdapter())
     ..registerAdapter(DeclarationModelAdapter())
     ..registerAdapter(FilterItemModelAdapter())
-    ..registerAdapter(ContactsModelAdapter());
+    ..registerAdapter(ContactsModelAdapter())
+    ..registerAdapter(FilterResponseModelAdapter());
 }

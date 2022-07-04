@@ -1,21 +1,26 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/profile_info_section.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_info_section.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ContactProfilePage extends StatelessWidget {
+class ContactProfilePage extends StatefulWidget {
   final String id;
 
   const ContactProfilePage({
@@ -23,40 +28,49 @@ class ContactProfilePage extends StatelessWidget {
     required this.id,
   }) : super(key: key);
 
-  void _contentInit(BuildContext context) {
-    return BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(FetchContactsEvent());
+  @override
+  State<ContactProfilePage> createState() => _ContactProfilePageState();
+}
+
+class _ContactProfilePageState extends State<ContactProfilePage> {
+  @override
+  void initState() {
+    BlocProvider.of<GetSingleProfileBloc>(
+      context,
+      listen: false,
+    ).add(GetSingleProfileEventImpl(widget.id));
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, navState) {
-        return BlocBuilder<ContactsBloc, ContactsState>(
+        return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
           builder: (context, state) {
-            if (state is FetchContactsLoadingState) {
-              return const Scaffold(
-                body: Center(
+            if (state is GetSingleProfileLoadingState) {
+              return Scaffold(
+                backgroundColor: theme.background,
+                body: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
             }
 
-            if (state is FetchContactsLoadedState) {
-              final ProfileEntity user = state.data.contacts.firstWhere(
-                (element) => element.id == id,
-              );
+            if (state is GetSingleProfileLoadedState) {
+              final ProfileEntity user = state.profile;
 
               return Swipe(
                 onSwipeRight: () {
                   if (kIsWeb) {
-                    _contentInit(context);
+                    _previousContentInit(context);
                   }
                   _onBack(context);
                 },
                 child: Scaffold(
+                  backgroundColor: theme.background,
                   bottomNavigationBar: !kIsWeb
                       ? CustomBottomBar(
                           state: navState,
@@ -65,38 +79,6 @@ class ContactProfilePage extends StatelessWidget {
                       : null,
                   body: Stack(
                     children: [
-                      // Action buttons.
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Call.
-                              _ActionButton(
-                                img: 'assets/icons/phone.svg',
-                                onTap: () {},
-                              ),
-                              const SizedBox(width: 16),
-
-                              // Message.
-                              _ActionButton(
-                                img: 'assets/icons/message.svg',
-                                onTap: () {},
-                              ),
-                              const SizedBox(width: 16),
-
-                              // Send email.
-                              _ActionButton(
-                                img: 'assets/icons/email.svg',
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
                       // Content.
                       SingleChildScrollView(
                         child: SafeArea(
@@ -113,7 +95,7 @@ class ContactProfilePage extends StatelessWidget {
                                     _BackButton(
                                       onTap: () {
                                         if (kIsWeb) {
-                                          _contentInit(context);
+                                          _previousContentInit(context);
                                         }
                                         _onBack(context);
                                       },
@@ -124,24 +106,16 @@ class ContactProfilePage extends StatelessWidget {
                                 const SizedBox(height: 41),
 
                                 // Profile image.
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: AvatarBox(
-                                    size: 102,
-                                    imgPath: user.photoLink,
-                                    isApiImg: false,
-                                    borderRadius: 24,
-                                  ),
-                                ),
+                                ProfileImage(user: user, size: 102,borderRadius: 24,),
                                 const SizedBox(height: 12),
 
                                 // Full name.
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    '${user.firstName} ${user.middleName}\n${user.lastName}',
+                                    user.fullName,
                                     textAlign: TextAlign.center,
-                                    style: theme.textTheme.headline4!.copyWith(
+                                    style: theme.textTheme.px17.copyWith(
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
@@ -149,11 +123,11 @@ class ContactProfilePage extends StatelessWidget {
                                 const SizedBox(height: 16),
 
                                 //-- Profile info --
-                                // Post
+                                // Post.
                                 ProfileInfoSection(
                                   headline:
                                       AppLocalizations.of(context)!.position,
-                                  text: user.position.description,
+                                  text: user.position,
                                   bottomPadding: 21,
                                 ),
 
@@ -161,43 +135,61 @@ class ContactProfilePage extends StatelessWidget {
                                 ProfileInfoSection(
                                   headline:
                                       AppLocalizations.of(context)!.department,
-                                  text: user.position.description,
+                                  text: user.department,
                                   bottomPadding: 21,
                                 ),
 
-                                // Office phone.
-                                ProfileInfoSection(
-                                  headline: AppLocalizations.of(context)!
-                                      .office_phone,
-                                  text: user.phone.first.number,
-                                  bottomPadding: 21,
-                                ),
+                                // Birthday.
+                                if (user.birthDayToString != null)
+                                  ProfileInfoSection(
+                                    headline: AppLocalizations.of(context)!
+                                        .birth_date,
+                                    text: user.birthDayToString!,
+                                    bottomPadding: 21,
+                                  ),
 
-                                // Self phone.
-                                ProfileInfoSection(
-                                  headline:
-                                      AppLocalizations.of(context)!.self_phone,
-                                  text:
-                                      '${user.phone[1].suffix} ${user.phone[1].number}',
-                                  bottomPadding: 21,
-                                ),
-
-                                // Birth date.
-                                ProfileInfoSection(
-                                  headline:
-                                      AppLocalizations.of(context)!.birth_date,
-                                  text: user.birthday,
-                                  bottomPadding: 21,
-                                ),
-
-                                // Email.
-                                ProfileInfoSection(
-                                  headline: AppLocalizations.of(context)!.email,
-                                  text: user.email,
-                                  bottomPadding: 21,
+                                // Contact info.
+                                ...List.generate(
+                                  user.contactInfo.length,
+                                  (i) => ProfileInfoSection(
+                                    headline: user.contactInfo[i].type,
+                                    text: user.contactInfo[i].contact,
+                                    bottomPadding: 21,
+                                  ),
                                 ),
                               ],
                             ),
+                          ),
+                        ),
+                      ),
+                      // Action buttons.
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Call.
+                              _ActionButton(
+                                img: ImageAssets.phone,
+                                onTap: () {},
+                              ),
+                              const SizedBox(width: 16),
+
+                              // Message.
+                              _ActionButton(
+                                img: ImageAssets.message,
+                                onTap: () {},
+                              ),
+                              const SizedBox(width: 16),
+
+                              // Send email.
+                              _ActionButton(
+                                img: ImageAssets.email,
+                                onTap: () {},
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -208,7 +200,7 @@ class ContactProfilePage extends StatelessWidget {
             }
 
             if (state is ContactsEmptyState) {
-              _contentInit(context);
+              _previousContentInit(context);
             }
 
             // TODO: Отработать другие стейты.
@@ -217,6 +209,11 @@ class ContactProfilePage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _previousContentInit(BuildContext context) {
+    return BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(const FetchContactsEvent());
   }
 
   void _onBack(BuildContext context) => context.pop();
@@ -232,7 +229,7 @@ class _BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -240,8 +237,8 @@ class _BackButton extends StatelessWidget {
       child: Stack(
         children: [
           SvgPicture.asset(
-            'assets/icons/back_arrow.svg',
-            color: theme.cardColor,
+            ImageAssets.backArrow,
+            color: theme.text,
             width: 16,
           ),
           const SizedBox(
@@ -267,11 +264,11 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.primaryColor,
+        color: theme.primary,
         borderRadius: BorderRadius.circular(16.8),
         boxShadow: [
           BoxShadow(

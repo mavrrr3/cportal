@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'package:cportal_flutter/common/app_colors.dart';
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/news_code_enum.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/custom_bottom_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/home/widgets/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
@@ -18,14 +17,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 const List<OnboardingEntity> _onboardingContent = [
   OnboardingEntity(
     title: 'Как общаться с коллегами?',
-    description:
-        'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
+    description: 'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
     image: 'assets/img/onboarding/1.svg',
   ),
   OnboardingEntity(
@@ -36,8 +33,7 @@ const List<OnboardingEntity> _onboardingContent = [
   ),
   OnboardingEntity(
     title: 'Любите читать?',
-    description:
-        'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
+    description: 'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
     image: 'assets/img/onboarding/3.svg',
   ),
   OnboardingEntity(
@@ -79,8 +75,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
   // Для онбординга.
   late bool _isOnboarding;
@@ -113,28 +108,29 @@ class _HomePageState extends State<HomePage>
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused && !kIsWeb) {
       // TODO выставить нужный delay.
-      timer = Timer(
-        const Duration(seconds: 10000000000000),
-        _loadPinRequest,
-      );
+      // timer = Timer(
+      //   const Duration(seconds: 10000000000000),
+      //   _loadPinRequest,
+      // );
     } else if (state == AppLifecycleState.resumed) {
       timer?.cancel();
     }
   }
 
-  Future<void> _loadPinRequest() async {
-    if (mounted) context.goNamed(NavigationRouteNames.inputPin);
-  }
+  // Future<void> _loadPinRequest() async {
+  //   if (mounted) context.goNamed(NavigationRouteNames.inputPin);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
       const MainPage(),
-      NewsPage(pageType: NewsCodeEnum.news),
-      NewsPage(pageType: NewsCodeEnum.quastion),
+      const NewsPage(),
+      const QuestionsPage(),
       const DeclarationsPage(),
       const ContactsPage(),
     ];
@@ -142,6 +138,7 @@ class _HomePageState extends State<HomePage>
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: theme.background,
           body: Stack(
             children: [
               Row(
@@ -168,8 +165,7 @@ class _HomePageState extends State<HomePage>
 
                   // Текущая страница.
                   Expanded(
-                    child:
-                        kIsWeb ? widget.child : listPages[state.currentIndex],
+                    child: kIsWeb ? widget.child : listPages[state.currentIndex],
                   ),
                 ],
               ),
@@ -180,9 +176,7 @@ class _HomePageState extends State<HomePage>
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  color: theme.brightness == Brightness.light
-                      ? theme.hoverColor.withOpacity(0.2)
-                      : AppColors.darkOnboardingBG.withOpacity(0.95),
+                  color: theme.barrierColor,
                 ),
 
               // Закрыть онбординг.

@@ -1,6 +1,7 @@
+import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +11,7 @@ class OnBoardingWelcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     // Контент страниц онбординга.
     final List<OnboardingEntity> onboardingContent = [
@@ -53,17 +54,17 @@ class OnBoardingWelcome extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.cardColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding:const EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 20,
             ),
             child: Column(
               children: [
-              const  SizedBox(height: 87),
+                const SizedBox(height: 87),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -71,12 +72,11 @@ class OnBoardingWelcome extends StatelessWidget {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.welcome,
-                          style: theme.textTheme.headline2,
+                          style: theme.textTheme.header,
                         ),
                         Text(
-                          AppLocalizations.of(context)!
-                              .findImportantInformation,
-                          style: theme.textTheme.headline5,
+                          AppLocalizations.of(context)!.findImportantInformation,
+                          style: theme.textTheme.px16,
                         ),
                       ],
                     ),

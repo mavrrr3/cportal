@@ -1,84 +1,74 @@
 import 'dart:async';
-import 'dart:developer';
+
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
-import 'package:flutter/foundation.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/domain/usecases/check_auth_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/login_user_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:local_auth/local_auth.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  LoginUserUseCase loginUser;
-  CheckAuthUseCase checkAuth;
+  final IAuthRepository _authRepository;
+  final IPinCodeRepository _pinCodeRepository;
+  final IBiometricRepository _biometricRepository;
 
   AuthBloc(
-    this.loginUser,
-    this.checkAuth,
-  ) : super(const AuthInitial()) {
+    this._authRepository,
+    this._pinCodeRepository,
+    this._biometricRepository,
+  ) : super(const AuthInitialState()) {
     _setupEvents();
   }
 
   void _setupEvents() {
-    on<ChangeAuthCode>(_onChange, transformer: bloc_concurrency.sequential());
-    on<CheckAuth>(_onCheckAuth, transformer: bloc_concurrency.sequential());
-    on<AuthEventImpl>(_onAuthorize, transformer: bloc_concurrency.sequential());
+    on<CheckLogin>(_onCheckLogin, transformer: bloc_concurrency.sequential());
+    on<LogInWithUser>(_onLogInWithUser, transformer: bloc_concurrency.sequential());
+    on<LogInWithPinCode>(_onLogInWithPinCode, transformer: bloc_concurrency.sequential());
+    on<LogInWithBiometrics>(_onLogInWithBiometrics, transformer: bloc_concurrency.sequential());
   }
 
-  FutureOr<void> _onChange(
-    ChangeAuthCode event,
-    Emitter<AuthState> emit,
-  ) {
-    if (event.connectingCode.length != 6) emit(const AuthInitial());
+  FutureOr<void> _onCheckLogin(AuthEvent _, Emitter<AuthState> emit) async {
+    final isAuthenticated = await _authRepository.isAuthenticated();
+    final hasPinCode = await _pinCodeRepository.hasPinCode();
+    final biometricType = await _biometricRepository.getEnabledBiometric();
+
+    if (isAuthenticated && hasPinCode) {
+      emit(HasAuthCredentials(biometricType));
+    } else {
+      emit(const NotAuthenticated());
+    }
   }
 
-  FutureOr<void> _onCheckAuth(
-    CheckAuth event,
-    Emitter<AuthState> emit,
-  ) async {
-    log(event.toString());
-    emit(const AuthInitial());
-
-    final notAuth = await checkAuth();
-    log(notAuth.toString());
-    notAuth.fold(
-      (failure) => const ErrorAuthState(error: 'Ошибка обработки кэша'),
-      (isAuth) => emit(Authenticated(isAuth)),
-    );
+  FutureOr<void> _onLogInWithUser(LogInWithUser event, Emitter<AuthState> emit) async {
+    emit(Authenticated(event.user));
   }
 
-  FutureOr<void> _onAuthorize(
-    AuthEventImpl event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthInitial());
+  FutureOr<void> _onLogInWithPinCode(LogInWithPinCode event, Emitter<AuthState> emit) async {
+    final pinIsMatched = await _pinCodeRepository.pinIsMatched(event.pinCode);
+    final enabledBiometric = _getEnabledBiometric(state);
 
-    final failureOrUser = await loginUser(
-      LoginUserParams(connectingCode: event.connectingCode),
-    );
-    log(failureOrUser.toString());
-    failureOrUser.fold(
-      (failure) {
-        emit(
-          ErrorAuthState(error: _mapFailureToMessage(failure)),
-        );
-      },
-      (user) {
-        emit(AuthUser(user: user));
-      },
-    );
-    if (kDebugMode) log('AuthState: $state');
+    if (!pinIsMatched) {
+      emit(WrongPinCode(enabledBiometric));
+      await Future.delayed(const Duration(seconds: 2), () => emit(TryAgainLater(enabledBiometric)));
+      await Future.delayed(const Duration(seconds: 30), () => emit(HasAuthCredentials(enabledBiometric)));
+    } else {
+      final user = await _authRepository.getUser();
+      emit(Authenticated(user));
+    }
   }
-}
 
-String _mapFailureToMessage(Failure failure) {
-  switch (failure.runtimeType) {
-    case ServerFailure:
-      return 'Ошибка на сервере';
-    case CacheFailure:
-      return 'Ошибка обработки кэша';
-    default:
-      return 'Unexpected Error';
+  FutureOr<void> _onLogInWithBiometrics(LogInWithBiometrics event, Emitter<AuthState> emit) async {
+    final isAuthenticated = await _biometricRepository.authenticate(localizedReason: event.localizedReason);
+
+    if (isAuthenticated) {
+      final user = await _authRepository.getUser();
+      emit(Authenticated(user));
+    }
+  }
+
+  BiometricType? _getEnabledBiometric(AuthState state) {
+    return state is HasAuthCredentials ? state.enabledBiometric : null;
   }
 }

@@ -8,7 +8,7 @@ part of 'news_model.dart';
 
 class NewsModelAdapter extends TypeAdapter<NewsModel> {
   @override
-  final int typeId = 7;
+  final int typeId = 6;
 
   @override
   NewsModel read(BinaryReader reader) {
@@ -42,7 +42,7 @@ class NewsModelAdapter extends TypeAdapter<NewsModel> {
 
 class ResponseModelAdapter extends TypeAdapter<ResponseModel> {
   @override
-  final int typeId = 11;
+  final int typeId = 10;
 
   @override
   ResponseModel read(BinaryReader reader) {
@@ -52,7 +52,7 @@ class ResponseModelAdapter extends TypeAdapter<ResponseModel> {
     };
     return ResponseModel(
       count: fields[0] as int,
-      update: fields[1] as int,
+      update: fields[1] as int?,
       categories: (fields[2] as List?)?.cast<String>(),
       articles: (fields[3] as List).cast<ArticleModel>(),
     );
