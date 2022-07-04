@@ -2,11 +2,13 @@ import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repositor
 import 'package:hive_flutter/hive_flutter.dart';
 
 class PinCodeRepository implements IPinCodeRepository {
-  PinCodeRepository();
+  final HiveInterface _hive;
+
+  PinCodeRepository(this._hive);
 
   @override
   Future<void> savePin(String pinCode) async {
-    final box = await Hive.openBox<String>('pin_code');
+    final box = await _hive.openBox<String>('pin_code');
     await box.put('pin_code', pinCode);
   }
 
@@ -25,7 +27,7 @@ class PinCodeRepository implements IPinCodeRepository {
   }
 
   Future<String?> _getPin() async {
-    final box = await Hive.openBox<String>('pin_code');
+    final box = await _hive.openBox<String>('pin_code');
 
     return box.get('pin_code');
   }

@@ -5,8 +5,10 @@
 import 'dart:async' as _i4;
 
 import 'package:cportal_flutter/core/error/failure.dart' as _i5;
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart' as _i6;
-import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart' as _i3;
+import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart'
+    as _i6;
+import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart'
+    as _i3;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -25,36 +27,28 @@ class _FakeEither_0<L, R> extends _i1.Fake implements _i2.Either<L, R> {}
 /// A class which mocks [IProfileRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIProfileRepository extends _i1.Mock implements _i3.IProfileRepository {
+class MockIProfileRepository extends _i1.Mock
+    implements _i3.IProfileRepository {
   MockIProfileRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>> getSingleProfile(
-    String? id, {
-    bool? isMyProfile = false,
-  }) =>
+          String? id,
+          {bool? isMyProfile = false}) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getSingleProfile,
-          [id],
-          {
-            #isMyProfile: isMyProfile,
-          },
-        ),
-        returnValue: Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>>.value(
-          _FakeEither_0<_i5.Failure, _i6.ProfileEntity>(),
-        ),
-      ) as _i4.Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>>);
+          Invocation.method(
+              #getSingleProfile, [id], {#isMyProfile: isMyProfile}),
+          returnValue: Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>>.value(
+              _FakeEither_0<_i5.Failure, _i6.ProfileEntity>())) as _i4
+          .Future<_i2.Either<_i5.Failure, _i6.ProfileEntity>>);
   @override
   _i4.Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>> searchProfiles(
-    String? query,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(#searchProfiles, [query]),
-        returnValue: Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>>.value(
-          _FakeEither_0<_i5.Failure, List<_i6.ProfileEntity>>(),
-        ),
-      ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>>);
+          String? query) =>
+      (super.noSuchMethod(Invocation.method(#searchProfiles, [query]),
+          returnValue:
+              Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>>.value(
+                  _FakeEither_0<_i5.Failure, List<_i6.ProfileEntity>>())) as _i4
+          .Future<_i2.Either<_i5.Failure, List<_i6.ProfileEntity>>>);
 }

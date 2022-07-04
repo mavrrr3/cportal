@@ -69,6 +69,9 @@ dependencies:
   responsive_framework: ^0.1.8
   qr_flutter: ^4.0.0
   bloc_test: ^9.0.3
+  retrofit: ^3.0.1+1
+  json_annotation: ^4.5.0
+  json_serializable: ^6.2.0
 
 dev_dependencies:
   dart_code_metrics: ^4.16.0
@@ -83,6 +86,7 @@ dev_dependencies:
   mockito: ^5.1.0
   mocktail: ^0.3.0
   test: ^1.19.5
+  retrofit_generator: ^4.0.1
 
 flutter:
   generate: true
