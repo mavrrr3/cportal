@@ -72,6 +72,7 @@ dependencies:
   retrofit: ^3.0.1+1
   json_annotation: ^4.5.0
   json_serializable: ^6.2.0
+  device_info_plus: ^4.0.0
 
 dev_dependencies:
   dart_code_metrics: ^4.16.0
