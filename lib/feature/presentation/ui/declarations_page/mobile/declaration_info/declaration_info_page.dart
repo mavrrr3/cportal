@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_if_elements_to_conditional_expressions
+
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
@@ -45,27 +47,8 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
     return Swipe(
       onSwipeRight: () => context.pop(),
       child: Scaffold(
-        floatingActionButton: // Отозвать заявление.
-            Button.factory(
-          context,
-          type: ButtonEnum.filled,
-          onTap: () {},
-          text: AppLocalizations.of(context)!.cancel_declaration,
-          color: theme.red,
-          size: Size(width - 32, 48),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         backgroundColor: theme.background,
-        bottomNavigationBar: !kIsWeb
-            ? BlocBuilder<NavigationBarBloc, NavigationBarState>(
-                builder: (context, state) {
-                  return CustomBottomBar(
-                    state: state,
-                    isNestedNavigation: true,
-                  );
-                },
-              )
-            : null,
+
         body: SafeArea(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -146,14 +129,43 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
                   // Подробная информация о заявлении.
                   DeclarationData(data: declarationInfoMock.data),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 32),
 
-                  const SizedBox(height: 60),
+                  declarationInfoMock.progress != 1
+                      ? Button.factory(
+                          context,
+                          type: ButtonEnum.filled,
+                          onTap: () {},
+                          text: AppLocalizations.of(context)!.cancelDeclaration,
+                          color: theme.red,
+                          size: Size(width - 32, 48),
+                        )
+                      : Button.factory(
+                          context,
+                          type: ButtonEnum.outlined,
+                          onTap: () {},
+                          text:
+                              AppLocalizations.of(context)!.archiveDeclaration,
+                          size: Size(width - 32, 48),
+                        ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
         ),
+        // Отозвать заявление.
+
+        bottomNavigationBar: !kIsWeb
+            ? BlocBuilder<NavigationBarBloc, NavigationBarState>(
+                builder: (context, state) {
+                  return CustomBottomBar(
+                    state: state,
+                    isNestedNavigation: true,
+                  );
+                },
+              )
+            : null,
       ),
     );
   }

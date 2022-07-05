@@ -10,7 +10,7 @@ class DeclarationProgress extends StatefulWidget {
     Key? key,
     required this.progress,
     required this.currentStep,
-    this.duration = 500,
+    this.duration = 650,
   }) : super(key: key);
 
   @override
@@ -18,6 +18,14 @@ class DeclarationProgress extends StatefulWidget {
 }
 
 class _DeclarationProgressState extends State<DeclarationProgress> {
+  late double progress;
+
+  @override
+  void initState() {
+    super.initState();
+    progressAnimation();
+  }
+
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -38,12 +46,12 @@ class _DeclarationProgressState extends State<DeclarationProgress> {
             ),
             AnimatedContainer(
               height: 24,
-              curve: Curves.easeOut,
+              curve: Curves.easeInOut,
               duration: Duration(milliseconds: widget.duration),
-              width: width * widget.progress,
+              width: width * progress,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: widget.progress < 1 ? theme.yellow : theme.green,
+                color: widget.progress < 1 ? theme.yellow : theme.progressDone,
               ),
             ),
           ],
@@ -58,5 +66,21 @@ class _DeclarationProgressState extends State<DeclarationProgress> {
           ),
       ],
     );
+  }
+
+  Future<void> progressAnimation() async {
+    if (widget.progress > 0) {
+      setState(() {
+        progress = 0;
+      });
+      await Future<dynamic>.delayed(const Duration(milliseconds: 5));
+      setState(() {
+        progress = widget.progress / 2;
+      });
+      await Future<dynamic>.delayed(const Duration(milliseconds: 5));
+      setState(() {
+        progress = widget.progress;
+      });
+    }
   }
 }

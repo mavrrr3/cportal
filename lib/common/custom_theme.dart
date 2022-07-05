@@ -18,6 +18,7 @@ final light = CustomTheme(
   textLight: const Color(0xFF282A2D).withOpacity(0.68),
   onBoarding: const Color(0xFF282A2D).withOpacity(0.2),
   barrierColor: const Color(0xFF282A2D).withOpacity(0.2),
+  progressDone: const Color(0xFF33C06F),
   textTheme: _getTextTheme(textColor: const Color(0xFF282A2D)),
 );
 
@@ -38,6 +39,8 @@ final dark = CustomTheme(
   textLight: const Color(0xFFFCFCFC).withOpacity(0.68),
   onBoarding: const Color(0xFF282A2D).withOpacity(0.2),
   barrierColor: const Color(0xFF1A1D1F).withOpacity(0.8),
+  progressDone: const Color(0xFF33C06F),
+
   textTheme: _getTextTheme(textColor: const Color(0xFFFCFCFC)),
 );
 
@@ -100,6 +103,8 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
     );
 
 class CustomTheme extends ThemeExtension<CustomTheme> {
+  final CustomTextTheme textTheme;
+
   final Brightness? brightness;
   final Color? background;
   final Color? white;
@@ -115,9 +120,10 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Color? textLight;
   final Color? onBoarding;
   final Color? barrierColor;
-  final CustomTextTheme textTheme;
+  final Color? progressDone;
 
   CustomTheme({
+    required this.textTheme,
     this.brightness,
     this.background,
     this.white,
@@ -133,7 +139,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.textLight,
     this.onBoarding,
     this.barrierColor,
-    required this.textTheme,
+    this.progressDone,
   });
 
   @override
@@ -153,6 +159,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     Color? textLight,
     Color? onBoarding,
     Color? barrierColor,
+    Color? progressDone,
     CustomTextTheme? textTheme,
   }) {
     return CustomTheme(
@@ -170,6 +177,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       textLight: textLight ?? this.textLight,
       onBoarding: onBoarding ?? this.onBoarding,
       barrierColor: barrierColor ?? this.barrierColor,
+      progressDone: progressDone ?? this.progressDone,
       textTheme: textTheme ?? this.textTheme,
     );
   }
@@ -197,6 +205,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       textLight: Color.lerp(textLight, other.textLight, t),
       onBoarding: Color.lerp(onBoarding, other.onBoarding, t),
       barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
+      progressDone: Color.lerp(progressDone, other.progressDone, t),
       textTheme: textTheme,
     );
   }

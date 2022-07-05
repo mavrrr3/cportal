@@ -118,6 +118,7 @@
     "priority": "Приоритет",
     "initiator": "Инициатор",
     "responsible": "Ответственный",
-    "cancel_declaration": "Отозвать заявление",
+    "cancelDeclaration": "Отозвать заявление",
+    "archiveDeclaration": "Отправить в архив",
     "save": "Сохранить"
 }

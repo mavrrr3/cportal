@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 
 class OnBoardingWelcomeWeb extends StatelessWidget {
-  final Function onTap;
+  final Function() onTap;
 
   const OnBoardingWelcomeWeb({
     Key? key,
