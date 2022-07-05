@@ -24,4 +24,5 @@ abstract class ImageAssets {
   static const obscureSymbol = '$iconsPath/obscure_symbol.svg';
   static const arrowUp = '$iconsPath/arrow_up.svg';
   static const arrowDown = '$iconsPath/arrow_down.svg';
+  static const flashLight = '$iconsPath/flash_light.svg';
 }
