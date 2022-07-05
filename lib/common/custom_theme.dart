@@ -28,7 +28,7 @@ final dark = CustomTheme(
   white: const Color(0xFFFFFFFF),
   black: const Color(0xFF000000),
   primary: const Color(0xFF2A85FF),
-  red: const Color(0xFFFF6A55),
+  red: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
   lightRedPIN: const Color(0xFFFF6A55).withOpacity(0.17),

@@ -60,7 +60,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/declarations/info',
+  initialLocation: '/',
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -275,19 +275,35 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.createDeclaration,
       path: '/declarations/create:fid',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
         child: CreateDeclarationPage(
           id: state.params['fid']!,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
         ),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
       path: '/declarations/info',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
+      pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
         child: const DeclarationInfoPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
+        ),
       ),
     ),
   ],

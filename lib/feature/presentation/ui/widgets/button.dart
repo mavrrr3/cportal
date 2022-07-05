@@ -4,35 +4,38 @@ import 'package:flutter/material.dart';
 class Button {
   // ignore: long-parameter-list
   static ButtonStyleButton factory(
-    BuildContext context,
-    ButtonEnum type,
-    String text,
-    Function function,
-    Size size,
-  ) {
+    BuildContext context, {
+    required ButtonEnum type,
+    required String text,
+    required Function() onTap,
+    Size size = const Size(double.infinity, 48),
+    Color? color,
+  }) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     switch (type) {
-      case ButtonEnum.blue:
+      case ButtonEnum.filled:
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: size,
-            primary: theme.primary,
+            primary: color ?? theme.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: () => function(),
+          onPressed: onTap,
           child: _TextForButton(
             text,
-            theme.brightness == Brightness.light ? theme.cardColor : theme.text,
+            color: theme.brightness == Brightness.light
+                ? theme.cardColor
+                : theme.text,
           ),
         );
       case ButtonEnum.outlined:
         return OutlinedButton(
           style: OutlinedButton.styleFrom(
             side: BorderSide(
-              color: theme.primary!,
+              color: color ?? theme.primary!,
               width: 2,
             ),
             minimumSize: size,
@@ -40,8 +43,8 @@ class Button {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: () => function(),
-          child: _TextForButton(text, null),
+          onPressed: onTap,
+          child: _TextForButton(text),
         );
       case ButtonEnum.text:
         return TextButton(
@@ -50,15 +53,18 @@ class Button {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: () => function(),
-          child: _TextForButton(text, null),
+          onPressed: onTap,
+          child: _TextForButton(
+            text,
+            color: color ?? theme.primary,
+          ),
         );
     }
   }
 }
 
 enum ButtonEnum {
-  blue,
+  filled,
   outlined,
   text,
 }
@@ -67,9 +73,9 @@ class _TextForButton extends StatelessWidget {
   final String? text;
   final Color? color;
   const _TextForButton(
-    this.text,
-    this.color, {
+    this.text, {
     Key? key,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -80,7 +86,7 @@ class _TextForButton extends StatelessWidget {
       text!,
       style: theme.textTheme.px16.copyWith(
         fontWeight: FontWeight.w700,
-        color: color ?? theme.primary,
+        color: color,
       ),
     );
   }

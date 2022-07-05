@@ -86,12 +86,11 @@ class UserData extends StatelessWidget {
                     const Expanded(child: SizedBox.shrink()),
                     Button.factory(
                       context,
-                      ButtonEnum.blue,
-                      'Сохранить',
-                      () {
+                      type: ButtonEnum.filled,
+                      text: AppLocalizations.of(context)!.save,
+                      onTap: () {
                         // TODO раелизовать сохранение номера.
                       },
-                      const Size(double.infinity, 48),
                     ),
                   ],
                 ),

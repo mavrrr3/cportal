@@ -156,12 +156,12 @@ class _OnBoardingContentWebState extends State<OnBoardingContentWeb> {
                     alignment: Alignment.center,
                     child: Button.factory(
                       context,
-                      ButtonEnum.blue,
-                      AppLocalizations.of(context)!.go_over,
-                      () {
+                      type: ButtonEnum.filled,
+                      text: AppLocalizations.of(context)!.go_over,
+                      onTap: () {
                         widget.onTap;
                       },
-                      const Size(
+                      size: const Size(
                         328,
                         48,
                       ),

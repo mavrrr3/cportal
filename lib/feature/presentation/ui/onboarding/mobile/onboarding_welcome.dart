@@ -75,7 +75,8 @@ class OnBoardingWelcome extends StatelessWidget {
                           style: theme.textTheme.header,
                         ),
                         Text(
-                          AppLocalizations.of(context)!.findImportantInformation,
+                          AppLocalizations.of(context)!
+                              .findImportantInformation,
                           style: theme.textTheme.px16,
                         ),
                       ],
@@ -89,15 +90,14 @@ class OnBoardingWelcome extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Button.factory(
               context,
-              ButtonEnum.blue,
-              AppLocalizations.of(context)!.forward,
-              () {
+              type: ButtonEnum.filled,
+              text: AppLocalizations.of(context)!.forward,
+              onTap: () {
                 GoRouter.of(context).pushNamed(
                   NavigationRouteNames.onboarding,
                   extra: onboardingContent,
                 );
               },
-              const Size(double.infinity, 48),
             ),
           ),
         ],

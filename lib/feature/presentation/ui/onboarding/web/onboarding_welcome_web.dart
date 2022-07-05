@@ -48,10 +48,9 @@ class OnBoardingWelcomeWeb extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 174, right: 206),
                 child: Button.factory(
                   context,
-                  ButtonEnum.blue,
-                  AppLocalizations.of(context)!.forward,
-                  onTap,
-                  const Size(double.infinity, 48),
+                  type: ButtonEnum.filled,
+                  text: AppLocalizations.of(context)!.forward,
+                  onTap: onTap,
                 ),
               ),
             ],
