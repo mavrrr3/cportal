@@ -69,7 +69,7 @@ class NewsRepositoryMobile implements INewsRepository {
   }
 
   @override
-  Future<List<String>> fetchCategories() async {
+  Future<List<String>> fetchNewsCategories() async {
     final localNews = await localDataSource.fetchNewsFromCache();
 
     return localNews.response.categories ?? [];
@@ -97,8 +97,10 @@ class NewsRepositoryMobile implements INewsRepository {
   }
 
   @override
-  Future<List<String>> fetchQuestionCategories() {
-    throw UnimplementedError();
+  Future<List<String>> fetchQuestionCategories() async {
+    final localNews = await localDataSource.fetchQuestionsFromCache();
+
+    return localNews.response.categories ?? [];
   }
 
   @override

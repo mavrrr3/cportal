@@ -31,7 +31,6 @@ dependencies:
   # Key-value local cache/db
   hive: ^2.2.2
   hive_flutter: ^1.1.0
-  shared_preferences: ^2.0.13
 
   # Localization
   intl: ^0.17.0
@@ -41,11 +40,9 @@ dependencies:
   flutter_svg: ^1.0.3
   google_fonts: ^2.3.1
   pinput: ^2.2.9
-  pixel_perfect: ^1.1.1
 
   # State management for realisation bisness logic
   bloc_concurrency: ^0.2.0
-  bloc: ^8.0.3
   flutter_bloc: ^8.0.1
 
   # Other
@@ -69,6 +66,10 @@ dependencies:
   responsive_framework: ^0.1.8
   qr_flutter: ^4.0.0
   bloc_test: ^9.0.3
+  retrofit: ^3.0.1+1
+  json_annotation: ^4.5.0
+  json_serializable: ^6.2.0
+  device_info_plus: ^4.0.0
 
 dev_dependencies:
   dart_code_metrics: ^4.16.0
@@ -83,6 +84,7 @@ dev_dependencies:
   mockito: ^5.1.0
   mocktail: ^0.3.0
   test: ^1.19.5
+  retrofit_generator: ^4.0.1
 
 flutter:
   generate: true

@@ -9,6 +9,8 @@ import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
+import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
+import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -175,5 +177,7 @@ void _hiveAdaptersInit() {
     ..registerAdapter(DeclarationModelAdapter())
     ..registerAdapter(FilterItemModelAdapter())
     ..registerAdapter(ContactsModelAdapter())
-    ..registerAdapter(FilterResponseModelAdapter());
+    ..registerAdapter(FilterResponseModelAdapter())
+    ..registerAdapter(UserModelAdapter())
+    ..registerAdapter(ContactModelAdapter());
 }

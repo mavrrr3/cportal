@@ -39,7 +39,7 @@ class WrongPinCode extends HasAuthCredentials {
   const WrongPinCode(BiometricType? enabledBiometric) : super(enabledBiometric);
 }
 
-class TryAgainLater extends HasAuthCredentials {
+class TryAgainLater extends WrongPinCode {
   const TryAgainLater(BiometricType? enabledBiometric) : super(enabledBiometric);
 }
 
