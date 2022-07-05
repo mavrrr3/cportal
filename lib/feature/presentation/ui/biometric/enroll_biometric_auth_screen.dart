@@ -1,7 +1,10 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/auth_mobile_layout.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +33,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
     return BlocConsumer<BiometricBloc, BiometricState>(
       listener: (context, state) {
         if (state is BiometricSuccessfullyEnrolled) {
-          context.goNamed(NavigationRouteNames.mainPage);
+          _logInWithUser(context);
         }
       },
       builder: (context, state) {
@@ -90,7 +93,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () => context.goNamed(NavigationRouteNames.mainPage),
+                    onPressed: () => _logInWithUser(context),
                     child: Text(
                       strings.noThanks,
                       style: theme.textTheme.px16.copyWith(
@@ -106,5 +109,14 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _logInWithUser(BuildContext context) {
+    final connectingCodeState = context.read<ConnectingCodeBloc>().state;
+
+    if (connectingCodeState is AuthenticatedWithConnectingCode) {
+      context.read<AuthBloc>().add(LogInWithUser(connectingCodeState.user));
+      context.goNamed(NavigationRouteNames.mainPage);
+    }
   }
 }
