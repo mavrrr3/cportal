@@ -3,15 +3,16 @@ import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
@@ -123,9 +124,14 @@ class _MainPageState extends State<MainPage> {
                             child: BlocBuilder<AuthBloc, AuthState>(
                               builder: (context, state) {
                                 if (state is Authenticated) {
-                                  return AvatarBox(
+                                  final user = state.user;
+
+                                  return ProfileImage(
+                                    fullName: user.name,
+                                    imgLink: user.photoUrl,
+                                    color: RandomColorService.color,
                                     size: 40,
-                                    imgPath: state.user.photoUrl,
+                                    borderRadius: 12,
                                   );
                                 }
 

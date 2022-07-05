@@ -9,8 +9,6 @@ import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_steps_history.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_user.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

@@ -2,8 +2,6 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
@@ -32,14 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     final Color? iconColor = theme.textLight;
-
-    BlocProvider.of<GetSingleProfileBloc>(
-      context,
-      listen: false,
-    ).add(const GetSingleProfileEventImpl(
-      'A1B2C3D4E5',
-      isMyProfile: true,
-    ));
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {

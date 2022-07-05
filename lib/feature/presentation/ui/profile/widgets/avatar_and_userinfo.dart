@@ -1,7 +1,8 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -22,9 +23,11 @@ class AvatarAndUserInfo extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 32),
-          AvatarBox(
+          ProfileImage(
+            fullName: user.name,
+            imgLink: user.photoUrl,
+            color: RandomColorService.color,
             size: 102,
-            imgPath: user.photoUrl,
             borderRadius: 24,
           ),
           const SizedBox(height: 12),

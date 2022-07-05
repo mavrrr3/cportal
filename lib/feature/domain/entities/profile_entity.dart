@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +33,6 @@ class ProfileEntity extends Equatable {
       .where((element) => element.type == 'Рабочий телефон')
       .first
       .contact;
-
 
   @override
   List<Object?> get props => [
