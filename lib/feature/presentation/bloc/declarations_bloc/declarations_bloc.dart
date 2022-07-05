@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
-import 'package:cportal_flutter/feature/domain/entities/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_state.dart';
 import 'package:flutter/material.dart';

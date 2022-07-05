@@ -5,7 +5,7 @@ class DeclarationEntity {
   final String number;
   final String status;
 
-  DeclarationEntity({
+  const DeclarationEntity({
     required this.title,
     required this.svgPath,
     required this.date,
@@ -14,7 +14,7 @@ class DeclarationEntity {
   });
 }
 
-final List<DeclarationEntity> mockDeclarations = [
+ const List<DeclarationEntity> mockDeclarations = [
   DeclarationEntity(
     title: 'Заявление на отпуск',
     svgPath: 'assets/icons/fly_vocation.svg',

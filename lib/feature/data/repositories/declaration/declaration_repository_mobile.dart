@@ -4,7 +4,7 @@ import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/declaration_datasource/declaration_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/declaration_datasource/declaration_remote_datasource.dart';
-import 'package:cportal_flutter/feature/domain/entities/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_declaration_repository.dart';
 
 class DeclarationRepositoryMobile extends IDeclarationRepository {

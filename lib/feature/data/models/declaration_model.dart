@@ -1,6 +1,6 @@
-// ignore_for_file: overridden_fields
+// ignore_for_file: overridden_fields, override_on_non_overriding_member
 
-import 'package:cportal_flutter/feature/domain/entities/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:hive/hive.dart';
 
 part 'declaration_model.g.dart';
@@ -23,7 +23,7 @@ class DeclarationModel extends DeclarationEntity {
   @HiveField(4)
   final String status;
 
-  const DeclarationModel({
+  DeclarationModel({
     required this.title,
     required this.svgPath,
     required this.date,

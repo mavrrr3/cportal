@@ -9,6 +9,8 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecti
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/create_declaration_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/declaration_info_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
@@ -52,11 +54,13 @@ abstract class NavigationRouteNames {
   static const contacts = 'contacts';
   static const contactProfile = 'contact_profile';
   static const declarations = 'declarations';
+  static const createDeclaration = 'create_declaration';
+  static const declarationInfo = 'declaration_info';
 }
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/splash_screen',
+  initialLocation: '/declarations/info',
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -84,7 +88,9 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -264,6 +270,24 @@ final GoRouter router = GoRouter(
         child: ContactProfilePage(
           id: state.params['fid']!,
         ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.createDeclaration,
+      path: '/declarations/create:fid',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: CreateDeclarationPage(
+          id: state.params['fid']!,
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.declarationInfo,
+      path: '/declarations/info',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const DeclarationInfoPage(),
       ),
     ),
   ],

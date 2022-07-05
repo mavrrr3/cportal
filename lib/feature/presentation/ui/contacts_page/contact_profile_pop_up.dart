@@ -71,13 +71,19 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Profile Image & Full Name.
-                          ProfileImage(user: state.profile, size: 102, borderRadius: 24,),
+                          ProfileImage(
+                            fullName: state.profile.fullName,
+                            imgLink: state.profile.photoLink,
+                            color: state.profile.color,
+                            size: 102,
+                            borderRadius: 24,
+                          ),
                           const SizedBox(height: 12),
                           Align(
                             alignment: Alignment.center,
@@ -108,18 +114,15 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
                           // Contact info.
                           ...List.generate(
                             state.profile.contactInfo.length,
-                            (i){
-                            return
-                            
-                             ProfileInfoSection(
-                              headline: state.profile.contactInfo[i].type,
-                              text: state.profile.contactInfo[i].contact,
-                              bottomPadding: 18,
-                              hasEmail: state.profile.contactInfo[i].type == 'Эл. почта',
-                            ) ;
-
-                            } ,
-                            
+                            (i) {
+                              return ProfileInfoSection(
+                                headline: state.profile.contactInfo[i].type,
+                                text: state.profile.contactInfo[i].contact,
+                                bottomPadding: 18,
+                                hasEmail: state.profile.contactInfo[i].type ==
+                                    'Эл. почта',
+                              );
+                            },
                           ),
 
                           // Birth date.
