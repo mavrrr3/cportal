@@ -1,6 +1,8 @@
 // ignore_for_file: cascade_invocations
 
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
+import 'package:cportal_flutter/feature/data/api/auth_api.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
@@ -35,6 +37,7 @@ import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.da
 import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
@@ -70,7 +73,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // BLOC/CUBIT.
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
-  sl.registerFactory(() => AuthBloc(sl(), sl(), sl())..add(const CheckLogin()));
+  sl.registerFactory(() => AuthBloc(sl())..add(const CheckLogin()));
   sl.registerFactory(() => ConnectingCodeBloc(sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
@@ -104,6 +107,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
   sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
+  sl.registerLazySingleton(() => AuthUseCase(sl(), sl(), sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -141,11 +145,11 @@ Future<void> init() async {
   //   );
   // }
   sl.registerLazySingleton<IPinCodeRepository>(
-    PinCodeRepository.new,
+    () => PinCodeRepository(sl()),
   );
 
   sl.registerLazySingleton<IAuthRepository>(
-    AuthRepository.new,
+    () => AuthRepository(sl(), sl()),
   );
 
   sl.registerLazySingleton<IBiometricRepository>(
@@ -229,7 +233,16 @@ Future<void> init() async {
   if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
   // EXTERNAL.
   sl.registerLazySingleton(InternetConnectionChecker.new);
-  sl.registerLazySingleton(Dio.new);
   sl.registerLazySingleton(LocalAuthentication.new);
   sl.registerLazySingleton<HiveInterface>(() => Hive);
+  sl.registerLazySingleton(
+    () => Dio(
+      BaseOptions(
+        baseUrl: AppConfig.apiUri,
+        headers: <String, dynamic>{'Authorization': AppConfig.authKey},
+      ),
+    ),
+  );
+  // API.
+  sl.registerLazySingleton(() => AuthApi(sl()));
 }

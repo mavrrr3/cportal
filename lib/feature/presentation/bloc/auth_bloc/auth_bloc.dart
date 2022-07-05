@@ -1,23 +1,17 @@
 import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
-import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
-import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
-import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:local_auth/local_auth.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final IAuthRepository _authRepository;
-  final IPinCodeRepository _pinCodeRepository;
-  final IBiometricRepository _biometricRepository;
+  final AuthUseCase _authUseCase;
 
   AuthBloc(
-    this._authRepository,
-    this._pinCodeRepository,
-    this._biometricRepository,
+    this._authUseCase,
   ) : super(const AuthInitialState()) {
     _setupEvents();
   }
@@ -30,12 +24,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   FutureOr<void> _onCheckLogin(AuthEvent _, Emitter<AuthState> emit) async {
-    final isAuthenticated = await _authRepository.isAuthenticated();
-    final hasPinCode = await _pinCodeRepository.hasPinCode();
-    final biometricType = await _biometricRepository.getEnabledBiometric();
+    final hasAuthCredentials = await _authUseCase.hasAuthCredentials();
 
-    if (isAuthenticated && hasPinCode) {
-      emit(HasAuthCredentials(biometricType));
+    if (hasAuthCredentials) {
+      final enabledBiometricType = await _authUseCase.getEnabledBiometricType();
+      emit(HasAuthCredentials(enabledBiometricType));
     } else {
       emit(const NotAuthenticated());
     }
@@ -46,24 +39,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   FutureOr<void> _onLogInWithPinCode(LogInWithPinCode event, Emitter<AuthState> emit) async {
-    final pinIsMatched = await _pinCodeRepository.pinIsMatched(event.pinCode);
-    final enabledBiometric = _getEnabledBiometric(state);
+    final user = await _authUseCase.logInWithPinCode(event.pinCode);
 
-    if (!pinIsMatched) {
+    if (user == null) {
+      final enabledBiometric = _getEnabledBiometric(state);
       emit(WrongPinCode(enabledBiometric));
       await Future.delayed(const Duration(seconds: 2), () => emit(TryAgainLater(enabledBiometric)));
       await Future.delayed(const Duration(seconds: 30), () => emit(HasAuthCredentials(enabledBiometric)));
     } else {
-      final user = await _authRepository.getUser();
       emit(Authenticated(user));
     }
   }
 
   FutureOr<void> _onLogInWithBiometrics(LogInWithBiometrics event, Emitter<AuthState> emit) async {
-    final isAuthenticated = await _biometricRepository.authenticate(localizedReason: event.localizedReason);
+    final user = await _authUseCase.logInWithBiometric(event.localizedReason);
 
-    if (isAuthenticated) {
-      final user = await _authRepository.getUser();
+    if (user != null) {
       emit(Authenticated(user));
     }
   }

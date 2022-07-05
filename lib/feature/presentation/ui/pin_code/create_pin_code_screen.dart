@@ -1,6 +1,9 @@
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -43,7 +46,12 @@ class _CreatePinCodeScreenState extends State<CreatePinCodeScreen> {
               context.goNamed(NavigationRouteNames.enrollFingerPrint);
             }
           } else if (state is BiometricNotSupported) {
-            context.goNamed(NavigationRouteNames.mainPage);
+            final connectingCodeState = context.read<ConnectingCodeBloc>().state;
+
+            if (connectingCodeState is AuthenticatedWithConnectingCode) {
+              context.read<AuthBloc>().add(LogInWithUser(connectingCodeState.user));
+              context.goNamed(NavigationRouteNames.mainPage);
+            }
           }
         },
         child: ResponsiveWrapper.of(context).isLargerThan(TABLET)

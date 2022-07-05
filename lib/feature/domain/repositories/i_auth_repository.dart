@@ -1,9 +1,9 @@
-import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
+import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 
 abstract class IAuthRepository {
-  Future<UserEntity> logInWithConnectingCode({required String connectingCode});
+  Future<UserModel?> logInWithConnectingCode({required String connectingCode});
 
-  Future<UserEntity> getUser();
+  Future<UserModel?> getUser();
 
   Future<bool> isAuthenticated();
 }
