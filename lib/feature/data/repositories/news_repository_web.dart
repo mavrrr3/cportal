@@ -47,7 +47,7 @@ class NewsRepositoryWeb implements INewsRepository {
   }
 
   @override
-  Future<List<String>> fetchCategories() async {
+  Future<List<String>> fetchNewsCategories() async {
     final localNews = await localDataSource.fetchNewsFromCache();
 
     return localNews.response.categories ?? [];

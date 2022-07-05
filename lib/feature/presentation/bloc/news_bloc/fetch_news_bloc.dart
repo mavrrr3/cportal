@@ -14,7 +14,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
   int pageAll = 1;
   Map pageByCategory = <String, int>{};
-  List<String> tabs = ['Все'];
+  List<String> newsTabs = ['Все'];
 
   FetchNewsBloc({
     required this.fetchNews,
@@ -28,7 +28,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as NewsLoaded).articles;
       }
 
-      emit(NewsLoading(oldArticles, tabs, isFirstFetch: pageAll == 1));
+      emit(NewsLoading(oldArticles, newsTabs, isFirstFetch: pageAll == 1));
 
       final failureOrNews = await fetchNews(FetchNewsParams(
         page: pageAll,
@@ -50,8 +50,8 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
         if (tabsFromCache.isNotEmpty) {
           for (final tab in tabsFromCache) {
-            if (!tabs.contains(tab)) {
-              tabs.add(tab);
+            if (!newsTabs.contains(tab)) {
+              newsTabs.add(tab);
             }
           }
         }
@@ -64,17 +64,17 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
         // Создание листа со всеми вкладками.
         for (final tab in news.response.categories!) {
-          if (!tabs.contains(tab)) {
-            tabs.add(tab);
+          if (!newsTabs.contains(tab)) {
+            newsTabs.add(tab);
           }
         }
-        for (int count = 0; count < tabs.length; count++) {
-          if (pageByCategory.length != tabs.length) {
-            pageByCategory.addAll(<String, int>{tabs[count]: 1});
+        for (int count = 0; count < newsTabs.length; count++) {
+          if (pageByCategory.length != newsTabs.length) {
+            pageByCategory.addAll(<String, int>{newsTabs[count]: 1});
           }
         }
 
-        emit(NewsLoaded(articles: articles, tabs: tabs));
+        emit(NewsLoaded(articles: articles, tabs: newsTabs));
       }
 
       failureOrNews.fold(failureToMessage, loadedNewsToArticles);
@@ -91,7 +91,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
       emit(NewsLoading(
         oldArticles,
-        tabs,
+        newsTabs,
         isFirstFetch: pageByCategory[event.category] == 1,
       ));
 
@@ -121,7 +121,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
         /// Создание листа со всеми вкладками.
 
-        emit(NewsLoaded(articles: articles, tabs: tabs));
+        emit(NewsLoaded(articles: articles, tabs: newsTabs));
       }
 
       failureOrNews.fold(failureToMessage, loadedNewsToArticles);
