@@ -243,7 +243,6 @@ Future<void> init() async {
       ),
     ),
   );
-
-  // API
+  // API.
   sl.registerLazySingleton(() => AuthApi(sl()));
 }
