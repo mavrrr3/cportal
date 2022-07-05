@@ -1,15 +1,18 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 
 class ProfileImage extends StatelessWidget {
-  final ProfileEntity user;
+  final String fullName;
+  final String imgLink;
+  final Color color;
   final double size;
   final double borderRadius;
   const ProfileImage({
     Key? key,
-    required this.user,
+    required this.fullName,
+    required this.imgLink,
+    required this.color,
     required this.size,
     required this.borderRadius,
   }) : super(key: key);
@@ -18,28 +21,31 @@ class ProfileImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
-      child: user.photoLink != ''
+      child: imgLink != ''
           ? AvatarBox(
               size: size,
-              imgPath: user.photoLink,
+              imgPath: imgLink,
               borderRadius: borderRadius,
             )
           : _EmptyAvatarBox(
+              fullName: fullName,
               size: size,
               borderRadius: borderRadius,
-              user: user,
+              color: color,
             ),
     );
   }
 }
 
 class _EmptyAvatarBox extends StatelessWidget {
-  final ProfileEntity user;
+  final String fullName;
+  final Color color;
   final double size;
   final double borderRadius;
   const _EmptyAvatarBox({
     Key? key,
-    required this.user,
+    required this.fullName,
+    required this.color,
     this.size = 48,
     this.borderRadius = 6,
   }) : super(key: key);
@@ -53,11 +59,11 @@ class _EmptyAvatarBox extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
-        color: user.color,
+        color: color,
       ),
       child: Center(
         child: Text(
-          getShortName(user.fullName),
+          getShortName(fullName),
           style: theme.textTheme.px22.copyWith(
             color: Colors.black,
             letterSpacing: -1,

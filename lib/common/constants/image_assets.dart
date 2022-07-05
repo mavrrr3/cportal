@@ -24,4 +24,9 @@ abstract class ImageAssets {
   static const obscureSymbol = '$iconsPath/obscure_symbol.svg';
   static const arrowUp = '$iconsPath/arrow_up.svg';
   static const arrowDown = '$iconsPath/arrow_down.svg';
+  static const history = '$iconsPath/history.svg';
+  static const stepDone = '$iconsPath/declaration_step_done.svg';
+  static const stepInProgress = '$iconsPath/declaration_step_in_progress.svg';
+  static const stepDeclined = '$iconsPath/declaration_step_declined.svg';
+  static const highPriority = '$iconsPath/high_priority.svg';
 }

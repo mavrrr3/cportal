@@ -2,10 +2,10 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CreateDeclaration extends StatelessWidget {
+class CreateDeclarationCard extends StatelessWidget {
   final List<Widget> items;
   final Function(int) onTap;
-  const CreateDeclaration({
+  const CreateDeclarationCard({
     Key? key,
     required this.items,
     required this.onTap,

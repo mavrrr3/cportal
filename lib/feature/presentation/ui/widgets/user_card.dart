@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 
-class ContactCard extends StatelessWidget {
-  final ProfileEntity user;
+class UserCard extends StatelessWidget {
+  final String fullName;
+  final String position;
+  final String imgLink;
+  final Color color;
+
   final double? width;
 
   /// Карточка контакта.
-  const ContactCard({
+  const UserCard({
     Key? key,
-    required this.user,
+    required this.fullName,
+    required this.position,
+    required this.imgLink,
+    required this.color,
     this.width,
   }) : super(key: key);
 
@@ -30,15 +36,20 @@ class ContactCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProfileImage(user: user, size: 48, borderRadius: 6),
+              ProfileImage(
+                fullName: fullName,
+                imgLink: imgLink,
+                color: color,
+                size: 48,
+                borderRadius: 6,
+              ),
               const SizedBox(width: 12),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.fullName,
+                      fullName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.px14
@@ -46,7 +57,7 @@ class ContactCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      user.position,
+                      position,
                       style: theme.textTheme.px12.copyWith(
                         color: theme.textLight,
                       ),

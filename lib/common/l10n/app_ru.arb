@@ -112,5 +112,11 @@
     "declarationsArchive": "Архив заявлений",
     "declarations": "Заявления",
     "newDeclarations": "Новые",
-    "createDeclaration": "Создать заявление"
+    "createDeclaration": "Создать заявление",
+    "history": "История", 
+    "dateAndTime": "Дата и время",
+    "priority": "Приоритет",
+    "initiator": "Инициатор",
+    "responsible": "Ответственный",
+    "cancel_declaration": "Отозвать заявление"
 }

@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NewsRemoteDataSource implements INewsRemoteDataSource {
   final INewsLocalDataSource localDatasource;
