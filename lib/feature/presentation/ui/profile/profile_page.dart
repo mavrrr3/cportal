@@ -1,8 +1,9 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
@@ -22,7 +23,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late ProfileEntity profile;
+  late UserEntity user;
 
   bool isNotificationTurnedOn = true;
 
@@ -40,16 +41,10 @@ class _ProfilePageState extends State<ProfilePage> {
       isMyProfile: true,
     ));
 
-    return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is GetSingleProfileLoadingState) {
-          return Scaffold(
-            backgroundColor: theme.background,
-            body: const Center(child: CircularProgressIndicator()),
-          );
-        }
-        if (state is GetSingleProfileLoadedState) {
-          profile = state.profile;
+        if (state is Authenticated) {
+          user = state.user;
 
           return Scaffold(
             backgroundColor: theme.background,
@@ -82,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 child: Column(
                   children: [
-                    AvatarAndUserInfo(profile: profile),
+                    AvatarAndUserInfo(user: user),
                     const SizedBox(height: 16),
                     Container(
                       decoration: BoxDecoration(

@@ -4,6 +4,8 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -118,10 +120,17 @@ class _MainPageState extends State<MainPage> {
                                       NavigationRouteNames.profile,
                                     );
                             },
-                            child: const AvatarBox(
-                              size: 40,
-                              imgPath:
-                                  '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+                            child: BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                if (state is Authenticated) {
+                                  return AvatarBox(
+                                    size: 40,
+                                    imgPath: state.user.photoUrl,
+                                  );
+                                }
+
+                                return const PlatformProgressIndicator();
+                              },
                             ),
                           ),
                         ],

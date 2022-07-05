@@ -44,7 +44,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
       _index = 0;
     } else if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark) {
       _index = 1;
-    } else {
+    } else if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.system) {
       _index = 2;
     }
 
