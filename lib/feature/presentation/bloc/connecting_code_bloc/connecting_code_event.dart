@@ -15,3 +15,12 @@ class LogInWithConnectingCode extends ConnectingCodeEvent {
   @override
   List<Object> get props => [connectingCode];
 }
+
+class ReadQrCode extends ConnectingCodeEvent {
+  final String connectingCode;
+
+  const ReadQrCode(this.connectingCode);
+
+  @override
+  List<Object> get props => [connectingCode];
+}

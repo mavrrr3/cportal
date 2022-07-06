@@ -52,11 +52,11 @@ dependencies:
   flutter_dotenv: ^5.0.2
   swipe: ^0.0.1
   fluttertoast: ^8.0.9
-  qr_code_scanner:
-    git:
-      url: https://github.com/xeinebiu/qr_code_scanner.git
-      ref: fix_break_changes_platform
-  camera: ^0.9.5+1
+  qr_code_scanner: ^1.0.0
+  # qr_code_scanner:
+  #   git:
+  #     url: https://github.com/xeinebiu/qr_code_scanner.git
+  #     ref: fix_break_changes_platform
   flutter_vibrate: ^1.3.0
 
   # flutter_web_auth: ^0.4.1

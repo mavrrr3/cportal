@@ -25,6 +25,9 @@ class _ConnectingCodeScreenState extends State<ConnectingCodeScreen> {
       listener: (context, state) {
         if (state is AuthenticatedWithConnectingCode) {
           context.goNamed(NavigationRouteNames.createPin);
+        } else if (state is ConnectingCodeQrReadSuccess) {
+          codeController.text = state.connectingCode;
+          context.read<ConnectingCodeBloc>().add(LogInWithConnectingCode(state.connectingCode));
         }
       },
       child: ResponsiveWrapper.of(context).isLargerThan(TABLET)
