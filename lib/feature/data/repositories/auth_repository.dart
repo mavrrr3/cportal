@@ -1,25 +1,24 @@
-import 'package:cportal_flutter/feature/data/api/auth_api.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:hive/hive.dart';
 
 class AuthRepository implements IAuthRepository {
-  final AuthApi _authApi;
-  final HiveInterface _hive;
+  final IAuthLocalDataSource _authLocalDataSource;
+  final IAuthRemoteDataSource _authRemoteDataSource;
 
-  AuthRepository(this._authApi, this._hive);
+  AuthRepository(this._authLocalDataSource, this._authRemoteDataSource);
 
   @override
   Future<UserModel?> getUser() async {
-    final localUser = await _getCachedUser();
+    final localUser = await _authLocalDataSource.getCachedUser();
 
     if (localUser == null) return null;
 
     try {
-      final responseUserModel = await _authApi.getUser(localUser.token);
+      final responseUserModel = await _authRemoteDataSource.getUser(localUser.token);
       final user = responseUserModel.response;
-      await _saveUser(user);
+      await _authLocalDataSource.saveUser(user);
 
       return user;
     } on Exception catch (_) {
@@ -29,7 +28,7 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<bool> isAuthenticated() async {
-    final localUser = await _getCachedUser();
+    final localUser = await _authLocalDataSource.getCachedUser();
 
     return localUser != null;
   }
@@ -37,27 +36,14 @@ class AuthRepository implements IAuthRepository {
   @override
   Future<UserModel?> logInWithConnectingCode({required String connectingCode}) async {
     try {
-      final info = await DeviceInfoPlugin().deviceInfo;
-      final deviceName = info.toMap()['name'] as String;
-
-      final responseUserModel = await _authApi.login(connectingCode, deviceName);
+      final deviceName = await _authLocalDataSource.getDeviceName();
+      final responseUserModel = await _authRemoteDataSource.login(connectingCode, deviceName);
       final user = responseUserModel.response;
-      await _saveUser(user);
+      await _authLocalDataSource.saveUser(user);
 
       return user;
     } on Exception catch (_) {
       return null;
     }
-  }
-
-  Future<void> _saveUser(UserModel user) async {
-    final box = await _hive.openBox<UserModel>('user');
-    await box.put('user', user);
-  }
-
-  Future<UserModel?> _getCachedUser() async {
-    final box = await _hive.openBox<UserModel>('user');
-
-    return box.get('user');
   }
 }
