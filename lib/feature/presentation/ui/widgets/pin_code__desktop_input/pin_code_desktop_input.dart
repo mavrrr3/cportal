@@ -1,18 +1,16 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/connecting_code_input/cursor.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/cursor.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-class ConnectingCodeInput extends StatelessWidget {
+class PinCodeDesktopInput extends StatelessWidget {
   final TextEditingController codeController;
   final FocusNode codeFocusNode;
-  final bool isDesktop;
   final bool forceErrorState;
   final void Function(String value) onCompleted;
 
-  const ConnectingCodeInput({
+  const PinCodeDesktopInput({
     Key? key,
-    this.isDesktop = false,
     required this.codeFocusNode,
     required this.codeController,
     required this.forceErrorState,
@@ -33,10 +31,12 @@ class ConnectingCodeInput extends StatelessWidget {
     );
 
     return Pinput(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      obscureText: true,
+      obscuringCharacter: '*',
+      separator: const SizedBox(width: 11),
       forceErrorState: forceErrorState,
-      useNativeKeyboard: isDesktop,
-      length: 6,
+      useNativeKeyboard: true,
+      length: 4,
       controller: codeController,
       focusNode: codeFocusNode,
       defaultPinTheme: defaultPinTheme,
@@ -45,21 +45,11 @@ class ConnectingCodeInput extends StatelessWidget {
         textStyle: defaultPinTheme.textStyle!.copyWith(color: theme.red),
       ),
       focusedPinTheme: defaultPinTheme.copyWith(
-        width: 52,
-        height: 62,
-        decoration: defaultPinTheme.decoration!.copyWith(
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(40, 42, 45, 0.08),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
+        decoration: defaultPinTheme.decoration?.copyWith(
+          border: Border.all(color: const Color(0xFF5284DA).withOpacity(0.34)),
         ),
       ),
-      cursor: isDesktop ? const Cursor() : null,
-      showCursor: isDesktop,
+      cursor: const Cursor(),
       onCompleted: onCompleted,
     );
   }

@@ -4,6 +4,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.d
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/pin_code_field.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/pin_code_desktop_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,13 +79,20 @@ class EnterPinArea extends StatelessWidget {
                 ],
               ),
             ),
-            PinCodeField(
-              forceErrorState: state is WrongPinCode,
-              pinCodeController: pinController,
-              pinCodeFocusNode: pinFocusNode,
-              onCompleted: (pinCode) => authBloc.add(LogInWithPinCode(pinCode)),
-              useNativeKeyboard: isDesktop,
-            ),
+            if (isDesktop)
+              PinCodeDesktopInput(
+                onCompleted: (pinCode) => authBloc.add(LogInWithPinCode(pinCode)),
+                forceErrorState: state is WrongPinCode,
+                codeController: pinController,
+                codeFocusNode: pinFocusNode,
+              )
+            else
+              PinCodeField(
+                forceErrorState: state is WrongPinCode,
+                pinCodeController: pinController,
+                pinCodeFocusNode: pinFocusNode,
+                onCompleted: (pinCode) => authBloc.add(LogInWithPinCode(pinCode)),
+              ),
           ],
         );
       },

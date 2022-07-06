@@ -6,7 +6,6 @@ class PinCodeField extends StatelessWidget {
   final TextEditingController pinCodeController;
   final FocusNode pinCodeFocusNode;
   final void Function(String value) onCompleted;
-  final bool useNativeKeyboard;
   final bool forceErrorState;
 
   const PinCodeField({
@@ -14,7 +13,6 @@ class PinCodeField extends StatelessWidget {
     required this.pinCodeController,
     required this.pinCodeFocusNode,
     required this.onCompleted,
-    this.useNativeKeyboard = false,
     required this.forceErrorState,
   }) : super(key: key);
 
@@ -31,7 +29,6 @@ class PinCodeField extends StatelessWidget {
           shape: BoxShape.circle,
         ),
       ),
-      useNativeKeyboard: useNativeKeyboard,
       length: 4,
       controller: pinCodeController,
       focusNode: pinCodeFocusNode,

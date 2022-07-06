@@ -34,16 +34,16 @@ class ConnectingCodeMobile extends StatelessWidget {
           ),
         ),
       ),
-      child: Column(
-        children: [
-          const SizedBox(height: 8),
-          EnterConnectingCode(
-            codeController: codeController,
-            codeFocusNode: codeFocusNode,
-          ),
-          const Spacer(),
-          CustomKeyboard(keyboardController: codeController),
-        ],
+      child: Center(
+        child: Column(
+          children: [
+            const SizedBox(height: 8),
+            EnterConnectingCode(
+              codeController: codeController,
+              codeFocusNode: codeFocusNode,
+            ),
+          ],
+        ),
       ),
     );
   }

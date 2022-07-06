@@ -20,6 +20,17 @@ class _ConnectingCodeScreenState extends State<ConnectingCodeScreen> {
   final codeFocusNode = FocusNode();
 
   @override
+  void initState() {
+    codeController.addListener(() {
+      if (codeController.text.length == 6) {
+        context.read<ConnectingCodeBloc>().add(LogInWithConnectingCode(codeController.text));
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<ConnectingCodeBloc, ConnectingCodeState>(
       listener: (context, state) {
