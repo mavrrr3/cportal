@@ -31,7 +31,7 @@ final DeclarationInfoEntity declarationInfoMock = DeclarationInfoEntity(
   title: 'Заявление на пропуск',
   id: '#И213212111',
   progress: 0.75,
-  date: DateTime(4, 07, 22),
+  date: DateTime(2022, 07, 01, 17, 23, 41),
   priority: 'Высокий',
   initiator: DeclarationUserEntity(
     id: '1531231',

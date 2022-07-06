@@ -9,7 +9,7 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecti
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/create_declaration_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/create_declaration/create_declaration_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/declaration_info_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
@@ -274,12 +274,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.createDeclaration,
-      path: '/declarations/create:fid',
+      path: '/declarations/create',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
-        child: CreateDeclarationPage(
-          id: state.params['fid']!,
-        ),
+        child: const CreateDeclarationPage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(
           opacity: CurvedAnimation(

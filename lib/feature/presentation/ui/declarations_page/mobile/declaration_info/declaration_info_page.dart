@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
 
-import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_app_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_progress.dart';
@@ -17,7 +17,6 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bott
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:go_router/go_router.dart';
@@ -61,24 +60,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // AppBar.
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => context.pop(),
-                        child: SvgPicture.asset(
-                          ImageAssets.backArrow,
-                          width: 16,
-                          color: theme.text,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        declarationInfoMock.title,
-                        style: theme.textTheme.px22,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 38),
+                  DeclarationAppBar(title: declarationInfoMock.title),
 
                   // Прогресс и текущий этап.
                   DeclarationProgress(

@@ -111,7 +111,7 @@
     "logInToContinue": "Авторизуйтесь для продолжения",
     "declarationsArchive": "Архив заявлений",
     "declarations": "Заявления",
-    "newDeclarations": "Новые",
+    "complitedDeclarations": "Выполненные",
     "createDeclaration": "Создать заявление",
     "history": "История",
     "dateAndTime": "Дата и время",
@@ -119,6 +119,7 @@
     "initiator": "Инициатор",
     "responsible": "Ответственный",
     "cancelDeclaration": "Отозвать заявление",
+    "newDeclaration": "Новое заявление",
     "archiveDeclaration": "Отправить в архив",
     "save": "Сохранить"
 }

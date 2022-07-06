@@ -33,17 +33,21 @@ class DeclarationsTabBar extends StatelessWidget {
               tabs: [
                 Tab(
                   child: Text(
-                    AppLocalizations.of(context)!.declarations,
+                    AppLocalizations.of(context)!.inProcess,
                     style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
+                      color:
+                          tabController.index == 0 ? theme.primary : theme.text,
                     ),
                   ),
                 ),
                 Tab(
                   child: Text(
-                    AppLocalizations.of(context)!.newDeclarations,
+                    AppLocalizations.of(context)!.complitedDeclarations,
                     style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
+                      color:
+                          tabController.index == 1 ? theme.primary : theme.text,
                     ),
                   ),
                 ),

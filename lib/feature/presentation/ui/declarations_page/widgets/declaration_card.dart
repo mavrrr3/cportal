@@ -8,7 +8,7 @@ class DeclarationCard extends StatelessWidget {
   final String text;
   const DeclarationCard({
     Key? key,
-    this.width = 156,
+    required this.width,
     required this.svgPath,
     required this.text,
   }) : super(key: key);
@@ -32,7 +32,7 @@ class DeclarationCard extends StatelessWidget {
             SvgPicture.asset(
               svgPath,
               color: theme.textLight,
-              width: 20,
+              width: 24,
             ),
             const SizedBox(height: 20),
             Expanded(

@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/decl
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declarations_content_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/web/declarations_content_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
@@ -12,6 +13,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_we
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class DeclarationsPage extends StatefulWidget {
@@ -21,7 +23,8 @@ class DeclarationsPage extends StatefulWidget {
   State<DeclarationsPage> createState() => _DeclarationsPageState();
 }
 
-class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerProviderStateMixin {
+class _DeclarationsPageState extends State<DeclarationsPage>
+    with SingleTickerProviderStateMixin {
   late bool _isFilterOpenWeb;
   late TextEditingController _searchController;
   late TabController _tabController;
@@ -36,8 +39,10 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
 
   // Во время инициализации запускается ивент и подгружаются заявления и фильтры.
   void _contentInit() {
-    BlocProvider.of<DeclarationsBloc>(context, listen: false).add(const FetchDeclarationsEvent());
-    BlocProvider.of<FilterDeclarationsBloc>(context, listen: false).add(FetchFiltersEvent());
+    BlocProvider.of<DeclarationsBloc>(context, listen: false)
+        .add(const FetchDeclarationsEvent());
+    BlocProvider.of<FilterDeclarationsBloc>(context, listen: false)
+        .add(FetchFiltersEvent());
   }
 
   @override
@@ -109,6 +114,15 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
                 ),
               ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.pushNamed(NavigationRouteNames.createDeclaration);
+          },
+          child: const Icon(
+            Icons.add,
+            size: 32,
+          ),
         ),
       ),
     );

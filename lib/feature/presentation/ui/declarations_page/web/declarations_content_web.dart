@@ -32,22 +32,27 @@ class DeclarationsContentWeb extends StatelessWidget {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final List<Widget> newDeclaration = [
       DeclarationCard(
+        width: 156,
         svgPath: ImageAssets.calendar,
         text: AppLocalizations.of(context)!.buisenesTripDeclaration,
       ),
       DeclarationCard(
+        width: 156,
         svgPath: ImageAssets.flyVocation,
         text: AppLocalizations.of(context)!.vocationDeclaration,
       ),
       DeclarationCard(
+        width: 156,
         svgPath: ImageAssets.lock,
         text: AppLocalizations.of(context)!.passDeclaration,
       ),
       DeclarationCard(
+        width: 156,
         svgPath: ImageAssets.payList,
         text: AppLocalizations.of(context)!.payListDeclaration,
       ),
       DeclarationCard(
+        width: 156,
         svgPath: ImageAssets.support,
         text: AppLocalizations.of(context)!.supportDeclaration,
       ),
