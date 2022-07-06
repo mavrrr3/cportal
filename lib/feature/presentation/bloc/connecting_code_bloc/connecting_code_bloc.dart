@@ -15,7 +15,8 @@ class ConnectingCodeBloc extends Bloc<ConnectingCodeEvent, ConnectingCodeState> 
   ConnectingCodeBloc(
     this._authUseCase,
   ) : super(const ConnectingCodeInitial()) {
-    on<LogInWithConnectingCode>(_onLogInWithConnectingCode, transformer: bloc_concurrency.sequential());
+    on<LogInWithConnectingCode>(_onLogInWithConnectingCode, transformer: bloc_concurrency.droppable());
+    on<ReadQrCode>(_onReadQrCode, transformer: bloc_concurrency.sequential());
   }
 
   FutureOr<void> _onLogInWithConnectingCode(LogInWithConnectingCode event, Emitter<ConnectingCodeState> emit) async {
@@ -27,6 +28,12 @@ class ConnectingCodeBloc extends Bloc<ConnectingCodeEvent, ConnectingCodeState> 
       emit(const WrongConnectingCode());
       await Future.delayed(const Duration(seconds: 2), () => emit(const TryAgainLater()));
       await Future.delayed(const Duration(seconds: 30), () => emit(const ConnectingCodeInitial()));
+    }
+  }
+
+  FutureOr<void> _onReadQrCode(ReadQrCode event, Emitter<ConnectingCodeState> emit) async {
+    if (state is! WrongConnectingCode) {
+      emit(ConnectingCodeQrReadSuccess(event.connectingCode));
     }
   }
 }

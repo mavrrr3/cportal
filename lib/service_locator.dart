@@ -2,7 +2,8 @@
 
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
-import 'package:cportal_flutter/feature/data/api/auth_api.dart';
+import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
@@ -11,10 +12,12 @@ import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_lo
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_contacts_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
@@ -61,6 +64,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -228,9 +232,16 @@ Future<void> init() async {
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
   );
+  sl.registerLazySingleton<IAuthLocalDataSource>(
+    () => AuthLocalDataSource(sl(), sl()),
+  );
+  sl.registerLazySingleton<IAuthRemoteDataSource>(
+    () => AuthRemoteDataSource(sl()),
+  );
 
   // CORE.
   if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
+  sl.registerLazySingleton<DeviceInfoPlugin>(DeviceInfoPlugin.new);
   // EXTERNAL.
   sl.registerLazySingleton(InternetConnectionChecker.new);
   sl.registerLazySingleton(LocalAuthentication.new);
@@ -243,6 +254,4 @@ Future<void> init() async {
       ),
     ),
   );
-  // API.
-  sl.registerLazySingleton(() => AuthApi(sl()));
 }

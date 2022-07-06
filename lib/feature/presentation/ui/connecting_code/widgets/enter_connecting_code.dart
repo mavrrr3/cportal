@@ -29,7 +29,7 @@ class EnterConnectingCode extends StatelessWidget {
       width: 320,
       child: BlocConsumer<ConnectingCodeBloc, ConnectingCodeState>(
         listener: (context, state) {
-          if (state is TryAgainLater) {
+          if (state is ConnectingCodeInitial) {
             codeController.clear();
           }
         },

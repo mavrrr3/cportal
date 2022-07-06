@@ -29,4 +29,5 @@ abstract class ImageAssets {
   static const stepInProgress = '$iconsPath/declaration_step_in_progress.svg';
   static const stepDeclined = '$iconsPath/declaration_step_declined.svg';
   static const highPriority = '$iconsPath/high_priority.svg';
+  static const flashLight = '$iconsPath/flash_light.svg';
 }

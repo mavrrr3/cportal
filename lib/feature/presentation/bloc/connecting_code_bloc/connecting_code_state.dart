@@ -11,6 +11,15 @@ class ConnectingCodeInitial extends ConnectingCodeState {
   const ConnectingCodeInitial();
 }
 
+class ConnectingCodeQrReadSuccess extends ConnectingCodeState {
+  final String connectingCode;
+
+  const ConnectingCodeQrReadSuccess(this.connectingCode);
+
+  @override
+  List<Object> get props => [connectingCode];
+}
+
 class AuthenticatedWithConnectingCode extends ConnectingCodeState {
   final UserEntity user;
 
