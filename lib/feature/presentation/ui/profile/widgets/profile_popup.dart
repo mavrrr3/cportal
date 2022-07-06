@@ -34,8 +34,6 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     late ProfileEntity profile;
 
     void showChooserNotification(BuildContext context) {
-      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
       showModalBottomSheet<void>(
         backgroundColor: theme.cardColor,
         shape: const RoundedRectangleBorder(
@@ -141,7 +139,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      Navigator.pop(context);
+                      context.pop();
                     },
                     child: Icon(
                       Icons.close,

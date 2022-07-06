@@ -287,13 +287,15 @@ Future<void> showProfile(BuildContext context) {
     barrierDismissible: true,
     builder: (context) {
       final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+      final double width = MediaQuery.of(context).size.width;
 
       return StatefulBuilder(
         builder: (context, setState) {
           return Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               vertical: 10,
-              horizontal: 100,
+              horizontal:
+                  isLargerThenMobile(context) ? width * 0.25 : width * 0.15,
             ),
             child: Container(
               decoration: BoxDecoration(
