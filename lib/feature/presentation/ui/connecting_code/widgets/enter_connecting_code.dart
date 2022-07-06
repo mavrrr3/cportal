@@ -8,14 +8,12 @@ import 'package:go_router/go_router.dart';
 
 class EnterConnectingCode extends StatelessWidget {
   final bool isDesktop;
-  final bool isErrorState;
   final TextEditingController codeController;
   final FocusNode codeFocusNode;
 
   const EnterConnectingCode({
     Key? key,
     this.isDesktop = false,
-    this.isErrorState = false,
     required this.codeController,
     required this.codeFocusNode,
   }) : super(key: key);
@@ -24,15 +22,6 @@ class EnterConnectingCode extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final strings = AppLocalizations.of(context)!;
-
-    final textStyle = isErrorState ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
-    final codeAreaColor = isErrorState ? theme.lightRedPIN : Colors.white;
-    final focusedBorder = isDesktop
-        ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: const Color(0xFF5284DA).withOpacity(0.34)),
-          )
-        : null;
 
     return SizedBox(
       width: 320,
@@ -43,6 +32,16 @@ class EnterConnectingCode extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final isErrorState = state is WrongConnectingCode;
+          final textStyle = isErrorState ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
+          final codeAreaColor = isErrorState ? theme.lightRedPIN : Colors.white;
+          final focusedBorder = isDesktop
+              ? OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: const Color(0xFF5284DA).withOpacity(0.34)),
+                )
+              : null;
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
