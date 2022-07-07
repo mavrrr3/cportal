@@ -97,7 +97,6 @@ flutter:
     - assets/img/
     - assets/img/onboarding/
     - assets/icons/navbar/
-    - assets/icons/profile/
 
   #
   # For details regarding fonts from package dependencies,
