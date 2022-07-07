@@ -11,7 +11,7 @@ class SvgIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
-      'assets/icons/$path',
+      path,
       width: width,
       color: color,
     );
