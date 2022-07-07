@@ -1,7 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/connecting_code_input/connecting_code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,7 +21,6 @@ class EnterConnectingCode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final connectingCodeBloc = context.read<ConnectingCodeBloc>();
     final strings = AppLocalizations.of(context)!;
 
     return SizedBox(
@@ -34,6 +32,16 @@ class EnterConnectingCode extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final isWrongCode = state is WrongConnectingCode;
+          final textStyle = isWrongCode ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
+          final codeAreaColor = isWrongCode ? theme.lightRedPIN : Colors.white;
+          final focusedBorder = isDesktop
+              ? OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: theme.primary!.withOpacity(0.34)),
+                )
+              : null;
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -54,14 +62,25 @@ class EnterConnectingCode extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              SizedBox(
-                height: 62,
-                child: ConnectingCodeInput(
-                  onCompleted: (connectingCode) => connectingCodeBloc.add(LogInWithConnectingCode(connectingCode)),
-                  forceErrorState: state is WrongConnectingCode,
-                  isDesktop: isDesktop,
-                  codeController: codeController,
-                  codeFocusNode: codeFocusNode,
+              Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: codeAreaColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: codeController,
+                  focusNode: codeFocusNode,
+                  style: textStyle,
+                  textCapitalization: TextCapitalization.characters,
+                  cursorHeight: 24,
+                  cursorColor: theme.primary,
+                  decoration: InputDecoration(
+                    focusedBorder: focusedBorder,
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),

@@ -3,6 +3,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/pin_code_field.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/pin_code_desktop_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -63,15 +64,24 @@ class CreatePinCodeArea extends StatelessWidget {
                 ],
               ),
             ),
-            PinCodeField(
-              forceErrorState: state is PinCodeNotMatch,
-              pinCodeController: pinController,
-              pinCodeFocusNode: pinFocusNode,
-              onCompleted: (value) {
-                pinCodeBloc.add(state is PinCodeEditing ? RepeatPinCode(value) : CreatePinCode(value));
-              },
-              useNativeKeyboard: isDesktop,
-            ),
+            if (isDesktop)
+              PinCodeDesktopInput(
+                forceErrorState: state is PinCodeNotMatch,
+                codeController: pinController,
+                codeFocusNode: pinFocusNode,
+                onCompleted: (value) {
+                  pinCodeBloc.add(state is PinCodeEditing ? RepeatPinCode(value) : CreatePinCode(value));
+                },
+              )
+            else
+              PinCodeField(
+                forceErrorState: state is PinCodeNotMatch,
+                pinCodeController: pinController,
+                pinCodeFocusNode: pinFocusNode,
+                onCompleted: (value) {
+                  pinCodeBloc.add(state is PinCodeEditing ? RepeatPinCode(value) : CreatePinCode(value));
+                },
+              ),
           ],
         );
       },
