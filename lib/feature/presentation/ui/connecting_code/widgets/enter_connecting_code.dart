@@ -32,13 +32,13 @@ class EnterConnectingCode extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final isErrorState = state is WrongConnectingCode;
-          final textStyle = isErrorState ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
-          final codeAreaColor = isErrorState ? theme.lightRedPIN : Colors.white;
+          final isWrongCode = state is WrongConnectingCode;
+          final textStyle = isWrongCode ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
+          final codeAreaColor = isWrongCode ? theme.lightRedPIN : Colors.white;
           final focusedBorder = isDesktop
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: const Color(0xFF5284DA).withOpacity(0.34)),
+                  borderSide: BorderSide(color: theme.primary!.withOpacity(0.34)),
                 )
               : null;
 
@@ -74,7 +74,7 @@ class EnterConnectingCode extends StatelessWidget {
                   style: textStyle,
                   textCapitalization: TextCapitalization.characters,
                   cursorHeight: 24,
-                  cursorColor: const Color(0xFF5284DA),
+                  cursorColor: theme.primary,
                   decoration: InputDecoration(
                     focusedBorder: focusedBorder,
                     border: const OutlineInputBorder(

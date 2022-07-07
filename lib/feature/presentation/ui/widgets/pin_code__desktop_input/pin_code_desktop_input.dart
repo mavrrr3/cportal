@@ -46,7 +46,7 @@ class PinCodeDesktopInput extends StatelessWidget {
       ),
       focusedPinTheme: defaultPinTheme.copyWith(
         decoration: defaultPinTheme.decoration?.copyWith(
-          border: Border.all(color: const Color(0xFF5284DA).withOpacity(0.34)),
+          border: Border.all(color: theme.primary!.withOpacity(0.34)),
         ),
       ),
       cursor: const Cursor(),
