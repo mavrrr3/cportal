@@ -144,7 +144,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.mainPage,
       path: '/',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
           child: MainPage(),
