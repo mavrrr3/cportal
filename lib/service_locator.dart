@@ -5,6 +5,8 @@ import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/data/api/auth_api.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/declaration_datasource/declarations_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/declaration_datasource/declarations_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
@@ -12,16 +14,20 @@ import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_re
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_contacts_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_declarations_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_contacts_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_declarations_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_web.dart';
+import 'package:cportal_flutter/feature/data/repositories/declaration/declaration_repository_mobile.dart';
+import 'package:cportal_flutter/feature/data/repositories/declaration/declaration_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_mobile.dart';
@@ -32,12 +38,16 @@ import 'package:cportal_flutter/feature/data/repositories/profile_repository_web
 import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repository.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_declaration_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/declaration/fetch_declarations_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/declaration/get_single_declaration_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/declaration/search_declaration_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
@@ -94,7 +104,11 @@ Future<void> init() async {
       ));
   sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
 
-  sl.registerFactory(DeclarationsBloc.new);
+  sl.registerFactory(() => DeclarationsBloc(
+        fetchDeclarations: sl(),
+        fetchDeclarationInfo: sl(),
+        searchDeclarations: sl(),
+      ));
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
@@ -104,9 +118,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchQuestionsByCategoryUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsFiltersUseCase(sl()));
-  sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
   sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
+  sl.registerLazySingleton(() => FetchDeclarationsUseCase(sl()));
+  sl.registerLazySingleton(() => GetSingleDeclarationUseCase(sl()));
+  sl.registerLazySingleton(() => SearchDeclarationUseCase(sl()));
+  sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
+
   sl.registerLazySingleton(() => AuthUseCase(sl(), sl(), sl()));
 
   // REPOSITORY
@@ -199,6 +217,19 @@ Future<void> init() async {
       ),
     );
   }
+  if (kIsWeb) {
+    sl.registerLazySingleton<IDeclarationRepository>(
+      () => DeclarationRepositoryWeb(remoteDataSource: sl()),
+    );
+  } else {
+    sl.registerLazySingleton<IDeclarationRepository>(
+      () => DeclarationRepositoryMobile(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ),
+    );
+  }
 
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
@@ -227,6 +258,13 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
+  );
+
+  sl.registerLazySingleton<IDeclarationsRemoteDataSource>(
+    () => DeclarationsRemoteDataSource(sl(), sl()),
+  );
+  sl.registerLazySingleton<IDeclarationsLocalDataSource>(
+    () => DeclarationsLocalDataSource(sl()),
   );
 
   // CORE.

@@ -1,17 +1,36 @@
+import 'package:cportal_flutter/core/error/server_exception.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_declarations_remote_datasource.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_declaration_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 
 class DeclarationRepositoryWeb extends IDeclarationRepository {
+  final IDeclarationsRemoteDataSource remoteDataSource;
+
+  DeclarationRepositoryWeb({required this.remoteDataSource});
+
   @override
-  Future<Either<Failure, List<DeclarationEntity>>> fetchDeclarations(int page) {
-    throw UnimplementedError();
+  Future<Either<Failure, List<DeclarationEntity>>> fetchDeclarations(int page) async {
+    try {
+      final remoteDeclarations = await remoteDataSource.fetchDeclarations(page);
+
+      return Right(remoteDeclarations);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, DeclarationEntity>> getSingleDeclaration(String id) {
-    throw UnimplementedError();
+  Future<Either<Failure, DeclarationInfoEntity>> getSingleDeclaration(String id) async {
+    try {
+      final remoteDeclarations = await remoteDataSource.getSingleDeclaration(id);
+
+      return Right(remoteDeclarations);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 
   @override

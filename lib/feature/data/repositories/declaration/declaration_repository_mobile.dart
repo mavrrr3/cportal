@@ -1,15 +1,18 @@
+import 'package:cportal_flutter/core/error/cache_exception.dart';
+import 'package:cportal_flutter/core/error/server_exception.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_declarations_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_declarations_remote_datasource.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
-import 'package:cportal_flutter/feature/data/datasources/declaration_datasource/declaration_local_datasource.dart';
-import 'package:cportal_flutter/feature/data/datasources/declaration_datasource/declaration_remote_datasource.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_declaration_repository.dart';
 
 class DeclarationRepositoryMobile extends IDeclarationRepository {
-  final IDeclarationRemoteDataSource remoteDataSource;
-  final IDeclarationLocalDataSource localDataSource;
+  final IDeclarationsRemoteDataSource remoteDataSource;
+  final IDeclarationsLocalDataSource localDataSource;
   final INetworkInfo networkInfo;
   DeclarationRepositoryMobile({
     required this.remoteDataSource,
@@ -21,29 +24,38 @@ class DeclarationRepositoryMobile extends IDeclarationRepository {
   Future<Either<Failure, List<DeclarationEntity>>> fetchDeclarations(
     int page,
   ) async {
-    throw UnimplementedError();
-    // if (await networkInfo.isConnected) {
-    //   try {
-    //     final remoteNews = await remoteDataSource.fetchDeclarations(page);
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteDeclarations = await remoteDataSource.fetchDeclarations(page);
 
-    //     return Right(remoteNews);
-    //   } on ServerException {
-    //     return Left(ServerFailure());
-    //   }
-    // } else {
-    //   try {
-    //     final localNews = await localDataSource.fetchDeclarationsFromCache();
+        return Right(remoteDeclarations);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final locaDeclarations = await localDataSource.fetchDeclarationsFromCache(page);
 
-    //     return Right(localNews);
-    //   } on CacheException {
-    //     return Left(CacheFailure());
-    //   }
-    // }
+        return Right(locaDeclarations);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
   }
 
   @override
-  Future<Either<Failure, DeclarationEntity>> getSingleDeclaration(String id) {
-    throw UnimplementedError();
+  Future<Either<Failure, DeclarationInfoEntity>> getSingleDeclaration(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteDeclarations = await remoteDataSource.getSingleDeclaration(id);
+
+        return Right(remoteDeclarations);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 
   @override

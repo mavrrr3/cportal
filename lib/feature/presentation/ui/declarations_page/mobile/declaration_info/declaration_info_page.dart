@@ -2,14 +2,10 @@
 
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_app_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_data.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_progress.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_steps_history.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_user.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
@@ -63,10 +59,10 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                   DeclarationAppBar(title: declarationInfoMock.title),
 
                   // Прогресс и текущий этап.
-                  DeclarationProgress(
-                    progress: declarationInfoMock.progress,
-                    currentStep: _getCurrentStep(declarationInfoMock.steps),
-                  ),
+                  // DeclarationProgress(
+                  //   progress: declarationInfoMock.progress,
+                  //   currentStep: _getCurrentStep(declarationInfoMock.steps),
+                  // ),
                   const SizedBox(height: 24),
 
                   // История этапов.
@@ -82,10 +78,10 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                   const SizedBox(height: 16),
 
                   // Дата и приоритет.
-                  DeclarationDateAndPriority(
-                    date: declarationInfoMock.date,
-                    priority: declarationInfoMock.priority,
-                  ),
+                  // DeclarationDateAndPriority(
+                  //   date: declarationInfoMock.date,
+                  //   priority: declarationInfoMock.priority,
+                  // ),
                   const SizedBox(height: 24),
 
                   // Инциатор.
@@ -152,7 +148,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
     );
   }
 
-  String _getCurrentStep(List<DeclarationStepEntity> items) => items
-      .firstWhere((element) => element.status == StepStatus.inProgress)
-      .title;
+  // String _getCurrentStep(List<DeclarationStepEntity> items) => items
+  //     .firstWhere((element) => element.status == StepStatus.inProgress)
+  //     .title;
 }

@@ -1,13 +1,12 @@
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_data_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_user_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
 
 class DeclarationInfoEntity {
   final String id;
   final String title;
+  final String status;
   final double progress;
-  final DateTime date;
   final String priority;
   final DeclarationUserEntity initiator;
   final DeclarationUserEntity responsible;
@@ -17,8 +16,8 @@ class DeclarationInfoEntity {
   DeclarationInfoEntity({
     required this.id,
     required this.title,
+    required this.status,
     required this.progress,
-    required this.date,
     required this.priority,
     required this.initiator,
     required this.responsible,
@@ -31,8 +30,8 @@ final DeclarationInfoEntity declarationInfoMock = DeclarationInfoEntity(
   title: 'Заявление на пропуск',
   id: '#И213212111',
   progress: 0.75,
-  date: DateTime(2022, 07, 01, 17, 23, 41),
   priority: 'Высокий',
+  status: 'Обработка',
   initiator: DeclarationUserEntity(
     id: '1531231',
     fullName: 'Кириллова Анна Дмитриевна',
@@ -49,17 +48,17 @@ final DeclarationInfoEntity declarationInfoMock = DeclarationInfoEntity(
     DeclarationStepEntity(
       title: 'Заявка создана',
       date: DateTime(2022, 7, 1, 15, 21, 42),
-      status: StepStatus.done,
+      status: 'StepStatus.done',
     ),
     DeclarationStepEntity(
       title: 'Принято Службой безопасности',
       date: DateTime(2022, 7, 3, 11, 15, 38),
-      status: StepStatus.done,
+      status: 'StepStatus.done',
     ),
     DeclarationStepEntity(
       title: 'На проверке службой безопасности',
       date: DateTime(2022, 7, 4, 17, 42, 12),
-      status: StepStatus.inProgress,
+      status: 'StepStatus.inProgress',
     ),
   ],
   data: [

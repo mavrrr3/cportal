@@ -5,7 +5,8 @@ import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
-import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
@@ -175,6 +176,7 @@ void _hiveAdaptersInit() {
     ..registerAdapter(ResponseModelAdapter())
     ..registerAdapter(FilterModelAdapter())
     ..registerAdapter(DeclarationModelAdapter())
+    ..registerAdapter(DeclarationInfoModelAdapter())
     ..registerAdapter(FilterItemModelAdapter())
     ..registerAdapter(ContactsModelAdapter())
     ..registerAdapter(FilterResponseModelAdapter())

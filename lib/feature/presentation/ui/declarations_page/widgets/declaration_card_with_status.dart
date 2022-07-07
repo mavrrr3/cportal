@@ -2,7 +2,6 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class DeclarationCardWithStatus extends StatelessWidget {
   final DeclarationEntity item;
@@ -53,26 +52,26 @@ class DeclarationCardWithStatus extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SvgPicture.asset(
-                          item.svgPath,
-                          color: theme.textLight,
-                          width: 20,
-                        ),
+                        // NetworkImage(
+                        //   item.icon,
+                        //   color: theme.textLight,
+                        //   width: 20,
+                        // ),
                       ],
                     ),
-                    Text(
-                      item.date,
-                      style: theme.textTheme.px12.copyWith(
-                        color: theme.textLight,
-                      ),
-                    ),
+                    // Text(
+                    //   item.date,
+                    //   style: theme.textTheme.px12.copyWith(
+                    //     color: theme.textLight,
+                    //   ),
+                    // ),
                     const SizedBox(height: 2),
-                    Text(
-                      item.number,
-                      style: theme.textTheme.px12.copyWith(
-                        color: theme.textLight,
-                      ),
-                    ),
+                    // Text(
+                    //   item.number,
+                    //   style: theme.textTheme.px12.copyWith(
+                    //     color: theme.textLight,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
