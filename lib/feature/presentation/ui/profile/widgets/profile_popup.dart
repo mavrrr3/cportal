@@ -139,7 +139,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      context.pop();
+                      Navigator.pop(context);
                     },
                     child: Icon(
                       Icons.close,

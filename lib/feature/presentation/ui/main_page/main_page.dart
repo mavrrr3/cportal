@@ -288,14 +288,15 @@ Future<void> showProfile(BuildContext context) {
     builder: (context) {
       final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
       final double width = MediaQuery.of(context).size.width;
+      final double horizontalPadding =
+          isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
       return StatefulBuilder(
         builder: (context, setState) {
           return Padding(
             padding: EdgeInsets.symmetric(
               vertical: 10,
-              horizontal:
-                  isLargerThenMobile(context) ? width * 0.25 : width * 0.15,
+              horizontal: horizontalPadding,
             ),
             child: Container(
               decoration: BoxDecoration(
