@@ -40,7 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
         if (state is Authenticated) {
           context.goNamed(NavigationRouteNames.mainPage);
         } else if (state is HasAuthCredentials && state is! WrongPinCode) {
-          pinFocusNode.requestFocus();
           pinController.clear();
         }
       },

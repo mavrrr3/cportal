@@ -24,7 +24,7 @@ class CreatePinCodeScreen extends StatefulWidget {
 
 class _CreatePinCodeScreenState extends State<CreatePinCodeScreen> {
   final pinController = TextEditingController();
-  final pinFocusNode = FocusNode()..requestFocus();
+  final pinFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,6 @@ class _CreatePinCodeScreenState extends State<CreatePinCodeScreen> {
           context.read<BiometricBloc>().add(const CheckBiometricSupport());
         } else if (state is PinCodeInitialState || state is PinCodeEditing) {
           pinController.clear();
-          pinFocusNode.requestFocus();
         }
       },
       child: BlocListener<BiometricBloc, BiometricState>(

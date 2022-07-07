@@ -20,10 +20,22 @@ class _ConnectingCodeScreenState extends State<ConnectingCodeScreen> {
   final codeFocusNode = FocusNode();
 
   @override
+  void initState() {
+    codeController.addListener(() {
+      if (codeController.text.length == 6) {
+        context.read<ConnectingCodeBloc>().add(LogInWithConnectingCode(codeController.text));
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<ConnectingCodeBloc, ConnectingCodeState>(
       listener: (context, state) {
         if (state is AuthenticatedWithConnectingCode) {
+          codeFocusNode.unfocus();
           context.goNamed(NavigationRouteNames.createPin);
         } else if (state is ConnectingCodeQrReadSuccess) {
           codeController.text = state.connectingCode;

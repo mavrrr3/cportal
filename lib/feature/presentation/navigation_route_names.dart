@@ -61,7 +61,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.splashScreen,
       path: '/splash_screen',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const Scaffold(body: SplashScreen()),
       ),
@@ -69,7 +69,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.connectingCode,
       path: '/connecting_code',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const ConnectingCodeScreen(),
       ),
@@ -96,7 +96,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: NavigationRouteNames.connectingCodeInfo,
           path: 'info',
-          pageBuilder: (context, state) => NoTransitionPage<void>(
+          pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
             child: const ConnectingCodeInfoScreen(),
           ),
@@ -106,7 +106,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.qrScanner,
       path: '/qr_scanner',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const QrScanner(),
       ),
@@ -122,7 +122,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.createPin,
       path: '/create_pin',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
+      pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const CreatePinCodeScreen(),
       ),
