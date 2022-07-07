@@ -14,7 +14,7 @@ class EnrollFingerPrintScreen extends StatelessWidget {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return EnrollBiometricAuthScreen(
-      title: AppLocalizations.of(context)!.useFaceId,
+      title: AppLocalizations.of(context)!.useFingerPrint,
       biometricType: BiometricType.fingerprint,
       logo: SvgPicture.asset(
         ImageAssets.fingerPrint,
