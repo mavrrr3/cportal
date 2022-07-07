@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -86,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: RowProfile(
                           firstWidget: SvgIcon(
                             iconColor,
-                            path: 'profile/add_person.svg',
+                            path: ImageAssets.addPerson,
                             width: 22,
                           ),
                           text: localizedStrings.newEmpoyee,
@@ -98,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     RowProfile(
                       firstWidget: SvgIcon(
                         iconColor,
-                        path: 'profile/bell.svg',
+                        path: ImageAssets.bell,
                         width: 21,
                       ),
                       text: localizedStrings.notofications,
@@ -111,7 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     RowProfile(
                       firstWidget: SvgIcon(
                         iconColor,
-                        path: 'finger_print.svg',
+                        path: ImageAssets.fingerPrint,
                         width: 20,
                       ),
                       text: localizedStrings.fingerPrint,
@@ -127,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: RowProfile(
                         firstWidget: SvgIcon(
                           iconColor,
-                          path: 'profile/lock.svg',
+                          path: ImageAssets.lock,
                           width: 20,
                         ),
                         text: localizedStrings.changePin,
@@ -236,7 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget getBlueArrow() {
     return SvgPicture.asset(
-      'assets/icons/question_arrow.svg',
+      ImageAssets.questionArrow,
       color: theme.primary,
       width: 8.5,
     );
