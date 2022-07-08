@@ -3,7 +3,7 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_app_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
@@ -60,13 +60,12 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DeclarationCard(
+                      CreateDeclarationCard(
                         width: halfWidth,
                         svgPath: ImageAssets.calendar,
-                        text: AppLocalizations.of(context)!
-                            .buisenesTripDeclaration,
+                        text: AppLocalizations.of(context)!.buisenesTripDeclaration,
                       ),
-                      DeclarationCard(
+                      CreateDeclarationCard(
                         width: halfWidth,
                         svgPath: ImageAssets.flyVocation,
                         text: AppLocalizations.of(context)!.vocationDeclaration,
@@ -77,12 +76,12 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DeclarationCard(
+                      CreateDeclarationCard(
                         width: halfWidth,
                         svgPath: ImageAssets.lock,
                         text: AppLocalizations.of(context)!.passDeclaration,
                       ),
-                      DeclarationCard(
+                      CreateDeclarationCard(
                         width: halfWidth,
                         svgPath: ImageAssets.payList,
                         text: AppLocalizations.of(context)!.payListDeclaration,
@@ -90,7 +89,7 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  DeclarationCard(
+                  CreateDeclarationCard(
                     width: double.infinity,
                     svgPath: ImageAssets.support,
                     text: AppLocalizations.of(context)!.supportDeclaration,

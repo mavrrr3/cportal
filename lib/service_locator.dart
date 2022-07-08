@@ -63,7 +63,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.d
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
@@ -106,8 +107,10 @@ Future<void> init() async {
 
   sl.registerFactory(() => DeclarationsBloc(
         fetchDeclarations: sl(),
-        fetchDeclarationInfo: sl(),
         searchDeclarations: sl(),
+      ));
+  sl.registerFactory(() => SingleDeclarationBloc(
+        getSingleDeclaration: sl(),
       ));
 
   // USECASE.

@@ -11,7 +11,6 @@ class DeclarationModel extends DeclarationEntity {
   @HiveField(0)
   final String id;
   @override
-
   @HiveField(1)
   final DateTime date;
   @override
@@ -22,6 +21,9 @@ class DeclarationModel extends DeclarationEntity {
   final String status;
   @override
   @HiveField(4)
+  final String currentStep;
+  @override
+  @HiveField(5)
   final String icon;
 
   DeclarationModel({
@@ -30,12 +32,14 @@ class DeclarationModel extends DeclarationEntity {
     required this.date,
     required this.id,
     required this.status,
+    required this.currentStep,
   }) : super(
           title: title,
           icon: icon,
           date: date,
           id: id,
           status: status,
+          currentStep: currentStep,
         );
 
   factory DeclarationModel.fromJson(Map<String, dynamic> json) => DeclarationModel(
@@ -43,7 +47,8 @@ class DeclarationModel extends DeclarationEntity {
         date: DateTime.parse(json['date'] as String),
         title: json['title'] as String,
         status: json['status'] as String,
-        icon: json['image'] as String,
+        currentStep: json['current_step'] as String,
+        icon: json['image'] as String? ?? '',
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -52,5 +57,6 @@ class DeclarationModel extends DeclarationEntity {
         'title': title,
         'status': status,
         'image': icon,
+        'current_step': currentStep,
       };
 }

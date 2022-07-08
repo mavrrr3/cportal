@@ -1,8 +1,8 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
@@ -23,8 +23,7 @@ class DeclarationsPage extends StatefulWidget {
   State<DeclarationsPage> createState() => _DeclarationsPageState();
 }
 
-class _DeclarationsPageState extends State<DeclarationsPage>
-    with SingleTickerProviderStateMixin {
+class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerProviderStateMixin {
   late bool _isFilterOpenWeb;
   late TextEditingController _searchController;
   late TabController _tabController;
@@ -39,10 +38,8 @@ class _DeclarationsPageState extends State<DeclarationsPage>
 
   // Во время инициализации запускается ивент и подгружаются заявления и фильтры.
   void _contentInit() {
-    BlocProvider.of<DeclarationsBloc>(context, listen: false)
-        .add(const FetchDeclarationsEvent());
-    BlocProvider.of<FilterDeclarationsBloc>(context, listen: false)
-        .add(FetchFiltersEvent());
+    BlocProvider.of<DeclarationsBloc>(context, listen: false).add(const FetchDeclarationsEvent(isFirstFetch: true));
+    BlocProvider.of<FilterDeclarationsBloc>(context, listen: false).add(FetchFiltersEvent());
   }
 
   @override

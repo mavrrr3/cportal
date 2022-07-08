@@ -4,6 +4,7 @@ import 'package:cportal_flutter/feature/data/models/user/declaration_user_model.
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_data_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
 import 'package:hive/hive.dart';
 
 part 'declaration_info_model.g.dart';
@@ -27,23 +28,23 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
   final String status;
 
   @override
-  @HiveField(5)
+  @HiveField(4)
   final String priority;
 
   @override
-  @HiveField(6)
+  @HiveField(5)
   final DeclarationUserModel initiator;
 
   @override
-  @HiveField(7)
+  @HiveField(6)
   final DeclarationUserModel responsible;
 
   @override
-  @HiveField(8)
+  @HiveField(7)
   final List<DeclarationStepModel> steps;
 
   @override
-  @HiveField(9)
+  @HiveField(8)
   final List<DeclarationDataModel> data;
 
   DeclarationInfoModel({
@@ -109,7 +110,7 @@ class DeclarationStepModel extends DeclarationStepEntity {
 
   @override
   @HiveField(2)
-  final String status;
+  final StepStatus status;
 
   DeclarationStepModel({
     required this.title,
@@ -120,7 +121,7 @@ class DeclarationStepModel extends DeclarationStepEntity {
   factory DeclarationStepModel.fromJson(Map<String, dynamic> json) => DeclarationStepModel(
         title: json['title'] as String,
         date: DateTime.parse(json['date'] as String),
-        status: json['status'] as String,
+        status: getDeclarationStepStatus(status: json['status'] as String),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{

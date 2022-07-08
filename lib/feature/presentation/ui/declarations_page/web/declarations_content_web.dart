@@ -1,15 +1,15 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
+
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_card.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declarations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/in_process_title.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,27 +31,27 @@ class DeclarationsContentWeb extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final List<Widget> newDeclaration = [
-      DeclarationCard(
+      CreateDeclarationCard(
         width: 156,
         svgPath: ImageAssets.calendar,
         text: AppLocalizations.of(context)!.buisenesTripDeclaration,
       ),
-      DeclarationCard(
+      CreateDeclarationCard(
         width: 156,
         svgPath: ImageAssets.flyVocation,
         text: AppLocalizations.of(context)!.vocationDeclaration,
       ),
-      DeclarationCard(
+      CreateDeclarationCard(
         width: 156,
         svgPath: ImageAssets.lock,
         text: AppLocalizations.of(context)!.passDeclaration,
       ),
-      DeclarationCard(
+      CreateDeclarationCard(
         width: 156,
         svgPath: ImageAssets.payList,
         text: AppLocalizations.of(context)!.payListDeclaration,
       ),
-      DeclarationCard(
+      CreateDeclarationCard(
         width: 156,
         svgPath: ImageAssets.support,
         text: AppLocalizations.of(context)!.supportDeclaration,
@@ -116,45 +116,44 @@ class DeclarationsContentWeb extends StatelessWidget {
                       ),
 
                       // Создать заявление.
-                      CreateDeclarationCard(
+                      CreateDeclarations(
                         items: newDeclaration,
                         onTap: (i) {},
                       ),
 
                       // История завершенных заявлений.
-                      const SizedBox(height: 55),
-                      Wrap(
-                        spacing: 16,
-                        runSpacing: 8,
-                        children: List.generate(
-                          state.doneDeclarations.length,
-                          (index) => DeclarationCardWithStatus(
-                            item: state.doneDeclarations[index],
-                            width: 328,
-                            onTap: () {},
-                          ),
-                        ),
-                      ),
+                      // const SizedBox(height: 55),
+                      // Wrap(
+                      //   spacing: 16,
+                      //   runSpacing: 8,
+                      //   children: List.generate(
+                      //     state.doneDeclarations.length,
+                      //     (index) => DeclarationCardWithStatus(
+                      //       item: state.doneDeclarations[index],
+                      //       width: 328,
+                      //       onTap: () {},
+                      //     ),
+                      //   ),
+                      // ),
 
                       // Заявления, которые в процессе.
                       const SizedBox(height: 32),
                       const InProcessTitle(bottomPadding: 24),
 
-                      Wrap(
-                        spacing: 16,
-                        runSpacing: 8,
-                        children: List.generate(
-                          state.inProgressDeclarations.length,
-                          (index) => DeclarationCardWithStatus(
-                            item: state.inProgressDeclarations[index],
-                            width: 328,
-                            onTap: () {},
-                          ),
-                        ),
-                      ),
+                      // Wrap(
+                      //   spacing: 16,
+                      //   runSpacing: 8,
+                      //   children: List.generate(
+                      //     state.inProgressDeclarations.length,
+                      //     (index) => DeclarationCardWithStatus(
+                      //       item: state.inProgressDeclarations[index],
+                      //       width: 328,
+                      //       onTap: () {},
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(height: 32),
                       ArchiveDeclarationButton(
-                        theme: theme,
                         onTap: () {},
                         width: 169,
                       ),

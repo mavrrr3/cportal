@@ -18,16 +18,15 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
 
   @override
   Future<List<DeclarationModel>> fetchDeclarations(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
+    final String baseUrl = 'http://ribadi.ddns.net:88/cportal/hs/api/declaration/1.0?$page';
     try {
       log('====== ${AppConfig.authKey}');
       final response = await dio.get<String>(baseUrl);
-
       final jsonR = json.decode(response.data!) as Map<String, dynamic>;
       final declarations = List<DeclarationModel>.from(jsonR['response']
           .map((dynamic x) => DeclarationModel.fromJson(x as Map<String, dynamic>)) as Iterable<dynamic>);
 
-      log('ContactsRemouteDataSource  ==========  ${declarations.length}');
+      log('DeclarationsRemoteDataSource  ==========  ${declarations.length}');
       await localDataSource.declarationsToCache(declarations, page);
 
       return declarations;
@@ -38,13 +37,15 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
 
   @override
   Future<DeclarationInfoModel> getSingleDeclaration(String id) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/declaration/1.0?id=$id';
+    log('--[getSingleDeclaration]--[id $id]');
+    final String baseUrl = 'http://ribadi.ddns.net:88/cportal/hs/api/declaration/1.0?id=$id';
 
     try {
       final response = await dio.get<String>(baseUrl);
+      final jsonR = json.decode(response.data!) as Map<String, dynamic>;
 
       final declarationInfo = DeclarationInfoModel.fromJson(
-        json.decode(response.data!) as Map<String, dynamic>,
+        jsonR['response'] as Map<String, dynamic>,
       );
       log('Remote DataSource [Single Declaration] ${response.data}');
 

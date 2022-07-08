@@ -15,7 +15,7 @@ class DeclarationStep extends StatelessWidget {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     final DateFormat dateFormatter = DateFormat('d MMMM yyyy', 'ru');
-    final DateFormat timeFormatter = DateFormat('H:m:s', 'ru');
+    final DateFormat timeFormatter = DateFormat('H:m:s');
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

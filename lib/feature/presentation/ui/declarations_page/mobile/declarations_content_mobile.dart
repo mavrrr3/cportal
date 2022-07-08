@@ -1,13 +1,15 @@
+import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tab_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tabs_content.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class DeclarationsContentMobile extends StatelessWidget {
   final TextEditingController searchController;
@@ -63,15 +65,11 @@ class DeclarationsContentMobile extends StatelessWidget {
               },
             ),
 
-            // Заголовки вкладок.
-            DeclarationsTabBar(
-              tabController: tabController,
-            ),
-
-            // Контент вкладок.
+            // Список заявлений.
             Expanded(
-              child: DeclarationsTabsContent(
-                tabController: tabController,
+              child: Padding(
+                padding: getHorizontalPadding(context),
+                child: const DeclarationsList(),
               ),
             ),
           ],

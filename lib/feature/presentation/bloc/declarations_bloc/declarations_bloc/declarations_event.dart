@@ -8,10 +8,12 @@ abstract class DeclarationsEvent extends Equatable {
 }
 
 class FetchDeclarationsEvent extends DeclarationsEvent {
-  const FetchDeclarationsEvent();
+  final bool isFirstFetch;
+
+  const FetchDeclarationsEvent({this.isFirstFetch = false});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [isFirstFetch];
 }
 
 class SearchDeclarationsEvent extends DeclarationsEvent {

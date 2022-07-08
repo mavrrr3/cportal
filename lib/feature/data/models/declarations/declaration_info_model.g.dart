@@ -23,11 +23,11 @@ class DeclarationInfoModelAdapter extends TypeAdapter<DeclarationInfoModel> {
       title: fields[1] as String,
       progress: fields[2] as double,
       status: fields[3] as String,
-      priority: fields[5] as String,
-      initiator: fields[6] as DeclarationUserModel,
-      responsible: fields[7] as DeclarationUserModel,
-      steps: (fields[8] as List).cast<DeclarationStepModel>(),
-      data: (fields[9] as List).cast<DeclarationDataModel>(),
+      priority: fields[4] as String,
+      initiator: fields[5] as DeclarationUserModel,
+      responsible: fields[6] as DeclarationUserModel,
+      steps: (fields[7] as List).cast<DeclarationStepModel>(),
+      data: (fields[8] as List).cast<DeclarationDataModel>(),
     );
   }
 
@@ -43,15 +43,15 @@ class DeclarationInfoModelAdapter extends TypeAdapter<DeclarationInfoModel> {
       ..write(obj.progress)
       ..writeByte(3)
       ..write(obj.status)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.priority)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.initiator)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.responsible)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.steps)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.data);
   }
 
@@ -79,7 +79,7 @@ class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
     return DeclarationStepModel(
       title: fields[0] as String,
       date: fields[1] as DateTime,
-      status: fields[2] as String,
+      status: fields[2] as StepStatus,
     );
   }
 

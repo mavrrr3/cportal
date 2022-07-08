@@ -1,37 +1,49 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class DeclarationsList extends StatelessWidget {
-  final List<DeclarationEntity> items;
-  final Function(int) onTap;
   const DeclarationsList({
     Key? key,
-    required this.items,
-    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    return ListView.builder(
-      itemCount: items.length + 1,
-      itemBuilder: (context, i) {
-        return i != items.length
-            ? DeclarationCardWithStatus(
-                item: items[i],
-                onTap: () => onTap(i),
-              )
-            : Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: ArchiveDeclarationButton(
-                  theme: theme,
-                  onTap: () {},
+    return BlocBuilder<DeclarationsBloc, DeclarationsState>(
+      builder: (context, state) {
+        if (state is DeclarationsLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is DeclarationsLoadedState) {
+          return ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: state.declarations.length,
+            itemBuilder: (context, i) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  top: i == 0 ? 9 : 0,
+                  bottom: 16,
+                ),
+                child: DeclarationCardWithStatus(
+                  item: state.declarations[i],
+                  onTap: () => context.pushNamed(
+                    NavigationRouteNames.declarationInfo,
+                    params: {'fid': state.declarations[i].id},
+                  ),
                 ),
               );
+            },
+          );
+        }
+
+        return const SizedBox();
       },
     );
   }

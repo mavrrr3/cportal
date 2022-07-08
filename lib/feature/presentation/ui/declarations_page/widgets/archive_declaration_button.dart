@@ -3,19 +3,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ArchiveDeclarationButton extends StatelessWidget {
-  final CustomTheme theme;
   final Function() onTap;
   final double? width;
 
   const ArchiveDeclarationButton({
     Key? key,
-    required this.theme,
     required this.onTap,
     this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(

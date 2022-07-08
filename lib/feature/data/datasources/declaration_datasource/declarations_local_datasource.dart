@@ -31,8 +31,8 @@ class DeclarationsLocalDataSource implements IDeclarationsLocalDataSource {
 
   @override
   Future<void> declarationsToCache(List<DeclarationModel> declarations, int page) async {
-    // Удаляет box с диска
-    // await Hive.deleteBoxFromDisk('declarations');
+    // Удаляет box с диска.
+    await Hive.deleteBoxFromDisk('declarations');
     var box = await Hive.openBox<List<DeclarationModel>>('declarations');
     if (!Hive.isBoxOpen('declarations')) {
       await Hive.openBox<List<DeclarationModel>>('declarations');

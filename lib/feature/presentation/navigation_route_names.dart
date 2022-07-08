@@ -88,9 +88,7 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoPopup(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -278,8 +276,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
         child: const CreateDeclarationPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
+        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
           opacity: CurvedAnimation(
             parent: animation,
             curve: Curves.easeOut,
@@ -290,12 +287,13 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
-      path: '/declarations/info',
+      path: '/declarations/info/:fid',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
-        child: const DeclarationInfoPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
+        child: DeclarationInfoPage(
+          id: state.params['fid']!,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
           opacity: CurvedAnimation(
             parent: animation,
             curve: Curves.easeOut,
