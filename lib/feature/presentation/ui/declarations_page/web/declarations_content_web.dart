@@ -6,7 +6,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/decl
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
@@ -111,7 +111,10 @@ class DeclarationsContentWeb extends StatelessWidget {
                       ),
 
                       // Создать заявление.
-                      CreateDeclaration(items: newDeclaration, onTap: (i) {}),
+                      CreateDeclarationCard(
+                        items: newDeclaration,
+                        onTap: (i) {},
+                      ),
 
                       // История завершенных заявлений.
                       const SizedBox(height: 55),
@@ -123,6 +126,7 @@ class DeclarationsContentWeb extends StatelessWidget {
                           (index) => DeclarationCardWithStatus(
                             item: state.doneDeclarations[index],
                             width: 328,
+                            onTap: () {},
                           ),
                         ),
                       ),
@@ -139,6 +143,7 @@ class DeclarationsContentWeb extends StatelessWidget {
                           (index) => DeclarationCardWithStatus(
                             item: state.inProgressDeclarations[index],
                             width: 328,
+                            onTap: () {},
                           ),
                         ),
                       ),

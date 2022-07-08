@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contact_card.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/user_card.dart';
 
 class ContactsListMobile extends StatelessWidget {
   final List<ProfileEntity> items;
@@ -13,24 +13,26 @@ class ContactsListMobile extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: items.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: GestureDetector(
-            onTap: () {
-              onTap(index);
-            },
-            child: ContactCard(
-              user: items[index],
-            ),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, i) => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: GestureDetector(
+          onTap: () {
+            onTap(i);
+          },
+          child: UserCard(
+            fullName: items[i].fullName,
+            position: items[i].position,
+            imgLink: items[i].photoLink,
+            color: items[i].color,
           ),
         ),
-      );
+      ),
+    );
   }
 }

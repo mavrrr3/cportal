@@ -1,8 +1,8 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
@@ -22,34 +22,21 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late ProfileEntity profile;
-
+  late UserEntity user;
+  late AppLocalizations localizedStrings;
+  late CustomTheme theme;
   bool isNotificationTurnedOn = true;
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    theme = Theme.of(context).extension<CustomTheme>()!;
+    localizedStrings = AppLocalizations.of(context)!;
     final Color? iconColor = theme.textLight;
 
-    BlocProvider.of<GetSingleProfileBloc>(
-      context,
-      listen: false,
-    ).add(const GetSingleProfileEventImpl(
-      'A1B2C3D4E5',
-      isMyProfile: true,
-    ));
-
-    return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is GetSingleProfileLoadingState) {
-          return Scaffold(
-            backgroundColor: theme.background,
-            body: const Center(child: CircularProgressIndicator()),
-          );
-        }
-        if (state is GetSingleProfileLoadedState) {
-          profile = state.profile;
+        if (state is Authenticated) {
+          user = state.user;
 
           return Scaffold(
             backgroundColor: theme.background,
@@ -68,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               centerTitle: false,
               title: Text(
-                AppLocalizations.of(context)!.profile,
+                localizedStrings.profile,
                 style: theme.textTheme.header,
               ),
             ),
@@ -82,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 child: Column(
                   children: [
-                    AvatarAndUserInfo(profile: profile),
+                    AvatarAndUserInfo(user: user),
                     const SizedBox(height: 16),
                     Container(
                       decoration: BoxDecoration(
@@ -100,11 +87,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: RowProfile(
                           firstWidget: SvgIcon(
                             iconColor,
-                            path: 'profile/add_person.svg',
+                            path: ImageAssets.addPerson,
                             width: 22,
                           ),
-                          text: AppLocalizations.of(context)!.newEmpoyee,
-                          secondWidget: getBlueArrow(theme),
+                          text: localizedStrings.newEmpoyee,
+                          secondWidget: getBlueArrow(),
                         ),
                       ),
                     ),
@@ -112,12 +99,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     RowProfile(
                       firstWidget: SvgIcon(
                         iconColor,
-                        path: 'profile/bell.svg',
+                        path: ImageAssets.bell,
                         width: 21,
                       ),
-                      text: AppLocalizations.of(context)!.notofications,
+                      text: localizedStrings.notofications,
                       secondWidget: customSwitch(
-                        theme,
                         isNotificationTurnedOn,
                         turnOnOffNotify,
                       ),
@@ -126,26 +112,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     RowProfile(
                       firstWidget: SvgIcon(
                         iconColor,
-                        path: 'finger_print.svg',
+                        path: ImageAssets.fingerPrint,
                         width: 20,
                       ),
-                      text: AppLocalizations.of(context)!.fingerPrint,
+                      text: localizedStrings.fingerPrint,
                       secondWidget: customSwitch(
-                        theme,
                         isFingerPrintAuth,
                         turnOnOffFingerPrintAuth,
                       ),
                     ),
                     const SizedBox(height: 26),
-                    RowProfile(
-                      firstWidget: SvgIcon(
-                        iconColor,
-                        path: 'profile/lock.svg',
-                        width: 20,
+                    GestureDetector(
+                      onTap: () =>
+                          context.goNamed(NavigationRouteNames.editPin),
+                      child: RowProfile(
+                        firstWidget: SvgIcon(
+                          iconColor,
+                          path: ImageAssets.lock,
+                          width: 20,
+                        ),
+                        text: localizedStrings.changePin,
+                        secondWidget: getBlueArrow(),
                       ),
-                      text: AppLocalizations.of(context)!.changePin,
-                      secondWidget: getBlueArrow(theme),
-                      call: () => context.goNamed(NavigationRouteNames.editPin),
                     ),
                     const SizedBox(height: 28),
                     const ChangeTheme(),
@@ -164,12 +152,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void turnOnOffNotify(bool newValue) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
     setState(() {
       isNotificationTurnedOn = newValue;
       if (newValue) {
-        showChooserNotification(context, theme);
+        showChooserNotification(context);
       }
     });
   }
@@ -180,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => isFingerPrintAuth = newValue);
   }
 
-  void showChooserNotification(BuildContext context, CustomTheme theme) {
+  void showChooserNotification(BuildContext context) {
     showModalBottomSheet<void>(
       backgroundColor: theme.cardColor,
       barrierColor: theme.barrierColor,
@@ -201,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.turnOffNotify,
+                  localizedStrings.turnOffNotify,
                   style: theme.textTheme.px16,
                 ),
                 const SizedBox(height: 18),
@@ -210,12 +196,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.of(context).pop();
                     setState(() => showToasterAboutNotify(
                           context,
-                          theme,
-                          text: 'Оповещения выключены на 1 час',
+                          text: localizedStrings.oneHourCancelNotify,
                         ));
                   },
                   child: Text(
-                    AppLocalizations.of(context)!.forHour,
+                    localizedStrings.forHour,
                     style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -223,21 +208,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  AppLocalizations.of(context)!.forFourHour,
+                  localizedStrings.forFourHour,
                   style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  AppLocalizations.of(context)!.forTwentyFourHour,
+                  localizedStrings.forTwentyFourHour,
                   style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  AppLocalizations.of(context)!.forever,
+                  localizedStrings.forever,
                   style: theme.textTheme.px16.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -249,49 +234,46 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
-}
 
-Widget getBlueArrow(CustomTheme theme) {
-  return SvgPicture.asset(
-    'assets/icons/question_arrow.svg',
-    color: theme.primary,
-    width: 8.5,
-  );
-}
-
-Widget customSwitch(CustomTheme theme, bool val, Function onChangeMethod) =>
-    SizedBox(
-      height: 20,
-      width: 34,
-      child: Switch(
-        activeTrackColor: theme.primary?.withOpacity(0.38),
-        activeColor: theme.primary,
-        // Сделал цвет такой вместо заведения нового из фигмы #D8E0E9.
-        inactiveTrackColor: theme.text?.withOpacity(0.08),
-        inactiveThumbColor: theme.cardColor,
-        value: val,
-        onChanged: (newValue) => onChangeMethod(newValue),
-      ),
+  Widget getBlueArrow() {
+    return SvgPicture.asset(
+      ImageAssets.questionArrow,
+      color: theme.primary,
+      width: 8.5,
     );
+  }
 
-void showToasterAboutNotify(
-  BuildContext context,
-  CustomTheme theme, {
-  required String text,
-}) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      backgroundColor: theme.cardColor,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      content: Text(
-        text,
-        style: theme.textTheme.px14.copyWith(
-          color: theme.brightness == Brightness.light
-              ? theme.cardColor
-              : theme.background,
+  Widget customSwitch(bool val, Function onChangeMethod) => SizedBox(
+        height: 20,
+        width: 34,
+        child: Switch(
+          activeTrackColor: theme.primary?.withOpacity(0.38),
+          activeColor: theme.primary,
+          inactiveTrackColor: theme.text?.withOpacity(0.08),
+          inactiveThumbColor: theme.cardColor,
+          value: val,
+          onChanged: (newValue) => onChangeMethod(newValue),
+        ),
+      );
+
+  void showToasterAboutNotify(
+    BuildContext context, {
+    required String text,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: theme.cardColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        content: Text(
+          text,
+          style: theme.textTheme.px14.copyWith(
+            color: theme.brightness == Brightness.light
+                ? theme.cardColor
+                : theme.background,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

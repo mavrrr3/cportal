@@ -21,9 +21,18 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
 
   @override
   Future<ContactsModel> fetchContacts(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
     try {
-      final response = await dio.get<String>(baseUrl);
+      log('====== ${AppConfig.authKey}');
+      final response = await dio.get<String>(
+        baseUrl,
+        options: Options(
+          headers: <String, dynamic>{
+            'Authorization': AppConfig.authKey,
+          },
+        ),
+      );
 
       final contacts = ContactsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
@@ -40,7 +49,8 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
 
   @override
   Future<List<ProfileEntity>> fetchContactsBySearch(String query) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
     try {
       final response = await dio.get<String>(baseUrl);
 

@@ -106,7 +106,13 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                                 const SizedBox(height: 41),
 
                                 // Profile image.
-                                ProfileImage(user: user, size: 102,borderRadius: 24,),
+                                ProfileImage(
+                                  fullName: user.fullName,
+                                  imgLink: user.photoLink,
+                                  color: user.color,
+                                  size: 102,
+                                  borderRadius: 24,
+                                ),
                                 const SizedBox(height: 12),
 
                                 // Full name.

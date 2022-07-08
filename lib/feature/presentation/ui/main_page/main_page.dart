@@ -1,15 +1,16 @@
 import 'dart:developer';
-import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
@@ -17,7 +18,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/profile_popup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,18 +43,14 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    _fetchContent(context);
+
     _searchController = TextEditingController();
     _questionController = ScrollController();
     _searchFocus = FocusNode();
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
-
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchAllNewsEvent(),
-    );
-    BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
-        .add(const FetchQaustionsEvent());
   }
 
   @override
@@ -79,7 +76,6 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    List<ArticleEntity> articles;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -118,10 +114,22 @@ class _MainPageState extends State<MainPage> {
                                       NavigationRouteNames.profile,
                                     );
                             },
-                            child: const AvatarBox(
-                              size: 40,
-                              imgPath:
-                                  '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+                            child: BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                if (state is Authenticated) {
+                                  final user = state.user;
+
+                                  return ProfileImage(
+                                    fullName: user.name,
+                                    imgLink: user.photoUrl,
+                                    color: RandomColorService.color,
+                                    size: 40,
+                                    borderRadius: 12,
+                                  );
+                                }
+
+                                return const PlatformProgressIndicator();
+                              },
                             ),
                           ),
                         ],
@@ -176,70 +184,8 @@ class _MainPageState extends State<MainPage> {
                               },
                             ),
                             const SizedBox(height: 24),
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.faq,
-                                    style: theme.textTheme.px22,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  BlocBuilder<FetchQuestionsBloc,
-                                      FetchQuestionsState>(
-                                    builder: (context, state) {
-                                      if (state is QuestionsLoading &&
-                                          state.isFirstFetch) {
-                                        return const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 60,
-                                          ),
-                                          child: Center(
-                                            child: PlatformProgressIndicator(),
-                                          ),
-                                        );
-                                      } else if (state is QuestionsLoading) {
-                                        articles = state.oldArticles;
-                                        log(articles.toString());
-                                      } else if (state is QuestionsLoaded) {
-                                        final articles = state.articles;
-
-                                        return ListView.builder(
-                                          controller: _questionController,
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: AppConfig
-                                              .numberNewsArticlesOnMain,
-                                          itemBuilder: (context, i) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                bottom: 24,
-                                              ),
-                                              child: QuestionRow(
-                                                text: articles[i].header,
-                                                onTap: () {
-                                                  GoRouter.of(context)
-                                                      .pushNamed(
-                                                    NavigationRouteNames
-                                                        .questionArticlePage,
-                                                    params: {
-                                                      'fid': articles[i].id,
-                                                    },
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      }
-
-                                      return const SizedBox();
-                                    },
-                                  ),
-                                ],
-                              ),
+                            QuestionsMain(
+                              questionController: _questionController,
                             ),
                           ],
                         ),
@@ -265,6 +211,14 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
+void _fetchContent(BuildContext context) {
+  BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+    const FetchAllNewsEvent(),
+  );
+  BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
+      .add(const FetchQaustionsEvent());
+}
+
 Future<void> showProfile(BuildContext context) {
   return showDialog(
     context: context,
@@ -272,13 +226,16 @@ Future<void> showProfile(BuildContext context) {
     barrierDismissible: true,
     builder: (context) {
       final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+      final double width = MediaQuery.of(context).size.width;
+      final double horizontalPadding =
+          isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
       return StatefulBuilder(
         builder: (context, setState) {
           return Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               vertical: 10,
-              horizontal: 100,
+              horizontal: horizontalPadding,
             ),
             child: Container(
               decoration: BoxDecoration(

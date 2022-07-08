@@ -1,12 +1,14 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_state.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/in_process_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class AllDeclarations extends StatelessWidget {
   const AllDeclarations({Key? key}) : super(key: key);
@@ -34,10 +36,13 @@ class AllDeclarations extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (state.doneDeclarations.isNotEmpty)
-                    ..._drawDeclarationCards(state.doneDeclarations),
+                    ..._drawDeclarationCards(context, state.doneDeclarations),
                   if (state.inProgressDeclarations.isNotEmpty)
                     const InProcessTitle(bottomPadding: 16),
-                  ..._drawDeclarationCards(state.inProgressDeclarations),
+                  ..._drawDeclarationCards(
+                    context,
+                    state.inProgressDeclarations,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: ArchiveDeclarationButton(
@@ -57,13 +62,22 @@ class AllDeclarations extends StatelessWidget {
   }
 }
 
-List<Widget> _drawDeclarationCards(List<DeclarationEntity> declarations) {
+List<Widget> _drawDeclarationCards(
+  BuildContext context,
+  List<DeclarationEntity> declarations,
+) {
   final List<Widget> list = [];
   int count = 0;
   while (count < declarations.length) {
     list.add(
       DeclarationCardWithStatus(
         item: declarations[count],
+        onTap: () {
+          context.pushNamed(
+            NavigationRouteNames.createDeclaration,
+            // params: {'fid': 'test'},
+          );
+        },
       ),
     );
     count++;
