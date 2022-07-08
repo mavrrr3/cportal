@@ -5,5 +5,5 @@ abstract class IAuthLocalDataSource {
 
   Future<UserModel?> getCachedUser();
 
-  Future<String> getDeviceName();
+  Future<String?> getDeviceName();
 }
