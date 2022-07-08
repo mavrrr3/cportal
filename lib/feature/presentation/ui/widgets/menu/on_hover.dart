@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class OnMenuHover extends StatefulWidget {
+class OnHover extends StatefulWidget {
   final Widget Function(bool isHovered) builder;
-  const OnMenuHover({Key? key, required this.builder}) : super(key: key);
+  const OnHover({Key? key, required this.builder}) : super(key: key);
 
   @override
-  State<OnMenuHover> createState() => _OnMenuHoverState();
+  State<OnHover> createState() => _OnHoverState();
 }
 
-class _OnMenuHoverState extends State<OnMenuHover> {
+class _OnHoverState extends State<OnHover> {
   bool isHovered = false;
 
   @override

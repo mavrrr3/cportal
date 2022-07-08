@@ -11,6 +11,7 @@ import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
@@ -119,12 +120,16 @@ class _MainPageState extends State<MainPage> {
                                 if (state is Authenticated) {
                                   final user = state.user;
 
-                                  return ProfileImage(
-                                    fullName: user.name,
-                                    imgLink: user.photoUrl,
-                                    color: RandomColorService.color,
-                                    size: 40,
-                                    borderRadius: 12,
+                                  return OnHover(
+                                    builder: (isHovered) {
+                                      return ProfileImage(
+                                        fullName: user.name,
+                                        imgLink: user.photoUrl,
+                                        color: RandomColorService.color,
+                                        size: isHovered ? 48 : 40,
+                                        borderRadius: 12,
+                                      );
+                                    },
                                   );
                                 }
 

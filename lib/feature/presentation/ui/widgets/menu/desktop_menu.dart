@@ -3,7 +3,7 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_menu_hover.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -130,7 +130,7 @@ class _MenuItem extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: OnMenuHover(builder: (isHovered) {
+        child: OnHover(builder: (isHovered) {
           return Row(
             children: [
               SvgPicture.asset(
@@ -168,21 +168,21 @@ void changePage(BuildContext context, int index) {
 
   switch (index) {
     case 0:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+      context.pushNamed(NavigationRouteNames.mainPage);
       break;
     case 1:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.news);
+      context.pushNamed(NavigationRouteNames.news);
       break;
     case 2:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.questions);
+      context.pushNamed(NavigationRouteNames.questions);
       break;
     case 3:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.declarations);
+      context.pushNamed(NavigationRouteNames.declarations);
       break;
     case 4:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.contacts);
+      context.pushNamed(NavigationRouteNames.contacts);
       break;
     default:
-      GoRouter.of(context).pushNamed(NavigationRouteNames.mainPage);
+      context.pushNamed(NavigationRouteNames.mainPage);
   }
 }

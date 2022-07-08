@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -50,27 +51,38 @@ class NewsCardSimilarItem extends StatelessWidget {
           const SizedBox(height: 12),
           SizedBox(
             width: 220,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.header,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 4,
-                  style: theme.textTheme.px14.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
+            child: OnHover(
+              builder: (isHovered) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      outputFormat.format(item.date),
-                      style: theme.textTheme.px12,
+                      item.header,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                      style: theme.textTheme.px14.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: isHovered
+                            ? theme.text?.withOpacity(0.6)
+                            : theme.text,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          outputFormat.format(item.date),
+                          style: theme.textTheme.px12.copyWith(
+                            color: isHovered
+                                ? theme.text?.withOpacity(0.6)
+                                : theme.text,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
