@@ -37,7 +37,7 @@ class AuthRepository implements IAuthRepository {
   Future<UserModel?> logInWithConnectingCode({required String connectingCode}) async {
     try {
       final deviceName = await _authLocalDataSource.getDeviceName();
-      final responseUserModel = await _authRemoteDataSource.login(connectingCode, deviceName);
+      final responseUserModel = await _authRemoteDataSource.login(connectingCode, deviceName ?? '');
       final user = responseUserModel.response;
       await _authLocalDataSource.saveUser(user);
 

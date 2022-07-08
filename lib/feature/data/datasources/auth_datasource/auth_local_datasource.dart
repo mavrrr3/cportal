@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -24,14 +26,34 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
   }
 
   @override
-  Future<String> getDeviceName() async {
-    final deviceInfo = await _deviceInfoPlugin.deviceInfo;
-    final mappedInfo = deviceInfo.toMap();
-
+  Future<String?> getDeviceName() async {
     if (kIsWeb) {
-      return mappedInfo['appVersion'] as String;
+      final info = await _deviceInfoPlugin.webBrowserInfo;
+
+      return info.userAgent;
+    }
+    if (Platform.isAndroid) {
+      final info = await _deviceInfoPlugin.androidInfo;
+
+      return info.model;
+    } else if (Platform.isIOS) {
+      final info = await _deviceInfoPlugin.iosInfo;
+
+      return info.name;
+    } else if (Platform.isLinux) {
+      final info = await _deviceInfoPlugin.linuxInfo;
+
+      return info.prettyName;
+    } else if (Platform.isMacOS) {
+      final info = await _deviceInfoPlugin.macOsInfo;
+
+      return info.model;
+    } else if (Platform.isWindows) {
+      final info = await _deviceInfoPlugin.windowsInfo;
+
+      return info.computerName;
     }
 
-    return mappedInfo['name'] as String;
+    return null;
   }
 }
