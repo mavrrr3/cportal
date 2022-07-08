@@ -3,6 +3,7 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_menu_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -129,30 +130,41 @@ class _MenuItem extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              item.img,
-              width: 24,
-              color: isActive ? theme.primary : theme.text?.withOpacity(0.48),
-            ),
-            const SizedBox(width: 16),
-            Text(
-              item.text,
-              style: theme.textTheme.px16.copyWith(
-                color: isActive ? theme.primary : theme.text,
-                fontWeight: FontWeight.w700,
+        child: OnMenuHover(builder: (isHovered) {
+          return Row(
+            children: [
+              SvgPicture.asset(
+                item.img,
+                width: 24,
+                color: isActive
+                    ? theme.primary
+                    : isHovered
+                        ? theme.primary
+                        : theme.text?.withOpacity(0.48),
               ),
-            ),
-          ],
-        ),
+              const SizedBox(width: 16),
+              Text(
+                item.text,
+                style: theme.textTheme.px16.copyWith(
+                  color: isActive
+                      ? theme.primary
+                      : isHovered
+                          ? theme.primary
+                          : theme.text,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }
 }
 
 void changePage(BuildContext context, int index) {
-  BlocProvider.of<NavigationBarBloc>(context).add(NavigationBarEventImpl(index: index));
+  BlocProvider.of<NavigationBarBloc>(context)
+      .add(NavigationBarEventImpl(index: index));
 
   switch (index) {
     case 0:
