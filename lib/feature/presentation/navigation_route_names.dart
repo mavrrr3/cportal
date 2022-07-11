@@ -1,10 +1,10 @@
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/connecting_code_info_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/connecting_code_info_mobile_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_screen.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_info_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_info_web_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_qr_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
@@ -32,7 +32,7 @@ abstract class NavigationRouteNames {
   static const splashScreen = 'splash_screen';
   static const mainPage = 'main_page';
   static const connectingCode = 'connecting_code';
-  static const connectingCodeInfoPopup = 'connecting_code_info_popup';
+  static const connectingCodeInfoMobile = 'connecting_code_info_mobile';
   static const connectingCodeInfo = 'connecting_code_info';
   static const connectingQr = 'connecting_qr';
   static const qrScanner = 'qr_scanner';
@@ -79,18 +79,16 @@ final GoRouter router = GoRouter(
       ),
       routes: [
         GoRoute(
-          name: NavigationRouteNames.connectingCodeInfoPopup,
-          path: 'info_popup',
+          name: NavigationRouteNames.connectingCodeInfoMobile,
+          path: 'info_mobile',
           pageBuilder: (context, state) => CustomTransitionPage(
             key: state.pageKey,
             barrierColor: Colors.black54,
             barrierDismissible: true,
             fullscreenDialog: true,
             opaque: false,
-            child: const ConnectingCodeInfoPopup(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            child: const ConnectingCodeInfoMobilePopup(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -102,9 +100,20 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: NavigationRouteNames.connectingCodeInfo,
           path: 'info',
-          pageBuilder: (context, state) => MaterialPage(
+          pageBuilder: (context, state) => CustomTransitionPage(
+            transitionDuration: Duration.zero,
             key: state.pageKey,
-            child: const ConnectingCodeInfoScreen(),
+            barrierColor: Colors.transparent,
+            barrierDismissible: true,
+            opaque: false,
+            child: const ConnectingCodeInfoWebPopup(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+              opacity: CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOut,
+              ),
+              child: child,
+            ),
           ),
         ),
       ],
