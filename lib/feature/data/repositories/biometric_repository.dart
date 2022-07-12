@@ -1,36 +1,62 @@
-import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/core/platform/i_biometric_info.dart';
+import 'dart:async';
+
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
-import 'package:dartz/dartz.dart';
-import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:local_auth/local_auth.dart';
 
 class BiometricRepository implements IBiometricRepository {
-  final IBiometricInfo biometricInfo;
+  final LocalAuthentication _localAuthentication;
 
-  BiometricRepository({
-    required this.biometricInfo,
-  });
+  BiometricRepository(this._localAuthentication);
 
   @override
-  Future<Either<Failure, bool>> autheticate() async {
-    try {
-      final isAuth = await biometricInfo.autheticate();
+  Future<bool> authenticate({required String localizedReason}) {
+    return _localAuthentication.authenticate(
+      localizedReason: localizedReason,
+      stickyAuth: true,
+      biometricOnly: true,
+    );
+  }
 
-      return Right(isAuth);
-    } on PlatformException {
-      return Left(PlatformFailure());
+  @override
+  Future<List<BiometricType>> getAvailableBiometrics() => _localAuthentication.getAvailableBiometrics();
+
+  @override
+  Future<bool> isSupportedBiometrics() async {
+    try {
+      final canCheckBiometrics = _localAuthentication.canCheckBiometrics;
+      final isDeviceSupported = _localAuthentication.isDeviceSupported();
+
+      final results = await Future.wait([canCheckBiometrics, isDeviceSupported]);
+
+      return !results.any((res) => !res);
+    } on Exception catch (_) {
+      return false;
     }
   }
 
   @override
-  Future<Either<Failure, List<BiometricType>>> getBiometrics() async {
-    try {
-      final listBiometric = await biometricInfo.getBiometrics();
+  Future<void> saveEnabledBiometric(BiometricType enabledBiometric) async {
+    final box = await Hive.openBox<String>('biometric');
+    if (enabledBiometric == BiometricType.face) {
+      await box.add('0');
+    } else {
+      await box.add('1');
+    }
+  }
 
-      return Right(listBiometric);
-    } on PlatformException {
-      return Left(PlatformFailure());
+  @override
+  Future<BiometricType?> getEnabledBiometric() async {
+    final box = await Hive.openBox<String>('biometric');
+
+    final biometricType = box.get(0);
+    switch (biometricType) {
+      case '0':
+        return BiometricType.face;
+      case '1':
+        return BiometricType.fingerprint;
+      default:
+        return null;
     }
   }
 }

@@ -2,19 +2,23 @@ import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/profile_popup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +35,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late TextEditingController _searchController;
+  late ScrollController _questionController;
   late FocusNode _searchFocus;
   late Duration _animationDuration;
   late bool _isSearchActive;
@@ -38,20 +43,20 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    _fetchContent(context);
+
     _searchController = TextEditingController();
+    _questionController = ScrollController();
     _searchFocus = FocusNode();
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
-
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchAllNewsEvent(),
-    );
   }
 
   @override
   void dispose() {
     _searchFocus.removeListener(_onFocusChange);
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -109,10 +114,22 @@ class _MainPageState extends State<MainPage> {
                                       NavigationRouteNames.profile,
                                     );
                             },
-                            child: const AvatarBox(
-                              size: 40,
-                              imgPath:
-                                  '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+                            child: BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                if (state is Authenticated) {
+                                  final user = state.user;
+
+                                  return ProfileImage(
+                                    fullName: user.name,
+                                    imgLink: user.photoUrl,
+                                    color: RandomColorService.color,
+                                    size: 40,
+                                    borderRadius: 12,
+                                  );
+                                }
+
+                                return const PlatformProgressIndicator();
+                              },
                             ),
                           ),
                         ],
@@ -167,7 +184,9 @@ class _MainPageState extends State<MainPage> {
                               },
                             ),
                             const SizedBox(height: 24),
-                            const FaqWidget(),
+                            QuestionsMain(
+                              questionController: _questionController,
+                            ),
                           ],
                         ),
                       ),
@@ -192,6 +211,14 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
+void _fetchContent(BuildContext context) {
+  BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+    const FetchAllNewsEvent(),
+  );
+  BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
+      .add(const FetchQaustionsEvent());
+}
+
 Future<void> showProfile(BuildContext context) {
   return showDialog(
     context: context,
@@ -199,13 +226,16 @@ Future<void> showProfile(BuildContext context) {
     barrierDismissible: true,
     builder: (context) {
       final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+      final double width = MediaQuery.of(context).size.width;
+      final double horizontalPadding =
+          isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
       return StatefulBuilder(
         builder: (context, setState) {
           return Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               vertical: 10,
-              horizontal: 100,
+              horizontal: horizontalPadding,
             ),
             child: Container(
               decoration: BoxDecoration(

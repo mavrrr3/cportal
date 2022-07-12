@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 
 class OnBoardingWelcomeWeb extends StatelessWidget {
@@ -14,8 +14,7 @@ class OnBoardingWelcomeWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Align(
       alignment: Alignment.center,

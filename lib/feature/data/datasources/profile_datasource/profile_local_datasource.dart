@@ -1,20 +1,9 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-abstract class IProfileLocalDataSource {
-  /// Сохраняем [ProfileModel] в кэш
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<void> singleProfileToCache(ProfileModel profile);
-
-  /// Извлекаем [ProfileModel] из кеша
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<ProfileModel?> getSingleProfileFromCache(String id);
-}
 
 class ProfileLocalDataSource implements IProfileLocalDataSource {
   @override

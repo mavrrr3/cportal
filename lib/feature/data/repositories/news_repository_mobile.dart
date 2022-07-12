@@ -1,8 +1,8 @@
 import 'package:cportal_flutter/core/error/cache_exception.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
-import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
-import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
@@ -69,27 +69,27 @@ class NewsRepositoryMobile implements INewsRepository {
   }
 
   @override
-  Future<List<String>> fetchCategories() async {
+  Future<List<String>> fetchNewsCategories() async {
     final localNews = await localDataSource.fetchNewsFromCache();
 
     return localNews.response.categories ?? [];
   }
 
   @override
-  Future<Either<Failure, NewsEntity>> fetchQuastions(int page) async {
+  Future<Either<Failure, NewsEntity>> fetchQuestions(int page) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteQuastions = await remoteDataSource.fetchQuastions(page);
+        final remoteQuestions = await remoteDataSource.fetchQuestions(page);
 
-        return Right(remoteQuastions);
+        return Right(remoteQuestions);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        final localQuastions = await localDataSource.fetchQuastionsFromCache();
+        final localQuestions = await localDataSource.fetchQuestionsFromCache();
 
-        return Right(localQuastions);
+        return Right(localQuestions);
       } on CacheException {
         return Left(CacheFailure());
       }
@@ -97,7 +97,35 @@ class NewsRepositoryMobile implements INewsRepository {
   }
 
   @override
-  Future<List<String>> fetchQuastionCategories() {
-    throw UnimplementedError();
+  Future<List<String>> fetchQuestionCategories() async {
+    final localNews = await localDataSource.fetchQuestionsFromCache();
+
+    return localNews.response.categories ?? [];
+  }
+
+  @override
+  Future<Either<Failure, NewsEntity>> fetchQuestionsByCategory(
+    int page,
+    String category,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteQuestionsByCategory =
+            await remoteDataSource.fetchQuestionsByCategory(page, category);
+
+        return Right(remoteQuestionsByCategory);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localNewsByCtegory =
+            await localDataSource.fetchNewsByCategoryFromCache(category);
+
+        return Right(localNewsByCtegory);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
   }
 }

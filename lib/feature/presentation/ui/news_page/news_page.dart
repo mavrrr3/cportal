@@ -37,7 +37,7 @@ class _NewsPageState extends State<NewsPage> {
   Widget build(BuildContext context) {
     int currentIndex = 0;
 
-    void _onPageChanged(
+    void onPageChanged(
       int index,
       BuildContext context,
       List<String> categories,
@@ -131,14 +131,14 @@ class _NewsPageState extends State<NewsPage> {
                       currentIndex: currentIndex,
                       items: categories,
                       onTap: (index) =>
-                          _onPageChanged(index, context, categories),
+                          onPageChanged(index, context, categories),
                     ),
 
                     Expanded(
                       child: Swipe(
                         onSwipeRight: () {
                           if (currentIndex != 0) {
-                            _onPageChanged(
+                            onPageChanged(
                               currentIndex - 1,
                               context,
                               categories,
@@ -147,7 +147,7 @@ class _NewsPageState extends State<NewsPage> {
                         },
                         onSwipeLeft: () {
                           if (categories.length - 1 != currentIndex) {
-                            _onPageChanged(
+                            onPageChanged(
                               currentIndex + 1,
                               context,
                               categories,

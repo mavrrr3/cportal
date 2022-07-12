@@ -1,9 +1,13 @@
-import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:dartz/dartz.dart';
 import 'package:local_auth/local_auth.dart';
 
 abstract class IBiometricRepository {
-  Future<Either<Failure, List<BiometricType>>> getBiometrics();
+  Future<bool> isSupportedBiometrics();
 
-  Future<Either<Failure, bool>> autheticate();
+  Future<List<BiometricType>> getAvailableBiometrics();
+
+  Future<bool> authenticate({required String localizedReason});
+
+  Future<void> saveEnabledBiometric(BiometricType enabledBiometric);
+
+  Future<BiometricType?> getEnabledBiometric();
 }
