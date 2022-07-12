@@ -52,7 +52,7 @@ class EnterConnectingCode extends StatelessWidget {
               const SizedBox(height: 8),
               GestureDetector(
                 onTap: () => context.pushNamed(
-                  isDesktop ? NavigationRouteNames.connectingCodeInfo : NavigationRouteNames.connectingCodeInfoPopup,
+                  isDesktop ? NavigationRouteNames.connectingCodeInfo : NavigationRouteNames.connectingCodeInfoMobile,
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.howToGetConnectingCode,

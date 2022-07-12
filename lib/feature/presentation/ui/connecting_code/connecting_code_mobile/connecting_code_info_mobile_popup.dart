@@ -6,14 +6,14 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ConnectingCodeInfoPopup extends StatefulWidget {
-  const ConnectingCodeInfoPopup({Key? key}) : super(key: key);
+class ConnectingCodeInfoMobilePopup extends StatefulWidget {
+  const ConnectingCodeInfoMobilePopup({Key? key}) : super(key: key);
 
   @override
-  State<ConnectingCodeInfoPopup> createState() => _ConnectingCodeInfoPopupState();
+  State<ConnectingCodeInfoMobilePopup> createState() => _ConnectingCodeInfoMobilePopupState();
 }
 
-class _ConnectingCodeInfoPopupState extends State<ConnectingCodeInfoPopup> {
+class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobilePopup> {
   bool isShowed = false;
 
   @override

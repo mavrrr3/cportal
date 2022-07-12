@@ -46,7 +46,7 @@ class EnterPinArea extends StatelessWidget {
                     onTap: () => context.pushNamed(
                       isDesktop
                           ? NavigationRouteNames.connectingCodeInfo
-                          : NavigationRouteNames.connectingCodeInfoPopup,
+                          : NavigationRouteNames.connectingCodeInfoMobile,
                     ),
                     child: SizedBox(
                       height: 24,
