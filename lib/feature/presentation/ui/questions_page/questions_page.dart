@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_content.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,10 +38,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<FetchQuestionsBloc>(context, listen: false).add(
-      const FetchQaustionsEvent(),
-    );
-
     final double width = MediaQuery.of(context).size.width;
 
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -54,14 +49,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
         List<String> categories = [];
 
-        if (state is QuestionsLoading && state.isFirstFetch) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 60),
-            child: Center(
-              child: PlatformProgressIndicator(),
-            ),
-          );
-        } else if (state is QuestionsLoading) {
+        if (state is QuestionsLoading) {
           articles = state.oldArticles;
           categories = state.tabs;
         } else if (state is QuestionsLoaded) {
