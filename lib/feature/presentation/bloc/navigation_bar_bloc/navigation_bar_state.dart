@@ -26,6 +26,6 @@ class NavigationBarState {
   ];
 
   NavigationBarState({
-    this.currentIndex = 0,
+    this.currentIndex = 2,
   });
 }

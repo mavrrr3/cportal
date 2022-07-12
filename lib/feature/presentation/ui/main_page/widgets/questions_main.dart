@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
@@ -60,14 +61,21 @@ class QuestionsMain extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         bottom: 24,
                       ),
-                      child: QuestionRow(
-                        text: articles[i].header,
-                        onTap: () {
-                          context.pushNamed(
-                            NavigationRouteNames.questionArticlePage,
-                            params: {
-                              'fid': articles[i].id,
-                            },
+                      child: OnHover(
+                        builder: (isHovered) {
+                          return Opacity(
+                            opacity: isHovered ? 0.6 : 1,
+                            child: QuestionRow(
+                              text: articles[i].header,
+                              onTap: () {
+                                context.pushNamed(
+                                  NavigationRouteNames.questionArticlePage,
+                                  params: {
+                                    'fid': articles[i].id,
+                                  },
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
