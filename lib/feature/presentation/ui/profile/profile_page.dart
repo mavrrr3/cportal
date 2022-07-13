@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       text: localizedStrings.notofications,
                       secondWidget: customSwitch(
                         isNotificationTurnedOn,
-                        turnOnOffNotify,
+                        turnOffNotify,
                       ),
                     ),
                     const SizedBox(height: 26),
@@ -151,12 +151,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void turnOnOffNotify(bool newValue) {
+  void turnOffNotify(bool newValue) {
     setState(() {
-      isNotificationTurnedOn = newValue;
-      if (newValue) {
-        showChooserNotification(context);
+      if (!newValue) {
+        showChooserNotification();
       }
+      isNotificationTurnedOn = !isNotificationTurnedOn;
     });
   }
 
@@ -166,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => isFingerPrintAuth = newValue);
   }
 
-  void showChooserNotification(BuildContext context) {
+  void showChooserNotification() {
     showModalBottomSheet<void>(
       backgroundColor: theme.cardColor,
       barrierColor: theme.barrierColor,
@@ -179,55 +179,63 @@ class _ProfilePageState extends State<ProfilePage> {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return SizedBox(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  localizedStrings.turnOffNotify,
-                  style: theme.textTheme.px16,
-                ),
-                const SizedBox(height: 18),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    setState(() => showToasterAboutNotify(
-                          context,
-                          text: localizedStrings.oneHourCancelNotify,
-                        ));
-                  },
-                  child: Text(
-                    localizedStrings.forHour,
-                    style: theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
+        return SafeArea(
+          child: SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    localizedStrings.turnOffNotify,
+                    style: theme.textTheme.px16,
+                  ),
+                  const SizedBox(height: 18),
+                  OnTapNotify(
+                    text: localizedStrings.oneHourCancelNotify,
+                    child: Text(
+                      localizedStrings.forHour,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  localizedStrings.forFourHour,
-                  style: theme.textTheme.px16.copyWith(
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(height: 24),
+                  OnTapNotify(
+                    text:
+                        'Оповещения выключены на ${localizedStrings.forFourHour}',
+                    child: Text(
+                      localizedStrings.forFourHour,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  localizedStrings.forTwentyFourHour,
-                  style: theme.textTheme.px16.copyWith(
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(height: 24),
+                  OnTapNotify(
+                    text:
+                        'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
+                    child: Text(
+                      localizedStrings.forTwentyFourHour,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  localizedStrings.forever,
-                  style: theme.textTheme.px16.copyWith(
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(height: 24),
+                  OnTapNotify(
+                    text:
+                        'Оповещения выключены ${localizedStrings.forever.toLowerCase()}',
+                    child: Text(
+                      localizedStrings.forever,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -255,25 +263,52 @@ class _ProfilePageState extends State<ProfilePage> {
           onChanged: (newValue) => onChangeMethod(newValue),
         ),
       );
+}
 
-  void showToasterAboutNotify(
-    BuildContext context, {
-    required String text,
-  }) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: theme.cardColor,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        content: Text(
-          text,
-          style: theme.textTheme.px14.copyWith(
-            color: theme.brightness == Brightness.light
-                ? theme.cardColor
-                : theme.background,
-          ),
-        ),
-      ),
+class OnTapNotify extends StatefulWidget {
+  final Widget child;
+  final String text;
+
+  const OnTapNotify({
+    Key? key,
+    required this.text,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  State<OnTapNotify> createState() => _OnTapNotifyState();
+}
+
+class _OnTapNotifyState extends State<OnTapNotify> {
+  @override
+  Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+
+        setState(() {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: theme.black,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+              content: Text(
+                widget.text,
+                style: theme.textTheme.px14.copyWith(
+                  color: theme.brightness == Brightness.light
+                      ? theme.cardColor
+                      : theme.background,
+                ),
+              ),
+            ),
+          );
+        });
+      },
+      child: widget.child,
     );
   }
 }

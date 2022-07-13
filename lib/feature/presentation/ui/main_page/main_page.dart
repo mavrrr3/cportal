@@ -35,6 +35,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late CustomTheme theme;
   late TextEditingController _searchController;
   late ScrollController _questionController;
   late FocusNode _searchFocus;
@@ -76,7 +77,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -214,52 +215,51 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-}
 
-void _fetchContent(BuildContext context) {
-  BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-    const FetchAllNewsEvent(),
-  );
-  BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
-      .add(const FetchQaustionsEvent());
-}
+  Future<void> showProfile(BuildContext context) {
+    return showDialog(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
+      builder: (context) {
+        final double width = MediaQuery.of(context).size.width;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
-Future<void> showProfile(BuildContext context) {
-  return showDialog(
-    context: context,
-    useRootNavigator: true,
-    barrierDismissible: true,
-    builder: (context) {
-      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-      final double width = MediaQuery.of(context).size.width;
-      final double horizontalPadding =
-          isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
-
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: horizontalPadding,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: horizontalPadding,
               ),
-              child: const Padding(
-                padding: EdgeInsets.only(
-                  left: 32,
-                  right: 32,
-                  bottom: 32,
-                  top: 32,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: ProfilePopUp(),
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    left: 32,
+                    right: 32,
+                    bottom: 32,
+                    top: 32,
+                  ),
+                  child: ProfilePopUp(),
+                ),
               ),
-            ),
-          );
-        },
-      );
-    },
-  );
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _fetchContent(BuildContext context) {
+    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+      const FetchAllNewsEvent(),
+    );
+    BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
+        .add(const FetchQaustionsEvent());
+  }
 }
