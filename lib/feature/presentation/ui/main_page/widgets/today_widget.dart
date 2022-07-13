@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -48,7 +49,14 @@ class TodayWidget extends StatelessWidget {
             runSpacing: 16,
             children: List.generate(
               _items.length,
-              (index) => _TodayItem(item: _items[index]),
+              (index) => OnHover(
+                builder: (isHovered) {
+                  return Opacity(
+                    opacity: isHovered ? 0.6 : 1,
+                    child: _TodayItem(item: _items[index]),
+                  );
+                },
+              ),
             ),
           ),
       ],
