@@ -64,17 +64,14 @@ class _QuestionsContentState extends State<QuestionsContent> {
       int index,
     ) {
       if (articles[index].category == tabs[widget.currentIndex]) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 30),
-          child: QuestionRow(
-            text: articles[index].header,
-            onTap: () {
-              GoRouter.of(context).pushNamed(
-                NavigationRouteNames.questionArticlePage,
-                params: {'fid': articles[index].id},
-              );
-            },
-          ),
+        return QuestionRow(
+          text: articles[index].header,
+          onTap: () {
+            GoRouter.of(context).pushNamed(
+              NavigationRouteNames.questionArticlePage,
+              params: {'fid': articles[index].id},
+            );
+          },
         );
       }
 
@@ -87,7 +84,7 @@ class _QuestionsContentState extends State<QuestionsContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
           ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
