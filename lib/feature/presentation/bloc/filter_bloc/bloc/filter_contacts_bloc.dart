@@ -12,8 +12,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_sta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
-    implements IFilterBLoc {
+class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilterBLoc {
   final FetchContactsFiltersUseCase fetchFilters;
 
   FilterContactsBloc({required this.fetchFilters}) : super(FilterEmptyState()) {
@@ -66,6 +65,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
         response.filters.forEach((element) {
           filters.add(element);
         });
+        
 
         FilterLoadedState? newState;
         if (oldState is FilterLoadedState) {
@@ -90,8 +90,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
         filters: (state as FilterLoadedState).contactsFilters,
         index: event.index,
       );
-      final newState = (state as FilterLoadedState)
-          .copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -110,8 +109,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
         filterIndex: event.filterIndex,
         itemIndex: event.itemIndex,
       );
-      final newState = (state as FilterLoadedState)
-          .copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -130,8 +128,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
         filterIndex: event.filterIndex,
         item: event.item,
       );
-      final newState = (state as FilterLoadedState)
-          .copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -148,8 +145,7 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
       final updatedFilters = FilterFunctions.removeAll(
         filters: (state as FilterLoadedState).contactsFilters,
       );
-      final newState = (state as FilterLoadedState)
-          .copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
