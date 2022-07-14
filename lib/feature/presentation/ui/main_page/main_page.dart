@@ -57,8 +57,11 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    _searchFocus.removeListener(_onFocusChange);
+    _searchFocus
+      ..removeListener(_onFocusChange)
+      ..dispose();
     _searchController.dispose();
+    _questionController.dispose();
     super.dispose();
   }
 
