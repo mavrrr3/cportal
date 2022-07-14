@@ -3,7 +3,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__deskto
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-class PinCodeDesktopInput extends StatelessWidget {
+class PinCodeDesktopInput extends StatefulWidget {
   final TextEditingController codeController;
   final FocusNode codeFocusNode;
   final bool forceErrorState;
@@ -17,6 +17,11 @@ class PinCodeDesktopInput extends StatelessWidget {
     required this.onCompleted,
   }) : super(key: key);
 
+  @override
+  State<PinCodeDesktopInput> createState() => _PinCodeDesktopInputState();
+}
+
+class _PinCodeDesktopInputState extends State<PinCodeDesktopInput> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
@@ -36,11 +41,11 @@ class PinCodeDesktopInput extends StatelessWidget {
       obscureText: true,
       obscuringCharacter: '*',
       separator: const SizedBox(width: 11),
-      forceErrorState: forceErrorState,
+      forceErrorState: widget.forceErrorState,
       useNativeKeyboard: true,
       length: 4,
-      controller: codeController,
-      focusNode: codeFocusNode,
+      controller: widget.codeController,
+      focusNode: widget.codeFocusNode,
       defaultPinTheme: defaultPinTheme,
       errorPinTheme: defaultPinTheme.copyWith(
         decoration:
@@ -53,7 +58,14 @@ class PinCodeDesktopInput extends StatelessWidget {
         ),
       ),
       cursor: const Cursor(),
-      onCompleted: onCompleted,
+      onCompleted: widget.onCompleted,
     );
+  }
+
+  @override
+  void dispose() {
+    widget.codeController.dispose();
+    widget.codeFocusNode.dispose();
+    super.dispose();
   }
 }
