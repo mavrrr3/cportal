@@ -2,7 +2,7 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-class PinCodeField extends StatefulWidget {
+class PinCodeField extends StatelessWidget {
   final TextEditingController pinCodeController;
   final FocusNode pinCodeFocusNode;
   final void Function(String value) onCompleted;
@@ -17,33 +17,28 @@ class PinCodeField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<PinCodeField> createState() => _PinCodeFieldState();
-}
-
-class _PinCodeFieldState extends State<PinCodeField> {
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Pinput(
       autofocus: true,
       enabled: true,
-      forceErrorState: widget.forceErrorState,
+      forceErrorState: forceErrorState,
       obscureText: true,
       obscuringWidget: Container(
         decoration: BoxDecoration(
-          color: widget.forceErrorState ? theme.red : theme.primary,
+          color: forceErrorState ? theme.red : theme.primary,
           shape: BoxShape.circle,
         ),
       ),
       length: 4,
-      controller: widget.pinCodeController,
-      focusNode: widget.pinCodeFocusNode,
+      controller: pinCodeController,
+      focusNode: pinCodeFocusNode,
       defaultPinTheme: getDefaultPinTheme(theme),
       focusedPinTheme: getDefaultPinTheme(theme),
       separator: const SizedBox(width: 32),
       showCursor: false,
-      onCompleted: widget.onCompleted,
+      onCompleted: onCompleted,
     );
   }
 
@@ -58,12 +53,5 @@ class _PinCodeFieldState extends State<PinCodeField> {
         shape: BoxShape.circle,
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    widget.pinCodeController.dispose();
-    widget.pinCodeFocusNode.dispose();
-    super.dispose();
   }
 }
