@@ -85,14 +85,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: RowProfile(
-                          firstWidget: SvgIcon(
-                            iconColor,
-                            path: ImageAssets.addPerson,
-                            width: 22,
+                        child: GestureDetector(
+                          onTap: () => context
+                              .goNamed(NavigationRouteNames.onBoardingStart),
+                          child: RowProfile(
+                            firstWidget: SvgIcon(
+                              iconColor,
+                              path: ImageAssets.addPerson,
+                              width: 22,
+                            ),
+                            text: localizedStrings.newEmployee,
+                            secondWidget: getBlueArrow(),
                           ),
-                          text: localizedStrings.newEmployee,
-                          secondWidget: getBlueArrow(),
                         ),
                       ),
                     ),

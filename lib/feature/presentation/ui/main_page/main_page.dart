@@ -118,7 +118,9 @@ class _MainPageState extends State<MainPage> {
                             },
                             child: BlocBuilder<AuthBloc, AuthState>(
                               builder: (context, state) {
-                                if (state is Authenticated) {
+                                if (state is! Authenticated) {
+                                  return const PlatformProgressIndicator();
+                                } else {
                                   final user = state.user;
 
                                   return OnHover(
@@ -133,8 +135,6 @@ class _MainPageState extends State<MainPage> {
                                     },
                                   );
                                 }
-
-                                return const PlatformProgressIndicator();
                               },
                             ),
                           ),

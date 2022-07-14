@@ -280,14 +280,19 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: RowProfile(
-                                firstWidget: SvgIcon(
-                                  iconColor,
-                                  path: ImageAssets.addPerson,
-                                  width: 22,
+                              child: GestureDetector(
+                                onTap: () => context.goNamed(
+                                  NavigationRouteNames.onBoardingStart,
                                 ),
-                                text: localizedStrings.newEmployee,
-                                secondWidget: getBlueArrow(),
+                                child: RowProfile(
+                                  firstWidget: SvgIcon(
+                                    iconColor,
+                                    path: ImageAssets.addPerson,
+                                    width: 22,
+                                  ),
+                                  text: localizedStrings.newEmployee,
+                                  secondWidget: getBlueArrow(),
+                                ),
                               ),
                             ),
                           ),
