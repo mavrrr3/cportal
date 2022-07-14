@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_ic
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/on_tap_notify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -90,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             path: ImageAssets.addPerson,
                             width: 22,
                           ),
-                          text: localizedStrings.newEmpoyee,
+                          text: localizedStrings.newEmployee,
                           secondWidget: getBlueArrow(),
                         ),
                       ),
@@ -102,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         path: ImageAssets.bell,
                         width: 21,
                       ),
-                      text: localizedStrings.notofications,
+                      text: localizedStrings.notifications,
                       secondWidget: customSwitch(
                         isNotificationTurnedOn,
                         turnOffNotify,
@@ -124,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 26),
                     GestureDetector(
                       onTap: () =>
-                          context.goNamed(NavigationRouteNames.editPin),
+                          context.goNamed(NavigationRouteNames.changePin),
                       child: RowProfile(
                         firstWidget: SvgIcon(
                           iconColor,
@@ -263,52 +264,4 @@ class _ProfilePageState extends State<ProfilePage> {
           onChanged: (newValue) => onChangeMethod(newValue),
         ),
       );
-}
-
-class OnTapNotify extends StatefulWidget {
-  final Widget child;
-  final String text;
-
-  const OnTapNotify({
-    Key? key,
-    required this.text,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  State<OnTapNotify> createState() => _OnTapNotifyState();
-}
-
-class _OnTapNotifyState extends State<OnTapNotify> {
-  @override
-  Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-
-        setState(() {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: theme.black,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-              ),
-              content: Text(
-                widget.text,
-                style: theme.textTheme.px14.copyWith(
-                  color: theme.brightness == Brightness.light
-                      ? theme.cardColor
-                      : theme.background,
-                ),
-              ),
-            ),
-          );
-        });
-      },
-      child: widget.child,
-    );
-  }
 }

@@ -1,13 +1,14 @@
 // ignore_for_file: unused_element
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/pop_up/change_theme_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -282,10 +283,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                               child: RowProfile(
                                 firstWidget: SvgIcon(
                                   iconColor,
-                                  path: 'profile/add_person.svg',
+                                  path: ImageAssets.addPerson,
                                   width: 22,
                                 ),
-                                text: localizedStrings.newEmpoyee,
+                                text: localizedStrings.newEmployee,
                                 secondWidget: getBlueArrow(),
                               ),
                             ),
@@ -294,10 +295,10 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           RowProfile(
                             firstWidget: SvgIcon(
                               iconColor,
-                              path: 'profile/bell.svg',
+                              path: ImageAssets.bell,
                               width: 21,
                             ),
-                            text: localizedStrings.notofications,
+                            text: localizedStrings.notifications,
                             secondWidget: customSwitch(
                               isNotificationTurnedOn,
                               turnOnOffNotify,
@@ -307,7 +308,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                           RowProfile(
                             firstWidget: SvgIcon(
                               iconColor,
-                              path: 'finger_print.svg',
+                              path: ImageAssets.fingerPrint,
                               width: 20,
                             ),
                             text: localizedStrings.fingerPrint,
@@ -317,16 +318,18 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          RowProfile(
-                            firstWidget: SvgIcon(
-                              iconColor,
-                              path: 'profile/lock.svg',
-                              width: 20,
+                          GestureDetector(
+                            onTap: () =>
+                                context.goNamed(NavigationRouteNames.changePin),
+                            child: RowProfile(
+                              firstWidget: SvgIcon(
+                                iconColor,
+                                path: ImageAssets.lock,
+                                width: 20,
+                              ),
+                              text: localizedStrings.changePin,
+                              secondWidget: getBlueArrow(),
                             ),
-                            text: localizedStrings.changePin,
-                            secondWidget: getBlueArrow(),
-                            call: () =>
-                                context.goNamed(NavigationRouteNames.editPin),
                           ),
                           const SizedBox(height: 28),
                           const ChangeThemePopUp(),

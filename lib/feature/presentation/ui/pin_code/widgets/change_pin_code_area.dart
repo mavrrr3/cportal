@@ -2,18 +2,20 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_state.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/pin_code_field.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/pin_code_desktop_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
-class CreatePinCodeArea extends StatelessWidget {
+class ChangePinCodeArea extends StatelessWidget {
   final TextEditingController pinController;
   final FocusNode pinFocusNode;
   final bool isDesktop;
 
-  const CreatePinCodeArea({
+  const ChangePinCodeArea({
     Key? key,
     required this.pinController,
     required this.pinFocusNode,
@@ -24,8 +26,14 @@ class CreatePinCodeArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final pinCodeBloc = context.read<PinCodeBloc>();
+    final localizedStrings = AppLocalizations.of(context)!;
 
-    return BlocBuilder<PinCodeBloc, PinCodeState>(
+    return BlocConsumer<PinCodeBloc, PinCodeState>(
+      listener: (context, state) {
+        if (state is PinCodeSuccessfullyChanged) {
+          return context.goNamed(NavigationRouteNames.mainPage);
+        }
+      },
       builder: (context, state) {
         return Column(
           children: [
@@ -36,8 +44,8 @@ class CreatePinCodeArea extends StatelessWidget {
                 children: [
                   Text(
                     state is PinCodeInitialState
-                        ? AppLocalizations.of(context)!.createPinCode
-                        : AppLocalizations.of(context)!.repeatPinCode,
+                        ? localizedStrings.enterNewPinCode
+                        : localizedStrings.repeatPinCode,
                     style: theme.textTheme.header,
                   ),
                   const SizedBox(height: 8),
@@ -45,7 +53,7 @@ class CreatePinCodeArea extends StatelessWidget {
                     height: 24,
                     child: Text(
                       state is PinCodeInitialState
-                          ? AppLocalizations.of(context)!.itWillBeNeedToEnter
+                          ? localizedStrings.itWillBeNeedToEnter
                           : '',
                       style: theme.textTheme.px14.copyWith(color: theme.text),
                     ),
@@ -56,7 +64,7 @@ class CreatePinCodeArea extends StatelessWidget {
                       height: 20,
                       child: Text(
                         state is PinCodeNotMatch
-                            ? AppLocalizations.of(context)!.pinNotCorrect
+                            ? localizedStrings.pinNotCorrect
                             : '',
                         style: theme.textTheme.px14.copyWith(
                           color: theme.red,
