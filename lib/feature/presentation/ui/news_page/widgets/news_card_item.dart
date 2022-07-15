@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:extended_image/extended_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news/cached_news_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -32,20 +32,10 @@ class NewsCardItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: width ?? 220,
-            height: height ?? 106,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                alignment: FractionalOffset.topCenter,
-                image: ExtendedNetworkImageProvider(
-                  '${AppConfig.imagesUrl}/${item.image}',
-                  cache: true,
-                ),
-              ),
-            ),
+          CachedNewsImage(
+            width: width,
+            height: height,
+            imgUrl: '${AppConfig.imagesUrl}/${item.image}',
           ),
           const SizedBox(height: 12),
           SizedBox(

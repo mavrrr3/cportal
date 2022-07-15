@@ -21,6 +21,7 @@ class PinCodeField extends StatelessWidget {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Pinput(
+      useNativeKeyboard: false,
       autofocus: true,
       enabled: true,
       forceErrorState: forceErrorState,
