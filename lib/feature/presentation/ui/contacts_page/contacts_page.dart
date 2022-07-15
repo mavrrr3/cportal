@@ -50,7 +50,6 @@ class _ContactsPageState extends State<ContactsPage> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-       
         backgroundColor: theme.background,
         body: Stack(
           children: [
@@ -193,9 +192,7 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
             if (_isFilterOpenWeb)
               GestureDetector(
-                onTap: () => setState(() {
-                  _isFilterOpenWeb = false;
-                }),
+                onTap: _onApplyFilter,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,

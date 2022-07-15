@@ -50,7 +50,14 @@ Future<void> showFilterMobile(
         ),
       ),
     ),
-  );
+  ).whenComplete(() {
+    log('post chosen filters request');
+    switch (type) {
+      case FilterType.contacts:
+
+      default:
+    }
+  });
 }
 
 class FilterMobile extends StatefulWidget {
@@ -119,10 +126,16 @@ class _FilterMobileState extends State<FilterMobile> {
         return BlocBuilder<FilterDeclarationsBloc, FilterState>(
           builder: (context, state) {
             if (state is FilterLoadedState) {
+              final List<TextEditingController> controllers = [];
+              // ignore: prefer-correct-identifier-length
+              for (int i = 0; i < state.declarationsFilters.length; i++) {
+                controllers.add(TextEditingController());
+              }
+
               return BottomSheetContent(
                 scrollController: widget.scrollController,
                 filters: state.declarationsFilters,
-                controllers: const [],
+                controllers: controllers,
                 onExpand: (i) {
                   BlocProvider.of<FilterDeclarationsBloc>(context).add(FilterExpandSectionEvent(index: i));
                 },
