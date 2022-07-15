@@ -108,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         turnOnOffNotify,
                       ),
                     ),
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 24),
                     RowProfile(
                       firstWidget: SvgIcon(
                         iconColor,
@@ -121,10 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         turnOnOffFingerPrintAuth,
                       ),
                     ),
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 24),
                     GestureDetector(
-                      onTap: () =>
-                          context.goNamed(NavigationRouteNames.editPin),
+                      onTap: () => context.goNamed(NavigationRouteNames.editPin),
                       child: RowProfile(
                         firstWidget: SvgIcon(
                           iconColor,
@@ -132,6 +131,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: 20,
                         ),
                         text: localizedStrings.changePin,
+                        secondWidget: getBlueArrow(),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => context.pushNamed(NavigationRouteNames.devices),
+                      child: RowProfile(
+                        firstWidget: SvgIcon(
+                          iconColor,
+                          path: ImageAssets.addDevice,
+                          width: 20,
+                        ),
+                        text: localizedStrings.devices,
                         secondWidget: getBlueArrow(),
                       ),
                     ),
@@ -268,9 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
         content: Text(
           text,
           style: theme.textTheme.px14.copyWith(
-            color: theme.brightness == Brightness.light
-                ? theme.cardColor
-                : theme.background,
+            color: theme.brightness == Brightness.light ? theme.cardColor : theme.background,
           ),
         ),
       ),

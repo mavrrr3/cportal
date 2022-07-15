@@ -119,5 +119,15 @@
     "initiator": "Инициатор",
     "responsible": "Ответственный",
     "cancel_declaration": "Отозвать заявление",
-    "oneHourCancelNotify": "Оповещения выключены на 1 час"
+    "oneHourCancelNotify": "Оповещения выключены на 1 час", 
+    "devices": "Устройства", 
+    "enterWithQrText": "Вы можете зайти в приложение KoApp\nдля браузера с помощью QR-кода", 
+    "connectDevice": "Подключить устройство", 
+    "mainDevice": "Основное устройство", 
+    "endOtherSessions": "Завершить все другие сеансы", 
+    "otherDevices": "Другие устройства", 
+    "singOutFromOtherDevices": "Выход с других устройств", 
+    "areYouSureEndSessions": "Вы уверены, что хотите завершить\nсеансы на других устройствах?", 
+    "exit": "Выйти", 
+    "cancelLowerCase": "Отмена"
 }

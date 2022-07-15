@@ -34,4 +34,8 @@ abstract class ImageAssets {
   static const stepDeclined = '$iconsPath/declaration_step_declined.svg';
   static const highPriority = '$iconsPath/high_priority.svg';
   static const flashLight = '$iconsPath/flash_light.svg';
+  static const addDevice = '$iconsPath/add_device.svg';
+  static const addDeviceLogo = '$iconsPath/add_device_logo.svg';
+  static const android = '$iconsPath/android.svg';
+  static const exit = '$iconsPath/exit.svg';
 }
