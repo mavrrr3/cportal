@@ -23,8 +23,8 @@ class CachedNewsImage extends StatelessWidget {
       height: height ?? 106,
       imgUrl,
       handleLoadingProgress: true,
-      clearMemoryCacheIfFailed: true,
-      clearMemoryCacheWhenDispose: true,
+      clearMemoryCacheIfFailed: false,
+      clearMemoryCacheWhenDispose: false,
       cache: true,
       loadStateChanged: (state) {
         if (state.extendedImageLoadState == LoadState.loading) {

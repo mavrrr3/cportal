@@ -32,8 +32,8 @@ class AvatarBox extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
         hasApiImg ? '${AppConfig.imagesUrl}/$imgPath' : imgPath,
         handleLoadingProgress: true,
-        clearMemoryCacheIfFailed: true,
-        clearMemoryCacheWhenDispose: true,
+        clearMemoryCacheIfFailed: false,
+        clearMemoryCacheWhenDispose: false,
         cache: true,
         loadStateChanged: (state) {
           if (state.extendedImageLoadState == LoadState.loading) {
