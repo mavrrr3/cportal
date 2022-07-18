@@ -33,12 +33,16 @@ class EnterConnectingCode extends StatelessWidget {
         },
         builder: (context, state) {
           final isWrongCode = state is WrongConnectingCode;
-          final textStyle = isWrongCode ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
-          final codeAreaColor = isWrongCode ? theme.lightRedPIN : Colors.white;
+          final textStyle = isWrongCode
+              ? theme.textTheme.px16.copyWith(color: theme.red)
+              : theme.textTheme.px16;
+          final codeAreaColor =
+              isWrongCode ? theme.lightRedPIN : theme.cardColor;
           final focusedBorder = isDesktop
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: theme.primary!.withOpacity(0.34)),
+                  borderSide:
+                      BorderSide(color: theme.primary!.withOpacity(0.34)),
                 )
               : null;
 
@@ -52,7 +56,9 @@ class EnterConnectingCode extends StatelessWidget {
               const SizedBox(height: 8),
               GestureDetector(
                 onTap: () => context.pushNamed(
-                  isDesktop ? NavigationRouteNames.connectingCodeInfo : NavigationRouteNames.connectingCodeInfoMobile,
+                  isDesktop
+                      ? NavigationRouteNames.connectingCodeInfo
+                      : NavigationRouteNames.connectingCodeInfoMobile,
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.howToGetConnectingCode,
@@ -73,12 +79,17 @@ class EnterConnectingCode extends StatelessWidget {
                   focusNode: codeFocusNode,
                   style: textStyle,
                   textCapitalization: TextCapitalization.characters,
-                  cursorHeight: 24,
+                  cursorHeight: 16,
+                  autocorrect: false,
                   cursorColor: theme.primary,
                   decoration: InputDecoration(
                     focusedBorder: focusedBorder,
                     border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 16,
                     ),
                   ),
                 ),

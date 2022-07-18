@@ -99,7 +99,8 @@ class _ContactsPageState extends State<ContactsPage> {
                                 _onSearchInput(text);
                               },
                               onFilterTap: () async {
-                                if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
+                                if (!ResponsiveWrapper.of(context)
+                                    .isLargerThan(MOBILE)) {
                                   await showFilterMobile(
                                     context,
                                     onApply: _onApplyFilter,
@@ -123,13 +124,15 @@ class _ContactsPageState extends State<ContactsPage> {
                                   children: [
                                     // Выбранные фильтры.
 
-                                    BlocBuilder<FilterContactsBloc, FilterState>(
+                                    BlocBuilder<FilterContactsBloc,
+                                        FilterState>(
                                       builder: (context, state) {
                                         if (state is FilterLoadedState) {
                                           return SelectedFiltersView(
                                             filters: state.contactsFilters,
                                             onRemove: (item, i) {
-                                              BlocProvider.of<FilterContactsBloc>(
+                                              BlocProvider.of<
+                                                  FilterContactsBloc>(
                                                 context,
                                               ).add(
                                                 FilterRemoveItemEvent(
@@ -227,7 +230,8 @@ class _ContactsPageState extends State<ContactsPage> {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
+            BlocProvider.of<ContactsBloc>(context)
+                .add(const FetchContactsEvent());
           }
         }
       }
