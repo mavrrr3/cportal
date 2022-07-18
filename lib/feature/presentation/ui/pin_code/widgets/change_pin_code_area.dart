@@ -43,7 +43,8 @@ class ChangePinCodeArea extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    state is PinCodeInitialState
+                    state is PinCodeInitialState ||
+                            state is PinCodeSuccessfullyChanged
                         ? localizedStrings.enterNewPinCode
                         : localizedStrings.repeatPinCode,
                     style: theme.textTheme.header,

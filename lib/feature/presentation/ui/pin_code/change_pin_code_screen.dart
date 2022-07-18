@@ -12,7 +12,6 @@ import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_mobile
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class ChangePinCodeScreen extends StatefulWidget {
@@ -38,22 +37,13 @@ class _ChangePinCodeScreenState extends State<ChangePinCodeScreen> {
       },
       child: BlocListener<BiometricBloc, BiometricState>(
         listener: (context, state) {
-          if (state is BiometricSupported) {
-            if (state.biometricType == BiometricType.face) {
-              context.goNamed(NavigationRouteNames.enrollFaceId);
-            } else {
-              context.goNamed(NavigationRouteNames.enrollFingerPrint);
-            }
-          } else if (state is BiometricNotSupported) {
-            final connectingCodeState =
-                context.read<ConnectingCodeBloc>().state;
+          final connectingCodeState = context.read<ConnectingCodeBloc>().state;
 
-            if (connectingCodeState is AuthenticatedWithConnectingCode) {
-              context
-                  .read<AuthBloc>()
-                  .add(LogInWithUser(connectingCodeState.user));
-              context.goNamed(NavigationRouteNames.mainPage);
-            }
+          if (connectingCodeState is AuthenticatedWithConnectingCode) {
+            context
+                .read<AuthBloc>()
+                .add(LogInWithUser(connectingCodeState.user));
+            context.goNamed(NavigationRouteNames.mainPage);
           }
         },
         child: ResponsiveWrapper.of(context).isLargerThan(TABLET)

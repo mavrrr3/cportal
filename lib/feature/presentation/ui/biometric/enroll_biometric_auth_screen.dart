@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
@@ -70,7 +72,8 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () => context.read<BiometricBloc>().add(
-                          EnrollBiometricAuth(strings.logInToContinue, biometricType),
+                          EnrollBiometricAuth(
+                              strings.logInToContinue, biometricType),
                         ),
                     child: Text(
                       strings.yes,
@@ -113,7 +116,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
 
   void _logInWithUser(BuildContext context) {
     final connectingCodeState = context.read<ConnectingCodeBloc>().state;
-
+    log(connectingCodeState.toString());
     if (connectingCodeState is AuthenticatedWithConnectingCode) {
       context.read<AuthBloc>().add(LogInWithUser(connectingCodeState.user));
       context.goNamed(NavigationRouteNames.mainPage);
