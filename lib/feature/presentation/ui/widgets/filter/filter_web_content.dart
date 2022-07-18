@@ -6,17 +6,21 @@ import 'package:flutter/material.dart';
 
 class FilterWebContent extends StatelessWidget {
   final List<FilterEntity> filters;
+  final List<TextEditingController> controllers;
   final Function() onApply;
   final Function() onClear;
   final Function(int) onExpand;
   final Function(int, int) onSelect;
+  final Function(int, String) onSearch;
 
   const FilterWebContent({
     Key? key,
     required this.filters,
+    required this.controllers,
     required this.onApply,
     required this.onClear,
     required this.onExpand,
+    required this.onSearch,
     required this.onSelect,
   }) : super(key: key);
 
@@ -24,7 +28,7 @@ class FilterWebContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final double width = MediaQuery.of(context).size.width;
-    
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: MediaQuery.of(context).size.height,
@@ -44,8 +48,10 @@ class FilterWebContent extends StatelessWidget {
                 itemBuilder: (context, index) => FilterSection(
                   sectionWidth: width * 0.25 - 80,
                   item: filters[index],
+                  controller: TextEditingController(),
                   onExpand: () => onExpand(index),
                   onSelect: (i) => onSelect(index, i),
+                  onSearch: (text) => onSearch(index, text),
                 ),
               ),
             ),
