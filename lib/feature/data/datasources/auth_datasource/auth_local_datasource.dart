@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
+import 'package:cportal_flutter/feature/domain/entities/device_info.dart';
+import 'package:cportal_flutter/feature/domain/entities/device_platform.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
@@ -26,34 +28,43 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
   }
 
   @override
-  Future<String?> getDeviceName() async {
+  Future<DeviceInfo> getDeviceInfo() async {
+    String? device;
+    String? osInformation;
+    DevicePlatform? platform = DevicePlatform.desktop;
+
     if (kIsWeb) {
       final info = await _deviceInfoPlugin.webBrowserInfo;
-
-      return info.userAgent;
+      device = '${info.vendor} ${info.vendorSub}';
+      osInformation = 'Web';
     }
     if (Platform.isAndroid) {
       final info = await _deviceInfoPlugin.androidInfo;
-
-      return info.model;
+      device = info.model;
+      osInformation = 'Android ${info.version.baseOS}';
+      platform = DevicePlatform.android;
     } else if (Platform.isIOS) {
       final info = await _deviceInfoPlugin.iosInfo;
-
-      return info.name;
+      device = info.name;
+      osInformation = '${info.systemName} ${info.systemVersion}';
+      platform = DevicePlatform.ios;
     } else if (Platform.isLinux) {
       final info = await _deviceInfoPlugin.linuxInfo;
-
-      return info.prettyName;
+      device = info.prettyName;
+      osInformation = 'Linux';
     } else if (Platform.isMacOS) {
       final info = await _deviceInfoPlugin.macOsInfo;
-
-      return info.model;
+      device = info.model;
+      osInformation = 'macOS ${info.osRelease}';
     } else if (Platform.isWindows) {
-      final info = await _deviceInfoPlugin.windowsInfo;
-
-      return info.computerName;
+      device = 'Desktop';
+      osInformation = 'Windows';
     }
 
-    return null;
+    return DeviceInfo(
+      device ?? '',
+      'KoApp $osInformation',
+      platform,
+    );
   }
 }

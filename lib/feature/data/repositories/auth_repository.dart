@@ -36,14 +36,34 @@ class AuthRepository implements IAuthRepository {
   @override
   Future<UserModel?> logInWithConnectingCode({required String connectingCode}) async {
     try {
-      final deviceName = await _authLocalDataSource.getDeviceName();
-      final responseUserModel = await _authRemoteDataSource.login(connectingCode, deviceName ?? '');
+      final deviceInfo = await _authLocalDataSource.getDeviceInfo();
+      final responseUserModel = await _authRemoteDataSource.login(connectingCode, deviceInfo);
       final user = responseUserModel.response;
       await _authLocalDataSource.saveUser(user);
 
       return user;
     } on Exception catch (_) {
       return null;
+    }
+  }
+
+  @override
+  Future<void> sendConnectingData({required String qrData}) async {
+    try {
+      await _authRemoteDataSource.sendConnectingData(qrData: qrData);
+    } on Exception catch (_) {
+      return;
+    }
+  }
+
+  @override
+  Future<void> sendScannedData({required String qrData}) async {
+    try {
+      final user = await _authLocalDataSource.getCachedUser();
+
+      return _authRemoteDataSource.sendScannedData(qrData: qrData, token: user?.token ?? '');
+    } on Exception catch (_) {
+      return;
     }
   }
 }

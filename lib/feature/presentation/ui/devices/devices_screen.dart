@@ -1,9 +1,11 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/device_information.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/exit_other_device_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/layout_with_app_bar.dart';
+import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -47,7 +49,10 @@ class DevicesScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () => context.pushNamed(NavigationRouteNames.qrScanner),
+                onPressed: () => context.pushNamed(
+                  NavigationRouteNames.qrScanner,
+                  extra: (String scannedData) => sl<AuthUseCase>().sendScannedData(qrData: scannedData),
+                ),
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),

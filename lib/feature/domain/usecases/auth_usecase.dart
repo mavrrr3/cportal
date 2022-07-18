@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
@@ -53,4 +55,26 @@ class AuthUseCase {
   }
 
   Future<BiometricType?> getEnabledBiometricType() => _biometricRepository.getEnabledBiometric();
+
+  String generateConnectingCode() {
+    final randomGenerator = Random();
+    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const length = 20;
+    final codeBuffer = StringBuffer();
+
+    for (var counter = 0; counter < length; counter++) {
+      final random = randomGenerator.nextInt(charset.length);
+      codeBuffer.write(charset[random]);
+    }
+
+    return codeBuffer.toString();
+  }
+
+  Future<void> sendConnectingData({required String qrData}) {
+    return _authRepository.sendConnectingData(qrData: qrData);
+  }
+
+  Future<void> sendScannedData({required String qrData}) {
+    return _authRepository.sendScannedData(qrData: qrData);
+  }
 }
