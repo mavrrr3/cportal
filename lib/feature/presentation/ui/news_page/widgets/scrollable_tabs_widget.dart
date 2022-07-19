@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -66,42 +67,55 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
     required bool isCurrent,
     Function()? onTap,
   }) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.only(
-          right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
-        ),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          curve: Curves.easeIn,
-          decoration: BoxDecoration(
-            border: isCurrent
-                ? Border(
-                    bottom: BorderSide(
-                      width: 2.5,
-                      color: widget.activeColor ?? theme.primary!,
-                    ),
-                  )
-                : null,
-          ),
+    return OnHover(
+      builder: (isHovered) {
+        return GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(
-              text,
-              style: isCurrent
-                  ? theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: widget.activeColor ?? theme.primary!,
-                    )
-                  : theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+            padding: EdgeInsets.only(
+              right: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                  ? 8.0
+                  : 19,
+            ),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeIn,
+              decoration: BoxDecoration(
+                border: isCurrent
+                    ? Border(
+                        bottom: BorderSide(
+                          width: 2.5,
+                          color: widget.activeColor ?? theme.primary!,
+                        ),
+                      )
+                    : isHovered
+                        ? Border(
+                            bottom: BorderSide(
+                              width: 2.5,
+                              color: theme.text!,
+                            ),
+                          )
+                        : null,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  text,
+                  style: isCurrent
+                      ? theme.textTheme.px16.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: widget.activeColor ?? theme.primary!,
+                        )
+                      : theme.textTheme.px16.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_blo
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/pop_up/change_theme_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
@@ -160,38 +161,46 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                       width: 350,
                       child: Column(
                         children: [
-                          Container(
-                            width: 350,
-                            decoration: BoxDecoration(
-                              color: theme.text!.withOpacity(0.04),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4),
-                                topRight: Radius.circular(4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 4,
-                              ),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    localizedStrings.yourPhoneNumber,
-                                    style: theme.textTheme.px12.copyWith(
-                                      color: theme.textLight,
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.68 : 1,
+                                child: Container(
+                                  width: 350,
+                                  decoration: BoxDecoration(
+                                    color: theme.text!.withOpacity(0.04),
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(4),
+                                      topRight: Radius.circular(4),
                                     ),
                                   ),
-                                  Text(
-                                    user.personalPhone,
-                                    style: theme.textTheme.px16,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 4,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          localizedStrings.yourPhoneNumber,
+                                          style: theme.textTheme.px12.copyWith(
+                                            color: theme.textLight,
+                                          ),
+                                        ),
+                                        Text(
+                                          user.personalPhone,
+                                          style: theme.textTheme.px16,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            },
                           ),
                           Container(
                             decoration: BoxDecoration(
@@ -201,22 +210,31 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                 ),
                               ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: GestureDetector(
-                                onTap: () => context.goNamed(
-                                  NavigationRouteNames.onBoardingStart,
-                                ),
-                                child: RowProfile(
-                                  firstWidget: SvgIcon(
-                                    iconColor,
-                                    path: ImageAssets.addPerson,
-                                    width: 22,
+                            child: OnHover(
+                              builder: (isHovered) {
+                                return Opacity(
+                                  opacity: isHovered ? 0.64 : 1,
+                                  child: GestureDetector(
+                                    onTap: () => context.goNamed(
+                                      NavigationRouteNames.onBoardingStart,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 20,
+                                      ),
+                                      child: RowProfile(
+                                        firstWidget: SvgIcon(
+                                          iconColor,
+                                          path: ImageAssets.addPerson,
+                                          width: 22,
+                                        ),
+                                        text: localizedStrings.newEmployee,
+                                        secondWidget: getBlueArrow(),
+                                      ),
+                                    ),
                                   ),
-                                  text: localizedStrings.newEmployee,
-                                  secondWidget: getBlueArrow(),
-                                ),
-                              ),
+                                );
+                              },
                             ),
                           ),
                           const SizedBox(height: 24),

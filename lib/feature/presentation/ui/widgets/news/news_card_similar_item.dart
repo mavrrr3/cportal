@@ -30,20 +30,20 @@ class NewsCardSimilarItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CachedNewsImage(
-            width: width,
-            height: height,
-            imgUrl: '${AppConfig.imagesUrl}/${item.image}',
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: 220,
-            child: OnHover(
-              builder: (isHovered) {
-                return Column(
+      child: OnHover(
+        builder: (isHovered) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CachedNewsImage(
+                width: width,
+                height: height,
+                imgUrl: '${AppConfig.imagesUrl}/${item.image}',
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: 220,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -71,11 +71,11 @@ class NewsCardSimilarItem extends StatelessWidget {
                       ],
                     ),
                   ],
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
