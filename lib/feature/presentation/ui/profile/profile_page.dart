@@ -101,29 +101,35 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 28),
-                    RowProfile(
-                      firstWidget: SvgIcon(
-                        iconColor,
-                        path: ImageAssets.bell,
-                        width: 21,
-                      ),
-                      text: localizedStrings.notifications,
-                      secondWidget: customSwitch(
-                        isNotificationTurnedOn,
-                        turnOffNotify,
+                    GestureDetector(
+                      onTap: () => turnOffNotify(isNotificationTurnedOn),
+                      child: RowProfile(
+                        firstWidget: SvgIcon(
+                          iconColor,
+                          path: ImageAssets.bell,
+                          width: 21,
+                        ),
+                        text: localizedStrings.notifications,
+                        secondWidget: customSwitch(
+                          isNotificationTurnedOn,
+                          turnOffNotify,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 26),
-                    RowProfile(
-                      firstWidget: SvgIcon(
-                        iconColor,
-                        path: ImageAssets.fingerPrint,
-                        width: 20,
-                      ),
-                      text: localizedStrings.fingerPrint,
-                      secondWidget: customSwitch(
-                        isFingerPrintAuth,
-                        turnOnOffFingerPrintAuth,
+                    GestureDetector(
+                      onTap: () => turnOnOffFingerPrintAuth(isFingerPrintAuth),
+                      child: RowProfile(
+                        firstWidget: SvgIcon(
+                          iconColor,
+                          path: ImageAssets.fingerPrint,
+                          width: 20,
+                        ),
+                        text: localizedStrings.fingerPrint,
+                        secondWidget: customSwitch(
+                          isFingerPrintAuth,
+                          turnOnOffFingerPrintAuth,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 26),
@@ -168,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isFingerPrintAuth = false;
 
   void turnOnOffFingerPrintAuth(bool newValue) {
-    setState(() => isFingerPrintAuth = newValue);
+    setState(() => isFingerPrintAuth = !isFingerPrintAuth);
   }
 
   void showChooserNotification() {
