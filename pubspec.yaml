@@ -38,7 +38,7 @@ dependencies:
   # Theme
   adaptive_theme: ^3.1.0
   flutter_svg: ^1.1.1+1
-  google_fonts: ^2.3.1
+  google_fonts: ^3.0.1
   pinput: ^2.2.9
 
   # State management for realisation bisness logic
