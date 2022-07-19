@@ -238,44 +238,74 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          RowProfile(
-                            firstWidget: SvgIcon(
-                              iconColor,
-                              path: ImageAssets.bell,
-                              width: 21,
-                            ),
-                            text: localizedStrings.notifications,
-                            secondWidget: customSwitch(
-                              isNotificationTurnedOn,
-                              turnOffNotify,
-                            ),
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.64 : 1,
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      turnOffNotify(isNotificationTurnedOn),
+                                  child: RowProfile(
+                                    firstWidget: SvgIcon(
+                                      iconColor,
+                                      path: ImageAssets.bell,
+                                      width: 21,
+                                    ),
+                                    text: localizedStrings.notifications,
+                                    secondWidget: customSwitch(
+                                      isNotificationTurnedOn,
+                                      turnOffNotify,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(height: 24),
-                          RowProfile(
-                            firstWidget: SvgIcon(
-                              iconColor,
-                              path: ImageAssets.fingerPrint,
-                              width: 20,
-                            ),
-                            text: localizedStrings.fingerPrint,
-                            secondWidget: customSwitch(
-                              isFingerPrintAuth,
-                              turnOnOffFingerPrintAuth,
-                            ),
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.64 : 1,
+                                child: GestureDetector(
+                                  onTap: () => turnOnOffFingerPrintAuth(
+                                    isFingerPrintAuth,
+                                  ),
+                                  child: RowProfile(
+                                    firstWidget: SvgIcon(
+                                      iconColor,
+                                      path: ImageAssets.fingerPrint,
+                                      width: 20,
+                                    ),
+                                    text: localizedStrings.fingerPrint,
+                                    secondWidget: customSwitch(
+                                      isFingerPrintAuth,
+                                      turnOnOffFingerPrintAuth,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(height: 24),
-                          GestureDetector(
-                            onTap: () =>
-                                context.goNamed(NavigationRouteNames.changePin),
-                            child: RowProfile(
-                              firstWidget: SvgIcon(
-                                iconColor,
-                                path: ImageAssets.lock,
-                                width: 20,
-                              ),
-                              text: localizedStrings.changePin,
-                              secondWidget: getBlueArrow(),
-                            ),
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.64 : 1,
+                                child: GestureDetector(
+                                  onTap: () => context
+                                      .goNamed(NavigationRouteNames.changePin),
+                                  child: RowProfile(
+                                    firstWidget: SvgIcon(
+                                      iconColor,
+                                      path: ImageAssets.lock,
+                                      width: 20,
+                                    ),
+                                    text: localizedStrings.changePin,
+                                    secondWidget: getBlueArrow(),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(height: 28),
                           const ChangeThemePopUp(),
@@ -359,8 +389,13 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     });
   }
 
-  void turnOnOffFingerPrintAuth(bool newValue) {
-    setState(() => isFingerPrintAuth = newValue);
+  void turnOnOffFingerPrintAuth(bool value) {
+    setState(() {
+      if (!value) {
+        value;
+      }
+      isFingerPrintAuth = !isFingerPrintAuth;
+    });
   }
 
   Widget getBlueArrow() {

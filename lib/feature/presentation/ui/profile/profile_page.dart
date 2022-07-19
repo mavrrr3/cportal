@@ -173,8 +173,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   bool isFingerPrintAuth = false;
 
-  void turnOnOffFingerPrintAuth(bool newValue) {
-    setState(() => isFingerPrintAuth = !isFingerPrintAuth);
+  void turnOnOffFingerPrintAuth(bool value) {
+    setState(() {
+      if (!value) {
+        value;
+      }
+      isFingerPrintAuth = !isFingerPrintAuth;
+    });
   }
 
   void showChooserNotification() {
