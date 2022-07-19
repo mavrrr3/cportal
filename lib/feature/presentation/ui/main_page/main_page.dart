@@ -35,7 +35,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late CustomTheme theme;
   late TextEditingController _searchController;
   late ScrollController _questionController;
   late FocusNode _searchFocus;
@@ -80,7 +79,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    theme = Theme.of(context).extension<CustomTheme>()!;
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -225,6 +224,7 @@ class _MainPageState extends State<MainPage> {
       useRootNavigator: true,
       barrierDismissible: true,
       builder: (context) {
+        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
         final double horizontalPadding =
             isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
