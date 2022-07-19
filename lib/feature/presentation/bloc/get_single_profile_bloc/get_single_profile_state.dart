@@ -16,6 +16,14 @@ class GetSingleProfileLoadedState extends GetSingleProfileState {
   final ProfileEntity profile;
   const GetSingleProfileLoadedState({required this.profile});
 
+  String get getPhone => profile.contactInfo
+      .firstWhere((element) => element.type == 'Личный номер телефона')
+      .contact;
+
+  String get getEmail => profile.contactInfo
+      .firstWhere((element) => element.type == 'Эл. почта')
+      .contact;
+
   @override
   List<Object?> get props => [profile];
 }

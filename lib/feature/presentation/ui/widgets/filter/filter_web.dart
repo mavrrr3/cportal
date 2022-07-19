@@ -24,8 +24,6 @@ class FilterWeb extends StatefulWidget {
 }
 
 class _FilterWebState extends State<FilterWeb> {
-
-
   @override
   Widget build(BuildContext context) {
     switch (widget.type) {
@@ -36,6 +34,7 @@ class _FilterWebState extends State<FilterWeb> {
             if (state is FilterLoadedState) {
               return FilterWebContent(
                 filters: state.contactsFilters,
+                controllers: const [],
                 onApply: widget.onApply,
                 onClear: widget.onClear,
                 onExpand: (i) => BlocProvider.of<FilterContactsBloc>(context).add(
@@ -47,6 +46,7 @@ class _FilterWebState extends State<FilterWeb> {
                     itemIndex: itemIndex,
                   ),
                 ),
+                onSearch: (i, text) {},
               );
             }
 
@@ -62,6 +62,7 @@ class _FilterWebState extends State<FilterWeb> {
             if (state is FilterLoadedState) {
               return FilterWebContent(
                 filters: state.declarationsFilters,
+                controllers: const [],
                 onApply: widget.onApply,
                 onClear: widget.onClear,
                 onExpand: (i) => BlocProvider.of<FilterDeclarationsBloc>(context).add(
@@ -73,6 +74,7 @@ class _FilterWebState extends State<FilterWeb> {
                     itemIndex: itemIndex,
                   ),
                 ),
+                onSearch: (i, text) {},
               );
             }
 

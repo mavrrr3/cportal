@@ -31,6 +31,8 @@ class PinCodeDesktopInput extends StatelessWidget {
     );
 
     return Pinput(
+      autofocus: true,
+      enabled: true,
       obscureText: true,
       obscuringCharacter: '*',
       separator: const SizedBox(width: 11),
@@ -41,7 +43,8 @@ class PinCodeDesktopInput extends StatelessWidget {
       focusNode: codeFocusNode,
       defaultPinTheme: defaultPinTheme,
       errorPinTheme: defaultPinTheme.copyWith(
-        decoration: defaultPinTheme.decoration!.copyWith(color: theme.lightRedPIN),
+        decoration:
+            defaultPinTheme.decoration!.copyWith(color: theme.lightRedPIN),
         textStyle: defaultPinTheme.textStyle!.copyWith(color: theme.red),
       ),
       focusedPinTheme: defaultPinTheme.copyWith(

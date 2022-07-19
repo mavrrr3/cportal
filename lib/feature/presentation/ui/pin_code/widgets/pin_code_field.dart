@@ -21,6 +21,9 @@ class PinCodeField extends StatelessWidget {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Pinput(
+      useNativeKeyboard: false,
+      autofocus: true,
+      enabled: true,
       forceErrorState: forceErrorState,
       obscureText: true,
       obscuringWidget: Container(
@@ -45,7 +48,9 @@ class PinCodeField extends StatelessWidget {
       width: 16,
       height: 16,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.light ? theme.textLight?.withOpacity(0.2) : theme.background,
+        color: theme.brightness == Brightness.light
+            ? theme.textLight?.withOpacity(0.2)
+            : theme.background,
         shape: BoxShape.circle,
       ),
     );

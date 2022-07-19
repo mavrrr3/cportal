@@ -223,11 +223,11 @@ Future<void> init() async {
   sl.registerLazySingleton<IContactsRemoteDataSource>(
     () => ContactsRemoteDataSource(sl(), sl()),
   );
-  sl.registerLazySingleton<IContactsLocalDataSource>(
+  sl.registerLazySingleton<IContactsLocalDataSource>(    
     () => ContactsLocalDataSource(sl()),
   );
   sl.registerLazySingleton<IFilterRemoteDataSource>(
-    () => FilterRemoteDataSource(sl()),
+    () => FilterRemoteDataSource(sl(), sl()),
   );
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
