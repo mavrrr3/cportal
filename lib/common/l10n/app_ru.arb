@@ -129,5 +129,6 @@
     "singOutFromOtherDevices": "Выход с других устройств", 
     "areYouSureEndSessions": "Вы уверены, что хотите завершить\nсеансы на других устройствах?", 
     "exit": "Выйти", 
-    "cancelLowerCase": "Отмена"
+    "cancelLowerCase": "Отмена", 
+    "online": "в сети"
 }

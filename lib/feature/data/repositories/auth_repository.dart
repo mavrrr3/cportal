@@ -1,13 +1,20 @@
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_location_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/models/login/login_request.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
 
 class AuthRepository implements IAuthRepository {
   final IAuthLocalDataSource _authLocalDataSource;
   final IAuthRemoteDataSource _authRemoteDataSource;
+  final ILocationRemoteDataSource _locationRemoteDataSource;
 
-  AuthRepository(this._authLocalDataSource, this._authRemoteDataSource);
+  AuthRepository(
+    this._authLocalDataSource,
+    this._authRemoteDataSource,
+    this._locationRemoteDataSource,
+  );
 
   @override
   Future<UserModel?> getUser() async {
@@ -37,7 +44,16 @@ class AuthRepository implements IAuthRepository {
   Future<UserModel?> logInWithConnectingCode({required String connectingCode}) async {
     try {
       final deviceInfo = await _authLocalDataSource.getDeviceInfo();
-      final responseUserModel = await _authRemoteDataSource.login(connectingCode, deviceInfo);
+      final location = await _locationRemoteDataSource.getLocation();
+
+      final loginRequest = LoginRequest(
+        connectingCode: connectingCode,
+        device: deviceInfo.name,
+        deviceDescription: 'KoApp ${deviceInfo.osInformation}',
+        platform: deviceInfo.platform,
+        location: location?.fullLocation,
+      );
+      final responseUserModel = await _authRemoteDataSource.login(loginRequest);
       final user = responseUserModel.response;
       await _authLocalDataSource.saveUser(user);
 
@@ -50,7 +66,7 @@ class AuthRepository implements IAuthRepository {
   @override
   Future<void> sendConnectingData({required String qrData}) async {
     try {
-      await _authRemoteDataSource.sendConnectingData(qrData: qrData);
+      return _authRemoteDataSource.sendConnectingData(qrData: qrData);
     } on Exception catch (_) {
       return;
     }

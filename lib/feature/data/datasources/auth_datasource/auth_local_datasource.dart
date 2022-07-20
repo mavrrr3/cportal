@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
-import 'package:cportal_flutter/feature/domain/entities/device_info.dart';
-import 'package:cportal_flutter/feature/domain/entities/device_platform.dart';
+import 'package:cportal_flutter/feature/domain/entities/device/device_info.dart';
+import 'package:cportal_flutter/feature/domain/entities/device/device_platform.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
@@ -62,9 +62,9 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
     }
 
     return DeviceInfo(
-      device ?? '',
-      'KoApp $osInformation',
-      platform,
+      name: device ?? '',
+      osInformation: osInformation ?? '',
+      platform: platform,
     );
   }
 }

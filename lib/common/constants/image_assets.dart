@@ -35,7 +35,10 @@ abstract class ImageAssets {
   static const highPriority = '$iconsPath/high_priority.svg';
   static const flashLight = '$iconsPath/flash_light.svg';
   static const addDevice = '$iconsPath/add_device.svg';
-  static const addDeviceLogo = '$iconsPath/add_device_logo.svg';
+  static const monitorLight = '$iconsPath/monitor_light.svg';
+  static const monitorDark = '$iconsPath/monitor_dark.svg';
   static const android = '$iconsPath/android.svg';
   static const exit = '$iconsPath/exit.svg';
+  static const apple = '$iconsPath/apple.svg';
+  static const desktop = '$iconsPath/desktop.svg';
 }

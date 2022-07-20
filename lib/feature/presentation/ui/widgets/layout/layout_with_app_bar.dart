@@ -34,7 +34,10 @@ class LayoutWithAppBar extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: SizedBox(
                     width: 24,
-                    child: SvgPicture.asset(ImageAssets.backArrow),
+                    child: SvgPicture.asset(
+                      ImageAssets.backArrow,
+                      color: theme.text,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),

@@ -1,20 +1,20 @@
-import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class DeviceInformation extends StatelessWidget {
   final String deviceName;
   final String osVersion;
   final String location;
-  final bool online;
+  final String connectingStatus;
+  final Widget icon;
 
   const DeviceInformation({
     Key? key,
     required this.deviceName,
     required this.osVersion,
     required this.location,
-    required this.online,
+    required this.connectingStatus,
+    required this.icon,
   }) : super(key: key);
 
   @override
@@ -27,9 +27,7 @@ class DeviceInformation extends StatelessWidget {
         SizedBox(
           width: 24,
           height: 24,
-          child: Center(
-            child: SvgPicture.asset(ImageAssets.android),
-          ),
+          child: Center(child: icon),
         ),
         const SizedBox(width: 12),
         Column(
@@ -40,12 +38,14 @@ class DeviceInformation extends StatelessWidget {
               style: theme.textTheme.px14.copyWith(
                 fontWeight: FontWeight.w700,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
             Text(
               osVersion,
               style: theme.textTheme.px14.copyWith(
                 height: 1.43,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
             Row(
@@ -59,7 +59,7 @@ class DeviceInformation extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'deviceName',
+                  connectingStatus,
                   style: theme.textTheme.px14.copyWith(
                     color: theme.text?.withOpacity(0.68),
                     height: 1.33,

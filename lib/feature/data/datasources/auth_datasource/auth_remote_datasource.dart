@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/models/login/login_request.dart';
 import 'package:cportal_flutter/feature/data/models/user/response_user_model.dart';
-import 'package:cportal_flutter/feature/domain/entities/device_info.dart';
 import 'package:dio/dio.dart';
 
 class AuthRemoteDataSource implements IAuthRemoteDataSource {
@@ -17,8 +17,14 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
   }
 
   @override
-  Future<ResponseUserModel> login(String connectingCode, DeviceInfo deviceInfo) async {
-    final queryParameters = <String, dynamic>{'binding_code': connectingCode, 'device': deviceInfo.name};
+  Future<ResponseUserModel> login(LoginRequest loginRequest) async {
+    final queryParameters = <String, dynamic>{
+      'binding_code': loginRequest.connectingCode,
+      'device': Uri.encodeComponent(loginRequest.device),
+      'app': Uri.encodeComponent(loginRequest.deviceDescription),
+      'platform': loginRequest.platform.name,
+      'location': Uri.encodeComponent(loginRequest.location ?? ''),
+    };
     final result = await _makeRequest(queryParameters: queryParameters, method: 'GET');
 
     return ResponseUserModel.fromJson(result.data!);
