@@ -8,3 +8,5 @@ abstract class ConnectingDevicesEvent extends Equatable {
 }
 
 class LoadConnectingDevices extends ConnectingDevicesEvent {}
+
+class EndOtherSessions extends ConnectingDevicesEvent {}

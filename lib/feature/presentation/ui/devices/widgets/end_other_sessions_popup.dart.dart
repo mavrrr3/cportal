@@ -1,11 +1,13 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ExitOtherDevicePopup extends StatelessWidget {
-  const ExitOtherDevicePopup({Key? key}) : super(key: key);
+class EndOtherSessionsPopup extends StatelessWidget {
+  const EndOtherSessionsPopup({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,10 @@ class ExitOtherDevicePopup extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<ConnectingDevicesBloc>().add(EndOtherSessions());
+                      Navigator.of(context).pop();
+                    },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.all(12),
                       primary: theme.primary,

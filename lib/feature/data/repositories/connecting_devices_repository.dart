@@ -30,4 +30,13 @@ class ConnectingDevicesRepository extends IConnectingDevicesRepository {
       return connectingDevices ?? ConnectingDevicesModel.empty();
     }
   }
+
+  @override
+  Future<void> endOtherSessions() async {
+    try {
+      final user = await _authLocalDataSource.getCachedUser();
+
+      return _devicesRemoteDataSource.endOtherSessions(token: user?.token ?? '');
+    } on Exception catch (_) {}
+  }
 }

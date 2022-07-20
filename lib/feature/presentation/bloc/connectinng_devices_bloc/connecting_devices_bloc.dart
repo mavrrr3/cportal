@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cportal_flutter/feature/domain/entities/device/connecting_device_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_connecting_devices_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 part 'connecting_devices_event.dart';
 part 'connecting_devices_state.dart';
@@ -14,12 +15,22 @@ class ConnectingDevicesBloc extends Bloc<ConnectingDevicesEvent, ConnectingDevic
   ConnectingDevicesBloc(
     this._connectingDevicesRepository,
   ) : super(ConnectingDevicesInitial()) {
-    on<LoadConnectingDevices>(_onLoadConnectingDevices);
+    _setupEvents();
+  }
+
+  void _setupEvents() {
+    on<LoadConnectingDevices>(_onLoadConnectingDevices, transformer: bloc_concurrency.droppable());
+    on<EndOtherSessions>(_onEndOtherSessions, transformer: bloc_concurrency.droppable());
   }
 
   FutureOr<void> _onLoadConnectingDevices(ConnectingDevicesEvent _, Emitter<ConnectingDevicesState> emit) async {
     final connectingDevices = await _connectingDevicesRepository.getConnectingDevices();
 
     emit(ConnectingDevicesLoaded(connectingDevices.items.map((e) => e.toEntity()).toList()));
+  }
+
+  FutureOr<void> _onEndOtherSessions(ConnectingDevicesEvent _, Emitter<ConnectingDevicesState> __) async {
+    await _connectingDevicesRepository.endOtherSessions();
+    add(LoadConnectingDevices());
   }
 }

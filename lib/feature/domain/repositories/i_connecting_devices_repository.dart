@@ -2,4 +2,6 @@ import 'package:cportal_flutter/feature/data/models/connecting_devices/connectin
 
 abstract class IConnectingDevicesRepository {
   Future<ConnectingDevicesModel> getConnectingDevices();
+
+  Future<void> endOtherSessions();
 }

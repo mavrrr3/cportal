@@ -2,4 +2,6 @@ import 'package:cportal_flutter/feature/data/models/connecting_devices/connectin
 
 abstract class IConnectingDevicesRemoteDataSource {
   Future<ConnectingDevicesModel> getConnectingDevices({required String token});
+
+  Future<void> endOtherSessions({required String token});
 }

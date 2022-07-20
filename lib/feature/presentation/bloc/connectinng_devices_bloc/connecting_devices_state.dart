@@ -17,5 +17,3 @@ class ConnectingDevicesLoaded extends ConnectingDevicesState {
   @override
   List<Object> get props => [connectingDevices];
 }
-
-class ConnectingDevicesLoading extends ConnectingDevicesState {}

@@ -3,7 +3,7 @@ import 'package:cportal_flutter/common/util/date_time_util.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/device_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/device_information.dart';
-import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/exit_other_device_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/end_other_sessions_popup.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -50,7 +50,7 @@ class ConnectingDevices extends StatelessWidget {
                     MaterialButton(
                       onPressed: () => showDialog<void>(
                         context: context,
-                        builder: (context) => const ExitOtherDevicePopup(),
+                        builder: (context) => const EndOtherSessionsPopup(),
                       ),
                       child: Center(
                         child: Text(
