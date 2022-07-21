@@ -101,8 +101,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
     _isOnboarding = false;
     _isLearningCourse = false;
 
-    BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent(isFirstFetch: true));
-    BlocProvider.of<FilterContactsBloc>(context, listen: false).add(FetchFiltersEvent());
+   
     _onboardingAnimationListener();
     _pageDuration = const Duration(seconds: 5);
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/only_selected_filters_service.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -38,7 +39,8 @@ class _ContactsPageState extends State<ContactsPage> {
     _scrollController = ScrollController();
     _searchController = TextEditingController();
     _isFilterOpenWeb = false;
-
+    BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent(isFirstFetch: true));
+    BlocProvider.of<FilterContactsBloc>(context, listen: false).add(FetchFiltersEvent());
     super.initState();
   }
 
@@ -99,14 +101,15 @@ class _ContactsPageState extends State<ContactsPage> {
                                 _onSearchInput(text);
                               },
                               onFilterTap: () async {
-                                if (!ResponsiveWrapper.of(context)
-                                    .isLargerThan(MOBILE)) {
+                                if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
                                   await showFilterMobile(
                                     context,
                                     onApply: _onApplyFilter,
                                     onClear: _onClearFilter,
                                     type: FilterType.contacts,
-                                  );
+                                  ).whenComplete(() {
+                                    _sendFilters(context);
+                                  });
                                 } else {
                                   setState(() {
                                     _isFilterOpenWeb = true;
@@ -123,16 +126,13 @@ class _ContactsPageState extends State<ContactsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Выбранные фильтры.
-
-                                    BlocBuilder<FilterContactsBloc,
-                                        FilterState>(
+                                    BlocBuilder<FilterContactsBloc, FilterState>(
                                       builder: (context, state) {
                                         if (state is FilterLoadedState) {
                                           return SelectedFiltersView(
                                             filters: state.contactsFilters,
-                                            onRemove: (item, i) {
-                                              BlocProvider.of<
-                                                  FilterContactsBloc>(
+                                            onRemove: (item, i) async {
+                                              BlocProvider.of<FilterContactsBloc>(
                                                 context,
                                               ).add(
                                                 FilterRemoveItemEvent(
@@ -140,12 +140,14 @@ class _ContactsPageState extends State<ContactsPage> {
                                                   item: item,
                                                 ),
                                               );
+                                              await Future<dynamic>.delayed(const Duration(milliseconds: 150));
+                                              _sendFilters(context, isFromRemove: true);
                                             },
                                           );
                                         }
 
                                         // TODO: отработать другие стейты.
-                                        return const SizedBox();
+                                        return const SizedBox(height: 31);
                                       },
                                     ),
 
@@ -230,8 +232,7 @@ class _ContactsPageState extends State<ContactsPage> {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            BlocProvider.of<ContactsBloc>(context)
-                .add(const FetchContactsEvent());
+            BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
           }
         }
       }
@@ -269,6 +270,12 @@ class _ContactsPageState extends State<ContactsPage> {
     BlocProvider.of<FilterContactsBloc>(
       context,
     ).add(FilterRemoveAllEvent());
+    BlocProvider.of<ContactsBloc>(
+      context,
+      listen: false,
+    ).add(
+      const FetchContactsEvent(isFirstFetch: true),
+    );
   }
 
   // Профиль пользователя для Web.
@@ -302,10 +309,51 @@ class _ContactsPageState extends State<ContactsPage> {
     );
   }
 
-  void _onSearchInput(String text) {
+  void _onSearchInput(
+    String text,
+  ) {
+    final state = BlocProvider.of<FilterContactsBloc>(
+      context,
+    ).state;
+
     BlocProvider.of<ContactsBloc>(
       context,
       listen: false,
-    ).add(SearchContactsEvent(query: text));
+    ).add(
+      SearchContactsEvent(
+        query: text,
+        filters: (state is FilterLoadedState) ? OnlySelectedFiltersService.count(state.contactsFilters) : [],
+      ),
+    );
+  }
+
+  void _sendFilters(BuildContext context, {bool isFromRemove = false}) {
+    final state = BlocProvider.of<FilterContactsBloc>(
+      context,
+    ).state;
+    if (state is FilterLoadedState) {
+      final onlySelectedFilters = OnlySelectedFiltersService.count(state.contactsFilters);
+
+      if (onlySelectedFilters.isNotEmpty) {
+        BlocProvider.of<ContactsBloc>(
+          context,
+          listen: false,
+        ).add(
+          SearchContactsEvent(
+            query: '',
+            filters: onlySelectedFilters,
+          ),
+        );
+      } else {
+        if (isFromRemove) {
+          BlocProvider.of<ContactsBloc>(
+            context,
+            listen: false,
+          ).add(
+            const FetchContactsEvent(isFirstFetch: true),
+          );
+        }
+      }
+    }
   }
 }

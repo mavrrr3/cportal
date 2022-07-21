@@ -50,14 +50,7 @@ Future<void> showFilterMobile(
         ),
       ),
     ),
-  ).whenComplete(() {
-    log('post chosen filters request');
-    switch (type) {
-      case FilterType.contacts:
-
-      default:
-    }
-  });
+  );
 }
 
 class FilterMobile extends StatefulWidget {
