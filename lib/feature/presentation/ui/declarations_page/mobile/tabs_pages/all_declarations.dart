@@ -73,7 +73,7 @@ List<Widget> _drawDeclarationCards(
         onTap: () {
           context.pushNamed(
             NavigationRouteNames.createDeclaration,
-            // params: {'fid': 'test'},
+            // Params: {'fid': 'test'},.
           );
         },
       ),

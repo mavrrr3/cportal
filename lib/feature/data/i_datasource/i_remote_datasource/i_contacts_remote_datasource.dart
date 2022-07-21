@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
-import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 
