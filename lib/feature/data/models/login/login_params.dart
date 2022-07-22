@@ -1,14 +1,14 @@
 import 'package:cportal_flutter/feature/domain/entities/device/device_platform.dart';
 import 'package:equatable/equatable.dart';
 
-class LoginRequest extends Equatable {
+class LogInParams extends Equatable {
   final String connectingCode;
   final String device;
   final String deviceDescription;
   final DevicePlatform platform;
   final String? location;
 
-  const LoginRequest({
+  const LogInParams({
     required this.connectingCode,
     required this.device,
     required this.deviceDescription,

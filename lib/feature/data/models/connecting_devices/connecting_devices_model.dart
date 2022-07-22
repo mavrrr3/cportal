@@ -17,7 +17,5 @@ class ConnectingDevicesModel {
     required this.items,
   });
 
-  factory ConnectingDevicesModel.empty() => ConnectingDevicesModel(count: 0, items: const []);
-
   factory ConnectingDevicesModel.fromJson(Map<String, dynamic> json) => _$ConnectingDevicesModelFromJson(json);
 }

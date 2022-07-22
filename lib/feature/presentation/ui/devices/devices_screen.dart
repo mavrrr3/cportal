@@ -1,6 +1,8 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/usecases/auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth/auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/connecting_params.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_scanned_data_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/connecting_devices.dart';
@@ -65,7 +67,8 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 ),
                 onPressed: () => context.pushNamed(
                   NavigationRouteNames.qrScanner,
-                  extra: (String scannedData) => sl<AuthUseCase>().sendScannedData(qrData: scannedData),
+                  extra: (String scannedData) =>
+                      sl<SendScannedDataUseCase>()(ConnectingParams(connectingCode: scannedData)),
                 ),
                 child: Center(
                   child: Padding(

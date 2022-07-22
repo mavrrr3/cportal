@@ -24,9 +24,11 @@ class ConnectingDevicesBloc extends Bloc<ConnectingDevicesEvent, ConnectingDevic
   }
 
   FutureOr<void> _onLoadConnectingDevices(ConnectingDevicesEvent _, Emitter<ConnectingDevicesState> emit) async {
-    final connectingDevices = await _connectingDevicesRepository.getConnectingDevices();
-
-    emit(ConnectingDevicesLoaded(connectingDevices.items.map((e) => e.toEntity()).toList()));
+    final response = await _connectingDevicesRepository.getConnectingDevices();
+    response.fold(
+      (failure) {},
+      (devices) => emit(ConnectingDevicesLoaded(devices.items)),
+    );
   }
 
   FutureOr<void> _onEndOtherSessions(ConnectingDevicesEvent _, Emitter<ConnectingDevicesState> __) async {

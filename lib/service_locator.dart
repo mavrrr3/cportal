@@ -6,6 +6,7 @@ import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_lo
 import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/connecting_devices_datasource/connecting_device_local_datasorce.dart';
 import 'package:cportal_flutter/feature/data/datasources/connecting_devices_datasource/connecting_devices_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/connecting_qr_datasource/connecting_qr_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/contacts_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
@@ -15,21 +16,26 @@ import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_lo
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_remote_datasource.dart';
-import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_connecting_devices_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_connecting_devices_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_connecting_qr_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_contacts_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_location_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_profile_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_user_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/repositories/biometric_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/connecting_devices_repository.dart';
+import 'package:cportal_flutter/feature/data/repositories/connecting_qr_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_mobile.dart';
@@ -40,15 +46,25 @@ import 'package:cportal_flutter/feature/data/repositories/pin_code_repository.da
 import 'package:cportal_flutter/feature/data/repositories/profile_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/profile_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
+import 'package:cportal_flutter/feature/data/repositories/user_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_connecting_devices_repository.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_connecting_qr_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth/auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth/has_auth_credentials_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_biometrics_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_connecting_code_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_pin_code_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/generate_connecting_code_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_connecting_data_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_scanned_data_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
@@ -87,7 +103,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // BLOC/CUBIT.
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
-  sl.registerFactory(() => AuthBloc(sl())..add(const CheckLogin()));
+  sl.registerFactory(() => AuthBloc(sl(), sl(), sl(), sl())..add(const CheckLogin()));
   sl.registerFactory(() => ConnectingCodeBloc(sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
@@ -109,7 +125,7 @@ Future<void> init() async {
   sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
 
   sl.registerFactory(DeclarationsBloc.new);
-  sl.registerFactory(() => ConnectingQrBloc(sl()));
+  sl.registerFactory(() => ConnectingQrBloc(sl(), sl(), sl()));
   sl.registerFactory(() => ConnectingDevicesBloc(sl()));
 
   // USECASE.
@@ -123,7 +139,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
   sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
-  sl.registerLazySingleton(() => AuthUseCase(sl(), sl(), sl()));
+  sl.registerLazySingleton(() => AuthUseCase(sl(), sl()));
+  sl.registerLazySingleton(() => HasAuthCredentialsUseCase(sl(), sl()));
+  sl.registerLazySingleton(() => LogInWithConnectingCodeUseCase(sl()));
+  sl.registerLazySingleton(() => LogInWithPinCodeUseCase(sl(), sl()));
+  sl.registerLazySingleton(() => LogInWithBiometricsUseCase(sl(), sl()));
+  sl.registerLazySingleton(() => GenerateConnectingCodeUseCase(sl()));
+  sl.registerLazySingleton(() => SendScannedDataUseCase(sl()));
+  sl.registerLazySingleton(() => SendConnectingDataUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -165,7 +188,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<IAuthRepository>(
-    () => AuthRepository(sl(), sl(), sl()),
+    () => AuthRepository(sl(), sl(), sl(), sl()),
   );
 
   sl.registerLazySingleton<IBiometricRepository>(
@@ -218,6 +241,12 @@ Future<void> init() async {
   sl.registerLazySingleton<IConnectingDevicesRepository>(
     () => ConnectingDevicesRepository(sl(), sl(), sl()),
   );
+  sl.registerLazySingleton<IUserRepository>(
+    () => UserRepository(sl(), sl()),
+  );
+  sl.registerLazySingleton<IConnectingQrRepository>(
+    () => ConnectingQrRepository(sl(), sl()),
+  );
 
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
@@ -247,8 +276,8 @@ Future<void> init() async {
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
   );
-  sl.registerLazySingleton<IAuthLocalDataSource>(
-    () => AuthLocalDataSource(sl(), sl()),
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    () => AuthLocalDataSource(sl()),
   );
   sl.registerLazySingleton<IAuthRemoteDataSource>(
     () => AuthRemoteDataSource(sl()),
@@ -262,6 +291,15 @@ Future<void> init() async {
   sl.registerLazySingleton<ILocationRemoteDataSource>(
     () => LocationRemoteDataSource(sl()),
   );
+  sl.registerLazySingleton<IUserLocalDataSource>(
+    () => UserLocalDataSource(sl()),
+  );
+  sl.registerLazySingleton<IUserRemoteDataSource>(
+    () => UserRemoteDataSource(sl()),
+  );
+  sl.registerLazySingleton<IConnectingQrRemoteDataSource>(
+    () => ConnectingQrRemoteDataSource(sl()),
+  );
 
   // CORE.
   if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
@@ -274,7 +312,10 @@ Future<void> init() async {
     () => Dio(
       BaseOptions(
         baseUrl: AppConfig.apiUri,
-        headers: <String, dynamic>{'Authorization': AppConfig.authKey},
+        headers: <String, dynamic>{
+          'Authorization': AppConfig.authKey,
+          'Token': '3cf40b91-e4a2-4208-a9b8-908c3cacf5a3',
+        },
       ),
     ),
   );

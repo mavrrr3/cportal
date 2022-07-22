@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
-import 'package:cportal_flutter/feature/domain/usecases/auth_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_connecting_code_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/connecting_params.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/generate_connecting_code_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_connecting_data_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
@@ -10,24 +13,19 @@ part 'connecting_qr_event.dart';
 part 'connecting_qr_state.dart';
 
 class ConnectingQrBloc extends Bloc<ConnectingQrEvent, ConnectingQrState> {
-  final AuthUseCase _authUseCase;
+  final LogInWithConnectingCodeUseCase _logInWithConnectingCode;
+  final GenerateConnectingCodeUseCase _generateConnectingCode;
+  final SendConnectingDataUseCase _sendConnectingData;
 
-  final _userStream = StreamController<UserEntity?>();
-  late StreamSubscription<UserEntity?> _streamSubscription;
-
-  ConnectingQrBloc(this._authUseCase) : super(ConnectingQrInitial(_authUseCase.generateConnectingCode())) {
+  ConnectingQrBloc(
+    this._logInWithConnectingCode,
+    this._generateConnectingCode,
+    this._sendConnectingData,
+  ) : super(ConnectingQrInitial(_generateConnectingCode())) {
     _setupEvents();
     add(CheckLoginCredentials());
 
-    _streamSubscription = _userStream.stream.listen((event) {
-      if (event != null) {
-        add(ReceivedUser(user: event));
-      } else {
-        add(CheckLoginCredentials());
-      }
-    });
-
-    _authUseCase.sendConnectingData(qrData: state.qrData);
+    _sendConnectingData(ConnectingParams(connectingCode: state.qrData));
   }
 
   void _setupEvents() {
@@ -44,17 +42,10 @@ class ConnectingQrBloc extends Bloc<ConnectingQrEvent, ConnectingQrState> {
   }
 
   Future<void> _tryGetUser() async {
-    final user = await _authUseCase.loginWithConnectingCode(state.qrData);
-    if (!_userStream.isClosed) {
-      _userStream.add(user);
-    }
-  }
-
-  @override
-  Future<void> close() {
-    _streamSubscription.cancel();
-    _userStream.close();
-
-    return super.close();
+    final response = await _logInWithConnectingCode(LoginWithConnectingCodeParams(connectingCode: state.qrData));
+    response.fold(
+      (failure) => add(CheckLoginCredentials()),
+      (user) => add(ReceivedUser(user: user)),
+    );
   }
 }

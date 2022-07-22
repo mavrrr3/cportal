@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
-import 'package:cportal_flutter/feature/data/models/login/login_request.dart';
+import 'package:cportal_flutter/feature/data/models/login/login_params.dart';
 import 'package:cportal_flutter/feature/data/models/user/response_user_model.dart';
+import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:dio/dio.dart';
 
 class AuthRemoteDataSource implements IAuthRemoteDataSource {
@@ -9,39 +10,17 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
   AuthRemoteDataSource(this._dio);
 
   @override
-  Future<ResponseUserModel> getUser(String token) async {
-    final queryParameters = <String, dynamic>{'token': token};
-    final result = await _makeRequest(queryParameters: queryParameters, method: 'GET');
-
-    return ResponseUserModel.fromJson(result.data!);
-  }
-
-  @override
-  Future<ResponseUserModel> login(LoginRequest loginRequest) async {
+  Future<UserModel> login({required LogInParams loginParams}) async {
     final queryParameters = <String, dynamic>{
-      'binding_code': loginRequest.connectingCode,
-      'device': Uri.encodeComponent(loginRequest.device),
-      'app': Uri.encodeComponent(loginRequest.deviceDescription),
-      'platform': loginRequest.platform.name,
-      'location': Uri.encodeComponent(loginRequest.location ?? ''),
+      'binding_code': loginParams.connectingCode,
+      'device': Uri.encodeComponent(loginParams.device),
+      'app': Uri.encodeComponent(loginParams.deviceDescription),
+      'platform': loginParams.platform.name,
+      'location': Uri.encodeComponent(loginParams.location ?? ''),
     };
     final result = await _makeRequest(queryParameters: queryParameters, method: 'GET');
 
-    return ResponseUserModel.fromJson(result.data!);
-  }
-
-  @override
-  Future<void> sendConnectingData({required String qrData}) {
-    final queryParameters = <String, dynamic>{'binding_code': qrData};
-
-    return _makeRequest(queryParameters: queryParameters, method: 'POST');
-  }
-
-  @override
-  Future<void> sendScannedData({required String qrData, required String token}) {
-    final queryParameters = <String, dynamic>{'binding_code': qrData, 'token': token};
-
-    return _makeRequest(queryParameters: queryParameters, method: 'POST');
+    return ResponseUserModel.fromJson(result.data!).response;
   }
 
   Future<Response<Map<String, dynamic>>> _makeRequest({

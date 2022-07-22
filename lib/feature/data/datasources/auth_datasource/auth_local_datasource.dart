@@ -1,33 +1,16 @@
 import 'dart:io';
 
-import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_auth_local_datasource.dart';
-import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/device/device_info.dart';
 import 'package:cportal_flutter/feature/domain/entities/device/device_platform.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
 
-class AuthLocalDataSource implements IAuthLocalDataSource {
-  final HiveInterface _hive;
+// TODO: delete this
+class AuthLocalDataSource {
   final DeviceInfoPlugin _deviceInfoPlugin;
 
-  AuthLocalDataSource(this._hive, this._deviceInfoPlugin);
+  AuthLocalDataSource(this._deviceInfoPlugin);
 
-  @override
-  Future<UserModel?> getCachedUser() async {
-    final box = await _hive.openBox<UserModel>('user');
-
-    return box.get('user');
-  }
-
-  @override
-  Future<void> saveUser(UserModel user) async {
-    final box = await _hive.openBox<UserModel>('user');
-    await box.put('user', user);
-  }
-
-  @override
   Future<DeviceInfo> getDeviceInfo() async {
     String? device;
     String? osInformation;

@@ -61,12 +61,12 @@ class ConnectingDeviceModelAdapter extends TypeAdapter<ConnectingDeviceModel> {
 ConnectingDeviceModel _$ConnectingDeviceModelFromJson(
         Map<String, dynamic> json) =>
     ConnectingDeviceModel(
-      json['device'] as String,
-      json['app'] as String,
+      Uri.decodeComponent(json['device'] as String),
+      Uri.decodeComponent(json['app'] as String),
       $enumDecode(_$DevicePlatformEnumMap, json['platform'],
           unknownValue: DevicePlatform.unknown),
       DateTime.parse(json['date'] as String),
-      json['location'] as String,
+      Uri.decodeComponent(json['location'] as String),
     );
 
 const _$DevicePlatformEnumMap = {
