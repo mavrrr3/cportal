@@ -60,7 +60,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/connecting_code',
+  initialLocation: '/splash_screen',
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -291,6 +291,7 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
+    
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
       path: '/declarations/info',
