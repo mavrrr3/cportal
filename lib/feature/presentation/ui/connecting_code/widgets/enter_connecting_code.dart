@@ -73,7 +73,6 @@ class EnterConnectingCode extends StatelessWidget {
                   focusNode: codeFocusNode,
                   style: textStyle,
                   textCapitalization: TextCapitalization.characters,
-                  // cursorHeight: 16,
                   autocorrect: false,
                   cursorColor: theme.primary,
                   decoration: InputDecoration(

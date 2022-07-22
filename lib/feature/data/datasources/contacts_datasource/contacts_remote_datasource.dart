@@ -42,7 +42,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
 
   @override
   Future<List<ProfileModel>> fetchContactsBySearch(String query, List<FilterEntity> filters) async {
-    final String baseUrl = '${AppConfig.apiUri}:88/cportal/hs/api/contacts/1.0/?q=$query';
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
     try {
       final List<Map<String, dynamic>> selectedFilers = [];
       if (filters.isNotEmpty) {
@@ -57,12 +57,6 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
       final response = await dio.post<String>(
         baseUrl,
         data: json.encode(body),
-        options: Options(
-          headers: <String, dynamic>{
-            'Authorization': AppConfig.authKey,
-            'token': 'b4fee420-dcaf-4a15-b977-a183f3656ad1',
-          },
-        ),
       );
 
       final contactsModel = ContactsModel.fromJson(
