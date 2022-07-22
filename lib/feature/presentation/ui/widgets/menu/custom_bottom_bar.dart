@@ -44,8 +44,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   context.pop();
                 }
                 setState(
-                  () => BlocProvider.of<NavigationBarBloc>(context)
-                      .add(NavigationBarEventImpl(index: index)),
+                  () => BlocProvider.of<NavigationBarBloc>(context).add(NavigationBarEventImpl(index: index)),
                 );
               },
             ),

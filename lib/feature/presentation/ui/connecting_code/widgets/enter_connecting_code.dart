@@ -33,16 +33,12 @@ class EnterConnectingCode extends StatelessWidget {
         },
         builder: (context, state) {
           final isWrongCode = state is WrongConnectingCode;
-          final textStyle = isWrongCode
-              ? theme.textTheme.px16.copyWith(color: theme.red)
-              : theme.textTheme.px16;
-          final codeAreaColor =
-              isWrongCode ? theme.lightRedPIN : theme.cardColor;
+          final textStyle = isWrongCode ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
+          final codeAreaColor = isWrongCode ? theme.lightRedPIN : theme.cardColor;
           final focusedBorder = isDesktop
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      BorderSide(color: theme.primary!.withOpacity(0.34)),
+                  borderSide: BorderSide(color: theme.primary!.withOpacity(0.34)),
                 )
               : null;
 
@@ -56,9 +52,7 @@ class EnterConnectingCode extends StatelessWidget {
               const SizedBox(height: 8),
               GestureDetector(
                 onTap: () => context.pushNamed(
-                  isDesktop
-                      ? NavigationRouteNames.connectingCodeInfo
-                      : NavigationRouteNames.connectingCodeInfoMobile,
+                  isDesktop ? NavigationRouteNames.connectingCodeInfo : NavigationRouteNames.connectingCodeInfoMobile,
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.howToGetConnectingCode,
@@ -87,10 +81,7 @@ class EnterConnectingCode extends StatelessWidget {
                     border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 16,
-                    ),
+                    contentPadding: const EdgeInsets.fromLTRB(14, 17, 14, 19),
                   ),
                 ),
               ),

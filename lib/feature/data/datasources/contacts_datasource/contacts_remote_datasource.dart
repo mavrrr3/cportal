@@ -53,7 +53,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
       final body = <String, dynamic>{
         'request': selectedFilers,
       };
-
+      log(json.encode(body));
       final response = await dio.post<String>(
         baseUrl,
         data: json.encode(body),
