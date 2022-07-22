@@ -1,10 +1,11 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
@@ -80,7 +81,7 @@ class QuestionArticlePage extends StatelessWidget {
                                       child: Row(
                                         children: [
                                           SvgPicture.asset(
-                                            'assets/icons/back_arrow.svg',
+                                            ImageAssets.backArrow,
                                             width: 16,
                                             color: theme.primary,
                                           ),
@@ -133,7 +134,7 @@ class QuestionArticlePage extends StatelessWidget {
                                                   height: 24,
                                                 ),
                                                 SvgPicture.asset(
-                                                  'assets/icons/back_arrow.svg',
+                                                  ImageAssets.backArrow,
                                                   width: 16,
                                                 ),
                                               ],
