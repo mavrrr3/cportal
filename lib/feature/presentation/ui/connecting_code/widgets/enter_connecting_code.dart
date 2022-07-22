@@ -73,7 +73,7 @@ class EnterConnectingCode extends StatelessWidget {
                   focusNode: codeFocusNode,
                   style: textStyle,
                   textCapitalization: TextCapitalization.characters,
-                  cursorHeight: 16,
+                  // cursorHeight: 16,
                   autocorrect: false,
                   cursorColor: theme.primary,
                   decoration: InputDecoration(
@@ -81,7 +81,7 @@ class EnterConnectingCode extends StatelessWidget {
                     border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
-                    contentPadding: const EdgeInsets.fromLTRB(14, 17, 14, 19),
+                    contentPadding: const EdgeInsets.fromLTRB(14, 16, 14, 16),
                   ),
                 ),
               ),
