@@ -52,7 +52,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _onLogInWithPinCode(LogInWithPinCode event, Emitter<AuthState> emit) async {
     final response = await _logInWithPinCode(LoginWitPinCodeParams(pinCode: event.pinCode));
 
-    response.fold((failure) => _onWrongPinCode(emit), (user) => _onLogIn(emit, user));
+    await response.fold<FutureOr<void>>(
+      (failure) async {
+        await _onWrongPinCode(emit);
+      },
+      (user) => _onLogIn(emit, user),
+    );
   }
 
   FutureOr<void> _onLogInWithBiometrics(LogInWithBiometrics event, Emitter<AuthState> emit) async {

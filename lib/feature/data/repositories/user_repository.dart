@@ -22,16 +22,11 @@ class UserRepository implements IUserRepository {
 
     try {
       final user = await _userRemoteDataSource.getUser(token: localUser.token);
-
-      try {
-        await _userLocalDataSource.saveUser(user);
-      } on Exception catch (_) {
-        return Right(user);
-      }
+      await _userLocalDataSource.saveUser(user);
 
       return Right(user);
     } on Exception catch (_) {
-      return Left(ServerFailure());
+      return Right(localUser);
     }
   }
 

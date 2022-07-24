@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
@@ -15,12 +17,18 @@ class AuthRepository implements IAuthRepository {
   // TODO: delete this
   final AuthLocalDataSource _authLocalDataSource;
 
+  final _authController = StreamController<AuthenticationStatus>.broadcast();
+
   AuthRepository(
     this._userLocalDataSource,
     this._authRemoteDataSource,
     this._locationRemoteDataSource,
     this._authLocalDataSource,
   );
+
+  Stream<AuthenticationStatus> get status async* {
+    yield* _authController.stream;
+  }
 
   @override
   Future<Either<Failure, UserEntity>> logInWithConnectingCode({required String connectingCode}) async {
@@ -37,10 +45,22 @@ class AuthRepository implements IAuthRepository {
       );
       final user = await _authRemoteDataSource.login(loginParams: loginParams);
       await _userLocalDataSource.saveUser(user);
-      print(user.token);
+
       return Right(user);
     } on Exception catch (_) {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<void> logOut() async {
+    try {
+      await _userLocalDataSource.deleteUser();
+      _authController.add(AuthenticationStatus.unauthenticated);
+    } on Exception catch (_) {}
+  }
+
+  void dispose() => _authController.close();
 }
+
+enum AuthenticationStatus { unknown, authenticated, unauthenticated }

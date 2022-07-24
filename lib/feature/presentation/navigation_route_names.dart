@@ -1,3 +1,5 @@
+import 'package:cportal_flutter/core/auth_service.dart';
+import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
@@ -26,6 +28,7 @@ import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_code
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
+import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,6 +66,18 @@ abstract class NavigationRouteNames {
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
   initialLocation: '/splash_screen',
+  refreshListenable: sl<AuthService>(),
+  redirect: (state) {
+    final authService = sl<AuthService>();
+    final connectingCodeLocation = state.namedLocation(NavigationRouteNames.connectingCode);
+    final isGoingToConnectingCode = state.subloc == connectingCodeLocation;
+
+    if (authService.authStatus == AuthenticationStatus.unauthenticated && !isGoingToConnectingCode) {
+      return connectingCodeLocation;
+    }
+
+    return null;
+  },
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,

@@ -20,4 +20,11 @@ class UserLocalDataSource implements IUserLocalDataSource {
 
     await box.put('user', user);
   }
+
+  @override
+  Future<void> deleteUser() async {
+    final box = await _hive.openBox<UserModel>('user');
+
+    await box.deleteFromDisk();
+  }
 }

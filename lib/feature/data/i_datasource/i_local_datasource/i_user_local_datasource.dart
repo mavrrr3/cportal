@@ -4,4 +4,6 @@ abstract class IUserLocalDataSource {
   Future<UserModel?> getUser();
 
   Future<void> saveUser(UserModel user);
+
+  Future<void> deleteUser();
 }

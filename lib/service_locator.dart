@@ -1,6 +1,8 @@
 // ignore_for_file: cascade_invocations
 
 import 'package:cportal_flutter/app_config.dart';
+import 'package:cportal_flutter/core/auth_service.dart';
+import 'package:cportal_flutter/core/interceptor/token_interceptor.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_remote_datasource.dart';
@@ -280,7 +282,7 @@ Future<void> init() async {
     () => AuthLocalDataSource(sl()),
   );
   sl.registerLazySingleton<IAuthRemoteDataSource>(
-    () => AuthRemoteDataSource(sl()),
+    () => AuthRemoteDataSource(sl.get<Dio>(instanceName: 'initial')),
   );
   sl.registerLazySingleton<IConnectingDevicesRemoteDataSource>(
     () => ConnectingDevicesRemoteDataSource(sl()),
@@ -289,7 +291,7 @@ Future<void> init() async {
     () => ConnectingDevicesLocalDataSource(sl()),
   );
   sl.registerLazySingleton<ILocationRemoteDataSource>(
-    () => LocationRemoteDataSource(sl()),
+    () => LocationRemoteDataSource(Dio()),
   );
   sl.registerLazySingleton<IUserLocalDataSource>(
     () => UserLocalDataSource(sl()),
@@ -304,19 +306,30 @@ Future<void> init() async {
   // CORE.
   if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
   sl.registerLazySingleton<DeviceInfoPlugin>(DeviceInfoPlugin.new);
+  sl.registerLazySingleton<AuthService>(() => AuthService(sl()));
   // EXTERNAL.
   sl.registerLazySingleton(InternetConnectionChecker.new);
   sl.registerLazySingleton(LocalAuthentication.new);
   sl.registerLazySingleton<HiveInterface>(() => Hive);
-  sl.registerLazySingleton(
+  sl.registerLazySingleton<Dio>(
     () => Dio(
       BaseOptions(
         baseUrl: AppConfig.apiUri,
         headers: <String, dynamic>{
           'Authorization': AppConfig.authKey,
-          'Token': '3cf40b91-e4a2-4208-a9b8-908c3cacf5a3',
         },
       ),
     ),
+    instanceName: 'initial',
+  );
+  sl.registerLazySingleton<Dio>(
+    () => Dio(
+      BaseOptions(
+        baseUrl: AppConfig.apiUri,
+        headers: <String, dynamic>{
+          'Authorization': AppConfig.authKey,
+        },
+      ),
+    )..interceptors.add(TokenInterceptor(sl(), sl())),
   );
 }
