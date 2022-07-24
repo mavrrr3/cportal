@@ -35,10 +35,8 @@ class AllDeclarations extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (state.doneDeclarations.isNotEmpty)
-                    ..._drawDeclarationCards(context, state.doneDeclarations),
-                  if (state.inProgressDeclarations.isNotEmpty)
-                    const InProcessTitle(bottomPadding: 16),
+                  if (state.doneDeclarations.isNotEmpty) ..._drawDeclarationCards(context, state.doneDeclarations),
+                  if (state.inProgressDeclarations.isNotEmpty) const InProcessTitle(bottomPadding: 16),
                   ..._drawDeclarationCards(
                     context,
                     state.inProgressDeclarations,

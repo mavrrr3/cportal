@@ -24,6 +24,14 @@ class FilterModel extends FilterEntity {
           items: items,
           isActive: isActive,
         );
+
+  factory FilterModel.fromJson(Map<String, dynamic> json) => FilterModel(
+        headline: json['headline'] as String,
+        isActive: false,
+        items: List<FilterItemModel>.from(
+          json['items'].map((dynamic x) => FilterItemModel.fromJson(x as String)) as Iterable<dynamic>,
+        ),
+      );
 }
 
 @HiveType(typeId: 8)
@@ -40,6 +48,11 @@ class FilterItemModel extends FilterItemEntity {
           name: name,
           isActive: isActive,
         );
+
+  factory FilterItemModel.fromJson(String title) => FilterItemModel(
+        name: title,
+        isActive: false,
+      );
 }
 
 @HiveType(typeId: 11)
@@ -52,4 +65,10 @@ class FilterResponseModel extends FilterResponseEntity {
   }) : super(
           filters: filters,
         );
+
+  factory FilterResponseModel.fromJson(Map<String, dynamic> json) => FilterResponseModel(
+        filters: List<FilterModel>.from(
+          json['response'].map((dynamic x) => FilterModel.fromJson(x as Map<String, dynamic>)) as Iterable<dynamic>,
+        ),
+      );
 }

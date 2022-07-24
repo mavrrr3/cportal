@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_ic
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/on_tap_notify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -84,14 +85,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: RowProfile(
-                          firstWidget: SvgIcon(
-                            iconColor,
-                            path: ImageAssets.addPerson,
-                            width: 22,
+                        child: GestureDetector(
+                          onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
+                          child: RowProfile(
+                            firstWidget: SvgIcon(
+                              iconColor,
+                              path: ImageAssets.addPerson,
+                              width: 22,
+                            ),
+                            text: localizedStrings.newEmployee,
+                            secondWidget: getBlueArrow(),
                           ),
-                          text: localizedStrings.newEmpoyee,
-                          secondWidget: getBlueArrow(),
                         ),
                       ),
                     ),
@@ -102,10 +106,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         path: ImageAssets.bell,
                         width: 21,
                       ),
-                      text: localizedStrings.notofications,
+                      text: localizedStrings.notifications,
                       secondWidget: customSwitch(
                         isNotificationTurnedOn,
-                        turnOnOffNotify,
+                        turnOffNotify,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -123,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 24),
                     GestureDetector(
-                      onTap: () => context.goNamed(NavigationRouteNames.editPin),
+                      onTap: () => context.goNamed(NavigationRouteNames.changePin),
                       child: RowProfile(
                         firstWidget: SvgIcon(
                           iconColor,
@@ -164,12 +168,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void turnOnOffNotify(bool newValue) {
+  void turnOffNotify(bool newValue) {
     setState(() {
-      isNotificationTurnedOn = newValue;
-      if (newValue) {
-        showChooserNotification(context);
+      if (!newValue) {
+        showChooserNotification();
       }
+      isNotificationTurnedOn = !isNotificationTurnedOn;
     });
   }
 
@@ -179,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => isFingerPrintAuth = newValue);
   }
 
-  void showChooserNotification(BuildContext context) {
+  void showChooserNotification() {
     showModalBottomSheet<void>(
       backgroundColor: theme.cardColor,
       barrierColor: theme.barrierColor,
@@ -192,55 +196,60 @@ class _ProfilePageState extends State<ProfilePage> {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return SizedBox(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  localizedStrings.turnOffNotify,
-                  style: theme.textTheme.px16,
-                ),
-                const SizedBox(height: 18),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    setState(() => showToasterAboutNotify(
-                          context,
-                          text: localizedStrings.oneHourCancelNotify,
-                        ));
-                  },
-                  child: Text(
-                    localizedStrings.forHour,
-                    style: theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
+        return SafeArea(
+          child: SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    localizedStrings.turnOffNotify,
+                    style: theme.textTheme.px16,
+                  ),
+                  const SizedBox(height: 18),
+                  OnTapNotify(
+                    text: localizedStrings.oneHourCancelNotify,
+                    child: Text(
+                      localizedStrings.forHour,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  localizedStrings.forFourHour,
-                  style: theme.textTheme.px16.copyWith(
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(height: 24),
+                  OnTapNotify(
+                    text: 'Оповещения выключены на ${localizedStrings.forFourHour}',
+                    child: Text(
+                      localizedStrings.forFourHour,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  localizedStrings.forTwentyFourHour,
-                  style: theme.textTheme.px16.copyWith(
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(height: 24),
+                  OnTapNotify(
+                    text: 'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
+                    child: Text(
+                      localizedStrings.forTwentyFourHour,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  localizedStrings.forever,
-                  style: theme.textTheme.px16.copyWith(
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(height: 24),
+                  OnTapNotify(
+                    text: 'Оповещения выключены ${localizedStrings.forever.toLowerCase()}',
+                    child: Text(
+                      localizedStrings.forever,
+                      style: theme.textTheme.px16.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -268,23 +277,4 @@ class _ProfilePageState extends State<ProfilePage> {
           onChanged: (newValue) => onChangeMethod(newValue),
         ),
       );
-
-  void showToasterAboutNotify(
-    BuildContext context, {
-    required String text,
-  }) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: theme.cardColor,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        content: Text(
-          text,
-          style: theme.textTheme.px14.copyWith(
-            color: theme.brightness == Brightness.light ? theme.cardColor : theme.background,
-          ),
-        ),
-      ),
-    );
-  }
 }

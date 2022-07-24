@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/constants/image_assets.dart';
+import 'package:cportal_flutter/common/constants/uri_schemes.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
@@ -19,6 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactProfilePage extends StatefulWidget {
   final String id;
@@ -179,21 +183,60 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                               // Call.
                               _ActionButton(
                                 img: ImageAssets.phone,
-                                onTap: () {},
+                                onTap: () async {
+                                  final phoneWithOutMask =
+                                      int.parse(state.getPhone.replaceAll(
+                                    RegExp('[^0-9]'),
+                                    '',
+                                  ));
+                                  log(phoneWithOutMask.toString());
+
+                                  final Uri telLauncher = Uri(
+                                    scheme: UriSchemes.tel,
+                                    path: '+$phoneWithOutMask',
+                                  );
+                                  // final Uri telLauncher = Uri(
+                                  //   scheme: UriSchemes.tel,
+                                  //   path: '123456',
+                                  // );
+                                  log('$telLauncher');
+
+                                  await launchUrl(telLauncher);
+                                },
                               ),
                               const SizedBox(width: 16),
 
                               // Message.
                               _ActionButton(
                                 img: ImageAssets.message,
-                                onTap: () {},
+                                onTap: () async {
+                                  final phoneWithOutMask =
+                                      int.parse(state.getPhone.replaceAll(
+                                    RegExp('[^0-9]'),
+                                    '',
+                                  ));
+                                  final Uri smsLauncher = Uri(
+                                    scheme: UriSchemes.sms,
+                                    path: '$phoneWithOutMask',
+                                  );
+                                  log('$smsLauncher');
+
+                                  await launchUrl(smsLauncher);
+                                },
                               ),
                               const SizedBox(width: 16),
 
                               // Send email.
                               _ActionButton(
                                 img: ImageAssets.email,
-                                onTap: () {},
+                                onTap: () async {
+                                  final Uri emailLauncher = Uri(
+                                    scheme: UriSchemes.mail,
+                                    path: state.getEmail,
+                                  );
+                                  log('$emailLauncher');
+                                  await launchUrl(emailLauncher);
+                                },
                               ),
                             ],
                           ),
@@ -259,7 +302,7 @@ class _BackButton extends StatelessWidget {
 
 class _ActionButton extends StatelessWidget {
   final String img;
-  final Function onTap;
+  final Function() onTap;
 
   /// Кнопка взаимодействия с Юзером [Звонок, Чат, Почта].
   const _ActionButton({
@@ -272,23 +315,26 @@ class _ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.primary,
-        borderRadius: BorderRadius.circular(16.8),
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(0, 4),
-            blurRadius: 10,
-            color: Colors.black.withOpacity(0.25),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.primary,
+          borderRadius: BorderRadius.circular(16.8),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 4),
+              blurRadius: 10,
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SvgPicture.asset(
+            img,
+            width: 24,
           ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SvgPicture.asset(
-          img,
-          width: 24,
         ),
       ),
     );

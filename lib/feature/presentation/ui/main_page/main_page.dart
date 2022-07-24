@@ -56,8 +56,11 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    _searchFocus.removeListener(_onFocusChange);
+    _searchFocus
+      ..removeListener(_onFocusChange)
+      ..dispose();
     _searchController.dispose();
+    _questionController.dispose();
     super.dispose();
   }
 
@@ -117,7 +120,9 @@ class _MainPageState extends State<MainPage> {
                             },
                             child: BlocBuilder<AuthBloc, AuthState>(
                               builder: (context, state) {
-                                if (state is Authenticated) {
+                                if (state is! Authenticated) {
+                                  return const PlatformProgressIndicator();
+                                } else {
                                   final user = state.user;
 
                                   return OnHover(
@@ -132,8 +137,6 @@ class _MainPageState extends State<MainPage> {
                                     },
                                   );
                                 }
-
-                                return const PlatformProgressIndicator();
                               },
                             ),
                           ),
@@ -214,52 +217,52 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-}
 
-void _fetchContent(BuildContext context) {
-  BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-    const FetchAllNewsEvent(),
-  );
-  BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
-      .add(const FetchQaustionsEvent());
-}
+  Future<void> showProfile(BuildContext context) {
+    return showDialog(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
+      builder: (context) {
+        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+        final double width = MediaQuery.of(context).size.width;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
-Future<void> showProfile(BuildContext context) {
-  return showDialog(
-    context: context,
-    useRootNavigator: true,
-    barrierDismissible: true,
-    builder: (context) {
-      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-      final double width = MediaQuery.of(context).size.width;
-      final double horizontalPadding =
-          isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
-
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: horizontalPadding,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: horizontalPadding,
               ),
-              child: const Padding(
-                padding: EdgeInsets.only(
-                  left: 32,
-                  right: 32,
-                  bottom: 32,
-                  top: 32,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: ProfilePopUp(),
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    left: 32,
+                    right: 32,
+                    bottom: 32,
+                    top: 32,
+                  ),
+                  child: ProfilePopUp(),
+                ),
               ),
-            ),
-          );
-        },
-      );
-    },
-  );
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _fetchContent(BuildContext context) {
+    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+      const FetchAllNewsEvent(),
+    );
+    BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
+        .add(const FetchQaustionsEvent());
+  }
 }

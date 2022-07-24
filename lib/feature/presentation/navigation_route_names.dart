@@ -18,6 +18,7 @@ import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/change_pin_code_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
@@ -42,7 +43,7 @@ abstract class NavigationRouteNames {
   static const qrScanner = 'qr_scanner';
   static const createPin = 'create_pin';
   static const login = 'login';
-  static const editPin = 'edit_pin';
+  static const changePin = 'change_pin';
   static const enrollFaceId = 'enroll_face_id';
   static const enrollFingerPrint = 'enroll_finger_print';
   static const news = 'news_mobile';
@@ -105,7 +106,9 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoMobilePopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -124,7 +127,9 @@ final GoRouter router = GoRouter(
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -157,6 +162,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const CreatePinCodeScreen(),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.changePin,
+      path: '/change_pin',
+      pageBuilder: (context, state) => MaterialPage(
+        key: state.pageKey,
+        child: const ChangePinCodeScreen(),
       ),
     ),
     GoRoute(

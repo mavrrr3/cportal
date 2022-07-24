@@ -38,14 +38,8 @@ class _ContactsPageState extends State<ContactsPage> {
     _scrollController = ScrollController();
     _searchController = TextEditingController();
     _isFilterOpenWeb = false;
-    _contentInit();
-    super.initState();
-  }
 
-  // Во время инициализации запускается ивент и подгружаются контакты и фильтры.
-  void _contentInit() {
-    BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent(isFirstFetch: true));
-    BlocProvider.of<FilterContactsBloc>(context, listen: false).add(FetchFiltersEvent());
+    super.initState();
   }
 
   @override
@@ -56,6 +50,7 @@ class _ContactsPageState extends State<ContactsPage> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+       
         backgroundColor: theme.background,
         body: Stack(
           children: [

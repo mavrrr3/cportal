@@ -31,7 +31,7 @@ class QuestionsMain extends StatelessWidget {
             AppLocalizations.of(context)!.faq,
             style: theme.textTheme.px22,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 4),
           BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
             builder: (context, state) {
               List<ArticleEntity> articles;
@@ -57,28 +57,23 @@ class QuestionsMain extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: AppConfig.numberNewsArticlesOnMain,
                   itemBuilder: (context, i) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 24,
-                      ),
-                      child: OnHover(
-                        builder: (isHovered) {
-                          return Opacity(
-                            opacity: isHovered ? 0.6 : 1,
-                            child: QuestionRow(
-                              text: articles[i].header,
-                              onTap: () {
-                                context.pushNamed(
-                                  NavigationRouteNames.questionArticlePage,
-                                  params: {
-                                    'fid': articles[i].id,
-                                  },
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      ),
+                    return OnHover(
+                      builder: (isHovered) {
+                        return Opacity(
+                          opacity: isHovered ? 0.6 : 1,
+                          child: QuestionRow(
+                            text: articles[i].header,
+                            onTap: () {
+                              context.pushNamed(
+                                NavigationRouteNames.questionArticlePage,
+                                params: {
+                                  'fid': articles[i].id,
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      },
                     );
                   },
                 );
