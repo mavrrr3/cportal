@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
@@ -20,15 +21,13 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
 
   @override
   Future<FilterResponseModel> fetchContactsFilters() async {
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';
     try {
-      const String baseUrl = 'http://ribadi.ddns.net:88/cportal/hs/api/contacts/filter/1.0';
-
       final response = await dio.get<String>(baseUrl);
 
       final remoteFilters = FilterResponseModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
       );
-
       log('FilterRemouteDataSource [contacts]  ==========  $remoteFilters');
       await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
 

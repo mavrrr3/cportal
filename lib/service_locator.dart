@@ -223,7 +223,7 @@ Future<void> init() async {
   sl.registerLazySingleton<IContactsRemoteDataSource>(
     () => ContactsRemoteDataSource(sl(), sl()),
   );
-  sl.registerLazySingleton<IContactsLocalDataSource>(    
+  sl.registerLazySingleton<IContactsLocalDataSource>(
     () => ContactsLocalDataSource(sl()),
   );
   sl.registerLazySingleton<IFilterRemoteDataSource>(
@@ -250,7 +250,7 @@ Future<void> init() async {
     () => Dio(
       BaseOptions(
         baseUrl: AppConfig.apiUri,
-        headers: <String, dynamic>{'Authorization': AppConfig.authKey},
+        headers: <String, dynamic>{'authorization': AppConfig.authKey},
       ),
     ),
   );

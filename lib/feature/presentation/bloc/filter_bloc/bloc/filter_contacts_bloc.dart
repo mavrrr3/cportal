@@ -65,7 +65,6 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilt
         response.filters.forEach((element) {
           filters.add(element);
         });
-        
 
         FilterLoadedState? newState;
         if (oldState is FilterLoadedState) {

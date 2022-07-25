@@ -304,6 +304,7 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
+    
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
       path: '/declarations/info',
