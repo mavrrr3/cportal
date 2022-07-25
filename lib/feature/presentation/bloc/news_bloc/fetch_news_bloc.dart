@@ -1,8 +1,7 @@
-import 'dart:developer';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_news_by_category_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_news_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,10 +9,12 @@ import 'package:cportal_flutter/core/error/failure.dart';
 
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
+
   final FetchNewsByCategoryUseCase fetchNewsByCategory;
+
   int pageAll = 1;
-  int pageByCategory = 1;
-  List<String> tabs = ['Все'];
+  Map pageByCategory = <String, int>{};
+  List<String> newsTabs = ['Все'];
 
   FetchNewsBloc({
     required this.fetchNews,
@@ -21,18 +22,19 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   }) : super(NewsEmptyState()) {
     on<FetchAllNewsEvent>((event, emit) async {
       var oldArticles = <ArticleEntity>[];
+      if (state is NewsLoading) return;
 
       if (state is NewsLoaded) {
         oldArticles = (state as NewsLoaded).articles;
       }
 
-      emit(NewsLoading(oldArticles, tabs, isFirstFetch: pageAll == 1));
+      emit(NewsLoading(oldArticles, newsTabs, isFirstFetch: pageAll == 1));
 
       final failureOrNews = await fetchNews(FetchNewsParams(
         page: pageAll,
       ));
 
-      String _failureToMessage(Failure failure) {
+      String failureToMessage(Failure failure) {
         switch (failure.runtimeType) {
           case ServerFailure:
             return 'Ошибка на сервере';
@@ -48,31 +50,34 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
         if (tabsFromCache.isNotEmpty) {
           for (final tab in tabsFromCache) {
-            if (!tabs.contains(tab)) {
-              tabs.add(tab);
+            if (!newsTabs.contains(tab)) {
+              newsTabs.add(tab);
             }
           }
-          log('+++++++++++tabsFromCache++ $tabsFromCache ++tabsFromCache+++++++++++++');
         }
       }
-      void _loadedNewsToArticles(NewsEntity news) {
+      void loadedNewsToArticles(NewsEntity news) {
         pageAll++;
         final articles = (state as NewsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);
-        log('Загрузилось ${articles.length} статей');
 
         // Создание листа со всеми вкладками.
         for (final tab in news.response.categories!) {
-          if (!tabs.contains(tab)) {
-            tabs.add(tab);
+          if (!newsTabs.contains(tab)) {
+            newsTabs.add(tab);
+          }
+        }
+        for (int count = 0; count < newsTabs.length; count++) {
+          if (pageByCategory.length != newsTabs.length) {
+            pageByCategory.addAll(<String, int>{newsTabs[count]: 1});
           }
         }
 
-        emit(NewsLoaded(articles: articles, tabs: tabs));
+        emit(NewsLoaded(articles: articles, tabs: newsTabs));
       }
 
-      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
     });
 
     on<FetchNewsEventBy>((event, emit) async {
@@ -84,16 +89,20 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as NewsLoaded).articles;
       }
 
-      emit(NewsLoading(oldArticles, tabs, isFirstFetch: pageByCategory == 1));
+      emit(NewsLoading(
+        oldArticles,
+        newsTabs,
+        isFirstFetch: pageByCategory[event.category] == 1,
+      ));
 
       final failureOrNews = await fetchNewsByCategory(
         FetchNewsByCategoryParams(
           category: event.category,
-          page: pageByCategory,
+          page: pageByCategory[event.category] as int,
         ),
       );
 
-      String _failureToMessage(Failure failure) {
+      String failureToMessage(Failure failure) {
         switch (failure.runtimeType) {
           case ServerFailure:
             return 'Ошибка на сервере';
@@ -104,20 +113,18 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         }
       }
 
-      void _loadedNewsToArticles(NewsEntity news) {
-        pageByCategory++;
+      void loadedNewsToArticles(NewsEntity news) {
+        pageByCategory[event.category]++;
         final articles = (state as NewsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(news.response.articles);
 
-        log('Загрузилось ${articles.length} статей из категории ${event.category}');
-
         /// Создание листа со всеми вкладками.
 
-        emit(NewsLoaded(articles: articles, tabs: tabs));
+        emit(NewsLoaded(articles: articles, tabs: newsTabs));
       }
 
-      failureOrNews.fold(_failureToMessage, _loadedNewsToArticles);
+      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
     });
   }
 }

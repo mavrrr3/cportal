@@ -1,9 +1,9 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/finger_print/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_step_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -34,8 +34,7 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
 
   @override
   Widget build(BuildContext context) {
-                                 final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Scaffold(
       backgroundColor: theme.cardColor,
@@ -76,6 +75,7 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
               AppLocalizations.of(context)!.go_over,
               () {
                 // TODO: обработать навигацию на прохождение курса.
+                return context.goNamed(NavigationRouteNames.mainPage);
               },
               const Size(double.infinity, 48),
             ),

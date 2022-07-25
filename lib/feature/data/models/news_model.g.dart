@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: implicit_dynamic_parameter
+
 part of 'news_model.dart';
 
 // **************************************************************************
@@ -52,7 +54,7 @@ class ResponseModelAdapter extends TypeAdapter<ResponseModel> {
     };
     return ResponseModel(
       count: fields[0] as int,
-      update: fields[1] as int,
+      update: fields[1] as int?,
       categories: (fields[2] as List?)?.cast<String>(),
       articles: (fields[3] as List).cast<ArticleModel>(),
     );

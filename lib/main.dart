@@ -5,16 +5,22 @@ import 'package:cportal_flutter/common/app_bloc_observer.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
+import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
-import 'package:cportal_flutter/feature/data/models/user_model.dart';
+import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
+import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -126,6 +132,9 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<AuthBloc>(
       create: (ctx) => sl<AuthBloc>(),
     ),
+    BlocProvider<ConnectingCodeBloc>(
+      create: (ctx) => sl<ConnectingCodeBloc>(),
+    ),
     BlocProvider<PinCodeBloc>(
       create: (ctx) => sl<PinCodeBloc>(),
     ),
@@ -135,22 +144,29 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<FetchNewsBloc>(
       create: (ctx) => sl<FetchNewsBloc>(),
     ),
+    BlocProvider<FetchQuestionsBloc>(
+      create: (ctx) => sl<FetchQuestionsBloc>(),
+    ),
     BlocProvider<NavigationBarBloc>(
       create: (ctx) => sl<NavigationBarBloc>(),
     ),
-    BlocProvider<FilterBloc>(
-      create: (ctx) => sl<FilterBloc>(),
+    BlocProvider<FilterContactsBloc>(
+      create: (ctx) => sl<FilterContactsBloc>(),
     ),
     BlocProvider<ContactsBloc>(
       create: (ctx) => sl<ContactsBloc>(),
+    ),
+    BlocProvider<FilterDeclarationsBloc>(
+      create: (ctx) => sl<FilterDeclarationsBloc>(),
+    ),
+    BlocProvider<DeclarationsBloc>(
+      create: (ctx) => sl<DeclarationsBloc>(),
     ),
   ];
 }
 
 void _hiveAdaptersInit() {
   Hive
-    ..registerAdapter(UserModelAdapter())
-    ..registerAdapter(UserTypeModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
     ..registerAdapter(ContactInfoModelAdapter())
     ..registerAdapter(NewsModelAdapter())
@@ -158,6 +174,10 @@ void _hiveAdaptersInit() {
     ..registerAdapter(ParagraphModelAdapter())
     ..registerAdapter(ResponseModelAdapter())
     ..registerAdapter(FilterModelAdapter())
+    ..registerAdapter(DeclarationModelAdapter())
     ..registerAdapter(FilterItemModelAdapter())
-    ..registerAdapter(ContactsModelAdapter());
+    ..registerAdapter(ContactsModelAdapter())
+    ..registerAdapter(FilterResponseModelAdapter())
+    ..registerAdapter(UserModelAdapter())
+    ..registerAdapter(ContactModelAdapter());
 }

@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: implicit_dynamic_parameter
+
 part of 'article_model.dart';
 
 // **************************************************************************
@@ -22,7 +24,7 @@ class ArticleModelAdapter extends TypeAdapter<ArticleModel> {
       category: fields[2] as String,
       header: fields[3] as String,
       content: (fields[4] as List).cast<ParagraphModel>(),
-      image: fields[5] as String,
+      image: fields[5] as String?,
     );
   }
 

@@ -24,6 +24,14 @@ class FilterModel extends FilterEntity {
           items: items,
           isActive: isActive,
         );
+
+  factory FilterModel.fromJson(Map<String, dynamic> json) => FilterModel(
+        headline: json['headline'] as String,
+        isActive: false,
+        items: List<FilterItemModel>.from(
+          json['items'].map((dynamic x) => FilterItemModel.fromJson(x as String)) as Iterable<dynamic>,
+        ),
+      );
 }
 
 @HiveType(typeId: 8)
@@ -41,15 +49,26 @@ class FilterItemModel extends FilterItemEntity {
           isActive: isActive,
         );
 
-  // FilterItemModel copyWith({
-  //   String? name,
-  //   bool? isActive,
-  // }) {
-  //   return FilterItemModel(
-  //     name: name ?? this.name,
-  //     isActive: isActive ?? this.isActive,
-  //   );
-  // }
+  factory FilterItemModel.fromJson(String title) => FilterItemModel(
+        name: title,
+        isActive: false,
+      );
+}
 
-  // bool get changeActivity => !isActive;
+@HiveType(typeId: 11)
+class FilterResponseModel extends FilterResponseEntity {
+  @HiveField(0)
+  final List<FilterModel> filters;
+
+  const FilterResponseModel({
+    required this.filters,
+  }) : super(
+          filters: filters,
+        );
+
+  factory FilterResponseModel.fromJson(Map<String, dynamic> json) => FilterResponseModel(
+        filters: List<FilterModel>.from(
+          json['response'].map((dynamic x) => FilterModel.fromJson(x as Map<String, dynamic>)) as Iterable<dynamic>,
+        ),
+      );
 }

@@ -6,7 +6,7 @@ class ArticleEntity extends Equatable {
   final String category;
   final String header;
   final List<ParagraphEntity> content;
-  final String image;
+  final String? image;
   const ArticleEntity({
     required this.id,
     required this.date,

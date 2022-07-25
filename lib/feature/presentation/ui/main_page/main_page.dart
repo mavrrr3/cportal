@@ -1,18 +1,25 @@
 import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/faq_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_card_item.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_horizontal_scroll.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/profile_popup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +36,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late TextEditingController _searchController;
+  late ScrollController _questionController;
   late FocusNode _searchFocus;
   late Duration _animationDuration;
   late bool _isSearchActive;
@@ -36,20 +44,23 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    _fetchContent(context);
+
     _searchController = TextEditingController();
+    _questionController = ScrollController();
     _searchFocus = FocusNode();
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
-
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchAllNewsEvent(),
-    );
   }
 
   @override
   void dispose() {
-    _searchFocus.removeListener(_onFocusChange);
+    _searchFocus
+      ..removeListener(_onFocusChange)
+      ..dispose();
+    _searchController.dispose();
+    _questionController.dispose();
     super.dispose();
   }
 
@@ -77,13 +88,12 @@ class _MainPageState extends State<MainPage> {
         children: [
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                    ? 16
-                    : 13,
+              padding: EdgeInsets.only(
+                top: isLargerThenMobile(context) ? 10 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: kIsWeb ? const BoxConstraints(maxWidth: 704) : null,
+                constraint:
+                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -102,15 +112,32 @@ class _MainPageState extends State<MainPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                              isLargerThenTablet(context)
                                   ? showProfile(context)
                                   : context.pushNamed(
                                       NavigationRouteNames.profile,
                                     );
                             },
-                            child: const AvatarBox(
-                              size: 40,
-                              imgPath: '2.jpg',
+                            child: BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                if (state is! Authenticated) {
+                                  return const PlatformProgressIndicator();
+                                } else {
+                                  final user = state.user;
+
+                                  return OnHover(
+                                    builder: (isHovered) {
+                                      return ProfileImage(
+                                        fullName: user.name,
+                                        imgLink: user.photoUrl,
+                                        color: RandomColorService.color,
+                                        size: isHovered ? 48 : 40,
+                                        borderRadius: 12,
+                                      );
+                                    },
+                                  );
+                                }
+                              },
                             ),
                           ),
                         ],
@@ -149,53 +176,24 @@ class _MainPageState extends State<MainPage> {
                               builder: (context, state) {
                                 if (state is NewsLoading) {
                                   const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: PlatformProgressIndicator(),
                                   );
                                 }
 
                                 if (state is NewsLoaded) {
-                                  return !kIsWeb
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                            left: getSingleHorizontalPadding(
-                                              context,
-                                            ),
-                                          ),
-                                          child: NewsHorizontalScroll(
-                                            onTap: (i) => _onArticleSelected(
-                                              state.articles[i].id,
-                                            ),
-                                            items: state.articles,
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding:
-                                              getHorizontalPadding(context),
-                                          child: Wrap(
-                                            spacing: 16,
-                                            runSpacing: 20,
-                                            children: List.generate(
-                                              state.articles.length,
-                                              (i) => NewsCardItem(
-                                                onTap: () => _onArticleSelected(
-                                                  state.articles[i].id,
-                                                ),
-                                                width: 312,
-                                                height: 152,
-                                                item: state.articles[i],
-                                              ),
-                                            ),
-                                          ),
-                                        );
+                                  final articles = state.articles;
+
+                                  return kIsWeb
+                                      ? NewsMainWeb(articles: articles)
+                                      : NewsMainMobile(articles: articles);
                                 }
 
                                 return const SizedBox();
                               },
                             ),
                             const SizedBox(height: 24),
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: const FaqWidget(),
+                            QuestionsMain(
+                              questionController: _questionController,
                             ),
                           ],
                         ),
@@ -207,7 +205,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+            constraint: isLargerThenTablet(context)
                 ? const BoxConstraints(maxWidth: 640)
                 : null,
             child: SearchBox(
@@ -220,51 +218,51 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  void _onArticleSelected(String id) {
-    GoRouter.of(context).pushNamed(
-      NavigationRouteNames.newsArticlePage,
-      params: {'fid': id},
+  Future<void> showProfile(BuildContext context) {
+    return showDialog(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
+      builder: (context) {
+        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+        final double width = MediaQuery.of(context).size.width;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: horizontalPadding,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    left: 32,
+                    right: 32,
+                    bottom: 32,
+                    top: 32,
+                  ),
+                  child: ProfilePopUp(),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
-}
 
-Future<void> showProfile(BuildContext context) {
-  return showDialog(
-    context: context,
-    useRootNavigator: true,
-    barrierDismissible: true,
-    builder: (context) {
-      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-      // final double width = MediaQuery.of(context).size.width;
-      // var horizontalPading = width * 0.28;
-      // log(horizontalPading.toString());
-
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 100,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(
-                  left: 32,
-                  right: 32,
-                  bottom: 32,
-                  top: 32,
-                ),
-                child: ProfilePopUp(),
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
+  void _fetchContent(BuildContext context) {
+    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
+      const FetchAllNewsEvent(),
+    );
+    BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
+        .add(const FetchQaustionsEvent());
+  }
 }

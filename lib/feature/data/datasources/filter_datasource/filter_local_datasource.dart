@@ -1,20 +1,10 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
+import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-
-abstract class IFilterLocalDataSource {
-  /// Извлекаем [List<FilterModel>] из кеша
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<List<FilterModel>> fetchFiltersFromCache();
-
-  /// Сохраняем [List<FilterModel>] в кэш
-  ///
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<void> filtersToCache(List<FilterModel> filters);
-}
 
 class FilterLocalDataSource implements IFilterLocalDataSource {
   final HiveInterface hive;
@@ -22,33 +12,38 @@ class FilterLocalDataSource implements IFilterLocalDataSource {
   FilterLocalDataSource(this.hive);
 
   @override
-  Future<List<FilterModel>> fetchFiltersFromCache() async {
-    final box = await hive.openBox<List<FilterModel>>('filters');
+  Future<FilterResponseModel> fetchFiltersFromCache(
+    FilterType type,
+  ) async {
+    final box = await hive.openBox<FilterResponseModel>('filters_$type');
 
-    final filters = box.get('filters');
+    final filters = box.get('filters_$type');
 
-    if (kDebugMode) log('List<FilterModel> из кэша $filters');
+    if (kDebugMode) log('FilterResponseModel из кэша $filters');
 
-    await Hive.box<List<FilterModel>>('filters').close();
+    await Hive.box<FilterResponseModel>('filters_$type').close();
 
     return filters!;
   }
 
   @override
-  Future<void> filtersToCache(List<FilterModel> filters) async {
+  Future<void> filtersToCache(
+    FilterResponseModel filters,
+    FilterType type,
+  ) async {
     // Удаляет box с диска.
-    // await Hive.deleteBoxFromDisk('filters');
-    var box = await Hive.openBox<List<FilterModel>>('filters');
-    if (!Hive.isBoxOpen('filters')) {
-      await Hive.openBox<List<FilterModel>>('filters');
+    await Hive.deleteBoxFromDisk('filters_$type');
+    var box = await Hive.openBox<FilterResponseModel>('filters_$type');
+    if (!Hive.isBoxOpen('filters_$type')) {
+      await Hive.openBox<FilterResponseModel>('filters_$type');
     } else {
-      box = await Hive.openBox<List<FilterModel>>('filters');
+      box = await Hive.openBox<FilterResponseModel>('filters_$type');
     }
 
-    log('List<FilterModel> сохранил в кэш ${filters.length}');
+    log('FilterResponseModel сохранил в кэш ${filters.filters.length}');
 
-    await box.put('filters', filters);
+    await box.put('filters_$type', filters);
 
-    await Hive.box<List<FilterModel>>('filters').close();
+    await Hive.box<FilterResponseModel>('filters_$type').close();
   }
 }

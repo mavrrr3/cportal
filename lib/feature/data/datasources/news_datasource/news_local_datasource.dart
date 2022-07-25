@@ -1,30 +1,9 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-
-abstract class INewsLocalDataSource {
-  /// Извлекает [NewsModel] из кеша
-  /// Возвращает [NewsModel]
-  /// Пробрасываем все ошибки через [CacheException]
-  Future<NewsModel> fetchNewsFromCache();
-
-  /// Сохраняет [NewsModel] в кэш
-  ///
-  /// Пробрасывает все ошибки через [CacheException]
-  Future<void> newsToCache(NewsModel news);
-
-  /// Извлекает [NewsModel] из кеша
-  /// Возвращает [NewsModel]
-  /// Пробрасывает все ошибки через [CacheException]
-  Future<NewsModel> fetchNewsByCategoryFromCache(String category);
-
-  /// Сохраняет [NewsModel] в кэш
-  ///
-  /// Пробрасывает все ошибки через [CacheException]
-  Future<void> newsByCategoryToCache(NewsModel news, String category);
-}
 
 class NewsLocalDataSource implements INewsLocalDataSource {
   final HiveInterface hive;
@@ -52,7 +31,7 @@ class NewsLocalDataSource implements INewsLocalDataSource {
 
   @override
   Future<void> newsToCache(NewsModel news) async {
-    // Удаляет box с диска
+    // Удаляет box с диска.
     // await Hive.deleteBoxFromDisk('news');
     var box = await Hive.openBox<NewsModel>('news');
     if (!Hive.isBoxOpen('news')) {
@@ -99,5 +78,41 @@ class NewsLocalDataSource implements INewsLocalDataSource {
     await box.put(category, news);
 
     await Hive.box<NewsModel>('news').close();
+  }
+
+  @override
+  Future<NewsModel> fetchQuestionsFromCache() async {
+    var box = await Hive.openBox<NewsModel>('questions');
+    log(Hive.isBoxOpen('questions').toString());
+    if (!Hive.isBoxOpen('questions')) {
+      await Hive.openBox<NewsModel>('questions');
+    } else {
+      box = await Hive.openBox<NewsModel>('questions');
+    }
+
+    final questions = box.get('questions');
+
+    if (kDebugMode) log('questions из кэша ${questions!.response.count}');
+
+    await Hive.box<NewsModel>('questions').close();
+
+    return questions!;
+  }
+
+  @override
+  Future<void> questionsToCache(NewsModel questions) async {
+    // Удаляет box с диска.
+    // await Hive.deleteBoxFromDisk('questions');
+    var box = await Hive.openBox<NewsModel>('questions');
+    if (!Hive.isBoxOpen('questions')) {
+      await Hive.openBox<NewsModel>('questions');
+    } else {
+      box = await Hive.openBox<NewsModel>('questions');
+    }
+    log('questions сохранил в кэш ${questions.response.count}');
+
+    await box.put('questions', questions);
+
+    await Hive.box<NewsModel>('questions').close();
   }
 }

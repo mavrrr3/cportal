@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/app_colors.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -14,16 +13,15 @@ class SearchBg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       width: width ?? MediaQuery.of(context).size.width,
       height: height ?? MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: theme.brightness == Brightness.light
-            ? AppColors.textMain.withOpacity(0.2)
-            : AppColors.darkOnboardingBG.withOpacity(0.8),
+            ? theme.text?.withOpacity(0.2)
+            : theme.barrierColor,
       ),
     );
   }

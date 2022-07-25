@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:equatable/equatable.dart';
 
 class FilterEntity extends Equatable {
@@ -25,10 +26,13 @@ class FilterEntity extends Equatable {
 
   bool get changeActivity => !isActive;
 
-
-
   @override
   List<Object?> get props => [headline, items, isActive];
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'headline': headline,
+        'items': List<dynamic>.from(items.map<dynamic>((x) => (x as FilterItemModel).name)),
+      };
 }
 
 class FilterItemEntity extends Equatable {
@@ -56,17 +60,13 @@ class FilterItemEntity extends Equatable {
   List<Object?> get props => [name, isActive];
 }
 
+class FilterResponseEntity extends Equatable {
+  final List<FilterEntity> filters;
 
-// ignore: must_be_immutable
-// class FilterItemEntity extends Equatable {
-//   final String name;
-//   bool isActive;
+  const FilterResponseEntity({required this.filters});
 
-//   FilterItemEntity({
-//     required this.name,
-//     this.isActive = false,
-//   });
+  @override
+  List<Object?> get props => [filters];
+}
 
-//   @override
-//   List<Object?> get props => [name, isActive];
-// }
+enum FilterType { contacts, declarations }

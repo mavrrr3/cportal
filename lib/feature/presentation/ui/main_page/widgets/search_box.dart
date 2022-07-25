@@ -1,8 +1,8 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/ui/faq/widgets/faq_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/search_box/search_box_row.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchBox extends StatelessWidget {
   final bool isAnimation;
@@ -20,7 +20,7 @@ class SearchBox extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+        padding: isLargerThenTablet(context)
             ? const EdgeInsets.only(left: 32)
             : getHorizontalPadding(context),
         child: AnimatedOpacity(
@@ -29,12 +29,12 @@ class SearchBox extends StatelessWidget {
           curve: Curves.easeIn,
           child: Padding(
             padding: EdgeInsets.only(
-              top: ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 60 : 56,
+              top: isLargerThenTablet(context) ? 60 : 56,
             ),
             child: AnimatedContainer(
               duration: animationDuration,
               curve: Curves.easeIn,
-              width: ResponsiveWrapper.of(context).isLargerThan(TABLET)
+              width: isLargerThenTablet(context)
                   ? 584
                   : MediaQuery.of(context).size.width,
               height: isAnimation ? 216 : 0,
@@ -104,7 +104,7 @@ class _SearchBoxItem extends StatelessWidget {
               style: theme.textTheme.px12.copyWith(color: theme.textLight),
             ),
             const SizedBox(height: 4),
-            FaqRow(text: text),
+            SearchBoxRow(text: text),
           ],
         ),
       ),

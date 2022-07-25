@@ -6,6 +6,7 @@ final light = CustomTheme(
   brightness: Brightness.light,
   background: const Color(0xFFF0F0F0),
   white: const Color(0xFFFFFFFF),
+  black: const Color(0xFF000000),
   primary: const Color(0xFF5284DA),
   red: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
@@ -25,6 +26,7 @@ final dark = CustomTheme(
   brightness: Brightness.dark,
   background: const Color(0xFF111315),
   white: const Color(0xFFFFFFFF),
+  black: const Color(0xFF000000),
   primary: const Color(0xFF2A85FF),
   red: const Color(0xFFFF6A55),
   green: const Color(0xFF559935),
@@ -39,10 +41,69 @@ final dark = CustomTheme(
   textTheme: _getTextTheme(textColor: const Color(0xFFFCFCFC)),
 );
 
+CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
+      // [28 px] Header.
+      header: GoogleFonts.russoOne(
+        fontSize: 28,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [32 px].
+      px32: GoogleFonts.roboto(
+        fontSize: 32,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [22 px].
+      px22: GoogleFonts.roboto(
+        fontSize: 22,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [17 px].
+      px17: GoogleFonts.roboto(
+        fontSize: 17,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [16 px].
+      px16: GoogleFonts.roboto(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [14 px].
+      px14: GoogleFonts.roboto(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [12 px].
+      px12: GoogleFonts.roboto(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+      ),
+
+      // [12 px] BottomBar.
+      bottomBar: GoogleFonts.inter(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: textColor,
+      ),
+    );
+
 class CustomTheme extends ThemeExtension<CustomTheme> {
   final Brightness? brightness;
   final Color? background;
   final Color? white;
+  final Color? black;
   final Color? primary;
   final Color? red;
   final Color? green;
@@ -60,6 +121,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.brightness,
     this.background,
     this.white,
+    this.black,
     this.primary,
     this.red,
     this.green,
@@ -117,7 +179,26 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     ThemeExtension<CustomTheme>? other,
     double t,
   ) {
-    throw UnimplementedError();
+    if (other is! CustomTheme) {
+      return this;
+    }
+
+    return CustomTheme(
+      background: Color.lerp(background, other.background, t),
+      white: Color.lerp(white, other.white, t),
+      primary: Color.lerp(primary, other.primary, t),
+      red: Color.lerp(red, other.red, t),
+      green: Color.lerp(green, other.green, t),
+      yellow: Color.lerp(yellow, other.yellow, t),
+      lightRedPIN: Color.lerp(lightRedPIN, other.lightRedPIN, t),
+      cardColor: Color.lerp(cardColor, other.cardColor, t),
+      divider: Color.lerp(divider, other.divider, t),
+      text: Color.lerp(text, other.text, t),
+      textLight: Color.lerp(textLight, other.textLight, t),
+      onBoarding: Color.lerp(onBoarding, other.onBoarding, t),
+      barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
+      textTheme: textTheme,
+    );
   }
 }
 
@@ -142,266 +223,3 @@ class CustomTextTheme {
     required this.bottomBar,
   });
 }
-
-CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
-      // 2 [28 px]. 
-      header: GoogleFonts.russoOne(
-        fontSize: 28,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 1 [32 px].
-      px32: GoogleFonts.roboto(
-        fontSize: 32,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 3 [22 px].
-      px22: GoogleFonts.roboto(
-        fontSize: 22,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 4 [17 px].
-      px17: GoogleFonts.roboto(
-        fontSize: 17,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 5 [16 px].
-      px16: GoogleFonts.roboto(
-        fontSize: 16,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // 6 [14 px].
-      px14: GoogleFonts.roboto(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // Body 1 [12 px].
-      px12: GoogleFonts.roboto(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      // [12 px] BottomBar.
-      bottomBar: GoogleFonts.inter(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: textColor,
-      ),
-    );
-// // *---* [Light Theme] *---*
-// //
-// ThemeData lightTheme() => ThemeData.light().copyWith(
-//       brightness: Brightness.light,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: Colors.white,
-//       scaffoldBackgroundColor: AppColors.mainBgLight,
-
-//       // [White].
-//       splashColor: Colors.white,
-
-//       // [Blue].
-//       primaryColor: AppColors.blue,
-
-//       // [Red].
-//       errorColor: AppColors.red,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: AppColors.lightRed,
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-      // hoverColor: AppColors.kLightTextColor,
-
-//       // [Text].
-//       cardColor: AppColors.textMain,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(
-//         backgroundColor: AppColors.appBarLight,
-//         titleTextStyle: const TextStyle(color: AppColors.kLightTextColor),
-//       ),
-//       iconTheme: const IconThemeData(color: Colors.black),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-
-//       // textTheme: _getTextTheme(AppColors.textMain),
-//     );
-
-// // *---* [Dark Theme] *---*
-// //
-// ThemeData darkTheme() => ThemeData.dark().copyWith(
-//       brightness: Brightness.dark,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: AppColors.secondBgDark,
-//       scaffoldBackgroundColor: AppColors.mainBgDark,
-
-//       // [White].
-//       splashColor: const Color(0xFF33383F),
-
-//       // [Blue].
-//       primaryColor: AppColors.blueDark,
-
-//       // [Red].
-//       errorColor: AppColors.redDark,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: const Color(0xFFFF6A55).withOpacity(0.17),
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-//       hoverColor: AppColors.textDark,
-
-//       // [Text].
-//       cardColor: AppColors.textDark,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(backgroundColor: AppColors.appBarDark),
-//       iconTheme: const IconThemeData(color: Colors.white),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-//       // textTheme: _getTextTheme(AppColors.textDark),
-//     );
-
-// const appBarTheme = AppBarTheme(
-//   centerTitle: true,
-//   elevation: 0,
-//   backgroundColor: Colors.white,
-// );// // *---* [Light Theme] *---*
-// //
-// ThemeData lightTheme() => ThemeData.light().copyWith(
-//       brightness: Brightness.light,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: Colors.white,
-//       scaffoldBackgroundColor: AppColors.mainBgLight,
-
-//       // [White].
-//       splashColor: Colors.white,
-
-//       // [Blue].
-//       primaryColor: AppColors.blue,
-
-//       // [Red].
-//       errorColor: AppColors.red,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: AppColors.lightRed,
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-//       hoverColor: AppColors.kLightTextColor,
-
-//       // [Text].
-//       cardColor: AppColors.textMain,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(
-//         backgroundColor: AppColors.appBarLight,
-//         titleTextStyle: const TextStyle(color: AppColors.kLightTextColor),
-//       ),
-//       iconTheme: const IconThemeData(color: Colors.black),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-
-//       // textTheme: _getTextTheme(AppColors.textMain),
-//     );
-
-// // *---* [Dark Theme] *---*
-// //
-// ThemeData darkTheme() => ThemeData.dark().copyWith(
-//       brightness: Brightness.dark,
-
-//       // --- [Color Scheme] ---
-//       // [BackGround]
-//       backgroundColor: AppColors.secondBgDark,
-//       scaffoldBackgroundColor: AppColors.mainBgDark,
-
-//       // [White].
-//       splashColor: const Color(0xFF33383F),
-
-//       // [Blue].
-//       primaryColor: AppColors.blueDark,
-
-//       // [Red].
-//       errorColor: AppColors.redDark,
-
-//       // [Green].
-//       focusColor: AppColors.green,
-
-//       // [Light red for PIN].
-//       hintColor: const Color(0xFFFF6A55).withOpacity(0.17),
-
-//       // [Divider].
-//       dividerColor: AppColors.dividerColor.withOpacity(0.08),
-
-//       // [Light Text, also for icons with custom opacity].
-//       hoverColor: AppColors.textDark,
-
-//       // [Text].
-//       cardColor: AppColors.textDark,
-//       //------
-
-//       // Color in StatusBadge.
-//       indicatorColor: AppColors.yellow,
-
-//       // [Other].
-//       appBarTheme: appBarTheme.copyWith(backgroundColor: AppColors.appBarDark),
-//       iconTheme: const IconThemeData(color: Colors.white),
-//       visualDensity: VisualDensity.adaptivePlatformDensity,
-
-//       // --- [Text Theme].
-//       // textTheme: _getTextTheme(AppColors.textDark),
-//     );
-
-// const appBarTheme = AppBarTheme(
-//   centerTitle: true,
-//   elevation: 0,
-//   backgroundColor: Colors.white,
-// );

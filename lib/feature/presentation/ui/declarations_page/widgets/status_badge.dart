@@ -12,8 +12,7 @@ class StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Container(
       height: 19,
@@ -27,7 +26,7 @@ class StatusBadge extends StatelessWidget {
           child: Text(
             capitalize(text),
             style: theme.textTheme.px12.copyWith(
-              color: theme.text,
+              color: theme.white,
             ),
           ),
         ),
