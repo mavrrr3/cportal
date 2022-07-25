@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
@@ -25,180 +27,214 @@ class QuestionArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    late ArticleEntity? singleArticle;
+
+    final state = context.watch<FetchQuestionsBloc>().state;
+    if (state is QuestionsLoaded) {
+      singleArticle = state.singleQuestion(id);
+    }
 
     return Swipe(
       onSwipeRight: () {
         if (!kIsWeb) {
-          onBack(context);
+          context.pop();
         }
       },
-      child: BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
-        builder: (context, state) {
-          if (state is QuestionsLoaded) {
-            final ArticleEntity singleArticle = state.singleArticle(id);
-
-            return BlocBuilder<NavigationBarBloc, NavigationBarState>(
-              builder: (context, navState) {
-                return Scaffold(
-                  backgroundColor: theme.background,
-                  body: SafeArea(
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ResponsiveVisibility(
-                            visible: false,
-                            visibleWhen: const [
-                              Condition<dynamic>.largerThan(name: TABLET),
-                            ],
-                            child: DesktopMenu(
-                              currentIndex: 2,
-                              onChange: (index) => changePage(context, index),
-                            ),
+      child: Scaffold(
+        backgroundColor: theme.background,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ResponsiveVisibility(
+                  visible: false,
+                  visibleWhen: const [
+                    Condition<dynamic>.largerThan(name: TABLET),
+                  ],
+                  child: DesktopMenu(
+                    currentIndex: 2,
+                    onChange: (index) => changePage(context, index),
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Кнопка назад для Tablet/Web.
+                      if (isLargerThenTablet(context))
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 7,
+                            top: 16,
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              context.pop();
+                            },
+                            child: Row(
                               children: [
-                                // Кнопка назад для Tablet/Web.
-                                if (isLargerThenTablet(context))
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 7,
-                                      top: 16,
-                                    ),
-                                    child: GestureDetector(
-                                      behavior: HitTestBehavior.translucent,
-                                      onTap: () {
-                                        context.pop();
-                                      },
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            ImageAssets.backArrow,
-                                            width: 16,
-                                            color: theme.primary,
-                                          ),
-                                          const SizedBox(width: 6),
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .questions,
-                                            style:
-                                                theme.textTheme.px16.copyWith(
-                                              color: theme.primary,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                else
-                                  const SizedBox(),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        isLargerThenTablet(context) ? 32 : 20.0,
-                                  ),
-                                  child: ResponsiveConstraints(
-                                    constraint: isLargerThenTablet(context)
-                                        ? const BoxConstraints(maxWidth: 1046)
-                                        : null,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: isLargerThenTablet(context)
-                                              ? 4
-                                              : 19,
-                                        ),
-                                        // Кнопка назад mobile.
-                                        if (isLargerThenTablet(context))
-                                          const SizedBox()
-                                        else
-                                          GestureDetector(
-                                            behavior:
-                                                HitTestBehavior.translucent,
-                                            onTap: () => onBack(context),
-                                            child: Stack(
-                                              children: [
-                                                const SizedBox(
-                                                  width: 26,
-                                                  height: 24,
-                                                ),
-                                                SvgPicture.asset(
-                                                  ImageAssets.backArrow,
-                                                  width: 16,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        if (isLargerThenTablet(context))
-                                          const SizedBox()
-                                        else
-                                          const SizedBox(height: 19),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              singleArticle.header,
-                                              style: theme.textTheme.header,
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Column(
-                                              children: [
-                                                ...List.generate(
-                                                  singleArticle.content.length,
-                                                  (index) {
-                                                    return NewsTemplate.factory(
-                                                      context,
-                                                      singleArticle
-                                                          .content[index],
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 24),
-                                            nextQuestion(
-                                              singleArticle,
-                                              state,
-                                              context,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                SvgPicture.asset(
+                                  ImageAssets.backArrow,
+                                  width: 16,
+                                  color: theme.primary,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  AppLocalizations.of(context)!.questions,
+                                  style: theme.textTheme.px16.copyWith(
+                                    color: theme.primary,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
+                        )
+                      else
+                        const SizedBox(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isLargerThenTablet(context) ? 32 : 20.0,
+                        ),
+                        child: ResponsiveConstraints(
+                          constraint: isLargerThenTablet(context)
+                              ? const BoxConstraints(
+                                  maxWidth: 1046,
+                                )
+                              : null,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: isLargerThenTablet(context) ? 4 : 19,
+                              ),
+                              // Кнопка назад mobile.
+                              if (isLargerThenTablet(context))
+                                const SizedBox()
+                              else
+                                GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () => context.pop(),
+                                  child: Stack(
+                                    children: [
+                                      const SizedBox(
+                                        width: 26,
+                                        height: 24,
+                                      ),
+                                      SvgPicture.asset(
+                                        ImageAssets.backArrow,
+                                        width: 16,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              if (isLargerThenTablet(context))
+                                const SizedBox()
+                              else
+                                const SizedBox(height: 19),
+
+                              if (singleArticle == null)
+                                BlocBuilder<GetSingleQuestionBloc,
+                                    GetSingleQuestionState>(
+                                  builder: (context, state) {
+                                    log(state.toString());
+                                    if (state is GetSingleQuestionLoadedState) {
+                                      return SingleQuestionArticle(
+                                        article: state.singleQuestion,
+                                      );
+                                    }
+
+                                    return const SizedBox();
+                                  },
+                                )
+                              else
+                                BlocBuilder<FetchQuestionsBloc,
+                                    FetchQuestionsState>(
+                                  builder: (context, state) {
+                                    log(state.toString());
+                                    if (state is QuestionsLoaded) {
+                                      return SingleQuestionArticle(
+                                        article: state.singleQuestion(id)!,
+                                        articles: state.articles,
+                                      );
+                                    }
+
+                                    return const SizedBox();
+                                  },
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SingleQuestionArticle extends StatelessWidget {
+  final ArticleEntity article;
+  final List<ArticleEntity>? articles;
+  const SingleQuestionArticle({
+    Key? key,
+    required this.article,
+    this.articles,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          article.header,
+          style: theme.textTheme.header,
+        ),
+        const SizedBox(height: 20),
+        Column(
+          children: [
+            ...List.generate(
+              article.content.length,
+              (index) {
+                return NewsTemplate.factory(
+                  context,
+                  article.content[index],
                 );
               },
-            );
-          }
-
-          return const SizedBox();
-        },
-      ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        if (articles != null)
+          nextQuestion(
+            article,
+            articles!,
+            context,
+          )
+        else
+          const SizedBox(),
+      ],
     );
   }
 
   Widget nextQuestion(
     ArticleEntity currentItem,
-    QuestionsLoaded state,
+    List<ArticleEntity> articles,
     BuildContext context,
   ) {
     final List<ArticleEntity> currentTabsItems = [];
-    for (final item in state.articles) {
+    for (final item in articles) {
       if (item.category == currentItem.category) {
         currentTabsItems.add(item);
       }
@@ -226,6 +262,4 @@ class QuestionArticlePage extends StatelessWidget {
           )
         : const SizedBox();
   }
-
-  void onBack(BuildContext context) => context.pop();
 }

@@ -51,8 +51,8 @@ class GetSingleQuestionBloc
           message: _mapFailureToMessage(failure),
         ));
       },
-      (singleNews) {
-        emit(GetSingleQuestionLoadedState(singleQuestion: singleNews));
+      (singleQuestion) {
+        emit(GetSingleQuestionLoadedState(singleQuestion: singleQuestion));
       },
     );
   }

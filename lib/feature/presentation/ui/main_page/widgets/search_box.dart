@@ -2,6 +2,10 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/main_search_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
@@ -116,13 +120,17 @@ class SearchBox extends StatelessWidget {
 void goToPage(String category, String id, BuildContext context) {
   switch (category) {
     case 'Новости':
+      BlocProvider.of<GetSingleNewsBloc>(context, listen: false)
+          .add(GetSingleNewsEventImpl(id));
       return context.pushNamed(
-        NavigationRouteNames.newsArticleFromSearch,
+        NavigationRouteNames.newsArticlePage,
         params: {'fid': id},
       );
     case 'Вопросы':
+      BlocProvider.of<GetSingleQuestionBloc>(context, listen: false)
+          .add(GetSingleQuestionEventImpl(id));
       return context.pushNamed(
-        NavigationRouteNames.questionArticleFromSearch,
+        NavigationRouteNames.questionArticlePage,
         params: {'fid': id},
       );
     case 'Контакты':

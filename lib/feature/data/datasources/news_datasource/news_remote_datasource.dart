@@ -122,7 +122,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       final singleNews = ArticleModel.fromJson(
         response.data!['response'] as Map<String, dynamic>,
       );
-
+      log(singleNews.toString());
       await localDatasource.singleNewsToCache(singleNews);
 
       return singleNews;
@@ -146,6 +146,7 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
       final singleQuestion = ArticleModel.fromJson(
         response.data!['response'] as Map<String, dynamic>,
       );
+      log(singleQuestion.toString());
 
       await localDatasource.singleQuestionToCache(singleQuestion);
 

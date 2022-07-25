@@ -15,11 +15,9 @@ import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page_from_search.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/change_pin_code_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/question_article_page_from_search.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_welcome.dart';
@@ -59,8 +57,6 @@ abstract class NavigationRouteNames {
   static const declarations = 'declarations';
   static const createDeclaration = 'create_declaration';
   static const declarationInfo = 'declaration_info';
-  static const questionArticleFromSearch = 'question_article_from_search';
-  static const newsArticleFromSearch = 'news_article_from_search';
 }
 
 final GoRouter router = GoRouter(
@@ -214,14 +210,6 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: NavigationRouteNames.newsArticleFromSearch,
-      path: '/news_article_from_search/:fid',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: NewsArticlePageFromSearch(id: state.params['fid']!),
-      ),
-    ),
-    GoRoute(
       name: NavigationRouteNames.questions,
       path: '/questions',
       pageBuilder: (context, state) => NoTransitionPage<void>(
@@ -238,14 +226,6 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: QuestionArticlePage(id: state.params['fid']!),
-      ),
-    ),
-    GoRoute(
-      name: NavigationRouteNames.questionArticleFromSearch,
-      path: '/question_article_from_search/:fid',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: QuestionArticlePageFromSearch(id: state.params['fid']!),
       ),
     ),
     GoRoute(
