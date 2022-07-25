@@ -1,22 +1,21 @@
 // ignore_for_file: unused_element
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
+import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/pop_up/change_theme_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-
-bool _isNotificationTurnedOn = true;
-var _isFingerPrintAuth = false;
 
 class ProfilePopUp extends StatefulWidget {
   const ProfilePopUp({Key? key}) : super(key: key);
@@ -27,91 +26,17 @@ class ProfilePopUp extends StatefulWidget {
 
 class _ProfilePopUpState extends State<ProfilePopUp> {
   late CustomTheme theme;
+  late AppLocalizations localizedStrings;
+  bool isNotificationTurnedOn = true;
+  bool isFingerPrintAuth = false;
+
   @override
   Widget build(BuildContext context) {
     theme = Theme.of(context).extension<CustomTheme>()!;
-    final localizedStrings = AppLocalizations.of(context)!;
+    localizedStrings = AppLocalizations.of(context)!;
 
     final Color? iconColor = theme.textLight;
     late UserEntity user;
-
-    void showChooserNotification(BuildContext context) {
-      showModalBottomSheet<void>(
-        backgroundColor: theme.cardColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-        ),
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return SizedBox(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    localizedStrings.turnOffNotify,
-                    style: theme.textTheme.px16,
-                  ),
-                  const SizedBox(height: 18),
-                  GestureDetector(
-                    onTap: () => setState(() => showToasterAboutNotify(
-                          theme,
-                          'Оповещения выключены на 1 час',
-                        )),
-                    child: Text(
-                      localizedStrings.forHour,
-                      style: theme.textTheme.px16.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    localizedStrings.forFourHour,
-                    style: theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    localizedStrings.forTwentyFourHour,
-                    style: theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    localizedStrings.forever,
-                    style: theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    const bool isNotificationTurnedOn = true;
-    const bool isFingerPrintAuth = false;
-    void turnOnOffNotify(bool newValue) {
-      setState(() {
-        _isNotificationTurnedOn = newValue;
-        showChooserNotification(context);
-      });
-    }
-
-    void turnOnOffFingerPrintAuth(bool newValue) {
-      setState(() => _isFingerPrintAuth = newValue);
-    }
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
@@ -236,38 +161,46 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                       width: 350,
                       child: Column(
                         children: [
-                          Container(
-                            width: 350,
-                            decoration: BoxDecoration(
-                              color: theme.text!.withOpacity(0.04),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4),
-                                topRight: Radius.circular(4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 4,
-                              ),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    localizedStrings.yourPhoneNumber,
-                                    style: theme.textTheme.px12.copyWith(
-                                      color: theme.textLight,
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.68 : 1,
+                                child: Container(
+                                  width: 350,
+                                  decoration: BoxDecoration(
+                                    color: theme.text!.withOpacity(0.04),
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(4),
+                                      topRight: Radius.circular(4),
                                     ),
                                   ),
-                                  Text(
-                                    user.personalPhone,
-                                    style: theme.textTheme.px16,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 4,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          localizedStrings.yourPhoneNumber,
+                                          style: theme.textTheme.px12.copyWith(
+                                            color: theme.textLight,
+                                          ),
+                                        ),
+                                        Text(
+                                          user.personalPhone,
+                                          style: theme.textTheme.px16,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            },
                           ),
                           Container(
                             decoration: BoxDecoration(
@@ -277,37 +210,51 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                 ),
                               ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: RowProfile(
-                                firstWidget: SvgIcon(
-                                  iconColor,
-                                  path: 'profile/add_person.svg',
-                                  width: 22,
-                                ),
-                                text: localizedStrings.newEmpoyee,
-                                secondWidget: getBlueArrow(),
-                              ),
+                            child: OnHover(
+                              builder: (isHovered) {
+                                return Opacity(
+                                  opacity: isHovered ? 0.64 : 1,
+                                  child: GestureDetector(
+                                    onTap: () => context.goNamed(
+                                      NavigationRouteNames.onBoardingStart,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 20,
+                                      ),
+                                      child: RowProfile(
+                                        firstWidget: SvgIcon(
+                                          iconColor,
+                                          path: ImageAssets.addPerson,
+                                          width: 22,
+                                        ),
+                                        text: localizedStrings.newEmployee,
+                                        secondWidget: getBlueArrow(),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           const SizedBox(height: 24),
                           RowProfile(
                             firstWidget: SvgIcon(
                               iconColor,
-                              path: 'profile/bell.svg',
+                              path: ImageAssets.bell,
                               width: 21,
                             ),
-                            text: localizedStrings.notofications,
+                            text: localizedStrings.notifications,
                             secondWidget: customSwitch(
                               isNotificationTurnedOn,
-                              turnOnOffNotify,
+                              turnOffNotify,
                             ),
                           ),
                           const SizedBox(height: 24),
                           RowProfile(
                             firstWidget: SvgIcon(
                               iconColor,
-                              path: 'finger_print.svg',
+                              path: ImageAssets.fingerPrint,
                               width: 20,
                             ),
                             text: localizedStrings.fingerPrint,
@@ -317,16 +264,18 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          RowProfile(
-                            firstWidget: SvgIcon(
-                              iconColor,
-                              path: 'profile/lock.svg',
-                              width: 20,
+                          GestureDetector(
+                            onTap: () =>
+                                context.goNamed(NavigationRouteNames.changePin),
+                            child: RowProfile(
+                              firstWidget: SvgIcon(
+                                iconColor,
+                                path: ImageAssets.lock,
+                                width: 20,
+                              ),
+                              text: localizedStrings.changePin,
+                              secondWidget: getBlueArrow(),
                             ),
-                            text: localizedStrings.changePin,
-                            secondWidget: getBlueArrow(),
-                            call: () =>
-                                context.goNamed(NavigationRouteNames.editPin),
                           ),
                           const SizedBox(height: 28),
                           const ChangeThemePopUp(),
@@ -347,6 +296,73 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     );
   }
 
+  void showChooserNotification(BuildContext context) {
+    showModalBottomSheet<void>(
+      backgroundColor: theme.cardColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  localizedStrings.turnOffNotify,
+                  style: theme.textTheme.px16,
+                ),
+                const SizedBox(height: 18),
+                RowTurnOffNotify(
+                  notifyText: 'Оповещения выключены на 1 час',
+                  rowText: localizedStrings.oneHourCancelNotify,
+                ),
+                const SizedBox(height: 24),
+                RowTurnOffNotify(
+                  notifyText:
+                      'Оповещения выключены на ${localizedStrings.forFourHour}',
+                  rowText: localizedStrings.forFourHour,
+                ),
+                const SizedBox(height: 24),
+                RowTurnOffNotify(
+                  notifyText:
+                      'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
+                  rowText: localizedStrings.forTwentyFourHour,
+                ),
+                const SizedBox(height: 24),
+                RowTurnOffNotify(
+                  notifyText:
+                      'Оповещения выключены на ${localizedStrings.forever.toLowerCase()}',
+                  rowText: localizedStrings.forever,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void turnOffNotify(bool newValue) {
+    setState(() {
+      if (!newValue) {
+        showChooserNotification(context);
+      }
+      isNotificationTurnedOn = !isNotificationTurnedOn;
+    });
+  }
+
+  void turnOnOffFingerPrintAuth(bool newValue) {
+    setState(() => isFingerPrintAuth = newValue);
+  }
+
   Widget getBlueArrow() {
     return Icon(
       Icons.arrow_forward_ios_sharp,
@@ -365,18 +381,6 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
         value: val,
         onChanged: (newValue) => onChangeMethod(newValue),
       );
-
-  void showToasterAboutNotify(CustomTheme theme, String text) {
-    Fluttertoast.showToast(
-      msg: text,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: theme.text,
-      textColor: theme.cardColor,
-      fontSize: 16,
-    );
-  }
 }
 
 class TitleAndDescriptionRow extends StatelessWidget {
@@ -407,6 +411,53 @@ class TitleAndDescriptionRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class RowTurnOffNotify extends StatefulWidget {
+  final String notifyText;
+  final String rowText;
+  const RowTurnOffNotify({
+    Key? key,
+    required this.notifyText,
+    required this.rowText,
+  }) : super(key: key);
+
+  @override
+  State<RowTurnOffNotify> createState() => _RowTurnOffNotifyState();
+}
+
+class _RowTurnOffNotifyState extends State<RowTurnOffNotify> {
+  @override
+  Widget build(BuildContext context) {
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+
+    return GestureDetector(
+      onTap: () => setState(() => showToasterAboutNotify(
+            theme,
+            widget.notifyText,
+          )),
+      child: Text(
+        widget.rowText,
+        style: theme.textTheme.px16.copyWith(
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  void showToasterAboutNotify(CustomTheme theme, String text) {
+    Navigator.of(context).pop();
+
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: theme.text,
+      textColor: theme.cardColor,
+      fontSize: 16,
     );
   }
 }
