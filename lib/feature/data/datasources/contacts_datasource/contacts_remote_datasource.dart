@@ -12,31 +12,29 @@ import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 
 class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   final IContactsLocalDataSource localDataSource;
-  final Dio dio;
+  final Dio _dio;
 
   ContactsRemoteDataSource(
     this.localDataSource,
-    this.dio,
+    this._dio,
   );
 
   @override
   Future<ContactsModel> fetchContacts(int page) async {
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
+
     try {
-      log('====== ${AppConfig.authKey}');
-      final response = await dio.get<String>(
-        baseUrl,
-        options: Options(
-          headers: <String, dynamic>{
-            'Authorization': AppConfig.authKey,
-          },
+      final response = await _dio.fetch<Map<String, dynamic>>(
+        Options(method: 'POST', responseType: ResponseType.json).compose(
+          _dio.options,
+          baseUrl,
         ),
       );
 
-      final contacts = ContactsModel.fromJson(
-        json.decode(response.data!) as Map<String, dynamic>,
-      );
+      log('+++++++++++++++++++   ${response.data}');
+
+      final contacts = ContactsModel.fromJson(response.data!);
 
       log('ContactsRemouteDataSource  ==========  ${contacts.contacts.length}');
       await localDataSource.contactsToCache(contacts);
@@ -52,7 +50,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
     try {
-      final response = await dio.get<String>(baseUrl);
+      final response = await _dio.get<String>(baseUrl);
 
       final contactsModel = ContactsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,

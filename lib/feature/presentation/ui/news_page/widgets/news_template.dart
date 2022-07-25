@@ -49,7 +49,7 @@ class NewsTemplate {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  'http://${AppConfig.imagesUrl}/${paragraph.image}',
+                  '${AppConfig.imagesUrl}/${paragraph.image}',
                   cache: true,
                 ),
               ),

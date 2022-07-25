@@ -14,13 +14,10 @@ class MainSearchEmpty extends MainSearchState {
 }
 
 class MainSearchLoading extends MainSearchState {
-  final List<MainSearchEntity> oldSearchList;
-  final bool isFirstFetch;
-
-  const MainSearchLoading(this.oldSearchList, {this.isFirstFetch = false});
+  const MainSearchLoading();
 
   @override
-  List<Object?> get props => [oldSearchList];
+  List<Object?> get props => [];
 }
 
 class MainSearchLoaded extends MainSearchState {

@@ -8,7 +8,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
@@ -50,7 +50,6 @@ class _ContactsPageState extends State<ContactsPage> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-       
         backgroundColor: theme.background,
         body: Stack(
           children: [
@@ -100,7 +99,8 @@ class _ContactsPageState extends State<ContactsPage> {
                                 _onSearchInput(text);
                               },
                               onFilterTap: () async {
-                                if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
+                                if (!ResponsiveWrapper.of(context)
+                                    .isLargerThan(MOBILE)) {
                                   await showFilterMobile(
                                     context,
                                     onApply: _onApplyFilter,
@@ -124,13 +124,15 @@ class _ContactsPageState extends State<ContactsPage> {
                                   children: [
                                     // Выбранные фильтры.
 
-                                    BlocBuilder<FilterContactsBloc, FilterState>(
+                                    BlocBuilder<FilterContactsBloc,
+                                        FilterState>(
                                       builder: (context, state) {
                                         if (state is FilterLoadedState) {
                                           return SelectedFiltersView(
                                             filters: state.contactsFilters,
                                             onRemove: (item, i) {
-                                              BlocProvider.of<FilterContactsBloc>(
+                                              BlocProvider.of<
+                                                  FilterContactsBloc>(
                                                 context,
                                               ).add(
                                                 FilterRemoveItemEvent(
@@ -230,7 +232,8 @@ class _ContactsPageState extends State<ContactsPage> {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
+            BlocProvider.of<ContactsBloc>(context)
+                .add(const FetchContactsEvent());
           }
         }
       }

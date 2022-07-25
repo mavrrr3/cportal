@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/contacts/fetch_contacts_filters_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/i_filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_functions.dart';
@@ -12,7 +12,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_sta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilterBLoc {
+class FilterContactsBloc extends Bloc<FilterEvent, FilterState>
+    implements IFilterBLoc {
   final FetchContactsFiltersUseCase fetchFilters;
 
   FilterContactsBloc({required this.fetchFilters}) : super(FilterEmptyState()) {
@@ -65,7 +66,6 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilt
         response.filters.forEach((element) {
           filters.add(element);
         });
-        
 
         FilterLoadedState? newState;
         if (oldState is FilterLoadedState) {
@@ -90,7 +90,8 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilt
         filters: (state as FilterLoadedState).contactsFilters,
         index: event.index,
       );
-      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState)
+          .copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -109,7 +110,8 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilt
         filterIndex: event.filterIndex,
         itemIndex: event.itemIndex,
       );
-      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState)
+          .copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -128,7 +130,8 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilt
         filterIndex: event.filterIndex,
         item: event.item,
       );
-      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState)
+          .copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);
@@ -145,7 +148,8 @@ class FilterContactsBloc extends Bloc<FilterEvent, FilterState> implements IFilt
       final updatedFilters = FilterFunctions.removeAll(
         filters: (state as FilterLoadedState).contactsFilters,
       );
-      final newState = (state as FilterLoadedState).copyWith(contactsFilters: updatedFilters);
+      final newState = (state as FilterLoadedState)
+          .copyWith(contactsFilters: updatedFilters);
 
       emit(FilterLoadingState());
       emit(newState);

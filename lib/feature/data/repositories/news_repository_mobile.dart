@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_n
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -123,6 +124,51 @@ class NewsRepositoryMobile implements INewsRepository {
             await localDataSource.fetchNewsByCategoryFromCache(category);
 
         return Right(localNewsByCtegory);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, ArticleEntity>> getSingleNews(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteSingleNews = await remoteDataSource.getSingleNews(id);
+
+        return Right(remoteSingleNews);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localSingleNews =
+            await localDataSource.getSingleNewsFromCache(id);
+
+        return Right(localSingleNews);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, ArticleEntity>> getSingleQuestion(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteSingleQuastion =
+            await remoteDataSource.getSingleQuestion(id);
+
+        return Right(remoteSingleQuastion);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localSingleQuastion =
+            await localDataSource.getSingleQuestionFromCache(id);
+
+        return Right(localSingleQuastion);
       } on CacheException {
         return Left(CacheFailure());
       }

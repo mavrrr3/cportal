@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:cportal_flutter/app_config.dart';
@@ -18,7 +17,9 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     String id, {
     bool isMyProfile = false,
   }) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?id=$id';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?id=$id';
+
     try {
       // TODO: Избавиться от if, передавать эту переменную в singleProfileToCache.
       if (isMyProfile) {
@@ -28,11 +29,15 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
 
         return localeUser;
       } else {
-        final response = await dio.get<String>(baseUrl);
+        final response = await dio.fetch<Map<String, dynamic>>(
+          Options(method: 'GET', responseType: ResponseType.json).compose(
+            dio.options,
+            baseUrl,
+          ),
+        );
 
-        final jsonR = json.decode(response.data!) as Map<String, dynamic>;
         final profile = ProfileModel.fromJson(
-          jsonR['response'] as Map<String, dynamic>,
+          response.data!['response'] as Map<String, dynamic>,
         );
 
         log('ProfileRemouteDataSource  ==========  $profile');

@@ -35,12 +35,7 @@ class QuestionArticlePage extends StatelessWidget {
       child: BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
         builder: (context, state) {
           if (state is QuestionsLoaded) {
-            ArticleEntity articlefromBloc() {
-              return state.articles
-                  .where((element) => element.id == id)
-                  .toList()
-                  .first;
-            }
+            final ArticleEntity singleArticle = state.singleArticle(id);
 
             return BlocBuilder<NavigationBarBloc, NavigationBarState>(
               builder: (context, navState) {
@@ -149,20 +144,18 @@ class QuestionArticlePage extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              articlefromBloc().header,
+                                              singleArticle.header,
                                               style: theme.textTheme.header,
                                             ),
                                             const SizedBox(height: 20),
                                             Column(
                                               children: [
                                                 ...List.generate(
-                                                  articlefromBloc()
-                                                      .content
-                                                      .length,
+                                                  singleArticle.content.length,
                                                   (index) {
                                                     return NewsTemplate.factory(
                                                       context,
-                                                      articlefromBloc()
+                                                      singleArticle
                                                           .content[index],
                                                     );
                                                   },
@@ -171,7 +164,7 @@ class QuestionArticlePage extends StatelessWidget {
                                             ),
                                             const SizedBox(height: 24),
                                             nextQuestion(
-                                              articlefromBloc(),
+                                              singleArticle,
                                               state,
                                               context,
                                             ),

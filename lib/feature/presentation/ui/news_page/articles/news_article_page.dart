@@ -41,6 +41,7 @@ class NewsArticlePage extends StatelessWidget {
               body: kIsWeb
                   ? SingleNewsArticleWeb(
                       article: articlefromBloc(),
+                      articles: state.articles,
                     )
                   : SingleNewsArticleMobile(
                       article: articlefromBloc(),

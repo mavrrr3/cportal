@@ -7,7 +7,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometr
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/auth_mobile_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

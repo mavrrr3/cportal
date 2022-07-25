@@ -186,6 +186,11 @@ class QuestionsLoading extends FetchQuestionsState {
 class QuestionsLoaded extends FetchQuestionsState {
   final List<ArticleEntity> articles;
   final List<String> tabs;
+
+  ArticleEntity singleArticle(String id) {
+    return articles.where((element) => element.id == id).toList().first;
+  }
+
   const QuestionsLoaded({
     required this.articles,
     required this.tabs,
