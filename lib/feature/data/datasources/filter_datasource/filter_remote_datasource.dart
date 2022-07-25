@@ -23,9 +23,6 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';
     try {
-      final String baseUrl =
-          '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';
-
       final response = await _dio.fetch<Map<String, dynamic>>(
         Options(method: 'GET', responseType: ResponseType.json).compose(
           _dio.options,
