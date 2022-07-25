@@ -5,7 +5,7 @@ import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/pop_up/change_theme_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
@@ -238,44 +238,74 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          RowProfile(
-                            firstWidget: SvgIcon(
-                              iconColor,
-                              path: ImageAssets.bell,
-                              width: 21,
-                            ),
-                            text: localizedStrings.notifications,
-                            secondWidget: customSwitch(
-                              isNotificationTurnedOn,
-                              turnOffNotify,
-                            ),
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.64 : 1,
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      turnOffNotify(isNotificationTurnedOn),
+                                  child: RowProfile(
+                                    firstWidget: SvgIcon(
+                                      iconColor,
+                                      path: ImageAssets.bell,
+                                      width: 21,
+                                    ),
+                                    text: localizedStrings.notifications,
+                                    secondWidget: customSwitch(
+                                      isNotificationTurnedOn,
+                                      turnOffNotify,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(height: 24),
-                          RowProfile(
-                            firstWidget: SvgIcon(
-                              iconColor,
-                              path: ImageAssets.fingerPrint,
-                              width: 20,
-                            ),
-                            text: localizedStrings.fingerPrint,
-                            secondWidget: customSwitch(
-                              isFingerPrintAuth,
-                              turnOnOffFingerPrintAuth,
-                            ),
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.64 : 1,
+                                child: GestureDetector(
+                                  onTap: () => turnOnOffFingerPrintAuth(
+                                    isFingerPrintAuth,
+                                  ),
+                                  child: RowProfile(
+                                    firstWidget: SvgIcon(
+                                      iconColor,
+                                      path: ImageAssets.fingerPrint,
+                                      width: 20,
+                                    ),
+                                    text: localizedStrings.fingerPrint,
+                                    secondWidget: customSwitch(
+                                      isFingerPrintAuth,
+                                      turnOnOffFingerPrintAuth,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(height: 24),
-                          GestureDetector(
-                            onTap: () =>
-                                context.goNamed(NavigationRouteNames.changePin),
-                            child: RowProfile(
-                              firstWidget: SvgIcon(
-                                iconColor,
-                                path: ImageAssets.lock,
-                                width: 20,
-                              ),
-                              text: localizedStrings.changePin,
-                              secondWidget: getBlueArrow(),
-                            ),
+                          OnHover(
+                            builder: (isHovered) {
+                              return Opacity(
+                                opacity: isHovered ? 0.64 : 1,
+                                child: GestureDetector(
+                                  onTap: () => context
+                                      .goNamed(NavigationRouteNames.changePin),
+                                  child: RowProfile(
+                                    firstWidget: SvgIcon(
+                                      iconColor,
+                                      path: ImageAssets.lock,
+                                      width: 20,
+                                    ),
+                                    text: localizedStrings.changePin,
+                                    secondWidget: getBlueArrow(),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(height: 28),
                           const ChangeThemePopUp(),
@@ -359,8 +389,13 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     });
   }
 
-  void turnOnOffFingerPrintAuth(bool newValue) {
-    setState(() => isFingerPrintAuth = newValue);
+  void turnOnOffFingerPrintAuth(bool value) {
+    setState(() {
+      if (!value) {
+        value;
+      }
+      isFingerPrintAuth = !isFingerPrintAuth;
+    });
   }
 
   Widget getBlueArrow() {

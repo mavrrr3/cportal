@@ -2,7 +2,7 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/pin_code_field.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/pin_code_desktop_input.dart';
 import 'package:flutter/material.dart';

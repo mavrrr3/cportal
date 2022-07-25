@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:flutter/foundation.dart';
@@ -41,7 +42,7 @@ class QuestionRow extends StatelessWidget {
               ),
             ),
             SvgPicture.asset(
-              'assets/icons/question_arrow.svg',
+              ImageAssets.questionArrow,
               color: theme.primary,
               width: 8,
             ),

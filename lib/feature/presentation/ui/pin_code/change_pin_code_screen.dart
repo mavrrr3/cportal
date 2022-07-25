@@ -6,7 +6,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometr
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_desktop/change_pin_code_desktop_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/pin_code/pin_code_mobile/change_pin_code_mobile_screen.dart';
 import 'package:flutter/material.dart';

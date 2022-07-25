@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:flutter/foundation.dart';
@@ -30,7 +31,7 @@ class SearchBoxRow extends StatelessWidget {
                 ? 400
                 : isLargerThenMobile(context)
                     ? width - 400
-                    : width - 60,
+                    : width - 90,
             child: Text(
               text,
               overflow: TextOverflow.ellipsis,
@@ -38,7 +39,7 @@ class SearchBoxRow extends StatelessWidget {
             ),
           ),
           SvgPicture.asset(
-            'assets/icons/question_arrow.svg',
+            ImageAssets.questionArrow,
             color: theme.primary,
             width: 8,
           ),

@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news/news_card_similar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

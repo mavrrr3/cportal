@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 
 abstract class INewsRemoteDataSource {
@@ -20,4 +21,14 @@ abstract class INewsRemoteDataSource {
   /// Возвращает [NewsModel]
   /// Пробрасываем ошибки через [ServerException]
   Future<NewsModel> fetchQuestionsByCategory(int page, String category);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [ArticleModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<ArticleModel> getSingleQuestion(String id);
+
+  /// Обращается к эндпойнту .....
+  /// Возвращает [ArticleModel]
+  /// Пробрасываем ошибки через [ServerException]
+  Future<ArticleModel> getSingleNews(String id);
 }

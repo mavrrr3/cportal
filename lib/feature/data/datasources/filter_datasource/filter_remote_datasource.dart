@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cportal_flutter/app_config.dart';
@@ -12,22 +11,27 @@ import 'package:dio/dio.dart';
 
 class FilterRemoteDataSource implements IFilterRemoteDataSource {
   final IFilterLocalDataSource localDatasource;
-  final Dio dio;
+  final Dio _dio;
 
   FilterRemoteDataSource(
     this.localDatasource,
-    this.dio,
+    this._dio,
   );
 
   @override
   Future<FilterResponseModel> fetchContactsFilters() async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';
     try {
-      final response = await dio.get<String>(baseUrl);
-
-      final remoteFilters = FilterResponseModel.fromJson(
-        json.decode(response.data!) as Map<String, dynamic>,
+      final response = await _dio.fetch<Map<String, dynamic>>(
+        Options(method: 'GET', responseType: ResponseType.json).compose(
+          _dio.options,
+          baseUrl,
+        ),
       );
+
+      final remoteFilters = FilterResponseModel.fromJson(response.data!);
+
       log('FilterRemouteDataSource [contacts]  ==========  $remoteFilters');
       await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
 
@@ -43,7 +47,10 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
       const FilterResponseModel remoteFilters = _declarationsFilter;
 
       log('FilterRemouteDataSource [declarations]  ==========  $remoteFilters');
-      await localDatasource.filtersToCache(remoteFilters, FilterType.declarations);
+      await localDatasource.filtersToCache(
+        remoteFilters,
+        FilterType.declarations,
+      );
 
       return remoteFilters;
     } on ServerException {

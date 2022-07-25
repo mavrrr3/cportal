@@ -1,13 +1,13 @@
-import 'dart:developer';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
@@ -44,7 +44,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _fetchContent(context);
 
     _searchController = TextEditingController();
     _questionController = ScrollController();
@@ -106,8 +105,8 @@ class _MainPageState extends State<MainPage> {
                           SearchInput(
                             controller: _searchController,
                             focusNode: _searchFocus,
-                            onChanged: (text) {
-                              log('[Search text] $text');
+                            onChanged: (query) {
+                              _onSearchInput(query);
                             },
                           ),
                           GestureDetector(
@@ -258,11 +257,10 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  void _fetchContent(BuildContext context) {
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchAllNewsEvent(),
-    );
-    BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
-        .add(const FetchQaustionsEvent());
+  void _onSearchInput(String query) {
+    BlocProvider.of<MainSearchBloc>(
+      context,
+      listen: false,
+    ).add(MainSearch(query));
   }
 }

@@ -13,23 +13,29 @@ import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 
 class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   final IContactsLocalDataSource localDataSource;
-  final Dio dio;
+  final Dio _dio;
 
   ContactsRemoteDataSource(
     this.localDataSource,
-    this.dio,
+    this._dio,
   );
 
   @override
   Future<ContactsModel> fetchContacts(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
-    try {
-      log('====== ${AppConfig.authKey}');
-      final response = await dio.get<String>(baseUrl);
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
 
-      final contacts = ContactsModel.fromJson(
-        json.decode(response.data!) as Map<String, dynamic>,
+    try {
+      final response = await _dio.fetch<Map<String, dynamic>>(
+        Options(method: 'POST', responseType: ResponseType.json).compose(
+          _dio.options,
+          baseUrl,
+        ),
       );
+
+      log('+++++++++++++++++++   ${response.data}');
+
+      final contacts = ContactsModel.fromJson(response.data!);
 
       log('ContactsRemouteDataSource  ==========  ${contacts.contacts.length}');
       await localDataSource.contactsToCache(contacts);
@@ -41,23 +47,12 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   }
 
   @override
-  Future<List<ProfileModel>> fetchContactsBySearch(String query, List<FilterEntity> filters) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
+  Future<List<ProfileModel>> fetchContactsBySearch(
+      String query, List<FilterEntity> filters) async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
     try {
-      final List<Map<String, dynamic>> selectedFilers = [];
-      if (filters.isNotEmpty) {
-        for (final filter in filters) {
-          selectedFilers.add(filter.toJson());
-        }
-      }
-      final body = <String, dynamic>{
-        'request': selectedFilers,
-      };
-      log(json.encode(body));
-      final response = await dio.post<String>(
-        baseUrl,
-        data: json.encode(body),
-      );
+      final response = await _dio.get<String>(baseUrl);
 
       final contactsModel = ContactsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
