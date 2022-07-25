@@ -71,10 +71,7 @@ List<Widget> _drawDeclarationCards(
       DeclarationCardWithStatus(
         item: declarations[count],
         onTap: () {
-          context.pushNamed(
-            NavigationRouteNames.createDeclaration,
-            // params: {'fid': 'test'},
-          );
+          context.pushNamed(NavigationRouteNames.declarationInfo);
         },
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:equatable/equatable.dart';
 
 class FilterEntity extends Equatable {
@@ -27,6 +28,11 @@ class FilterEntity extends Equatable {
 
   @override
   List<Object?> get props => [headline, items, isActive];
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'headline': headline,
+        'items': List<dynamic>.from(items.map<dynamic>((x) => (x as FilterItemModel).name)),
+      };
 }
 
 class FilterItemEntity extends Equatable {
