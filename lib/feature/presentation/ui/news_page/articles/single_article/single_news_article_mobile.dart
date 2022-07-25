@@ -5,6 +5,7 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
           DesktopMenu(
             currentIndex: 1,
             onChange: (index) {
-              changePage(context, index);
+               MenuService.changePage(context, index);
             },
           ),
         Expanded(

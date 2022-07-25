@@ -16,6 +16,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mo
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   // Меню Web.
                   child: DesktopMenu(
                     currentIndex: 4,
-                    onChange: (index) => changePage(context, index),
+                    onChange: (index) => MenuService.changePage(context, index),
                   ),
                 ),
                 Expanded(
@@ -117,7 +118,8 @@ class _ContactsPageState extends State<ContactsPage> {
                                     ),
                                   );
                                   await Future<dynamic>.delayed(
-                                      const Duration(milliseconds: 150));
+                                    const Duration(milliseconds: 150),
+                                  );
                                   _sendFilters(context, isFromRemove: true);
                                 },
                               );

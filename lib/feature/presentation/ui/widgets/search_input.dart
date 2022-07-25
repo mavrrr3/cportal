@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -85,5 +86,9 @@ double getSearchContainerWidth(
 ) {
   final double width = MediaQuery.of(context).size.width;
 
-  return ResponsiveWrapper.of(context).isSmallerThan(TABLET) ? width - 84 : 584;
+  return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
+      ? kIsWeb
+          ? width - 136
+          : width - 84
+      : 584;
 }
