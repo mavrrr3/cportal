@@ -6,6 +6,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_b
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news/news_card_similar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,7 @@ class SingleNewsArticleWeb extends StatelessWidget {
               DesktopMenu(
                 currentIndex: 1,
                 onChange: (index) {
-                  changePage(context, index);
+                   MenuService.changePage(context, index);
                 },
               ),
               SafeArea(

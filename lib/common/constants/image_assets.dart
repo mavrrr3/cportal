@@ -2,9 +2,7 @@ abstract class ImageAssets {
   static const splash = 'assets/img/bg_splash.png';
 
   static const iconsPath = 'assets/icons';
-
   static const backspace = '$iconsPath/backspace.svg';
-
   static const qrCode = '$iconsPath/qr_code.svg';
   static const faceId = '$iconsPath/face_id.svg';
   static const bell = '$iconsPath/bell.svg';
@@ -34,4 +32,5 @@ abstract class ImageAssets {
   static const stepDeclined = '$iconsPath/declaration_step_declined.svg';
   static const highPriority = '$iconsPath/high_priority.svg';
   static const flashLight = '$iconsPath/flash_light.svg';
+  static const burgerMenu = '$iconsPath/burger_menu.svg';
 }

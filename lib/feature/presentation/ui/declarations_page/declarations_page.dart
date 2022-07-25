@@ -10,6 +10,7 @@ import 'package:cportal_flutter/feature/presentation/ui/declarations_page/web/de
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -61,7 +62,7 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
                   // Меню Web.
                   child: DesktopMenu(
                     currentIndex: 3,
-                    onChange: (index) => changePage(context, index),
+                    onChange: (index) =>  MenuService.changePage(context, index),
                   ),
                 ),
                 // ignore: prefer_if_elements_to_conditional_expressions

@@ -5,12 +5,15 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -103,6 +106,14 @@ class _MainPageState extends State<MainPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          if (kIsWeb &&
+                              ResponsiveWrapper.of(context)
+                                  .isSmallerThan(TABLET))
+                            BurgerMenuButton(onTap: () {
+                              context.read<NavigationBarBloc>().add(
+                                    const NavBarVisibilityEvent(isActive: true),
+                                  );
+                            }),
                           SearchInput(
                             controller: _searchController,
                             focusNode: _searchFocus,

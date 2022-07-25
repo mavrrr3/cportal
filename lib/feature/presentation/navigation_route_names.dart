@@ -61,7 +61,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/splash_screen',
+  initialLocation: '/',
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -170,7 +170,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const HomePage(
           child: MainPage(),
-          desktopMenuIndex: 0,
+          webMenuIndex: 0,
         ),
       ),
     ),
@@ -197,7 +197,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const HomePage(
           child: NewsPage(),
-          desktopMenuIndex: 1,
+          webMenuIndex: 1,
         ),
       ),
     ),
@@ -216,7 +216,7 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const HomePage(
           child: QuestionsPage(),
-          desktopMenuIndex: 2,
+          webMenuIndex: 2,
         ),
       ),
     ),
@@ -304,7 +304,6 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
-    
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
       path: '/declarations/info',

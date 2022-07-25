@@ -13,8 +13,6 @@ import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -74,14 +72,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
             child: Scaffold(
               backgroundColor: theme.background,
               bottomNavigationBar: !kIsWeb
-                  ? BlocBuilder<NavigationBarBloc, NavigationBarState>(
-                      builder: (context, state) {
-                        return CustomBottomBar(
-                          state: state,
-                          isNestedNavigation: true,
-                        );
-                      },
-                    )
+                  ? const CustomBottomBar(isNestedNavigation: true)
                   : null,
               body: Stack(
                 children: [
@@ -143,7 +134,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
 
                             // Department.
                             ProfileInfoSection(
-                              headline: AppLocalizations.of(context)!.department,
+                              headline:
+                                  AppLocalizations.of(context)!.department,
                               text: user.department,
                               bottomPadding: 21,
                             ),
@@ -151,7 +143,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             // Birthday.
                             if (user.birthDayToString != null)
                               ProfileInfoSection(
-                                headline: AppLocalizations.of(context)!.birth_date,
+                                headline:
+                                    AppLocalizations.of(context)!.birth_date,
                                 text: user.birthDayToString!,
                                 bottomPadding: 21,
                               ),
@@ -182,7 +175,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                           _ActionButton(
                             img: ImageAssets.phone,
                             onTap: () async {
-                              final phoneWithOutMask = int.parse(state.getPhone.replaceAll(
+                              final phoneWithOutMask =
+                                  int.parse(state.getPhone.replaceAll(
                                 RegExp('[^0-9]'),
                                 '',
                               ));
@@ -207,7 +201,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                           _ActionButton(
                             img: ImageAssets.message,
                             onTap: () async {
-                              final phoneWithOutMask = int.parse(state.getPhone.replaceAll(
+                              final phoneWithOutMask =
+                                  int.parse(state.getPhone.replaceAll(
                                 RegExp('[^0-9]'),
                                 '',
                               ));
@@ -255,7 +250,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
   }
 
   void _previousContentInit(BuildContext context) {
-    return BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent());
+    return BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(const FetchContactsEvent());
   }
 
   void _onBack(BuildContext context) => context.pop();

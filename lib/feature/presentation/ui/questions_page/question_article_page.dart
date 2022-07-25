@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class QuestionArticlePage extends StatelessWidget {
                             ],
                             child: DesktopMenu(
                               currentIndex: 2,
-                              onChange: (index) => changePage(context, index),
+                              onChange: (index) => MenuService.changePage(context, index),
                             ),
                           ),
                           Expanded(
