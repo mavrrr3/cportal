@@ -1,16 +1,19 @@
 import 'dart:io';
 
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:swipe/swipe.dart';
 
 class QrScanner extends StatefulWidget {
-  const QrScanner({Key? key}) : super(key: key);
+  final void Function(String data) onScannedData;
+
+  const QrScanner({
+    Key? key,
+    required this.onScannedData,
+  }) : super(key: key);
 
   @override
   State<QrScanner> createState() => _QrScannerState();
@@ -26,10 +29,7 @@ class _QrScannerState extends State<QrScanner> {
   @override
   void reassemble() {
     super.reassemble();
-    if (Platform.isAndroid) {
-      qrController!.pauseCamera();
-    }
-    qrController!.resumeCamera();
+    _reloadCamera();
   }
 
   @override
@@ -73,20 +73,28 @@ class _QrScannerState extends State<QrScanner> {
   }
 
   void _onQrViewCreated(QRViewController controller, BuildContext context) {
-    setState(() {
-      qrController = controller;
-    });
+    qrController = controller;
 
     controller.scannedDataStream.listen((scanData) {
       if (!isStopped) {
         context.pop();
-        context.read<ConnectingCodeBloc>().add(ReadQrCode(scanData.code ?? ''));
+        setState(() {
+          isStopped = true;
+        });
+        widget.onScannedData(scanData.code ?? '');
       }
-
-      setState(() {
-        isStopped = true;
-      });
     });
+
+    if (Platform.isAndroid) {
+      _reloadCamera();
+    }
+  }
+
+  void _reloadCamera() {
+    if (Platform.isAndroid) {
+      qrController?.pauseCamera();
+    }
+    qrController?.resumeCamera();
   }
 
   @override
