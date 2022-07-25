@@ -22,7 +22,7 @@ class EndOtherSessionsPopup extends StatelessWidget {
       ),
       child: SizedBox(
         height: 252,
-        width: double.infinity,
+        width: 328,
         child: Column(
           children: [
             Align(

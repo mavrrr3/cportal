@@ -30,44 +30,54 @@ class DeviceInformation extends StatelessWidget {
           child: Center(child: icon),
         ),
         const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              deviceName,
-              style: theme.textTheme.px14.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              osVersion,
-              style: theme.textTheme.px14.copyWith(
-                height: 1.43,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                Text(
-                  location,
-                  style: theme.textTheme.px14.copyWith(
-                    color: theme.text?.withOpacity(0.68),
-                    height: 1.33,
-                  ),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                deviceName,
+                style: theme.textTheme.px14.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  connectingStatus,
-                  style: theme.textTheme.px14.copyWith(
-                    color: theme.text?.withOpacity(0.68),
-                    height: 1.33,
-                  ),
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                osVersion,
+                style: theme.textTheme.px14.copyWith(
+                  height: 1.43,
                 ),
-              ],
-            ),
-          ],
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      location,
+                      style: theme.textTheme.px14.copyWith(
+                        color: theme.text?.withOpacity(0.68),
+                        height: 1.33,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      connectingStatus,
+                      style: theme.textTheme.px14.copyWith(
+                        color: theme.text?.withOpacity(0.68),
+                        height: 1.33,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
