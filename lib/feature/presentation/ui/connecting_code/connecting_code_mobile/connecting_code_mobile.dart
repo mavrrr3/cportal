@@ -28,6 +28,7 @@ class ConnectingCodeMobile extends StatelessWidget {
         behavior: HitTestBehavior.translucent,
         onTap: () => context.pushNamed(
           NavigationRouteNames.qrScanner,
+          // ignore: avoid_types_on_closure_parameters
           extra: (String scannedData) => context.read<ConnectingCodeBloc>().add(ReadQrCode(scannedData)),
         ),
         child: Padding(

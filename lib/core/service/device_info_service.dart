@@ -5,11 +5,10 @@ import 'package:cportal_flutter/feature/domain/entities/device/device_platform.d
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 
-// TODO: delete this
-class AuthLocalDataSource {
+class DeviceInfoService {
   final DeviceInfoPlugin _deviceInfoPlugin;
 
-  AuthLocalDataSource(this._deviceInfoPlugin);
+  DeviceInfoService(this._deviceInfoPlugin);
 
   Future<DeviceInfo> getDeviceInfo() async {
     String? device;
@@ -23,8 +22,8 @@ class AuthLocalDataSource {
     }
     if (Platform.isAndroid) {
       final info = await _deviceInfoPlugin.androidInfo;
-      device = info.model;
-      osInformation = 'Android ${info.version.baseOS}';
+      device = '${info.manufacturer} ${info.model}';
+      osInformation = 'Android ${info.version.release}';
       platform = DevicePlatform.android;
     } else if (Platform.isIOS) {
       final info = await _deviceInfoPlugin.iosInfo;

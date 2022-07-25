@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/core/auth_service.dart';
+import 'package:cportal_flutter/core/service/auth_service.dart';
 import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
@@ -106,9 +106,7 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoMobilePopup(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -127,9 +125,7 @@ final GoRouter router = GoRouter(
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,

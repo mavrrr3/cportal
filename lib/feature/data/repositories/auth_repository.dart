@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_local_datasource.dart';
+import 'package:cportal_flutter/core/service/device_info_service.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_location_remote_datasource.dart';
@@ -14,8 +14,7 @@ class AuthRepository implements IAuthRepository {
   final IUserLocalDataSource _userLocalDataSource;
   final IAuthRemoteDataSource _authRemoteDataSource;
   final ILocationRemoteDataSource _locationRemoteDataSource;
-  // TODO: delete this
-  final AuthLocalDataSource _authLocalDataSource;
+  final DeviceInfoService _deviceInfoService;
 
   final _authController = StreamController<AuthenticationStatus>.broadcast();
 
@@ -23,9 +22,10 @@ class AuthRepository implements IAuthRepository {
     this._userLocalDataSource,
     this._authRemoteDataSource,
     this._locationRemoteDataSource,
-    this._authLocalDataSource,
+    this._deviceInfoService,
   );
 
+  @override
   Stream<AuthenticationStatus> get status async* {
     yield* _authController.stream;
   }
@@ -33,7 +33,7 @@ class AuthRepository implements IAuthRepository {
   @override
   Future<Either<Failure, UserEntity>> logInWithConnectingCode({required String connectingCode}) async {
     try {
-      final deviceInfo = await _authLocalDataSource.getDeviceInfo();
+      final deviceInfo = await _deviceInfoService.getDeviceInfo();
       final location = await _locationRemoteDataSource.getLocation();
 
       final loginParams = LogInParams(

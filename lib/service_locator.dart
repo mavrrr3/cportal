@@ -1,10 +1,12 @@
 // ignore_for_file: cascade_invocations
 
 import 'package:cportal_flutter/app_config.dart';
-import 'package:cportal_flutter/core/auth_service.dart';
+import 'package:cportal_flutter/core/interceptor/auth_key_interceptor.dart';
+import 'package:cportal_flutter/core/service/auth_service.dart';
 import 'package:cportal_flutter/core/interceptor/token_interceptor.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
-import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_local_datasource.dart';
+import 'package:cportal_flutter/core/service/device_info_service.dart';
+import 'package:cportal_flutter/core/service/dio_factory.dart';
 import 'package:cportal_flutter/feature/data/datasources/auth_datasource/auth_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/connecting_devices_datasource/connecting_device_local_datasorce.dart';
 import 'package:cportal_flutter/feature/data/datasources/connecting_devices_datasource/connecting_devices_remote_datasource.dart';
@@ -59,7 +61,6 @@ import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repositor
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
-import 'package:cportal_flutter/feature/domain/usecases/auth/auth_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/has_auth_credentials_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_biometrics_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_connecting_code_usecase.dart';
@@ -102,6 +103,7 @@ import 'package:local_auth/local_auth.dart';
 
 final sl = GetIt.instance;
 
+// ignore: long-method
 Future<void> init() async {
   // BLOC/CUBIT.
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
@@ -128,7 +130,7 @@ Future<void> init() async {
 
   sl.registerFactory(DeclarationsBloc.new);
   sl.registerFactory(() => ConnectingQrBloc(sl(), sl(), sl()));
-  sl.registerFactory(() => ConnectingDevicesBloc(sl()));
+  sl.registerFactory(() => ConnectingDevicesBloc(sl(), sl()));
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
@@ -141,7 +143,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
   sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
   sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
-  sl.registerLazySingleton(() => AuthUseCase(sl(), sl()));
   sl.registerLazySingleton(() => HasAuthCredentialsUseCase(sl(), sl()));
   sl.registerLazySingleton(() => LogInWithConnectingCodeUseCase(sl()));
   sl.registerLazySingleton(() => LogInWithPinCodeUseCase(sl(), sl()));
@@ -169,22 +170,6 @@ Future<void> init() async {
       ),
     );
   }
-  // if (kIsWeb) {
-  //   sl.registerLazySingleton<IUserRepository>(
-  //     () => UserRepositoryWeb(
-  //       remoteDataSource: sl(),
-  //       localDataSource: sl(),
-  //     ),
-  //   );
-  // } else {
-  //   sl.registerLazySingleton<IUserRepository>(
-  //     () => UserRepositoryMobile(
-  //       remoteDataSource: sl(),
-  //       localDataSource: sl(),
-  //       networkInfo: sl(),
-  //     ),
-  //   );
-  // }
   sl.registerLazySingleton<IPinCodeRepository>(
     () => PinCodeRepository(sl()),
   );
@@ -269,7 +254,7 @@ Future<void> init() async {
   sl.registerLazySingleton<IContactsRemoteDataSource>(
     () => ContactsRemoteDataSource(sl(), sl()),
   );
-  sl.registerLazySingleton<IContactsLocalDataSource>(    
+  sl.registerLazySingleton<IContactsLocalDataSource>(
     () => ContactsLocalDataSource(sl()),
   );
   sl.registerLazySingleton<IFilterRemoteDataSource>(
@@ -278,11 +263,8 @@ Future<void> init() async {
   sl.registerLazySingleton<IFilterLocalDataSource>(
     () => FilterLocalDataSource(sl()),
   );
-  sl.registerLazySingleton<AuthLocalDataSource>(
-    () => AuthLocalDataSource(sl()),
-  );
   sl.registerLazySingleton<IAuthRemoteDataSource>(
-    () => AuthRemoteDataSource(sl.get<Dio>(instanceName: 'initial')),
+    () => AuthRemoteDataSource(sl<Dio>(instanceName: 'initial')),
   );
   sl.registerLazySingleton<IConnectingDevicesRemoteDataSource>(
     () => ConnectingDevicesRemoteDataSource(sl()),
@@ -306,30 +288,26 @@ Future<void> init() async {
   // CORE.
   if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
   sl.registerLazySingleton<DeviceInfoPlugin>(DeviceInfoPlugin.new);
+  sl.registerLazySingleton<DeviceInfoService>(() => DeviceInfoService(sl()));
   sl.registerLazySingleton<AuthService>(() => AuthService(sl()));
+  sl.registerLazySingleton<DioFactory>(DioFactory.new);
   // EXTERNAL.
   sl.registerLazySingleton(InternetConnectionChecker.new);
   sl.registerLazySingleton(LocalAuthentication.new);
   sl.registerLazySingleton<HiveInterface>(() => Hive);
   sl.registerLazySingleton<Dio>(
-    () => Dio(
-      BaseOptions(
-        baseUrl: AppConfig.apiUri,
-        headers: <String, dynamic>{
-          'Authorization': AppConfig.authKey,
-        },
-      ),
+    () => sl<DioFactory>().create(
+      baseUrl: AppConfig.apiUri,
+      interceptors: [
+        AuthKeyInterceptor(AppConfig.authKey),
+      ],
     ),
     instanceName: 'initial',
   );
   sl.registerLazySingleton<Dio>(
-    () => Dio(
-      BaseOptions(
-        baseUrl: AppConfig.apiUri,
-        headers: <String, dynamic>{
-          'Authorization': AppConfig.authKey,
-        },
+    () => sl<Dio>(instanceName: 'initial')
+      ..interceptors.add(
+        TokenInterceptor(sl(), sl()),
       ),
-    )..interceptors.add(TokenInterceptor(sl(), sl())),
   );
 }
