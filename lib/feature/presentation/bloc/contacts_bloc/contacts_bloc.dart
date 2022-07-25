@@ -83,8 +83,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   ) async {
     if (state is ContactsLoadedState) {
       final favorites = (state as ContactsLoadedState).favorites;
-      final failureOrContacts =
-          await searchContacts(SearchContactsParams(query: event.query));
+      final failureOrContacts = await searchContacts(SearchContactsParams(
+        query: event.query,
+        filters: event.filters,
+      ));
 
       failureOrContacts.fold(
         _mapFailureToMessage,

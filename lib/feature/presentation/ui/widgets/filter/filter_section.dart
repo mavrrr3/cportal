@@ -104,27 +104,31 @@ class _FilterSectionState extends State<FilterSection> {
                     left: 8,
                     bottom: 12,
                   ),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      widget.onSelect(index);
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomCheckBox(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          widget.onSelect(index);
+                        },
+                        child: CustomCheckBox(
                           isActive: widget.item.items[index].isActive,
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            widget.item.items[index].name,
-                            style: theme.textTheme.px14,
-                          ),
+                      ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () {
+                          widget.onSelect(index);
+                        },
+                        child: Text(
+                          widget.item.items[index].name,
+                          style: theme.textTheme.px14,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               },

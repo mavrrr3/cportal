@@ -20,6 +20,8 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
 
   @override
   Future<FilterResponseModel> fetchContactsFilters() async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';
     try {
       final String baseUrl =
           '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';

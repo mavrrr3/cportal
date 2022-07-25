@@ -257,10 +257,8 @@ Future<void> init() async {
   sl.registerLazySingleton(
     () => Dio(
       BaseOptions(
-        headers: <String, String>{
-          'authorization': AppConfig.authKey,
-          'token': AppConfig.token,
-        },
+        baseUrl: AppConfig.apiUri,
+        headers: <String, dynamic>{'authorization': AppConfig.authKey},
       ),
     ),
   );

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/only_selected_filters_service.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -12,10 +13,10 @@ import 'package:cportal_flutter/feature/presentation/navigation/navigation_route
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,88 +68,90 @@ class _ContactsPageState extends State<ContactsPage> {
                     onChange: (index) => changePage(context, index),
                   ),
                 ),
-                BlocBuilder<ContactsBloc, ContactsState>(
-                  builder: (context, state) {
-                    List<ProfileEntity> contacts = [];
-                    if (state is ContactsLoadingState && state.isFirstFetch) {
-                      return const Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
+                Expanded(
+                  child: SafeArea(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: kIsWeb ? 12 : 11,
                         ),
-                      );
-                    } else if (state is ContactsLoadingState) {
-                      contacts = state.oldContacts;
-                    }
+                        // Поиск.
+                        SearchWithFilter(
+                          searchController: _searchController,
+                          onSearch: (text) {
+                            _onSearchInput(text);
+                          },
+                          onFilterTap: () async {
+                            if (!ResponsiveWrapper.of(context)
+                                .isLargerThan(MOBILE)) {
+                              await showFilterMobile(
+                                context,
+                                onApply: _onApplyFilter,
+                                onClear: _onClearFilter,
+                                type: FilterType.contacts,
+                              ).whenComplete(() {
+                                _sendFilters(context);
+                              });
+                            } else {
+                              setState(() {
+                                _isFilterOpenWeb = true;
+                              });
+                            }
+                          },
+                        ),
 
-                    if (state is ContactsLoadedState) {
-                      contacts = state.contacts;
-                    }
-
-                    return Expanded(
-                      child: SafeArea(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: kIsWeb ? 12 : 11,
-                            ),
-                            // Поиск.
-                            SearchWithFilter(
-                              searchController: _searchController,
-                              onSearch: (text) {
-                                _onSearchInput(text);
-                              },
-                              onFilterTap: () async {
-                                if (!ResponsiveWrapper.of(context)
-                                    .isLargerThan(MOBILE)) {
-                                  await showFilterMobile(
+                        // Выбранные фильтры.
+                        BlocBuilder<FilterContactsBloc, FilterState>(
+                          builder: (context, state) {
+                            if (state is FilterLoadedState) {
+                              return SelectedFiltersView(
+                                filters: state.contactsFilters,
+                                onRemove: (item, i) async {
+                                  BlocProvider.of<FilterContactsBloc>(
                                     context,
-                                    onApply: _onApplyFilter,
-                                    onClear: _onClearFilter,
-                                    type: FilterType.contacts,
+                                  ).add(
+                                    FilterRemoveItemEvent(
+                                      filterIndex: i,
+                                      item: item,
+                                    ),
                                   );
-                                } else {
-                                  setState(() {
-                                    _isFilterOpenWeb = true;
-                                  });
-                                }
-                              },
-                            ),
+                                  await Future<dynamic>.delayed(
+                                      const Duration(milliseconds: 150));
+                                  _sendFilters(context, isFromRemove: true);
+                                },
+                              );
+                            }
 
-                            Expanded(
+                            // TODO: отработать другие стейты.
+                            return const SizedBox(height: 31);
+                          },
+                        ),
+                        BlocBuilder<ContactsBloc, ContactsState>(
+                          builder: (context, state) {
+                            List<ProfileEntity> contacts = [];
+                            if (state is ContactsLoadingState &&
+                                state.isFirstFetch) {
+                              return const Expanded(
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else if (state is ContactsLoadingState) {
+                              contacts = state.oldContacts;
+                            }
+
+                            if (state is ContactsLoadedState) {
+                              contacts = state.contacts;
+                            }
+
+                            return Expanded(
                               child: SingleChildScrollView(
                                 controller: _scrollController,
                                 physics: const BouncingScrollPhysics(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Выбранные фильтры.
-
-                                    BlocBuilder<FilterContactsBloc,
-                                        FilterState>(
-                                      builder: (context, state) {
-                                        if (state is FilterLoadedState) {
-                                          return SelectedFiltersView(
-                                            filters: state.contactsFilters,
-                                            onRemove: (item, i) {
-                                              BlocProvider.of<
-                                                  FilterContactsBloc>(
-                                                context,
-                                              ).add(
-                                                FilterRemoveItemEvent(
-                                                  filterIndex: i,
-                                                  item: item,
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        }
-
-                                        // TODO: отработать другие стейты.
-                                        return const SizedBox();
-                                      },
-                                    ),
-
                                     // Избранные.
                                     // if (state.favorites.isNotEmpty)
                                     //   Padding(
@@ -184,20 +187,18 @@ class _ContactsPageState extends State<ContactsPage> {
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
             if (_isFilterOpenWeb)
               GestureDetector(
-                onTap: () => setState(() {
-                  _isFilterOpenWeb = false;
-                }),
+                onTap: _onApplyFilter,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
@@ -271,6 +272,12 @@ class _ContactsPageState extends State<ContactsPage> {
     BlocProvider.of<FilterContactsBloc>(
       context,
     ).add(FilterRemoveAllEvent());
+    BlocProvider.of<ContactsBloc>(
+      context,
+      listen: false,
+    ).add(
+      const FetchContactsEvent(isFirstFetch: true),
+    );
   }
 
   // Профиль пользователя для Web.
@@ -304,10 +311,54 @@ class _ContactsPageState extends State<ContactsPage> {
     );
   }
 
-  void _onSearchInput(String text) {
+  void _onSearchInput(
+    String text,
+  ) {
+    final state = BlocProvider.of<FilterContactsBloc>(
+      context,
+    ).state;
+
     BlocProvider.of<ContactsBloc>(
       context,
       listen: false,
-    ).add(SearchContactsEvent(query: text));
+    ).add(
+      SearchContactsEvent(
+        query: text,
+        filters: (state is FilterLoadedState)
+            ? OnlySelectedFiltersService.count(state.contactsFilters)
+            : [],
+      ),
+    );
+  }
+
+  void _sendFilters(BuildContext context, {bool isFromRemove = false}) {
+    final state = BlocProvider.of<FilterContactsBloc>(
+      context,
+    ).state;
+    if (state is FilterLoadedState) {
+      final onlySelectedFilters =
+          OnlySelectedFiltersService.count(state.contactsFilters);
+
+      if (onlySelectedFilters.isNotEmpty) {
+        BlocProvider.of<ContactsBloc>(
+          context,
+          listen: false,
+        ).add(
+          SearchContactsEvent(
+            query: '',
+            filters: onlySelectedFilters,
+          ),
+        );
+      } else {
+        if (isFromRemove) {
+          BlocProvider.of<ContactsBloc>(
+            context,
+            listen: false,
+          ).add(
+            const FetchContactsEvent(isFirstFetch: true),
+          );
+        }
+      }
+    }
   }
 }

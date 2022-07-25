@@ -36,7 +36,8 @@ class EnterConnectingCode extends StatelessWidget {
           final textStyle = isWrongCode
               ? theme.textTheme.px16.copyWith(color: theme.red)
               : theme.textTheme.px16;
-          final codeAreaColor = isWrongCode ? theme.lightRedPIN : Colors.white;
+          final codeAreaColor =
+              isWrongCode ? theme.lightRedPIN : theme.cardColor;
           final focusedBorder = isDesktop
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -78,13 +79,14 @@ class EnterConnectingCode extends StatelessWidget {
                   focusNode: codeFocusNode,
                   style: textStyle,
                   textCapitalization: TextCapitalization.characters,
-                  cursorHeight: 24,
+                  autocorrect: false,
                   cursorColor: theme.primary,
                   decoration: InputDecoration(
                     focusedBorder: focusedBorder,
                     border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
+                    contentPadding: const EdgeInsets.fromLTRB(14, 16, 14, 16),
                   ),
                 ),
               ),
