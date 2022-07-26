@@ -19,8 +19,7 @@ class DeviceInfoService {
       final info = await _deviceInfoPlugin.webBrowserInfo;
       device = '${info.vendor} ${info.vendorSub}';
       osInformation = 'Web';
-    }
-    if (Platform.isAndroid) {
+    } else if (Platform.isAndroid) {
       final info = await _deviceInfoPlugin.androidInfo;
       device = '${info.manufacturer} ${info.model}';
       osInformation = 'Android ${info.version.release}';

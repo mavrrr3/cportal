@@ -14,8 +14,9 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          final nextScreen =
-              state is HasAuthCredentials ? NavigationRouteNames.login : NavigationRouteNames.connectingCode;
+          final nextScreen = state is HasAuthCredentials
+              ? NavigationRouteNames.login
+              : NavigationRouteNames.connectingCode;
 
           context.goNamed(nextScreen);
         },
@@ -23,5 +24,4 @@ class SplashScreen extends StatelessWidget {
       ),
     );
   }
-
 }

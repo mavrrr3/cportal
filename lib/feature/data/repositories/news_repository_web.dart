@@ -86,14 +86,24 @@ class NewsRepositoryWeb implements INewsRepository {
   }
 
   @override
-  Future<Either<Failure, ArticleEntity>> getSingleNews(String id) {
-    // TODO: implement getSingleNews.
-    throw UnimplementedError();
+  Future<Either<Failure, ArticleEntity>> getSingleNews(String id) async {
+    try {
+      final remoteSingleNews = await remoteDataSource.getSingleNews(id);
+
+      return Right(remoteSingleNews);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, ArticleEntity>> getSingleQuestion(String id) {
-    // TODO: implement getSingleQuestion.
-    throw UnimplementedError();
+  Future<Either<Failure, ArticleEntity>> getSingleQuestion(String id) async {
+    try {
+      final remoteSingleQuastion = await remoteDataSource.getSingleQuestion(id);
+
+      return Right(remoteSingleQuastion);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }
