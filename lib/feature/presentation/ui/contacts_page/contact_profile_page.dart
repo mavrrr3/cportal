@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/constants/uri_schemes.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/formatter_util.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
@@ -176,10 +177,9 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             img: ImageAssets.phone,
                             onTap: () async {
                               final phoneWithOutMask =
-                                  int.parse(state.getPhone.replaceAll(
-                                RegExp('[^0-9]'),
-                                '',
-                              ));
+                                  FormatterUtil.pfoneWithoutMask(
+                                phone: state.getPhone,
+                              );
                               log(phoneWithOutMask.toString());
 
                               final Uri telLauncher = Uri(
@@ -202,10 +202,9 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             img: ImageAssets.message,
                             onTap: () async {
                               final phoneWithOutMask =
-                                  int.parse(state.getPhone.replaceAll(
-                                RegExp('[^0-9]'),
-                                '',
-                              ));
+                                  FormatterUtil.pfoneWithoutMask(
+                                phone: state.getPhone,
+                              );
                               final Uri smsLauncher = Uri(
                                 scheme: UriSchemes.sms,
                                 path: '$phoneWithOutMask',

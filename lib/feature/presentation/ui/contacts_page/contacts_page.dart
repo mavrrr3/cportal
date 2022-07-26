@@ -139,6 +139,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              /// [Не удалять, нужная фича]
                               // Избранные.
                               // if (state.favorites.isNotEmpty)
                               //   Padding(
