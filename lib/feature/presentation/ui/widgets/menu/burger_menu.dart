@@ -1,13 +1,12 @@
-import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_item_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_items_column_web.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BurgerMenu extends StatelessWidget {
+  final int currentIndex;
   final Function(int) onChange;
   final Function() onClose;
   final double menuWidth;
@@ -15,6 +14,7 @@ class BurgerMenu extends StatelessWidget {
 
   const BurgerMenu({
     Key? key,
+    required this.currentIndex,
     required this.onChange,
     required this.onClose,
     this.menuWidth = 256,
@@ -44,30 +44,10 @@ class BurgerMenu extends StatelessWidget {
                   duration: Duration(milliseconds: (duration * 1.15).toInt()),
                   child: Material(
                     color: theme.cardColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          ImageAssets.logo,
-                          color: theme.text!.withOpacity(0.4),
-                          width: 24,
-                        ),
-                        const SizedBox(height: 24),
-                        // Генерация навигационных элементов меню.
-                        ...List.generate(
-                          state.menuItems.length,
-                          (i) => GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              onChange(i);
-                            },
-                            child: MenuItemRow(
-                              item: state.menuItems[i],
-                              isActive: state.currentIndex == i,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: MenuItemsColumnWeb(
+                      menuItems: state.menuItems,
+                      currentIndex: currentIndex,
+                      onChange: onChange,
                     ),
                   ),
                 ),

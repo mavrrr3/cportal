@@ -106,49 +106,52 @@ class _MainPageState extends State<MainPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (kIsWeb &&
-                              ResponsiveWrapper.of(context)
-                                  .isSmallerThan(TABLET))
-                            BurgerMenuButton(onTap: () {
-                              context.read<NavigationBarBloc>().add(
-                                    const NavBarVisibilityEvent(isActive: true),
-                                  );
-                            }),
-                          SearchInput(
-                            controller: _searchController,
-                            focusNode: _searchFocus,
-                            onChanged: (text) {
-                              log('[Search text] $text');
-                            },
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isLargerThenTablet(context)
-                                  ? showProfile(context)
-                                  : context.pushNamed(
-                                      NavigationRouteNames.profile,
-                                    );
-                            },
-                            child: BlocBuilder<AuthBloc, AuthState>(
-                              builder: (context, state) {
-                                if (state is! Authenticated) {
-                                  return const PlatformProgressIndicator();
-                                } else {
-                                  final user = state.user;
+                          BurgerMenuButton(onTap: () {
+                            context.read<NavigationBarBloc>().add(
+                                  const NavBarVisibilityEvent(isActive: true),
+                                );
+                          }),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                SearchInput(
+                                  controller: _searchController,
+                                  focusNode: _searchFocus,
+                                  onChanged: (text) {
+                                    log('[Search text] $text');
+                                  },
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    isLargerThenTablet(context)
+                                        ? showProfile(context)
+                                        : context.pushNamed(
+                                            NavigationRouteNames.profile,
+                                          );
+                                  },
+                                  child: BlocBuilder<AuthBloc, AuthState>(
+                                    builder: (context, state) {
+                                      if (state is! Authenticated) {
+                                        return const PlatformProgressIndicator();
+                                      } else {
+                                        final user = state.user;
 
-                                  return OnHover(
-                                    builder: (isHovered) {
-                                      return ProfileImage(
-                                        fullName: user.name,
-                                        imgLink: user.photoUrl,
-                                        color: RandomColorService.color,
-                                        size: isHovered ? 48 : 40,
-                                        borderRadius: 12,
-                                      );
+                                        return OnHover(
+                                          builder: (isHovered) {
+                                            return ProfileImage(
+                                              fullName: user.name,
+                                              imgLink: user.photoUrl,
+                                              color: RandomColorService.color,
+                                              size: isHovered ? 48 : 40,
+                                              borderRadius: 12,
+                                            );
+                                          },
+                                        );
+                                      }
                                     },
-                                  );
-                                }
-                              },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
