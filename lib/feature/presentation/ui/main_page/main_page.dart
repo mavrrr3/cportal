@@ -4,9 +4,14 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
@@ -51,6 +56,7 @@ class _MainPageState extends State<MainPage> {
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
+    _fetchContent(context);
   }
 
   @override
@@ -76,6 +82,14 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  void _fetchContent(BuildContext context) {
+    context
+      ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
+      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
+      ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
+      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -91,8 +105,7 @@ class _MainPageState extends State<MainPage> {
                 top: isLargerThenMobile(context) ? 10 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint:
-                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
+                constraint: kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -182,9 +195,7 @@ class _MainPageState extends State<MainPage> {
                                 if (state is NewsLoaded) {
                                   final articles = state.articles;
 
-                                  return kIsWeb
-                                      ? NewsMainWeb(articles: articles)
-                                      : NewsMainMobile(articles: articles);
+                                  return kIsWeb ? NewsMainWeb(articles: articles) : NewsMainMobile(articles: articles);
                                 }
 
                                 return const SizedBox();
@@ -204,9 +215,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: isLargerThenTablet(context)
-                ? const BoxConstraints(maxWidth: 640)
-                : null,
+            constraint: isLargerThenTablet(context) ? const BoxConstraints(maxWidth: 640) : null,
             child: SearchBox(
               isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
@@ -225,8 +234,7 @@ class _MainPageState extends State<MainPage> {
       builder: (context) {
         final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding =
-            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {
