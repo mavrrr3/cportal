@@ -29,10 +29,7 @@ class _QrScannerState extends State<QrScanner> {
   @override
   void reassemble() {
     super.reassemble();
-    if (Platform.isAndroid) {
-      qrController!.pauseCamera();
-    }
-    qrController!.resumeCamera();
+    _reloadCamera();
   }
 
   @override
@@ -76,9 +73,7 @@ class _QrScannerState extends State<QrScanner> {
   }
 
   void _onQrViewCreated(QRViewController controller, BuildContext context) {
-    setState(() {
-      qrController = controller;
-    });
+    qrController = controller;
 
     controller.scannedDataStream.listen((scanData) {
       if (!isStopped) {
@@ -89,6 +84,17 @@ class _QrScannerState extends State<QrScanner> {
         widget.onScannedData(scanData.code ?? '');
       }
     });
+
+    if (Platform.isAndroid) {
+      _reloadCamera();
+    }
+  }
+
+  void _reloadCamera() {
+    if (Platform.isAndroid) {
+      qrController?.pauseCamera();
+    }
+    qrController?.resumeCamera();
   }
 
   @override
