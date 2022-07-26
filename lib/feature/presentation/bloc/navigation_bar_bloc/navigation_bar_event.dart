@@ -7,7 +7,18 @@ abstract class NavigationBarEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class NavigationBarEventImpl extends NavigationBarEvent {
+class NavBarChangePageEvent extends NavigationBarEvent {
   final int index;
-  const NavigationBarEventImpl({required this.index});
+  const NavBarChangePageEvent({required this.index});
+
+  @override
+  List<Object> get props => [index];
+}
+
+class NavBarVisibilityEvent extends NavigationBarEvent {
+  final bool isActive;
+  const NavBarVisibilityEvent({required this.isActive});
+
+  @override
+  List<Object> get props => [isActive];
 }

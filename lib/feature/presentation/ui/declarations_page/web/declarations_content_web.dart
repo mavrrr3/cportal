@@ -82,7 +82,6 @@ class DeclarationsContentWeb extends StatelessWidget {
                         searchController: searchController,
                         onSearch: (text) {},
                         onFilterTap: onFilterTap,
-                        padding: EdgeInsets.zero,
                       ),
 
                       // Выбранные фильтры.

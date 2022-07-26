@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/core/service/auth_service.dart';
 import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/routes.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/connecting_code_info_mobile_popup.dart';
@@ -36,7 +37,7 @@ import 'package:go_router/go_router.dart';
 
 abstract class NavigationRouteNames {
   static const splashScreen = 'splash_screen';
-  static const mainPage = 'main_page';
+  static const mainPage = 'main';
   static const connectingCode = 'connecting_code';
   static const connectingCodeInfoMobile = 'connecting_code_info_mobile';
   static const connectingCodeInfo = 'connecting_code_info';
@@ -198,11 +199,12 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.mainPage,
-      path: '/',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: HomePage(
+      path: Routes.main,
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const HomePage(
           child: MainPage(),
-          desktopMenuIndex: 0,
+          webMenuIndex: 0,
         ),
       ),
     ),
@@ -222,11 +224,12 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.news,
-      path: '/news',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: HomePage(
+      path: Routes.news,
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const HomePage(
           child: NewsPage(),
-          desktopMenuIndex: 1,
+          webMenuIndex: 1,
         ),
       ),
     ),
@@ -239,11 +242,12 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.questions,
-      path: '/questions',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: HomePage(
+      path: Routes.questions,
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const HomePage(
           child: QuestionsPage(),
-          desktopMenuIndex: 2,
+          webMenuIndex: 2,
         ),
       ),
     ),
@@ -301,16 +305,24 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.contacts,
-      path: '/contacts',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: ContactsPage(),
+      path: Routes.contacts,
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const HomePage(
+          child: ContactsPage(),
+          webMenuIndex: 4,
+        ),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.declarations,
-      path: '/declarations',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: DeclarationsPage(),
+      path: Routes.declarations,
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const HomePage(
+          child: DeclarationsPage(),
+          webMenuIndex: 3,
+        ),
       ),
     ),
     GoRoute(

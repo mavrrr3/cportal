@@ -9,7 +9,6 @@ import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/web/declarations_content_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -21,7 +20,8 @@ class DeclarationsPage extends StatefulWidget {
   State<DeclarationsPage> createState() => _DeclarationsPageState();
 }
 
-class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerProviderStateMixin {
+class _DeclarationsPageState extends State<DeclarationsPage>
+    with SingleTickerProviderStateMixin {
   late bool _isFilterOpenWeb;
   late TextEditingController _searchController;
   late TabController _tabController;
@@ -36,8 +36,10 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
 
   // Во время инициализации запускается ивент и подгружаются заявления и фильтры.
   void _contentInit() {
-    BlocProvider.of<DeclarationsBloc>(context, listen: false).add(const FetchDeclarationsEvent());
-    BlocProvider.of<FilterDeclarationsBloc>(context, listen: false).add(FetchFiltersEvent());
+    BlocProvider.of<DeclarationsBloc>(context, listen: false)
+        .add(const FetchDeclarationsEvent());
+    BlocProvider.of<FilterDeclarationsBloc>(context, listen: false)
+        .add(FetchFiltersEvent());
   }
 
   @override
@@ -50,44 +52,28 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
         backgroundColor: theme.background,
         body: Stack(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ResponsiveVisibility(
-                  visible: false,
-                  visibleWhen: const [
-                    Condition<dynamic>.largerThan(name: MOBILE),
-                  ],
-                  // Меню Web.
-                  child: DesktopMenu(
-                    currentIndex: 3,
-                    onChange: (index) => changePage(context, index),
-                  ),
-                ),
-                // ignore: prefer_if_elements_to_conditional_expressions
-                isLargerThenTablet(context)
-                    ? DeclarationsContentWeb(
-                        searchController: _searchController,
-                        onFilterTap: () {
-                          setState(() {
-                            _isFilterOpenWeb = true;
-                          });
-                        },
-                      )
-                    : DeclarationsContentMobile(
-                        searchController: _searchController,
-                        tabController: _tabController,
-                        onFilterTap: () async {
-                          await showFilterMobile(
-                            context,
-                            onApply: _onApplyFilter,
-                            onClear: _onClearFilter,
-                            type: FilterType.declarations,
-                          );
-                        },
-                      ),
-              ],
-            ),
+            if (isLargerThenTablet(context))
+              DeclarationsContentWeb(
+                searchController: _searchController,
+                onFilterTap: () {
+                  setState(() {
+                    _isFilterOpenWeb = true;
+                  });
+                },
+              )
+            else
+              DeclarationsContentMobile(
+                searchController: _searchController,
+                tabController: _tabController,
+                onFilterTap: () async {
+                  await showFilterMobile(
+                    context,
+                    onApply: _onApplyFilter,
+                    onClear: _onClearFilter,
+                    type: FilterType.declarations,
+                  );
+                },
+              ),
             if (_isFilterOpenWeb)
               GestureDetector(
                 onTap: () => setState(() {
