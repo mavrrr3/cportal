@@ -86,8 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: GestureDetector(
-                          onTap: () => context
-                              .goNamed(NavigationRouteNames.onBoardingStart),
+                          onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
                           child: RowProfile(
                             firstWidget: SvgIcon(
                               iconColor,
@@ -132,10 +131,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 24),
                     GestureDetector(
-                      onTap: () =>
-                          context.goNamed(NavigationRouteNames.changePin),
+                      onTap: () => context.goNamed(NavigationRouteNames.changePin),
                       child: RowProfile(
                         firstWidget: SvgIcon(
                           iconColor,
@@ -143,6 +141,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: 20,
                         ),
                         text: localizedStrings.changePin,
+                        secondWidget: getBlueArrow(),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => context.pushNamed(NavigationRouteNames.devices),
+                      child: RowProfile(
+                        firstWidget: SvgIcon(
+                          iconColor,
+                          path: ImageAssets.addDevice,
+                          width: 20,
+                        ),
+                        text: localizedStrings.devices,
                         secondWidget: getBlueArrow(),
                       ),
                     ),
@@ -219,8 +231,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 24),
                   OnTapNotify(
-                    text:
-                        'Оповещения выключены на ${localizedStrings.forFourHour}',
+                    text: 'Оповещения выключены на ${localizedStrings.forFourHour}',
                     child: Text(
                       localizedStrings.forFourHour,
                       style: theme.textTheme.px16.copyWith(
@@ -230,8 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 24),
                   OnTapNotify(
-                    text:
-                        'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
+                    text: 'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
                     child: Text(
                       localizedStrings.forTwentyFourHour,
                       style: theme.textTheme.px16.copyWith(
@@ -241,8 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 24),
                   OnTapNotify(
-                    text:
-                        'Оповещения выключены ${localizedStrings.forever.toLowerCase()}',
+                    text: 'Оповещения выключены ${localizedStrings.forever.toLowerCase()}',
                     child: Text(
                       localizedStrings.forever,
                       style: theme.textTheme.px16.copyWith(

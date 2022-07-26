@@ -39,7 +39,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
       emit(PinCodeNotMatch());
       await Future.delayed(const Duration(seconds: 1), () => emit(PinCodeInitialState()));
     } else {
-      await _pinCodeRepository.savePin(event.pinCode);
+      await _pinCodeRepository.savePin(pinCode: event.pinCode);
       emit(PinCodeSuccessfullyChanged());
     }
   }
