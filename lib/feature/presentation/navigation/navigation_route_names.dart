@@ -72,11 +72,11 @@ final GoRouter router = GoRouter(
   redirect: (state) {
     final authService = sl<AuthService>();
 
-    final connectingCodeLocation = state.namedLocation(NavigationRouteNames.connectingCode);
-    final connectingQrLocation = state.namedLocation(NavigationRouteNames.connectingQr);
-    final qrScannerLocation = state.namedLocation(NavigationRouteNames.qrScanner);
-    final connectingInfoLocation = state.namedLocation(NavigationRouteNames.connectingCodeInfo);
-    final connectingInfoMobileLocation = state.namedLocation(NavigationRouteNames.connectingCodeInfoMobile);
+    const connectingCodeLocation = '/connecting_code';
+    const connectingQrLocation = '/connecting_qr';
+    const qrScannerLocation = '/qr_scanner';
+    const connectingInfoLocation = '/connecting_code/info';
+    const connectingInfoMobileLocation = '/connecting_code/info_mobile';
 
     final isGoingToConnectingCode = state.subloc == connectingCodeLocation;
     final isGoingToConnectingQr = state.subloc == connectingQrLocation;
