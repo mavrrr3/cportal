@@ -87,13 +87,13 @@ class NewsRepositoryWeb implements INewsRepository {
 
   @override
   Future<Either<Failure, ArticleEntity>> getSingleNews(String id) {
-    // TODO: implement getSingleNews
+    // TODO: implement getSingleNews.
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, ArticleEntity>> getSingleQuestion(String id) {
-    // TODO: implement getSingleQuestion
+    // TODO: implement getSingleQuestion.
     throw UnimplementedError();
   }
 }
