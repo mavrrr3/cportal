@@ -15,31 +15,30 @@ class FavoritesWideScreen extends StatelessWidget {
     required this.theme,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Wrap(
-        spacing: 12,
-        runSpacing: 12,
-        children: List.generate(
-          items.length,
-          (i) => GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              onTap(i);
-            },
-            child: SizedBox(
-              height: 48,
-              width: 48,
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  items[i].photoLink,
-                ),
-                backgroundColor: theme.text?.withOpacity(0.38),
+      spacing: 12,
+      runSpacing: 12,
+      children: List.generate(
+        items.length,
+        (i) => GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            onTap(i);
+          },
+          child: SizedBox(
+            height: 48,
+            width: 48,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                items[i].photoLink,
               ),
+              backgroundColor: theme.text?.withOpacity(0.38),
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }

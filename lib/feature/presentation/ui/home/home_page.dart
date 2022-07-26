@@ -26,7 +26,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 const List<OnboardingEntity> _onboardingContent = [
   OnboardingEntity(
     title: 'Как общаться с коллегами?',
-    description: 'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
+    description:
+        'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
     image: 'assets/img/onboarding/1.svg',
   ),
   OnboardingEntity(
@@ -37,7 +38,8 @@ const List<OnboardingEntity> _onboardingContent = [
   ),
   OnboardingEntity(
     title: 'Любите читать?',
-    description: 'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
+    description:
+        'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
     image: 'assets/img/onboarding/3.svg',
   ),
   OnboardingEntity(
@@ -79,7 +81,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin, WidgetsBindingObserver {
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
   // Для онбординга.
   late bool _isOnboarding;
@@ -102,8 +105,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
 
     _onboardingAnimationListener();
     _pageDuration = const Duration(seconds: 5);
-    BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent(isFirstFetch: true));
-    BlocProvider.of<FilterContactsBloc>(context, listen: false).add(FetchFiltersEvent());
+    BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(const FetchContactsEvent(isFirstFetch: true));
+    BlocProvider.of<FilterContactsBloc>(context, listen: false)
+        .add(FetchFiltersEvent());
     super.initState();
   }
 
@@ -170,7 +175,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
 
                   // Текущая страница.
                   Expanded(
-                    child: kIsWeb ? widget.child : listPages[state.currentIndex],
+                    child:
+                        kIsWeb ? widget.child : listPages[state.currentIndex],
                   ),
                 ],
               ),

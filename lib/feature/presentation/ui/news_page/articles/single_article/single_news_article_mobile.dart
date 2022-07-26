@@ -13,12 +13,12 @@ import 'package:intl/intl.dart';
 
 class SingleNewsArticleMobile extends StatelessWidget {
   final ArticleEntity article;
-  final List<ArticleEntity> articles;
+  final List<ArticleEntity>? articles;
 
   const SingleNewsArticleMobile({
     Key? key,
     required this.article,
-    required this.articles,
+    this.articles,
   }) : super(key: key);
 
   @override
@@ -112,10 +112,13 @@ class SingleNewsArticleMobile extends StatelessWidget {
                             ],
                           ),
                         ),
-                        NewsMainMobile(
-                          articles: articles,
-                          currentArticle: article,
-                        ),
+                        if (articles != null)
+                          NewsMainMobile(
+                            articles: articles!,
+                            currentArticle: article,
+                          )
+                        else
+                          const SizedBox(),
                       ],
                     ),
                   ),
