@@ -61,7 +61,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/',
+  initialLocation: '/splash_screen',
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -271,7 +271,10 @@ final GoRouter router = GoRouter(
       path: '/contacts',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: const ContactsPage(),
+        child: const HomePage(
+          child: ContactsPage(),
+          webMenuIndex: 4,
+        ),
       ),
     ),
     GoRoute(
@@ -279,7 +282,10 @@ final GoRouter router = GoRouter(
       path: '/declarations',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: const DeclarationsPage(),
+        child: const HomePage(
+          child: DeclarationsPage(),
+          webMenuIndex: 3,
+        ),
       ),
     ),
     GoRoute(

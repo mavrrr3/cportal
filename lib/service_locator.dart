@@ -258,10 +258,7 @@ Future<void> init() async {
     () => Dio(
       BaseOptions(
         baseUrl: AppConfig.apiUri,
-        headers: <String, dynamic>{
-          'authorization': AppConfig.authKey,
-          'token': 'e5c6cc0a-1771-4e2c-bc6a-4019267bac66',
-        },
+        headers: <String, dynamic>{'authorization': AppConfig.authKey},
       ),
     ),
   );

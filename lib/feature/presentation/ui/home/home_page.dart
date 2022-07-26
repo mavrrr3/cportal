@@ -174,7 +174,8 @@ class _HomePageState extends State<HomePage>
                             );
                           },
                           currentIndex: widget.webMenuIndex,
-                          onChange: (index) =>  MenuService.changePage(context, index),
+                          onChange: (index) =>
+                              MenuService.changePage(context, index),
                         ),
                       ),
 
@@ -291,15 +292,11 @@ class _HomePageState extends State<HomePage>
               ),
 
               // Bottom Bar.
-              bottomNavigationBar: const ResponsiveVisibility(
-                hiddenWhen: [
-                  Condition<dynamic>.largerThan(name: MOBILE),
-                ],
-                child: CustomBottomBar(),
-              ),
+              bottomNavigationBar: !kIsWeb ? const CustomBottomBar() : null,
             ),
             BurgerMenu(
-              onChange: (i) =>  MenuService.changePage(context, i),
+              currentIndex: widget.webMenuIndex,
+              onChange: (i) => MenuService.changePage(context, i),
               onClose: () => context
                   .read<NavigationBarBloc>()
                   .add(const NavBarVisibilityEvent(isActive: false)),
