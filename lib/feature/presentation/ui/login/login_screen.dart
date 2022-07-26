@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_desktop/login_desktop_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_mobile/login_mobile_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final state = authBloc.state;
 
     if (state is HasAuthCredentials && state.enabledBiometric != null) {
-      authBloc.add(LogInWithBiometrics(AppLocalizations.of(context)!.logInToContinue));
+      authBloc.add(
+        LogInWithBiometrics(
+          AppLocalizations.of(context)!.logInToContinue,
+        ),
+      );
     }
     super.didChangeDependencies();
   }

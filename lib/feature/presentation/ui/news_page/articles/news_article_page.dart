@@ -1,5 +1,7 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/single_article/single_news_article_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/single_article/single_news_article_web.dart';
@@ -18,41 +20,66 @@ class NewsArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late ArticleEntity? singleArticle;
+
+    final state = context.watch<FetchNewsBloc>().state;
+    if (state is NewsLoaded) {
+      singleArticle = state.singleArticle(id);
+    }
+
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return BlocBuilder<FetchNewsBloc, FetchNewsState>(
-      builder: (context, state) {
-        if (state is NewsLoaded) {
-          ArticleEntity articlefromBloc() {
-            return state.articles
-                .where((element) => element.id == id)
-                .toList()
-                .first;
-          }
+    return Scaffold(
+      backgroundColor: theme.background,
+      body: singleArticle != null
+          ? BlocBuilder<FetchNewsBloc, FetchNewsState>(
+              builder: (context, state) {
+                if (state is NewsLoaded) {
+                  return Swipe(
+                    onSwipeRight: () {
+                      if (!kIsWeb) {
+                        context.pop();
+                      }
+                    },
+                    child: kIsWeb
+                        ? SingleNewsArticleWeb(
+                            article: singleArticle!,
+                            articles: state.articles,
+                          )
+                        : SingleNewsArticleMobile(
+                            article: singleArticle!,
+                            articles: state.articles,
+                          ),
+                  );
+                }
 
-          return Swipe(
-            onSwipeRight: () {
-              if (!kIsWeb) {
-                GoRouter.of(context).pop();
-              }
-            },
-            child: Scaffold(
-              backgroundColor: theme.background,
-              body: kIsWeb
-                  ? SingleNewsArticleWeb(
-                      article: articlefromBloc(),
-                    )
-                  : SingleNewsArticleMobile(
-                      article: articlefromBloc(),
-                      articles: state.articles,
-                    ),
+                // TODO: Отработать другие стейты.
+                return const SizedBox();
+              },
+            )
+          : BlocBuilder<GetSingleNewsBloc, GetSingleNewsState>(
+              builder: (context, state) {
+                if (state is GetSingleNewsLoadedState) {
+                  return Swipe(
+                    onSwipeRight: () {
+                      if (!kIsWeb) {
+                        context.pop();
+                      }
+                    },
+                    child: kIsWeb
+                        ? SingleNewsArticleWeb(
+                            article: state.singleNews,
+                          )
+                        : SingleNewsArticleMobile(
+                            article: state.singleNews,
+                          ),
+                  );
+                }
+
+                // TODO: Отработать другие стейты.
+                return const SizedBox();
+              },
             ),
-          );
-        }
-
-        // TODO: Отработать другие стейты.
-        return const SizedBox();
-      },
     );
   }
 }

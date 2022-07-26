@@ -8,7 +8,7 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/co
 class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
   final Function(int) onTap;
-  
+
   /// Рендеринг контактов.
   const ContactsList({
     Key? key,

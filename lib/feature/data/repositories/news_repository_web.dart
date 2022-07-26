@@ -5,6 +5,7 @@ import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_n
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -82,5 +83,17 @@ class NewsRepositoryWeb implements INewsRepository {
     } on ServerException {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, ArticleEntity>> getSingleNews(String id) {
+    // TODO: implement getSingleNews
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, ArticleEntity>> getSingleQuestion(String id) {
+    // TODO: implement getSingleQuestion
+    throw UnimplementedError();
   }
 }

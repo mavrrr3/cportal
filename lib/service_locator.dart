@@ -16,6 +16,7 @@ import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/con
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/location_datasource/location_remote_datasorce.dart';
+import 'package:cportal_flutter/feature/data/datasources/main_search_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
@@ -34,6 +35,7 @@ import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_contacts_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_location_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_main_search_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_profile_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_user_remote_datasource.dart';
@@ -44,6 +46,7 @@ import 'package:cportal_flutter/feature/data/repositories/contacts_repository_mo
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_web.dart';
+import 'package:cportal_flutter/feature/data/repositories/main_search_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/news_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/pin_code_repository.dart';
@@ -56,6 +59,7 @@ import 'package:cportal_flutter/feature/domain/repositories/i_connecting_devices
 import 'package:cportal_flutter/feature/domain/repositories/i_connecting_qr_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_filter_repository.dart';
+import 'package:cportal_flutter/feature/domain/repositories/i_main_search_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_news_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
@@ -68,16 +72,19 @@ import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_pin_cod
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/generate_connecting_code_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_connecting_data_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_scanned_data_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/contacts/fetch_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/main_search_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/news/get_single_news_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_questions_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_questions_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_declarations_filters_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_filters_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/search_contacts_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/search_profile_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/declaration/fetch_declarations_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/contacts/fetch_contacts_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/profile/get_single_profile_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/contacts/search_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/profile/search_profile_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/questions/get_single_question_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
@@ -87,6 +94,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
@@ -100,6 +109,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -108,6 +118,8 @@ Future<void> init() async {
   // BLOC/CUBIT.
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
   sl.registerFactory(() => AuthBloc(sl(), sl(), sl(), sl())..add(const CheckLogin()));
+  sl.registerFactory(() => GetSingleNewsBloc(getSingleNews: sl()));
+  sl.registerFactory(() => GetSingleQuestionBloc(getSingleQuestion: sl()));
   sl.registerFactory(() => ConnectingCodeBloc(sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
   sl.registerFactory(() => BiometricBloc(sl()));
@@ -132,8 +144,12 @@ Future<void> init() async {
   sl.registerFactory(() => ConnectingQrBloc(sl(), sl(), sl()));
   sl.registerFactory(() => ConnectingDevicesBloc(sl(), sl()));
 
+  sl.registerFactory(() => MainSearchBloc(sl()));
+
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
+  sl.registerLazySingleton(() => GetSingleNewsUseCase(sl()));
+  sl.registerLazySingleton(() => GetSingleQuestionUseCase(sl()));
   sl.registerLazySingleton(() => SearchProfileUseCase(sl()));
   sl.registerLazySingleton(() => FetchNewsUseCase(sl()));
   sl.registerLazySingleton(() => FetchQuestionsUseCase(sl()));
@@ -150,6 +166,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GenerateConnectingCodeUseCase(sl()));
   sl.registerLazySingleton(() => SendScannedDataUseCase(sl()));
   sl.registerLazySingleton(() => SendConnectingDataUseCase(sl()));
+  sl.registerLazySingleton(() => MainSearchUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -235,6 +252,10 @@ Future<void> init() async {
     () => ConnectingQrRepository(sl()),
   );
 
+  sl.registerLazySingleton<IMainSearchRepository>(
+    () => MainSearchRepository(remoteDataSource: sl()),
+  );
+
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
     () => ProfileRemoteDataSource(sl(), sl()),
@@ -283,6 +304,9 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<IConnectingQrRemoteDataSource>(
     () => ConnectingQrRemoteDataSource(sl()),
+  );
+  sl.registerLazySingleton<IMainSearchRemoteDataSource>(
+    () => MainSearchRemoteDataSource(sl()),
   );
 
   // CORE.

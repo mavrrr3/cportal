@@ -9,7 +9,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
@@ -115,7 +115,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                       item: item,
                                     ),
                                   );
-                                  await Future<dynamic>.delayed(const Duration(milliseconds: 150));
+                                  await Future<dynamic>.delayed(
+                                    const Duration(milliseconds: 150),
+                                  );
                                   _sendFilters(context, isFromRemove: true);
                                 },
                               );

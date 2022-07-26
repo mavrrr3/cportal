@@ -21,11 +21,13 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/foundation.dart';
@@ -38,6 +40,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.da
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:responsive_framework/responsive_framework.dart';
+
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -104,6 +108,7 @@ class Main extends StatelessWidget {
         builder: (light, dark) => MaterialApp.router(
           routerDelegate: router.routerDelegate,
           routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
           debugShowCheckedModeBanner: false,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
@@ -168,6 +173,15 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<ConnectingDevicesBloc>(
       create: (ctx) => sl<ConnectingDevicesBloc>(),
+    ),
+    BlocProvider<MainSearchBloc>(
+      create: (ctx) => sl<MainSearchBloc>(),
+    ),
+    BlocProvider<GetSingleNewsBloc>(
+      create: (ctx) => sl<GetSingleNewsBloc>(),
+    ),
+    BlocProvider<GetSingleQuestionBloc>(
+      create: (ctx) => sl<GetSingleQuestionBloc>(),
     ),
   ];
 }
