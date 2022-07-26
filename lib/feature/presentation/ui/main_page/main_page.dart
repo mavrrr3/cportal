@@ -56,6 +56,7 @@ class _MainPageState extends State<MainPage> {
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
+    _fetchContent(context);
   }
 
   @override
@@ -83,15 +84,14 @@ class _MainPageState extends State<MainPage> {
 
   void _fetchContent(BuildContext context) {
     context
-      ..watch<FetchNewsBloc>().add(const FetchAllNewsEvent())
-      ..watch<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
-      ..watch<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
-      ..watch<FilterContactsBloc>().add(FetchFiltersEvent());
+      ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
+      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
+      ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
+      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    _fetchContent(context);
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return GestureDetector(
