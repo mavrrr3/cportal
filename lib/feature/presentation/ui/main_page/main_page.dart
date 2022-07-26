@@ -82,6 +82,14 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  void _fetchContent(BuildContext context) {
+    context
+      ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
+      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
+      ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
+      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -268,13 +276,5 @@ class _MainPageState extends State<MainPage> {
       context,
       listen: false,
     ).add(MainSearch(query));
-  }
-
-  void _fetchContent(BuildContext context) {
-    context
-      ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
-      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
-      ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
-      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
   }
 }
