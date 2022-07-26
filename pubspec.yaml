@@ -72,7 +72,7 @@ dependencies:
   retrofit: ^3.0.1+1
   json_annotation: ^4.5.0
   json_serializable: ^6.2.0
-  device_info_plus: ^4.0.0
+  device_info_plus: ^4.0.1
   expand_tap_area: ^1.1.1
 
 dev_dependencies:
