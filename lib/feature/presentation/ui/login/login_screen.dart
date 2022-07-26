@@ -29,7 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (state is HasAuthCredentials && state.enabledBiometric != null) {
       authBloc.add(
-          LogInWithBiometrics(AppLocalizations.of(context)!.logInToContinue));
+        LogInWithBiometrics(
+          AppLocalizations.of(context)!.logInToContinue,
+        ),
+      );
     }
     super.didChangeDependencies();
   }
@@ -45,10 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: ResponsiveWrapper.of(context).isLargerThan(TABLET)
-          ? LoginDesktopScreen(
-              pinController: pinController, pinFocusNode: pinFocusNode)
-          : LoginMobileScreen(
-              pinController: pinController, pinFocusNode: pinFocusNode),
+          ? LoginDesktopScreen(pinController: pinController, pinFocusNode: pinFocusNode)
+          : LoginMobileScreen(pinController: pinController, pinFocusNode: pinFocusNode),
     );
   }
 

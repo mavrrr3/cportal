@@ -83,8 +83,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             _onSearchInput(text);
                           },
                           onFilterTap: () async {
-                            if (!ResponsiveWrapper.of(context)
-                                .isLargerThan(MOBILE)) {
+                            if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
                               await showFilterMobile(
                                 context,
                                 onApply: _onApplyFilter,
@@ -117,7 +116,8 @@ class _ContactsPageState extends State<ContactsPage> {
                                     ),
                                   );
                                   await Future<dynamic>.delayed(
-                                      const Duration(milliseconds: 150));
+                                    const Duration(milliseconds: 150),
+                                  );
                                   _sendFilters(context, isFromRemove: true);
                                 },
                               );
@@ -130,8 +130,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         BlocBuilder<ContactsBloc, ContactsState>(
                           builder: (context, state) {
                             List<ProfileEntity> contacts = [];
-                            if (state is ContactsLoadingState &&
-                                state.isFirstFetch) {
+                            if (state is ContactsLoadingState && state.isFirstFetch) {
                               return const Expanded(
                                 child: Center(
                                   child: CircularProgressIndicator(),
@@ -233,8 +232,7 @@ class _ContactsPageState extends State<ContactsPage> {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            BlocProvider.of<ContactsBloc>(context)
-                .add(const FetchContactsEvent());
+            BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
           }
         }
       }
@@ -324,9 +322,7 @@ class _ContactsPageState extends State<ContactsPage> {
     ).add(
       SearchContactsEvent(
         query: text,
-        filters: (state is FilterLoadedState)
-            ? OnlySelectedFiltersService.count(state.contactsFilters)
-            : [],
+        filters: (state is FilterLoadedState) ? OnlySelectedFiltersService.count(state.contactsFilters) : [],
       ),
     );
   }
@@ -336,8 +332,7 @@ class _ContactsPageState extends State<ContactsPage> {
       context,
     ).state;
     if (state is FilterLoadedState) {
-      final onlySelectedFilters =
-          OnlySelectedFiltersService.count(state.contactsFilters);
+      final onlySelectedFilters = OnlySelectedFiltersService.count(state.contactsFilters);
 
       if (onlySelectedFilters.isNotEmpty) {
         BlocProvider.of<ContactsBloc>(

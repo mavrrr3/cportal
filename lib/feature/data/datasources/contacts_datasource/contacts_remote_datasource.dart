@@ -22,8 +22,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
 
   @override
   Future<ContactsModel> fetchContacts(int page) async {
-    final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
 
     try {
       final response = await _dio.fetch<Map<String, dynamic>>(
@@ -48,9 +47,10 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
 
   @override
   Future<List<ProfileModel>> fetchContactsBySearch(
-      String query, List<FilterEntity> filters) async {
-    final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
+    String query,
+    List<FilterEntity> filters,
+  ) async {
+    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?q=$query';
     try {
       final response = await _dio.get<String>(baseUrl);
 

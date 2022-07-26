@@ -13,9 +13,17 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - name: 🔎 Checkout source code
+        run: |
+          echo Install Dependencies; \
+            flutter pub get
+          echo Check format; \
+            dart format --set-exit-if-changed -l 120 -o none lib
+          echo Check analyzer; \
+            flutter analyze --fatal-infos --fatal-warnings lib
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter pub run dart_code_metrics:metrics analyze lib
@@ -24,16 +32,22 @@ jobs:
   build_ios:
     name: Build Flutter (iOs)
     needs: [flutter_test]
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
           architecture: x64
+      - name: 🔎 Checkout source code
+        run: |
+          echo Install Dependencies; \
+            flutter pub get
+          echo Check format; \
+            dart format --set-exit-if-changed -l 120 -o none lib
+          echo Check analyzer; \
+            flutter analyze --fatal-infos --fatal-warnings lib
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build ios --flavor=prod --release --no-codesign
@@ -43,13 +57,21 @@ jobs:
     needs: [flutter_test]
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - name: 🔎 Checkout source code
+        run: |
+          echo Install Dependencies; \
+            flutter pub get
+          echo Check format; \
+            dart format --set-exit-if-changed -l 120 -o none lib
+          echo Check analyzer; \
+            flutter analyze --fatal-infos --fatal-warnings lib
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build appbundle --flavor=prod
@@ -59,13 +81,21 @@ jobs:
     needs: [flutter_test]
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - name: 🔎 Checkout source code
+        run: |
+          echo Install Dependencies; \
+            flutter pub get
+          echo Check format; \
+            dart format --set-exit-if-changed -l 120 -o none lib
+          echo Check analyzer; \
+            flutter analyze --fatal-infos --fatal-warnings lib
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build web
