@@ -16,6 +16,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - name: 🔎 Checkout source code
+        run: |
+          echo Install Dependencies; \
+            flutter pub get
+          echo Check format; \
+            dart format --set-exit-if-changed -l 120 -o none lib
+          echo Check analyzer; \
+            flutter analyze --fatal-infos --fatal-warnings lib
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter pub run dart_code_metrics:metrics analyze lib
@@ -56,6 +64,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - name: 🔎 Checkout source code
+        run: |
+          echo Install Dependencies; \
+            flutter pub get
+          echo Check format; \
+            dart format --set-exit-if-changed -l 120 -o none lib
+          echo Check analyzer; \
+            flutter analyze --fatal-infos --fatal-warnings lib
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build appbundle --flavor=prod
@@ -72,6 +88,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - name: 🔎 Checkout source code
+        run: |
+          echo Install Dependencies; \
+            flutter pub get
+          echo Check format; \
+            dart format --set-exit-if-changed -l 120 -o none lib
+          echo Check analyzer; \
+            flutter analyze --fatal-infos --fatal-warnings lib
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build web
