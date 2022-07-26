@@ -1,3 +1,5 @@
+import 'package:cportal_flutter/core/service/auth_service.dart';
+import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/routes.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
@@ -12,6 +14,7 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_p
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/create_declaration_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/declaration_info_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/devices/devices_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
@@ -27,6 +30,8 @@ import 'package:cportal_flutter/feature/presentation/ui/pin_code/create_pin_code
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
+import 'package:cportal_flutter/service_locator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,11 +63,42 @@ abstract class NavigationRouteNames {
   static const declarations = 'declarations';
   static const createDeclaration = 'create_declaration';
   static const declarationInfo = 'declaration_info';
+  static const devices = 'devices';
 }
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
   initialLocation: '/splash_screen',
+  refreshListenable: sl<AuthService>(),
+  redirect: (state) {
+    final authService = sl<AuthService>();
+
+    const connectingCodeLocation = '/connecting_code';
+    const connectingQrLocation = '/connecting_qr';
+    const qrScannerLocation = '/qr_scanner';
+    const connectingInfoLocation = '/connecting_code/info';
+    const connectingInfoMobileLocation = '/connecting_code/info_mobile';
+
+    final isGoingToConnectingCode = state.subloc == connectingCodeLocation;
+    final isGoingToConnectingQr = state.subloc == connectingQrLocation;
+    final isGoingToQrScanner = state.subloc == qrScannerLocation;
+    final isGoingToConnectingCodeInfo =
+        state.subloc == connectingInfoLocation || state.subloc == connectingInfoMobileLocation;
+
+    final isAuthenticated = authService.authStatus == AuthenticationStatus.authenticated;
+    final isUnAuthenticated = authService.authStatus == AuthenticationStatus.unauthenticated;
+
+    if ((isGoingToConnectingQr || isGoingToQrScanner || isGoingToConnectingCodeInfo || isGoingToConnectingCodeInfo) &&
+        !isAuthenticated) {
+      return null;
+    }
+
+    if (isUnAuthenticated && !isGoingToConnectingCode) {
+      return connectingCodeLocation;
+    }
+
+    return null;
+  },
   routes: <GoRoute>[
     GoRoute(
       name: NavigationRouteNames.splashScreen,
@@ -129,9 +165,7 @@ final GoRouter router = GoRouter(
       path: '/qr_scanner',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: QrScanner(
-          onScannedData: state.extra as Function(String data),
-        ),
+        child: QrScanner(onScannedData: state.extra as Function(String data)),
       ),
     ),
     GoRoute(
@@ -238,6 +272,17 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const ProfilePage(),
       ),
+      routes: [
+        GoRoute(
+          name: NavigationRouteNames.devices,
+          path: 'devices',
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const DevicesScreen(),
+          ),
+          redirect: (state) => kIsWeb ? '/' : null,
+        ),
+      ],
     ),
     GoRoute(
       name: NavigationRouteNames.userData,

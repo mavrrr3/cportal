@@ -7,7 +7,7 @@ class PinCodeRepository implements IPinCodeRepository {
   PinCodeRepository(this._hive);
 
   @override
-  Future<void> savePin(String pinCode) async {
+  Future<void> savePin({required String pinCode}) async {
     final box = await _hive.openBox<String>('pin_code');
     await box.put('pin_code', pinCode);
   }
@@ -20,7 +20,7 @@ class PinCodeRepository implements IPinCodeRepository {
   }
 
   @override
-  Future<bool> pinIsMatched(String pinCode) async {
+  Future<bool> pinIsMatched({required String pinCode}) async {
     final savedPinCode = await _getPin();
 
     return savedPinCode == pinCode;

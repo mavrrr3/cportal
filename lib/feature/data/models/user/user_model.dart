@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides, overridden_fields
+
 import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -7,7 +9,7 @@ part 'user_model.g.dart';
 
 @JsonSerializable(createToJson: false)
 @HiveType(typeId: 0)
-class UserModel {
+class UserModel extends UserEntity {
   @HiveField(0)
   final String token;
   @HiveField(1)
@@ -29,7 +31,7 @@ class UserModel {
   @HiveField(8)
   final String photoUrl;
 
-  UserModel({
+  const UserModel({
     required this.token,
     required this.id,
     required this.name,
@@ -38,19 +40,15 @@ class UserModel {
     required this.birthDate,
     required this.contacts,
     required this.photoUrl,
-  });
+  }) : super(
+          id: id,
+          name: name,
+          department: department,
+          position: position,
+          birthDate: birthDate,
+          contacts: contacts,
+          photoUrl: photoUrl,
+        );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
-
-  UserEntity toEntity() {
-    return UserEntity(
-      id: id,
-      name: name,
-      department: department,
-      position: position,
-      birthDate: birthDate,
-      contacts: contacts.map((contact) => contact.toEntity()).toList(),
-      photoUrl: photoUrl,
-    );
-  }
 }

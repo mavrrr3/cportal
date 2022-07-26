@@ -1,9 +1,12 @@
-import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
+import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
+import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
+import 'package:dartz/dartz.dart';
 
 abstract class IAuthRepository {
-  Future<UserModel?> logInWithConnectingCode({required String connectingCode});
+  Future<Either<Failure, UserEntity>> logInWithConnectingCode({required String connectingCode});
 
-  Future<UserModel?> getUser();
+  Future<void> logOut();
 
-  Future<bool> isAuthenticated();
+  Stream<AuthenticationStatus> get status;
 }
