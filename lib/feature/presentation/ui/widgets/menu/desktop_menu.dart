@@ -31,7 +31,7 @@ class DesktopMenu extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: MenuItemsColumnWeb(
               menuItems: state.menuItems,
-              currentIndex: state.currentIndex,
+              currentIndex: currentIndex,
               onChange: onChange,
             ),
           ),

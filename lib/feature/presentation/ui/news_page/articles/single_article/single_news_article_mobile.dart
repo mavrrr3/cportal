@@ -34,7 +34,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
           DesktopMenu(
             currentIndex: 1,
             onChange: (index) {
-               MenuService.changePage(context, index);
+              MenuService.changePage(context, index);
             },
           ),
         Expanded(

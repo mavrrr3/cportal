@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/routes.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/connecting_code_info_mobile_popup.dart';
@@ -31,7 +32,7 @@ import 'package:go_router/go_router.dart';
 
 abstract class NavigationRouteNames {
   static const splashScreen = 'splash_screen';
-  static const mainPage = 'main_page';
+  static const mainPage = 'main';
   static const connectingCode = 'connecting_code';
   static const connectingCodeInfoMobile = 'connecting_code_info_mobile';
   static const connectingCodeInfo = 'connecting_code_info';
@@ -89,7 +90,9 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoMobilePopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -108,7 +111,9 @@ final GoRouter router = GoRouter(
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -163,7 +168,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.mainPage,
-      path: '/',
+      path: Routes.main,
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -190,7 +195,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.news,
-      path: '/news',
+      path: Routes.news,
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -209,7 +214,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.questions,
-      path: '/questions',
+      path: Routes.questions,
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -268,7 +273,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.contacts,
-      path: '/contacts',
+      path: Routes.contacts,
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -279,7 +284,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.declarations,
-      path: '/declarations',
+      path: Routes.declarations,
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(

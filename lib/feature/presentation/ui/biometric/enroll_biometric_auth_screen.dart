@@ -73,7 +73,9 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                     ),
                     onPressed: () => context.read<BiometricBloc>().add(
                           EnrollBiometricAuth(
-                              strings.logInToContinue, biometricType,),
+                            strings.logInToContinue,
+                            biometricType,
+                          ),
                         ),
                     child: Text(
                       strings.yes,

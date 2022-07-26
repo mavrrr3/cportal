@@ -2,17 +2,13 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tab_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tabs_content.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 class DeclarationsContentMobile extends StatelessWidget {
   final TextEditingController searchController;
@@ -38,24 +34,10 @@ class DeclarationsContentMobile extends StatelessWidget {
 
           Padding(
             padding: getHorizontalPadding(context),
-            child: Row(
-              children: [
-                if (kIsWeb &&
-                    ResponsiveWrapper.of(context).isSmallerThan(TABLET))
-                  BurgerMenuButton(onTap: () {
-                    context.read<NavigationBarBloc>().add(
-                          const NavBarVisibilityEvent(isActive: true),
-                        );
-                  }),
-                // Строка с поиском.
-                Expanded(
-                  child: SearchWithFilter(
-                    searchController: searchController,
-                    onSearch: (text) {},
-                    onFilterTap: onFilterTap,
-                  ),
-                ),
-              ],
+            child: SearchWithFilter(
+              searchController: searchController,
+              onSearch: (text) {},
+              onFilterTap: onFilterTap,
             ),
           ),
 

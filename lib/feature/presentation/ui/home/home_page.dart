@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
@@ -108,10 +104,7 @@ class _HomePageState extends State<HomePage>
 
     _onboardingAnimationListener();
     _pageDuration = const Duration(seconds: 5);
-    BlocProvider.of<ContactsBloc>(context, listen: false)
-        .add(const FetchContactsEvent(isFirstFetch: true));
-    BlocProvider.of<FilterContactsBloc>(context, listen: false)
-        .add(FetchFiltersEvent());
+
     super.initState();
   }
 

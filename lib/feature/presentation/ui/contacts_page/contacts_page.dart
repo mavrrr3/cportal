@@ -10,15 +10,12 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -66,45 +63,28 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   Padding(
                     padding: getHorizontalPadding(context),
-                    child: Row(
-                      children: [
-                        BurgerMenuButton(
-                          onTap: () {
-                            context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(
-                                    isActive: true,
-                                  ),
-                                );
-                          },
-                        ),
-
-                        // Поиск.
-                        Expanded(
-                          child: SearchWithFilter(
-                            searchController: _searchController,
-                            onSearch: (text) {
-                              _onSearchInput(text);
-                            },
-                            onFilterTap: () async {
-                              if (!ResponsiveWrapper.of(context)
-                                  .isLargerThan(MOBILE)) {
-                                await showFilterMobile(
-                                  context,
-                                  onApply: _onApplyFilter,
-                                  onClear: _onClearFilter,
-                                  type: FilterType.contacts,
-                                ).whenComplete(() {
-                                  _sendFilters(context);
-                                });
-                              } else {
-                                setState(() {
-                                  _isFilterOpenWeb = true;
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                      ],
+                    child: SearchWithFilter(
+                      searchController: _searchController,
+                      onSearch: (text) {
+                        _onSearchInput(text);
+                      },
+                      onFilterTap: () async {
+                        if (!ResponsiveWrapper.of(context)
+                            .isLargerThan(MOBILE)) {
+                          await showFilterMobile(
+                            context,
+                            onApply: _onApplyFilter,
+                            onClear: _onClearFilter,
+                            type: FilterType.contacts,
+                          ).whenComplete(() {
+                            _sendFilters(context);
+                          });
+                        } else {
+                          setState(() {
+                            _isFilterOpenWeb = true;
+                          });
+                        }
+                      },
                     ),
                   ),
 
@@ -138,8 +118,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   BlocBuilder<ContactsBloc, ContactsState>(
                     builder: (context, state) {
                       List<ProfileEntity> contacts = [];
-                      if (state is ContactsLoadingState &&
-                          state.isFirstFetch) {
+                      if (state is ContactsLoadingState && state.isFirstFetch) {
                         return const Expanded(
                           child: Center(
                             child: CircularProgressIndicator(),
