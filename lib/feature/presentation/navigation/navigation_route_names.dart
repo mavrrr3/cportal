@@ -82,12 +82,18 @@ final GoRouter router = GoRouter(
     final isGoingToConnectingQr = state.subloc == connectingQrLocation;
     final isGoingToQrScanner = state.subloc == qrScannerLocation;
     final isGoingToConnectingCodeInfo =
-        state.subloc == connectingInfoLocation || state.subloc == connectingInfoMobileLocation;
+        state.subloc == connectingInfoLocation ||
+            state.subloc == connectingInfoMobileLocation;
 
-    final isAuthenticated = authService.authStatus == AuthenticationStatus.authenticated;
-    final isUnAuthenticated = authService.authStatus == AuthenticationStatus.unauthenticated;
+    final isAuthenticated =
+        authService.authStatus == AuthenticationStatus.authenticated;
+    final isUnAuthenticated =
+        authService.authStatus == AuthenticationStatus.unauthenticated;
 
-    if ((isGoingToConnectingQr || isGoingToQrScanner || isGoingToConnectingCodeInfo || isGoingToConnectingCodeInfo) &&
+    if ((isGoingToConnectingQr ||
+            isGoingToQrScanner ||
+            isGoingToConnectingCodeInfo ||
+            isGoingToConnectingCodeInfo) &&
         !isAuthenticated) {
       return null;
     }
@@ -102,30 +108,29 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.splashScreen,
       path: '/splash_screen',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const Scaffold(body: SplashScreen()),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: Scaffold(body: SplashScreen()),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.connectingCode,
       path: '/connecting_code',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const ConnectingCodeScreen(),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: ConnectingCodeScreen(),
       ),
       routes: [
         GoRoute(
           name: NavigationRouteNames.connectingCodeInfoMobile,
           path: 'info_mobile',
           pageBuilder: (context, state) => CustomTransitionPage(
-            key: state.pageKey,
             barrierColor: Colors.black54,
             barrierDismissible: true,
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoMobilePopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -139,12 +144,13 @@ final GoRouter router = GoRouter(
           path: 'info',
           pageBuilder: (context, state) => CustomTransitionPage(
             transitionDuration: Duration.zero,
-            key: state.pageKey,
             barrierColor: Colors.transparent,
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -159,48 +165,42 @@ final GoRouter router = GoRouter(
       name: NavigationRouteNames.qrScanner,
       path: '/qr_scanner',
       pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
         child: QrScanner(onScannedData: state.extra as Function(String data)),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.connectingQr,
       path: '/connecting_qr',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const ConnectingQrScreen(),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: ConnectingQrScreen(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.createPin,
       path: '/create_pin',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const CreatePinCodeScreen(),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: CreatePinCodeScreen(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.changePin,
       path: '/change_pin',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const ChangePinCodeScreen(),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: ChangePinCodeScreen(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.login,
       path: '/login',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const LoginScreen(),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: LoginScreen(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.mainPage,
       path: '/',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const HomePage(
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: HomePage(
           child: MainPage(),
           desktopMenuIndex: 0,
         ),
@@ -209,25 +209,22 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.enrollFaceId,
       path: '/enroll_face_id',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const EnrollFaceIdScreen(),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: EnrollFaceIdScreen(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.enrollFingerPrint,
       path: '/enroll_finger_print',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: const EnrollFingerPrintScreen(),
+      pageBuilder: (context, state) => const MaterialPage(
+        child: EnrollFingerPrintScreen(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.news,
       path: '/news',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const HomePage(
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: HomePage(
           child: NewsPage(),
           desktopMenuIndex: 1,
         ),
@@ -237,16 +234,14 @@ final GoRouter router = GoRouter(
       name: NavigationRouteNames.newsArticlePage,
       path: '/news/:fid',
       pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
         child: NewsArticlePage(id: state.params['fid']!),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.questions,
       path: '/questions',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const HomePage(
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: HomePage(
           child: QuestionsPage(),
           desktopMenuIndex: 2,
         ),
@@ -256,24 +251,21 @@ final GoRouter router = GoRouter(
       name: NavigationRouteNames.questionArticlePage,
       path: '/questions/:fid',
       pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
         child: QuestionArticlePage(id: state.params['fid']!),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.profile,
       path: '/profile',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const ProfilePage(),
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: ProfilePage(),
       ),
       routes: [
         GoRoute(
           name: NavigationRouteNames.devices,
           path: 'devices',
-          pageBuilder: (context, state) => MaterialPage(
-            key: state.pageKey,
-            child: const DevicesScreen(),
+          pageBuilder: (context, state) => const MaterialPage(
+            child: DevicesScreen(),
           ),
           redirect: (state) => kIsWeb ? '/' : null,
         ),
@@ -282,56 +274,49 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.userData,
       path: '/user_data',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const UserData(),
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: UserData(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.onBoardingStart,
       path: '/onboarding_start',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const OnBoardingWelcome(),
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: OnBoardingWelcome(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.onboarding,
       path: '/onboarding',
       pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
         child: Onboarding(content: state.extra! as List<OnboardingEntity>),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.onboardingEnd,
       path: '/onboarding_end',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const OnBoardingLearningCourse(),
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: OnBoardingLearningCourse(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.contacts,
       path: '/contacts',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const ContactsPage(),
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: ContactsPage(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.declarations,
       path: '/declarations',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const DeclarationsPage(),
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: DeclarationsPage(),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.contactProfile,
       path: '/users/profile/:fid',
       pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
         child: ContactProfilePage(
           id: state.params['fid']!,
         ),
@@ -341,7 +326,6 @@ final GoRouter router = GoRouter(
       name: NavigationRouteNames.createDeclaration,
       path: '/declarations/create:fid',
       pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
         child: CreateDeclarationPage(
           id: state.params['fid']!,
         ),
@@ -350,14 +334,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
       path: '/declarations/info',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        key: state.pageKey,
-        child: const DeclarationInfoPage(),
+      pageBuilder: (context, state) => const NoTransitionPage<void>(
+        child: DeclarationInfoPage(),
       ),
     ),
   ],
   errorPageBuilder: (context, state) => NoTransitionPage<void>(
-    key: state.pageKey,
     child: Center(
       child: Text(state.error.toString()),
     ),
