@@ -105,7 +105,8 @@ class _MainPageState extends State<MainPage> {
                 top: isLargerThenMobile(context) ? 10 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
+                constraint:
+                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -195,7 +196,9 @@ class _MainPageState extends State<MainPage> {
                                 if (state is NewsLoaded) {
                                   final articles = state.articles;
 
-                                  return kIsWeb ? NewsMainWeb(articles: articles) : NewsMainMobile(articles: articles);
+                                  return kIsWeb
+                                      ? NewsMainWeb(articles: articles)
+                                      : NewsMainMobile(articles: articles);
                                 }
 
                                 return const SizedBox();
@@ -215,7 +218,9 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: isLargerThenTablet(context) ? const BoxConstraints(maxWidth: 640) : null,
+            constraint: isLargerThenTablet(context)
+                ? const BoxConstraints(maxWidth: 640)
+                : null,
             child: SearchBox(
               isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
@@ -234,7 +239,8 @@ class _MainPageState extends State<MainPage> {
       builder: (context) {
         final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {
