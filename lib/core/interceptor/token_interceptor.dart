@@ -18,7 +18,7 @@ class TokenInterceptor extends Interceptor {
     final token = box.get('user')?.token;
 
     if (token != null) {
-      options.headers.addAll(<String, dynamic>{'Token': token});
+      options.headers.addAll(<String, dynamic>{'token': token});
     }
     super.onRequest(options, handler);
   }

@@ -16,16 +16,18 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<Either<Failure, UserEntity>> getUser() async {
-    final localUser = await _userLocalDataSource.getUser();
-
-    if (localUser == null) return Left(CacheFailure());
-
     try {
-      final user = await _userRemoteDataSource.getUser(token: localUser.token);
+      final user = await _userRemoteDataSource.getUser();
       await _userLocalDataSource.saveUser(user);
 
       return Right(user);
     } on Exception catch (_) {
+      final localUser = await _userLocalDataSource.getUser();
+
+      if (localUser == null) {
+        return Left(CacheFailure());
+      }
+
       return Right(localUser);
     }
   }

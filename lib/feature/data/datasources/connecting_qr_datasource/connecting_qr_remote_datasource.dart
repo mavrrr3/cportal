@@ -14,8 +14,8 @@ class ConnectingQrRemoteDataSource implements IConnectingQrRemoteDataSource {
   }
 
   @override
-  Future<void> sendScannedData({required String connectingCode, required String token}) {
-    final queryParameters = <String, dynamic>{'binding_code': connectingCode, 'token': token};
+  Future<void> sendScannedData({required String connectingCode}) {
+    final queryParameters = <String, dynamic>{'binding_code': connectingCode};
 
     return _makeRequest(queryParameters: queryParameters);
   }

@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_state.dart';
@@ -31,7 +32,11 @@ class _CreatePinCodeScreenState extends State<CreatePinCodeScreen> {
     return BlocListener<PinCodeBloc, PinCodeState>(
       listener: (context, state) {
         if (state is PinCodeSuccessfullyChanged) {
-          context.read<BiometricBloc>().add(const CheckBiometricSupport());
+          if (context.read<BiometricBloc>().state is BiometricNotSupported) {
+            context.goNamed(NavigationRouteNames.mainPage);
+          } else {
+            context.read<BiometricBloc>().add(const CheckBiometricSupport());
+          }
         } else if (state is PinCodeInitialState || state is PinCodeEditing) {
           pinController.clear();
         }
@@ -45,13 +50,13 @@ class _CreatePinCodeScreenState extends State<CreatePinCodeScreen> {
               context.goNamed(NavigationRouteNames.enrollFingerPrint);
             }
           } else if (state is BiometricNotSupported) {
-            final connectingCodeState =
-                context.read<ConnectingCodeBloc>().state;
+            final connectingCodeState = context.read<ConnectingCodeBloc>().state;
+            final authState = context.read<AuthBloc>().state;
 
             if (connectingCodeState is AuthenticatedWithConnectingCode) {
-              context
-                  .read<AuthBloc>()
-                  .add(LogInWithUser(connectingCodeState.user));
+              context.read<AuthBloc>().add(LogInWithUser(connectingCodeState.user));
+              context.goNamed(NavigationRouteNames.mainPage);
+            } else if (authState is Authenticated) {
               context.goNamed(NavigationRouteNames.mainPage);
             }
           }

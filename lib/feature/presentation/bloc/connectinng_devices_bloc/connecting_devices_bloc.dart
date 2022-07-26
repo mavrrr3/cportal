@@ -38,6 +38,7 @@ class ConnectingDevicesBloc extends Bloc<ConnectingDevicesEvent, ConnectingDevic
 
   FutureOr<void> _onSendScannedData(SendScannedData event, Emitter<ConnectingDevicesState> __) async {
     await _sendScannedDataUseCase(ConnectingParams(connectingCode: event.scannedData));
+    add(LoadConnectingDevices());
   }
 
   FutureOr<void> _onEndOtherSessions(ConnectingDevicesEvent _, Emitter<ConnectingDevicesState> __) async {

@@ -9,9 +9,8 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
   UserRemoteDataSource(this._dio);
 
   @override
-  Future<UserModel> getUser({required String token}) async {
-    final queryParameters = <String, dynamic>{'token': token};
-    final result = await _dio.get<Map<String, dynamic>>('/cportal/hs/api/secure/1.0', queryParameters: queryParameters);
+  Future<UserModel> getUser() async {
+    final result = await _dio.get<Map<String, dynamic>>('/cportal/hs/api/secure/1.0');
 
     return ResponseUserModel.fromJson(result.data!).response;
   }

@@ -226,13 +226,13 @@ Future<void> init() async {
     );
   }
   sl.registerLazySingleton<IConnectingDevicesRepository>(
-    () => ConnectingDevicesRepository(sl(), sl(), sl()),
+    () => ConnectingDevicesRepository(sl(), sl()),
   );
   sl.registerLazySingleton<IUserRepository>(
     () => UserRepository(sl(), sl()),
   );
   sl.registerLazySingleton<IConnectingQrRepository>(
-    () => ConnectingQrRepository(sl(), sl()),
+    () => ConnectingQrRepository(sl()),
   );
 
   // DATASOURCE.

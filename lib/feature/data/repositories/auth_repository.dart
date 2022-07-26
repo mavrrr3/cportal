@@ -16,7 +16,7 @@ class AuthRepository implements IAuthRepository {
   final ILocationRemoteDataSource _locationRemoteDataSource;
   final DeviceInfoService _deviceInfoService;
 
-  final _authController = StreamController<AuthenticationStatus>.broadcast();
+  final _authController = StreamController<AuthenticationStatus>();
 
   AuthRepository(
     this._userLocalDataSource,
@@ -44,6 +44,7 @@ class AuthRepository implements IAuthRepository {
         location: location?.fullLocation,
       );
       final user = await _authRemoteDataSource.login(loginParams: loginParams);
+      _authController.add(AuthenticationStatus.authenticated);
       await _userLocalDataSource.saveUser(user);
 
       return Right(user);

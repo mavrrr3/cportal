@@ -30,6 +30,7 @@ import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dar
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
 import 'package:cportal_flutter/service_locator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -70,10 +71,28 @@ final GoRouter router = GoRouter(
   refreshListenable: sl<AuthService>(),
   redirect: (state) {
     final authService = sl<AuthService>();
-    final connectingCodeLocation = state.namedLocation(NavigationRouteNames.connectingCode);
-    final isGoingToConnectingCode = state.subloc == connectingCodeLocation;
 
-    if (authService.authStatus == AuthenticationStatus.unauthenticated && !isGoingToConnectingCode) {
+    final connectingCodeLocation = state.namedLocation(NavigationRouteNames.connectingCode);
+    final connectingQrLocation = state.namedLocation(NavigationRouteNames.connectingQr);
+    final qrScannerLocation = state.namedLocation(NavigationRouteNames.qrScanner);
+    final connectingInfoLocation = state.namedLocation(NavigationRouteNames.connectingCodeInfo);
+    final connectingInfoMobileLocation = state.namedLocation(NavigationRouteNames.connectingCodeInfoMobile);
+
+    final isGoingToConnectingCode = state.subloc == connectingCodeLocation;
+    final isGoingToConnectingQr = state.subloc == connectingQrLocation;
+    final isGoingToQrScanner = state.subloc == qrScannerLocation;
+    final isGoingToConnectingCodeInfo =
+        state.subloc == connectingInfoLocation || state.subloc == connectingInfoMobileLocation;
+
+    final isAuthenticated = authService.authStatus == AuthenticationStatus.authenticated;
+    final isUnAuthenticated = authService.authStatus == AuthenticationStatus.unauthenticated;
+
+    if ((isGoingToConnectingQr || isGoingToQrScanner || isGoingToConnectingCodeInfo || isGoingToConnectingCodeInfo) &&
+        !isAuthenticated) {
+      return null;
+    }
+
+    if (isUnAuthenticated && !isGoingToConnectingCode) {
       return connectingCodeLocation;
     }
 
@@ -256,6 +275,7 @@ final GoRouter router = GoRouter(
             key: state.pageKey,
             child: const DevicesScreen(),
           ),
+          redirect: (state) => kIsWeb ? '/' : null,
         ),
       ],
     ),
@@ -327,7 +347,6 @@ final GoRouter router = GoRouter(
         ),
       ),
     ),
-    
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
       path: '/declarations/info',

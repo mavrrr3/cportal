@@ -9,21 +9,18 @@ class ConnectingDevicesRemoteDataSource extends IConnectingDevicesRemoteDataSour
   ConnectingDevicesRemoteDataSource(this._dio);
 
   @override
-  Future<ConnectingDevicesModel> getConnectingDevices({required String token}) async {
-    final queryParameters = <String, dynamic>{'token': token};
-    final result = await _makeRequest(method: 'GET', queryParameters: queryParameters);
+  Future<ConnectingDevicesModel> getConnectingDevices() async {
+    final result = await _makeRequest(method: 'GET');
 
     return ConnectingDevicesResponse.fromJson(result.data!).response;
   }
 
   @override
-  Future<void> endOtherSessions({required String token}) async {
-    final queryParameters = <String, dynamic>{'token': token};
-    await _makeRequest(method: 'DELETE', queryParameters: queryParameters);
+  Future<void> endOtherSessions() async {
+    await _makeRequest(method: 'DELETE');
   }
 
   Future<Response<Map<String, dynamic>>> _makeRequest({
-    required Map<String, dynamic> queryParameters,
     required String method,
   }) async {
     return _dio.fetch<Map<String, dynamic>>(
@@ -31,7 +28,6 @@ class ConnectingDevicesRemoteDataSource extends IConnectingDevicesRemoteDataSour
           .compose(
             _dio.options,
             '/cportal/hs/api/secure/devices/1.0',
-            queryParameters: queryParameters,
           )
           .copyWith(baseUrl: _dio.options.baseUrl),
     );

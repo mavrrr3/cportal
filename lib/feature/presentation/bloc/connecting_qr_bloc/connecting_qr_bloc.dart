@@ -14,6 +14,7 @@ part 'connecting_qr_state.dart';
 
 class ConnectingQrBloc extends Bloc<ConnectingQrEvent, ConnectingQrState> {
   final LogInWithConnectingCodeUseCase _logInWithConnectingCode;
+  // ignore: unused_field
   final GenerateConnectingCodeUseCase _generateConnectingCode;
   final SendConnectingDataUseCase _sendConnectingData;
 
@@ -33,8 +34,8 @@ class ConnectingQrBloc extends Bloc<ConnectingQrEvent, ConnectingQrState> {
     on<ReceivedUser>(_onReceivedUser, transformer: bloc_concurrency.sequential());
   }
 
-  FutureOr<void> _onCheckLoginCredentials(ConnectingQrEvent _, Emitter<ConnectingQrState> __) {
-    Future.delayed(const Duration(seconds: 2), _tryGetUser);
+  FutureOr<void> _onCheckLoginCredentials(ConnectingQrEvent _, Emitter<ConnectingQrState> __) async {
+    await Future.delayed(const Duration(seconds: 2), _tryGetUser);
   }
 
   FutureOr<void> _onReceivedUser(ReceivedUser event, Emitter<ConnectingQrState> emit) {
@@ -43,9 +44,11 @@ class ConnectingQrBloc extends Bloc<ConnectingQrEvent, ConnectingQrState> {
 
   Future<void> _tryGetUser() async {
     final response = await _logInWithConnectingCode(LoginWithConnectingCodeParams(connectingCode: state.qrData));
-    response.fold(
-      (failure) => add(CheckLoginCredentials()),
-      (user) => add(ReceivedUser(user: user)),
-    );
+    if (!isClosed) {
+      response.fold(
+        (failure) => add(CheckLoginCredentials()),
+        (user) => add(ReceivedUser(user: user)),
+      );
+    }
   }
 }

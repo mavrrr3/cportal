@@ -34,7 +34,7 @@ class ConnectingQrScreen extends StatelessWidget {
                 listener: (context, state) {
                   if (state is ConnectingQrSuccessAuth) {
                     context.read<AuthBloc>().add(LogInWithUser(state.user));
-                    context.goNamed(NavigationRouteNames.mainPage);
+                    context.goNamed(NavigationRouteNames.createPin);
                   }
                 },
               ),

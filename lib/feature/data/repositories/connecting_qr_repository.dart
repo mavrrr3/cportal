@@ -1,19 +1,14 @@
 import 'dart:math';
 
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_connecting_qr_remote_datasource.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_connecting_qr_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class ConnectingQrRepository implements IConnectingQrRepository {
   final IConnectingQrRemoteDataSource _connectingQrRemoteDataSource;
-  final IUserLocalDataSource _userLocalDataSource;
 
-  ConnectingQrRepository(
-    this._connectingQrRemoteDataSource,
-    this._userLocalDataSource,
-  );
+  ConnectingQrRepository(this._connectingQrRemoteDataSource);
 
   @override
   String generateConnectingCode() {
@@ -45,11 +40,7 @@ class ConnectingQrRepository implements IConnectingQrRepository {
   @override
   Future<Either<Failure, void>> sendScannedData({required String connectingCode}) async {
     try {
-      final user = await _userLocalDataSource.getUser();
-      final result = await _connectingQrRemoteDataSource.sendScannedData(
-        connectingCode: connectingCode,
-        token: user?.token ?? '',
-      );
+      final result = await _connectingQrRemoteDataSource.sendScannedData(connectingCode: connectingCode);
 
       return Right(result);
     } on Exception catch (_) {
