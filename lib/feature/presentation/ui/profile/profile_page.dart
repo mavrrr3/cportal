@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/platform_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
@@ -145,19 +146,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () => context.pushNamed(NavigationRouteNames.devices),
-                      child: RowProfile(
-                        firstWidget: SvgIcon(
-                          iconColor,
-                          path: ImageAssets.addDevice,
-                          width: 20,
+                    if (kIsMobile)
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => context.pushNamed(NavigationRouteNames.devices),
+                        child: RowProfile(
+                          firstWidget: SvgIcon(
+                            iconColor,
+                            path: ImageAssets.addDevice,
+                            width: 20,
+                          ),
+                          text: localizedStrings.devices,
+                          secondWidget: getBlueArrow(),
                         ),
-                        text: localizedStrings.devices,
-                        secondWidget: getBlueArrow(),
                       ),
-                    ),
                     const SizedBox(height: 28),
                     const ChangeTheme(),
                   ],
