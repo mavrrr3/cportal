@@ -10,12 +10,15 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -113,47 +116,63 @@ class _MainPageState extends State<MainPage> {
                   children: [
                     Padding(
                       padding: getHorizontalPadding(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SearchInput(
-                            controller: _searchController,
-                            focusNode: _searchFocus,
-                            onChanged: (query) {
-                              _onSearchInput(query);
-                            },
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isLargerThenTablet(context)
-                                  ? showProfile(context)
-                                  : context.pushNamed(
-                                      NavigationRouteNames.profile,
-                                    );
-                            },
-                            child: BlocBuilder<AuthBloc, AuthState>(
-                              builder: (context, state) {
-                                if (state is! Authenticated) {
-                                  return const PlatformProgressIndicator();
-                                } else {
-                                  final user = state.user;
-
-                                  return OnHover(
-                                    builder: (isHovered) {
-                                      return ProfileImage(
-                                        fullName: user.name,
-                                        imgLink: user.photoUrl,
-                                        color: RandomColorService.color,
-                                        size: isHovered ? 48 : 40,
-                                        borderRadius: 12,
-                                      );
-                                    },
+                      child: ResponsiveConstraints(
+                        constraint: const BoxConstraints(maxWidth: 640),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            BurgerMenuButton(onTap: () {
+                              context.read<NavigationBarBloc>().add(
+                                    const NavBarVisibilityEvent(isActive: true),
                                   );
-                                }
-                              },
+                            }),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SearchInput(
+                                    controller: _searchController,
+                                    focusNode: _searchFocus,
+                                    onChanged: (query) {
+                                      _onSearchInput(query);
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      isLargerThenTablet(context)
+                                          ? showProfile(context)
+                                          : context.pushNamed(
+                                              NavigationRouteNames.profile,
+                                            );
+                                    },
+                                    child: BlocBuilder<AuthBloc, AuthState>(
+                                      builder: (context, state) {
+                                        if (state is! Authenticated) {
+                                          return const PlatformProgressIndicator();
+                                        } else {
+                                          final user = state.user;
+
+                                          return OnHover(
+                                            builder: (isHovered) {
+                                              return ProfileImage(
+                                                fullName: user.name,
+                                                imgLink: user.photoUrl,
+                                                color: RandomColorService.color,
+                                                size: isHovered ? 48 : 40,
+                                                borderRadius: 12,
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(

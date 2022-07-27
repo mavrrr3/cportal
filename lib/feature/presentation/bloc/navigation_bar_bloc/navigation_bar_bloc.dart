@@ -11,17 +11,29 @@ class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
   }
 
   void _setupEvents() {
-    on<NavigationBarEventImpl>(
-      _onEvent,
+    on<NavBarChangePageEvent>(
+      _changeCurrentIndex,
+      transformer: bloc_concurrency.sequential(),
+    );
+    on<NavBarVisibilityEvent>(
+      _changeVisibility,
       transformer: bloc_concurrency.sequential(),
     );
   }
 
-  FutureOr<void> _onEvent(
-    NavigationBarEventImpl event,
+  FutureOr<void> _changeCurrentIndex(
+    NavBarChangePageEvent event,
     Emitter emit,
   ) async {
     emit(NavigationBarState(currentIndex: event.index));
+    debugPrint('Отработал эвент: $event');
+  }
+
+  FutureOr<void> _changeVisibility(
+    NavBarVisibilityEvent event,
+    Emitter emit,
+  ) async {
+    emit(NavigationBarState(isActive: event.isActive));
     debugPrint('Отработал эвент: $event');
   }
 }

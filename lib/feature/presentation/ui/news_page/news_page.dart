@@ -1,6 +1,9 @@
 // ignore_for_file: unused_local_variable
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_content.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -104,9 +107,19 @@ class _NewsPageState extends State<NewsPage> {
               const SizedBox(height: 12),
               Padding(
                 padding: getHorizontalPadding(context),
-                child: Text(
-                  AppLocalizations.of(context)!.news,
-                  style: theme.textTheme.header,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    BurgerMenuButton(onTap: () {
+                      context.read<NavigationBarBloc>().add(
+                            const NavBarVisibilityEvent(isActive: true),
+                          );
+                    }),
+                    Text(
+                      AppLocalizations.of(context)!.news,
+                      style: theme.textTheme.header,
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),

@@ -3,8 +3,6 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_progress.dart';
@@ -14,7 +12,6 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -141,20 +138,13 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
             ),
           ),
         ),
-        bottomNavigationBar: !kIsWeb
-            ? BlocBuilder<NavigationBarBloc, NavigationBarState>(
-                builder: (context, state) {
-                  return CustomBottomBar(
-                    state: state,
-                    isNestedNavigation: true,
-                  );
-                },
-              )
-            : null,
+        bottomNavigationBar:
+            !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
       ),
     );
   }
 
-  String _getCurrentStep(List<DeclarationStepEntity> items) =>
-      items.firstWhere((element) => element.status == StepStatus.inProgress).title;
+  String _getCurrentStep(List<DeclarationStepEntity> items) => items
+      .firstWhere((element) => element.status == StepStatus.inProgress)
+      .title;
 }
