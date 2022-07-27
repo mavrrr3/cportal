@@ -51,7 +51,6 @@ class FilterWebContent extends StatelessWidget {
                   controller: TextEditingController(),
                   onExpand: () => onExpand(index),
                   onSelect: (i) => onSelect(index, i),
-                  onSearch: (text) => onSearch(index, text),
                 ),
               ),
             ),

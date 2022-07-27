@@ -10,7 +10,6 @@ class FilterSection extends StatefulWidget {
   final TextEditingController controller;
   final Function() onExpand;
   final Function(int) onSelect;
-  final Function(String) onSearch;
   final double? sectionWidth;
 
   /// Блок отдельного раздела фильтра.
@@ -20,7 +19,6 @@ class FilterSection extends StatefulWidget {
     required this.controller,
     required this.onExpand,
     required this.onSelect,
-    required this.onSearch,
     this.sectionWidth,
   }) : super(key: key);
 
@@ -47,10 +45,12 @@ class _FilterSectionState extends State<FilterSection> {
             child: Row(
               children: [
                 Container(
-                  width: widget.sectionWidth ?? (MediaQuery.of(context).size.width - 80),
+                  width: widget.sectionWidth ??
+                      (MediaQuery.of(context).size.width - 80),
                   decoration: BoxDecoration(
-                    color:
-                        theme.brightness == Brightness.light ? theme.background : theme.background!.withOpacity(0.34),
+                    color: theme.brightness == Brightness.light
+                        ? theme.background
+                        : theme.background!.withOpacity(0.34),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: widget.item.isActive
@@ -58,8 +58,8 @@ class _FilterSectionState extends State<FilterSection> {
                           controller: widget.controller,
                           onChanged: (text) {
                             setState(() {});
-                            widget.onSearch(text);
                           },
+                          autocorrect: false,
                           decoration: InputDecoration(
                             hintText: widget.item.headline,
                             hintStyle: theme.textTheme.px14.copyWith(
@@ -73,7 +73,10 @@ class _FilterSectionState extends State<FilterSection> {
                           ),
                         )
                       : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 16,
+                          ),
                           child: Text(
                             widget.item.headline,
                             style: theme.textTheme.px14.copyWith(
@@ -84,7 +87,9 @@ class _FilterSectionState extends State<FilterSection> {
                 ),
                 const SizedBox(width: 24),
                 SvgPicture.asset(
-                  widget.item.isActive ? ImageAssets.arrowUp : ImageAssets.arrowDown,
+                  widget.item.isActive
+                      ? ImageAssets.arrowUp
+                      : ImageAssets.arrowDown,
                   width: 24,
                   color: theme.primary,
                 ),
@@ -138,7 +143,9 @@ class _FilterSectionState extends State<FilterSection> {
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: getSortedFilters(controller: widget.controller, items: widget.item.items).length,
+              itemCount: getSortedFilters(
+                      controller: widget.controller, items: widget.item.items)
+                  .length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(
@@ -149,8 +156,9 @@ class _FilterSectionState extends State<FilterSection> {
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       // ignore: prefer-correct-identifier-length
-                      final i = widget.item.items
-                          .indexOf(getSortedFilters(controller: widget.controller, items: widget.item.items)[index]);
+                      final i = widget.item.items.indexOf(getSortedFilters(
+                          controller: widget.controller,
+                          items: widget.item.items)[index]);
                       widget.onSelect(i);
                     },
                     child: Row(
@@ -158,13 +166,18 @@ class _FilterSectionState extends State<FilterSection> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CustomCheckBox(
-                          isActive:
-                              getSortedFilters(controller: widget.controller, items: widget.item.items)[index].isActive,
+                          isActive: getSortedFilters(
+                                  controller: widget.controller,
+                                  items: widget.item.items)[index]
+                              .isActive,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            getSortedFilters(controller: widget.controller, items: widget.item.items)[index].name,
+                            getSortedFilters(
+                                    controller: widget.controller,
+                                    items: widget.item.items)[index]
+                                .name,
                             style: theme.textTheme.px14,
                           ),
                         ),

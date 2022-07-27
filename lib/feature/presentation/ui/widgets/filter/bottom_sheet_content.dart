@@ -44,7 +44,6 @@ class BottomSheetContent extends StatelessWidget {
                 controller: controllers[index],
                 onExpand: () => onExpand(index),
                 onSelect: (i) => onSelect(index, i),
-                onSearch: (text) => onSearch(index, text),
               ),
             ),
           ),
