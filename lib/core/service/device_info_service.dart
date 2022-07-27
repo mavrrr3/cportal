@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cportal_flutter/common/util/browser_name_extension.dart';
 import 'package:cportal_flutter/feature/domain/entities/device/device_info.dart';
 import 'package:cportal_flutter/feature/domain/entities/device/device_platform.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -17,7 +18,7 @@ class DeviceInfoService {
 
     if (kIsWeb) {
       final info = await _deviceInfoPlugin.webBrowserInfo;
-      device = '${info.vendor} ${info.vendorSub}';
+      device = info.browserName.toPrettyName();
       osInformation = 'Web';
     } else if (Platform.isAndroid) {
       final info = await _deviceInfoPlugin.androidInfo;
