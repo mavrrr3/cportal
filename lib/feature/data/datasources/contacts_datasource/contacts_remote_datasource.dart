@@ -13,11 +13,11 @@ import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 
 class ContactsRemoteDataSource implements IContactsRemoteDataSource {
   final IContactsLocalDataSource localDataSource;
-  final Dio dio;
+  final Dio _dio;
 
   ContactsRemoteDataSource(
     this.localDataSource,
-    this.dio,
+    this._dio,
   );
 
   @override
@@ -26,7 +26,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
         '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
     try {
       log('====== ${AppConfig.authKey}');
-      final response = await dio.get<String>(baseUrl);
+      final response = await _dio.get<String>(baseUrl);
 
       final contacts = ContactsModel.fromJson(
         json.decode(response.data!) as Map<String, dynamic>,
@@ -59,7 +59,7 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
         'request': selectedFilers,
       };
       log(json.encode(body));
-      final response = await dio.post<String>(
+      final response = await _dio.post<String>(
         baseUrl,
         data: json.encode(body),
       );
