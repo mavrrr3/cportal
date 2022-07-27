@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/only_selected_filters_service.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
@@ -132,50 +133,60 @@ class _ContactsPageState extends State<ContactsPage> {
                         contacts = state.contacts;
                       }
 
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          controller: _scrollController,
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              /// [Не удалять, нужная фича]
-                              // Избранные.
-                              // if (state.favorites.isNotEmpty)
-                              //   Padding(
-                              //     padding: EdgeInsets.only(
-                              //       left: getSingleHorizontalPadding(
-                              //         context,
-                              //       ),
-                              //       bottom: 16,
-                              //     ),
-                              //     child: Favorites(
-                              //       items: state.favorites,
-                              //       onTap: (i) async {
-                              //         await _goToUserPage(
-                              //           contacts,
-                              //           i,
-                              //         );
-                              //       },
-                              //     ),
-                              //   ),
+                      return contacts.isNotEmpty
+                          ? Expanded(
+                              child: SingleChildScrollView(
+                                controller: _scrollController,
+                                physics: const BouncingScrollPhysics(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /// [Не удалять, нужная фича]
+                                    // Избранные.
+                                    // if (state.favorites.isNotEmpty)
+                                    //   Padding(
+                                    //     padding: EdgeInsets.only(
+                                    //       left: getSingleHorizontalPadding(
+                                    //         context,
+                                    //       ),
+                                    //       bottom: 16,
+                                    //     ),
+                                    //     child: Favorites(
+                                    //       items: state.favorites,
+                                    //       onTap: (i) async {
+                                    //         await _goToUserPage(
+                                    //           contacts,
+                                    //           i,
+                                    //         );
+                                    //       },
+                                    //     ),
+                                    //   ),
 
-                              // Колонка контактов.
-                              ContactsList(
-                                items: contacts,
-                                onTap: (i) async {
-                                  await _goToUserPage(
-                                    contacts,
-                                    i,
-                                  );
-                                },
+                                    // Колонка контактов.
+                                    ContactsList(
+                                      items: contacts,
+                                      onTap: (i) async {
+                                        await _goToUserPage(contacts, i);
+                                      },
+                                    ),
+
+                                    const SizedBox(height: 42),
+                                  ],
+                                ),
                               ),
-
-                              const SizedBox(height: 42),
-                            ],
-                          ),
-                        ),
-                      );
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Center(
+                                child: Text(
+                                  AppLocalizations.of(context)!.emptySearch,
+                                  style: theme.textTheme.px22.copyWith(
+                                    color: theme.text?.withOpacity(0.5),
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
                     },
                   ),
                 ],
