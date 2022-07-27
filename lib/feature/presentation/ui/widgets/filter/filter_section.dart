@@ -144,8 +144,9 @@ class _FilterSectionState extends State<FilterSection> {
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               itemCount: getSortedFilters(
-                      controller: widget.controller, items: widget.item.items)
-                  .length,
+                controller: widget.controller,
+                items: widget.item.items,
+              ).length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(
@@ -157,8 +158,9 @@ class _FilterSectionState extends State<FilterSection> {
                     onTap: () {
                       // ignore: prefer-correct-identifier-length
                       final i = widget.item.items.indexOf(getSortedFilters(
-                          controller: widget.controller,
-                          items: widget.item.items)[index]);
+                        controller: widget.controller,
+                        items: widget.item.items,
+                      )[index]);
                       widget.onSelect(i);
                     },
                     child: Row(
@@ -167,16 +169,18 @@ class _FilterSectionState extends State<FilterSection> {
                       children: [
                         CustomCheckBox(
                           isActive: getSortedFilters(
-                                  controller: widget.controller,
-                                  items: widget.item.items)[index]
+                            controller: widget.controller,
+                            items: widget.item.items,
+                          )[index]
                               .isActive,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             getSortedFilters(
-                                    controller: widget.controller,
-                                    items: widget.item.items)[index]
+                              controller: widget.controller,
+                              items: widget.item.items,
+                            )[index]
                                 .name,
                             style: theme.textTheme.px14,
                           ),

@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogInWithPinCodeUseCase _logInWithPinCode;
   final LogInWithBiometricsUseCase _logInWithBiometrics;
   final HasAuthCredentialsUseCase _hasAuthCredentialsUseCase;
-  // TODO: usecase
+  // TODO: usecase.
   final IBiometricRepository _biometricRepository;
 
   AuthBloc(
@@ -38,19 +38,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final hasAuthCredentials = await _hasAuthCredentialsUseCase();
 
     if (hasAuthCredentials) {
-      final enabledBiometricType = await _biometricRepository.getEnabledBiometric();
+      final enabledBiometricType =
+          await _biometricRepository.getEnabledBiometric();
       emit(HasAuthCredentials(enabledBiometricType));
     } else {
       emit(const NotAuthenticated());
     }
   }
 
-  FutureOr<void> _onLogInWithUser(LogInWithUser event, Emitter<AuthState> emit) async {
+  FutureOr<void> _onLogInWithUser(
+    LogInWithUser event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(Authenticated(event.user));
   }
 
-  FutureOr<void> _onLogInWithPinCode(LogInWithPinCode event, Emitter<AuthState> emit) async {
-    final response = await _logInWithPinCode(LoginWitPinCodeParams(pinCode: event.pinCode));
+  FutureOr<void> _onLogInWithPinCode(
+    LogInWithPinCode event,
+    Emitter<AuthState> emit,
+  ) async {
+    final response =
+        await _logInWithPinCode(LoginWitPinCodeParams(pinCode: event.pinCode));
 
     await response.fold<FutureOr<void>>(
       (failure) async {
@@ -60,8 +68,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  FutureOr<void> _onLogInWithBiometrics(LogInWithBiometrics event, Emitter<AuthState> emit) async {
-    final response = await _logInWithBiometrics(LoginWithBiometricsParams(localizedReason: event.localizedReason));
+  FutureOr<void> _onLogInWithBiometrics(
+    LogInWithBiometrics event,
+    Emitter<AuthState> emit,
+  ) async {
+    final response = await _logInWithBiometrics(
+      LoginWithBiometricsParams(localizedReason: event.localizedReason),
+    );
 
     response.fold((failure) {}, (user) => _onLogIn(emit, user));
   }
@@ -69,8 +82,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onWrongPinCode(Emitter<AuthState> emit) async {
     final enabledBiometric = _getEnabledBiometric(state);
     emit(WrongPinCode(enabledBiometric));
-    await Future.delayed(const Duration(seconds: 2), () => emit(TryAgainLater(enabledBiometric)));
-    await Future.delayed(const Duration(seconds: 30), () => emit(HasAuthCredentials(enabledBiometric)));
+    await Future.delayed(
+      const Duration(seconds: 2),
+      () => emit(TryAgainLater(enabledBiometric)),
+    );
+    await Future.delayed(
+      const Duration(seconds: 30),
+      () => emit(HasAuthCredentials(enabledBiometric)),
+    );
   }
 
   void _onLogIn(Emitter<AuthState> emit, UserEntity? user) {
