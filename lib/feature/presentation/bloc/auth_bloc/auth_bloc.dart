@@ -28,19 +28,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _setupEvents() {
-    on<CheckLogin>(_onCheckLogin, transformer: bloc_concurrency.sequential());
-    on<LogInWithUser>(
-      _onLogInWithUser,
-      transformer: bloc_concurrency.sequential(),
-    );
-    on<LogInWithPinCode>(
-      _onLogInWithPinCode,
-      transformer: bloc_concurrency.sequential(),
-    );
-    on<LogInWithBiometrics>(
-      _onLogInWithBiometrics,
-      transformer: bloc_concurrency.sequential(),
-    );
+    on<CheckLogin>(_onCheckLogin, transformer: bloc_concurrency.droppable());
+    on<LogInWithUser>(_onLogInWithUser, transformer: bloc_concurrency.droppable());
+    on<LogInWithPinCode>(_onLogInWithPinCode, transformer: bloc_concurrency.droppable());
+    on<LogInWithBiometrics>(_onLogInWithBiometrics, transformer: bloc_concurrency.droppable());
   }
 
   FutureOr<void> _onCheckLogin(AuthEvent _, Emitter<AuthState> emit) async {

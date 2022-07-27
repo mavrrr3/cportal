@@ -117,7 +117,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // BLOC/CUBIT.
   sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
-  sl.registerFactory(() => AuthBloc(sl(), sl(), sl(), sl())..add(const CheckLogin()));
+  sl.registerFactory(() => AuthBloc(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => GetSingleNewsBloc(getSingleNews: sl()));
   sl.registerFactory(() => GetSingleQuestionBloc(getSingleQuestion: sl()));
   sl.registerFactory(() => ConnectingCodeBloc(sl()));
