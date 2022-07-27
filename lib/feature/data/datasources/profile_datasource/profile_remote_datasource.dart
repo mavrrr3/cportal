@@ -9,9 +9,9 @@ import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 
 class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   final IProfileLocalDataSource localDataSource;
-  final Dio dio;
+  final Dio _dio;
 
-  ProfileRemoteDataSource(this.localDataSource, this.dio);
+  ProfileRemoteDataSource(this.localDataSource, this._dio);
   @override
   Future<ProfileModel> getSingleProfile(
     String id, {
@@ -23,9 +23,9 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     try {
       // TODO: Избавиться от if, передавать эту переменную в singleProfileToCache.
       if (isMyProfile) {
-        final response = await dio.fetch<Map<String, dynamic>>(
+        final response = await _dio.fetch<Map<String, dynamic>>(
           Options(method: 'GET', responseType: ResponseType.json).compose(
-            dio.options,
+            _dio.options,
             baseUrl,
           ),
         );
@@ -34,9 +34,9 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
           response.data!['response'] as Map<String, dynamic>,
         );
       } else {
-        final response = await dio.fetch<Map<String, dynamic>>(
+        final response = await _dio.fetch<Map<String, dynamic>>(
           Options(method: 'GET', responseType: ResponseType.json).compose(
-            dio.options,
+            _dio.options,
             baseUrl,
           ),
         );
