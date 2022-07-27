@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
@@ -91,7 +89,8 @@ class _FilterMobileState extends State<FilterMobile> {
                 filters: state.contactsFilters,
                 controllers: controllers,
                 onExpand: (i) {
-                  BlocProvider.of<FilterContactsBloc>(context).add(FilterExpandSectionEvent(index: i));
+                  BlocProvider.of<FilterContactsBloc>(context)
+                      .add(FilterExpandSectionEvent(index: i));
                 },
                 onSelect: (filterIndex, itemIndex) {
                   BlocProvider.of<FilterContactsBloc>(context).add(
@@ -101,9 +100,7 @@ class _FilterMobileState extends State<FilterMobile> {
                     ),
                   );
                 },
-                onSearch: (i, text) {
-                  log(controllers[i].text);
-                },
+                onSearch: (i, text) {},
                 onApply: widget.onApply,
                 onClear: widget.onClear,
               );
@@ -130,7 +127,8 @@ class _FilterMobileState extends State<FilterMobile> {
                 filters: state.declarationsFilters,
                 controllers: controllers,
                 onExpand: (i) {
-                  BlocProvider.of<FilterDeclarationsBloc>(context).add(FilterExpandSectionEvent(index: i));
+                  BlocProvider.of<FilterDeclarationsBloc>(context)
+                      .add(FilterExpandSectionEvent(index: i));
                 },
                 onSelect: (filterIndex, itemIndex) {
                   BlocProvider.of<FilterDeclarationsBloc>(context).add(
