@@ -83,12 +83,18 @@ final GoRouter router = GoRouter(
     final isGoingToConnectingQr = state.subloc == connectingQrLocation;
     final isGoingToQrScanner = state.subloc == qrScannerLocation;
     final isGoingToConnectingCodeInfo =
-        state.subloc == connectingInfoLocation || state.subloc == connectingInfoMobileLocation;
+        state.subloc == connectingInfoLocation ||
+            state.subloc == connectingInfoMobileLocation;
 
-    final isAuthenticated = authService.authStatus == AuthenticationStatus.authenticated;
-    final isUnAuthenticated = authService.authStatus == AuthenticationStatus.unauthenticated;
+    final isAuthenticated =
+        authService.authStatus == AuthenticationStatus.authenticated;
+    final isUnAuthenticated =
+        authService.authStatus == AuthenticationStatus.unauthenticated;
 
-    if ((isGoingToConnectingQr || isGoingToQrScanner || isGoingToConnectingCodeInfo || isGoingToConnectingCodeInfo) &&
+    if ((isGoingToConnectingQr ||
+            isGoingToQrScanner ||
+            isGoingToConnectingCodeInfo ||
+            isGoingToConnectingCodeInfo) &&
         !isAuthenticated) {
       return null;
     }
@@ -123,7 +129,9 @@ final GoRouter router = GoRouter(
             fullscreenDialog: true,
             opaque: false,
             child: const ConnectingCodeInfoMobilePopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -141,7 +149,9 @@ final GoRouter router = GoRouter(
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -267,9 +277,9 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.userData,
-      path: '/user_data',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: UserData(),
+      path: '/user_data/:fid',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        child: UserData(id: state.params['fid']!),
       ),
     ),
     GoRoute(

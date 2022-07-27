@@ -14,15 +14,16 @@ import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
 
 class UserData extends StatelessWidget {
-  const UserData({Key? key}) : super(key: key);
+  final String id;
+  const UserData({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<GetSingleProfileBloc>(
       context,
       listen: false,
-    ).add(const GetSingleProfileEventImpl(
-      'A1B2C3D4E5',
+    ).add(GetSingleProfileEventImpl(
+      id,
       isMyProfile: true,
     ));
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -51,49 +52,50 @@ class UserData extends StatelessWidget {
             if (state is GetSingleProfileLoadedState) {
               final ProfileEntity profile = state.profile;
 
-              return Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 33),
-                    const PhoneBox(),
-                    const SizedBox(height: 24),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.position,
-                      boldText: profile.position,
-                    ),
-                    const SizedBox(height: 8),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.department,
-                      boldText: profile.department,
-                    ),
-                    const SizedBox(height: 8),
-                    if (profile.birthDayToString != null)
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 33),
+                      const PhoneBox(),
+                      const SizedBox(height: 24),
                       UserDataRow(
-                        normalText: AppLocalizations.of(context)!.birthDay,
-                        boldText: profile.birthDayToString!,
+                        normalText: AppLocalizations.of(context)!.position,
+                        boldText: profile.position,
                       ),
-                    const SizedBox(height: 8),
-                    UserDataRow(
-                      normalText: AppLocalizations.of(context)!.email,
-                      boldText: profile.email,
-                    ),
-                    const Expanded(child: SizedBox.shrink()),
-                    Button.factory(
-                      context,
-                      ButtonEnum.blue,
-                      'Сохранить',
-                      () {
-                        // TODO раелизовать сохранение номера.
-                      },
-                      const Size(double.infinity, 48),
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      UserDataRow(
+                        normalText: AppLocalizations.of(context)!.department,
+                        boldText: profile.department,
+                      ),
+                      const SizedBox(height: 8),
+                      if (profile.birthDayToString != null)
+                        UserDataRow(
+                          normalText: AppLocalizations.of(context)!.birthDay,
+                          boldText: profile.birthDayToString!,
+                        ),
+                      const SizedBox(height: 8),
+                      UserDataRow(
+                        normalText: AppLocalizations.of(context)!.email,
+                        boldText: profile.email,
+                      ),
+                      const Expanded(child: SizedBox.shrink()),
+                      Button.factory(
+                        context,
+                        ButtonEnum.blue,
+                        'Сохранить изменения',
+                        () {
+                          // TODO раелизовать сохранение номера.
+                        },
+                        const Size(double.infinity, 48),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }

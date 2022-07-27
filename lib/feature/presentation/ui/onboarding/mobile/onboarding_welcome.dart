@@ -86,19 +86,21 @@ class OnBoardingWelcome extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Button.factory(
-              context,
-              ButtonEnum.blue,
-              AppLocalizations.of(context)!.forward,
-              () {
-                GoRouter.of(context).pushNamed(
-                  NavigationRouteNames.onboarding,
-                  extra: onboardingContent,
-                );
-              },
-              const Size(double.infinity, 48),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Button.factory(
+                context,
+                ButtonEnum.blue,
+                AppLocalizations.of(context)!.forward,
+                () {
+                  GoRouter.of(context).pushNamed(
+                    NavigationRouteNames.onboarding,
+                    extra: onboardingContent,
+                  );
+                },
+                const Size(double.infinity, 48),
+              ),
             ),
           ),
         ],
