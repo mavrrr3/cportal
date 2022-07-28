@@ -12,7 +12,7 @@ class PhoneButton extends StatelessWidget {
       width: double.infinity,
       height: 46,
       decoration: BoxDecoration(
-        color: theme.background,
+        color: theme.brightness == Brightness.light ? theme.background : theme.background?.withOpacity(0.34),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
