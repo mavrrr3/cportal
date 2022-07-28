@@ -40,4 +40,6 @@ abstract class ImageAssets {
   static const exit = '$iconsPath/exit.svg';
   static const apple = '$iconsPath/apple.svg';
   static const desktop = '$iconsPath/desktop.svg';
+  static const profile = '$iconsPath/profile.svg';
+  static const video = '$iconsPath/video.svg';
 }

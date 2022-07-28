@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/empty_declarations_title.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/card_with_icon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
@@ -32,16 +32,18 @@ class NewDeclarations extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DeclarationCard(
+                      CardWithIcon(
                         width: halfWidth,
                         svgPath: ImageAssets.calendar,
                         text: AppLocalizations.of(context)!
                             .buisenesTripDeclaration,
+                        onTap: () {},
                       ),
-                      DeclarationCard(
+                      CardWithIcon(
                         width: halfWidth,
                         svgPath: ImageAssets.flyVocation,
                         text: AppLocalizations.of(context)!.vocationDeclaration,
+                        onTap: () {},
                       ),
                     ],
                   ),
@@ -49,23 +51,26 @@ class NewDeclarations extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DeclarationCard(
+                      CardWithIcon(
                         width: halfWidth,
                         svgPath: ImageAssets.lock,
                         text: AppLocalizations.of(context)!.passDeclaration,
+                        onTap: () {},
                       ),
-                      DeclarationCard(
+                      CardWithIcon(
                         width: halfWidth,
                         svgPath: ImageAssets.payList,
                         text: AppLocalizations.of(context)!.payListDeclaration,
+                        onTap: () {},
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  DeclarationCard(
+                  CardWithIcon(
                     width: double.infinity,
                     svgPath: ImageAssets.support,
                     text: AppLocalizations.of(context)!.supportDeclaration,
+                    onTap: () {},
                   ),
                 ],
               ),

@@ -6,11 +6,11 @@ import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/decl
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_card.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_cards.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/in_process_title.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/card_with_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
@@ -30,26 +30,31 @@ class DeclarationsContentWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    final List<Widget> newDeclaration = [
-      DeclarationCard(
+    final List<CardWithIcon> newDeclaration = [
+      CardWithIcon(
         svgPath: ImageAssets.calendar,
         text: AppLocalizations.of(context)!.buisenesTripDeclaration,
+        onTap: () {},
       ),
-      DeclarationCard(
+      CardWithIcon(
         svgPath: ImageAssets.flyVocation,
         text: AppLocalizations.of(context)!.vocationDeclaration,
+        onTap: () {},
       ),
-      DeclarationCard(
+      CardWithIcon(
         svgPath: ImageAssets.lock,
         text: AppLocalizations.of(context)!.passDeclaration,
+        onTap: () {},
       ),
-      DeclarationCard(
+      CardWithIcon(
         svgPath: ImageAssets.payList,
         text: AppLocalizations.of(context)!.payListDeclaration,
+        onTap: () {},
       ),
-      DeclarationCard(
+      CardWithIcon(
         svgPath: ImageAssets.support,
         text: AppLocalizations.of(context)!.supportDeclaration,
+        onTap: () {},
       ),
     ];
 
@@ -110,7 +115,7 @@ class DeclarationsContentWeb extends StatelessWidget {
                       ),
 
                       // Создать заявление.
-                      CreateDeclarationCard(
+                      CreateDeclarationCards(
                         items: newDeclaration,
                         onTap: (i) {},
                       ),
