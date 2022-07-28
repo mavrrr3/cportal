@@ -28,15 +28,12 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
       ),
       content: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.howToGetCodeTitle,
-                style: theme.textTheme.px22,
-              ),
+            Text(
+              AppLocalizations.of(context)!.howToGetCodeTitle,
+              style: theme.textTheme.px22,
             ),
             const SizedBox(height: 8),
             Text(
@@ -44,21 +41,15 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
               style: theme.textTheme.px14,
             ),
             const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.address,
-                style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
-              ),
+            Text(
+              AppLocalizations.of(context)!.address,
+              style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
             ),
             const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.addressForCode,
-                style: theme.textTheme.px14.copyWith(
-                  color: theme.textLight,
-                ),
+            Text(
+              AppLocalizations.of(context)!.addressForCode,
+              style: theme.textTheme.px14.copyWith(
+                color: theme.text,
               ),
             ),
             const SizedBox(height: 10),
@@ -88,12 +79,9 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
               child: const WorkModeTable(),
             ),
             const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.getWithYou,
-                style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
-              ),
+            Text(
+              AppLocalizations.of(context)!.getWithYou,
+              style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
             ),
             const SizedBox(height: 10),
             Row(
@@ -111,21 +99,16 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
               ],
             ),
             const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.callBeforeCame,
-                style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
-              ),
+            Text(
+              AppLocalizations.of(context)!.callBeforeCame,
+              style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
             ),
             const SizedBox(height: 8),
             const PhoneButton(),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '${AppLocalizations.of(context)!.callAfter} 6 ${AppLocalizations.of(context)!.hours}',
-                style: theme.textTheme.px14.copyWith(color: theme.red?.withOpacity(0.6)),
-              ),
+            const SizedBox(height: 8),
+            Text(
+              '${AppLocalizations.of(context)!.callAfter} 6 ${AppLocalizations.of(context)!.hours}',
+              style: theme.textTheme.px14.copyWith(color: theme.red?.withOpacity(0.6)),
             ),
           ],
         ),
@@ -146,7 +129,7 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
               AppLocalizations.of(context)!.close,
               style: theme.textTheme.px16.copyWith(
                 fontWeight: FontWeight.w700,
-                color: theme.cardColor,
+                color: theme.brightness == Brightness.light ? theme.white : theme.text,
               ),
             ),
           ),
