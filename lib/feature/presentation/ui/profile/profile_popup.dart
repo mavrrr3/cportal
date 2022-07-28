@@ -46,276 +46,283 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
         if (state is Authenticated) {
           user = state.user;
 
-          return Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    localizedStrings.profile,
-                    style: theme.textTheme.header,
-                  ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.close,
-                      color: theme.textLight,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                AvatarBox(
-                  size: 102,
-                  imgPath: user.photoUrl,
-                ),
-                const SizedBox(width: 16),
-                Column(
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: 300,
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              user.name,
-                              style: theme.textTheme.px17.copyWith(
-                                fontWeight: FontWeight.w800,
-                              ),
-                              softWrap: true,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              user.id,
-                              style: theme.textTheme.px14.copyWith(),
-                              softWrap: true,
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      localizedStrings.profile,
+                      style: theme.textTheme.header,
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: theme.textLight,
                       ),
                     ),
                   ],
                 ),
-                const Expanded(child: SizedBox()),
-              ]),
-              const SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TitleAndDescriptionRow(
-                        title: localizedStrings.department,
-                        description: user.position,
-                      ),
-                      const SizedBox(height: 8),
-                      TitleAndDescriptionRow(
-                        title: localizedStrings.position,
-                        description: user.department,
-                      ),
-                    ],
-                  ),
-                  const Expanded(child: SizedBox()),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TitleAndDescriptionRow(
-                        title: localizedStrings.birthDay,
-                        description: user.birthDayToString,
-                      ),
-                      const SizedBox(height: 8),
-                      TitleAndDescriptionRow(
-                        title: localizedStrings.email,
-                        description: user.email,
-                      ),
-                    ],
-                  ),
-                  const Flexible(child: SizedBox()),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TitleAndDescriptionRow(
-                  title: localizedStrings.office_phone,
-                  description: user.officePhone,
-                ),
-              ),
-              const SizedBox(height: 32),
-              Material(
-                color: Colors.transparent,
-                child: Row(
+                const SizedBox(height: 32),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: 350,
-                      child: Column(
-                        children: [
-                          OnHover(
-                            builder: (isHovered) {
-                              return Opacity(
-                                opacity: isHovered ? 0.68 : 1,
-                                child: Container(
-                                  width: 350,
-                                  decoration: BoxDecoration(
-                                    color: theme.text!.withOpacity(0.04),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4),
-                                      topRight: Radius.circular(4),
-                                    ),
+                    AvatarBox(
+                      size: 102,
+                      imgPath: user.photoUrl,
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  user.name,
+                                  style: theme.textTheme.px17.copyWith(
+                                    fontWeight: FontWeight.w800,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 4,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          localizedStrings.yourPhoneNumber,
-                                          style: theme.textTheme.px12.copyWith(
-                                            color: theme.textLight,
-                                          ),
-                                        ),
-                                        Text(
-                                          user.personalPhone,
-                                          style: theme.textTheme.px16,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: theme.text!.withOpacity(0.08),
+                                  softWrap: true,
                                 ),
                               ),
-                            ),
-                            child: OnHover(
+                              const SizedBox(height: 8),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  user.id,
+                                  style: theme.textTheme.px14.copyWith(),
+                                  softWrap: true,
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Expanded(child: SizedBox()),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TitleAndDescriptionRow(
+                          title: localizedStrings.department,
+                          description: user.position,
+                        ),
+                        const SizedBox(height: 8),
+                        TitleAndDescriptionRow(
+                          title: localizedStrings.position,
+                          description: user.department,
+                        ),
+                      ],
+                    ),
+                    const Expanded(child: SizedBox()),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TitleAndDescriptionRow(
+                          title: localizedStrings.birthDay,
+                          description: user.birthDayToString,
+                        ),
+                        const SizedBox(height: 8),
+                        TitleAndDescriptionRow(
+                          title: localizedStrings.email,
+                          description: user.email,
+                        ),
+                      ],
+                    ),
+                    const Flexible(child: SizedBox()),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TitleAndDescriptionRow(
+                    title: localizedStrings.office_phone,
+                    description: user.officePhone,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                Material(
+                  color: Colors.transparent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 350,
+                        child: Column(
+                          children: [
+                            OnHover(
                               builder: (isHovered) {
                                 return Opacity(
-                                  opacity: isHovered ? 0.64 : 1,
-                                  child: GestureDetector(
-                                    onTap: () => context.goNamed(
-                                      NavigationRouteNames.onBoardingStart,
+                                  opacity: isHovered ? 0.68 : 1,
+                                  child: Container(
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                      color: theme.text!.withOpacity(0.04),
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(4),
+                                        topRight: Radius.circular(4),
+                                      ),
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
-                                        vertical: 20,
+                                        horizontal: 16,
+                                        vertical: 4,
                                       ),
-                                      child: RowProfile(
-                                        firstWidget: SvgIcon(
-                                          iconColor,
-                                          path: ImageAssets.addPerson,
-                                          width: 22,
-                                        ),
-                                        text: localizedStrings.newEmployee,
-                                        secondWidget: getBlueArrow(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            localizedStrings.yourPhoneNumber,
+                                            style:
+                                                theme.textTheme.px12.copyWith(
+                                              color: theme.textLight,
+                                            ),
+                                          ),
+                                          Text(
+                                            user.personalPhone,
+                                            style: theme.textTheme.px16,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 );
                               },
                             ),
-                          ),
-                          const SizedBox(height: 24),
-                          OnHover(
-                            builder: (isHovered) {
-                              return Opacity(
-                                opacity: isHovered ? 0.64 : 1,
-                                child: GestureDetector(
-                                  onTap: () =>
-                                      turnOffNotify(isNotificationTurnedOn),
-                                  child: RowProfile(
-                                    firstWidget: SvgIcon(
-                                      iconColor,
-                                      path: ImageAssets.bell,
-                                      width: 21,
-                                    ),
-                                    text: localizedStrings.notifications,
-                                    secondWidget: customSwitch(
-                                      isNotificationTurnedOn,
-                                      turnOffNotify,
-                                    ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: theme.text!.withOpacity(0.08),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          OnHover(
-                            builder: (isHovered) {
-                              return Opacity(
-                                opacity: isHovered ? 0.64 : 1,
-                                child: GestureDetector(
-                                  onTap: () => turnOnOffFingerPrintAuth(
-                                    isFingerPrintAuth,
-                                  ),
-                                  child: RowProfile(
-                                    firstWidget: SvgIcon(
-                                      iconColor,
-                                      path: ImageAssets.fingerPrint,
-                                      width: 20,
+                              ),
+                              child: OnHover(
+                                builder: (isHovered) {
+                                  return Opacity(
+                                    opacity: isHovered ? 0.64 : 1,
+                                    child: GestureDetector(
+                                      onTap: () => context.goNamed(
+                                        NavigationRouteNames.onBoardingStart,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 20,
+                                        ),
+                                        child: RowProfile(
+                                          firstWidget: SvgIcon(
+                                            iconColor,
+                                            path: ImageAssets.addPerson,
+                                            width: 22,
+                                          ),
+                                          text: localizedStrings.newEmployee,
+                                          secondWidget: getBlueArrow(),
+                                        ),
+                                      ),
                                     ),
-                                    text: localizedStrings.fingerPrint,
-                                    secondWidget: customSwitch(
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            OnHover(
+                              builder: (isHovered) {
+                                return Opacity(
+                                  opacity: isHovered ? 0.64 : 1,
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        turnOffNotify(isNotificationTurnedOn),
+                                    child: RowProfile(
+                                      firstWidget: SvgIcon(
+                                        iconColor,
+                                        path: ImageAssets.bell,
+                                        width: 21,
+                                      ),
+                                      text: localizedStrings.notifications,
+                                      secondWidget: customSwitch(
+                                        isNotificationTurnedOn,
+                                        turnOffNotify,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            OnHover(
+                              builder: (isHovered) {
+                                return Opacity(
+                                  opacity: isHovered ? 0.64 : 1,
+                                  child: GestureDetector(
+                                    onTap: () => turnOnOffFingerPrintAuth(
                                       isFingerPrintAuth,
-                                      turnOnOffFingerPrintAuth,
+                                    ),
+                                    child: RowProfile(
+                                      firstWidget: SvgIcon(
+                                        iconColor,
+                                        path: ImageAssets.fingerPrint,
+                                        width: 20,
+                                      ),
+                                      text: localizedStrings.fingerPrint,
+                                      secondWidget: customSwitch(
+                                        isFingerPrintAuth,
+                                        turnOnOffFingerPrintAuth,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          OnHover(
-                            builder: (isHovered) {
-                              return Opacity(
-                                opacity: isHovered ? 0.64 : 1,
-                                child: GestureDetector(
-                                  onTap: () => context
-                                      .goNamed(NavigationRouteNames.changePin),
-                                  child: RowProfile(
-                                    firstWidget: SvgIcon(
-                                      iconColor,
-                                      path: ImageAssets.lock,
-                                      width: 20,
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            OnHover(
+                              builder: (isHovered) {
+                                return Opacity(
+                                  opacity: isHovered ? 0.64 : 1,
+                                  child: GestureDetector(
+                                    onTap: () => context.goNamed(
+                                        NavigationRouteNames.changePin),
+                                    child: RowProfile(
+                                      firstWidget: SvgIcon(
+                                        iconColor,
+                                        path: ImageAssets.lock,
+                                        width: 20,
+                                      ),
+                                      text: localizedStrings.changePin,
+                                      secondWidget: getBlueArrow(),
                                     ),
-                                    text: localizedStrings.changePin,
-                                    secondWidget: getBlueArrow(),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 28),
-                          const ChangeThemePopUp(),
-                        ],
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 28),
+                            const ChangeThemePopUp(),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }
 

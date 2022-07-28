@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/platform_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
@@ -87,8 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: GestureDetector(
                           behavior: HitTestBehavior.translucent,
-                          onTap: () => context
-                              .goNamed(NavigationRouteNames.onBoardingStart),
+                          onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
                           child: RowProfile(
                             firstWidget: SvgIcon(
                               iconColor,
@@ -138,8 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 24),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: () =>
-                          context.goNamed(NavigationRouteNames.changePin),
+                      onTap: () => context.goNamed(NavigationRouteNames.changePin),
                       child: RowProfile(
                         firstWidget: SvgIcon(
                           iconColor,
@@ -151,20 +150,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () =>
-                          context.pushNamed(NavigationRouteNames.devices),
-                      child: RowProfile(
-                        firstWidget: SvgIcon(
-                          iconColor,
-                          path: ImageAssets.addDevice,
-                          width: 20,
+                    if (kIsMobile)
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => context.pushNamed(NavigationRouteNames.devices),
+                        child: RowProfile(
+                          firstWidget: SvgIcon(
+                            iconColor,
+                            path: ImageAssets.addDevice,
+                            width: 20,
+                          ),
+                          text: localizedStrings.devices,
+                          secondWidget: getBlueArrow(),
                         ),
-                        text: localizedStrings.devices,
-                        secondWidget: getBlueArrow(),
                       ),
-                    ),
                     const SizedBox(height: 28),
                     const ChangeTheme(),
                   ],
@@ -238,8 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 24),
                   OnTapNotify(
-                    text:
-                        'Оповещения выключены на ${localizedStrings.forFourHour}',
+                    text: 'Оповещения выключены на ${localizedStrings.forFourHour}',
                     child: Text(
                       localizedStrings.forFourHour,
                       style: theme.textTheme.px16.copyWith(
@@ -249,8 +247,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 24),
                   OnTapNotify(
-                    text:
-                        'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
+                    text: 'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
                     child: Text(
                       localizedStrings.forTwentyFourHour,
                       style: theme.textTheme.px16.copyWith(
@@ -260,8 +257,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 24),
                   OnTapNotify(
-                    text:
-                        'Оповещения выключены ${localizedStrings.forever.toLowerCase()}',
+                    text: 'Оповещения выключены ${localizedStrings.forever.toLowerCase()}',
                     child: Text(
                       localizedStrings.forever,
                       style: theme.textTheme.px16.copyWith(
