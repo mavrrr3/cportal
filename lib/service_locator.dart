@@ -86,7 +86,6 @@ import 'package:cportal_flutter/feature/domain/usecases/contacts/search_contacts
 import 'package:cportal_flutter/feature/domain/usecases/profile/search_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/questions/get_single_question_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
