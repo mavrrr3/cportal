@@ -18,27 +18,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool isShowedBiometricAuth = false;
   final pinController = TextEditingController();
   final pinFocusNode = FocusNode();
 
-  @override
-  void didChangeDependencies() {
-    final authBloc = context.read<AuthBloc>();
-    final state = authBloc.state;
-
-    if (state is HasAuthCredentials && state.enabledBiometric != null) {
-      authBloc.add(
-        LogInWithBiometrics(
-          AppLocalizations.of(context)!.logInToContinue,
-        ),
-      );
-    }
-    super.didChangeDependencies();
-  }
+  bool isShowedBiometricAuth = false;
 
   @override
   Widget build(BuildContext context) {
+    _showBiometricPopup(context);
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
@@ -51,6 +39,21 @@ class _LoginScreenState extends State<LoginScreen> {
           ? LoginDesktopScreen(pinController: pinController, pinFocusNode: pinFocusNode)
           : LoginMobileScreen(pinController: pinController, pinFocusNode: pinFocusNode),
     );
+  }
+
+  void _showBiometricPopup(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
+    final state = authBloc.state;
+
+    if (!isShowedBiometricAuth && state is HasAuthCredentials && state.enabledBiometric != null) {
+      isShowedBiometricAuth = true;
+
+      authBloc.add(
+        LogInWithBiometrics(
+          AppLocalizations.of(context)!.logInToContinue,
+        ),
+      );
+    }
   }
 
   @override
