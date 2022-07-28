@@ -47,6 +47,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
           user = state.user;
 
           return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 Row(
