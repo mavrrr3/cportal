@@ -50,7 +50,10 @@ class AvatarAndUserInfo extends StatelessWidget {
           const SizedBox(height: 16),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => context.goNamed(NavigationRouteNames.userData),
+            onTap: () =>
+                context.goNamed(NavigationRouteNames.userData, params: {
+              'fid': user.id,
+            }),
             child: Text(
               AppLocalizations.of(context)!.watchData,
               style: theme.textTheme.px16.copyWith(

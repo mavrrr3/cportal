@@ -9,9 +9,9 @@ import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 
 class ProfileRemoteDataSource implements IProfileRemoteDataSource {
   final IProfileLocalDataSource localDataSource;
-  final Dio dio;
+  final Dio _dio;
 
-  ProfileRemoteDataSource(this.localDataSource, this.dio);
+  ProfileRemoteDataSource(this.localDataSource, this._dio);
   @override
   Future<ProfileModel> getSingleProfile(
     String id, {
@@ -23,15 +23,20 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     try {
       // TODO: Избавиться от if, передавать эту переменную в singleProfileToCache.
       if (isMyProfile) {
-        final ProfileModel localeUser = profileModelFromJson(stringUser);
-
-        await localDataSource.singleProfileToCache(localeUser);
-
-        return localeUser;
-      } else {
-        final response = await dio.fetch<Map<String, dynamic>>(
+        final response = await _dio.fetch<Map<String, dynamic>>(
           Options(method: 'GET', responseType: ResponseType.json).compose(
-            dio.options,
+            _dio.options,
+            baseUrl,
+          ),
+        );
+
+        return ProfileModel.fromJson(
+          response.data!['response'] as Map<String, dynamic>,
+        );
+      } else {
+        final response = await _dio.fetch<Map<String, dynamic>>(
+          Options(method: 'GET', responseType: ResponseType.json).compose(
+            _dio.options,
             baseUrl,
           ),
         );
@@ -58,27 +63,3 @@ class ProfileRemoteDataSource implements IProfileRemoteDataSource {
     throw UnimplementedError();
   }
 }
-
-const String stringUser = '''
-{
-"id": "000000002",
-"name": "Иванов Иван Иванович",
-"departament": "Отдел вэб разработки",
-"position": "Директор",
-"birthdate": "2022-06-07T12:00:00",
-"contacts": [
-    {
-        "type": "Рабочий телефон",
-        "contact": "711-543"
-    },
-    {
-        "type": "Личный номер телефона",
-        "contact": "89128231848"
-    },
-    {
-        "type": "Эл. почта",
-        "contact": "ivanov@yandex.ru"
-    }
-],
-"photo": "20220616/285831712_340931151553303_8302347002848994819_n.jpg"
-}''';
