@@ -12,6 +12,7 @@ class FilterWebContent extends StatelessWidget {
   final Function(int) onExpand;
   final Function(int, int) onSelect;
   final Function(int, String) onSearch;
+  final bool isActive;
 
   const FilterWebContent({
     Key? key,
@@ -22,6 +23,7 @@ class FilterWebContent extends StatelessWidget {
     required this.onExpand,
     required this.onSearch,
     required this.onSelect,
+    required this.isActive,
   }) : super(key: key);
 
   @override
@@ -30,9 +32,9 @@ class FilterWebContent extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 225),
       height: MediaQuery.of(context).size.height,
-      width: width * 0.25,
+      width: isActive ? width * 0.25 : 0,
       decoration: BoxDecoration(color: theme.cardColor),
       child: Padding(
         padding: const EdgeInsets.symmetric(

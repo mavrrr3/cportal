@@ -92,19 +92,13 @@ class _DeclarationsPageState extends State<DeclarationsPage>
                     : const SizedBox();
               },
             ),
-            BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
-              builder: (_, state) {
-                return state.isActive
-                    ? Align(
-                        alignment: Alignment.centerRight,
-                        child: FilterWeb(
-                          type: FilterType.declarations,
-                          onApply: _onApplyFilter,
-                          onClear: _onClearFilter,
-                        ),
-                      )
-                    : const SizedBox();
-              },
+            Align(
+              alignment: Alignment.centerRight,
+              child: FilterWeb(
+                type: FilterType.declarations,
+                onApply: _onApplyFilter,
+                onClear: _onClearFilter,
+              ),
             ),
           ],
         ),

@@ -299,7 +299,8 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                   opacity: isHovered ? 0.64 : 1,
                                   child: GestureDetector(
                                     onTap: () => context.goNamed(
-                                        NavigationRouteNames.changePin),
+                                      NavigationRouteNames.changePin,
+                                    ),
                                     child: RowProfile(
                                       firstWidget: SvgIcon(
                                         iconColor,
