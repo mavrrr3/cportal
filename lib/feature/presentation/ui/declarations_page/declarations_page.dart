@@ -58,7 +58,7 @@ class _DeclarationsPageState extends State<DeclarationsPage>
                 onFilterTap: () {
                   context
                       .read<FilterVisibilityBloc>()
-                      .add(const FilterChangeVisibilityEvent(isVisible: true));
+                      .add(const FilterChangeVisibilityEvent(isActive: true));
                 },
               )
             else
@@ -81,7 +81,7 @@ class _DeclarationsPageState extends State<DeclarationsPage>
                         onTap: () => context
                             .read<FilterVisibilityBloc>()
                             .add(const FilterChangeVisibilityEvent(
-                              isVisible: false,
+                              isActive: false,
                             )),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -110,7 +110,7 @@ class _DeclarationsPageState extends State<DeclarationsPage>
     if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
       context
           .read<FilterVisibilityBloc>()
-          .add(const FilterChangeVisibilityEvent(isVisible: false));
+          .add(const FilterChangeVisibilityEvent(isActive: false));
     } else {
       Navigator.pop(context);
     }
@@ -118,6 +118,9 @@ class _DeclarationsPageState extends State<DeclarationsPage>
 
   void _onClearFilter() {
     context.read<FilterDeclarationsBloc>().add(FilterRemoveAllEvent());
+    context
+        .read<FilterVisibilityBloc>()
+        .add(const FilterChangeVisibilityEvent(isActive: false));
   }
 
   @override

@@ -82,7 +82,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         } else {
                           context.read<FilterVisibilityBloc>().add(
                                 const FilterChangeVisibilityEvent(
-                                  isVisible: true,
+                                  isActive: true,
                                 ),
                               );
                         }
@@ -260,7 +260,7 @@ class _ContactsPageState extends State<ContactsPage> {
     if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
       context
           .read<FilterVisibilityBloc>()
-          .add(const FilterChangeVisibilityEvent(isVisible: false));
+          .add(const FilterChangeVisibilityEvent(isActive: false));
     } else {
       Navigator.pop(context);
     }
@@ -275,6 +275,9 @@ class _ContactsPageState extends State<ContactsPage> {
     ).add(
       const FetchContactsEvent(isFirstFetch: true),
     );
+    context
+        .read<FilterVisibilityBloc>()
+        .add(const FilterChangeVisibilityEvent(isActive: false));
   }
 
   // Профиль пользователя для Web.

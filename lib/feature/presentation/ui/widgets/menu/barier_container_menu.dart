@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,11 +16,15 @@ class BarierContainerMenu extends StatelessWidget {
     return BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
       builder: (_, state) {
         return state.isActive
-            ? AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: 256,
-                height: MediaQuery.of(context).size.height,
-                color: theme.barrierColor,
+            ? GestureDetector(
+                onTap: () => context
+                    .read<FilterVisibilityBloc>()
+                    .add(const FilterChangeVisibilityEvent(isActive: false)),
+                child: Container(
+                  width: 256,
+                  height: MediaQuery.of(context).size.height,
+                  color: theme.barrierColor,
+                ),
               )
             : const SizedBox();
       },

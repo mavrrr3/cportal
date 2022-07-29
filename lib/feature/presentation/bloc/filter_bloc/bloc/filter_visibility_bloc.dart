@@ -24,7 +24,7 @@ class FilterVisibilityBloc extends Bloc<FilterEvent, FilterVisibilityState> {
     FilterChangeVisibilityEvent event,
     Emitter emit,
   ) async {
-    emit(FilterVisibilityState(isActive: event.isVisible));
+    emit(FilterVisibilityState(isActive: event.isActive));
 
     debugPrint('Отработал эвент: $event');
   }
