@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/core/interceptor/auth_key_interceptor.dart';
 import 'package:cportal_flutter/core/service/auth_service.dart';
@@ -16,7 +14,7 @@ import 'package:cportal_flutter/feature/data/datasources/contacts_datasource/con
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/location_datasource/location_remote_datasorce.dart';
-import 'package:cportal_flutter/feature/data/datasources/main_search_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/main_search_datasource/main_search_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
@@ -86,7 +84,6 @@ import 'package:cportal_flutter/feature/domain/usecases/contacts/search_contacts
 import 'package:cportal_flutter/feature/domain/usecases/profile/search_profile_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/questions/get_single_question_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
@@ -116,57 +113,56 @@ final sl = GetIt.instance;
 // ignore: long-method
 Future<void> init() async {
   // BLOC/CUBIT.
-  sl.registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()));
-  sl.registerFactory(() => AuthBloc(sl(), sl(), sl(), sl()));
-  sl.registerFactory(() => GetSingleNewsBloc(getSingleNews: sl()));
-  sl.registerFactory(() => GetSingleQuestionBloc(getSingleQuestion: sl()));
-  sl.registerFactory(() => ConnectingCodeBloc(sl()));
-  sl.registerFactory(() => PinCodeBloc(sl()));
-  sl.registerFactory(() => BiometricBloc(sl()));
-  sl.registerFactory(() => FetchNewsBloc(
-        fetchNews: sl(),
-        fetchNewsByCategory: sl(),
-      ));
-  sl.registerFactory(() => FetchQuestionsBloc(
-        fetchQaustions: sl(),
-        fetchQuestionsByCategory: sl(),
-      ));
-  sl.registerFactory(NavigationBarBloc.new);
-  sl.registerFactory(() => FilterContactsBloc(fetchFilters: sl()));
-  sl.registerFactory(() => ContactsBloc(
-        fetchContacts: sl(),
-        fetchProfile: sl(),
-        searchContacts: sl(),
-      ));
-  sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
+  sl
+    ..registerFactory(() => GetSingleProfileBloc(getSingleProfile: sl()))
+    ..registerFactory(() => AuthBloc(sl(), sl(), sl(), sl()))
+    ..registerFactory(() => GetSingleNewsBloc(getSingleNews: sl()))
+    ..registerFactory(() => GetSingleQuestionBloc(getSingleQuestion: sl()))
+    ..registerFactory(() => ConnectingCodeBloc(sl()))
+    ..registerFactory(() => PinCodeBloc(sl()))
+    ..registerFactory(() => BiometricBloc(sl()))
+    ..registerFactory(() => FetchNewsBloc(
+          fetchNews: sl(),
+          fetchNewsByCategory: sl(),
+        ))
+    ..registerFactory(() => FetchQuestionsBloc(
+          fetchQaustions: sl(),
+          fetchQuestionsByCategory: sl(),
+        ))
+    ..registerFactory(NavigationBarBloc.new)
+    ..registerFactory(() => FilterContactsBloc(fetchFilters: sl()))
+    ..registerFactory(() => ContactsBloc(
+          fetchContacts: sl(),
+          fetchProfile: sl(),
+          searchContacts: sl(),
+        ))
+    ..registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()))
+    ..registerFactory(DeclarationsBloc.new)
+    ..registerFactory(() => ConnectingQrBloc(sl(), sl(), sl()))
+    ..registerFactory(() => ConnectingDevicesBloc(sl(), sl()))
+    ..registerFactory(() => MainSearchBloc(sl()))
 
-  sl.registerFactory(DeclarationsBloc.new);
-  sl.registerFactory(() => ConnectingQrBloc(sl(), sl(), sl()));
-  sl.registerFactory(() => ConnectingDevicesBloc(sl(), sl()));
-
-  sl.registerFactory(() => MainSearchBloc(sl()));
-
-  // USECASE.
-  sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
-  sl.registerLazySingleton(() => GetSingleNewsUseCase(sl()));
-  sl.registerLazySingleton(() => GetSingleQuestionUseCase(sl()));
-  sl.registerLazySingleton(() => SearchProfileUseCase(sl()));
-  sl.registerLazySingleton(() => FetchNewsUseCase(sl()));
-  sl.registerLazySingleton(() => FetchQuestionsUseCase(sl()));
-  sl.registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()));
-  sl.registerLazySingleton(() => FetchQuestionsByCategoryUseCase(sl()));
-  sl.registerLazySingleton(() => FetchContactsFiltersUseCase(sl()));
-  sl.registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()));
-  sl.registerLazySingleton(() => FetchContactsUseCase(sl()));
-  sl.registerLazySingleton(() => SearchContactsUseCase(sl()));
-  sl.registerLazySingleton(() => HasAuthCredentialsUseCase(sl(), sl()));
-  sl.registerLazySingleton(() => LogInWithConnectingCodeUseCase(sl()));
-  sl.registerLazySingleton(() => LogInWithPinCodeUseCase(sl(), sl()));
-  sl.registerLazySingleton(() => LogInWithBiometricsUseCase(sl(), sl()));
-  sl.registerLazySingleton(() => GenerateConnectingCodeUseCase(sl()));
-  sl.registerLazySingleton(() => SendScannedDataUseCase(sl()));
-  sl.registerLazySingleton(() => SendConnectingDataUseCase(sl()));
-  sl.registerLazySingleton(() => MainSearchUseCase(sl()));
+    // USECASE.
+    ..registerLazySingleton(() => GetSingleProfileUseCase(sl()))
+    ..registerLazySingleton(() => GetSingleNewsUseCase(sl()))
+    ..registerLazySingleton(() => GetSingleQuestionUseCase(sl()))
+    ..registerLazySingleton(() => SearchProfileUseCase(sl()))
+    ..registerLazySingleton(() => FetchNewsUseCase(sl()))
+    ..registerLazySingleton(() => FetchQuestionsUseCase(sl()))
+    ..registerLazySingleton(() => FetchNewsByCategoryUseCase(sl()))
+    ..registerLazySingleton(() => FetchQuestionsByCategoryUseCase(sl()))
+    ..registerLazySingleton(() => FetchContactsFiltersUseCase(sl()))
+    ..registerLazySingleton(() => FetchDeclarationsFiltersUseCase(sl()))
+    ..registerLazySingleton(() => FetchContactsUseCase(sl()))
+    ..registerLazySingleton(() => SearchContactsUseCase(sl()))
+    ..registerLazySingleton(() => HasAuthCredentialsUseCase(sl(), sl()))
+    ..registerLazySingleton(() => LogInWithConnectingCodeUseCase(sl()))
+    ..registerLazySingleton(() => LogInWithPinCodeUseCase(sl(), sl()))
+    ..registerLazySingleton(() => LogInWithBiometricsUseCase(sl(), sl()))
+    ..registerLazySingleton(() => GenerateConnectingCodeUseCase(sl()))
+    ..registerLazySingleton(() => SendScannedDataUseCase(sl()))
+    ..registerLazySingleton(() => SendConnectingDataUseCase(sl()))
+    ..registerLazySingleton(() => MainSearchUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -187,17 +183,16 @@ Future<void> init() async {
       ),
     );
   }
-  sl.registerLazySingleton<IPinCodeRepository>(
-    () => PinCodeRepository(sl()),
-  );
-
-  sl.registerLazySingleton<IAuthRepository>(
-    () => AuthRepository(sl(), sl(), sl(), sl()),
-  );
-
-  sl.registerLazySingleton<IBiometricRepository>(
-    () => BiometricRepository(sl()),
-  );
+  sl
+    ..registerLazySingleton<IPinCodeRepository>(
+      () => PinCodeRepository(sl()),
+    )
+    ..registerLazySingleton<IAuthRepository>(
+      () => AuthRepository(sl(), sl(), sl(), sl()),
+    )
+    ..registerLazySingleton<IBiometricRepository>(
+      () => BiometricRepository(sl()),
+    );
 
   if (kIsWeb) {
     sl.registerLazySingleton<INewsRepository>(
@@ -242,96 +237,94 @@ Future<void> init() async {
       ),
     );
   }
-  sl.registerLazySingleton<IConnectingDevicesRepository>(
-    () => ConnectingDevicesRepository(sl(), sl()),
-  );
-  sl.registerLazySingleton<IUserRepository>(
-    () => UserRepository(sl(), sl()),
-  );
-  sl.registerLazySingleton<IConnectingQrRepository>(
-    () => ConnectingQrRepository(sl()),
-  );
+  sl
+    ..registerLazySingleton<IConnectingDevicesRepository>(
+      () => ConnectingDevicesRepository(sl(), sl()),
+    )
+    ..registerLazySingleton<IUserRepository>(
+      () => UserRepository(sl(), sl()),
+    )
+    ..registerLazySingleton<IConnectingQrRepository>(
+      () => ConnectingQrRepository(sl()),
+    )
+    ..registerLazySingleton<IMainSearchRepository>(
+      () => MainSearchRepository(remoteDataSource: sl()),
+    )
 
-  sl.registerLazySingleton<IMainSearchRepository>(
-    () => MainSearchRepository(remoteDataSource: sl()),
-  );
-
-  // DATASOURCE.
-  sl.registerLazySingleton<IProfileRemoteDataSource>(
-    () => ProfileRemoteDataSource(sl(), sl()),
-  );
-
-  sl.registerLazySingleton<IProfileLocalDataSource>(
-    ProfileLocalDataSource.new,
-  );
-
-  sl.registerLazySingleton<INewsRemoteDataSource>(
-    () => NewsRemoteDataSource(sl(), sl()),
-  );
-
-  sl.registerLazySingleton<INewsLocalDataSource>(
-    () => NewsLocalDataSource(sl()),
-  );
-  sl.registerLazySingleton<IContactsRemoteDataSource>(
-    () => ContactsRemoteDataSource(sl(), sl()),
-  );
-  sl.registerLazySingleton<IContactsLocalDataSource>(
-    () => ContactsLocalDataSource(sl()),
-  );
-  sl.registerLazySingleton<IFilterRemoteDataSource>(
-    () => FilterRemoteDataSource(sl(), sl()),
-  );
-  sl.registerLazySingleton<IFilterLocalDataSource>(
-    () => FilterLocalDataSource(sl()),
-  );
-  sl.registerLazySingleton<IAuthRemoteDataSource>(
-    () => AuthRemoteDataSource(sl<Dio>(instanceName: 'initial')),
-  );
-  sl.registerLazySingleton<IConnectingDevicesRemoteDataSource>(
-    () => ConnectingDevicesRemoteDataSource(sl()),
-  );
-  sl.registerLazySingleton<IConnectingDevicesLocalDataSource>(
-    () => ConnectingDevicesLocalDataSource(sl()),
-  );
-  sl.registerLazySingleton<ILocationRemoteDataSource>(
-    () => LocationRemoteDataSource(Dio()),
-  );
-  sl.registerLazySingleton<IUserLocalDataSource>(
-    () => UserLocalDataSource(sl()),
-  );
-  sl.registerLazySingleton<IUserRemoteDataSource>(
-    () => UserRemoteDataSource(sl()),
-  );
-  sl.registerLazySingleton<IConnectingQrRemoteDataSource>(
-    () => ConnectingQrRemoteDataSource(sl()),
-  );
-  sl.registerLazySingleton<IMainSearchRemoteDataSource>(
-    () => MainSearchRemoteDataSource(sl()),
-  );
+    // DATASOURCE.
+    ..registerLazySingleton<IProfileRemoteDataSource>(
+      () => ProfileRemoteDataSource(sl(), sl()),
+    )
+    ..registerLazySingleton<IProfileLocalDataSource>(
+      ProfileLocalDataSource.new,
+    )
+    ..registerLazySingleton<INewsRemoteDataSource>(
+      () => NewsRemoteDataSource(sl(), sl()),
+    )
+    ..registerLazySingleton<INewsLocalDataSource>(
+      () => NewsLocalDataSource(sl()),
+    )
+    ..registerLazySingleton<IContactsRemoteDataSource>(
+      () => ContactsRemoteDataSource(sl(), sl()),
+    )
+    ..registerLazySingleton<IContactsLocalDataSource>(
+      () => ContactsLocalDataSource(sl()),
+    )
+    ..registerLazySingleton<IFilterRemoteDataSource>(
+      () => FilterRemoteDataSource(sl(), sl()),
+    )
+    ..registerLazySingleton<IFilterLocalDataSource>(
+      () => FilterLocalDataSource(sl()),
+    )
+    ..registerLazySingleton<IAuthRemoteDataSource>(
+      () => AuthRemoteDataSource(sl<Dio>(instanceName: 'initial')),
+    )
+    ..registerLazySingleton<IConnectingDevicesRemoteDataSource>(
+      () => ConnectingDevicesRemoteDataSource(sl()),
+    )
+    ..registerLazySingleton<IConnectingDevicesLocalDataSource>(
+      () => ConnectingDevicesLocalDataSource(sl()),
+    )
+    ..registerLazySingleton<ILocationRemoteDataSource>(
+      () => LocationRemoteDataSource(Dio()),
+    )
+    ..registerLazySingleton<IUserLocalDataSource>(
+      () => UserLocalDataSource(sl()),
+    )
+    ..registerLazySingleton<IUserRemoteDataSource>(
+      () => UserRemoteDataSource(sl()),
+    )
+    ..registerLazySingleton<IConnectingQrRemoteDataSource>(
+      () => ConnectingQrRemoteDataSource(sl()),
+    )
+    ..registerLazySingleton<IMainSearchRemoteDataSource>(
+      () => MainSearchRemoteDataSource(sl()),
+    );
 
   // CORE.
   if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
-  sl.registerLazySingleton<DeviceInfoPlugin>(DeviceInfoPlugin.new);
-  sl.registerLazySingleton<DeviceInfoService>(() => DeviceInfoService(sl()));
-  sl.registerLazySingleton<AuthService>(() => AuthService(sl()));
-  sl.registerLazySingleton<DioFactory>(DioFactory.new);
-  // EXTERNAL.
-  sl.registerLazySingleton(InternetConnectionChecker.new);
-  sl.registerLazySingleton(LocalAuthentication.new);
-  sl.registerLazySingleton<HiveInterface>(() => Hive);
-  sl.registerLazySingleton<Dio>(
-    () => sl<DioFactory>().create(
-      baseUrl: AppConfig.apiUri,
-      interceptors: [
-        AuthKeyInterceptor(AppConfig.authKey),
-      ],
-    ),
-    instanceName: 'initial',
-  );
-  sl.registerLazySingleton<Dio>(
-    () => sl<Dio>(instanceName: 'initial')
-      ..interceptors.add(
-        TokenInterceptor(sl(), sl()),
+  sl
+    ..registerLazySingleton<DeviceInfoPlugin>(DeviceInfoPlugin.new)
+    ..registerLazySingleton<DeviceInfoService>(() => DeviceInfoService(sl()))
+    ..registerLazySingleton<AuthService>(() => AuthService(sl()))
+    ..registerLazySingleton<DioFactory>(DioFactory.new)
+    // EXTERNAL.
+    ..registerLazySingleton(InternetConnectionChecker.new)
+    ..registerLazySingleton(LocalAuthentication.new)
+    ..registerLazySingleton<HiveInterface>(() => Hive)
+    ..registerLazySingleton<Dio>(
+      () => sl<DioFactory>().create(
+        baseUrl: AppConfig.apiUri,
+        interceptors: [
+          AuthKeyInterceptor(AppConfig.authKey),
+        ],
       ),
-  );
+      instanceName: 'initial',
+    )
+    ..registerLazySingleton<Dio>(
+      () => sl<Dio>(instanceName: 'initial')
+        ..interceptors.add(
+          TokenInterceptor(sl(), sl()),
+        ),
+    );
 }
