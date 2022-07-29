@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/common/util/only_selected_filters_service.dart';
@@ -34,12 +35,10 @@ class ContactsPage extends StatefulWidget {
 class _ContactsPageState extends State<ContactsPage> {
   late ScrollController _scrollController;
   late TextEditingController _searchController;
-  late bool _isFilterOpenWeb;
   @override
   void initState() {
     _scrollController = ScrollController();
     _searchController = TextEditingController();
-    _isFilterOpenWeb = false;
 
     super.initState();
   }
@@ -81,9 +80,11 @@ class _ContactsPageState extends State<ContactsPage> {
                             _sendFilters(context);
                           });
                         } else {
-                          setState(() {
-                            _isFilterOpenWeb = true;
-                          });
+                          context.read<FilterVisibilityBloc>().add(
+                                const FilterChangeVisibilityEvent(
+                                  isVisible: true,
+                                ),
+                              );
                         }
                       },
                     ),
@@ -96,14 +97,12 @@ class _ContactsPageState extends State<ContactsPage> {
                         return SelectedFiltersView(
                           filters: state.contactsFilters,
                           onRemove: (item, i) async {
-                            BlocProvider.of<FilterContactsBloc>(
-                              context,
-                            ).add(
-                              FilterRemoveItemEvent(
-                                filterIndex: i,
-                                item: item,
-                              ),
-                            );
+                            context.read<FilterContactsBloc>().add(
+                                  FilterRemoveItemEvent(
+                                    filterIndex: i,
+                                    item: item,
+                                  ),
+                                );
                             await Future<dynamic>.delayed(
                               const Duration(milliseconds: 150),
                             );
@@ -192,24 +191,34 @@ class _ContactsPageState extends State<ContactsPage> {
                 ],
               ),
             ),
-            if (_isFilterOpenWeb)
-              GestureDetector(
-                onTap: _onApplyFilter,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  color: theme.barrierColor,
-                ),
-              ),
-            if (_isFilterOpenWeb)
-              Align(
-                alignment: Alignment.centerRight,
-                child: FilterWeb(
-                  type: FilterType.contacts,
-                  onApply: _onApplyFilter,
-                  onClear: _onClearFilter,
-                ),
-              ),
+            BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
+              builder: (_, state) {
+                return state.isActive
+                    ? GestureDetector(
+                        onTap: _onApplyFilter,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          color: theme.barrierColor,
+                        ),
+                      )
+                    : const SizedBox();
+              },
+            ),
+            BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
+              builder: (_, state) {
+                return state.isActive
+                    ? Align(
+                        alignment: Alignment.centerRight,
+                        child: FilterWeb(
+                          type: FilterType.contacts,
+                          onApply: _onApplyFilter,
+                          onClear: _onClearFilter,
+                        ),
+                      )
+                    : const SizedBox();
+              },
+            ),
           ],
         ),
       ),
@@ -255,9 +264,9 @@ class _ContactsPageState extends State<ContactsPage> {
   // Кнопка [Применить] фильтр.
   void _onApplyFilter() {
     if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
-      setState(() {
-        _isFilterOpenWeb = false;
-      });
+      context
+          .read<FilterVisibilityBloc>()
+          .add(const FilterChangeVisibilityEvent(isVisible: false));
     } else {
       Navigator.pop(context);
     }
@@ -265,9 +274,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   // Кнопка [Очистить] фильтр.
   void _onClearFilter() {
-    BlocProvider.of<FilterContactsBloc>(
-      context,
-    ).add(FilterRemoveAllEvent());
+    context.read<FilterContactsBloc>().add(FilterRemoveAllEvent());
     BlocProvider.of<ContactsBloc>(
       context,
       listen: false,
@@ -310,9 +317,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void _onSearchInput(
     String text,
   ) {
-    final state = BlocProvider.of<FilterContactsBloc>(
-      context,
-    ).state;
+    final state = context.read<FilterContactsBloc>().state;
 
     BlocProvider.of<ContactsBloc>(
       context,
@@ -328,9 +333,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void _sendFilters(BuildContext context, {bool isFromRemove = false}) {
-    final state = BlocProvider.of<FilterContactsBloc>(
-      context,
-    ).state;
+    final state = context.read<FilterContactsBloc>().state;
     if (state is FilterLoadedState) {
       final onlySelectedFilters =
           OnlySelectedFiltersService.count(state.contactsFilters);

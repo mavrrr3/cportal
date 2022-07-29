@@ -93,6 +93,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
@@ -144,6 +145,7 @@ Future<void> init() async {
   sl.registerFactory(() => ConnectingDevicesBloc(sl(), sl()));
 
   sl.registerFactory(() => MainSearchBloc(sl()));
+  sl.registerFactory(FilterVisibilityBloc.new);
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));

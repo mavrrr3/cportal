@@ -44,3 +44,13 @@ class FilterRemoveItemEvent extends FilterEvent {
 }
 
 class FilterRemoveAllEvent extends FilterEvent {}
+
+class FilterChangeVisibilityEvent extends FilterEvent {
+  final bool isVisible;
+
+  const FilterChangeVisibilityEvent({
+    required this.isVisible,
+  });
+  @override
+  List<Object> get props => [isVisible];
+}
