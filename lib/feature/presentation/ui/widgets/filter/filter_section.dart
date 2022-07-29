@@ -134,15 +134,15 @@ class _FilterSectionState extends State<FilterSection> {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            GestureDetector(
-                              onTap: () {
-                                widget.onSelect(index);
-                              },
-                              child: Text(
-                                widget.item.items[index].name,
-                                style: theme.textTheme.px14,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  widget.onSelect(index);
+                                },
+                                child: Text(
+                                  widget.item.items[index].name,
+                                  style: theme.textTheme.px14,
+                                ),
                               ),
                             ),
                           ],
@@ -203,7 +203,7 @@ class _FilterSectionState extends State<FilterSection> {
                                   )[index]
                                       .name,
                                   style: theme.textTheme.px14,
-                                  maxLines: 3,
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),

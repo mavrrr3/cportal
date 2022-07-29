@@ -49,16 +49,11 @@ class QuestionArticlePage extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ResponsiveVisibility(
-                  visible: false,
-                  visibleWhen: const [
-                    Condition<dynamic>.largerThan(name: TABLET),
-                  ],
-                  child: DesktopMenu(
+                if (isLargerThenTablet(context))
+                  DesktopMenu(
                     currentIndex: 2,
                     onChange: (index) => MenuService.changePage(context, index),
                   ),
-                ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

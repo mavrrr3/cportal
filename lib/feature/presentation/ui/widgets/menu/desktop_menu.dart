@@ -30,13 +30,15 @@ class DesktopMenu extends StatelessWidget {
               width: 256,
               height: MediaQuery.of(context).size.height,
               color: theme.cardColor,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: MenuItemsColumnWeb(
-                  menuItems: state.menuItems,
-                  currentIndex: currentIndex,
-                  onChange: onChange,
+              child: SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  child: MenuItemsColumnWeb(
+                    menuItems: state.menuItems,
+                    currentIndex: currentIndex,
+                    onChange: onChange,
+                  ),
                 ),
               ),
             ),

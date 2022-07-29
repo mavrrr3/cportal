@@ -32,7 +32,8 @@ class FilterWebContent extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 225),
+      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 300  ),
       height: MediaQuery.of(context).size.height,
       width: isActive ? width * 0.25 : 0,
       decoration: BoxDecoration(color: theme.cardColor),

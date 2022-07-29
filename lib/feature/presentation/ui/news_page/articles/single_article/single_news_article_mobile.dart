@@ -30,7 +30,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (isLargerThenMobile(context))
+        if (isLargerThenTablet(context))
           DesktopMenu(
             currentIndex: 1,
             onChange: (index) {

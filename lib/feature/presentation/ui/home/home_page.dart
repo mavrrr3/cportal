@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
@@ -20,7 +21,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 const List<OnboardingEntity> _onboardingContent = [
   OnboardingEntity(
@@ -152,13 +152,8 @@ class _HomePageState extends State<HomePage>
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ResponsiveVisibility(
-                        visible: false,
-                        visibleWhen: const [
-                          Condition<dynamic>.largerThan(name: MOBILE),
-                        ],
-                        // Меню Web.
-                        child: DesktopMenu(
+                      if (isLargerThenTablet(context))
+                        DesktopMenu(
                           onboarding: () {
                             setState(
                               () {
@@ -170,7 +165,6 @@ class _HomePageState extends State<HomePage>
                           onChange: (index) =>
                               MenuService.changePage(context, index),
                         ),
-                      ),
 
                       // Текущая страница.
                       Expanded(
@@ -285,7 +279,11 @@ class _HomePageState extends State<HomePage>
               ),
 
               // Bottom Bar.
-              bottomNavigationBar: !kIsWeb ? const CustomBottomBar() : null,
+              bottomNavigationBar: !kIsWeb
+                  ? isLargerThenTablet(context)
+                      ? null
+                      : const CustomBottomBar()
+                  : null,
             ),
             BurgerMenu(
               currentIndex: widget.webMenuIndex,
