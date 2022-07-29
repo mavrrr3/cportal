@@ -20,6 +20,7 @@ class AuthMobileLayout extends StatelessWidget {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: theme.background,
       body: SafeArea(
         child: Column(

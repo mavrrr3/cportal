@@ -1,10 +1,9 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/show_connecting_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 
 class EnterConnectingCode extends StatelessWidget {
   final bool isDesktop;
@@ -33,16 +32,12 @@ class EnterConnectingCode extends StatelessWidget {
         },
         builder: (context, state) {
           final isWrongCode = state is WrongConnectingCode;
-          final textStyle = isWrongCode
-              ? theme.textTheme.px16.copyWith(color: theme.red)
-              : theme.textTheme.px16;
-          final codeAreaColor =
-              isWrongCode ? theme.lightRedPIN : theme.cardColor;
+          final textStyle = isWrongCode ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
+          final codeAreaColor = isWrongCode ? theme.lightRedPIN : theme.cardColor;
           final focusedBorder = isDesktop
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      BorderSide(color: theme.primary!.withOpacity(0.34)),
+                  borderSide: BorderSide(color: theme.primary!.withOpacity(0.34)),
                 )
               : null;
 
@@ -55,11 +50,7 @@ class EnterConnectingCode extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               GestureDetector(
-                onTap: () => context.pushNamed(
-                  isDesktop
-                      ? NavigationRouteNames.connectingCodeInfo
-                      : NavigationRouteNames.connectingCodeInfoMobile,
-                ),
+                onTap: () => showConnectingInfo(context),
                 child: Text(
                   AppLocalizations.of(context)!.howToGetConnectingCode,
                   style: theme.textTheme.px14.copyWith(

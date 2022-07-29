@@ -25,7 +25,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bl
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
@@ -143,9 +142,6 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<ConnectingCodeBloc>(
       create: (ctx) => sl<ConnectingCodeBloc>(),
-    ),
-    BlocProvider<PinCodeBloc>(
-      create: (ctx) => sl<PinCodeBloc>(),
     ),
     BlocProvider<BiometricBloc>(
       create: (ctx) => sl<BiometricBloc>(),
