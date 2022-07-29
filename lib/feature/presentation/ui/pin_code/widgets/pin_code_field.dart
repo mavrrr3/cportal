@@ -48,9 +48,7 @@ class PinCodeField extends StatelessWidget {
       width: 16,
       height: 16,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.light
-            ? theme.textLight?.withOpacity(0.2)
-            : theme.background,
+        color: theme.brightness == Brightness.light ? theme.barrierColor : theme.text?.withOpacity(0.2),
         shape: BoxShape.circle,
       ),
     );

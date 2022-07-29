@@ -38,8 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final hasAuthCredentials = await _hasAuthCredentialsUseCase();
 
     if (hasAuthCredentials) {
-      final enabledBiometricType =
-          await _biometricRepository.getEnabledBiometric();
+      final enabledBiometricType = await _biometricRepository.getEnabledBiometric();
       emit(HasAuthCredentials(enabledBiometricType));
     } else {
       emit(const NotAuthenticated());
@@ -57,14 +56,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     LogInWithPinCode event,
     Emitter<AuthState> emit,
   ) async {
-    final response =
-        await _logInWithPinCode(LoginWitPinCodeParams(pinCode: event.pinCode));
+    final response = await _logInWithPinCode(LoginWitPinCodeParams(pinCode: event.pinCode));
 
     await response.fold<FutureOr<void>>(
       (failure) async {
         await _onWrongPinCode(emit);
       },
-      (user) => _onLogIn(emit, user),
+      (user) async {
+        if (user == null) {
+          await _onWrongPinCode(emit);
+        }
+        _onLogIn(emit, user);
+      },
     );
   }
 
