@@ -1,7 +1,10 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/card_horizontal_scroll.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/card_with_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HorizontalListViewMain extends StatelessWidget {
   final Color color;
@@ -21,10 +24,13 @@ class HorizontalListViewMain extends StatelessWidget {
               runSpacing: 16,
               children: List.generate(
                 gridViewMap.length,
-                (i) => CardHorizontalScroll(
-                  icon: gridViewMap[i]['icon'] as IconData,
+                (i) => CardWithIcon(
+                  width: 148,
+                  svgPath: gridViewMap[i]['icon'] as String,
                   text: gridViewMap[i]['text'] as String,
                   color: color,
+                  onTap: () =>
+                      context.goNamed(NavigationRouteNames.onBoardingStart),
                 ),
               ),
             ),
@@ -47,10 +53,13 @@ class HorizontalListViewMain extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      CardHorizontalScroll(
-                        icon: gridViewMap[i]['icon'] as IconData,
+                      CardWithIcon(
+                        svgPath: gridViewMap[i]['icon'] as String,
+                        width: 148,
                         text: gridViewMap[i]['text'] as String,
                         color: color,
+                        onTap: () => context
+                            .goNamed(NavigationRouteNames.onBoardingStart),
                       ),
                     ],
                   ),
@@ -63,23 +72,23 @@ class HorizontalListViewMain extends StatelessWidget {
 
 final List<Map<String, dynamic>> gridViewMap = [
   <String, dynamic>{
-    'icon': Icons.account_circle_outlined,
+    'icon': ImageAssets.profile,
     'text': 'Для новых сотрудников',
   },
   <String, dynamic>{
-    'icon': Icons.yard_outlined,
-    'text': 'Погружение в сферу',
+    'icon': ImageAssets.video,
+    'text': 'Погружение \nв сферу',
   },
   <String, dynamic>{
-    'icon': Icons.ac_unit_outlined,
-    'text': 'Погружение в сферу',
+    'icon': ImageAssets.video,
+    'text': 'Погружение \nв сферу',
   },
   <String, dynamic>{
-    'icon': Icons.ac_unit_outlined,
-    'text': 'Погружение в сферу',
+    'icon': ImageAssets.video,
+    'text': 'Погружение \nв сферу',
   },
   <String, dynamic>{
-    'icon': Icons.ac_unit_outlined,
-    'text': 'Погружение в сферу',
+    'icon': ImageAssets.video,
+    'text': 'Погружение \nв сферу',
   },
 ];

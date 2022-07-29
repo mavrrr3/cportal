@@ -2,6 +2,7 @@ import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/custom_check_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -42,59 +43,66 @@ class _FilterSectionState extends State<FilterSection> {
             onTap: widget.onExpand,
 
             /// Разделы фильтра.
-            child: Row(
-              children: [
-                Container(
-                  width: widget.sectionWidth ??
-                      (MediaQuery.of(context).size.width - 80),
-                  decoration: BoxDecoration(
-                    color: theme.brightness == Brightness.light
-                        ? theme.background
-                        : theme.background!.withOpacity(0.34),
-                    borderRadius: BorderRadius.circular(12),
+            child: OnHover(builder: (isSectionHovered) {
+              return Row(
+                children: [
+                  Opacity(
+                    opacity: isSectionHovered ? 0.6 : 1,
+                    child: Container(
+                      width: widget.sectionWidth ??
+                          (MediaQuery.of(context).size.width - 80),
+                      decoration: BoxDecoration(
+                        color: theme.brightness == Brightness.light
+                            ? theme.background
+                            : theme.background!.withOpacity(0.34),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: widget.item.isActive
+                          ? TextField(
+                              controller: widget.controller,
+                              onChanged: (text) {
+                                setState(() {});
+                              },
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                hintText: widget.item.headline,
+                                hintStyle: theme.textTheme.px14.copyWith(
+                                  color: theme.textLight,
+                                ),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(12),
+                              ),
+                              style: theme.textTheme.px14.copyWith(
+                                color: theme.textLight,
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 16,
+                              ),
+                              child: Text(
+                                widget.item.headline,
+                                style: theme.textTheme.px14.copyWith(
+                                  color: theme.textLight,
+                                ),
+                              ),
+                            ),
+                    ),
                   ),
-                  child: widget.item.isActive
-                      ? TextField(
-                          controller: widget.controller,
-                          onChanged: (text) {
-                            setState(() {});
-                          },
-                          autocorrect: false,
-                          decoration: InputDecoration(
-                            hintText: widget.item.headline,
-                            hintStyle: theme.textTheme.px14.copyWith(
-                              color: theme.textLight,
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.all(12),
-                          ),
-                          style: theme.textTheme.px14.copyWith(
-                            color: theme.textLight,
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 16,
-                          ),
-                          child: Text(
-                            widget.item.headline,
-                            style: theme.textTheme.px14.copyWith(
-                              color: theme.textLight,
-                            ),
-                          ),
-                        ),
-                ),
-                const SizedBox(width: 24),
-                SvgPicture.asset(
-                  widget.item.isActive
-                      ? ImageAssets.arrowUp
-                      : ImageAssets.arrowDown,
-                  width: 24,
-                  color: theme.primary,
-                ),
-              ],
-            ),
+                  const SizedBox(width: 24),
+                  SvgPicture.asset(
+                    widget.item.isActive
+                        ? ImageAssets.arrowUp
+                        : ImageAssets.arrowDown,
+                    width: 24,
+                    color: isSectionHovered
+                        ? theme.primary?.withOpacity(0.8)
+                        : theme.primary,
+                  ),
+                ],
+              );
+            }),
           ),
           const SizedBox(height: 16),
           if (widget.item.isActive && widget.controller.text.isEmpty)
@@ -109,37 +117,44 @@ class _FilterSectionState extends State<FilterSection> {
                     left: 8,
                     bottom: 12,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          widget.onSelect(index);
-                        },
-                        child: CustomCheckBox(
-                          isActive: widget.item.items[index].isActive,
+                  child: OnHover(
+                    builder: (isHovered) {
+                      return Opacity(
+                        opacity: isHovered ? 0.8 : 1,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                widget.onSelect(index);
+                              },
+                              child: CustomCheckBox(
+                                isActive: widget.item.items[index].isActive,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () {
+                                widget.onSelect(index);
+                              },
+                              child: Text(
+                                widget.item.items[index].name,
+                                style: theme.textTheme.px14,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () {
-                          widget.onSelect(index);
-                        },
-                        child: Text(
-                          widget.item.items[index].name,
-                          style: theme.textTheme.px14,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 );
               },
             ),
           if (widget.item.isActive && widget.controller.text.isNotEmpty)
-            // Пункты фильтра.
+            // Пункты фильтра по поиску.
             ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
@@ -153,40 +168,50 @@ class _FilterSectionState extends State<FilterSection> {
                     left: 8,
                     bottom: 12,
                   ),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      // ignore: prefer-correct-identifier-length
-                      final i = widget.item.items.indexOf(getSortedFilters(
-                        controller: widget.controller,
-                        items: widget.item.items,
-                      )[index]);
-                      widget.onSelect(i);
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomCheckBox(
-                          isActive: getSortedFilters(
-                            controller: widget.controller,
-                            items: widget.item.items,
-                          )[index]
-                              .isActive,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            getSortedFilters(
+                  child: OnHover(
+                    builder: (isHovered) {
+                      return Opacity(
+                        opacity: isHovered ? 0.8 : 1,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            // ignore: prefer-correct-identifier-length
+                            final i =
+                                widget.item.items.indexOf(getSortedFilters(
                               controller: widget.controller,
                               items: widget.item.items,
-                            )[index]
-                                .name,
-                            style: theme.textTheme.px14,
+                            )[index]);
+                            widget.onSelect(i);
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CustomCheckBox(
+                                isActive: getSortedFilters(
+                                  controller: widget.controller,
+                                  items: widget.item.items,
+                                )[index]
+                                    .isActive,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  getSortedFilters(
+                                    controller: widget.controller,
+                                    items: widget.item.items,
+                                  )[index]
+                                      .name,
+                                  style: theme.textTheme.px14,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 );
               },
