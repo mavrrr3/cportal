@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/cursor.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_code_desktop_input/cursor.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
@@ -43,8 +43,7 @@ class PinCodeDesktopInput extends StatelessWidget {
       focusNode: codeFocusNode,
       defaultPinTheme: defaultPinTheme,
       errorPinTheme: defaultPinTheme.copyWith(
-        decoration:
-            defaultPinTheme.decoration!.copyWith(color: theme.lightRedPIN),
+        decoration: defaultPinTheme.decoration!.copyWith(color: theme.lightRedPIN),
         textStyle: defaultPinTheme.textStyle!.copyWith(color: theme.red),
       ),
       focusedPinTheme: defaultPinTheme.copyWith(

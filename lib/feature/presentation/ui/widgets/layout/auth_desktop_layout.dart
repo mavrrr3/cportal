@@ -13,6 +13,7 @@ class AuthDesktopLayout extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.background,
+      resizeToAvoidBottomInset: false,
       body: Row(
         children: [
           const SplashWidget.desktop(),
