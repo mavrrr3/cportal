@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cportal_flutter/common/util/map_failure_to_message.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_questions_by_category_usecase.dart';
@@ -6,7 +7,6 @@ import 'package:cportal_flutter/feature/domain/usecases/questions/fetch_question
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cportal_flutter/core/error/failure.dart';
 
 class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
   final FetchQuestionsUseCase fetchQaustions;
@@ -39,17 +39,6 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
         page: pageAll,
       ));
 
-      String failureToMessage(Failure failure) {
-        switch (failure.runtimeType) {
-          case ServerFailure:
-            return 'Ошибка на сервере';
-          case CacheFailure:
-            return 'Ошибка обработки кэша';
-          default:
-            return 'Unexpected Error';
-        }
-      }
-
       if (!kIsWeb) {
         final tabsFromCache = await fetchQaustions.fetchQuestionCategories();
 
@@ -59,7 +48,6 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
               questionTabs.add(tab);
             }
           }
-          log('+++++++++++Questions tabs из КеШа++ $tabsFromCache ++Questions tabs из КеШа+++++++++++++');
         }
       }
       void loadedNewsToArticles(NewsEntity questions) {
@@ -67,8 +55,6 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
         final articles = (state as QuestionsLoading).oldArticles;
         // ignore: cascade_invocations
         articles.addAll(questions.response.articles);
-        log('Загрузилось ${articles.length} вопросов');
-        log('Загрузилось ${questions.response.categories!} вопросов');
 
         // Создание листа со всеми вкладками.
         for (final tab in questions.response.categories!) {
@@ -85,7 +71,7 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
         emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
       }
 
-      failureOrQuestions.fold(failureToMessage, loadedNewsToArticles);
+      failureOrQuestions.fold(mapFailureToMessage, loadedNewsToArticles);
     });
 
     on<FetchQaustionsEventBy>((event, emit) async {
@@ -110,32 +96,18 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
         ),
       );
 
-      String failureToMessage(Failure failure) {
-        switch (failure.runtimeType) {
-          case ServerFailure:
-            return 'Ошибка на сервере';
-          case CacheFailure:
-            return 'Ошибка обработки кэша';
-          default:
-            return 'Unexpected Error';
-        }
-      }
-
       void loadedNewsToArticles(NewsEntity news) {
         pageByCategory[event.category]++;
 
-        final articles = (state as QuestionsLoading).oldArticles;
-        // ignore: cascade_invocations
-        articles.addAll(news.response.articles);
-
-        log('Загрузилось ${articles.length} статей из категории ${event.category}');
+        final articles = (state as QuestionsLoading).oldArticles
+          ..addAll(news.response.articles);
 
         /// Создание листа со всеми вкладками.
 
         emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
       }
 
-      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
+      failureOrNews.fold(mapFailureToMessage, loadedNewsToArticles);
     });
   }
 }

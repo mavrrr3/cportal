@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
-import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/common/util/map_failure_to_message.dart';
 import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/contacts/fetch_contacts_usecase.dart';
@@ -70,7 +70,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     }
 
     failureOrContacts.fold(
-      _mapFailureToMessage,
+      mapFailureToMessage,
       _loadingContacts,
     );
 
@@ -89,22 +89,11 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       ));
 
       failureOrContacts.fold(
-        _mapFailureToMessage,
+        mapFailureToMessage,
         (contacts) {
           emit(ContactsLoadedState(contacts: contacts, favorites: favorites));
         },
       );
-    }
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'Ошибка на сервере';
-      case CacheFailure:
-        return 'Ошибка обработки кэша';
-      default:
-        return 'Unexpected Error';
     }
   }
 }

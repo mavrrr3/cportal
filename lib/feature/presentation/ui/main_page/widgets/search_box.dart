@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/g
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
@@ -87,11 +88,20 @@ class SearchBox extends StatelessWidget {
                                             itemCount: searchList.length,
                                             itemBuilder: (context, index) {
                                               return _SearchBoxItem(
-                                                () => goToPage(
-                                                  searchList[index].category,
-                                                  searchList[index].id,
-                                                  context,
-                                                ),
+                                                () {
+                                                  goToPage(
+                                                    searchList[index].category,
+                                                    searchList[index].id,
+                                                    context,
+                                                  );
+                                                  BlocProvider.of<
+                                                      MainSearchBloc>(
+                                                    context,
+                                                    listen: false,
+                                                  ).add(MainSearchAdd(
+                                                    searchList[index],
+                                                  ));
+                                                },
                                                 category:
                                                     searchList[index].category,
                                                 text: searchList[index].title,

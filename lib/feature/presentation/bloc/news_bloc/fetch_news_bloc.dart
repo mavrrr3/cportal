@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/map_failure_to_message.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
@@ -5,7 +6,6 @@ import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cportal_flutter/core/error/failure.dart';
 
 class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   final FetchNewsUseCase fetchNews;
@@ -37,17 +37,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       final failureOrNews = await fetchNews(FetchNewsParams(
         page: pageAll,
       ));
-
-      String failureToMessage(Failure failure) {
-        switch (failure.runtimeType) {
-          case ServerFailure:
-            return 'Ошибка на сервере';
-          case CacheFailure:
-            return 'Ошибка обработки кэша';
-          default:
-            return 'Unexpected Error';
-        }
-      }
 
       if (!kIsWeb) {
         final tabsFromCache = await fetchNews.fetchCategories();
@@ -81,7 +70,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(NewsLoaded(articles: articles, tabs: newsTabs));
       }
 
-      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
+      failureOrNews.fold(mapFailureToMessage, loadedNewsToArticles);
     });
 
     on<FetchNewsEventBy>((event, emit) async {
@@ -106,17 +95,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         ),
       );
 
-      String failureToMessage(Failure failure) {
-        switch (failure.runtimeType) {
-          case ServerFailure:
-            return 'Ошибка на сервере';
-          case CacheFailure:
-            return 'Ошибка обработки кэша';
-          default:
-            return 'Unexpected Error';
-        }
-      }
-
       void loadedNewsToArticles(NewsEntity news) {
         pageByCategory[event.category]++;
         final articles = (state as NewsLoading).oldArticles;
@@ -128,7 +106,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         emit(NewsLoaded(articles: articles, tabs: newsTabs));
       }
 
-      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
+      failureOrNews.fold(mapFailureToMessage, loadedNewsToArticles);
     });
   }
 }

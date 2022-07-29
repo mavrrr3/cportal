@@ -9,6 +9,7 @@ import 'package:cportal_flutter/feature/data/models/connecting_devices/connectin
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
+import 'package:cportal_flutter/feature/data/models/main_search_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
@@ -199,5 +200,6 @@ void _hiveAdaptersInit() {
     ..registerAdapter(ContactModelAdapter())
     ..registerAdapter(ConnectingDevicesModelAdapter())
     ..registerAdapter(ConnectingDeviceModelAdapter())
-    ..registerAdapter(DevicePlatformAdapter());
+    ..registerAdapter(DevicePlatformAdapter())
+    ..registerAdapter(MainSearchModelAdapter());
 }

@@ -15,6 +15,7 @@ import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filte
 import 'package:cportal_flutter/feature/data/datasources/filter_datasource/filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/location_datasource/location_remote_datasorce.dart';
 import 'package:cportal_flutter/feature/data/datasources/main_search_datasource/main_search_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/datasources/main_search_datasource/main_search_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/news_datasource/news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/datasources/profile_datasource/profile_local_datasource.dart';
@@ -24,6 +25,7 @@ import 'package:cportal_flutter/feature/data/datasources/user_datasource/user_re
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_connecting_devices_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_contacts_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_main_search_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_news_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_profile_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
@@ -71,7 +73,9 @@ import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/generate_c
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_connecting_data_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_scanned_data_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/contacts/fetch_contacts_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/main_search_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/main_search/main_search_add_to_memory_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/main_search/main_search_get_from_memory_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/main_search/main_search_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_by_category_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/fetch_news_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/get_single_news_usecase.dart';
@@ -140,7 +144,7 @@ Future<void> init() async {
     ..registerFactory(DeclarationsBloc.new)
     ..registerFactory(() => ConnectingQrBloc(sl(), sl(), sl()))
     ..registerFactory(() => ConnectingDevicesBloc(sl(), sl()))
-    ..registerFactory(() => MainSearchBloc(sl()))
+    ..registerFactory(() => MainSearchBloc(sl(), sl(), sl()))
 
     // USECASE.
     ..registerLazySingleton(() => GetSingleProfileUseCase(sl()))
@@ -162,7 +166,9 @@ Future<void> init() async {
     ..registerLazySingleton(() => GenerateConnectingCodeUseCase(sl()))
     ..registerLazySingleton(() => SendScannedDataUseCase(sl()))
     ..registerLazySingleton(() => SendConnectingDataUseCase(sl()))
-    ..registerLazySingleton(() => MainSearchUseCase(sl()));
+    ..registerLazySingleton(() => MainSearchUseCase(sl()))
+    ..registerLazySingleton(() => MainSearchAddToMemoryUseCase(sl()))
+    ..registerLazySingleton(() => MainSearchGetFromMemoryUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
@@ -248,7 +254,7 @@ Future<void> init() async {
       () => ConnectingQrRepository(sl()),
     )
     ..registerLazySingleton<IMainSearchRepository>(
-      () => MainSearchRepository(remoteDataSource: sl()),
+      () => MainSearchRepository(remoteDataSource: sl(), localDataSource: sl()),
     )
 
     // DATASOURCE.
@@ -299,6 +305,9 @@ Future<void> init() async {
     )
     ..registerLazySingleton<IMainSearchRemoteDataSource>(
       () => MainSearchRemoteDataSource(sl()),
+    )
+    ..registerLazySingleton<IMainSearchLocalDataSource>(
+      () => MainSearchLocalDatasource(sl()),
     );
 
   // CORE.

@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
-import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/common/util/map_failure_to_message.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/declaration/fetch_declarations_filters_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/i_filter_bloc.dart';
@@ -58,7 +58,7 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState>
     failureOrFilters.fold(
       (failure) {
         emit(FilterLoadingErrorState(
-          message: _mapFailureToMessage(failure),
+          message: mapFailureToMessage(failure),
         ));
       },
       (response) {
@@ -157,17 +157,6 @@ class FilterDeclarationsBloc extends Bloc<FilterEvent, FilterState>
       emit(newState);
 
       debugPrint('Отработал эвент: $event');
-    }
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'Ошибка на сервере';
-      case CacheFailure:
-        return 'Ошибка обработки кэша';
-      default:
-        return 'Unexpected Error';
     }
   }
 }

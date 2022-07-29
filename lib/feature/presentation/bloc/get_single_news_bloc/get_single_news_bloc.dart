@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cportal_flutter/common/util/map_failure_to_message.dart';
 import 'package:cportal_flutter/feature/domain/usecases/news/get_single_news_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cportal_flutter/core/error/failure.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
@@ -32,17 +32,6 @@ class GetSingleNewsBloc extends Bloc<GetSingleNewsEvent, GetSingleNewsState> {
 
     emit(GetSingleNewsLoadingState());
 
-    String _mapFailureToMessage(Failure failure) {
-      switch (failure.runtimeType) {
-        case ServerFailure:
-          return 'Ошибка на сервере';
-        case CacheFailure:
-          return 'Ошибка обработки кэша';
-        default:
-          return 'Unexpected Error';
-      }
-    }
-
     final failureOrSingleNews = await getSingleNews(
       GetSingleNewsParams(id: event.id),
     );
@@ -50,7 +39,7 @@ class GetSingleNewsBloc extends Bloc<GetSingleNewsEvent, GetSingleNewsState> {
     failureOrSingleNews.fold(
       (failure) {
         emit(GetSingleNewsLoadingError(
-          message: _mapFailureToMessage(failure),
+          message: mapFailureToMessage(failure),
         ));
       },
       (singleNews) {

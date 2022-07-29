@@ -1,10 +1,28 @@
-import 'package:cportal_flutter/feature/domain/entities/main_search_entity.dart';
+// ignore_for_file: overridden_fields
 
+import 'package:cportal_flutter/feature/domain/entities/main_search_entity.dart';
+import 'package:hive/hive.dart';
+
+part 'main_search_model.g.dart';
+
+@HiveType(typeId: 16)
 class MainSearchModel extends MainSearchEntity {
+  @override
+  @HiveField(0)
+  final String category;
+
+  @override
+  @HiveField(1)
+  final String id;
+
+  @override
+  @HiveField(2)
+  final String title;
+
   const MainSearchModel({
-    required String category,
-    required String id,
-    required String title,
+    required this.category,
+    required this.id,
+    required this.title,
   }) : super(
           category: category,
           id: id,

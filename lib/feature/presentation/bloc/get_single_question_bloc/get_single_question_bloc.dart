@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:cportal_flutter/common/util/map_failure_to_message.dart';
 import 'package:cportal_flutter/feature/domain/usecases/questions/get_single_question_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cportal_flutter/core/error/failure.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
@@ -30,17 +30,6 @@ class GetSingleQuestionBloc
   ) async {
     emit(GetSingleQuestionLoadingState());
 
-    String _mapFailureToMessage(Failure failure) {
-      switch (failure.runtimeType) {
-        case ServerFailure:
-          return 'Ошибка на сервере';
-        case CacheFailure:
-          return 'Ошибка обработки кэша';
-        default:
-          return 'Unexpected Error';
-      }
-    }
-
     final failureOrSingleQuestion = await getSingleQuestion(
       GetSingleQuestionParams(id: event.id),
     );
@@ -48,7 +37,7 @@ class GetSingleQuestionBloc
     failureOrSingleQuestion.fold(
       (failure) {
         emit(GetSingleQuestionLoadingError(
-          message: _mapFailureToMessage(failure),
+          message: mapFailureToMessage(failure),
         ));
       },
       (singleQuestion) {
