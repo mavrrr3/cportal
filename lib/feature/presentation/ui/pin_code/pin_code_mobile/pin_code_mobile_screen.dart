@@ -1,16 +1,20 @@
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/create_pin_code_area.dart';
+import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/pin_code_area.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/keyboard/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/auth_mobile_layout.dart';
 import 'package:flutter/material.dart';
 
-class CreatePinCodeMobileScreen extends StatelessWidget {
+class PinCodeMobileScreen extends StatelessWidget {
   final TextEditingController pinController;
   final FocusNode pinFocusNode;
+  final String firstTitle;
+  final String secondTitle;
 
-  const CreatePinCodeMobileScreen({
+  const PinCodeMobileScreen({
     Key? key,
     required this.pinController,
     required this.pinFocusNode,
+    required this.firstTitle,
+    required this.secondTitle,
   }) : super(key: key);
 
   @override
@@ -18,9 +22,11 @@ class CreatePinCodeMobileScreen extends StatelessWidget {
     return AuthMobileLayout(
       child: Column(
         children: [
-          CreatePinCodeArea(
+          PinCodeArea(
             pinController: pinController,
             pinFocusNode: pinFocusNode,
+            firstTitle: firstTitle,
+            secondTitle: secondTitle,
           ),
           const Spacer(),
           CustomKeyboard(keyboardController: pinController),

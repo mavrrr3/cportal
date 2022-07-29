@@ -2,13 +2,12 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/pin_code_field.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/pin_code_desktop_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_code_desktop_input/pin_code_desktop_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_code_field.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/show_connecting_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class EnterPinArea extends StatelessWidget {
   final bool isDesktop;
@@ -43,17 +42,12 @@ class EnterPinArea extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   GestureDetector(
-                    onTap: () => context.pushNamed(
-                      isDesktop
-                          ? NavigationRouteNames.connectingCodeInfo
-                          : NavigationRouteNames.connectingCodeInfoMobile,
-                    ),
+                    onTap: () => showConnectingInfo(context),
                     child: SizedBox(
                       height: 24,
                       child: Text(
                         strings.forgetPin,
-                        style:
-                            theme.textTheme.px14.copyWith(color: theme.primary),
+                        style: theme.textTheme.px14.copyWith(color: theme.primary),
                       ),
                     ),
                   ),
@@ -82,8 +76,7 @@ class EnterPinArea extends StatelessWidget {
             ),
             if (isDesktop)
               PinCodeDesktopInput(
-                onCompleted: (pinCode) =>
-                    authBloc.add(LogInWithPinCode(pinCode)),
+                onCompleted: (pinCode) => authBloc.add(LogInWithPinCode(pinCode)),
                 forceErrorState: state is WrongPinCode,
                 codeController: pinController,
                 codeFocusNode: pinFocusNode,
@@ -93,8 +86,7 @@ class EnterPinArea extends StatelessWidget {
                 forceErrorState: state is WrongPinCode,
                 pinCodeController: pinController,
                 pinCodeFocusNode: pinFocusNode,
-                onCompleted: (pinCode) =>
-                    authBloc.add(LogInWithPinCode(pinCode)),
+                onCompleted: (pinCode) => authBloc.add(LogInWithPinCode(pinCode)),
               ),
           ],
         );

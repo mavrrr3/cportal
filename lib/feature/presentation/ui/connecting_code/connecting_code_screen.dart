@@ -35,11 +35,7 @@ class _ConnectingCodeScreenState extends State<ConnectingCodeScreen> {
     return BlocListener<ConnectingCodeBloc, ConnectingCodeState>(
       listener: (context, state) {
         if (state is AuthenticatedWithConnectingCode) {
-          codeFocusNode.unfocus();
-          Future.delayed(
-            const Duration(milliseconds: 500),
-            () => context.goNamed(NavigationRouteNames.createPin),
-          );
+          context.goNamed(NavigationRouteNames.createPin);
         } else if (state is ConnectingCodeQrReadSuccess) {
           codeController.text = state.connectingCode;
           context.read<ConnectingCodeBloc>().add(LogInWithConnectingCode(state.connectingCode));

@@ -2,21 +2,25 @@ import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/pin_code/widgets/pin_code_field.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code__desktop_input/pin_code_desktop_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_code_desktop_input/pin_code_desktop_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_code_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CreatePinCodeArea extends StatelessWidget {
+class PinCodeArea extends StatelessWidget {
   final TextEditingController pinController;
   final FocusNode pinFocusNode;
+  final String firstTitle;
+  final String secondTitle;
   final bool isDesktop;
 
-  const CreatePinCodeArea({
+  const PinCodeArea({
     Key? key,
     required this.pinController,
     required this.pinFocusNode,
+    required this.firstTitle,
+    required this.secondTitle,
     this.isDesktop = false,
   }) : super(key: key);
 
@@ -35,18 +39,14 @@ class CreatePinCodeArea extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    state is PinCodeInitialState
-                        ? AppLocalizations.of(context)!.createPinCode
-                        : AppLocalizations.of(context)!.repeatPinCode,
+                    state is PinCodeInitialState ? firstTitle : secondTitle,
                     style: theme.textTheme.header,
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
                     height: 24,
                     child: Text(
-                      state is PinCodeInitialState
-                          ? AppLocalizations.of(context)!.itWillBeNeedToEnter
-                          : '',
+                      state is PinCodeInitialState ? AppLocalizations.of(context)!.itWillBeNeedToEnter : '',
                       style: theme.textTheme.px14.copyWith(color: theme.text),
                     ),
                   ),
@@ -55,9 +55,7 @@ class CreatePinCodeArea extends StatelessWidget {
                     child: SizedBox(
                       height: 20,
                       child: Text(
-                        state is PinCodeNotMatch
-                            ? AppLocalizations.of(context)!.pinNotCorrect
-                            : '',
+                        state is PinCodeNotMatch ? AppLocalizations.of(context)!.pinNotCorrect : '',
                         style: theme.textTheme.px14.copyWith(
                           color: theme.red,
                         ),
@@ -74,9 +72,7 @@ class CreatePinCodeArea extends StatelessWidget {
                 codeController: pinController,
                 codeFocusNode: pinFocusNode,
                 onCompleted: (value) {
-                  pinCodeBloc.add(state is PinCodeEditing
-                      ? RepeatPinCode(value)
-                      : CreatePinCode(value));
+                  pinCodeBloc.add(state is PinCodeEditing ? RepeatPinCode(value) : CreatePinCode(value));
                 },
               )
             else
@@ -85,9 +81,7 @@ class CreatePinCodeArea extends StatelessWidget {
                 pinCodeController: pinController,
                 pinCodeFocusNode: pinFocusNode,
                 onCompleted: (value) {
-                  pinCodeBloc.add(state is PinCodeEditing
-                      ? RepeatPinCode(value)
-                      : CreatePinCode(value));
+                  pinCodeBloc.add(state is PinCodeEditing ? RepeatPinCode(value) : CreatePinCode(value));
                 },
               ),
           ],
