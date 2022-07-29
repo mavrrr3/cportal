@@ -6,7 +6,6 @@ import 'package:cportal_flutter/feature/presentation/navigation/pages/create_pin
 import 'package:cportal_flutter/feature/presentation/navigation/routes.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/connecting_code_info_mobile_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_info_web_popup.dart';
@@ -39,7 +38,6 @@ abstract class NavigationRouteNames {
   static const splashScreen = 'splash_screen';
   static const mainPage = 'main';
   static const connectingCode = 'connecting_code';
-  static const connectingCodeInfoMobile = 'connecting_code_info_mobile';
   static const connectingCodeInfo = 'connecting_code_info';
   static const connectingQr = 'connecting_qr';
   static const qrScanner = 'qr_scanner';
@@ -114,24 +112,6 @@ final GoRouter router = GoRouter(
         child: ConnectingCodeScreen(),
       ),
       routes: [
-        GoRoute(
-          name: NavigationRouteNames.connectingCodeInfoMobile,
-          path: 'info_mobile',
-          pageBuilder: (context, state) => CustomTransitionPage(
-            barrierColor: Colors.black54,
-            barrierDismissible: true,
-            fullscreenDialog: true,
-            opaque: false,
-            child: const ConnectingCodeInfoMobilePopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
-              opacity: CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOut,
-              ),
-              child: child,
-            ),
-          ),
-        ),
         GoRoute(
           name: NavigationRouteNames.connectingCodeInfo,
           path: 'info',
