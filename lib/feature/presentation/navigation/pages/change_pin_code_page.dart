@@ -9,7 +9,7 @@ class ChangePinCodePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<PinCodeBloc>(
       create: (context) => sl<PinCodeBloc>(),
       child: const ChangePinCodeScreen(),
     );

@@ -2,6 +2,7 @@ import 'package:cportal_flutter/core/service/auth_service.dart';
 import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/change_pin_code_page.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/pages/connecting_qr_page.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/create_pin_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/routes.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
@@ -9,7 +10,6 @@ import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_info_web_popup.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_qr_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
@@ -143,7 +143,7 @@ final GoRouter router = GoRouter(
       name: NavigationRouteNames.connectingQr,
       path: '/connecting_qr',
       pageBuilder: (context, state) => const MaterialPage(
-        child: ConnectingQrScreen(),
+        child: ConnectingQrPage(),
       ),
     ),
     GoRoute(
