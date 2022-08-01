@@ -8,10 +8,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 class ProfileLocalDataSource implements IProfileLocalDataSource {
   @override
   Future<void> singleProfileToCache(ProfileModel profile) async {
-    // ignore: format-comment
-    await Hive.deleteBoxFromDisk('single_profile');
     var box = await Hive.openBox<ProfileModel>('single_profile');
-    if (!Hive.isBoxOpen('single_profile')) {
+  if (!Hive.isBoxOpen('single_profile')) {
       await Hive.openBox<ProfileModel>('single_profile');
     } else {
       box = await Hive.openBox<ProfileModel>('single_profile');

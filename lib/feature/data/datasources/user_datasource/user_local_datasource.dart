@@ -8,9 +8,7 @@ class UserLocalDataSource implements IUserLocalDataSource {
   UserLocalDataSource(this._hive);
 
   @override
-  Future<UserModel?> getUser() async {
-    // Удаляет box с диска.
-    // await Hive.deleteBoxFromDisk('user');
+Future<UserModel?> getUser() async {  
     final box = await _hive.openBox<UserModel>('user');
 
     return box.get('user');
