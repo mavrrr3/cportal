@@ -32,7 +32,8 @@ class EnterConnectingCode extends StatelessWidget {
         },
         builder: (context, state) {
           final isWrongCode = state is WrongConnectingCode;
-          final textStyle = isWrongCode ? theme.textTheme.px16.copyWith(color: theme.red) : theme.textTheme.px16;
+          final inputTextStyle = theme.textTheme.px16.copyWith(height: 1.5);
+          final errorCodeTextStyle = theme.textTheme.px14.copyWith(height: 1.43);
           final codeAreaColor = isWrongCode ? theme.lightRedPIN : theme.cardColor;
           final focusedBorder = isDesktop
               ? OutlineInputBorder(
@@ -46,7 +47,7 @@ class EnterConnectingCode extends StatelessWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.inputConnectingCode,
-                style: theme.textTheme.header,
+                style: theme.textTheme.header.copyWith(height: 1.29),
               ),
               const SizedBox(height: 8),
               GestureDetector(
@@ -55,12 +56,12 @@ class EnterConnectingCode extends StatelessWidget {
                   AppLocalizations.of(context)!.howToGetConnectingCode,
                   style: theme.textTheme.px14.copyWith(
                     color: theme.primary,
+                    height: 1.43,
                   ),
                 ),
               ),
               const SizedBox(height: 32),
-              Container(
-                height: 48,
+              DecoratedBox(
                 decoration: BoxDecoration(
                   color: codeAreaColor,
                   borderRadius: BorderRadius.circular(12),
@@ -68,16 +69,21 @@ class EnterConnectingCode extends StatelessWidget {
                 child: TextField(
                   controller: codeController,
                   focusNode: codeFocusNode,
-                  style: textStyle,
+                  style: isWrongCode ? inputTextStyle.copyWith(color: theme.red) : inputTextStyle,
                   textCapitalization: TextCapitalization.characters,
                   autocorrect: false,
                   cursorColor: theme.primary,
+                  cursorHeight: 24,
+                  cursorWidth: 1,
                   decoration: InputDecoration(
                     focusedBorder: focusedBorder,
                     border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
-                    contentPadding: const EdgeInsets.fromLTRB(14, 16, 14, 16),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 12,
+                    ),
                   ),
                 ),
               ),
@@ -87,12 +93,12 @@ class EnterConnectingCode extends StatelessWidget {
                 child: state is TryAgainLater
                     ? Text(
                         strings.tryToRepeatAfter30sec,
-                        style: theme.textTheme.px14,
+                        style: errorCodeTextStyle,
                       )
                     : state is WrongConnectingCode
                         ? Text(
                             strings.wrongConnectingCode,
-                            style: theme.textTheme.px14.copyWith(
+                            style: errorCodeTextStyle.copyWith(
                               color: theme.red!.withOpacity(0.6),
                             ),
                           )
