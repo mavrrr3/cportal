@@ -71,7 +71,8 @@ class _ContactsPageState extends State<ContactsPage> {
                         _onSearchInput(text);
                       },
                       onFilterTap: () async {
-                        if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
+                        if (!ResponsiveWrapper.of(context)
+                            .isLargerThan(MOBILE)) {
                           await showFilterMobile(
                             context,
                             onApply: _onApplyFilter,
@@ -233,7 +234,8 @@ class _ContactsPageState extends State<ContactsPage> {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            BlocProvider.of<ContactsBloc>(context).add(const FetchContactsEvent());
+            BlocProvider.of<ContactsBloc>(context)
+                .add(const FetchContactsEvent());
           }
         }
       }
@@ -258,7 +260,9 @@ class _ContactsPageState extends State<ContactsPage> {
   // Кнопка [Применить] фильтр.
   void _onApplyFilter() {
     if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
-      context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(isActive: false));
+      context
+          .read<FilterVisibilityBloc>()
+          .add(const FilterChangeVisibilityEvent(isActive: false));
     } else {
       Navigator.pop(context);
     }
@@ -273,7 +277,9 @@ class _ContactsPageState extends State<ContactsPage> {
     ).add(
       const FetchContactsEvent(isFirstFetch: true),
     );
-    context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(isActive: false));
+    context
+        .read<FilterVisibilityBloc>()
+        .add(const FilterChangeVisibilityEvent(isActive: false));
   }
 
   // Профиль пользователя для Web.
@@ -320,7 +326,9 @@ class _ContactsPageState extends State<ContactsPage> {
     ).add(
       SearchContactsEvent(
         query: text,
-        filters: (state is FilterLoadedState) ? OnlySelectedFiltersService.count(state.contactsFilters) : [],
+        filters: (state is FilterLoadedState)
+            ? OnlySelectedFiltersService.count(state.contactsFilters)
+            : [],
       ),
     );
   }
@@ -328,7 +336,8 @@ class _ContactsPageState extends State<ContactsPage> {
   void _sendFilters(BuildContext context, {bool isFromRemove = false}) {
     final state = context.read<FilterContactsBloc>().state;
     if (state is FilterLoadedState) {
-      final onlySelectedFilters = OnlySelectedFiltersService.count(state.contactsFilters);
+      final onlySelectedFilters =
+          OnlySelectedFiltersService.count(state.contactsFilters);
 
       if (onlySelectedFilters.isNotEmpty) {
         BlocProvider.of<ContactsBloc>(
