@@ -56,6 +56,14 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         color: textColor,
       ),
 
+      // [32 px Medium].
+      px32Medium: GoogleFonts.roboto(
+        fontSize: 32,
+        fontWeight: FontWeight.w500,
+        height: 1.17,
+        color: textColor,
+      ),
+
       // [22 px].
       px22: GoogleFonts.roboto(
         fontSize: 22,
@@ -205,6 +213,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
 class CustomTextTheme {
   final TextStyle header;
   final TextStyle px32;
+  final TextStyle px32Medium;
   final TextStyle px22;
   final TextStyle px17;
   final TextStyle px16;
@@ -215,6 +224,7 @@ class CustomTextTheme {
   CustomTextTheme({
     required this.header,
     required this.px32,
+    required this.px32Medium,
     required this.px22,
     required this.px17,
     required this.px16,

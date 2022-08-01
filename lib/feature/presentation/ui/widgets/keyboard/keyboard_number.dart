@@ -26,9 +26,7 @@ class KeyboardNumber extends StatelessWidget {
         child: Text(
           '$number',
           textAlign: TextAlign.center,
-          style: theme.textTheme.px32.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
+          style: theme.textTheme.px32Medium,
         ),
       ),
     );
