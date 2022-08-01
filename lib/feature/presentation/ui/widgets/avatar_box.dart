@@ -29,7 +29,7 @@ class AvatarBox extends StatelessWidget {
       child: ExtendedImage.network(
         fit: BoxFit.cover,
         shape: BoxShape.rectangle,
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
         hasApiImg ? '${AppConfig.imagesUrl}/$imgPath' : imgPath,
         handleLoadingProgress: true,
         clearMemoryCacheIfFailed: false,

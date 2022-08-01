@@ -24,7 +24,7 @@ class FilterViewRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 6),
+          padding: const EdgeInsets.only(top: 3),
           child: Text(
             headline,
             style: theme.textTheme.px12.copyWith(

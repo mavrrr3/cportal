@@ -42,7 +42,7 @@ class _FilterSectionState extends State<FilterSection> {
             behavior: HitTestBehavior.translucent,
             onTap: widget.onExpand,
 
-            /// Разделы фильтра.
+            /// Раздел фильтра.
             child: OnHover(builder: (isSectionHovered) {
               return Row(
                 children: [
@@ -51,6 +51,7 @@ class _FilterSectionState extends State<FilterSection> {
                     child: Container(
                       width: widget.sectionWidth ??
                           (MediaQuery.of(context).size.width - 80),
+                      height: 40,
                       decoration: BoxDecoration(
                         color: theme.brightness == Brightness.light
                             ? theme.background
@@ -70,17 +71,15 @@ class _FilterSectionState extends State<FilterSection> {
                                   color: theme.textLight,
                                 ),
                                 border: InputBorder.none,
-                                contentPadding: const EdgeInsets.all(12),
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(12, 0, 12, 8),
                               ),
                               style: theme.textTheme.px14.copyWith(
                                 color: theme.textLight,
                               ),
                             )
                           : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 16,
-                              ),
+                              padding: const EdgeInsets.all(12),
                               child: Text(
                                 widget.item.headline,
                                 style: theme.textTheme.px14.copyWith(
@@ -113,9 +112,9 @@ class _FilterSectionState extends State<FilterSection> {
               itemCount: widget.item.items.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.only(
+                  padding: EdgeInsets.only(
                     left: 8,
-                    bottom: 12,
+                    bottom: index != widget.item.items.length - 1 ? 12 : 16,
                   ),
                   child: OnHover(
                     builder: (isHovered) {
@@ -164,9 +163,9 @@ class _FilterSectionState extends State<FilterSection> {
               ).length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.only(
+                  padding: EdgeInsets.only(
                     left: 8,
-                    bottom: 12,
+                    bottom: index != widget.item.items.length - 1 ? 12 : 16,
                   ),
                   child: OnHover(
                     builder: (isHovered) {

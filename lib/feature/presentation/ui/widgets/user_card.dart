@@ -57,17 +57,24 @@ class UserCard extends StatelessWidget {
                             fullName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.px14
-                                .copyWith(fontWeight: FontWeight.w700),
+                            style: theme.textTheme.px14.copyWith(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.25,
+                              height: 1.143,
+                              leadingDistribution: TextLeadingDistribution.even,
+                            ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 4),
                           Text(
                             position,
-                            style: theme.textTheme.px12
-                                .copyWith(color: theme.textLight),
+                            style: theme.textTheme.px12.copyWith(
+                              color: theme.textLight,
+                              letterSpacing: 0.25,
+                              height: 1.3334,
+                              leadingDistribution: TextLeadingDistribution.even,
+                            ),
                           ),
                           const SizedBox(height: 8),
-                          // TagContainer(text: item.position.department),.
                         ],
                       ),
                     ),
