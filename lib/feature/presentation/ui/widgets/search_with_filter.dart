@@ -46,6 +46,8 @@ class SearchWithFilter extends StatelessWidget {
                   onChanged: (text) async {
                     onSearch(text);
                   },
+                  //TODO: flutfix Роман сделает как надо в контактах и заявках
+                  onTap: searchController.clear,
                 ),
 
                 // Фильтр.

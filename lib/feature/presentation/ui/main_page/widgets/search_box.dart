@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class SearchBox extends StatelessWidget {
+class SearchBox extends StatefulWidget {
   final bool isAnimation;
   final Duration animationDuration;
 
@@ -24,6 +24,21 @@ class SearchBox extends StatelessWidget {
     required this.isAnimation,
     required this.animationDuration,
   }) : super(key: key);
+
+  @override
+  State<SearchBox> createState() => _SearchBoxState();
+}
+
+class _SearchBoxState extends State<SearchBox> {
+  SearchBox copyWith({
+    bool? isAnimation,
+    Duration? animationDuration,
+  }) {
+    return SearchBox(
+      isAnimation: isAnimation ?? widget.isAnimation,
+      animationDuration: animationDuration ?? widget.animationDuration,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,20 +65,20 @@ class SearchBox extends StatelessWidget {
                 ? const EdgeInsets.only(left: 32)
                 : getHorizontalPadding(context),
             child: AnimatedOpacity(
-              duration: animationDuration,
-              opacity: isAnimation ? 1 : 0,
+              duration: widget.animationDuration,
+              opacity: widget.isAnimation ? 1 : 0,
               curve: Curves.easeIn,
               child: Padding(
                 padding: EdgeInsets.only(
                   top: isLargerThenTablet(context) ? 60 : 56,
                 ),
                 child: AnimatedContainer(
-                  duration: animationDuration,
+                  duration: widget.animationDuration,
                   curve: Curves.easeIn,
                   width: isLargerThenTablet(context)
                       ? 584
                       : MediaQuery.of(context).size.width,
-                  height: isAnimation ? getHeightSearchBox() : 0,
+                  height: widget.isAnimation ? getHeightSearchBox() : 0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: theme.cardColor,

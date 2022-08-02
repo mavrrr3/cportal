@@ -7,8 +7,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class SearchInput extends StatelessWidget {
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
+
+class SearchInput extends StatefulWidget {
   final Function(String)? onChanged;
+  final Function onTap;
   final TextEditingController controller;
   final FocusNode? focusNode;
   final Duration animationDuration;
@@ -21,8 +24,14 @@ class SearchInput extends StatelessWidget {
     this.focusNode,
     this.animationDuration = const Duration(milliseconds: 300),
     this.isAnimation = false,
+    required this.onTap,
   }) : super(key: key);
 
+  @override
+  State<SearchInput> createState() => _SearchInputState();
+}
+
+class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -55,11 +64,11 @@ class SearchInput extends StatelessWidget {
                     : 200,
                 child: TextField(
                   showCursor: true,
-                  controller: controller,
-                  focusNode: focusNode,
+                  controller: widget.controller,
+                  focusNode: widget.focusNode,
                   textInputAction: TextInputAction.search,
                   autocorrect: false,
-                  onChanged: onChanged,
+                  onChanged: widget.onChanged,
                   style: theme.textTheme.px14.copyWith(
                     color: theme.textLight,
                   ),
@@ -73,6 +82,22 @@ class SearchInput extends StatelessWidget {
                   ),
                 ),
               ),
+              const Expanded(child: SizedBox()),
+              if (widget.controller.text.isNotEmpty)
+                GestureDetector(
+                  onTap: () => widget.onTap(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.close,
+                      color: theme.brightness == Brightness.dark
+                          ? theme.white
+                          : theme.text?.withOpacity(0.65),
+                    ),
+                  ),
+                )
+              else
+                const SizedBox(),
             ],
           ),
         );
@@ -86,7 +111,7 @@ double getSearchContainerWidth(
 ) {
   final double width = MediaQuery.of(context).size.width;
 
-  return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
+  return !isLargerThenTablet(context)
       ? kIsWeb
           ? width - 136
           : width - 84
