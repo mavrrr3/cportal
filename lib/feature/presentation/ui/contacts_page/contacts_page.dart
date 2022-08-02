@@ -45,8 +45,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final MediaQueryData mediaQueryData = MediaQuery.of(context);
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     _setupScrollController(context);
 
@@ -199,8 +198,8 @@ class _ContactsPageState extends State<ContactsPage> {
                     ? GestureDetector(
                         onTap: _onApplyFilter,
                         child: Container(
-                          width: width,
-                          height: height,
+                          width: mediaQueryData.size.width,
+                          height: mediaQueryData.size.height,
                           color: theme.barrierColor,
                         ),
                       )

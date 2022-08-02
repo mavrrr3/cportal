@@ -8,7 +8,7 @@ class UserLocalDataSource implements IUserLocalDataSource {
   UserLocalDataSource(this._hive);
 
   @override
-Future<UserModel?> getUser() async {  
+  Future<UserModel?> getUser() async {
     final box = await _hive.openBox<UserModel>('user');
 
     return box.get('user');
