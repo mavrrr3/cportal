@@ -30,16 +30,6 @@ class SearchBox extends StatefulWidget {
 }
 
 class _SearchBoxState extends State<SearchBox> {
-  SearchBox copyWith({
-    bool? isAnimation,
-    Duration? animationDuration,
-  }) {
-    return SearchBox(
-      isAnimation: isAnimation ?? widget.isAnimation,
-      animationDuration: animationDuration ?? widget.animationDuration,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
