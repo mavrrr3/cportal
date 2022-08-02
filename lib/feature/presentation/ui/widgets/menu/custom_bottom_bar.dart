@@ -3,6 +3,7 @@ import 'package:cportal_flutter/feature/domain/entities/menu_button_entity.dart'
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -95,8 +96,8 @@ class _MenuItem extends StatelessWidget {
       return state.currentIndex == index ? activeColor : nonActiveColor;
     }
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+    return ExpandTapWidget(
+      tapPadding: const EdgeInsets.symmetric(horizontal: 10),
       onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
