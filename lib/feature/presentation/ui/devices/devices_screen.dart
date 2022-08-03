@@ -64,8 +64,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 onPressed: () => context.pushNamed(
                   NavigationRouteNames.qrScanner,
                   // ignore: avoid_types_on_closure_parameters
-                  extra: (String scannedData) =>
-                      context.read<ConnectingDevicesBloc>().add(SendScannedData(scannedData)),
+                  extra: (String scannedData) {
+                    context.read<ConnectingDevicesBloc>().add(SendScannedData(scannedData));
+                    context.pop();
+                  },
                 ),
                 child: Center(
                   child: Padding(
