@@ -31,8 +31,10 @@ class ConnectingCodeMobile extends StatelessWidget {
           onTap: () => context.pushNamed(
             NavigationRouteNames.qrScanner,
             // ignore: avoid_types_on_closure_parameters
-            extra: (String scannedData) =>
-                context.read<ConnectingCodeBloc>().add(ReadQrCode(scannedData)),
+            extra: (String scannedData) {
+              context.read<ConnectingCodeBloc>().add(ReadQrCode(scannedData));
+              context.pop();
+            },
           ),
           child: Padding(
             padding: const EdgeInsets.all(4),
