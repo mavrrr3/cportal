@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/common/util/random_color_service.dart';
@@ -49,6 +50,7 @@ class _MainPageState extends State<MainPage> {
   late FocusNode _searchFocus;
   late Duration _animationDuration;
   late bool _isSearchActive;
+  final _delayer = Delayer(milliseconds: 500);
 
   @override
   void initState() {
@@ -141,7 +143,8 @@ class _MainPageState extends State<MainPage> {
                                     controller: _searchController,
                                     focusNode: _searchFocus,
                                     onChanged: (query) {
-                                      _onSearchInput(query);
+                                      _delayer.run(() => _onSearchInput(query));
+
                                       if (_searchController.text.isEmpty) {
                                         setState(() {
                                           _isSearchActive = false;
