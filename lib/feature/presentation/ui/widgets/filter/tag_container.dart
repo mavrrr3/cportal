@@ -31,7 +31,7 @@ class TagContainer extends StatelessWidget {
                 color: theme.text!.withOpacity(0.06),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                padding: const EdgeInsets.fromLTRB(6, 2, 6, 1),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -39,6 +39,8 @@ class TagContainer extends StatelessWidget {
                       text,
                       style: theme.textTheme.px12.copyWith(
                         color: theme.textLight,
+                        height: 1.334,
+                        leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),
                     if (isCloseAction) const SizedBox(width: 4),

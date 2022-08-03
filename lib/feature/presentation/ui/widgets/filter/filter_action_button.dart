@@ -46,6 +46,8 @@ class FilterActionButton extends StatelessWidget {
                     text,
                     style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
+                      height: 1.5,
+                      leadingDistribution: TextLeadingDistribution.even,
                       color: isOutline ? theme.primary : theme.white,
                     ),
                   ),

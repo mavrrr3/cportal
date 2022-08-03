@@ -130,7 +130,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             ProfileInfoSection(
                               headline: AppLocalizations.of(context)!.position,
                               text: user.position,
-                              bottomPadding: 21,
+                              bottomPadding: 19,
                             ),
 
                             // Department.
@@ -138,7 +138,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                               headline:
                                   AppLocalizations.of(context)!.department,
                               text: user.department,
-                              bottomPadding: 21,
+                              bottomPadding: 19,
                             ),
 
                             // Birthday.
@@ -147,7 +147,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                                 headline:
                                     AppLocalizations.of(context)!.birth_date,
                                 text: user.birthDayToString!,
-                                bottomPadding: 21,
+                                bottomPadding: 19,
                               ),
 
                             // Contact info.
