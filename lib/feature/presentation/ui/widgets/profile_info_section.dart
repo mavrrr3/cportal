@@ -34,7 +34,7 @@ class ProfileInfoSection extends StatelessWidget {
             text,
             style: theme.textTheme.px16.copyWith(
               fontWeight: FontWeight.w700,
-              color: hasEmail ? theme.primary :  textColor ?? theme.text,
+              color: hasEmail ? theme.primary : textColor ?? theme.text,
               decoration: hasEmail ? TextDecoration.underline : null,
             ),
           ),

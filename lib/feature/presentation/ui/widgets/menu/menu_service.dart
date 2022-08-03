@@ -1,14 +1,13 @@
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class MenuService {
   static void changePage(BuildContext context, int index) {
-    final currentLocation = GoRouter.of(context).location;
+    final currentLocation = GoRouter.of(context).location.substring(1);
 
     if (currentLocation != _locationByIndex(index)) {
       context
@@ -38,17 +37,17 @@ class MenuService {
   static String _locationByIndex(int i) {
     switch (i) {
       case 0:
-        return Routes.main;
+        return NavigationRouteNames.mainPage;
       case 1:
-        return Routes.news;
+        return NavigationRouteNames.news;
       case 2:
-        return Routes.questions;
+        return NavigationRouteNames.questions;
       case 3:
-        return Routes.declarations;
+        return NavigationRouteNames.declarations;
       case 4:
-        return Routes.contacts;
+        return NavigationRouteNames.contacts;
       default:
-        return Routes.main;
+        return NavigationRouteNames.mainPage;
     }
   }
 }

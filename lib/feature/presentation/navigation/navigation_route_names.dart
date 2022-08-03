@@ -4,7 +4,6 @@ import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/change_pin_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/connecting_qr_page.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/create_pin_code_page.dart';
-import 'package:cportal_flutter/feature/presentation/navigation/routes.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/qr_scanner.dart';
@@ -169,7 +168,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.mainPage,
-      path: Routes.main,
+      path: '/main',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -194,7 +193,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.news,
-      path: Routes.news,
+      path: '/news',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -212,7 +211,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.questions,
-      path: Routes.questions,
+      path: '/questions',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -241,7 +240,7 @@ final GoRouter router = GoRouter(
           pageBuilder: (context, state) => const MaterialPage(
             child: DevicesScreen(),
           ),
-          redirect: (state) => kIsWeb ? Routes.main : null,
+          redirect: (state) => kIsWeb ? '/main' : null,
         ),
       ],
     ),
@@ -275,7 +274,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.contacts,
-      path: Routes.contacts,
+      path: '/contacts',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
@@ -286,7 +285,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.declarations,
-      path: Routes.declarations,
+      path: '/declarations',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
