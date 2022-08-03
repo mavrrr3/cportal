@@ -312,9 +312,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _onSearchInput(String query) {
-    BlocProvider.of<MainSearchBloc>(
-      context,
-      listen: false,
-    ).add(MainSearch(query));
+    context.read<MainSearchBloc>().add(MainSearch(query));
   }
 }

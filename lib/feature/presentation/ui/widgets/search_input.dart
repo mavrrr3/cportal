@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 
 class SearchInput extends StatefulWidget {
@@ -14,16 +12,12 @@ class SearchInput extends StatefulWidget {
   final Function onTap;
   final TextEditingController controller;
   final FocusNode? focusNode;
-  final Duration animationDuration;
-  final bool isAnimation;
 
   const SearchInput({
     Key? key,
     required this.controller,
     this.onChanged,
     this.focusNode,
-    this.animationDuration = const Duration(milliseconds: 300),
-    this.isAnimation = false,
     required this.onTap,
   }) : super(key: key);
 
@@ -59,9 +53,7 @@ class _SearchInputState extends State<SearchInput> {
                 ),
               ),
               SizedBox(
-                width: ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                    ? 510
-                    : 200,
+                width: isLargerThenTablet(context) ? 510 : 200,
                 child: TextField(
                   showCursor: true,
                   controller: widget.controller,
