@@ -45,7 +45,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final  size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     _setupScrollController(context);
 
