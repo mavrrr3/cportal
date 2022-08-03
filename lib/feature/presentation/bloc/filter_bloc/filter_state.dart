@@ -46,7 +46,7 @@ class FilterLoadedState extends FilterState {
       ];
 }
 
-class FilterVisibilityState extends FilterState {
+class FilterVisibilityState extends Equatable {
   final bool isActive;
   const FilterVisibilityState({
     required this.isActive,
