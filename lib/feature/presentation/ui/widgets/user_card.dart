@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 
 class UserCard extends StatelessWidget {
@@ -59,7 +59,6 @@ class UserCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.px14.copyWith(
                               fontWeight: FontWeight.w700,
-                              letterSpacing: 0.25,
                               height: 1.143,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),
@@ -69,7 +68,6 @@ class UserCard extends StatelessWidget {
                             position,
                             style: theme.textTheme.px12.copyWith(
                               color: theme.textLight,
-                              letterSpacing: 0.25,
                               height: 1.3334,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),

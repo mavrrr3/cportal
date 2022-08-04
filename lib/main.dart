@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/app_config.dart';
-import 'package:cportal_flutter/common/app_bloc_observer.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/app_bloc_observer.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_device_model.dart';
 import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_devices_model.dart';
