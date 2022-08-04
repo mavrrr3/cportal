@@ -71,7 +71,7 @@ class SearchInput extends StatelessWidget {
                   ),
                 ),
               ),
-              const Expanded(child: SizedBox()),
+              const Spacer(),
               if (controller.text.isNotEmpty)
                 GestureDetector(
                   onTap: () => onTap(),
