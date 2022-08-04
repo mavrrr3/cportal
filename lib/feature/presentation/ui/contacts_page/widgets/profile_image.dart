@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:flutter/material.dart';
 

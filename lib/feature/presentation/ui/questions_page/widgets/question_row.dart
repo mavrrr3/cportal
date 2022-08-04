@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

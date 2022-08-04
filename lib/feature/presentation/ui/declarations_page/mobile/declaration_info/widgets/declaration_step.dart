@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
 import 'package:flutter/material.dart';
