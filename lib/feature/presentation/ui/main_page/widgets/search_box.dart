@@ -55,7 +55,7 @@ class SearchBox extends StatelessWidget {
               curve: Curves.easeIn,
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: isLargerThenTablet(context) ? 60 : 58,
+                  top: isLargerThenTablet(context) ? 60 : 3,
                 ),
                 child: AnimatedContainer(
                   duration: animationDuration,
