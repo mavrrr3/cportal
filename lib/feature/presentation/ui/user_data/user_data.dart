@@ -7,26 +7,35 @@ import 'package:cportal_flutter/feature/presentation/navigation/navigation_route
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/phone_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/user_data/widgets/user_data_row.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
 
-class UserData extends StatelessWidget {
+class UserData extends StatefulWidget {
   final String id;
   const UserData({Key? key, required this.id}) : super(key: key);
 
   @override
+  State<UserData> createState() => _UserDataState();
+}
+
+class _UserDataState extends State<UserData> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<GetSingleProfileBloc>().add(GetSingleProfileEventImpl(
+          widget.id,
+          isMyProfile: true,
+        ));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    BlocProvider.of<GetSingleProfileBloc>(
-      context,
-      listen: false,
-    ).add(GetSingleProfileEventImpl(
-      id,
-      isMyProfile: true,
-    ));
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Swipe(
       onSwipeRight: () => context.goNamed(NavigationRouteNames.profile),
@@ -43,7 +52,7 @@ class UserData extends StatelessWidget {
             ),
           ),
           title: Text(
-            AppLocalizations.of(context)!.yourData,
+            localizedStrings.yourData,
             style: theme.textTheme.header,
           ),
         ),
@@ -65,23 +74,23 @@ class UserData extends StatelessWidget {
                       const PhoneBox(),
                       const SizedBox(height: 24),
                       UserDataRow(
-                        normalText: AppLocalizations.of(context)!.position,
+                        normalText: localizedStrings.position,
                         boldText: profile.position,
                       ),
                       const SizedBox(height: 8),
                       UserDataRow(
-                        normalText: AppLocalizations.of(context)!.department,
+                        normalText: localizedStrings.department,
                         boldText: profile.department,
                       ),
                       const SizedBox(height: 8),
                       if (profile.birthDayToString != null)
                         UserDataRow(
-                          normalText: AppLocalizations.of(context)!.birthDay,
+                          normalText: localizedStrings.birthDay,
                           boldText: profile.birthDayToString!,
                         ),
                       const SizedBox(height: 8),
                       UserDataRow(
-                        normalText: AppLocalizations.of(context)!.email,
+                        normalText: localizedStrings.email,
                         boldText: profile.email,
                       ),
                       const Expanded(child: SizedBox.shrink()),
@@ -100,7 +109,7 @@ class UserData extends StatelessWidget {
               );
             }
 
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: PlatformProgressIndicator());
           },
         ),
       ),
