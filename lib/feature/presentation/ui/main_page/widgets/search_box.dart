@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class SearchBox extends StatefulWidget {
+class SearchBox extends StatelessWidget {
   final bool isAnimation;
   final Duration animationDuration;
 
@@ -25,11 +25,6 @@ class SearchBox extends StatefulWidget {
     required this.animationDuration,
   }) : super(key: key);
 
-  @override
-  State<SearchBox> createState() => _SearchBoxState();
-}
-
-class _SearchBoxState extends State<SearchBox> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -55,20 +50,20 @@ class _SearchBoxState extends State<SearchBox> {
                 ? const EdgeInsets.only(left: 32)
                 : getHorizontalPadding(context),
             child: AnimatedOpacity(
-              duration: widget.animationDuration,
-              opacity: widget.isAnimation ? 1 : 0,
+              duration: animationDuration,
+              opacity: isAnimation ? 1 : 0,
               curve: Curves.easeIn,
               child: Padding(
                 padding: EdgeInsets.only(
                   top: isLargerThenTablet(context) ? 60 : 58,
                 ),
                 child: AnimatedContainer(
-                  duration: widget.animationDuration,
+                  duration: animationDuration,
                   curve: Curves.easeIn,
                   width: isLargerThenTablet(context)
                       ? 584
                       : MediaQuery.of(context).size.width,
-                  height: widget.isAnimation ? getHeightSearchBox() : 0,
+                  height: isAnimation ? getHeightSearchBox() : 0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: theme.cardColor,

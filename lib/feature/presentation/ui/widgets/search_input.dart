@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_lambdas
+
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 
-class SearchInput extends StatefulWidget {
+class SearchInput extends StatelessWidget {
   final Function(String)? onChanged;
   final Function onTap;
   final TextEditingController controller;
@@ -21,11 +23,6 @@ class SearchInput extends StatefulWidget {
     required this.onTap,
   }) : super(key: key);
 
-  @override
-  State<SearchInput> createState() => _SearchInputState();
-}
-
-class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -56,11 +53,11 @@ class _SearchInputState extends State<SearchInput> {
                 width: isLargerThenTablet(context) ? 510 : 200,
                 child: TextField(
                   showCursor: true,
-                  controller: widget.controller,
-                  focusNode: widget.focusNode,
+                  controller: controller,
+                  focusNode: focusNode,
                   textInputAction: TextInputAction.search,
                   autocorrect: false,
-                  onChanged: widget.onChanged,
+                  onChanged: onChanged,
                   style: theme.textTheme.px14.copyWith(
                     color: theme.textLight,
                   ),
@@ -75,9 +72,9 @@ class _SearchInputState extends State<SearchInput> {
                 ),
               ),
               const Expanded(child: SizedBox()),
-              if (widget.controller.text.isNotEmpty)
+              if (controller.text.isNotEmpty)
                 GestureDetector(
-                  onTap: () => widget.onTap(),
+                  onTap: () => onTap(),
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Icon(
