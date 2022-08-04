@@ -55,7 +55,7 @@ class SearchBox extends StatelessWidget {
               curve: Curves.easeIn,
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: isLargerThenTablet(context) ? 60 : 56,
+                  top: isLargerThenTablet(context) ? 60 : 58,
                 ),
                 child: AnimatedContainer(
                   duration: animationDuration,
@@ -120,15 +120,13 @@ class SearchBox extends StatelessWidget {
 void goToPage(String category, String id, BuildContext context) {
   switch (category) {
     case 'Новости':
-      BlocProvider.of<GetSingleNewsBloc>(context, listen: false)
-          .add(GetSingleNewsEventImpl(id));
+      context.read<GetSingleNewsBloc>().add(GetSingleNewsEventImpl(id));
       return context.pushNamed(
         NavigationRouteNames.newsArticlePage,
         params: {'fid': id},
       );
     case 'Вопросы':
-      BlocProvider.of<GetSingleQuestionBloc>(context, listen: false)
-          .add(GetSingleQuestionEventImpl(id));
+      context.read<GetSingleQuestionBloc>().add(GetSingleQuestionEventImpl(id));
       return context.pushNamed(
         NavigationRouteNames.questionArticlePage,
         params: {'fid': id},

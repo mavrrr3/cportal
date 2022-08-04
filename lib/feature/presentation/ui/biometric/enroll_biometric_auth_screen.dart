@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
@@ -49,12 +47,14 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: theme.textTheme.header,
+                      style: theme.textTheme.header.copyWith(
+                        height: 1.29,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       strings.doFingerPrintNotInputPin,
-                      style: theme.textTheme.px14.copyWith(height: 1.714),
+                      style: theme.textTheme.px14.copyWith(height: 1.71),
                     ),
                   ],
                 ),
@@ -79,9 +79,9 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                         ),
                     child: Text(
                       strings.yes,
-                      style: theme.textTheme.px16.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.white,
+                      style: theme.textTheme.px16Bold.copyWith(
+                        color: theme.brightness == Brightness.light ? theme.white : theme.text,
+                        leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),
                   ),
@@ -101,9 +101,9 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                     onPressed: () => _logInWithUser(context),
                     child: Text(
                       strings.noThanks,
-                      style: theme.textTheme.px16.copyWith(
-                        fontWeight: FontWeight.w700,
+                      style: theme.textTheme.px16Bold.copyWith(
                         color: theme.primary,
+                        leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),
                   ),
@@ -118,7 +118,6 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
 
   void _logInWithUser(BuildContext context) {
     final connectingCodeState = context.read<ConnectingCodeBloc>().state;
-    log(connectingCodeState.toString());
     if (connectingCodeState is AuthenticatedWithConnectingCode) {
       context.read<AuthBloc>().add(LogInWithUser(connectingCodeState.user));
       context.goNamed(NavigationRouteNames.mainPage);
