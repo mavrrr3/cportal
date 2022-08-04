@@ -11,7 +11,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
@@ -64,10 +63,6 @@ class _MainPageState extends State<MainPage> {
     _searchFocus.addListener(_onFocusChange);
 
     _fetchContent(context);
-    final state = context.read<MainSearchBloc>().state;
-    if (state is MainSearchLoaded) {
-      if (state.searchList.isEmpty) _isSearchActive = false;
-    }
   }
 
   @override
