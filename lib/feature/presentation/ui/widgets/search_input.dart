@@ -76,7 +76,11 @@ class SearchInput extends StatelessWidget {
                 GestureDetector(
                   onTap: () => onTap(),
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      right: 8,
+                      bottom: 8,
+                    ),
                     child: Icon(
                       Icons.close,
                       color: theme.brightness == Brightness.dark
