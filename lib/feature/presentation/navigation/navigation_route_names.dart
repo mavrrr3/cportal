@@ -8,7 +8,7 @@ import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_face_id
 import 'package:cportal_flutter/feature/presentation/ui/biometric/enroll_finger_print_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_mobile/qr_scanner.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecting_code_screen.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connection_code_web/connecting_code_info_web_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_info/connecting_code_info_web_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
