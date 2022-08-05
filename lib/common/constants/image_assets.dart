@@ -9,7 +9,7 @@ abstract class ImageAssets {
   static const addPerson = '$iconsPath/add_person.svg';
   static const fingerPrint = '$iconsPath/finger_print.svg';
   static const logo = '$iconsPath/logo.svg';
-  static const document = '$iconsPath/what_get_icon.svg';
+  static const document = '$iconsPath/document.svg';
   static const backArrow = '$iconsPath/back_arrow.svg';
   static const search = '$iconsPath/search.svg';
   static const filter = '$iconsPath/filter.svg';
@@ -42,4 +42,5 @@ abstract class ImageAssets {
   static const desktop = '$iconsPath/desktop.svg';
   static const profile = '$iconsPath/profile.svg';
   static const video = '$iconsPath/video.svg';
+  static const elevatedPhone = '$iconsPath/elevated_phone.svg';
 }

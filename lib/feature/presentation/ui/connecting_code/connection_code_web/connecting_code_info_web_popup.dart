@@ -1,7 +1,6 @@
-import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/phone_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/what_get_with_you.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/document.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/work_mode_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -86,15 +85,14 @@ class ConnectingCodeInfoWebPopup extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: SizedBox(
                           width: contWidth * 0.52,
+                          // TODO check this
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              WhatGetWithYou(
-                                iconPath: ImageAssets.document,
+                              Document(
                                 text: AppLocalizations.of(context)!.passport,
                               ),
-                              WhatGetWithYou(
-                                iconPath: ImageAssets.document,
+                              Document(
                                 text: AppLocalizations.of(context)!.pass,
                                 color: theme.primary,
                               ),

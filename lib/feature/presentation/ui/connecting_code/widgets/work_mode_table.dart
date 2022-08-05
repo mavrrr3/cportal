@@ -7,60 +7,59 @@ class WorkModeTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
     final locale = AppLocalizations.of(context)!;
-
-    final workModeMap = [
-      {
-        'day': locale.monday,
-        'time': locale.workTime,
-      },
-      {
-        'day': locale.tuesday,
-        'time': locale.workTime,
-      },
-      {
-        'day': locale.wednesday,
-        'time': locale.workTime,
-      },
-      {
-        'day': locale.thursday,
-        'time': locale.workTime,
-      },
-      {
-        'day': locale.friday,
-        'time': locale.workTime,
-      },
-      {
-        'day': locale.saturday,
-        'time': locale.weekEnd,
-      },
-      {
-        'day': locale.sunday,
-        'time': locale.weekEnd,
-      },
-    ];
+    final textStyle = theme.textTheme.px14.copyWith(height: 1.43);
 
     return Column(
-      children: [
-        ...workModeMap
-            .map(
-              (row) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    row['day']!,
-                    style: theme.textTheme.px14,
-                  ),
-                  Text(
-                    row['time']!,
-                    style: theme.textTheme.px14,
-                  ),
-                ],
-              ),
-            )
-            .toList(),
-      ],
+      children: _getWorkMode(locale)
+          .map(
+            (row) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  row['day']!,
+                  style: textStyle,
+                ),
+                Text(
+                  row['time']!,
+                  style: textStyle,
+                ),
+              ],
+            ),
+          )
+          .toList(),
     );
   }
+
+  List<Map<String, String>> _getWorkMode(AppLocalizations locale) => [
+        {
+          'day': locale.monday,
+          'time': locale.workTime,
+        },
+        {
+          'day': locale.tuesday,
+          'time': locale.workTime,
+        },
+        {
+          'day': locale.wednesday,
+          'time': locale.workTime,
+        },
+        {
+          'day': locale.thursday,
+          'time': locale.workTime,
+        },
+        {
+          'day': locale.friday,
+          'time': locale.workTime,
+        },
+        {
+          'day': locale.saturday,
+          'time': locale.weekEnd,
+        },
+        {
+          'day': locale.sunday,
+          'time': locale.weekEnd,
+        },
+      ];
 }
