@@ -36,9 +36,9 @@ class QuestionRow extends StatelessWidget {
                       : width - 60,
               child: Text(
                 text,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style:
-                    theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
+                style: theme.textTheme.px16Bold,
               ),
             ),
             SvgPicture.asset(

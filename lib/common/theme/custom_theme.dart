@@ -84,6 +84,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: textColor,
+        height: 1.25,
         letterSpacing: 0.5,
       ),
 
@@ -100,7 +101,17 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
       px14: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.w400,
+        height: 1.43,
         color: textColor,
+        letterSpacing: 0.25,
+      ),
+
+      // [14 px Bold].
+      px14Bold: GoogleFonts.roboto(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: textColor,
+        height: 1.43,
         letterSpacing: 0.25,
       ),
 
@@ -109,6 +120,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: textColor,
+        height: 1.33,
         letterSpacing: 0.25,
       ),
 
@@ -234,6 +246,7 @@ class CustomTextTheme {
   final TextStyle px16;
   final TextStyle px16Bold;
   final TextStyle px14;
+  final TextStyle px14Bold;
   final TextStyle px12;
   final TextStyle bottomBar;
 
@@ -246,6 +259,7 @@ class CustomTextTheme {
     required this.px16,
     required this.px16Bold,
     required this.px14,
+    required this.px14Bold,
     required this.px12,
     required this.bottomBar,
   });

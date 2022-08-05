@@ -75,69 +75,75 @@ class _TodayItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AvatarBox(
-          size: 69,
-          imgPath: item.image,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.title ?? AppLocalizations.of(context)!.birthDay,
-                style: theme.textTheme.px14,
-              ),
-              const SizedBox(height: 7),
-              Text(
-                item.description,
-                softWrap: true,
-                style: theme.textTheme.px14.copyWith(
-                  fontWeight: FontWeight.w700,
+    return SizedBox(
+      height: 69,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AvatarBox(
+            size: 69,
+            imgPath: item.image,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  item.title ?? AppLocalizations.of(context)!.birthDay,
+                  style: theme.textTheme.px14.copyWith(
+                    leadingDistribution: TextLeadingDistribution.even,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  if (item.post != null)
-                    Text(
-                      item.post!,
-                      style: theme.textTheme.px12.copyWith(
-                        color: theme.textLight,
-                      ),
-                    ),
-                  if (item.place != null)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: theme.text!.withOpacity(0.06),
-                          borderRadius: BorderRadius.circular(12),
+                const SizedBox(height: 3),
+                Text(
+                  item.description,
+                  softWrap: true,
+                  style: theme.textTheme.px14Bold.copyWith(
+                    leadingDistribution: TextLeadingDistribution.even,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    if (item.post != null)
+                      Text(
+                        item.post!,
+                        style: theme.textTheme.px12.copyWith(
+                          color: theme.textLight,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 7,
-                            vertical: 4,
+                      ),
+                    if (item.place != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: theme.text!.withOpacity(0.06),
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text(
-                            item.place!,
-                            style: theme.textTheme.px12.copyWith(
-                              color: theme.textLight,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 4,
+                            ),
+                            child: Text(
+                              item.place!,
+                              style: theme.textTheme.px12.copyWith(
+                                color: theme.textLight,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -260,6 +260,7 @@ class _MainPageState extends State<MainPage> {
                     style: theme.textTheme.px22,
                   ),
                 ),
+                const SizedBox(height: 12),
                 BlocBuilder<FetchNewsBloc, FetchNewsState>(
                   builder: (context, state) {
                     if (state is NewsLoading) {
