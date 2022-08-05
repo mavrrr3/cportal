@@ -84,7 +84,7 @@ class _TodayItem extends StatelessWidget {
           imgPath: item.image,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 15.5),
+          padding: const EdgeInsets.only(left: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

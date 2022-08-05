@@ -17,7 +17,7 @@ class NewsMainMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220,
+      height: 184,
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
