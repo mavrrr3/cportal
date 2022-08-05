@@ -231,11 +231,7 @@ class _MainPageState extends State<MainPage> {
                       children: [
                         const SizedBox(height: 16),
                         HorizontalListViewMain(
-                          color: _isSearchActive
-                              ? theme.brightness == Brightness.light
-                                  ? theme.cardColor!.withOpacity(0.3)
-                                  : theme.cardColor!
-                              : theme.cardColor!,
+                          color: theme.cardColor!,
                         ),
                         const SizedBox(height: 24),
                         Padding(
