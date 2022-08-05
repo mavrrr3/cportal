@@ -40,7 +40,7 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return AlertDialog(
       contentPadding: const EdgeInsets.only(top: 16),
@@ -73,7 +73,7 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          strings.workMode,
+                          localizedStrings.workMode,
                           style: theme.textTheme.px14.copyWith(
                             color: theme.text?.withOpacity(0.6),
                             height: 1.43,
@@ -124,7 +124,7 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
           onPressed: () => Navigator.pop(context),
           child: Center(
             child: Text(
-              strings.close,
+              localizedStrings.close,
               style: theme.textTheme.px16Bold.copyWith(
                 color: theme.brightness == Brightness.light ? theme.white : theme.text,
               ),

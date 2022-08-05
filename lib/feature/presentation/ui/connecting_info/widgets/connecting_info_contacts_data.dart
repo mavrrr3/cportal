@@ -15,13 +15,13 @@ class ConnectingInfoContactsData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          strings.getWithYou,
+          localizedStrings.getWithYou,
           style: theme.textTheme.px14.copyWith(
             color: theme.text?.withOpacity(0.6),
             height: 1.43,
@@ -32,18 +32,18 @@ class ConnectingInfoContactsData extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Document(
-              text: strings.passport,
+              text: localizedStrings.passport,
             ),
             const SizedBox(width: 8),
             Document(
-              text: strings.pass,
+              text: localizedStrings.pass,
               color: theme.primary,
             ),
           ],
         ),
         separator ?? const SizedBox(height: 16),
         Text(
-          strings.callBeforeCame,
+          localizedStrings.callBeforeCame,
           style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
         ),
         const Padding(
@@ -51,7 +51,7 @@ class ConnectingInfoContactsData extends StatelessWidget {
           child: PhoneButton(),
         ),
         Text(
-          '${strings.callAfter} 6 ${strings.hours}',
+          '${localizedStrings.callAfter} 6 ${localizedStrings.hours}',
           style: theme.textTheme.px14.copyWith(color: theme.red?.withOpacity(0.6)),
         ),
       ],

@@ -8,11 +8,11 @@ class WorkModeTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final locale = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
     final textStyle = theme.textTheme.px14.copyWith(height: 1.43);
 
     return Column(
-      children: _getWorkMode(locale)
+      children: _getWorkMode(localizedStrings)
           .map(
             (row) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

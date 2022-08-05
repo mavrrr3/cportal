@@ -12,7 +12,7 @@ class ConnectingCodeInfoWebPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -39,7 +39,7 @@ class ConnectingCodeInfoWebPopup extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 16, bottom: 8),
                             child: Text(
-                              strings.workMode,
+                              localizedStrings.workMode,
                               style: theme.textTheme.px14.copyWith(
                                 color: theme.text?.withOpacity(0.6),
                                 height: 1.43,
