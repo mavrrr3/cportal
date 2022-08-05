@@ -63,12 +63,12 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
                 child: ConnectingInfoMainInformation(),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 9),
+                padding: EdgeInsets.only(top: 10, bottom: _isExpanded ? 2 : 10),
                 child: InkWell(
                   radius: 0,
                   onTap: _handleTap,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

@@ -37,7 +37,7 @@ class ConnectingCodeInfoWebPopup extends StatelessWidget {
                         children: [
                           const ConnectingInfoMainInformation(),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            padding: const EdgeInsets.only(top: 16, bottom: 8),
                             child: Text(
                               strings.workMode,
                               style: theme.textTheme.px14.copyWith(
@@ -49,10 +49,23 @@ class ConnectingCodeInfoWebPopup extends StatelessWidget {
                           ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 358),
                             child: Column(
-                              children: const [
-                                WorkModeTable(),
-                                SizedBox(height: 16),
-                                ConnectingInfoContactsData(),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    maxWidth: 308,
+                                  ),
+                                  child: const WorkModeTable(),
+                                ),
+                                const SizedBox(height: 24),
+                                ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    maxWidth: 296,
+                                  ),
+                                  child: const ConnectingInfoContactsData(
+                                    separator: SizedBox(height: 24),
+                                  ),
+                                ),
                               ],
                             ),
                           ),

@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConnectingInfoContactsData extends StatelessWidget {
-  const ConnectingInfoContactsData({Key? key}) : super(key: key);
+  final Widget? separator;
+
+  const ConnectingInfoContactsData({
+    Key? key,
+    this.separator,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,7 @@ class ConnectingInfoContactsData extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        separator ?? const SizedBox(height: 16),
         Text(
           strings.callBeforeCame,
           style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
