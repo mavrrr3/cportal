@@ -45,6 +45,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late CustomTheme theme;
   late TextEditingController _searchController;
   late ScrollController _questionController;
   late FocusNode _searchFocus;
@@ -68,6 +69,12 @@ class _MainPageState extends State<MainPage> {
     if (state is MainSearchLoaded) {
       if (state.searchList.isEmpty) _isSearchActive = false;
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    theme = Theme.of(context).extension<CustomTheme>()!;
   }
 
   @override
@@ -103,115 +110,113 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverAppBar(
-              floating: true,
-              elevation: 0,
-              backgroundColor: theme.background,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Column(
+            _appBar(),
+            _mainPageBody(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SliverAppBar _appBar() {
+    return SliverAppBar(
+      toolbarHeight: 60,
+      floating: true,
+      elevation: 0,
+      backgroundColor: theme.background,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: isLargerThenMobile(context) ? 12 : 13,
+              ),
+              child: ResponsiveConstraints(
+                constraint:
+                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(
-                        top: isLargerThenMobile(context) ? 10 : 13,
-                      ),
+                      padding: getHorizontalPadding(context),
                       child: ResponsiveConstraints(
-                        constraint: kIsWeb
-                            ? const BoxConstraints(maxWidth: 1046)
-                            : null,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        constraint: const BoxConstraints(maxWidth: 644),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: ResponsiveConstraints(
-                                constraint: const BoxConstraints(maxWidth: 640),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    BurgerMenuButton(onTap: () {
-                                      context.read<NavigationBarBloc>().add(
-                                            const NavBarVisibilityEvent(
-                                              isActive: true,
-                                            ),
-                                          );
-                                    }),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SearchInput(
-                                          controller: _searchController,
-                                          focusNode: _searchFocus,
-                                          onChanged: (query) {
-                                            _delayer.run(
-                                              () => _onSearchInput(query),
-                                            );
-
-                                            if (_searchController
-                                                .text.isEmpty) {
-                                              setState(() {
-                                                _isSearchActive = false;
-                                              });
-                                            } else {
-                                              setState(() {
-                                                _isSearchActive = true;
-                                              });
-                                            }
-                                          },
-                                          onTap: () => setState(() {
-                                            _searchController.clear();
-                                            _isSearchActive = false;
-                                          }),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        GestureDetector(
-                                          onTap: () {
-                                            isLargerThenTablet(context)
-                                                ? showProfile(context)
-                                                : context.pushNamed(
-                                                    NavigationRouteNames
-                                                        .profile,
-                                                  );
-                                          },
-                                          child:
-                                              BlocBuilder<AuthBloc, AuthState>(
-                                            builder: (context, state) {
-                                              if (state is! Authenticated) {
-                                                return const PlatformProgressIndicator();
-                                              } else {
-                                                final user = state.user;
-
-                                                return OnHover(
-                                                  builder: (isHovered) {
-                                                    return ProfileImage(
-                                                      fullName: user.name,
-                                                      imgLink: user.photoUrl,
-                                                      color: RandomColorService
-                                                          .color,
-                                                      size: isHovered ? 48 : 40,
-                                                      borderRadius: 12,
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      ],
+                            BurgerMenuButton(onTap: () {
+                              context.read<NavigationBarBloc>().add(
+                                    const NavBarVisibilityEvent(
+                                      isActive: true,
                                     ),
-                                  ],
+                                  );
+                            }),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SearchInput(
+                                  controller: _searchController,
+                                  focusNode: _searchFocus,
+                                  onChanged: (query) {
+                                    _delayer.run(
+                                      () => _onSearchInput(query),
+                                    );
+
+                                    if (_searchController.text.isEmpty) {
+                                      setState(() {
+                                        _isSearchActive = false;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _isSearchActive = true;
+                                      });
+                                    }
+                                  },
+                                  onTap: () => setState(() {
+                                    _searchController.clear();
+                                    _isSearchActive = false;
+                                  }),
                                 ),
-                              ),
+                                const SizedBox(width: 12),
+                                GestureDetector(
+                                  onTap: () {
+                                    isLargerThenTablet(context)
+                                        ? showProfile(context)
+                                        : context.pushNamed(
+                                            NavigationRouteNames.profile,
+                                          );
+                                  },
+                                  child: BlocBuilder<AuthBloc, AuthState>(
+                                    builder: (context, state) {
+                                      if (state is! Authenticated) {
+                                        return const PlatformProgressIndicator();
+                                      } else {
+                                        final user = state.user;
+
+                                        return OnHover(
+                                          builder: (isHovered) {
+                                            return ProfileImage(
+                                              fullName: user.name,
+                                              imgLink: user.photoUrl,
+                                              color: RandomColorService.color,
+                                              size: isHovered ? 48 : 40,
+                                              borderRadius: 12,
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -221,75 +226,78 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        HorizontalListViewMain(
-                          color: theme.cardColor!,
-                        ),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: getHorizontalPadding(context),
-                          child: TodayWidget(
-                            onTap: (i) {},
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: getHorizontalPadding(context),
-                          child: Text(
-                            AppLocalizations.of(context)!.news,
-                            style: theme.textTheme.px22,
-                          ),
-                        ),
-                        BlocBuilder<FetchNewsBloc, FetchNewsState>(
-                          builder: (context, state) {
-                            if (state is NewsLoading) {
-                              const Center(
-                                child: PlatformProgressIndicator(),
-                              );
-                            }
-
-                            if (state is NewsLoaded) {
-                              final articles = state.articles;
-
-                              return kIsWeb
-                                  ? NewsMainWeb(articles: articles)
-                                  : NewsMainMobile(
-                                      articles: articles,
-                                    );
-                            }
-
-                            return const SizedBox();
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        QuestionsMain(
-                          questionController: _questionController,
-                        ),
-                      ],
-                    ),
-                  ),
-                  ResponsiveConstraints(
-                    constraint: isLargerThenTablet(context)
-                        ? const BoxConstraints(maxWidth: 640)
-                        : null,
-                    child: SearchBox(
-                      isAnimation: _isSearchActive,
-                      animationDuration: _animationDuration,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _mainPageBody() {
+    return SliverToBoxAdapter(
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                HorizontalListViewMain(
+                  color: theme.cardColor!,
+                ),
+                const SizedBox(height: 24),
+                Padding(
+                  padding: getHorizontalPadding(context),
+                  child: TodayWidget(
+                    onTap: (i) {},
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Padding(
+                  padding: getHorizontalPadding(context),
+                  child: Text(
+                    AppLocalizations.of(context)!.news,
+                    style: theme.textTheme.px22,
+                  ),
+                ),
+                BlocBuilder<FetchNewsBloc, FetchNewsState>(
+                  builder: (context, state) {
+                    if (state is NewsLoading) {
+                      const Center(
+                        child: PlatformProgressIndicator(),
+                      );
+                    }
+
+                    if (state is NewsLoaded) {
+                      final articles = state.articles;
+
+                      return kIsWeb
+                          ? NewsMainWeb(articles: articles)
+                          : NewsMainMobile(
+                              articles: articles,
+                            );
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
+                const SizedBox(height: 24),
+                QuestionsMain(
+                  questionController: _questionController,
+                ),
+              ],
+            ),
+          ),
+          ResponsiveConstraints(
+            constraint: isLargerThenTablet(context)
+                ? const BoxConstraints(maxWidth: 640)
+                : null,
+            child: SearchBox(
+              isAnimation: _isSearchActive,
+              animationDuration: _animationDuration,
+            ),
+          ),
+        ],
       ),
     );
   }

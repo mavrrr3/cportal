@@ -104,9 +104,9 @@ double getSearchContainerWidth(
 ) {
   final double width = MediaQuery.of(context).size.width;
 
-  return !isLargerThenTablet(context)
-      ? kIsWeb
+  return isLargerThenTablet(context)
+      ? 584
+      : kIsWeb
           ? width - 136
-          : width - 84
-      : 584;
+          : width - 84;
 }
