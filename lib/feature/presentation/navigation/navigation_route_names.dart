@@ -14,7 +14,7 @@ import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_p
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/create_declaration_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/declaration_info_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/devices/devices_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/devices/connecting_devices_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
@@ -238,7 +238,7 @@ final GoRouter router = GoRouter(
           name: NavigationRouteNames.devices,
           path: 'devices',
           pageBuilder: (context, state) => const MaterialPage(
-            child: DevicesScreen(),
+            child: ConnectingDevicesScreen(),
           ),
           redirect: (state) => kIsWeb ? '/main' : null,
         ),

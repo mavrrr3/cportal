@@ -11,8 +11,13 @@ class EndOtherSessionsPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<CustomTheme>()!;
+
+    final buttonTextStyle = theme.textTheme.px16Bold.copyWith(
+      color: theme.primary,
+      letterSpacing: 0.5,
+    );
 
     return Dialog(
       backgroundColor: theme.cardColor,
@@ -30,7 +35,7 @@ class EndOtherSessionsPopup extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
                 child: Text(
-                  strings.singOutFromOtherDevices,
+                  localizedStrings.singOutFromOtherDevices,
                   style: theme.textTheme.px22.copyWith(height: 1.27),
                 ),
               ),
@@ -41,7 +46,7 @@ class EndOtherSessionsPopup extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Text(
-                strings.areYouSureEndSessions,
+                localizedStrings.areYouSureEndSessions,
                 style: theme.textTheme.px14.copyWith(height: 1.43),
                 textAlign: TextAlign.center,
               ),
@@ -59,11 +64,8 @@ class EndOtherSessionsPopup extends StatelessWidget {
                       primary: theme.primary,
                     ),
                     child: Text(
-                      strings.cancelLowerCase,
-                      style: theme.textTheme.px16.copyWith(
-                        color: theme.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      localizedStrings.cancelLowerCase,
+                      style: buttonTextStyle,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -77,11 +79,8 @@ class EndOtherSessionsPopup extends StatelessWidget {
                       primary: theme.primary,
                     ),
                     child: Text(
-                      strings.exit,
-                      style: theme.textTheme.px16.copyWith(
-                        color: theme.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      localizedStrings.exit,
+                      style: buttonTextStyle,
                     ),
                   ),
                 ],
