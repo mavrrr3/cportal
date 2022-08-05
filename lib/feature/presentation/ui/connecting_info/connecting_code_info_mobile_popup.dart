@@ -125,9 +125,7 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
           child: Center(
             child: Text(
               strings.close,
-              // TODO change textStyle
-              style: theme.textTheme.px16.copyWith(
-                fontWeight: FontWeight.w700,
+              style: theme.textTheme.px16Bold.copyWith(
                 color: theme.brightness == Brightness.light ? theme.white : theme.text,
               ),
             ),

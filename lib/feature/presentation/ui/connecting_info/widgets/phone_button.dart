@@ -36,8 +36,7 @@ class PhoneButton extends StatelessWidget {
               ),
               Text(
                 phone,
-                // TODO change textStyle
-                style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
+                style: theme.textTheme.px16Bold,
               ),
             ],
           ),
