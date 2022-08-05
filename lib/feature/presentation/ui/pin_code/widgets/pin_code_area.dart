@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_state.dart';
@@ -40,14 +40,18 @@ class PinCodeArea extends StatelessWidget {
                 children: [
                   Text(
                     state is PinCodeInitialState ? firstTitle : secondTitle,
-                    style: theme.textTheme.header,
+                    style: theme.textTheme.header.copyWith(height: 1.29),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
                     height: 24,
                     child: Text(
                       state is PinCodeInitialState ? AppLocalizations.of(context)!.itWillBeNeedToEnter : '',
-                      style: theme.textTheme.px14.copyWith(color: theme.text),
+                      style: theme.textTheme.px14.copyWith(
+                        color: theme.text,
+                        height: 1.71,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 46),

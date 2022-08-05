@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:swipe/swipe.dart';
 
 class QrScanner extends StatefulWidget {
   final void Function(String data) onScannedData;
@@ -20,8 +19,6 @@ class QrScanner extends StatefulWidget {
 }
 
 class _QrScannerState extends State<QrScanner> {
-  bool isStopped = false;
-
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   QRViewController? qrController;
@@ -29,68 +26,67 @@ class _QrScannerState extends State<QrScanner> {
   @override
   void reassemble() {
     super.reassemble();
-    _reloadCamera();
+    _resumeCamera();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Swipe(
-      onSwipeRight: context.pop,
-      child: Scaffold(
-        body: Stack(
-          children: [
-            QRView(
-              key: qrKey,
-              overlay: QrScannerOverlayShape(
-                borderRadius: 12,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 220,
-                borderColor: Colors.white,
-                cutOutBottomOffset: 20,
-              ),
-              onQRViewCreated: (controller) => _onQrViewCreated(controller, context),
+    return Scaffold(
+      body: Stack(
+        children: [
+          QRView(
+            key: qrKey,
+            overlay: QrScannerOverlayShape(
+              borderRadius: 12,
+              borderLength: 30,
+              borderWidth: 10,
+              cutOutSize: 220,
+              borderColor: Colors.white,
+              cutOutBottomOffset: 20,
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 94),
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: qrController?.toggleFlash,
-                  child: SvgPicture.asset(
-                    ImageAssets.flashLight,
-                    width: 48,
-                    fit: BoxFit.cover,
-                  ),
+            onQRViewCreated: _onQrViewCreated,
+            onPermissionSet: (controller, hasPermission) {
+              if (!hasPermission) {
+                context.pop();
+              }
+            },
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 94),
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: qrController?.toggleFlash,
+                child: SvgPicture.asset(
+                  ImageAssets.flashLight,
+                  width: 48,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  void _onQrViewCreated(QRViewController controller, BuildContext context) {
-    qrController = controller;
+  void _onQrViewCreated(QRViewController controller) {
+    setState(() {
+      qrController = controller;
+    });
 
     controller.scannedDataStream.listen((scanData) {
-      if (!isStopped) {
-        context.pop();
-        setState(() {
-          isStopped = true;
-        });
-        widget.onScannedData(scanData.code ?? '');
-      }
+      controller.pauseCamera();
+      widget.onScannedData(scanData.code ?? '');
     });
 
     if (Platform.isAndroid) {
-      _reloadCamera();
+      _resumeCamera();
     }
   }
 
-  void _reloadCamera() {
+  void _resumeCamera() {
     if (Platform.isAndroid) {
       qrController?.pauseCamera();
     }

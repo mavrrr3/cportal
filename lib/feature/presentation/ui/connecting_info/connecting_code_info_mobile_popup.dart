@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/connecting_info_contacts_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/connecting_info_main_information.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/work_mode_table.dart';

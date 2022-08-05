@@ -56,6 +56,14 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         color: textColor,
       ),
 
+      // [32 px Medium].
+      px32Medium: GoogleFonts.roboto(
+        fontSize: 32,
+        fontWeight: FontWeight.w500,
+        height: 1.17,
+        color: textColor,
+      ),
+
       // [22 px].
       px22: GoogleFonts.roboto(
         fontSize: 22,
@@ -68,6 +76,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 17,
         fontWeight: FontWeight.w400,
         color: textColor,
+        letterSpacing: 0.5,
       ),
 
       // [16 px].
@@ -75,6 +84,16 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: textColor,
+        letterSpacing: 0.5,
+      ),
+
+      // [16 px Bold].
+      px16Bold: GoogleFonts.roboto(
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        color: textColor,
+        height: 1.5,
+        letterSpacing: 0.5,
       ),
 
       // [14 px].
@@ -82,6 +101,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: textColor,
+        letterSpacing: 0.25,
       ),
 
       // [12 px].
@@ -89,13 +109,16 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: textColor,
+        letterSpacing: 0.25,
       ),
 
-      // [12 px] BottomBar.
+      // [9 px] BottomBar.
       bottomBar: GoogleFonts.inter(
-        fontSize: 12,
+        fontSize: 9,
         fontWeight: FontWeight.w500,
         color: textColor,
+        height: 1.3334,
+        letterSpacing: 0.4,
       ),
     );
 
@@ -205,9 +228,11 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
 class CustomTextTheme {
   final TextStyle header;
   final TextStyle px32;
+  final TextStyle px32Medium;
   final TextStyle px22;
   final TextStyle px17;
   final TextStyle px16;
+  final TextStyle px16Bold;
   final TextStyle px14;
   final TextStyle px12;
   final TextStyle bottomBar;
@@ -215,9 +240,11 @@ class CustomTextTheme {
   CustomTextTheme({
     required this.header,
     required this.px32,
+    required this.px32Medium,
     required this.px22,
     required this.px17,
     required this.px16,
+    required this.px16Bold,
     required this.px14,
     required this.px12,
     required this.bottomBar,

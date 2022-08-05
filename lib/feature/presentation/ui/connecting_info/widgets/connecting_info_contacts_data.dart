@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/document.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/phone_button.dart';
 import 'package:flutter/material.dart';

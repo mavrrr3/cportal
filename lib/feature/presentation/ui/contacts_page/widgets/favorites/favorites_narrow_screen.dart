@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 
 class FavoritesNarrowScreen extends StatelessWidget {

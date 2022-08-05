@@ -60,8 +60,7 @@ class DeclarationsContentMobile extends StatelessWidget {
                 );
               }
 
-              // TODO: отработать другие стейты.
-              return const SizedBox();
+              return const SizedBox(height: 31);
             },
           ),
 

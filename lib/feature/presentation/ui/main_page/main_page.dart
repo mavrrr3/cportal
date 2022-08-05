@@ -1,4 +1,5 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/common/util/random_color_service.dart';
@@ -48,6 +49,7 @@ class _MainPageState extends State<MainPage> {
   late FocusNode _searchFocus;
   late Duration _animationDuration;
   late bool _isSearchActive;
+  final _delayer = Delayer(milliseconds: 500);
 
   @override
   void initState() {
@@ -59,6 +61,7 @@ class _MainPageState extends State<MainPage> {
     _animationDuration = const Duration(milliseconds: 300);
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
+
     _fetchContent(context);
   }
 
@@ -135,7 +138,23 @@ class _MainPageState extends State<MainPage> {
                                     controller: _searchController,
                                     focusNode: _searchFocus,
                                     onChanged: (query) {
-                                      _onSearchInput(query);
+                                      _delayer.run(() => _onSearchInput(query));
+
+                                      if (_searchController.text.isEmpty) {
+                                        setState(() {
+                                          _isSearchActive = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _isSearchActive = true;
+                                        });
+                                      }
+                                    },
+                                    onTap: () {
+                                      setState(() {
+                                        _searchController.clear();
+                                        _isSearchActive = false;
+                                      });
                                     },
                                   ),
                                   GestureDetector(
@@ -291,9 +310,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _onSearchInput(String query) {
-    BlocProvider.of<MainSearchBloc>(
-      context,
-      listen: false,
-    ).add(MainSearch(query));
+    context.read<MainSearchBloc>().add(MainSearch(query));
   }
 }

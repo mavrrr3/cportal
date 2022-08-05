@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/enter_connecting_code.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/auth_desktop_layout.dart';
