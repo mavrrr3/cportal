@@ -1,8 +1,8 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/phone_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/document.dart';
-import 'package:cportal_flutter/feature/presentation/ui/connecting_code/widgets/work_mode_table.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/connecting_info_contacts_data.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/connecting_info_main_information.dart';
+import 'package:cportal_flutter/feature/presentation/ui/connecting_info/widgets/work_mode_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,35 +58,9 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      strings.howToGetCodeTitle,
-                      style: theme.textTheme.px22.copyWith(height: 1.27),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      strings.howToGetCodeText,
-                      style: theme.textTheme.px14.copyWith(height: 1.43),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      strings.address,
-                      style: theme.textTheme.px14.copyWith(
-                        color: theme.text?.withOpacity(0.6),
-                        height: 1.43,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      strings.addressForCode,
-                      style: theme.textTheme.px14.copyWith(height: 1.43),
-                    ),
-                  ],
-                ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: ConnectingInfoMainInformation(),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 9),
@@ -129,40 +103,7 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
                         child: WorkModeTable(),
                       ),
                     ),
-                    Text(
-                      strings.getWithYou,
-                      style: theme.textTheme.px14.copyWith(
-                        color: theme.text?.withOpacity(0.6),
-                        height: 1.43,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Document(
-                          text: strings.passport,
-                        ),
-                        const SizedBox(width: 8),
-                        Document(
-                          text: strings.pass,
-                          color: theme.primary,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      strings.callBeforeCame,
-                      style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: PhoneButton(),
-                    ),
-                    Text(
-                      '${strings.callAfter} 6 ${strings.hours}',
-                      style: theme.textTheme.px14.copyWith(color: theme.red?.withOpacity(0.6)),
-                    ),
+                    const ConnectingInfoContactsData(),
                   ],
                 ),
               ),
@@ -206,5 +147,11 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
     setState(() {
       _isExpanded = !_isExpanded;
     });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }
