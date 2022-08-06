@@ -52,7 +52,7 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build appbundle --flavor=development --target lib/main_development.dart
+      - run: flutter build appbundle --flavor=prod
 
   build_web:
     name: Build Flutter for Web
