@@ -50,8 +50,7 @@ class NewsCardSimilarItem extends StatelessWidget {
                       item.header,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 4,
-                      style: theme.textTheme.px14.copyWith(
-                        fontWeight: FontWeight.w700,
+                      style: theme.textTheme.px14Bold.copyWith(
                         color: isHovered
                             ? theme.text?.withOpacity(0.6)
                             : theme.text,

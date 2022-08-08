@@ -76,7 +76,11 @@ class SearchInput extends StatelessWidget {
                 GestureDetector(
                   onTap: () => onTap(),
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      right: 8,
+                      bottom: 8,
+                    ),
                     child: Icon(
                       Icons.close,
                       color: theme.brightness == Brightness.dark
@@ -100,9 +104,9 @@ double getSearchContainerWidth(
 ) {
   final double width = MediaQuery.of(context).size.width;
 
-  return !isLargerThenTablet(context)
-      ? kIsWeb
+  return isLargerThenTablet(context)
+      ? 584
+      : kIsWeb
           ? width - 136
-          : width - 84
-      : 584;
+          : width - 84;
 }
