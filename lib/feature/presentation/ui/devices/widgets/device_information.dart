@@ -36,9 +36,7 @@ class DeviceInformation extends StatelessWidget {
             children: [
               Text(
                 deviceName,
-                style: theme.textTheme.px14.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+                style: theme.textTheme.px14Bold.copyWith(),
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
