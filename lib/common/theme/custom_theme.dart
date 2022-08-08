@@ -104,6 +104,14 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         letterSpacing: 0.25,
       ),
 
+      // [14 px Bold].
+      px14Bold: GoogleFonts.roboto(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: textColor,
+        letterSpacing: 0.25,
+      ),
+
       // [12 px].
       px12: GoogleFonts.roboto(
         fontSize: 12,
@@ -234,6 +242,7 @@ class CustomTextTheme {
   final TextStyle px16;
   final TextStyle px16Bold;
   final TextStyle px14;
+  final TextStyle px14Bold;
   final TextStyle px12;
   final TextStyle bottomBar;
 
@@ -246,6 +255,7 @@ class CustomTextTheme {
     required this.px16,
     required this.px16Bold,
     required this.px14,
+    required this.px14Bold,
     required this.px12,
     required this.bottomBar,
   });
