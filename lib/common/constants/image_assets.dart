@@ -43,4 +43,5 @@ abstract class ImageAssets {
   static const profile = '$iconsPath/profile.svg';
   static const video = '$iconsPath/video.svg';
   static const elevatedPhone = '$iconsPath/elevated_phone.svg';
+  static const close = '$iconsPath/close.svg';
 }
