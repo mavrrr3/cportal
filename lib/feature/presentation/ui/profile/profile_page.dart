@@ -10,6 +10,7 @@ import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_a
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/on_tap_notify.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/layout_with_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -35,33 +36,15 @@ class _ProfilePageState extends State<ProfilePage> {
     localizedStrings = AppLocalizations.of(context)!;
     final Color? iconColor = theme.textLight;
 
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (state is Authenticated) {
-          user = state.user;
+    return LayoutWithAppBar(
+      icon: ImageAssets.close,
+      title: localizedStrings.profile,
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is Authenticated) {
+            user = state.user;
 
-          return Scaffold(
-            backgroundColor: theme.background,
-            appBar: AppBar(
-              backgroundColor: theme.background,
-              elevation: 0,
-              leading: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () {
-                  context.goNamed(NavigationRouteNames.mainPage);
-                },
-                child: Icon(
-                  Icons.close,
-                  color: theme.text,
-                ),
-              ),
-              centerTitle: false,
-              title: Text(
-                localizedStrings.profile,
-                style: theme.textTheme.header,
-              ),
-            ),
-            body: SingleChildScrollView(
+            return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -169,14 +152,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-            ),
-          );
-        }
+            );
+          }
 
-        return const Center(
-          child: Text('Пусто'),
-        );
-      },
+          return const Center(
+            child: Text('Пусто'),
+          );
+        },
+      ),
     );
   }
 

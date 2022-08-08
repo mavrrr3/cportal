@@ -48,9 +48,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Center(
                         child: SvgPicture.asset(
                           theme.brightness == Brightness.light ? ImageAssets.monitorLight : ImageAssets.monitorDark,

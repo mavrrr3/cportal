@@ -7,11 +7,13 @@ import 'package:go_router/go_router.dart';
 class LayoutWithAppBar extends StatelessWidget {
   final String title;
   final Widget child;
+  final String? icon;
 
   const LayoutWithAppBar({
     Key? key,
     required this.title,
     required this.child,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -26,21 +28,23 @@ class LayoutWithAppBar extends StatelessWidget {
           child: Center(
             child: Row(
               children: [
-                MaterialButton(
-                  shape: const CircleBorder(),
-                  onPressed: context.pop,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  minWidth: 44,
-                  padding: const EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: 24,
+                Padding(
+                  padding: const EdgeInsets.only(left: 14),
+                  child: MaterialButton(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: const CircleBorder(),
+                    onPressed: context.pop,
+                    minWidth: 36,
+                    padding: const EdgeInsets.all(6),
                     child: SvgPicture.asset(
-                      ImageAssets.backArrow,
+                      icon ?? ImageAssets.backArrow,
                       color: theme.text,
+                      width: 24,
+                      height: 24,
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 22),
                 Text(
                   title,
                   style: theme.textTheme.header,
