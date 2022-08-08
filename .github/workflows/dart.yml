@@ -21,7 +21,7 @@ jobs:
       - run: flutter pub run dart_code_metrics:metrics analyze lib
       - run: flutter test
 
-  build_ios:
+  build_ios_and_apk:
     name: Build Flutter (iOs)
     needs: [flutter_test]
     runs-on: macos-11
@@ -37,22 +37,29 @@ jobs:
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build ios --flavor=prod --release --no-codesign
-
-  build_appbundle:
-    name: Build Flutter (Android)
-    needs: [flutter_test]
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
-      - run: flutter pub get
       - run: flutter clean
       - run: flutter build apk --flavor=dev --split-per-abi
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "build/app/outputs/apk/debug/*.apk"
+          tag: v1.0.${{ github.run_number }}
+
+#   build_appbundle:
+#     name: Build Flutter (Android)
+#     needs: [flutter_test]
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: actions/setup-java@v1
+#         with:
+#           java-version: "12.x"
+#       - uses: subosito/flutter-action@v1
+#         with:
+#           channel: "stable"
+#       - run: flutter pub get
+#       - run: flutter clean
+#       - run: flutter build apk --flavor=dev --split-per-abi
 
 
   build_web:
