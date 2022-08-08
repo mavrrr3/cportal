@@ -16,7 +16,6 @@ class EndOtherSessionsPopup extends StatelessWidget {
 
     final buttonTextStyle = theme.textTheme.px16Bold.copyWith(
       color: theme.primary,
-      letterSpacing: 0.5,
     );
 
     return Dialog(

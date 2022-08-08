@@ -62,10 +62,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                           child: Text(
                             localizedStrings.enterWithQrText,
                             textAlign: TextAlign.center,
-                            style: theme.textTheme.px16.copyWith(
-                              letterSpacing: 0.5,
-                              height: 1.25,
-                            ),
+                            style: theme.textTheme.px16.copyWith(height: 1.25),
                           ),
                         ),
                       ),
@@ -92,10 +89,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Text(
                                 localizedStrings.connectDevice,
-                                style: theme.textTheme.px16Bold.copyWith(
-                                  letterSpacing: 0.5,
-                                  color: theme.white,
-                                ),
+                                style: theme.textTheme.px16Bold.copyWith(color: theme.white),
                               ),
                             ),
                           ),
@@ -111,10 +105,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                         child: Center(
                           child: Text(
                             localizedStrings.endOtherSessions,
-                            style: theme.textTheme.px16Bold.copyWith(
-                              letterSpacing: 0.5,
-                              color: theme.red,
-                            ),
+                            style: theme.textTheme.px16Bold.copyWith(color: theme.red),
                           ),
                         ),
                       ),
