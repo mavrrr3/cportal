@@ -52,7 +52,7 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build apk --flavor=dev
+      - run: flutter build apk --flavor=dev --debug --split-per-abi
       - name: Create a Release APK
         uses: ncipollo/release-action@v1
         with:
