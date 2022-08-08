@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/app_config.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
@@ -25,16 +26,24 @@ class AvatarBox extends StatelessWidget {
       duration: isAnimation ? duration : const Duration(milliseconds: 300),
       width: isAnimation ? 0 : size,
       height: isAnimation ? 0 : size,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          alignment: FractionalOffset.topCenter,
-          image: ExtendedNetworkImageProvider(
-            hasApiImg ? '${AppConfig.imagesUrl}/$imgPath' : imgPath,
-            cache: true,
-          ),
-        ),
+      child: ExtendedImage.network(
+        fit: BoxFit.cover,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+        hasApiImg ? '${AppConfig.imagesUrl}/$imgPath' : imgPath,
+        handleLoadingProgress: true,
+        clearMemoryCacheIfFailed: false,
+        clearMemoryCacheWhenDispose: false,
+        cache: true,
+        loadStateChanged: (state) {
+          if (state.extendedImageLoadState == LoadState.loading) {
+            return const Center(
+              child: PlatformProgressIndicator(),
+            );
+          }
+
+          return null;
+        },
       ),
     );
   }

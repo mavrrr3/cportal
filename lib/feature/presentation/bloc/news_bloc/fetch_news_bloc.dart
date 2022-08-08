@@ -28,7 +28,11 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         oldArticles = (state as NewsLoaded).articles;
       }
 
-      emit(NewsLoading(oldArticles, newsTabs, isFirstFetch: pageAll == 1));
+      emit(NewsLoading(
+        oldArticles,
+        newsTabs,
+        isFirstFetch: pageAll == 1,
+      ));
 
       final failureOrNews = await fetchNews(FetchNewsParams(
         page: pageAll,
@@ -175,6 +179,13 @@ class NewsLoaded extends FetchNewsState {
     required this.articles,
     required this.tabs,
   });
+
+  ArticleEntity? singleArticle(String id) {
+    final List<ArticleEntity> newsListWithId =
+        articles.where((element) => element.id == id).toList();
+
+    return newsListWithId.isEmpty ? null : newsListWithId.first;
+  }
 
   @override
   List<Object?> get props => [articles, tabs];

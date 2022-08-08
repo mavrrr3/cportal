@@ -1,7 +1,8 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,17 +65,21 @@ class _QuestionsContentState extends State<QuestionsContent> {
       int index,
     ) {
       if (articles[index].category == tabs[widget.currentIndex]) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 30),
-          child: QuestionRow(
-            text: articles[index].header,
-            onTap: () {
-              GoRouter.of(context).pushNamed(
-                NavigationRouteNames.questionArticlePage,
-                params: {'fid': articles[index].id},
-              );
-            },
-          ),
+        return OnHover(
+          builder: (isHovered) {
+            return Opacity(
+              opacity: isHovered ? 0.6 : 1,
+              child: QuestionRow(
+                text: articles[index].header,
+                onTap: () {
+                  GoRouter.of(context).pushNamed(
+                    NavigationRouteNames.questionArticlePage,
+                    params: {'fid': articles[index].id},
+                  );
+                },
+              ),
+            );
+          },
         );
       }
 
@@ -87,7 +92,7 @@ class _QuestionsContentState extends State<QuestionsContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
           ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),

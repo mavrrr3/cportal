@@ -1,4 +1,5 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/constants/image_assets.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,27 +23,31 @@ class QuestionRow extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-            width: kIsWeb
-                ? width * 0.4
-                : isLargerThenMobile(context)
-                    ? width - 400
-                    : width - 60,
-            child: Text(
-              text,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: kIsWeb
+                  ? width * 0.4
+                  : isLargerThenMobile(context)
+                      ? width - 400
+                      : width - 60,
+              child: Text(
+                text,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
+              ),
             ),
-          ),
-          SvgPicture.asset(
-            'assets/icons/question_arrow.svg',
-            color: theme.primary,
-            width: 8,
-          ),
-        ],
+            SvgPicture.asset(
+              ImageAssets.questionArrow,
+              color: theme.primary,
+              width: 8,
+            ),
+          ],
+        ),
       ),
     );
   }

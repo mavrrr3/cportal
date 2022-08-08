@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
 
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_state.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_app_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
@@ -62,116 +60,113 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
         body: BlocBuilder<SingleDeclarationBloc, SingleDeclarationState>(
           builder: (context, state) {
-            if(state is SingleDeclarationLoadedState){
+            if (state is SingleDeclarationLoadedState) {
+              return SafeArea(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 18,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // AppBar.
+                        DeclarationAppBar(title: state.declaration.title),
 
+                        // Прогресс и текущий этап.
+                        DeclarationProgress(
+                          progress: state.declaration.progress,
+                          currentStep: _getCurrentStep(state.declaration.steps),
+                        ),
+                        const SizedBox(height: 24),
 
-            return SafeArea(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 18,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // AppBar.
-                      DeclarationAppBar(title: state.declaration.title),
+                        // История этапов.
+                        DeclarationStepsHistory(
+                          steps: state.declaration.steps,
+                          isHistoryExpanded: _isHistoryExpanded,
+                          onTap: () {
+                            setState(() {
+                              _isHistoryExpanded = !_isHistoryExpanded;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 16),
 
-                      // Прогресс и текущий этап.
-                      DeclarationProgress(
-                        progress: state.declaration.progress,
-                        currentStep: _getCurrentStep(state.declaration.steps),
-                      ),
-                      const SizedBox(height: 24),
+                        // Дата и приоритет.
+                        DeclarationDateAndPriority(
+                          date: DateTime.now(),
+                          priority: state.declaration.priority,
+                        ),
+                        const SizedBox(height: 24),
 
-                      // История этапов.
-                      DeclarationStepsHistory(
-                        steps: state.declaration.steps,
-                        isHistoryExpanded: _isHistoryExpanded,
-                        onTap: () {
-                          setState(() {
-                            _isHistoryExpanded = !_isHistoryExpanded;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 16),
+                        // Инциатор.
+                        DeclarationUser(
+                          title: AppLocalizations.of(context)!.initiator,
+                          user: state.declaration.initiator,
+                        ),
 
-                      // Дата и приоритет.
-                      DeclarationDateAndPriority(
-                        date: DateTime.now(),
-                        priority: state.declaration.priority,
-                      ),
-                      const SizedBox(height: 24),
+                        // Ответственный.
+                        const SizedBox(height: 16),
+                        DeclarationUser(
+                          title: AppLocalizations.of(context)!.responsible,
+                          user: state.declaration.responsible,
+                        ),
+                        const SizedBox(height: 24),
+                        Divider(
+                          color: theme.brightness == Brightness.light
+                              ? theme.black?.withOpacity(0.08)
+                              : theme.textLight?.withOpacity(0.08),
+                          height: 1,
+                        ),
+                        const SizedBox(height: 16),
 
-                      // Инциатор.
-                      DeclarationUser(
-                        title: AppLocalizations.of(context)!.initiator,
-                        user: state.declaration.initiator,
-                      ),
+                        // Подробная информация о заявлении.
+                        DeclarationData(data: state.declaration.data),
+                        const SizedBox(height: 32),
 
-                      // Ответственный.
-                      const SizedBox(height: 16),
-                      DeclarationUser(
-                        title: AppLocalizations.of(context)!.responsible,
-                        user: state.declaration.responsible,
-                      ),
-                      const SizedBox(height: 24),
-                      Divider(
-                        color: theme.brightness == Brightness.light
-                            ? theme.black?.withOpacity(0.08)
-                            : theme.textLight?.withOpacity(0.08),
-                        height: 1,
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Подробная информация о заявлении.
-                      DeclarationData(data: state.declaration.data),
-                      const SizedBox(height: 32),
-
-                      state.declaration.progress != 1
-                          ? Button.factory(
-                              context,
-                              type: ButtonEnum.filled,
-                              onTap: () {},
-                              text: AppLocalizations.of(context)!.cancelDeclaration,
-                              color: theme.red,
-                              size: Size(width - 32, 48),
-                            )
-                          : Button.factory(
-                              context,
-                              type: ButtonEnum.outlined,
-                              onTap: () {},
-                              text: AppLocalizations.of(context)!.archiveDeclaration,
-                              size: Size(width - 32, 48),
-                            ),
-                      const SizedBox(height: 16),
-                    ],
+                        state.declaration.progress != 1
+                            ? Button.factory(
+                                context,
+                                type: ButtonEnum.filled,
+                                onTap: () {},
+                                text: AppLocalizations.of(context)!
+                                    .cancelDeclaration,
+                                color: theme.red,
+                                size: Size(width - 32, 48),
+                              )
+                            : Button.factory(
+                                context,
+                                type: ButtonEnum.outlined,
+                                onTap: () {},
+                                text: AppLocalizations.of(context)!
+                                    .archiveDeclaration,
+                                size: Size(width - 32, 48),
+                              ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
             }
-            return SizedBox();
+
+            return const SizedBox();
           },
         ),
         // Отозвать заявление.
 
         bottomNavigationBar: !kIsWeb
-            ? BlocBuilder<NavigationBarBloc, NavigationBarState>(
-                builder: (context, state) {
-                  return CustomBottomBar(
-                    state: state,
-                    isNestedNavigation: true,
-                  );
-                },
+            ? const CustomBottomBar(
+                isNestedNavigation: true,
               )
             : null,
       ),
     );
   }
 
-  String _getCurrentStep(List<DeclarationStepEntity> items) =>
-      items.firstWhere((element) => element.status == StepStatus.inProcess).title;
+  String _getCurrentStep(List<DeclarationStepEntity> items) => items
+      .firstWhere((element) => element.status == StepStatus.inProcess)
+      .title;
 }

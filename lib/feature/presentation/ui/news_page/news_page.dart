@@ -1,7 +1,9 @@
 // ignore_for_file: unused_local_variable
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_content.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -51,10 +53,6 @@ class _NewsPageState extends State<NewsPage> {
       pageController.jumpToPage(index);
     }
 
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchAllNewsEvent(),
-    );
-
     final double width = MediaQuery.of(context).size.width;
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
@@ -65,14 +63,7 @@ class _NewsPageState extends State<NewsPage> {
 
         List<String> categories = [];
 
-        if (state is NewsLoading && state.isFirstFetch) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 60),
-            child: Center(
-              child: PlatformProgressIndicator(),
-            ),
-          );
-        } else if (state is NewsLoading) {
+        if (state is NewsLoading) {
           articles = state.oldArticles;
           if (state.tabs.isNotEmpty) categories = state.tabs;
         } else if (state is NewsLoaded) {
@@ -116,9 +107,19 @@ class _NewsPageState extends State<NewsPage> {
               const SizedBox(height: 12),
               Padding(
                 padding: getHorizontalPadding(context),
-                child: Text(
-                  AppLocalizations.of(context)!.news,
-                  style: theme.textTheme.header,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    BurgerMenuButton(onTap: () {
+                      context.read<NavigationBarBloc>().add(
+                            const NavBarVisibilityEvent(isActive: true),
+                          );
+                    }),
+                    Text(
+                      AppLocalizations.of(context)!.news,
+                      style: theme.textTheme.header,
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),

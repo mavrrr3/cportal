@@ -1,17 +1,18 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class AvatarAndUserInfo extends StatelessWidget {
-  final ProfileEntity profile;
+  final UserEntity user;
 
   const AvatarAndUserInfo({
     Key? key,
-    required this.profile,
+    required this.user,
   }) : super(key: key);
 
   @override
@@ -22,16 +23,18 @@ class AvatarAndUserInfo extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 32),
-          AvatarBox(
+          ProfileImage(
+            fullName: user.name,
+            imgLink: user.photoUrl,
+            color: RandomColorService.color,
             size: 102,
-            imgPath: profile.photoLink,
             borderRadius: 24,
           ),
           const SizedBox(height: 12),
           SizedBox(
             width: 250,
             child: Text(
-              profile.fullName,
+              user.name,
               style: theme.textTheme.px17.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -41,13 +44,16 @@ class AvatarAndUserInfo extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            profile.contactInfo.first.contact,
+            user.contacts.first.contact,
             style: theme.textTheme.px16,
           ),
           const SizedBox(height: 16),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => context.goNamed(NavigationRouteNames.userData),
+            onTap: () =>
+                context.goNamed(NavigationRouteNames.userData, params: {
+              'fid': user.id,
+            }),
             child: Text(
               AppLocalizations.of(context)!.watchData,
               style: theme.textTheme.px16.copyWith(

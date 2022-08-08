@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +13,7 @@ class AuthDesktopLayout extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.background,
+      resizeToAvoidBottomInset: false,
       body: Row(
         children: [
           const SplashWidget.desktop(),

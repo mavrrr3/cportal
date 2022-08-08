@@ -1,10 +1,13 @@
 import 'dart:async';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
@@ -13,11 +16,11 @@ import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 const List<OnboardingEntity> _onboardingContent = [
   OnboardingEntity(
@@ -63,12 +66,12 @@ const List<OnboardingEntity> _onboardingContent = [
 
 class HomePage extends StatefulWidget {
   final Widget child;
-  final int desktopMenuIndex;
+  final int webMenuIndex;
 
   const HomePage({
     Key? key,
     required this.child,
-    required this.desktopMenuIndex,
+    required this.webMenuIndex,
   }) : super(key: key);
 
   @override
@@ -137,148 +140,150 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, state) {
-        return Scaffold(
-          backgroundColor: theme.background,
-          body: Stack(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        return Stack(
+          children: [
+            Scaffold(
+              backgroundColor: theme.background,
+              body: Stack(
                 children: [
-                  ResponsiveVisibility(
-                    visible: false,
-                    visibleWhen: const [
-                      Condition<dynamic>.largerThan(name: MOBILE),
-                    ],
-                    // Меню Web.
-                    child: DesktopMenu(
-                      onboarding: () {
-                        setState(
-                          () {
-                            _isWelcome = true;
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (isLargerThenTablet(context))
+                        DesktopMenu(
+                          onboarding: () {
+                            setState(
+                              () {
+                                _isWelcome = true;
+                              },
+                            );
                           },
-                        );
-                      },
-                      currentIndex: widget.desktopMenuIndex,
-                      onChange: (index) => changePage(context, index),
-                    ),
+                          currentIndex: widget.webMenuIndex,
+                          onChange: (index) => MenuService.changePage(context, index),
+                        ),
+
+                      // Текущая страница.
+                      Expanded(
+                        child: kIsWeb ? widget.child : listPages[state.currentIndex],
+                      ),
+                    ],
                   ),
 
-                  // Текущая страница.
-                  Expanded(
-                    child: kIsWeb ? widget.child : listPages[state.currentIndex],
-                  ),
+                  // -- Онбординг для Web --
+                  // Затемнение заднего фона
+                  if (_isOnboarding || _isWelcome || _isLearningCourse)
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      color: theme.barrierColor,
+                    ),
+
+                  // Закрыть онбординг.
+                  if (_isOnboarding || _isWelcome || _isLearningCourse)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 60,
+                          top: 60,
+                        ),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            setState(() {
+                              _onBoardingIndex = 0;
+                              _isWelcome = false;
+                              _isOnboarding = false;
+                              _isLearningCourse = false;
+                              _animationController
+                                ..stop()
+                                ..reset();
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            'assets/icons/onboarding_close.svg',
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  // Добро пожаловать.
+                  if (_isWelcome)
+                    OnBoardingWelcomeWeb(
+                      onTap: () {
+                        setState(() {
+                          _isWelcome = false;
+                          _isOnboarding = true;
+                        });
+                        _loadOnboardingPage(animateToPage: false);
+                      },
+                    ),
+
+                  // Контент онбординга и его навигация.
+                  if (_isOnboarding)
+                    OnBoardingStepWeb(
+                      animationController: _animationController,
+                      pageController: _pageController,
+                      content: _onboardingContent,
+                      currentIndex: _onBoardingIndex,
+                      onNext: () {
+                        setState(() {
+                          if (_onBoardingIndex + 1 < _onboardingContent.length) {
+                            _onBoardingIndex += 1;
+                            _loadOnboardingPage();
+                          } else {
+                            setState(() {
+                              _isOnboarding = false;
+                              _isLearningCourse = true;
+                              _animationController
+                                ..stop()
+                                ..reset()
+                                ..duration = const Duration(seconds: 5)
+                                ..forward();
+                            });
+                          }
+                        });
+                      },
+                      onBack: () {
+                        setState(() {
+                          if (_onBoardingIndex - 1 >= 0) {
+                            _onBoardingIndex -= 1;
+                            _loadOnboardingPage();
+                          }
+                        });
+                      },
+                    ),
+
+                  // Обучающий курс (Последний этап онбординга).
+                  if (_isLearningCourse)
+                    OnBoardingLearningCourseWeb(
+                      animationController: _animationController,
+                      pageController: _pageController,
+                      onBack: () {
+                        setState(() {
+                          _isOnboarding = true;
+                          _isLearningCourse = false;
+                          _onBoardingIndex = _onboardingContent.length - 1;
+                          _loadOnboardingPage();
+                        });
+                      },
+                    ),
                 ],
               ),
 
-              // -- Онбординг для Web --
-              // Затемнение заднего фона
-              if (_isOnboarding || _isWelcome || _isLearningCourse)
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  color: theme.barrierColor,
-                ),
-
-              // Закрыть онбординг.
-              if (_isOnboarding || _isWelcome || _isLearningCourse)
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 60,
-                      top: 60,
-                    ),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        setState(() {
-                          _onBoardingIndex = 0;
-                          _isWelcome = false;
-                          _isOnboarding = false;
-                          _isLearningCourse = false;
-                          _animationController
-                            ..stop()
-                            ..reset();
-                        });
-                      },
-                      child: SvgPicture.asset(
-                        'assets/icons/onboarding_close.svg',
-                      ),
-                    ),
-                  ),
-                ),
-
-              // Добро пожаловать.
-              if (_isWelcome)
-                OnBoardingWelcomeWeb(
-                  onTap: () {
-                    setState(() {
-                      _isWelcome = false;
-                      _isOnboarding = true;
-                    });
-                    _loadOnboardingPage(animateToPage: false);
-                  },
-                ),
-
-              // Контент онбординга и его навигация.
-              if (_isOnboarding)
-                OnBoardingStepWeb(
-                  animationController: _animationController,
-                  pageController: _pageController,
-                  content: _onboardingContent,
-                  currentIndex: _onBoardingIndex,
-                  onNext: () {
-                    setState(() {
-                      if (_onBoardingIndex + 1 < _onboardingContent.length) {
-                        _onBoardingIndex += 1;
-                        _loadOnboardingPage();
-                      } else {
-                        setState(() {
-                          _isOnboarding = false;
-                          _isLearningCourse = true;
-                          _animationController
-                            ..stop()
-                            ..reset()
-                            ..duration = const Duration(seconds: 5)
-                            ..forward();
-                        });
-                      }
-                    });
-                  },
-                  onBack: () {
-                    setState(() {
-                      if (_onBoardingIndex - 1 >= 0) {
-                        _onBoardingIndex -= 1;
-                        _loadOnboardingPage();
-                      }
-                    });
-                  },
-                ),
-
-              // Обучающий курс (Последний этап онбординга).
-              if (_isLearningCourse)
-                OnBoardingLearningCourseWeb(
-                  animationController: _animationController,
-                  pageController: _pageController,
-                  onBack: () {
-                    setState(() {
-                      _isOnboarding = true;
-                      _isLearningCourse = false;
-                      _onBoardingIndex = _onboardingContent.length - 1;
-                      _loadOnboardingPage();
-                    });
-                  },
-                ),
-            ],
-          ),
-
-          // Bottom Bar.
-          bottomNavigationBar: ResponsiveVisibility(
-            hiddenWhen: const [
-              Condition<dynamic>.largerThan(name: MOBILE),
-            ],
-            child: CustomBottomBar(state: state),
-          ),
+              // Bottom Bar.
+              bottomNavigationBar: kIsWeb
+                  ? null
+                  : isLargerThenTablet(context)
+                      ? null
+                      : const CustomBottomBar(),
+            ),
+            BurgerMenu(
+              currentIndex: widget.webMenuIndex,
+              onChange: (i) => MenuService.changePage(context, i),
+              onClose: () => context.read<NavigationBarBloc>().add(const NavBarVisibilityEvent(isActive: false)),
+            ),
+          ],
         );
       },
     );

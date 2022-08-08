@@ -1,15 +1,26 @@
-import 'dart:developer';
-import 'package:cportal_flutter/app_config.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
@@ -17,7 +28,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_input.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/profile_popup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,10 +49,12 @@ class _MainPageState extends State<MainPage> {
   late FocusNode _searchFocus;
   late Duration _animationDuration;
   late bool _isSearchActive;
+  final _delayer = Delayer(milliseconds: 500);
 
   @override
   void initState() {
     super.initState();
+
     _searchController = TextEditingController();
     _questionController = ScrollController();
     _searchFocus = FocusNode();
@@ -49,17 +62,16 @@ class _MainPageState extends State<MainPage> {
     _isSearchActive = false;
     _searchFocus.addListener(_onFocusChange);
 
-    BlocProvider.of<FetchNewsBloc>(context, listen: false).add(
-      const FetchAllNewsEvent(),
-    );
-    BlocProvider.of<FetchQuestionsBloc>(context, listen: false)
-        .add(const FetchQaustionsEvent());
+    _fetchContent(context);
   }
 
   @override
   void dispose() {
-    _searchFocus.removeListener(_onFocusChange);
+    _searchFocus
+      ..removeListener(_onFocusChange)
+      ..dispose();
     _searchController.dispose();
+    _questionController.dispose();
     super.dispose();
   }
 
@@ -76,10 +88,17 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  void _fetchContent(BuildContext context) {
+    context
+      ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
+      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
+      ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
+      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    List<ArticleEntity> articles;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -100,31 +119,79 @@ class _MainPageState extends State<MainPage> {
                   children: [
                     Padding(
                       padding: getHorizontalPadding(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SearchInput(
-                            controller: _searchController,
-                            focusNode: _searchFocus,
-                            onChanged: (text) {
-                              log('[Search text] $text');
-                            },
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isLargerThenTablet(context)
-                                  ? showProfile(context)
-                                  : context.pushNamed(
-                                      NavigationRouteNames.profile,
-                                    );
-                            },
-                            child: const AvatarBox(
-                              size: 40,
-                              imgPath:
-                                  '20220616/285831712_340931151553303_8302347002848994819_n.jpg',
+                      child: ResponsiveConstraints(
+                        constraint: const BoxConstraints(maxWidth: 640),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            BurgerMenuButton(onTap: () {
+                              context.read<NavigationBarBloc>().add(
+                                    const NavBarVisibilityEvent(isActive: true),
+                                  );
+                            }),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SearchInput(
+                                    controller: _searchController,
+                                    focusNode: _searchFocus,
+                                    onChanged: (query) {
+                                      _delayer.run(() => _onSearchInput(query));
+
+                                      if (_searchController.text.isEmpty) {
+                                        setState(() {
+                                          _isSearchActive = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _isSearchActive = true;
+                                        });
+                                      }
+                                    },
+                                    onTap: () {
+                                      setState(() {
+                                        _searchController.clear();
+                                        _isSearchActive = false;
+                                      });
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      isLargerThenTablet(context)
+                                          ? showProfile(context)
+                                          : context.pushNamed(
+                                              NavigationRouteNames.profile,
+                                            );
+                                    },
+                                    child: BlocBuilder<AuthBloc, AuthState>(
+                                      builder: (context, state) {
+                                        if (state is! Authenticated) {
+                                          return const PlatformProgressIndicator();
+                                        } else {
+                                          final user = state.user;
+
+                                          return OnHover(
+                                            builder: (isHovered) {
+                                              return ProfileImage(
+                                                fullName: user.name,
+                                                imgLink: user.photoUrl,
+                                                color: RandomColorService.color,
+                                                size: isHovered ? 48 : 40,
+                                                borderRadius: 12,
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(
@@ -176,70 +243,8 @@ class _MainPageState extends State<MainPage> {
                               },
                             ),
                             const SizedBox(height: 24),
-                            Padding(
-                              padding: getHorizontalPadding(context),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.faq,
-                                    style: theme.textTheme.px22,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  BlocBuilder<FetchQuestionsBloc,
-                                      FetchQuestionsState>(
-                                    builder: (context, state) {
-                                      if (state is QuestionsLoading &&
-                                          state.isFirstFetch) {
-                                        return const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 60,
-                                          ),
-                                          child: Center(
-                                            child: PlatformProgressIndicator(),
-                                          ),
-                                        );
-                                      } else if (state is QuestionsLoading) {
-                                        articles = state.oldArticles;
-                                        log(articles.toString());
-                                      } else if (state is QuestionsLoaded) {
-                                        final articles = state.articles;
-
-                                        return ListView.builder(
-                                          controller: _questionController,
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: AppConfig
-                                              .numberNewsArticlesOnMain,
-                                          itemBuilder: (context, i) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                bottom: 24,
-                                              ),
-                                              child: QuestionRow(
-                                                text: articles[i].header,
-                                                onTap: () {
-                                                  GoRouter.of(context)
-                                                      .pushNamed(
-                                                    NavigationRouteNames
-                                                        .questionArticlePage,
-                                                    params: {
-                                                      'fid': articles[i].id,
-                                                    },
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      }
-
-                                      return const SizedBox();
-                                    },
-                                  ),
-                                ],
-                              ),
+                            QuestionsMain(
+                              questionController: _questionController,
                             ),
                           ],
                         ),
@@ -263,41 +268,48 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-}
 
-Future<void> showProfile(BuildContext context) {
-  return showDialog(
-    context: context,
-    useRootNavigator: true,
-    barrierDismissible: true,
-    builder: (context) {
-      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+  Future<void> showProfile(BuildContext context) {
+    return showDialog(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
+      builder: (context) {
+        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+        final double width = MediaQuery.of(context).size.width;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 100,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: horizontalPadding,
               ),
-              child: const Padding(
-                padding: EdgeInsets.only(
-                  left: 32,
-                  right: 32,
-                  bottom: 32,
-                  top: 32,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: ProfilePopUp(),
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    left: 32,
+                    right: 32,
+                    bottom: 32,
+                    top: 32,
+                  ),
+                  child: ProfilePopUp(),
+                ),
               ),
-            ),
-          );
-        },
-      );
-    },
-  );
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _onSearchInput(String query) {
+    context.read<MainSearchBloc>().add(MainSearch(query));
+  }
 }

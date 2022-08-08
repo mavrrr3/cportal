@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cportal_flutter/app_config.dart';
-import 'package:cportal_flutter/common/app_bloc_observer.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/util/app_bloc_observer.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
+import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_device_model.dart';
+import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_devices_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
@@ -12,17 +14,21 @@ import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
+import 'package:cportal_flutter/feature/domain/entities/device/device_platform.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/foundation.dart';
@@ -36,7 +42,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_blo
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:responsive_framework/responsive_framework.dart';
 
-import 'feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -103,6 +110,7 @@ class Main extends StatelessWidget {
         builder: (light, dark) => MaterialApp.router(
           routerDelegate: router.routerDelegate,
           routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
           debugShowCheckedModeBanner: false,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
@@ -138,9 +146,6 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<ConnectingCodeBloc>(
       create: (ctx) => sl<ConnectingCodeBloc>(),
     ),
-    BlocProvider<PinCodeBloc>(
-      create: (ctx) => sl<PinCodeBloc>(),
-    ),
     BlocProvider<BiometricBloc>(
       create: (ctx) => sl<BiometricBloc>(),
     ),
@@ -168,23 +173,42 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<SingleDeclarationBloc>(
       create: (ctx) => sl<SingleDeclarationBloc>(),
     ),
+    BlocProvider<ConnectingDevicesBloc>(
+      create: (ctx) => sl<ConnectingDevicesBloc>(),
+    ),
+    BlocProvider<MainSearchBloc>(
+      create: (ctx) => sl<MainSearchBloc>(),
+    ),
+    BlocProvider<GetSingleNewsBloc>(
+      create: (ctx) => sl<GetSingleNewsBloc>(),
+    ),
+    BlocProvider<GetSingleQuestionBloc>(
+      create: (ctx) => sl<GetSingleQuestionBloc>(),
+    ),
+    BlocProvider<FilterVisibilityBloc>(
+      create: (ctx) => sl<FilterVisibilityBloc>(),
+    ),
   ];
 }
 
 void _hiveAdaptersInit() {
   Hive
+    ..registerAdapter(UserModelAdapter())
+    ..registerAdapter(ContactModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
     ..registerAdapter(ContactInfoModelAdapter())
-    ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(ArticleModelAdapter())
     ..registerAdapter(ParagraphModelAdapter())
-    ..registerAdapter(ResponseModelAdapter())
+    ..registerAdapter(NewsModelAdapter())
     ..registerAdapter(FilterModelAdapter())
-    ..registerAdapter(DeclarationModelAdapter())
-    ..registerAdapter(DeclarationInfoModelAdapter())
     ..registerAdapter(FilterItemModelAdapter())
     ..registerAdapter(ContactsModelAdapter())
+    ..registerAdapter(ResponseModelAdapter())
     ..registerAdapter(FilterResponseModelAdapter())
-    ..registerAdapter(UserModelAdapter())
-    ..registerAdapter(ContactModelAdapter());
+    ..registerAdapter(DeclarationModelAdapter())
+    ..registerAdapter(ConnectingDeviceModelAdapter())
+    ..registerAdapter(ConnectingDevicesModelAdapter())
+    ..registerAdapter(DevicePlatformAdapter())
+    ..registerAdapter(DeclarationInfoModelAdapter())
+    ..registerAdapter(DeclarationStepModelAdapter());
 }

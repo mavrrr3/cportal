@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
@@ -28,21 +28,24 @@ Future<void> showFilterMobile(
         topRight: Radius.circular(12),
       ),
     ),
-    builder: (context) => DraggableScrollableSheet(
-      expand: false,
-      snap: true,
-      initialChildSize: 0.57,
-      minChildSize: 0.57,
-      maxChildSize: 0.875,
-      builder: (
-        context,
-        scrollController,
-      ) =>
-          FilterMobile(
-        scrollController: scrollController,
-        onApply: onApply,
-        onClear: onClear,
-        type: type,
+    builder: (context) => GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: DraggableScrollableSheet(
+        expand: false,
+        snap: true,
+        initialChildSize: 0.875,
+        minChildSize: 0.57,
+        maxChildSize: 0.875,
+        builder: (
+          context,
+          scrollController,
+        ) =>
+            FilterMobile(
+          scrollController: scrollController,
+          onApply: onApply,
+          onClear: onClear,
+          type: type,
+        ),
       ),
     ),
   );
@@ -75,11 +78,19 @@ class _FilterMobileState extends State<FilterMobile> {
         return BlocBuilder<FilterContactsBloc, FilterState>(
           builder: (context, state) {
             if (state is FilterLoadedState) {
+              final List<TextEditingController> controllers = [];
+              // ignore: prefer-correct-identifier-length
+              for (int i = 0; i < state.contactsFilters.length; i++) {
+                controllers.add(TextEditingController());
+              }
+
               return BottomSheetContent(
                 scrollController: widget.scrollController,
                 filters: state.contactsFilters,
+                controllers: controllers,
                 onExpand: (i) {
-                  BlocProvider.of<FilterContactsBloc>(context).add(FilterExpandSectionEvent(index: i));
+                  BlocProvider.of<FilterContactsBloc>(context)
+                      .add(FilterExpandSectionEvent(index: i));
                 },
                 onSelect: (filterIndex, itemIndex) {
                   BlocProvider.of<FilterContactsBloc>(context).add(
@@ -89,6 +100,7 @@ class _FilterMobileState extends State<FilterMobile> {
                     ),
                   );
                 },
+                onSearch: (i, text) {},
                 onApply: widget.onApply,
                 onClear: widget.onClear,
               );
@@ -104,11 +116,19 @@ class _FilterMobileState extends State<FilterMobile> {
         return BlocBuilder<FilterDeclarationsBloc, FilterState>(
           builder: (context, state) {
             if (state is FilterLoadedState) {
+              final List<TextEditingController> controllers = [];
+              // ignore: prefer-correct-identifier-length
+              for (int i = 0; i < state.declarationsFilters.length; i++) {
+                controllers.add(TextEditingController());
+              }
+
               return BottomSheetContent(
                 scrollController: widget.scrollController,
                 filters: state.declarationsFilters,
+                controllers: controllers,
                 onExpand: (i) {
-                  BlocProvider.of<FilterDeclarationsBloc>(context).add(FilterExpandSectionEvent(index: i));
+                  BlocProvider.of<FilterDeclarationsBloc>(context)
+                      .add(FilterExpandSectionEvent(index: i));
                 },
                 onSelect: (filterIndex, itemIndex) {
                   BlocProvider.of<FilterDeclarationsBloc>(context).add(
@@ -118,6 +138,7 @@ class _FilterMobileState extends State<FilterMobile> {
                     ),
                   );
                 },
+                onSearch: (i, text) {},
                 onApply: widget.onApply,
                 onClear: widget.onClear,
               );

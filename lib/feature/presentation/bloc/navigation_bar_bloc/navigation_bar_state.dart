@@ -1,25 +1,27 @@
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:cportal_flutter/feature/domain/entities/menu_button_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class NavigationBarState {
+class NavigationBarState extends Equatable {
   final int currentIndex;
-  final List<MenuButtonModel> menuItems = [
-    MenuButtonModel(
+  final bool isActive;
+  final List<MenuButtonEntity> menuItems = [
+    MenuButtonEntity(
       img: 'assets/icons/navbar/main.svg',
       text: 'Главная',
     ),
-    MenuButtonModel(
+    MenuButtonEntity(
       img: 'assets/icons/navbar/news.svg',
       text: 'Новости',
     ),
-    MenuButtonModel(
+    MenuButtonEntity(
       img: 'assets/icons/navbar/questions.svg',
       text: 'Вопросы',
     ),
-    MenuButtonModel(
+    MenuButtonEntity(
       img: 'assets/icons/navbar/declaration.svg',
       text: 'Заявления',
     ),
-    MenuButtonModel(
+    MenuButtonEntity(
       img: 'assets/icons/navbar/contacts.svg',
       text: 'Контакты',
     ),
@@ -27,5 +29,9 @@ class NavigationBarState {
 
   NavigationBarState({
     this.currentIndex = 0,
+    this.isActive = false,
   });
+
+  @override
+  List<Object?> get props => [currentIndex, isActive];
 }

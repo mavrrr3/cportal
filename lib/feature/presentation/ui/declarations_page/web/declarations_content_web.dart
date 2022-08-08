@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
@@ -9,8 +9,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_eve
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declarations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_card.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/in_process_title.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/card_with_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
@@ -30,31 +30,31 @@ class DeclarationsContentWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    final List<Widget> newDeclaration = [
-      CreateDeclarationCard(
-        width: 156,
+    final List<CardWithIcon> newDeclaration = [
+      CardWithIcon(
         svgPath: ImageAssets.calendar,
         text: AppLocalizations.of(context)!.buisenesTripDeclaration,
+        onTap: () {},
       ),
-      CreateDeclarationCard(
-        width: 156,
+      CardWithIcon(
         svgPath: ImageAssets.flyVocation,
         text: AppLocalizations.of(context)!.vocationDeclaration,
+        onTap: () {},
       ),
-      CreateDeclarationCard(
-        width: 156,
+      CardWithIcon(
         svgPath: ImageAssets.lock,
         text: AppLocalizations.of(context)!.passDeclaration,
+        onTap: () {},
       ),
-      CreateDeclarationCard(
-        width: 156,
+      CardWithIcon(
         svgPath: ImageAssets.payList,
         text: AppLocalizations.of(context)!.payListDeclaration,
+        onTap: () {},
       ),
-      CreateDeclarationCard(
-        width: 156,
+      CardWithIcon(
         svgPath: ImageAssets.support,
         text: AppLocalizations.of(context)!.supportDeclaration,
+        onTap: () {},
       ),
     ];
 
@@ -69,51 +69,49 @@ class DeclarationsContentWeb extends StatelessWidget {
         }
 
         if (state is DeclarationsLoadedState) {
-          return Expanded(
-            child: SafeArea(
-              child: Padding(
-                padding: getHorizontalPadding(context),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 12,
-                      ),
+          return SafeArea(
+            child: Padding(
+              padding: getHorizontalPadding(context),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 12,
+                    ),
 
-                      // Строка с поиском.
-                      SearchWithFilter(
-                        searchController: searchController,
-                        onSearch: (text) {},
-                        onFilterTap: onFilterTap,
-                        padding: EdgeInsets.zero,
-                      ),
+                    // Строка с поиском.
+                    SearchWithFilter(
+                      searchController: searchController,
+                      onSearch: (text) {},
+                      onFilterTap: onFilterTap,
+                    ),
 
-                      // Выбранные фильтры.
-                      BlocBuilder<FilterDeclarationsBloc, FilterState>(
-                        builder: (context, state) {
-                          if (state is FilterLoadedState) {
-                            return SelectedFiltersView(
-                              filters: state.declarationsFilters,
-                              onRemove: (item, i) {
-                                BlocProvider.of<FilterDeclarationsBloc>(
-                                  context,
-                                ).add(
-                                  FilterRemoveItemEvent(
-                                    filterIndex: i,
-                                    item: item,
-                                  ),
-                                );
-                              },
-                              padding: EdgeInsets.zero,
-                            );
-                          }
+                    // Выбранные фильтры.
+                    BlocBuilder<FilterDeclarationsBloc, FilterState>(
+                      builder: (context, state) {
+                        if (state is FilterLoadedState) {
+                          return SelectedFiltersView(
+                            filters: state.declarationsFilters,
+                            onRemove: (item, i) {
+                              BlocProvider.of<FilterDeclarationsBloc>(
+                                context,
+                              ).add(
+                                FilterRemoveItemEvent(
+                                  filterIndex: i,
+                                  item: item,
+                                ),
+                              );
+                            },
+                            padding: EdgeInsets.zero,
+                          );
+                        }
 
-                          // TODO: отработать другие стейты.
-                          return const SizedBox();
-                        },
-                      ),
+                        // TODO: отработать другие стейты.
+                        return const SizedBox();
+                      },
+                    ),
 
                       // Создать заявление.
                       CreateDeclarations(
@@ -136,9 +134,9 @@ class DeclarationsContentWeb extends StatelessWidget {
                       //   ),
                       // ),
 
-                      // Заявления, которые в процессе.
-                      const SizedBox(height: 32),
-                      const InProcessTitle(bottomPadding: 24),
+                    // Заявления, которые в процессе.
+                    const SizedBox(height: 32),
+                    const InProcessTitle(bottomPadding: 24),
 
                       // Wrap(
                       //   spacing: 16,
@@ -159,10 +157,9 @@ class DeclarationsContentWeb extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-              ),
+          
             ),
-          );
+            ),  );
         }
 
         // TODO: отработать другие стейты.

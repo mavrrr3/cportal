@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 
 class BottomSheetContent extends StatelessWidget {
   final ScrollController scrollController;
+
   final List<FilterEntity> filters;
+  final List<TextEditingController> controllers;
   final Function(int) onExpand;
   final Function(int, int) onSelect;
+  final Function(int, String) onSearch;
+
   final Function() onApply;
   final Function() onClear;
 
@@ -15,8 +19,10 @@ class BottomSheetContent extends StatelessWidget {
     Key? key,
     required this.scrollController,
     required this.filters,
+    required this.controllers,
     required this.onExpand,
     required this.onSelect,
+    required this.onSearch,
     required this.onApply,
     required this.onClear,
   }) : super(key: key);
@@ -35,6 +41,7 @@ class BottomSheetContent extends StatelessWidget {
               itemCount: filters.length,
               itemBuilder: (context, index) => FilterSection(
                 item: filters[index],
+                controller: controllers[index],
                 onExpand: () => onExpand(index),
                 onSelect: (i) => onSelect(index, i),
               ),

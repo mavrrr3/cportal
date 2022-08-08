@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:dartz/dartz.dart';
 
@@ -15,4 +16,6 @@ abstract class INewsRepository {
     int page,
     String category,
   );
+  Future<Either<Failure, ArticleEntity>> getSingleQuestion(String id);
+  Future<Either<Failure, ArticleEntity>> getSingleNews(String id);
 }

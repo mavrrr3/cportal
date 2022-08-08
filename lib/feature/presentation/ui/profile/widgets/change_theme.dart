@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -40,11 +41,15 @@ class _ChangeThemeState extends State<ChangeTheme> {
 
     final double width = MediaQuery.of(context).size.width;
 
-    if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light) {
+    final localizedStrings = AppLocalizations.of(context)!;
+
+    final adaptiveTheme = AdaptiveTheme.of(context);
+
+    if (adaptiveTheme.mode == AdaptiveThemeMode.light) {
       _index = 0;
-    } else if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark) {
+    } else if (adaptiveTheme.mode == AdaptiveThemeMode.dark) {
       _index = 1;
-    } else {
+    } else if (adaptiveTheme.mode == AdaptiveThemeMode.system) {
       _index = 2;
     }
 
@@ -53,7 +58,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            AppLocalizations.of(context)!.appTheme,
+            localizedStrings.appTheme,
             style: theme.textTheme.px12.copyWith(
               color: theme.textLight,
             ),
@@ -73,31 +78,31 @@ class _ChangeThemeState extends State<ChangeTheme> {
             children: [
               Row(
                 children: [
-                  _BuildButton(
-                    text: AppLocalizations.of(context)!.lightTheme,
+                  ChangeThemeButton(
+                    text: localizedStrings.lightTheme,
                     onTap: () {
                       _vibrate(_canVibrate);
-                      AdaptiveTheme.of(context).setLight();
+                      adaptiveTheme.setLight();
                       setState(() {
                         _index = 0;
                       });
                     },
                   ),
-                  _BuildButton(
-                    text: AppLocalizations.of(context)!.darkTheme,
+                  ChangeThemeButton(
+                    text: localizedStrings.darkTheme,
                     onTap: () {
                       _vibrate(_canVibrate);
-                      AdaptiveTheme.of(context).setDark();
+                      adaptiveTheme.setDark();
                       setState(() {
                         _index = 1;
                       });
                     },
                   ),
-                  _BuildButton(
-                    text: AppLocalizations.of(context)!.standartTheme,
+                  ChangeThemeButton(
+                    text: localizedStrings.standartTheme,
                     onTap: () {
                       _vibrate(_canVibrate);
-                      AdaptiveTheme.of(context).setSystem();
+                      adaptiveTheme.setSystem();
                       setState(() {
                         _index = 2;
                       });
@@ -128,7 +133,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                     ],
                   ),
                   child: Text(
-                    _getTextForContainer(_index),
+                    _getTextForContainer(_index, localizedStrings),
                     style: theme.textTheme.px12.copyWith(
                       color: theme.brightness == Brightness.light
                           ? theme.cardColor
@@ -144,16 +149,16 @@ class _ChangeThemeState extends State<ChangeTheme> {
     );
   }
 
-  String _getTextForContainer(int index) {
+  String _getTextForContainer(int index, AppLocalizations localizedStrings) {
     switch (index) {
       case 0:
-        return AppLocalizations.of(context)!.lightTheme;
+        return localizedStrings.lightTheme;
       case 1:
-        return AppLocalizations.of(context)!.darkTheme;
+        return localizedStrings.darkTheme;
       case 2:
-        return AppLocalizations.of(context)!.standartTheme;
+        return localizedStrings.standartTheme;
       default:
-        return AppLocalizations.of(context)!.lightTheme;
+        return localizedStrings.lightTheme;
     }
   }
 
@@ -166,44 +171,5 @@ class _ChangeThemeState extends State<ChangeTheme> {
     } on Exception catch (e) {
       log('Device can`t vibrate error: $e');
     }
-  }
-}
-
-class _BuildButton extends StatelessWidget {
-  final String text;
-  final Function() onTap;
-
-  /// Кнопка для смены темы.
-  const _BuildButton({
-    Key? key,
-    required this.text,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    final double width = MediaQuery.of(context).size.width;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
-        child: SizedBox(
-          width: (width - 34) / 3,
-          child: Align(
-            alignment: Alignment.center,
-            child: Text(
-              text,
-              style: theme.textTheme.px12.copyWith(
-                color: theme.text,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

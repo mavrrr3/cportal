@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_filters_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/contacts/fetch_contacts_filters_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/i_filter_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_functions.dart';

@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web_content.dart';
@@ -24,8 +25,6 @@ class FilterWeb extends StatefulWidget {
 }
 
 class _FilterWebState extends State<FilterWeb> {
-
-
   @override
   Widget build(BuildContext context) {
     switch (widget.type) {
@@ -34,19 +33,28 @@ class _FilterWebState extends State<FilterWeb> {
         return BlocBuilder<FilterContactsBloc, FilterState>(
           builder: (context, state) {
             if (state is FilterLoadedState) {
-              return FilterWebContent(
-                filters: state.contactsFilters,
-                onApply: widget.onApply,
-                onClear: widget.onClear,
-                onExpand: (i) => BlocProvider.of<FilterContactsBloc>(context).add(
-                  FilterExpandSectionEvent(index: i),
-                ),
-                onSelect: (filterIndex, itemIndex) => BlocProvider.of<FilterContactsBloc>(context).add(
-                  FilterSelectItemEvent(
-                    filterIndex: filterIndex,
-                    itemIndex: itemIndex,
-                  ),
-                ),
+              return BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
+                builder: (_, visibility) {
+                  return FilterWebContent(
+                    isActive: visibility.isActive,
+                    filters: state.contactsFilters,
+                    controllers: const [],
+                    onApply: widget.onApply,
+                    onClear: widget.onClear,
+                    onExpand: (i) =>
+                        BlocProvider.of<FilterContactsBloc>(context).add(
+                      FilterExpandSectionEvent(index: i),
+                    ),
+                    onSelect: (filterIndex, itemIndex) =>
+                        BlocProvider.of<FilterContactsBloc>(context).add(
+                      FilterSelectItemEvent(
+                        filterIndex: filterIndex,
+                        itemIndex: itemIndex,
+                      ),
+                    ),
+                    onSearch: (i, text) {},
+                  );
+                },
               );
             }
 
@@ -60,19 +68,28 @@ class _FilterWebState extends State<FilterWeb> {
         return BlocBuilder<FilterDeclarationsBloc, FilterState>(
           builder: (context, state) {
             if (state is FilterLoadedState) {
-              return FilterWebContent(
-                filters: state.declarationsFilters,
-                onApply: widget.onApply,
-                onClear: widget.onClear,
-                onExpand: (i) => BlocProvider.of<FilterDeclarationsBloc>(context).add(
-                  FilterExpandSectionEvent(index: i),
-                ),
-                onSelect: (filterIndex, itemIndex) => BlocProvider.of<FilterDeclarationsBloc>(context).add(
-                  FilterSelectItemEvent(
-                    filterIndex: filterIndex,
-                    itemIndex: itemIndex,
-                  ),
-                ),
+              return BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
+                builder: (_, visibility) {
+                  return FilterWebContent(
+                    isActive: visibility.isActive,
+                    filters: state.declarationsFilters,
+                    controllers: const [],
+                    onApply: widget.onApply,
+                    onClear: widget.onClear,
+                    onExpand: (i) =>
+                        BlocProvider.of<FilterDeclarationsBloc>(context).add(
+                      FilterExpandSectionEvent(index: i),
+                    ),
+                    onSelect: (filterIndex, itemIndex) =>
+                        BlocProvider.of<FilterDeclarationsBloc>(context).add(
+                      FilterSelectItemEvent(
+                        filterIndex: filterIndex,
+                        itemIndex: itemIndex,
+                      ),
+                    ),
+                    onSearch: (i, text) {},
+                  );
+                },
               );
             }
 

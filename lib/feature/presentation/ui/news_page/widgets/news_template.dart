@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_cast
 
 import 'package:cportal_flutter/app_config.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +49,7 @@ class NewsTemplate {
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
                 image: ExtendedNetworkImageProvider(
-                  'http://${AppConfig.imagesUrl}/${paragraph.image}',
+                  '${AppConfig.imagesUrl}/${paragraph.image}',
                   cache: true,
                 ),
               ),

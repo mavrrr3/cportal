@@ -45,3 +45,14 @@ class FilterLoadedState extends FilterState {
         declarationsFilters,
       ];
 }
+
+class FilterVisibilityState extends Equatable {
+  final bool isActive;
+  const FilterVisibilityState({
+    required this.isActive,
+  });
+  @override
+  List<Object?> get props => [
+        isActive,
+      ];
+}

@@ -186,11 +186,28 @@ class QuestionsLoading extends FetchQuestionsState {
 class QuestionsLoaded extends FetchQuestionsState {
   final List<ArticleEntity> articles;
   final List<String> tabs;
+
   const QuestionsLoaded({
     required this.articles,
     required this.tabs,
   });
 
+  ArticleEntity? singleQuestion(String id) {
+    final List<ArticleEntity> questionsListWithId =
+        articles.where((element) => element.id == id).toList();
+
+    return questionsListWithId.isEmpty ? null : questionsListWithId.first;
+  }
+
   @override
   List<Object?> get props => [articles, tabs];
+}
+
+class QuestionLoadingError extends FetchQuestionsState {
+  final String message;
+
+  const QuestionLoadingError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

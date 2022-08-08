@@ -1,23 +1,38 @@
 import 'dart:developer';
 
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_filter_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_filter_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
+import 'package:dio/dio.dart';
 
 class FilterRemoteDataSource implements IFilterRemoteDataSource {
   final IFilterLocalDataSource localDatasource;
+  final Dio _dio;
 
-  FilterRemoteDataSource(this.localDatasource);
+  FilterRemoteDataSource(
+    this.localDatasource,
+    this._dio,
+  );
 
   @override
   Future<FilterResponseModel> fetchContactsFilters() async {
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/contacts/filter/1.0';
     try {
-      const FilterResponseModel remoteFilters = _contactsFilter;
+      final response = await _dio.fetch<Map<String, dynamic>>(
+        Options(method: 'GET', responseType: ResponseType.json).compose(
+          _dio.options,
+          baseUrl,
+        ),
+      );
 
-      log('FilterRemouteDataSource  ==========  $remoteFilters');
+      final remoteFilters = FilterResponseModel.fromJson(response.data!);
+
+      log('FilterRemouteDataSource [contacts]  ==========  $remoteFilters');
       await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
 
       return remoteFilters;
@@ -31,7 +46,7 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
     try {
       const FilterResponseModel remoteFilters = _declarationsFilter;
 
-      log('FilterRemouteDataSource  ==========  $remoteFilters');
+      log('FilterRemouteDataSource [declarations]  ==========  $remoteFilters');
       await localDatasource.filtersToCache(
         remoteFilters,
         FilterType.declarations,
@@ -43,36 +58,6 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
     }
   }
 }
-
-/// Mock фильтров для раздела "Контакты".
-/// // ignore: prefer_const_constructors
-// ignore: prefer_const_constructors
-const FilterResponseModel _contactsFilter = FilterResponseModel(
-  filters: [
-    FilterModel(
-      headline: 'Компания',
-      items: [
-        FilterItemModel(name: 'АЭМ3'),
-        FilterItemModel(name: 'Новосталь-М'),
-        FilterItemModel(name: 'Демедия'),
-      ],
-    ),
-    FilterModel(
-      headline: 'Отдел',
-      items: [
-        FilterItemModel(name: 'Информационные технологии'),
-        FilterItemModel(name: 'Отдел кадров'),
-        FilterItemModel(name: 'Служба безопасности'),
-        FilterItemModel(name: 'Менеджеры по документообороту'),
-        FilterItemModel(name: 'Отдел мобильной разработки'),
-        FilterItemModel(name: 'Отдел продаж'),
-        FilterItemModel(name: 'Производственный отдел'),
-        FilterItemModel(name: 'Отдел сбыта'),
-        FilterItemModel(name: 'Администрация'),
-      ],
-    ),
-  ],
-);
 
 /// Mock фильтров для раздела "Заявления".
 const FilterResponseModel _declarationsFilter = FilterResponseModel(

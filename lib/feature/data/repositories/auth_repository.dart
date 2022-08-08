@@ -1,63 +1,67 @@
-import 'package:cportal_flutter/feature/data/api/auth_api.dart';
-import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
+import 'dart:async';
+
+import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:cportal_flutter/core/service/device_info_service.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_user_local_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_auth_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_location_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/models/login/login_params.dart';
+import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:hive/hive.dart';
+import 'package:dartz/dartz.dart';
 
 class AuthRepository implements IAuthRepository {
-  final AuthApi _authApi;
-  final HiveInterface _hive;
+  final IUserLocalDataSource _userLocalDataSource;
+  final IAuthRemoteDataSource _authRemoteDataSource;
+  final ILocationRemoteDataSource _locationRemoteDataSource;
+  final DeviceInfoService _deviceInfoService;
 
-  AuthRepository(this._authApi, this._hive);
+  final _authController = StreamController<AuthenticationStatus>();
+
+  AuthRepository(
+    this._userLocalDataSource,
+    this._authRemoteDataSource,
+    this._locationRemoteDataSource,
+    this._deviceInfoService,
+  );
 
   @override
-  Future<UserModel?> getUser() async {
-    final localUser = await _getCachedUser();
+  Stream<AuthenticationStatus> get status async* {
+    yield* _authController.stream;
+  }
 
-    if (localUser == null) return null;
-
+  @override
+  Future<Either<Failure, UserEntity>> logInWithConnectingCode({required String connectingCode}) async {
     try {
-      final responseUserModel = await _authApi.getUser(localUser.token);
-      final user = responseUserModel.response;
-      await _saveUser(user);
+      final deviceInfo = await _deviceInfoService.getDeviceInfo();
+      final location = await _locationRemoteDataSource.getLocation();
 
-      return user;
+      final loginParams = LogInParams(
+        connectingCode: connectingCode,
+        device: deviceInfo.name,
+        deviceDescription: 'KoApp ${deviceInfo.osInformation}',
+        platform: deviceInfo.platform,
+        location: location?.fullLocation,
+      );
+      final user = await _authRemoteDataSource.login(loginParams: loginParams);
+      _authController.add(AuthenticationStatus.authenticated);
+      await _userLocalDataSource.saveUser(user);
+
+      return Right(user);
     } on Exception catch (_) {
-      return localUser;
+      return Left(ServerFailure());
     }
   }
 
   @override
-  Future<bool> isAuthenticated() async {
-    final localUser = await _getCachedUser();
-
-    return localUser != null;
-  }
-
-  @override
-  Future<UserModel?> logInWithConnectingCode({required String connectingCode}) async {
+  Future<void> logOut() async {
     try {
-      final info = await DeviceInfoPlugin().deviceInfo;
-      final deviceName = info.toMap()['name'] as String;
-
-      final responseUserModel = await _authApi.login(connectingCode, deviceName);
-      final user = responseUserModel.response;
-      await _saveUser(user);
-
-      return user;
-    } on Exception catch (_) {
-      return null;
-    }
+      await _userLocalDataSource.deleteUser();
+      _authController.add(AuthenticationStatus.unauthenticated);
+    } on Exception catch (_) {}
   }
 
-  Future<void> _saveUser(UserModel user) async {
-    final box = await _hive.openBox<UserModel>('user');
-    await box.put('user', user);
-  }
-
-  Future<UserModel?> _getCachedUser() async {
-    final box = await _hive.openBox<UserModel>('user');
-
-    return box.get('user');
-  }
+  void dispose() => _authController.close();
 }
+
+enum AuthenticationStatus { unknown, authenticated, unauthenticated }

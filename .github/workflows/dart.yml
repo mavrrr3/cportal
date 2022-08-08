@@ -52,7 +52,11 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build appbundle --flavor=prod
+      - run: flutter build apk --flavor=dev
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/debug/*.apk"
 
   build_web:
     name: Build Flutter for Web

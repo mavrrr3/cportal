@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class KeyboardNumber extends StatelessWidget {
@@ -26,9 +26,7 @@ class KeyboardNumber extends StatelessWidget {
         child: Text(
           '$number',
           textAlign: TextAlign.center,
-          style: theme.textTheme.px32.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
+          style: theme.textTheme.px32Medium,
         ),
       ),
     );

@@ -2,13 +2,14 @@ abstract class ImageAssets {
   static const splash = 'assets/img/bg_splash.png';
 
   static const iconsPath = 'assets/icons';
-
   static const backspace = '$iconsPath/backspace.svg';
   static const qrCode = '$iconsPath/qr_code.svg';
   static const faceId = '$iconsPath/face_id.svg';
+  static const bell = '$iconsPath/bell.svg';
+  static const addPerson = '$iconsPath/add_person.svg';
   static const fingerPrint = '$iconsPath/finger_print.svg';
   static const logo = '$iconsPath/logo.svg';
-  static const document = '$iconsPath/what_get_icon.svg';
+  static const document = '$iconsPath/document.svg';
   static const backArrow = '$iconsPath/back_arrow.svg';
   static const search = '$iconsPath/search.svg';
   static const filter = '$iconsPath/filter.svg';
@@ -19,6 +20,7 @@ abstract class ImageAssets {
   static const calendar = '$iconsPath/calendar.svg';
   static const flyVocation = '$iconsPath/fly_vocation.svg';
   static const lock = '$iconsPath/lock.svg';
+  static const questionArrow = '$iconsPath/question_arrow.svg';
   static const payList = '$iconsPath/pay_list.svg';
   static const support = '$iconsPath/support.svg';
   static const obscureSymbol = '$iconsPath/obscure_symbol.svg';
@@ -29,4 +31,16 @@ abstract class ImageAssets {
   static const stepInProgress = '$iconsPath/declaration_step_in_progress.svg';
   static const stepDeclined = '$iconsPath/declaration_step_declined.svg';
   static const highPriority = '$iconsPath/high_priority.svg';
+  static const flashLight = '$iconsPath/flash_light.svg';
+  static const burgerMenu = '$iconsPath/burger_menu.svg';
+  static const addDevice = '$iconsPath/add_device.svg';
+  static const monitorLight = '$iconsPath/monitor_light.svg';
+  static const monitorDark = '$iconsPath/monitor_dark.svg';
+  static const android = '$iconsPath/android.svg';
+  static const exit = '$iconsPath/exit.svg';
+  static const apple = '$iconsPath/apple.svg';
+  static const desktop = '$iconsPath/desktop.svg';
+  static const profile = '$iconsPath/profile.svg';
+  static const video = '$iconsPath/video.svg';
+  static const elevatedPhone = '$iconsPath/elevated_phone.svg';
 }

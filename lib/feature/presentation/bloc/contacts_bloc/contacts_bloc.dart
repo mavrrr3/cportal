@@ -4,9 +4,9 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/contacts_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
-import 'package:cportal_flutter/feature/domain/usecases/fetch_contacts_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/get_single_profile_usecase.dart';
-import 'package:cportal_flutter/feature/domain/usecases/search_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/contacts/fetch_contacts_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/profile/get_single_profile_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/contacts/search_contacts_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +83,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   ) async {
     if (state is ContactsLoadedState) {
       final favorites = (state as ContactsLoadedState).favorites;
-      final failureOrContacts =
-          await searchContacts(SearchContactsParams(query: event.query));
+      final failureOrContacts = await searchContacts(SearchContactsParams(
+        query: event.query,
+        filters: event.filters,
+      ));
 
       failureOrContacts.fold(
         _mapFailureToMessage,

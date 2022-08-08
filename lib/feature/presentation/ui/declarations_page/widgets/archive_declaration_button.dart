@@ -1,4 +1,5 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -16,28 +17,38 @@ class ArchiveDeclarationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: width ?? double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          border: Border.all(width: 2, color: theme.primary!),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Center(
-            child: Text(
-              AppLocalizations.of(context)!.declarationsArchive,
-              style: theme.textTheme.px16.copyWith(
-                fontWeight: FontWeight.w700,
-                color: theme.primary,
+    return OnHover(
+      builder: (isHovered) {
+        return Opacity(
+          opacity: isHovered ? 0.8 : 1,
+          child: GestureDetector(
+            onTap: onTap,
+            child: Container(
+              width: width ?? double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(
+                  width: 2,
+                  color: theme.primary!,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.declarationsArchive,
+                    style: theme.textTheme.px16.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: theme.primary,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

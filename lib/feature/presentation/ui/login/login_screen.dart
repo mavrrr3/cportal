@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_desktop/login_desktop_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_mobile/login_mobile_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,29 +18,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool isShowedBiometricAuth = false;
   final pinController = TextEditingController();
   final pinFocusNode = FocusNode();
 
-  @override
-  void didChangeDependencies() {
-    final authBloc = context.read<AuthBloc>();
-    final state = authBloc.state;
-
-    if (state is HasAuthCredentials && state.enabledBiometric != null) {
-      authBloc.add(LogInWithBiometrics(AppLocalizations.of(context)!.logInToContinue));
-    }
-    super.didChangeDependencies();
-  }
+  bool isShowedBiometricAuth = false;
 
   @override
   Widget build(BuildContext context) {
+    _showBiometricPopup(context);
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
           context.goNamed(NavigationRouteNames.mainPage);
         } else if (state is HasAuthCredentials && state is! WrongPinCode) {
-          pinFocusNode.requestFocus();
           pinController.clear();
         }
       },
@@ -48,6 +39,21 @@ class _LoginScreenState extends State<LoginScreen> {
           ? LoginDesktopScreen(pinController: pinController, pinFocusNode: pinFocusNode)
           : LoginMobileScreen(pinController: pinController, pinFocusNode: pinFocusNode),
     );
+  }
+
+  void _showBiometricPopup(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
+    final state = authBloc.state;
+
+    if (!isShowedBiometricAuth && state is HasAuthCredentials && state.enabledBiometric != null) {
+      isShowedBiometricAuth = true;
+
+      authBloc.add(
+        LogInWithBiometrics(
+          AppLocalizations.of(context)!.logInToContinue,
+        ),
+      );
+    }
   }
 
   @override

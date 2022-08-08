@@ -1,10 +1,11 @@
 import 'package:cportal_flutter/app_config.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +14,12 @@ import 'package:intl/intl.dart';
 
 class SingleNewsArticleMobile extends StatelessWidget {
   final ArticleEntity article;
-  final List<ArticleEntity> articles;
+  final List<ArticleEntity>? articles;
 
   const SingleNewsArticleMobile({
     Key? key,
     required this.article,
-    required this.articles,
+    this.articles,
   }) : super(key: key);
 
   @override
@@ -29,11 +30,11 @@ class SingleNewsArticleMobile extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (isLargerThenMobile(context))
+        if (isLargerThenTablet(context))
           DesktopMenu(
             currentIndex: 1,
             onChange: (index) {
-              changePage(context, index);
+              MenuService.changePage(context, index);
             },
           ),
         Expanded(
@@ -112,10 +113,13 @@ class SingleNewsArticleMobile extends StatelessWidget {
                             ],
                           ),
                         ),
-                        NewsMainMobile(
-                          articles: articles,
-                          currentArticle: article,
-                        ),
+                        if (articles != null)
+                          NewsMainMobile(
+                            articles: articles!,
+                            currentArticle: article,
+                          )
+                        else
+                          const SizedBox(),
                       ],
                     ),
                   ),

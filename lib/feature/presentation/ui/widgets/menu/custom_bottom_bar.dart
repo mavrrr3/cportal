@@ -1,20 +1,19 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/feature/domain/entities/menu_button_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
+import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  final NavigationBarState state;
   final bool isNestedNavigation;
 
   const CustomBottomBar({
     Key? key,
-    required this.state,
     this.isNestedNavigation = false,
   }) : super(key: key);
 
@@ -27,39 +26,42 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return Container(
-      color: theme.cardColor,
-      child: SafeArea(
-        minimum: const EdgeInsets.only(bottom: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(
-            widget.state.menuItems.length,
-            (index) => _MenuItem(
-              item: widget.state.menuItems[index],
-              state: widget.state,
-              index: index,
-              onTap: () {
-                if (widget.isNestedNavigation) {
-                  context.pop();
-                }
-                setState(
-                  () => context
-                      .read<NavigationBarBloc>()
-                      .add(NavigationBarEventImpl(index: index)),
-                );
-              },
+    return BlocBuilder<NavigationBarBloc, NavigationBarState>(
+      builder: (context, state) {
+        return Container(
+          color: theme.cardColor,
+          child: SafeArea(
+            minimum: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(
+                state.menuItems.length,
+                (index) => _MenuItem(
+                  item: state.menuItems[index],
+                  state: state,
+                  index: index,
+                  onTap: () {
+                    if (widget.isNestedNavigation) {
+                      context.pop();
+                    }
+                    setState(
+                      () => BlocProvider.of<NavigationBarBloc>(context)
+                          .add(NavBarChangePageEvent(index: index)),
+                    );
+                  },
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
 
 class _MenuItem extends StatelessWidget {
   final NavigationBarState state;
-  final MenuButtonModel item;
+  final MenuButtonEntity item;
   final Function() onTap;
   final int index;
 
@@ -94,8 +96,8 @@ class _MenuItem extends StatelessWidget {
       return state.currentIndex == index ? activeColor : nonActiveColor;
     }
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+    return ExpandTapWidget(
+      tapPadding: const EdgeInsets.symmetric(horizontal: 10),
       onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -112,6 +114,7 @@ class _MenuItem extends StatelessWidget {
             item.text,
             style: theme.textTheme.bottomBar.copyWith(
               color: _textColor(index, state),
+              leadingDistribution: TextLeadingDistribution.even,
             ),
           ),
         ],

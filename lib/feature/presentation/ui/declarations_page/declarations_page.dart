@@ -1,16 +1,17 @@
-import 'package:cportal_flutter/common/custom_theme.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
-import 'package:cportal_flutter/feature/presentation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declarations_content_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/web/declarations_content_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,14 +24,13 @@ class DeclarationsPage extends StatefulWidget {
   State<DeclarationsPage> createState() => _DeclarationsPageState();
 }
 
-class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerProviderStateMixin {
-  late bool _isFilterOpenWeb;
+class _DeclarationsPageState extends State<DeclarationsPage>
+    with SingleTickerProviderStateMixin {
   late TextEditingController _searchController;
   late TabController _tabController;
   @override
   void initState() {
     super.initState();
-    _isFilterOpenWeb = false;
     _searchController = TextEditingController();
     _tabController = TabController(length: 2, vsync: this);
     _contentInit();
@@ -52,64 +52,54 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
         backgroundColor: theme.background,
         body: Stack(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ResponsiveVisibility(
-                  visible: false,
-                  visibleWhen: const [
-                    Condition<dynamic>.largerThan(name: MOBILE),
-                  ],
-                  // Меню Web.
-                  child: DesktopMenu(
-                    currentIndex: 3,
-                    onChange: (index) => changePage(context, index),
-                  ),
-                ),
-                // ignore: prefer_if_elements_to_conditional_expressions
-                isLargerThenTablet(context)
-                    ? DeclarationsContentWeb(
-                        searchController: _searchController,
-                        onFilterTap: () {
-                          setState(() {
-                            _isFilterOpenWeb = true;
-                          });
-                        },
+            if (isLargerThenTablet(context))
+              DeclarationsContentWeb(
+                searchController: _searchController,
+                onFilterTap: () {
+                  context
+                      .read<FilterVisibilityBloc>()
+                      .add(const FilterChangeVisibilityEvent(isActive: true));
+                },
+              )
+            else
+              DeclarationsContentMobile(
+                searchController: _searchController,
+                tabController: _tabController,
+                onFilterTap: () async {
+                  await showFilterMobile(
+                    context,
+                    onApply: _onApplyFilter,
+                    onClear: _onClearFilter,
+                    type: FilterType.declarations,
+                  );
+                },
+              ),
+            BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
+              builder: (_, state) {
+                return state.isActive
+                    ? GestureDetector(
+                        onTap: () => context
+                            .read<FilterVisibilityBloc>()
+                            .add(const FilterChangeVisibilityEvent(
+                              isActive: false,
+                            )),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          color: theme.barrierColor,
+                        ),
                       )
-                    : DeclarationsContentMobile(
-                        searchController: _searchController,
-                        tabController: _tabController,
-                        onFilterTap: () async {
-                          await showFilterMobile(
-                            context,
-                            onApply: _onApplyFilter,
-                            onClear: _onClearFilter,
-                            type: FilterType.declarations,
-                          );
-                        },
-                      ),
-              ],
+                    : const SizedBox();
+              },
             ),
-            if (_isFilterOpenWeb)
-              GestureDetector(
-                onTap: () => setState(() {
-                  _isFilterOpenWeb = false;
-                }),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  color: theme.barrierColor,
-                ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: FilterWeb(
+                type: FilterType.declarations,
+                onApply: _onApplyFilter,
+                onClear: _onClearFilter,
               ),
-            if (_isFilterOpenWeb)
-              Align(
-                alignment: Alignment.centerRight,
-                child: FilterWeb(
-                  type: FilterType.declarations,
-                  onApply: _onApplyFilter,
-                  onClear: _onClearFilter,
-                ),
-              ),
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -127,18 +117,19 @@ class _DeclarationsPageState extends State<DeclarationsPage> with SingleTickerPr
 
   void _onApplyFilter() {
     if (ResponsiveWrapper.of(context).isLargerThan(TABLET)) {
-      setState(() {
-        _isFilterOpenWeb = false;
-      });
+      context
+          .read<FilterVisibilityBloc>()
+          .add(const FilterChangeVisibilityEvent(isActive: false));
     } else {
       Navigator.pop(context);
     }
   }
 
   void _onClearFilter() {
-    BlocProvider.of<FilterDeclarationsBloc>(
-      context,
-    ).add(FilterRemoveAllEvent());
+    context.read<FilterDeclarationsBloc>().add(FilterRemoveAllEvent());
+    context
+        .read<FilterVisibilityBloc>()
+        .add(const FilterChangeVisibilityEvent(isActive: false));
   }
 
   @override
