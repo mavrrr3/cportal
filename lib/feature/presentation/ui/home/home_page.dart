@@ -109,6 +109,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
+  //
   // В случае сворачивания приложения отсчитывает delay
   // и перенаправляет на Ввод ПИН-кода
   @override
