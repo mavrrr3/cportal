@@ -21,49 +21,27 @@ jobs:
       - run: flutter pub run dart_code_metrics:metrics analyze lib
       - run: flutter test
 
-  build_ios_and_apk:
-    name: Build Flutter (iOs)
-    needs: [flutter_test]
-    runs-on: macos-11
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
-          architecture: x64
-      - run: flutter pub get
-      - run: flutter clean
-      - run: flutter build ios --flavor=prod --release --no-codesign
-      - run: flutter clean
-      - run: flutter build apk --flavor=dev --split-per-abi
-      - name: Create a Release APK
-        uses: ncipollo/release-action@v1.10.0
-        with:
-          artifacts: "build/app/outputs/apk/debug/*.apk"
-          tag: v1.0.${{ github.run_number }}
-
-#   build_appbundle:
-#     name: Build Flutter (Android)
+#   build_ios_and_apk:
+#     name: Build Flutter (iOs)
 #     needs: [flutter_test]
-#     runs-on: ubuntu-20.04
+#     runs-on: macos-11
 #     steps:
 #       - uses: actions/checkout@v2
 #       - uses: actions/setup-java@v1
 #         with:
 #           java-version: "12.x"
-#       - uses: subosito/flutter-action@v1
+#       - uses: subosito/flutter-action@v2
 #         with:
 #           channel: "stable"
+#           architecture: x64
 #       - run: flutter pub get
 #       - run: flutter clean
-#       - run: flutter build apk --flavor=dev --split-per-abi
+#       - run: flutter build ios --flavor=prod --release --no-codesign
+#       - run: flutter clean
 
 
-  build_web:
-    name: Build Flutter for Web
+  build_apk:
+    name: Build Flutter (Android)
     needs: [flutter_test]
     runs-on: ubuntu-20.04
     steps:
@@ -76,4 +54,26 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build web
+      - run: flutter build apk --flavor=dev --split-per-abi
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*.apk"
+          tag: v1.0.${{ github.run_number }}
+
+
+#   build_web:
+#     name: Build Flutter for Web
+#     needs: [flutter_test]
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: actions/setup-java@v1
+#         with:
+#           java-version: "12.x"
+#       - uses: subosito/flutter-action@v1
+#         with:
+#           channel: "stable"
+#       - run: flutter pub get
+#       - run: flutter clean
+#       - run: flutter build web
