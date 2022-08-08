@@ -42,5 +42,8 @@ abstract class ImageAssets {
   static const desktop = '$iconsPath/desktop.svg';
   static const profile = '$iconsPath/profile.svg';
   static const video = '$iconsPath/video.svg';
+  static const onboardingClose = '$iconsPath/onboarding_close.svg';
+  static const onboardingArrowNext = '$iconsPath/onboarding_arrow_next.svg';
+  static const onboardingArrowBack = '$iconsPath/onboarding_arrow_back.svg';
   static const elevatedPhone = '$iconsPath/elevated_phone.svg';
 }
