@@ -69,15 +69,23 @@ class OnBoardingWelcome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           AppLocalizations.of(context)!.welcome,
-                          style: theme.textTheme.header,
+                          style: theme.textTheme.header.copyWith(
+                            height: 1.2857,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
                         ),
+                        const SizedBox(height: 8),
                         Text(
                           AppLocalizations.of(context)!
                               .findImportantInformation,
-                          style: theme.textTheme.px16,
+                          style: theme.textTheme.px16.copyWith(
+                            height: 1.5,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
                         ),
                       ],
                     ),
