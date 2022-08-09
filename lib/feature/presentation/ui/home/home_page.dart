@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
@@ -25,7 +26,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 const List<OnboardingEntity> _onboardingContent = [
   OnboardingEntity(
     title: 'Как общаться с коллегами?',
-    description: 'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
+    description:
+        'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
     image: 'assets/img/onboarding/1.svg',
   ),
   OnboardingEntity(
@@ -36,7 +38,8 @@ const List<OnboardingEntity> _onboardingContent = [
   ),
   OnboardingEntity(
     title: 'Любите читать?',
-    description: 'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
+    description:
+        'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
     image: 'assets/img/onboarding/3.svg',
   ),
   OnboardingEntity(
@@ -78,7 +81,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin, WidgetsBindingObserver {
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
   // Для онбординга.
   late bool _isOnboarding;
@@ -105,6 +109,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
     super.initState();
   }
 
+  //
   // В случае сворачивания приложения отсчитывает delay
   // и перенаправляет на Ввод ПИН-кода
   @override
@@ -127,6 +132,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final size = MediaQuery.of(context).size;
 
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
@@ -159,12 +165,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                             );
                           },
                           currentIndex: widget.webMenuIndex,
-                          onChange: (index) => MenuService.changePage(context, index),
+                          onChange: (index) =>
+                              MenuService.changePage(context, index),
                         ),
 
                       // Текущая страница.
                       Expanded(
-                        child: kIsWeb ? widget.child : listPages[state.currentIndex],
+                        child: kIsWeb
+                            ? widget.child
+                            : listPages[state.currentIndex],
                       ),
                     ],
                   ),
@@ -173,8 +182,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                   // Затемнение заднего фона
                   if (_isOnboarding || _isWelcome || _isLearningCourse)
                     Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
+                      width: size.width,
+                      height: size.height,
                       color: theme.barrierColor,
                     ),
 
@@ -201,7 +210,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                             });
                           },
                           child: SvgPicture.asset(
-                            'assets/icons/onboarding_close.svg',
+                            ImageAssets.onboardingClose,
                           ),
                         ),
                       ),
@@ -228,7 +237,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                       currentIndex: _onBoardingIndex,
                       onNext: () {
                         setState(() {
-                          if (_onBoardingIndex + 1 < _onboardingContent.length) {
+                          if (_onBoardingIndex + 1 <
+                              _onboardingContent.length) {
                             _onBoardingIndex += 1;
                             _loadOnboardingPage();
                           } else {
@@ -281,7 +291,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
             BurgerMenu(
               currentIndex: widget.webMenuIndex,
               onChange: (i) => MenuService.changePage(context, i),
-              onClose: () => context.read<NavigationBarBloc>().add(const NavBarVisibilityEvent(isActive: false)),
+              onClose: () => context
+                  .read<NavigationBarBloc>()
+                  .add(const NavBarVisibilityEvent(isActive: false)),
             ),
           ],
         );

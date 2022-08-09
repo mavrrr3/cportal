@@ -12,6 +12,7 @@ class OnBoardingWelcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     // Контент страниц онбординга.
     final List<OnboardingEntity> onboardingContent = [
@@ -72,7 +73,7 @@ class OnBoardingWelcome extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.welcome,
+                          localizedStrings.welcome,
                           style: theme.textTheme.header.copyWith(
                             height: 1.2857,
                             leadingDistribution: TextLeadingDistribution.even,
@@ -80,8 +81,7 @@ class OnBoardingWelcome extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          AppLocalizations.of(context)!
-                              .findImportantInformation,
+                          localizedStrings.findImportantInformation,
                           style: theme.textTheme.px16.copyWith(
                             height: 1.5,
                             leadingDistribution: TextLeadingDistribution.even,

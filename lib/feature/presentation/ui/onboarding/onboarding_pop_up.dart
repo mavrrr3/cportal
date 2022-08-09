@@ -1,8 +1,8 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,7 +40,7 @@ class _OnBoardingPopUpState extends State<OnBoardingPopUp> {
             behavior: HitTestBehavior.translucent,
             onTap: widget.onBack,
             child: SvgPicture.asset(
-              'assets/icons/onboarding_arrow_back.svg',
+              ImageAssets.onboardingArrowBack,
             ),
           ),
         const SizedBox(width: 53),
@@ -59,7 +59,7 @@ class _OnBoardingPopUpState extends State<OnBoardingPopUp> {
             behavior: HitTestBehavior.translucent,
             onTap: widget.onNext,
             child: SvgPicture.asset(
-              'assets/icons/onboarding_arrow_next.svg',
+              ImageAssets.onboardingArrowNext,
             ),
           ),
       ],
