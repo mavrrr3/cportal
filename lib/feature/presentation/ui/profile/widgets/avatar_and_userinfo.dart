@@ -46,11 +46,9 @@ class AvatarAndUserInfo extends StatelessWidget {
         const SizedBox(height: 4),
         GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: () => context.goNamed(
-            NavigationRouteNames.userData,
-            params: {
-              'fid': user.id,
-            },
+          onTap: () => context.pushNamed(
+            NavigationRouteNames.profileData,
+            params: {'fid': user.id},
           ),
           child: Text(
             AppLocalizations.of(context)!.watchData,
