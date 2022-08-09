@@ -129,5 +129,7 @@
     "exit": "Выйти",
     "cancelLowerCase": "Отмена",
     "online": "в сети",
-    "emptySearch": "По вашему запросу\nничего не найдено"
+    "emptySearch": "По вашему запросу\nничего не найдено", 
+    "notificationsTurnedOff": "Оповещения выключены", 
+    "on": "на"
 }
