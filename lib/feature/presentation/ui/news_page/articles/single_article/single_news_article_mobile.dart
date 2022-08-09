@@ -36,7 +36,7 @@ class SingleNewsArticleMobile extends StatelessWidget {
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
-                SingleNewsMobileAppbar(article: article),
+                SingleNewsMobileAppBar(article: article),
 
                 /// Колонка с контентом статьи.
                 SingleArticleNewsBody(
