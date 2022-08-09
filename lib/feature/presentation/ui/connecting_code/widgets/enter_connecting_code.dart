@@ -47,7 +47,7 @@ class EnterConnectingCode extends StatelessWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.inputConnectingCode,
-                style: theme.textTheme.header.copyWith(height: 1.29),
+                style: theme.textTheme.header,
               ),
               const SizedBox(height: 8),
               GestureDetector(
