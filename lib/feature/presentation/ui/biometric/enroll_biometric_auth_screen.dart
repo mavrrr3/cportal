@@ -47,9 +47,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: theme.textTheme.header.copyWith(
-                        height: 1.29,
-                      ),
+                      style: theme.textTheme.header,
                     ),
                     const SizedBox(height: 8),
                     Text(
