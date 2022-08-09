@@ -23,11 +23,14 @@ class DisableNotificationSelect extends StatelessWidget {
       onTap: () {
         // Switch off.
         notificationController.value = false;
+        // Close DisableNotificationBottomSheet.
         Navigator.of(context).pop();
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: theme.black,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+            backgroundColor: theme.text,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
