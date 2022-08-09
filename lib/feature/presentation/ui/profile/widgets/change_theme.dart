@@ -8,9 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class ChangeTheme extends StatefulWidget {
-  const ChangeTheme({
-    Key? key,
-  }) : super(key: key);
+  const ChangeTheme({Key? key}) : super(key: key);
 
   @override
   State<ChangeTheme> createState() => _ChangeThemeState();
@@ -135,9 +133,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
                   child: Text(
                     _getTextForContainer(_index, localizedStrings),
                     style: theme.textTheme.px12.copyWith(
-                      color: theme.brightness == Brightness.light
-                          ? theme.cardColor
-                          : theme.text,
+                      color: theme.brightness == Brightness.light ? theme.cardColor : theme.text,
                     ),
                   ),
                 ),

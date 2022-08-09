@@ -127,6 +127,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: textColor,
+        height: 1.33,
         letterSpacing: 0.25,
       ),
 
