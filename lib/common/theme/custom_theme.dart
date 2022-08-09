@@ -82,6 +82,14 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         letterSpacing: 0.5,
       ),
 
+      px17Bold: GoogleFonts.roboto(
+        fontSize: 17,
+        fontWeight: FontWeight.w700,
+        color: textColor,
+        height: 1.24,
+        letterSpacing: 0.5,
+      ),
+
       // [16 px].
       px16: GoogleFonts.roboto(
         fontSize: 16,
@@ -106,6 +114,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontWeight: FontWeight.w400,
         height: 1.43,
         color: textColor,
+        height: 1.43,
         letterSpacing: 0.25,
       ),
 
@@ -253,6 +262,7 @@ class CustomTextTheme {
   final TextStyle px32Medium;
   final TextStyle px22;
   final TextStyle px17;
+  final TextStyle px17Bold;
   final TextStyle px16;
   final TextStyle px16Bold;
   final TextStyle px14;
@@ -266,6 +276,7 @@ class CustomTextTheme {
     required this.px32Medium,
     required this.px22,
     required this.px17,
+    required this.px17Bold,
     required this.px16,
     required this.px16Bold,
     required this.px14,
