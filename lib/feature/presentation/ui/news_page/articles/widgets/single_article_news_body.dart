@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 
 class SingleArticleNewsBody extends StatelessWidget {
   final ArticleEntity article;
-
   final DateFormat outputFormat;
   final List<ArticleEntity>? articles;
 
@@ -45,17 +44,15 @@ class SingleArticleNewsBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Column(
-                    children: [
-                      ...List.generate(
-                        article.content.length,
-                        (index) {
-                          return NewsTemplate.factory(
-                            context,
-                            article.content[index],
-                          );
-                        },
-                      ),
-                    ],
+                    children: List.generate(
+                      article.content.length,
+                      (index) {
+                        return NewsTemplate.factory(
+                          context,
+                          article.content[index],
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(height: 20),
                 ],

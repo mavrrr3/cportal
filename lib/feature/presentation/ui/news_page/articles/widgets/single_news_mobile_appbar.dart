@@ -5,10 +5,10 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class SingleNewsMobileAppbar extends StatelessWidget {
+class SingleNewsMobileAppBar extends StatelessWidget {
   final ArticleEntity article;
 
-  const SingleNewsMobileAppbar({
+  const SingleNewsMobileAppBar({
     Key? key,
     required this.article,
   }) : super(key: key);
@@ -47,7 +47,7 @@ class SingleNewsMobileAppbar extends StatelessWidget {
                     enableFeedback: false,
                     icon: Icon(Icons.arrow_back, color: theme.white),
                     iconSize: 26,
-                    onPressed: () => context.pop(),
+                    onPressed: context.pop,
                   ),
                 ),
               ),
