@@ -1,13 +1,10 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
-import 'package:cportal_flutter/common/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_app_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_card.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declaration_cards.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +28,7 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
     final halfWidth = (MediaQuery.of(context).size.width - 48) / 2;
 
     return Swipe(
@@ -51,7 +48,6 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                   ),
                   // Строка с поиском.
                   SearchWithFilter(
-                    padding: EdgeInsets.zero,
                     searchController: searchController,
                     onSearch: (text) {},
                     onFilterTap: () {},
@@ -63,7 +59,8 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                       CreateDeclarationCard(
                         width: halfWidth,
                         svgPath: ImageAssets.calendar,
-                        text: AppLocalizations.of(context)!.buisenesTripDeclaration,
+                        text: AppLocalizations.of(context)!
+                            .buisenesTripDeclaration,
                       ),
                       CreateDeclarationCard(
                         width: halfWidth,
@@ -99,16 +96,8 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
             ),
           ),
         ),
-        bottomNavigationBar: !kIsWeb
-            ? BlocBuilder<NavigationBarBloc, NavigationBarState>(
-                builder: (context, state) {
-                  return CustomBottomBar(
-                    state: state,
-                    isNestedNavigation: true,
-                  );
-                },
-              )
-            : null,
+        bottomNavigationBar:
+            !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
       ),
     );
   }

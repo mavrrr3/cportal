@@ -3,7 +3,6 @@ import 'package:cportal_flutter/feature/domain/entities/declarations/declaration
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/status_badge.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 class DeclarationCardWithStatus extends StatelessWidget {
@@ -63,11 +62,11 @@ class DeclarationCardWithStatus extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SvgPicture.asset(
-                                item.icon,
-                                color: theme.textLight,
-                                width: 20,
-                              ),
+                              // SvgPicture.asset(
+                              //   item.icon,
+                              //   color: theme.textLight,
+                              //   width: 20,
+                              // ),
                             ],
                           ),
                           Text(
@@ -89,11 +88,11 @@ class DeclarationCardWithStatus extends StatelessWidget {
                   ),
 
                   // Бейдж со статусами "Одобрено, Отклонено, Обработка".
-                  Positioned(
-                    left: 12,
-                    top: -9,
-                    child: _drawBadgeByStatus(theme, item.status),
-                  ),
+                  // Positioned(
+                  //   left: 12,
+                  //   top: -9,
+                  //   child: _drawBadgeByStatus(theme, item.status),
+                  // ),
                 ],
               ),
             ),

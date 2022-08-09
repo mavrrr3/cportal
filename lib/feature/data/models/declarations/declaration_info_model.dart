@@ -4,12 +4,12 @@ import 'package:cportal_flutter/feature/data/models/user/declaration_user_model.
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_data_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/step_status.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_status_entity.dart';
 import 'package:hive/hive.dart';
 
 part 'declaration_info_model.g.dart';
 
-@HiveType(typeId: 13)
+@HiveType(typeId: 16)
 class DeclarationInfoModel extends DeclarationInfoEntity {
   @override
   @HiveField(0)
@@ -69,18 +69,27 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
           data: data,
         );
 
-  factory DeclarationInfoModel.fromJson(Map<String, dynamic> json) => DeclarationInfoModel(
+  factory DeclarationInfoModel.fromJson(Map<String, dynamic> json) =>
+      DeclarationInfoModel(
         id: json['id'] as String,
         title: json['title'] as String,
         progress: json['progress'] as double,
         status: json['status'] as String,
         priority: json['priority'] as String,
-        initiator: DeclarationUserModel.fromJson(json['initiator'] as Map<String, dynamic>),
-        responsible: DeclarationUserModel.fromJson(json['responsible'] as Map<String, dynamic>),
-        steps: List<DeclarationStepModel>.from(json['actions']
-            .map((dynamic x) => DeclarationStepModel.fromJson(x as Map<String, dynamic>)) as Iterable<dynamic>),
+        initiator: DeclarationUserModel.fromJson(
+          json['initiator'] as Map<String, dynamic>,
+        ),
+        responsible: DeclarationUserModel.fromJson(
+          json['responsible'] as Map<String, dynamic>,
+        ),
+        steps: List<DeclarationStepModel>.from(json['actions'].map(
+          (dynamic x) => DeclarationStepModel.fromJson(
+            x as Map<String, dynamic>,
+          ),
+        ) as Iterable<dynamic>),
         data: List<DeclarationDataModel>.from(
-          json['declaration_data'].map((dynamic x) => DeclarationDataModel.fromJson(x as Map<String, dynamic>))
+          json['declaration_data'].map((dynamic x) =>
+                  DeclarationDataModel.fromJson(x as Map<String, dynamic>))
               as Iterable<dynamic>,
         ),
       );
@@ -93,12 +102,13 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
         'priority': priority,
         'initiator': initiator.toJson(),
         'responsible': responsible.toJson(),
-        'declaration_data': List<dynamic>.from(data.map<dynamic>((x) => x.toJson())),
+        'declaration_data':
+            List<dynamic>.from(data.map<dynamic>((x) => x.toJson())),
         'actions': List<dynamic>.from(steps.map<dynamic>((x) => x.toJson())),
       };
 }
 
-@HiveType(typeId: 15)
+@HiveType(typeId: 17)
 class DeclarationStepModel extends DeclarationStepEntity {
   @override
   @HiveField(0)
@@ -110,7 +120,7 @@ class DeclarationStepModel extends DeclarationStepEntity {
 
   @override
   @HiveField(2)
-  final StepStatus status;
+  final DeclarationStatusEnum status;
 
   DeclarationStepModel({
     required this.title,
@@ -118,10 +128,11 @@ class DeclarationStepModel extends DeclarationStepEntity {
     required this.status,
   }) : super(title: title, date: date, status: status);
 
-  factory DeclarationStepModel.fromJson(Map<String, dynamic> json) => DeclarationStepModel(
+  factory DeclarationStepModel.fromJson(Map<String, dynamic> json) =>
+      DeclarationStepModel(
         title: json['title'] as String,
         date: DateTime.parse(json['date'] as String),
-        status: getDeclarationStepStatus(status: json['status'] as String),
+        status: getDeclarationStepStatus(status: json['actions'] as String),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -149,7 +160,8 @@ class DeclarationDataModel extends DeclarationDataEntity {
           description: description,
         );
 
-  factory DeclarationDataModel.fromJson(Map<String, dynamic> json) => DeclarationDataModel(
+  factory DeclarationDataModel.fromJson(Map<String, dynamic> json) =>
+      DeclarationDataModel(
         title: json['title'] as String,
         description: json['description'] as String,
       );

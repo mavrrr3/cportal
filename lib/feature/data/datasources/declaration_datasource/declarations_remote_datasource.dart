@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cportal_flutter/app_config.dart';
@@ -6,30 +5,40 @@ import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_d
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_declarations_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_status_model.dart';
 import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 
 class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
   final IDeclarationsLocalDataSource localDataSource;
-  final Dio dio;
+  final Dio _dio;
 
-  DeclarationsRemoteDataSource(this.localDataSource, this.dio);
+  DeclarationsRemoteDataSource(this.localDataSource, this._dio);
 
   @override
   Future<List<DeclarationModel>> fetchDeclarations(int page) async {
-    final String baseUrl = 'http://ribadi.ddns.net:88/cportal/hs/api/declaration/1.0?$page';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/declaration/1.0?$page';
     try {
       log('====== ${AppConfig.authKey}');
-      final response = await dio.get<String>(baseUrl);
-      final jsonR = json.decode(response.data!) as Map<String, dynamic>;
-      final declarations = List<DeclarationModel>.from(jsonR['response']
-          .map((dynamic x) => DeclarationModel.fromJson(x as Map<String, dynamic>)) as Iterable<dynamic>);
 
-      log('DeclarationsRemoteDataSource  ==========  ${declarations.length}');
-      await localDataSource.declarationsToCache(declarations, page);
+      final response = await _dio.fetch<Map<String, dynamic>>(
+        Options(method: 'GET', responseType: ResponseType.json).compose(
+          _dio.options,
+          baseUrl,
+        ),
+      );
+      // final declarations =
+      //     List<DeclarationModel>.from(response.data!['response'].map(
+      //   (dynamic x) => DeclarationModel.fromJson(x as Map<String, dynamic>),
+      // ) as Iterable<dynamic>);
 
-      return declarations;
+      // log('Remote DataSource [Declarations count]  ${declarations.length}');
+      // await localDataSource.declarationsToCache(declarations, page);
+
+      return mock;
+      // return declarations;
     } on ServerException {
       throw ServerFailure();
     }
@@ -38,14 +47,19 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
   @override
   Future<DeclarationInfoModel> getSingleDeclaration(String id) async {
     log('--[getSingleDeclaration]--[id $id]');
-    final String baseUrl = 'http://ribadi.ddns.net:88/cportal/hs/api/declaration/1.0?id=$id';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/declaration/1.0?id=$id';
 
     try {
-      final response = await dio.get<String>(baseUrl);
-      final jsonR = json.decode(response.data!) as Map<String, dynamic>;
+      final response = await _dio.fetch<Map<String, dynamic>>(
+        Options(method: 'GET', responseType: ResponseType.json).compose(
+          _dio.options,
+          baseUrl,
+        ),
+      );
 
       final declarationInfo = DeclarationInfoModel.fromJson(
-        jsonR['response'] as Map<String, dynamic>,
+        response.data!['response'] as Map<String, dynamic>,
       );
       log('Remote DataSource [Single Declaration] ${response.data}');
 
@@ -61,3 +75,46 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
     throw UnimplementedError();
   }
 }
+
+final mock = [
+  DeclarationModel(
+    id: '',
+    title: 'Техподдержка. Не работает почта ',
+    description: 'Не согласовано Кириловой А.Д.',
+    date: DateTime(2022, 8, 18, 16, 34),
+    expiresDate: null,
+    statuses: [
+      const DeclarationStatusModel(title: 'Создано', color: '2E90FA'),
+    ],
+  ),
+  DeclarationModel(
+    id: '',
+    title: 'Пропуск. Петраков А. К. 28 февраля',
+    description: 'Требуется ознакомление',
+    date: DateTime(2022, 8, 18, 16, 34),
+    expiresDate: DateTime(2022, 1, 12, 18, 00),
+    statuses: [
+      const DeclarationStatusModel(title: 'В работе', color: 'CF5AF8'),
+    ],
+  ),
+  DeclarationModel(
+    id: '',
+    title: 'Отпуск. Март 2022',
+    description: 'Не согласовано Кириловой А.Д.',
+    date: DateTime(2022, 8, 17, 16, 34),
+    expiresDate: null,
+    statuses: [
+      const DeclarationStatusModel(title: 'Остановлено', color: 'FF6A55'),
+    ],
+  ),
+  DeclarationModel(
+    id: '',
+    title: 'Командировка. 12 июня Краснодар',
+    description: 'Не согласовано Кириловой А.Д.',
+    date: DateTime(2022, 8, 17, 16, 34),
+    expiresDate: null,
+    statuses: [
+      const DeclarationStatusModel(title: 'Завершено', color: '787B80'),
+    ],
+  ),
+];

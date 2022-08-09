@@ -10,7 +10,7 @@ part of 'declaration_info_model.dart';
 
 class DeclarationInfoModelAdapter extends TypeAdapter<DeclarationInfoModel> {
   @override
-  final int typeId = 13;
+  final int typeId = 16;
 
   @override
   DeclarationInfoModel read(BinaryReader reader) {
@@ -68,7 +68,7 @@ class DeclarationInfoModelAdapter extends TypeAdapter<DeclarationInfoModel> {
 
 class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
   @override
-  final int typeId = 15;
+  final int typeId = 17;
 
   @override
   DeclarationStepModel read(BinaryReader reader) {
@@ -79,7 +79,7 @@ class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
     return DeclarationStepModel(
       title: fields[0] as String,
       date: fields[1] as DateTime,
-      status: fields[2] as StepStatus,
+      status: fields[2] as DeclarationStatusEnum,
     );
   }
 
