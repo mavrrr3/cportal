@@ -11,6 +11,7 @@ import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_switch.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/section_item_arrow.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/theme_toggle/change_theme.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/bottom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/layout_with_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,6 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                     child: ChangeTheme(),
                   ),
+                  const BottomPadding(),
                 ],
               ),
             );
