@@ -17,27 +17,36 @@ class DeclarationModel extends DeclarationEntity {
   @HiveField(2)
   final String description;
   @HiveField(3)
+  @JsonKey(name: 'is_allert')
+  final bool? isAllert;
+  @HiveField(3)
   final DateTime date;
   @JsonKey(name: 'expires_date')
   @HiveField(4)
   final DateTime? expiresDate;
   @HiveField(5)
-  final List<DeclarationStatusModel> statuses;
+  final String status;
+  @HiveField(6)
+  final String statusColor;
 
   DeclarationModel({
     required this.id,
     required this.title,
     required this.description,
     required this.date,
-    required this.expiresDate,
-    required this.statuses,
+    required this.status,
+    required this.statusColor,
+    this.expiresDate,
+    this.isAllert,
   }) : super(
           id: id,
           title: title,
           description: description,
+          isAllert: isAllert,
           date: date,
           expiresDate: expiresDate,
-          statuses: statuses,
+          status: status,
+          statusColor: statusColor,
         );
 
   factory DeclarationModel.fromJson(Map<String, dynamic> json) =>

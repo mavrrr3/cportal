@@ -19,6 +19,7 @@ final light = CustomTheme(
   onBoarding: const Color(0xFF282A2D).withOpacity(0.2),
   barrierColor: const Color(0xFF282A2D).withOpacity(0.2),
   progressDone: const Color(0xFF33C06F),
+  allertMessage: const Color(0xFFDF292F),
   textTheme: _getTextTheme(textColor: const Color(0xFF282A2D)),
 );
 
@@ -40,7 +41,7 @@ final dark = CustomTheme(
   onBoarding: const Color(0xFF282A2D).withOpacity(0.2),
   barrierColor: const Color(0xFF1A1D1F).withOpacity(0.8),
   progressDone: const Color(0xFF33C06F),
-
+  allertMessage: const Color(0xFFFF6A55),
   textTheme: _getTextTheme(textColor: const Color(0xFFFCFCFC)),
 );
 
@@ -127,6 +128,14 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         letterSpacing: 0.25,
       ),
 
+      // [10 px].
+      px10: GoogleFonts.roboto(
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+        letterSpacing: 0.25,
+      ),
+
       // [9 px] BottomBar.
       bottomBar: GoogleFonts.inter(
         fontSize: 9,
@@ -156,6 +165,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Color? onBoarding;
   final Color? barrierColor;
   final Color? progressDone;
+  final Color? allertMessage;
 
   CustomTheme({
     required this.textTheme,
@@ -175,6 +185,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.onBoarding,
     this.barrierColor,
     this.progressDone,
+    this.allertMessage,
   });
 
   @override
@@ -195,6 +206,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     Color? onBoarding,
     Color? barrierColor,
     Color? progressDone,
+    Color? allertMessage,
     CustomTextTheme? textTheme,
   }) {
     return CustomTheme(
@@ -213,6 +225,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       onBoarding: onBoarding ?? this.onBoarding,
       barrierColor: barrierColor ?? this.barrierColor,
       progressDone: progressDone ?? this.progressDone,
+      allertMessage: allertMessage ?? this.allertMessage,
       textTheme: textTheme ?? this.textTheme,
     );
   }
@@ -241,6 +254,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       onBoarding: Color.lerp(onBoarding, other.onBoarding, t),
       barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
       progressDone: Color.lerp(progressDone, other.progressDone, t),
+      allertMessage: Color.lerp(allertMessage, other.allertMessage, t),
       textTheme: textTheme,
     );
   }
@@ -257,6 +271,7 @@ class CustomTextTheme {
   final TextStyle px14;
   final TextStyle px14Bold;
   final TextStyle px12;
+  final TextStyle px10;
   final TextStyle bottomBar;
 
   CustomTextTheme({
@@ -270,6 +285,7 @@ class CustomTextTheme {
     required this.px14,
     required this.px14Bold,
     required this.px12,
+    required this.px10,
     required this.bottomBar,
   });
 }

@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class DeclarationsState extends Equatable {
@@ -26,18 +25,16 @@ class DeclarationsLoadingState extends DeclarationsState {
 
 class DeclarationsLoadedState extends DeclarationsState {
   final List<DeclarationEntity> declarations;
+  final List<DeclarationEntity> tasks;
 
   const DeclarationsLoadedState({
     required this.declarations,
+    required this.tasks,
   });
 
   @override
-  List<Object?> get props => [
-        declarations,
-      ];
+  List<Object?> get props => [declarations, tasks];
 }
-
-
 
 class DeclarationsFetchErrorState extends DeclarationsState {
   final String message;

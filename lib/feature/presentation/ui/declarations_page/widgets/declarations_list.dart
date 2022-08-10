@@ -1,49 +1,80 @@
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/formatter_util.dart';
+import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:go_router/go_router.dart';
 
 class DeclarationsList extends StatelessWidget {
+  final List<DeclarationEntity> items;
+  final ScrollController scrollController;
+
   const DeclarationsList({
     Key? key,
+    required this.items,
+    required this.scrollController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DeclarationsBloc, DeclarationsState>(
-      builder: (context, state) {
-        if (state is DeclarationsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is DeclarationsLoadedState) {
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: state.declarations.length,
-            itemBuilder: (context, i) {
-              return Padding(
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+
+    DateTime currentDate = DateTime.now();
+
+    return ListView.builder(
+      shrinkWrap: true,
+      controller: scrollController,
+      physics: const BouncingScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, i) {
+        if (currentDate != items[i].date) {
+          currentDate = items[i].date;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: i == 0 ? 20 : 24),
+              Text(
+                FormatterUtil.declarationsHistoryDate(
+                  date: items[i].date,
+                ),
+                style: theme.textTheme.px12.copyWith(color: theme.textLight),
+              ),
+              Padding(
                 padding: EdgeInsets.only(
-                  top: i == 0 ? 9 : 0,
-                  bottom: 16,
+                  top: 18,
+                  bottom: getBottomPadding(i),
                 ),
                 child: DeclarationCardWithStatus(
-                  item: state.declarations[i],
+                  item: items[i],
                   onTap: () => context.pushNamed(
                     NavigationRouteNames.declarationInfo,
-                    params: {'fid': state.declarations[i].id},
+                    params: {'fid': items[i].id},
                   ),
                 ),
-              );
-            },
+              ),
+            ],
+          );
+        } else {
+          return Padding(
+            padding: EdgeInsets.only(
+              top: 16,
+              bottom: getBottomPadding(i),
+            ),
+            child: DeclarationCardWithStatus(
+              item: items[i],
+              onTap: () => context.pushNamed(
+                NavigationRouteNames.declarationInfo,
+                params: {'fid': items[i].id},
+              ),
+            ),
           );
         }
-
-        return const SizedBox();
       },
     );
   }
+
+  double getBottomPadding(int i) => i == items.length - 1 ? 32 : 0;
 }

@@ -42,20 +42,33 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
       oldDeclarations = (state as DeclarationsLoadedState).declarations;
     }
 
-    emit(DeclarationsLoadingState(oldDeclarations, isFirstFetch: event.isFirstFetch));
+    emit(DeclarationsLoadingState(
+      oldDeclarations,
+      isFirstFetch: event.isFirstFetch,
+    ));
     final failureOrDeclarations = await fetchDeclarations(
       FetchDeclarationsParams(page: page),
     );
     void _loadingDeclarations(List<DeclarationEntity> declarationEntity) {
       page++;
 
-      final declarationsList = (state as DeclarationsLoadingState).oldDeclarations;
+      final declarationsList =
+          (state as DeclarationsLoadingState).oldDeclarations;
 
       // ignore: cascade_invocations
       declarationsList.addAll(declarationEntity);
+      final List<DeclarationEntity> tasks = [];
+      for (final declaration in declarationsList) {
+        if (declaration.expiresDate != null) {
+          tasks.add(declaration);
+        }
+      }
       log('Загрузилось ${declarationsList.length} заявлений');
 
-      emit(DeclarationsLoadedState(declarations: declarationsList));
+      emit(DeclarationsLoadedState(
+        declarations: declarationsList,
+        tasks: tasks,
+      ));
     }
 
     failureOrDeclarations.fold(

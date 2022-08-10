@@ -1,14 +1,22 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-class DeclarationsTabBar extends StatelessWidget {
+class DeclarationsTabBar extends StatefulWidget {
   final TabController tabController;
   const DeclarationsTabBar({
     Key? key,
     required this.tabController,
   }) : super(key: key);
 
+  @override
+  State<DeclarationsTabBar> createState() => _DeclarationsTabBarState();
+}
+
+class _DeclarationsTabBarState extends State<DeclarationsTabBar> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
@@ -20,6 +28,7 @@ class DeclarationsTabBar extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TabBar(
+              onTap: (i) => setState(() {}),
               overlayColor: MaterialStateProperty.all(
                 Colors.transparent,
               ),
@@ -29,26 +38,61 @@ class DeclarationsTabBar extends StatelessWidget {
               labelColor: theme.primary,
               unselectedLabelColor: theme.cardColor,
               indicatorColor: theme.primary,
-              controller: tabController,
+              controller: widget.tabController,
               tabs: [
                 Tab(
                   child: Text(
-                    AppLocalizations.of(context)!.inProcess,
+                    AppLocalizations.of(context)!.myDeclarations,
                     style: theme.textTheme.px16.copyWith(
                       fontWeight: FontWeight.w700,
-                      color:
-                          tabController.index == 0 ? theme.primary : theme.text,
+                      leadingDistribution: TextLeadingDistribution.even,
+                      color: widget.tabController.index == 0
+                          ? theme.primary
+                          : theme.text,
                     ),
                   ),
                 ),
                 Tab(
-                  child: Text(
-                    AppLocalizations.of(context)!.complitedDeclarations,
-                    style: theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color:
-                          tabController.index == 1 ? theme.primary : theme.text,
-                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.tasks,
+                        style: theme.textTheme.px16.copyWith(
+                          fontWeight: FontWeight.w700,
+                          leadingDistribution: TextLeadingDistribution.even,
+                          color: widget.tabController.index == 1
+                              ? theme.primary
+                              : theme.text,
+                        ),
+                      ),
+                      BlocBuilder<DeclarationsBloc, DeclarationsState>(
+                        builder: (context, state) {
+                          if (state is DeclarationsLoadedState) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                              child: Container(
+                                width: 16,
+                                height: 17,
+                                decoration: BoxDecoration(
+                                  color: theme.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${state.tasks.length}',
+                                    style: theme.textTheme.px10
+                                        .copyWith(color: theme.white),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          return const SizedBox();
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],

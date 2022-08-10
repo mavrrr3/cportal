@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:flutter/material.dart';
 
 class DeclarationUserEntity {
@@ -6,7 +6,7 @@ class DeclarationUserEntity {
   final String fullName;
   final String position;
   final String image;
-  final Color color = RandomColorService.color;
+  final Color color = ColorService.randomColor;
 
   DeclarationUserEntity({
     required this.id,

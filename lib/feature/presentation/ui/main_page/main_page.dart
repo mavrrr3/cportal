@@ -1,8 +1,8 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -206,7 +206,7 @@ class _MainPageState extends State<MainPage> {
                                             return ProfileImage(
                                               fullName: user.name,
                                               imgLink: user.photoUrl,
-                                              color: RandomColorService.color,
+                                              color: ColorService.randomColor,
                                               size: isHovered ? 48 : 40,
                                               borderRadius: 12,
                                             );

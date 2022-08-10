@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +11,7 @@ class ProfileEntity extends Equatable {
   final DateTime? birthday;
   final String photoLink;
   final List<ContactInfoEntity> contactInfo;
-  final Color color = RandomColorService.color;
+  final Color color = ColorService.randomColor;
 
   ProfileEntity({
     required this.id,
