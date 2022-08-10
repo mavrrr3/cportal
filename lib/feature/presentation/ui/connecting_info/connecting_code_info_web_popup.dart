@@ -42,7 +42,6 @@ class ConnectingCodeInfoWebPopup extends StatelessWidget {
                               localizedStrings.workMode,
                               style: theme.textTheme.px14.copyWith(
                                 color: theme.text?.withOpacity(0.6),
-                                height: 1.43,
                               ),
                             ),
                           ),
