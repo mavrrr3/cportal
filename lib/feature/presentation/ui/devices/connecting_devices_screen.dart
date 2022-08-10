@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/device_i
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/device_information.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/end_other_sessions_popup.dart.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/widgets/main_device.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/bottom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/layout_with_app_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -134,6 +135,8 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                     childCount: state.connectingDevices.length - 1,
                     (context, index) {
                       final deviceInfo = state.connectingDevices[index + 1];
+                      // Last element.
+                      final isLast = index == state.connectingDevices.length - 2;
 
                       return Column(
                         children: [
@@ -147,17 +150,14 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                               icon: DeviceIcon(platform: deviceInfo.platform),
                             ),
                           ),
-                          // Last element.
-                          if (index != state.connectingDevices.length - 2) const SizedBox(height: 12),
+                          if (!isLast) const SizedBox(height: 12),
                         ],
                       );
                     },
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: bottomPadding == 0 ? 20 : bottomPadding,
-                  ),
+                const SliverToBoxAdapter(
+                  child: BottomPadding(),
                 ),
               ],
             );
