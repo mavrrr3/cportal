@@ -93,6 +93,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: textColor,
+        height: 1.25,
         letterSpacing: 0.5,
       ),
 
@@ -109,6 +110,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
       px14: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.w400,
+        height: 1.43,
         color: textColor,
         height: 1.43,
         letterSpacing: 0.25,
@@ -119,6 +121,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 14,
         fontWeight: FontWeight.w700,
         color: textColor,
+        height: 1.43,
         letterSpacing: 0.25,
       ),
 

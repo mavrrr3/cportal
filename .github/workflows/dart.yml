@@ -37,8 +37,10 @@ jobs:
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build ios --flavor=prod --release --no-codesign
+      - run: flutter clean
 
-  build_appbundle:
+
+  build_apk:
     name: Build Flutter (Android)
     needs: [flutter_test]
     runs-on: ubuntu-20.04
@@ -52,11 +54,13 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build apk --flavor=dev
-      - uses: actions/upload-artifact@v1
+      - run: flutter build apk --flavor=dev --split-per-abi
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1.10.0
         with:
-          name: APK for QA
-          path: build/app/outputs/apk/dev/debug/apk_development.apk
+          artifacts: "build/app/outputs/flutter-apk/*.apk"
+          tag: v1.0.${{ github.run_number }}
+
 
   build_web:
     name: Build Flutter for Web

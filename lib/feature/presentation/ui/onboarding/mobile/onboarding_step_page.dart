@@ -13,8 +13,7 @@ class OnBoardingStepPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                                     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,12 +22,18 @@ class OnBoardingStepPage extends StatelessWidget {
         const SizedBox(height: 68),
         Text(
           content.title,
-          style: theme.textTheme.header,
+          style: theme.textTheme.header.copyWith(
+            height: 1.2857,
+            leadingDistribution: TextLeadingDistribution.even,
+          ),
         ),
         const SizedBox(height: 8),
         Text(
           content.description,
-          style: theme.textTheme.px16,
+          style: theme.textTheme.px16.copyWith(
+            height: 1.5,
+            leadingDistribution: TextLeadingDistribution.even,
+          ),
         ),
         const SizedBox(height: 64),
         Align(

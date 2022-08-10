@@ -12,6 +12,7 @@ class OnBoardingWelcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     // Контент страниц онбординга.
     final List<OnboardingEntity> onboardingContent = [
@@ -69,15 +70,22 @@ class OnBoardingWelcome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.welcome,
-                          style: theme.textTheme.header,
+                          localizedStrings.welcome,
+                          style: theme.textTheme.header.copyWith(
+                            height: 1.2857,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
                         ),
+                        const SizedBox(height: 8),
                         Text(
-                          AppLocalizations.of(context)!
-                              .findImportantInformation,
-                          style: theme.textTheme.px16,
+                          localizedStrings.findImportantInformation,
+                          style: theme.textTheme.px16.copyWith(
+                            height: 1.5,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
                         ),
                       ],
                     ),
@@ -92,7 +100,7 @@ class OnBoardingWelcome extends StatelessWidget {
               child: Button.factory(
                 context,
                 ButtonEnum.blue,
-                AppLocalizations.of(context)!.forward,
+                localizedStrings.forward,
                 () {
                   GoRouter.of(context).pushNamed(
                     NavigationRouteNames.onboarding,
