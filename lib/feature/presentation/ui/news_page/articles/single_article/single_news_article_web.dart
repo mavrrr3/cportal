@@ -60,7 +60,6 @@ class SingleNewsArticleWeb extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             ImageAssets.backArrow,
-                            width: 16,
                             color: theme.primary,
                           ),
                           const SizedBox(width: 6),
