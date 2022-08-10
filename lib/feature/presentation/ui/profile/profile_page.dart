@@ -5,12 +5,12 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.da
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/change_theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/disable_notification_bottom_sheet.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/notification_bottom_sheet/disable_notification_bottom_sheet.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_divider.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_section_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_switch.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/section_item_arrow.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/theme_toggle/change_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/layout_with_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

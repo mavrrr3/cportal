@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/disable_notification_select.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/notification_bottom_sheet/disable_notification_select.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/profile_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

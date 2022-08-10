@@ -1,11 +1,12 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 
+/// Button to change theme.
 class ChangeThemeButton extends StatelessWidget {
   final String text;
   final Function() onTap;
 
-  /// Кнопка для смены темы.
+  /// Create a button to change theme.
   const ChangeThemeButton({
     Key? key,
     required this.text,
@@ -14,9 +15,8 @@ class ChangeThemeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    final double width = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -25,13 +25,10 @@ class ChangeThemeButton extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: SizedBox(
           width: (width - 34) / 3,
-          child: Align(
-            alignment: Alignment.center,
+          child: Center(
             child: Text(
               text,
-              style: theme.textTheme.px12.copyWith(
-                color: theme.text,
-              ),
+              style: theme.textTheme.px12,
             ),
           ),
         ),
