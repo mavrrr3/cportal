@@ -33,7 +33,7 @@ class EnterConnectingCode extends StatelessWidget {
         builder: (context, state) {
           final isWrongCode = state is WrongConnectingCode;
           final inputTextStyle = theme.textTheme.px16.copyWith(height: 1.5);
-          final errorCodeTextStyle = theme.textTheme.px14.copyWith(height: 1.43);
+          final errorCodeTextStyle = theme.textTheme.px14;
           final codeAreaColor = isWrongCode ? theme.lightRedPIN : theme.cardColor;
           final focusedBorder = isDesktop
               ? OutlineInputBorder(
@@ -47,7 +47,7 @@ class EnterConnectingCode extends StatelessWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.inputConnectingCode,
-                style: theme.textTheme.header.copyWith(height: 1.29),
+                style: theme.textTheme.header,
               ),
               const SizedBox(height: 8),
               GestureDetector(

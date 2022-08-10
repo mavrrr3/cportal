@@ -74,7 +74,6 @@ class QuestionArticlePage extends StatelessWidget {
                               children: [
                                 SvgPicture.asset(
                                   ImageAssets.backArrow,
-                                  width: 16,
                                   color: theme.primary,
                                 ),
                                 const SizedBox(width: 6),
@@ -120,21 +119,14 @@ class QuestionArticlePage extends StatelessWidget {
                                         width: 26,
                                         height: 24,
                                       ),
-                                      SvgPicture.asset(
-                                        ImageAssets.backArrow,
-                                        width: 16,
-                                      ),
+                                      SvgPicture.asset(ImageAssets.backArrow),
                                     ],
                                   ),
                                 ),
-                              if (isLargerThenTablet(context))
-                                const SizedBox()
-                              else
-                                const SizedBox(height: 19),
+                              if (isLargerThenTablet(context)) const SizedBox() else const SizedBox(height: 19),
 
                               if (singleArticle == null)
-                                BlocBuilder<GetSingleQuestionBloc,
-                                    GetSingleQuestionState>(
+                                BlocBuilder<GetSingleQuestionBloc, GetSingleQuestionState>(
                                   builder: (context, state) {
                                     log(state.toString());
                                     if (state is GetSingleQuestionLoadedState) {
@@ -147,8 +139,7 @@ class QuestionArticlePage extends StatelessWidget {
                                   },
                                 )
                               else
-                                BlocBuilder<FetchQuestionsBloc,
-                                    FetchQuestionsState>(
+                                BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
                                   builder: (context, state) {
                                     log(state.toString());
                                     if (state is QuestionsLoaded) {
@@ -235,12 +226,9 @@ class SingleQuestionArticle extends StatelessWidget {
         currentTabsItems.add(item);
       }
     }
-    final currentIndex =
-        currentTabsItems.indexWhere((element) => element.id == currentItem.id);
+    final currentIndex = currentTabsItems.indexWhere((element) => element.id == currentItem.id);
 
-    return currentTabsItems.length - 1 !=
-            currentTabsItems
-                .indexWhere((element) => element.id == currentItem.id)
+    return currentTabsItems.length - 1 != currentTabsItems.indexWhere((element) => element.id == currentItem.id)
         ? Padding(
             padding: const EdgeInsets.only(bottom: 32),
             child: QuestionRow(

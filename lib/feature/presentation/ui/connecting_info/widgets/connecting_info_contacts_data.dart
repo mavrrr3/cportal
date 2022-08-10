@@ -24,7 +24,6 @@ class ConnectingInfoContactsData extends StatelessWidget {
           localizedStrings.getWithYou,
           style: theme.textTheme.px14.copyWith(
             color: theme.text?.withOpacity(0.6),
-            height: 1.43,
           ),
         ),
         const SizedBox(height: 8),

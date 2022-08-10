@@ -46,7 +46,7 @@ class EndOtherSessionsPopup extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20),
               child: Text(
                 localizedStrings.areYouSureEndSessions,
-                style: theme.textTheme.px14.copyWith(height: 1.43),
+                style: theme.textTheme.px14,
                 textAlign: TextAlign.center,
               ),
             ),

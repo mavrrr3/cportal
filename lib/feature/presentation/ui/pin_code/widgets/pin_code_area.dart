@@ -40,7 +40,7 @@ class PinCodeArea extends StatelessWidget {
                 children: [
                   Text(
                     state is PinCodeInitialState ? firstTitle : secondTitle,
-                    style: theme.textTheme.header.copyWith(height: 1.29),
+                    style: theme.textTheme.header,
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
