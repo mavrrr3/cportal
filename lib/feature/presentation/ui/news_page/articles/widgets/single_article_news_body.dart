@@ -62,9 +62,7 @@ class SingleArticleNewsBody extends StatelessWidget {
               NewsMainMobile(
                 articles: articles!,
                 currentArticle: article,
-              )
-            else
-              const SizedBox(),
+              ),
           ],
         ),
       ),
