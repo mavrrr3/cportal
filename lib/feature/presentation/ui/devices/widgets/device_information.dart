@@ -41,9 +41,7 @@ class DeviceInformation extends StatelessWidget {
               ),
               Text(
                 osVersion,
-                style: theme.textTheme.px14.copyWith(
-                  height: 1.43,
-                ),
+                style: theme.textTheme.px14,
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 4),
@@ -52,6 +50,7 @@ class DeviceInformation extends StatelessWidget {
                   Flexible(
                     child: Text(
                       location,
+                      // TODO fix textStyle withh 12px
                       style: theme.textTheme.px14.copyWith(
                         color: theme.text?.withOpacity(0.68),
                         height: 1.33,
