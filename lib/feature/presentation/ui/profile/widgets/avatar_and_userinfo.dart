@@ -40,7 +40,7 @@ class AvatarAndUserInfo extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          user.contacts.first.contact,
+          user.id,
           style: theme.textTheme.px14,
         ),
         const SizedBox(height: 4),
