@@ -33,7 +33,6 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
   Widget build(BuildContext context) {
     final localizedStrings = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
 
     return LayoutWithAppBar(
       title: localizedStrings.devices,

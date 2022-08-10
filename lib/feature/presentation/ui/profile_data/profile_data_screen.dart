@@ -5,7 +5,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_blo
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile_data/widgets/phone_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile_data/widgets/profile_data_item.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/layout_with_app_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
