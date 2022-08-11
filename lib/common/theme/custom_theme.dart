@@ -210,6 +210,13 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     );
   }
 
+  bool get isLight => brightness == Brightness.light;
+
+  bool get isDark => brightness == Brightness.dark;
+
+  /// Returns a color depending on the selected theme.
+  Color? adaptive({required Color? light, required Color? dark}) => isLight ? light : dark;
+
   @override
   ThemeExtension<CustomTheme> lerp(
     ThemeExtension<CustomTheme>? other,
