@@ -3,7 +3,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_q
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -57,51 +56,49 @@ class _QuestionsContentState extends State<QuestionsContent> {
 
   @override
   Widget build(BuildContext context) {
-    Widget builderItem(
-      List<ArticleEntity> articles,
-      List<String> tabs,
-      int index,
-    ) {
-      if (articles[index].category == tabs[widget.currentIndex]) {
-        return OnHover(
-          builder: (isHovered) {
-            return Opacity(
-              opacity: isHovered ? 0.6 : 1,
-              child: QuestionItem(
-                text: articles[index].header,
-                onTap: () {
-                  GoRouter.of(context).pushNamed(
-                    NavigationRouteNames.questionArticlePage,
-                    params: {'fid': articles[index].id},
-                  );
-                },
-              ),
-            );
-          },
-        );
-      }
-
-      return const SizedBox();
-    }
-
     return SingleChildScrollView(
       controller: scrollController,
-      dragStartBehavior: DragStartBehavior.down,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 8),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: widget.articles.length,
-            itemBuilder: (context, index) {
-              return builderItem(widget.articles, widget.tabs, index);
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-          ),
-        ],
+      physics: const BouncingScrollPhysics(),
+      child: ListView.separated(
+        controller: scrollController,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: widget.articles.length,
+        itemBuilder: (context, index) => _questionBuilderItem(
+          widget.articles,
+          widget.tabs,
+          index,
+        ),
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),
     );
+  }
+
+  Widget _questionBuilderItem(
+    List<ArticleEntity> articles,
+    List<String> tabs,
+    int index,
+  ) {
+    if (articles[index].category == tabs[widget.currentIndex]) {
+      return OnHover(
+        builder: (isHovered) {
+          return Opacity(
+            opacity: isHovered ? 0.6 : 1,
+            child: QuestionItem(
+              text: articles[index].header,
+              onTap: () {
+                GoRouter.of(context).pushNamed(
+                  NavigationRouteNames.questionArticlePage,
+                  params: {'fid': articles[index].id},
+                );
+              },
+            ),
+          );
+        },
+      );
+    }
+
+    return const SizedBox.shrink();
   }
 }
