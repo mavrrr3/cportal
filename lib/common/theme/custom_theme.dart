@@ -53,6 +53,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
       px32: GoogleFonts.roboto(
         fontSize: 32,
         fontWeight: FontWeight.w400,
+        height: 1.25,
         color: textColor,
       ),
 
