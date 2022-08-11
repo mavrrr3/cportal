@@ -11,7 +11,7 @@ class FetchNewsUseCase extends IUseCase<NewsEntity, FetchNewsParams> {
   FetchNewsUseCase(this.newsRepository);
 
   @override
-  Future<Either<Failure, NewsEntity>> call(FetchNewsParams params) =>
+  Future<Either<Failure, NewsEntity>> call(FetchNewsParams params) async =>
       newsRepository.fetchNews(params.page);
 
   Future<List<String>> fetchCategories() async {
