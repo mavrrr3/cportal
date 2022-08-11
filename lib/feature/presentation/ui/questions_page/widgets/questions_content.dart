@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +48,7 @@ class _QuestionsContentState extends State<QuestionsContent> {
           if (widget.currentIndex == 0) {
             context.read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
           } else {
-            context
-                .read<FetchQuestionsBloc>()
-                .add(FetchQaustionsEventBy(widget.tabs[widget.currentIndex]));
+            context.read<FetchQuestionsBloc>().add(FetchQaustionsEventBy(widget.tabs[widget.currentIndex]));
           }
         }
       }
@@ -69,7 +67,7 @@ class _QuestionsContentState extends State<QuestionsContent> {
           builder: (isHovered) {
             return Opacity(
               opacity: isHovered ? 0.6 : 1,
-              child: QuestionRow(
+              child: QuestionItem(
                 text: articles[index].header,
                 onTap: () {
                   GoRouter.of(context).pushNamed(
@@ -93,13 +91,14 @@ class _QuestionsContentState extends State<QuestionsContent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          ListView.builder(
+          ListView.separated(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             itemCount: widget.articles.length,
             itemBuilder: (context, index) {
               return builderItem(widget.articles, widget.tabs, index);
             },
+            separatorBuilder: (context, index) => const SizedBox(height: 8),
           ),
         ],
       ),

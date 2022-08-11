@@ -7,7 +7,7 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_row.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +15,7 @@ import 'package:go_router/go_router.dart';
 
 class QuestionsMain extends StatelessWidget {
   final ScrollController questionController;
-  const QuestionsMain({Key? key, required this.questionController})
-      : super(key: key);
+  const QuestionsMain({Key? key, required this.questionController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +50,7 @@ class QuestionsMain extends StatelessWidget {
               } else if (state is QuestionsLoaded) {
                 final articles = state.articles;
 
-                return ListView.builder(
+                return ListView.separated(
                   controller: questionController,
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
@@ -61,7 +60,7 @@ class QuestionsMain extends StatelessWidget {
                       builder: (isHovered) {
                         return Opacity(
                           opacity: isHovered ? 0.6 : 1,
-                          child: QuestionRow(
+                          child: QuestionItem(
                             text: articles[i].header,
                             onTap: () {
                               context.pushNamed(
@@ -76,6 +75,7 @@ class QuestionsMain extends StatelessWidget {
                       },
                     );
                   },
+                  separatorBuilder: (context, index) => const SizedBox(height: 8),
                 );
               }
 
