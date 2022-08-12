@@ -132,7 +132,7 @@ void goToPage(String category, String id, BuildContext context) {
     case 'Вопросы':
       context.read<GetSingleQuestionBloc>().add(GetSingleQuestionEventImpl(id));
       return context.pushNamed(
-        NavigationRouteNames.questionArticlePage,
+        NavigationRouteNames.question,
         params: {'fid': id},
       );
     case 'Контакты':
