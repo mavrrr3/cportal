@@ -17,53 +17,47 @@ class AvatarAndUserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return Center(
-      child: Column(
-        children: [
-          const SizedBox(height: 32),
-          ProfileImage(
-            fullName: user.name,
-            imgLink: user.photoUrl,
-            color: RandomColorService.color,
-            size: 102,
-            borderRadius: 24,
+    return Column(
+      children: [
+        ProfileImage(
+          fullName: user.name,
+          imgLink: user.photoUrl,
+          color: RandomColorService.color,
+          size: 102,
+          borderRadius: 24,
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: 250,
+          child: Text(
+            user.name,
+            style: theme.textTheme.px17Bold,
+            softWrap: true,
+            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: 250,
-            child: Text(
-              user.name,
-              style: theme.textTheme.px17.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
-              softWrap: true,
-              textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 6),
+        Text(
+          user.id,
+          style: theme.textTheme.px14,
+        ),
+        const SizedBox(height: 4),
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => context.pushNamed(
+            NavigationRouteNames.profileData,
+            params: {'fid': user.id},
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.watchData,
+            style: theme.textTheme.px16Bold.copyWith(
+              color: theme.primary,
             ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            user.contacts.first.contact,
-            style: theme.textTheme.px16,
-          ),
-          const SizedBox(height: 16),
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () =>
-                context.goNamed(NavigationRouteNames.userData, params: {
-              'fid': user.id,
-            }),
-            child: Text(
-              AppLocalizations.of(context)!.watchData,
-              style: theme.textTheme.px16.copyWith(
-                fontWeight: FontWeight.w800,
-                color: theme.primary,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

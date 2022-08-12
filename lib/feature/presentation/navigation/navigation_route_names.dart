@@ -19,15 +19,15 @@ import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/question_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile_data/profile_data_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/question_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_welcome.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
-import 'package:cportal_flutter/feature/presentation/ui/user_data/user_data.dart';
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +51,7 @@ abstract class NavigationRouteNames {
   static const newsArticlePage = 'news_article_page';
   static const question = 'question';
   static const profile = 'profile';
-  static const userData = 'user_data';
+  static const profileData = 'profile_data';
   static const onBoardingStart = 'onboarding_start';
   static const onboarding = 'onboarding';
   static const onboardingEnd = 'onboarding_end';
@@ -242,14 +242,14 @@ final GoRouter router = GoRouter(
           ),
           redirect: (state) => kIsWeb ? '/main' : null,
         ),
+        GoRoute(
+          name: NavigationRouteNames.profileData,
+          path: 'data/:fid',
+          pageBuilder: (context, state) => MaterialPage(
+            child: ProfileDataScreen(id: state.params['fid']!),
+          ),
+        ),
       ],
-    ),
-    GoRoute(
-      name: NavigationRouteNames.userData,
-      path: '/user_data/:fid',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        child: UserData(id: state.params['fid']!),
-      ),
     ),
     GoRoute(
       name: NavigationRouteNames.onBoardingStart,

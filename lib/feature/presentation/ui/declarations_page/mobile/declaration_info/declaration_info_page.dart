@@ -60,7 +60,6 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         onTap: () => context.pop(),
                         child: SvgPicture.asset(
                           ImageAssets.backArrow,
-                          width: 16,
                           color: theme.text,
                         ),
                       ),
@@ -138,13 +137,11 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
             ),
           ),
         ),
-        bottomNavigationBar:
-            !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
+        bottomNavigationBar: !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
       ),
     );
   }
 
-  String _getCurrentStep(List<DeclarationStepEntity> items) => items
-      .firstWhere((element) => element.status == StepStatus.inProgress)
-      .title;
+  String _getCurrentStep(List<DeclarationStepEntity> items) =>
+      items.firstWhere((element) => element.status == StepStatus.inProgress).title;
 }

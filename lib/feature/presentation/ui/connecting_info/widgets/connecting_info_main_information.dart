@@ -20,20 +20,19 @@ class ConnectingInfoMainInformation extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           localizedStrings.howToGetCodeText,
-          style: theme.textTheme.px14.copyWith(height: 1.43),
+          style: theme.textTheme.px14,
         ),
         const SizedBox(height: 16),
         Text(
           localizedStrings.address,
           style: theme.textTheme.px14.copyWith(
             color: theme.text?.withOpacity(0.6),
-            height: 1.43,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           localizedStrings.addressForCode,
-          style: theme.textTheme.px14.copyWith(height: 1.43),
+          style: theme.textTheme.px14,
         ),
       ],
     );

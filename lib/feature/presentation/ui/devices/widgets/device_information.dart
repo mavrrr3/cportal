@@ -20,6 +20,9 @@ class DeviceInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final smallTextStyle = theme.textTheme.px12.copyWith(
+      color: theme.text?.withOpacity(0.68),
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,14 +39,12 @@ class DeviceInformation extends StatelessWidget {
             children: [
               Text(
                 deviceName,
-                style: theme.textTheme.px14Bold.copyWith(),
+                style: theme.textTheme.px14Bold,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                 osVersion,
-                style: theme.textTheme.px14.copyWith(
-                  height: 1.43,
-                ),
+                style: theme.textTheme.px14,
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 4),
@@ -52,10 +53,7 @@ class DeviceInformation extends StatelessWidget {
                   Flexible(
                     child: Text(
                       location,
-                      style: theme.textTheme.px14.copyWith(
-                        color: theme.text?.withOpacity(0.68),
-                        height: 1.33,
-                      ),
+                      style: smallTextStyle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -64,10 +62,7 @@ class DeviceInformation extends StatelessWidget {
                   Flexible(
                     child: Text(
                       connectingStatus,
-                      style: theme.textTheme.px14.copyWith(
-                        color: theme.text?.withOpacity(0.68),
-                        height: 1.33,
-                      ),
+                      style: smallTextStyle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

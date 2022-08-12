@@ -9,7 +9,6 @@ class WorkModeTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final localizedStrings = AppLocalizations.of(context)!;
-    final textStyle = theme.textTheme.px14.copyWith(height: 1.43);
 
     return Column(
       children: _getWorkMode(localizedStrings)
@@ -19,11 +18,11 @@ class WorkModeTable extends StatelessWidget {
               children: [
                 Text(
                   row['day']!,
-                  style: textStyle,
+                  style: theme.textTheme.px14,
                 ),
                 Text(
                   row['time']!,
-                  style: textStyle,
+                  style: theme.textTheme.px14,
                 ),
               ],
             ),
