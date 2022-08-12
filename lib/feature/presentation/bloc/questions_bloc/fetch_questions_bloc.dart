@@ -192,13 +192,6 @@ class QuestionsLoaded extends FetchQuestionsState {
     required this.tabs,
   });
 
-  ArticleEntity? singleQuestion(String id) {
-    final List<ArticleEntity> questionsListWithId =
-        articles.where((element) => element.id == id).toList();
-
-    return questionsListWithId.isEmpty ? null : questionsListWithId.first;
-  }
-
   @override
   List<Object?> get props => [articles, tabs];
 }

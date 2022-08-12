@@ -5,14 +5,14 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class QuestionItem extends StatelessWidget {
+class QuestionPreview extends StatelessWidget {
   final String text;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
-  const QuestionItem({
+  const QuestionPreview({
     Key? key,
     required this.text,
-    this.onTap,
+    required this.onTap,
   }) : super(key: key);
 
   @override

@@ -7,7 +7,7 @@ import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/question_preview.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,14 +60,12 @@ class QuestionsMain extends StatelessWidget {
                       builder: (isHovered) {
                         return Opacity(
                           opacity: isHovered ? 0.6 : 1,
-                          child: QuestionItem(
+                          child: QuestionPreview(
                             text: articles[i].header,
                             onTap: () {
                               context.pushNamed(
-                                NavigationRouteNames.questionArticlePage,
-                                params: {
-                                  'fid': articles[i].id,
-                                },
+                                NavigationRouteNames.question,
+                                params: {'fid': articles[i].id},
                               );
                             },
                           ),

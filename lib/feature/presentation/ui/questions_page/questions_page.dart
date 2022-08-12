@@ -1,11 +1,9 @@
-// ignore_for_file: unused_local_variable
-
 import 'dart:developer';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_content.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,15 +39,11 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
       builder: (context, state) {
         List<ArticleEntity> articles = [];
-        List<ArticleEntity> currentTabArticles = [];
-
         List<String> categories = [];
 
         if (state is QuestionsLoading) {
@@ -58,12 +52,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
         } else if (state is QuestionsLoaded) {
           articles = state.articles;
           categories = state.tabs;
-        }
-        if (currentIndex == 0) currentTabArticles = articles;
-        if (currentIndex != 0) {
-          currentTabArticles = articles
-              .where((element) => element.category == categories[currentIndex])
-              .toList();
         }
         log('_currentIndex: $currentIndex');
         List<ArticleEntity> sortedArticles(List<ArticleEntity> list) {
@@ -78,7 +66,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
           while (count < categories.length) {
             list.add(Padding(
               padding: getHorizontalPadding(context),
-              child: QuestionsContent(
+              child: QuestionsList(
                 articles: sortedArticles(articles),
                 tabs: categories,
                 currentIndex: currentIndex,
@@ -121,8 +109,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                     ScrollableTabsWidget(
                       currentIndex: currentIndex,
                       items: categories,
-                      onTap: (index) =>
-                          onPageChanged(index, context, categories),
+                      onTap: (index) => onPageChanged(index, context, categories),
                     ),
 
                     Expanded(
@@ -178,9 +165,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
     if (index == 0) {
       context.read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
     } else {
-      context
-          .read<FetchQuestionsBloc>()
-          .add(FetchQaustionsEventBy(categories[index]));
+      context.read<FetchQuestionsBloc>().add(FetchQaustionsEventBy(categories[index]));
     }
 
     pageController.jumpToPage(index);
