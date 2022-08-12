@@ -19,8 +19,7 @@ class CustomTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final roundedIndicator = RoundedTabIndicator(color: theme.primary!);
-    final labelStyle =
-        theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700);
+    final labelStyle = theme.textTheme.px16Bold;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
