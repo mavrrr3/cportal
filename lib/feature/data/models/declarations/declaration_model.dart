@@ -1,6 +1,5 @@
 // ignore_for_file: overridden_fields, annotate_overrides
 
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_status_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -15,18 +14,20 @@ class DeclarationModel extends DeclarationEntity {
   @HiveField(1)
   final String title;
   @HiveField(2)
+  @JsonKey(name: 'decription')
   final String description;
   @HiveField(3)
-  @JsonKey(name: 'is_allert')
-  final bool? isAllert;
-  @HiveField(3)
-  final DateTime date;
-  @JsonKey(name: 'expires_date')
+  @JsonKey(name: 'is_allert', defaultValue: false)
+  final bool isAllert;
   @HiveField(4)
-  final DateTime? expiresDate;
+  final DateTime date;
   @HiveField(5)
-  final String status;
+  @JsonKey(name: 'expires_date')
+  final DateTime? expiresDate;
   @HiveField(6)
+  final String status;
+  @HiveField(7)
+  @JsonKey(name: 'status_color')
   final String statusColor;
 
   DeclarationModel({
@@ -36,8 +37,8 @@ class DeclarationModel extends DeclarationEntity {
     required this.date,
     required this.status,
     required this.statusColor,
+    required this.isAllert,
     this.expiresDate,
-    this.isAllert,
   }) : super(
           id: id,
           title: title,

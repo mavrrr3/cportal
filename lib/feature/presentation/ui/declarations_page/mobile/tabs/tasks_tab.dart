@@ -1,11 +1,9 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class TasksTab extends StatelessWidget {
   final ScrollController scrollController;
@@ -25,7 +23,7 @@ class TasksTab extends StatelessWidget {
         }
         if (state is DeclarationsLoadedState) {
           return CustomScrollView(
-            controller: scrollController,
+            physics: const BouncingScrollPhysics(),
             slivers: [
               SliverOverlapInjector(
                 handle:
@@ -34,22 +32,9 @@ class TasksTab extends StatelessWidget {
               SliverPadding(
                 padding: getHorizontalPadding(context),
                 sliver: SliverToBoxAdapter(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: scrollController,
-                    itemCount: state.tasks.length,
-                    itemBuilder: (context, i) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: DeclarationCardWithStatus(
-                          item: state.tasks[i],
-                          onTap: () => context.pushNamed(
-                            NavigationRouteNames.declarationInfo,
-                            params: {'fid': state.tasks[i].id},
-                          ),
-                        ),
-                      );
-                    },
+                  child: DeclarationsList(
+                    items: state.tasks,
+                    scrollController: scrollController,
                   ),
                 ),
               ),

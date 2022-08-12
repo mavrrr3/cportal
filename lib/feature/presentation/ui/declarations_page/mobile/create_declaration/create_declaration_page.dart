@@ -18,12 +18,13 @@ class CreateDeclarationPage extends StatefulWidget {
 }
 
 class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
-  late TextEditingController searchController;
-
+  late TextEditingController _searchController;
+  late FocusNode _searchFocus;
   @override
   void initState() {
     super.initState();
-    searchController = TextEditingController();
+    _searchController = TextEditingController();
+    _searchFocus = FocusNode();
   }
 
   @override
@@ -48,21 +49,23 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                   ),
                   // Строка с поиском.
                   SearchWithFilter(
-                    searchController: searchController,
+                    searchController: _searchController,
+                    searchFocus: _searchFocus,
                     onSearch: (text) {},
+                    onClear: () {},
                     onFilterTap: () {},
                   ),
                   const SizedBox(height: 73),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CreateDeclarationCard(
+                      CreateDeclarationCards(
                         width: halfWidth,
                         svgPath: ImageAssets.calendar,
                         text: AppLocalizations.of(context)!
                             .buisenesTripDeclaration,
                       ),
-                      CreateDeclarationCard(
+                      CreateDeclarationCards(
                         width: halfWidth,
                         svgPath: ImageAssets.flyVocation,
                         text: AppLocalizations.of(context)!.vocationDeclaration,
@@ -73,12 +76,12 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CreateDeclarationCard(
+                      CreateDeclarationCards(
                         width: halfWidth,
                         svgPath: ImageAssets.lock,
                         text: AppLocalizations.of(context)!.passDeclaration,
                       ),
-                      CreateDeclarationCard(
+                      CreateDeclarationCards(
                         width: halfWidth,
                         svgPath: ImageAssets.payList,
                         text: AppLocalizations.of(context)!.payListDeclaration,
@@ -86,7 +89,7 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  CreateDeclarationCard(
+                  CreateDeclarationCards(
                     width: double.infinity,
                     svgPath: ImageAssets.support,
                     text: AppLocalizations.of(context)!.supportDeclaration,
@@ -105,6 +108,7 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
   @override
   void dispose() {
     super.dispose();
-    searchController.dispose();
+    _searchController.dispose();
+    _searchFocus.dispose();
   }
 }

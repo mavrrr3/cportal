@@ -2,7 +2,7 @@ class DeclarationEntity {
   final String id;
   final String title;
   final String description;
-  final bool? isAllert;
+  final bool isAllert;
   final DateTime date;
   final DateTime? expiresDate;
   final String status;

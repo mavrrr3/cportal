@@ -22,16 +22,18 @@ class DeclarationModelAdapter extends TypeAdapter<DeclarationModel> {
       id: fields[0] as String,
       title: fields[1] as String,
       description: fields[2] as String,
-      date: fields[3] as DateTime,
-      expiresDate: fields[4] as DateTime?,
-      statuses: (fields[5] as List).cast<DeclarationStatusModel>(),
+      date: fields[4] as DateTime,
+      status: fields[6] as String,
+      statusColor: fields[7] as String,
+      isAllert: fields[3] as bool,
+      expiresDate: fields[5] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DeclarationModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -39,11 +41,15 @@ class DeclarationModelAdapter extends TypeAdapter<DeclarationModel> {
       ..writeByte(2)
       ..write(obj.description)
       ..writeByte(3)
-      ..write(obj.date)
+      ..write(obj.isAllert)
       ..writeByte(4)
-      ..write(obj.expiresDate)
+      ..write(obj.date)
       ..writeByte(5)
-      ..write(obj.statuses);
+      ..write(obj.expiresDate)
+      ..writeByte(6)
+      ..write(obj.status)
+      ..writeByte(7)
+      ..write(obj.statusColor);
   }
 
   @override
@@ -65,13 +71,12 @@ DeclarationModel _$DeclarationModelFromJson(Map<String, dynamic> json) =>
     DeclarationModel(
       id: json['id'] as String,
       title: json['title'] as String,
-      description: json['description'] as String,
+      description: json['decription'] as String,
       date: DateTime.parse(json['date'] as String),
+      status: json['status'] as String,
+      statusColor: json['status_color'] as String,
+      isAllert: json['is_allert'] as bool? ?? false,
       expiresDate: json['expires_date'] == null
           ? null
           : DateTime.parse(json['expires_date'] as String),
-      statuses: (json['statuses'] as List<dynamic>)
-          .map(
-              (e) => DeclarationStatusModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );

@@ -7,7 +7,10 @@ import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.da
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
@@ -105,7 +108,10 @@ class _MainPageState extends State<MainPage> {
       ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
       ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
       ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
-      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
+      ..read<FilterContactsBloc>().add(FetchFiltersEvent())
+      ..read<DeclarationsBloc>()
+          .add(const FetchDeclarationsEvent(isFirstFetch: true))
+      ..read<FilterDeclarationsBloc>().add(FetchFiltersEvent());
   }
 
   @override
@@ -180,7 +186,7 @@ class _MainPageState extends State<MainPage> {
                                       });
                                     }
                                   },
-                                  onTap: () => setState(() {
+                                  onClear: () => setState(() {
                                     _searchController.clear();
                                     _isSearchActive = false;
                                   }),

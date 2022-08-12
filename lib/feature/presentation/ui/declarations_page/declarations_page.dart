@@ -1,8 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -25,21 +23,15 @@ class DeclarationsPage extends StatefulWidget {
 class _DeclarationsPageState extends State<DeclarationsPage>
     with SingleTickerProviderStateMixin {
   late TextEditingController _searchController;
+  late FocusNode _searchFocus;
+
   late TabController _tabController;
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _searchFocus = FocusNode();
     _tabController = TabController(length: 2, vsync: this);
-    _contentInit();
-  }
-
-  // Во время инициализации запускается ивент и подгружаются заявления и фильтры.
-  void _contentInit() {
-    BlocProvider.of<DeclarationsBloc>(context, listen: false)
-        .add(const FetchDeclarationsEvent(isFirstFetch: true));
-    BlocProvider.of<FilterDeclarationsBloc>(context, listen: false)
-        .add(FetchFiltersEvent());
   }
 
   @override
@@ -53,6 +45,7 @@ class _DeclarationsPageState extends State<DeclarationsPage>
         body: isLargerThenTablet(context)
             ? DeclarationsContentWeb(
                 searchController: _searchController,
+                searchFocus: _searchFocus,
                 onFilterTap: () {
                   context
                       .read<FilterVisibilityBloc>()
@@ -61,6 +54,7 @@ class _DeclarationsPageState extends State<DeclarationsPage>
               )
             : DeclarationsContentMobile(
                 searchController: _searchController,
+                searchFocus: _searchFocus,
                 tabController: _tabController,
                 onFilterTap: () async {
                   await showFilterMobile(
@@ -105,6 +99,7 @@ class _DeclarationsPageState extends State<DeclarationsPage>
   void dispose() {
     super.dispose();
     _searchController.dispose();
+    _searchFocus.dispose();
     _tabController.dispose();
   }
 }

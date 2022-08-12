@@ -8,12 +8,15 @@ import 'package:flutter/material.dart';
 
 class DeclarationsContentMobile extends StatefulWidget {
   final TextEditingController searchController;
+  final FocusNode searchFocus;
+
   final TabController tabController;
   final Function() onFilterTap;
 
   const DeclarationsContentMobile({
     Key? key,
     required this.searchController,
+    required this.searchFocus,
     required this.tabController,
     required this.onFilterTap,
   }) : super(key: key);
@@ -39,7 +42,7 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
     return SafeArea(
       child: NestedScrollView(
         floatHeaderSlivers: true,
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverOverlapAbsorber(
@@ -58,7 +61,9 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
                         padding: getHorizontalPadding(context),
                         child: SearchWithFilter(
                           searchController: widget.searchController,
+                          searchFocus: widget.searchFocus,
                           onSearch: (text) {},
+                          onClear: () {},
                           onFilterTap: widget.onFilterTap,
                         ),
                       ),

@@ -22,11 +22,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeclarationsContentWeb extends StatefulWidget {
   final TextEditingController searchController;
+  final FocusNode searchFocus;
+
   final Function() onFilterTap;
 
   const DeclarationsContentWeb({
     Key? key,
     required this.searchController,
+    required this.searchFocus,
     required this.onFilterTap,
   }) : super(key: key);
 
@@ -94,7 +97,9 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
                         // Строка с поиском.
                         SearchWithFilter(
                           searchController: widget.searchController,
+                          searchFocus: widget.searchFocus,
                           onSearch: (text) {},
+                          onClear: () {},
                           onFilterTap: widget.onFilterTap,
                         ),
 

@@ -20,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:swipe/swipe.dart';
 
 class DeclarationInfoPage extends StatefulWidget {
@@ -49,7 +48,6 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormatter = DateFormat('d MMMM', 'ru');
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final double width = MediaQuery.of(context).size.width;
 
@@ -168,6 +166,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
   String _getCurrentStep(List<DeclarationStepEntity> items) => items
       .firstWhere(
-          (element) => element.status == DeclarationStatusEnum.inProcess)
+        (element) => element.status == DeclarationStatusEnum.inProcess,
+      )
       .title;
 }

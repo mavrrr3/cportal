@@ -10,17 +10,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 
 class SearchInput extends StatelessWidget {
-  final Function(String)? onChanged;
-  final Function onTap;
   final TextEditingController controller;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
+  final Function(String) onChanged;
+  final Function onClear;
 
   const SearchInput({
     Key? key,
     required this.controller,
-    this.onChanged,
-    this.focusNode,
-    required this.onTap,
+    required this.onChanged,
+    required this.onClear,
+    required this.focusNode,
   }) : super(key: key);
 
   @override
@@ -72,9 +72,9 @@ class SearchInput extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              if (controller.text.isNotEmpty)
+              if (focusNode.hasFocus)
                 GestureDetector(
-                  onTap: () => onTap(),
+                  onTap: () => onClear(),
                   child: Padding(
                     padding: const EdgeInsets.only(
                       top: 8,
@@ -88,9 +88,7 @@ class SearchInput extends StatelessWidget {
                           : theme.text?.withOpacity(0.65),
                     ),
                   ),
-                )
-              else
-                const SizedBox(),
+                ),
             ],
           ),
         );

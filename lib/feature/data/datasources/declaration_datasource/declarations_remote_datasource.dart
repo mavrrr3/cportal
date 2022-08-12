@@ -5,7 +5,6 @@ import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_d
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_declarations_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_status_model.dart';
 import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
@@ -38,6 +37,7 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
       // await localDataSource.declarationsToCache(declarations, page);
 
       return mock;
+      
       // return declarations;
     } on ServerException {
       throw ServerFailure();
@@ -84,6 +84,7 @@ final mock = [
     date: DateTime(2022, 8, 18, 16, 34),
     status: 'Создано',
     statusColor: '2E90FA',
+    isAllert: false,
   ),
   DeclarationModel(
     id: '',
@@ -93,15 +94,16 @@ final mock = [
     expiresDate: DateTime(2022, 1, 12, 18, 00),
     status: 'В работе',
     statusColor: 'CF5AF8',
+    isAllert: true,
   ),
-
-    DeclarationModel(
+  DeclarationModel(
     id: '',
     title: 'Техподдержка. Не работает почта ',
     description: 'Не согласовано Кириловой А.Д.',
     date: DateTime(2022, 8, 17, 16, 34),
     status: 'Создано',
     statusColor: '2E90FA',
+    isAllert: false,
   ),
   DeclarationModel(
     id: '',
@@ -111,15 +113,16 @@ final mock = [
     expiresDate: DateTime(2022, 1, 12, 18, 00),
     status: 'В работе',
     statusColor: 'CF5AF8',
-   ),
-
-       DeclarationModel(
+    isAllert: true,
+  ),
+  DeclarationModel(
     id: '',
     title: 'Техподдержка. Не работает почта ',
     description: 'Не согласовано Кириловой А.Д.',
     date: DateTime(2022, 8, 17, 16, 34),
     status: 'Создано',
     statusColor: '2E90FA',
+    isAllert: false,
   ),
   DeclarationModel(
     id: '',
@@ -129,6 +132,7 @@ final mock = [
     expiresDate: DateTime(2022, 1, 12, 18, 00),
     status: 'В работе',
     statusColor: 'CF5AF8',
+    isAllert: true,
   ),
   DeclarationModel(
     id: '',
@@ -137,6 +141,7 @@ final mock = [
     date: DateTime(2022, 8, 17, 16, 34),
     status: 'Создано',
     statusColor: '2E90FA',
+    isAllert: false,
   ),
   DeclarationModel(
     id: '',
@@ -146,6 +151,7 @@ final mock = [
     expiresDate: DateTime(2022, 1, 12, 18, 00),
     status: 'В работе',
     statusColor: 'CF5AF8',
+    isAllert: true,
   ),
   DeclarationModel(
     id: '',
@@ -154,6 +160,7 @@ final mock = [
     date: DateTime(2022, 8, 17, 16, 34),
     status: 'Создано',
     statusColor: '2E90FA',
+    isAllert: false,
   ),
   DeclarationModel(
     id: '',
@@ -163,6 +170,6 @@ final mock = [
     expiresDate: DateTime(2022, 1, 12, 18, 00),
     status: 'В работе',
     statusColor: 'CF5AF8',
+    isAllert: true,
   ),
-  
 ];

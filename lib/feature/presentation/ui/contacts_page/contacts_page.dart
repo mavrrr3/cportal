@@ -36,12 +36,14 @@ class ContactsPage extends StatefulWidget {
 class _ContactsPageState extends State<ContactsPage> {
   late ScrollController _scrollController;
   late TextEditingController _searchController;
+  late FocusNode _searchFocus;
   final _delayer = Delayer(milliseconds: 500);
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _searchController = TextEditingController();
+    _searchFocus = FocusNode();
 
     super.initState();
   }
@@ -69,8 +71,15 @@ class _ContactsPageState extends State<ContactsPage> {
                     padding: getHorizontalPadding(context),
                     child: SearchWithFilter(
                       searchController: _searchController,
+                      searchFocus: _searchFocus,
                       onSearch: (text) {
-                        _delayer.run(() => _onSearchInput(text));
+                        _onSearchInput(text);
+                      },
+                      onClear: () {
+                        _searchController.clear();
+                        context
+                            .read<ContactsBloc>()
+                            .add(const FetchContactsEvent(isFirstFetch: true));
                       },
                       onFilterTap: () async {
                         if (!ResponsiveWrapper.of(context)
@@ -227,6 +236,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void dispose() {
     super.dispose();
     _searchController.dispose();
+    _searchFocus.dispose();
     _scrollController.dispose();
   }
 
@@ -322,17 +332,14 @@ class _ContactsPageState extends State<ContactsPage> {
   ) {
     final state = context.read<FilterContactsBloc>().state;
 
-    BlocProvider.of<ContactsBloc>(
-      context,
-      listen: false,
-    ).add(
-      SearchContactsEvent(
-        query: text,
-        filters: (state is FilterLoadedState)
-            ? OnlySelectedFiltersService.count(state.contactsFilters)
-            : [],
-      ),
-    );
+    context.read<ContactsBloc>().add(
+          SearchContactsEvent(
+            query: text,
+            filters: (state is FilterLoadedState)
+                ? OnlySelectedFiltersService.count(state.contactsFilters)
+                : [],
+          ),
+        );
   }
 
   void _sendFilters(BuildContext context, {bool isFromRemove = false}) {
@@ -342,23 +349,14 @@ class _ContactsPageState extends State<ContactsPage> {
           OnlySelectedFiltersService.count(state.contactsFilters);
 
       if (onlySelectedFilters.isNotEmpty) {
-        BlocProvider.of<ContactsBloc>(
-          context,
-          listen: false,
-        ).add(
-          SearchContactsEvent(
-            query: '',
-            filters: onlySelectedFilters,
-          ),
-        );
+        context.read<ContactsBloc>().add(
+              SearchContactsEvent(query: '', filters: onlySelectedFilters),
+            );
       } else {
         if (isFromRemove) {
-          BlocProvider.of<ContactsBloc>(
-            context,
-            listen: false,
-          ).add(
-            const FetchContactsEvent(isFirstFetch: true),
-          );
+          context
+              .read<ContactsBloc>()
+              .add(const FetchContactsEvent(isFirstFetch: true));
         }
       }
     }

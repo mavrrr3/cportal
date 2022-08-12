@@ -2,11 +2,11 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CreateDeclarationCard extends StatelessWidget {
+class CreateDeclarationCards extends StatelessWidget {
   final double width;
   final String svgPath;
   final String text;
-  const CreateDeclarationCard({
+  const CreateDeclarationCards({
     Key? key,
     required this.width,
     required this.svgPath,

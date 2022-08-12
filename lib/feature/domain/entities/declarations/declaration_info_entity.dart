@@ -1,7 +1,6 @@
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_data_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_user_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_status_entity.dart';
 
 class DeclarationInfoEntity {
   final String id;
