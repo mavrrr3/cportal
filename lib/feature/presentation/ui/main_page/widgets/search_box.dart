@@ -38,7 +38,7 @@ class SearchBox extends StatelessWidget {
         double getHeightSearchBox() {
           double height = 0;
           if (searchList.isNotEmpty) {
-            height = (searchList.length * 54) + 16;
+            height = (searchList.length * 56) + 16;
           }
 
           return height;

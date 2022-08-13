@@ -14,9 +14,8 @@ class FetchQuestionsUseCase extends IUseCase<NewsEntity, FetchQuestionsParams> {
   Future<Either<Failure, NewsEntity>> call(FetchQuestionsParams params) =>
       questionsRepository.fetchQuestions(params.page);
 
-  Future<List<String>> fetchQuestionCategories() async {
-    return questionsRepository.fetchQuestionCategories();
-  }
+  Future<List<String>> fetchQuestionCategories() =>
+      questionsRepository.fetchQuestionCategories();
 }
 
 class FetchQuestionsParams extends Equatable {
