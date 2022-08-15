@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/app_config.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +22,8 @@ class AvatarBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+
     return AnimatedContainer(
       duration: isAnimation ? duration : const Duration(milliseconds: 300),
       width: isAnimation ? 0 : size,
@@ -37,8 +39,8 @@ class AvatarBox extends StatelessWidget {
         cache: true,
         loadStateChanged: (state) {
           if (state.extendedImageLoadState == LoadState.loading) {
-            return const Center(
-              child: PlatformProgressIndicator(),
+            return Container(
+              color: theme.cardColor,
             );
           }
 
