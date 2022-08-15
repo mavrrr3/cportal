@@ -63,7 +63,7 @@ class QuestionsMain extends StatelessWidget {
                           child: QuestionPreview(
                             text: articles[i].header,
                             onTap: () {
-                              context.pushNamed(
+                              context.goNamed(
                                 NavigationRouteNames.question,
                                 params: {'fid': articles[i].id},
                               );
