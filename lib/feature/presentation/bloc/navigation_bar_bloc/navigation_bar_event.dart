@@ -22,3 +22,11 @@ class NavBarVisibilityEvent extends NavigationBarEvent {
   @override
   List<Object> get props => [isActive];
 }
+
+class NavBarLoadingEvent extends NavigationBarEvent {
+  final bool isLoading;
+  const NavBarLoadingEvent({required this.isLoading});
+
+  @override
+  List<Object> get props => [isLoading];
+}

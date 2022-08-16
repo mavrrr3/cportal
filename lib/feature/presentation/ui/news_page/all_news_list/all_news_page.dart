@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class AllNewsPage extends StatefulWidget {
   final List<String> _categories;
@@ -114,6 +115,17 @@ class _AllNewsPageState extends State<AllNewsPage>
                   ],
                 ),
               ),
+              if (state is NewsLoading)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.zero,
+                    child: Lottie.asset(
+                      'assets/lottie/loader.zip',
+                      width: 100,
+                    ),
+                  ),
+                ),
             ],
           ),
         );

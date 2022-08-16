@@ -4,6 +4,8 @@ import 'package:equatable/equatable.dart';
 class NavigationBarState extends Equatable {
   final int currentIndex;
   final bool isActive;
+  final bool isLoading;
+
   final List<MenuButtonEntity> menuItems = [
     MenuButtonEntity(
       img: 'assets/icons/navbar/main.svg',
@@ -30,8 +32,9 @@ class NavigationBarState extends Equatable {
   NavigationBarState({
     this.currentIndex = 0,
     this.isActive = false,
+    this.isLoading = false,
   });
 
   @override
-  List<Object?> get props => [currentIndex, isActive];
+  List<Object?> get props => [currentIndex, isActive, isLoading];
 }

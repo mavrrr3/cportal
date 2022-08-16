@@ -9,16 +9,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class NewsContent extends StatefulWidget {
-  final List<ArticleEntity> articles;
-  final List<String> tabs;
-  final int currentIndex;
+  final List<ArticleEntity> _articles;
+  final List<String> _tabs;
+  final int _currentIndex;
 
   const NewsContent({
     Key? key,
-    required this.articles,
-    required this.tabs,
-    required this.currentIndex,
-  }) : super(key: key);
+    required List<ArticleEntity> articles,
+    required List<String> tabs,
+    required int currentIndex,
+  })  : _articles = articles,
+        _tabs = tabs,
+        _currentIndex = currentIndex,
+        super(key: key);
 
   @override
   State<NewsContent> createState() => _NewsContentState();
@@ -49,12 +52,12 @@ class _NewsContentState extends State<NewsContent> {
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
         if (_scrollController.position.pixels != 0) {
-          if (widget.currentIndex == 0) {
+          if (widget._currentIndex == 0) {
             context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
           } else {
             context
                 .read<FetchNewsBloc>()
-                .add(FetchNewsEventBy(widget.tabs[widget.currentIndex]));
+                .add(FetchNewsEventBy(widget._tabs[widget._currentIndex]));
           }
         }
       }
@@ -80,13 +83,13 @@ class _NewsContentState extends State<NewsContent> {
     ) {
       final article = articles[index];
 
-      if (widget.currentIndex == 0) {
+      if (widget._currentIndex == 0) {
         return NewsCard(
           width,
           item: article,
           onTap: () => _onArticleSelected(article.id),
         );
-      } else if (article.category == tabs[widget.currentIndex]) {
+      } else if (article.category == tabs[widget._currentIndex]) {
         return NewsCard(
           width,
           item: article,
@@ -107,11 +110,11 @@ class _NewsContentState extends State<NewsContent> {
           if (isLargerThenMobile(context))
             Wrap(
               children: List.generate(
-                widget.articles.length,
+                widget._articles.length,
                 (index) {
                   return _builderItem(
-                    widget.articles,
-                    widget.tabs,
+                    widget._articles,
+                    widget._tabs,
                     312,
                     index,
                   );
@@ -123,11 +126,11 @@ class _NewsContentState extends State<NewsContent> {
               controller: _newsController,
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: widget.articles.length,
+              itemCount: widget._articles.length,
               itemBuilder: (context, index) {
                 return _builderItem(
-                  widget.articles,
-                  widget.tabs,
+                  widget._articles,
+                  widget._tabs,
                   width,
                   index,
                 );

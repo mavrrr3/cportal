@@ -28,31 +28,37 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
     return BlocBuilder<NavigationBarBloc, NavigationBarState>(
       builder: (context, state) {
-        return Container(
-          color: theme.cardColor,
-          child: SafeArea(
-            minimum: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(
-                state.menuItems.length,
-                (index) => _MenuItem(
-                  item: state.menuItems[index],
-                  state: state,
-                  index: index,
-                  onTap: () {
-                    if (widget.isNestedNavigation) {
-                      context.pop();
-                    }
-                    setState(
-                      () => BlocProvider.of<NavigationBarBloc>(context)
-                          .add(NavBarChangePageEvent(index: index)),
-                    );
-                  },
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              color: theme.cardColor,
+              child: SafeArea(
+                minimum: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(
+                    state.menuItems.length,
+                    (index) => _MenuItem(
+                      item: state.menuItems[index],
+                      state: state,
+                      index: index,
+                      onTap: () {
+                        if (widget.isNestedNavigation) {
+                          context.pop();
+                        }
+                        setState(
+                          () => BlocProvider.of<NavigationBarBloc>(context)
+                              .add(NavBarChangePageEvent(index: index)),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         );
       },
     );
@@ -75,14 +81,12 @@ class _MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     final Color nonActiveColor = theme.text!.withOpacity(0.48);
     final Color activeColor = theme.primary!;
 
     Color _textColor(int index, NavigationBarState state) {
-      final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
       return theme.brightness == Brightness.light
           ? state.currentIndex == index
               ? activeColor
