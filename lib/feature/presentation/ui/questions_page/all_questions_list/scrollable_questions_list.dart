@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_content.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_list.dart';
 import 'package:flutter/material.dart';
 
 class ScrollableQuestionsList extends StatelessWidget {
@@ -28,8 +28,8 @@ class ScrollableQuestionsList extends StatelessWidget {
           (index) {
             return Padding(
               padding: getHorizontalPadding(context),
-              child: QuestionsContent(
-                articles: _articles,
+              child: QuestionsList(
+                questions: _articles,
                 tabs: _categories,
                 currentIndex: _tabController.index,
               ),
