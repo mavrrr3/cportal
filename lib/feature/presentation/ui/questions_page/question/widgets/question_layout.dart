@@ -26,7 +26,10 @@ class QuestionLayout extends StatelessWidget {
         : LayoutWithAppBar(
             title: '',
             onTapBackButton: () => context.goNamed(NavigationRouteNames.questions),
-            child: SingleChildScrollView(child: child),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: child,
+            ),
           );
   }
 }
@@ -58,6 +61,7 @@ class QuestionDesktopLayout extends StatelessWidget {
             child: SafeArea(
               bottom: false,
               child: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
                 slivers: [
                   const SliverPersistentHeader(delegate: QuestionDesktopDelegate(), pinned: true),
                   SliverToBoxAdapter(child: child),
