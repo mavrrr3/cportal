@@ -19,9 +19,9 @@ import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/profile_data/profile_data_screen.dart';
-import 'package:cportal_flutter/feature/presentation/ui/questions_page/question_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile_data/profile_data_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/questions_page/question/question_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_learning_course.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_welcome.dart';
@@ -49,7 +49,7 @@ abstract class NavigationRouteNames {
   static const newsWeb = 'news';
   static const questions = 'questions';
   static const newsArticlePage = 'news_article_page';
-  static const questionArticlePage = 'question_article_page';
+  static const question = 'question';
   static const profile = 'profile';
   static const profileData = 'profile_data';
   static const onBoardingStart = 'onboarding_start';
@@ -219,13 +219,13 @@ final GoRouter router = GoRouter(
           webMenuIndex: 2,
         ),
       ),
-    ),
-    GoRoute(
-      name: NavigationRouteNames.questionArticlePage,
-      path: '/questions/:fid',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        child: QuestionArticlePage(id: state.params['fid']!),
-      ),
+      routes: [
+        GoRoute(
+          name: NavigationRouteNames.question,
+          path: ':fid',
+          builder: (context, state) => QuestionScreen(id: state.params['fid']!),
+        ),
+      ],
     ),
     GoRoute(
       name: NavigationRouteNames.profile,

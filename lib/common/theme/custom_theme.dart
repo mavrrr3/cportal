@@ -54,6 +54,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
       px32: GoogleFonts.roboto(
         fontSize: 32,
         fontWeight: FontWeight.w400,
+        height: 1.25,
         color: textColor,
       ),
 
@@ -218,6 +219,13 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       textTheme: textTheme ?? this.textTheme,
     );
   }
+
+  bool get isLight => brightness == Brightness.light;
+
+  bool get isDark => brightness == Brightness.dark;
+
+  /// Returns a color depending on the selected theme.
+  Color? adaptive({required Color? light, required Color? dark}) => isLight ? light : dark;
 
   @override
   ThemeExtension<CustomTheme> lerp(

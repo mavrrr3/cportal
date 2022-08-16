@@ -8,12 +8,14 @@ class LayoutWithAppBar extends StatelessWidget {
   final String title;
   final Widget child;
   final String? icon;
+  final VoidCallback? onTapBackButton;
 
   const LayoutWithAppBar({
     Key? key,
     required this.title,
     required this.child,
     this.icon,
+    this.onTapBackButton,
   }) : super(key: key);
 
   @override
@@ -33,7 +35,7 @@ class LayoutWithAppBar extends StatelessWidget {
                   child: MaterialButton(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     shape: const CircleBorder(),
-                    onPressed: context.pop,
+                    onPressed: onTapBackButton?.call ?? context.pop,
                     minWidth: 36,
                     padding: const EdgeInsets.all(6),
                     child: SvgPicture.asset(
