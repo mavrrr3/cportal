@@ -24,8 +24,7 @@ class AllNewsPage extends StatefulWidget {
   State<AllNewsPage> createState() => _AllNewsPageState();
 }
 
-class _AllNewsPageState extends State<AllNewsPage>
-    with TickerProviderStateMixin {
+class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin {
   late final PageController _pageController;
   late final TabController _tabController;
 
@@ -78,54 +77,57 @@ class _AllNewsPageState extends State<AllNewsPage>
         }
 
         return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              const SizedBox(height: 12),
-              Padding(
-                padding: getHorizontalPadding(context),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    BurgerMenuButton(onTap: () {
-                      context.read<NavigationBarBloc>().add(
-                            const NavBarVisibilityEvent(isActive: true),
-                          );
-                    }),
-                    Text(
-                      AppLocalizations.of(context)!.news,
-                      style: theme.textTheme.header,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomTabBar(
-                      tabs: getTabs(widget._categories),
-                      tabController: _tabController,
-                    ),
-                    ScrollableNewsList(
-                      articles: articles,
-                      tabController: _tabController,
-                      categories: widget._categories,
-                    ),
-                  ],
-                ),
-              ),
-              if (state is NewsLoading)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.zero,
-                    child: Lottie.asset(
-                      'assets/lottie/loader.zip',
-                      width: 100,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: getHorizontalPadding(context),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        BurgerMenuButton(onTap: () {
+                          context.read<NavigationBarBloc>().add(
+                                const NavBarVisibilityEvent(isActive: true),
+                              );
+                        }),
+                        Text(
+                          AppLocalizations.of(context)!.news,
+                          style: theme.textTheme.header,
+                        ),
+                      ],
                     ),
                   ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTabBar(
+                          tabs: getTabs(widget._categories),
+                          tabController: _tabController,
+                        ),
+                        ScrollableNewsList(
+                          articles: articles,
+                          tabController: _tabController,
+                          categories: widget._categories,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 0,
+                // Left and right parameters needs to center lottie animations.
+                left: 0,
+                right: 0,
+                child: Lottie.asset(
+                  'assets/lottie/loader.zip',
+                  width: 100,
                 ),
+              ),
             ],
           ),
         );
