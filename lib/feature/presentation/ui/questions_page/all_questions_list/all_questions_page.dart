@@ -6,7 +6,9 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/custom_tab_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/all_questions_list/scrollable_questions_list.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -83,31 +85,30 @@ class _AllQuestionsPageState extends State<AllQuestionsPage>
         }
 
         return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              const SizedBox(height: 12),
-              Padding(
-                padding: getHorizontalPadding(context),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    BurgerMenuButton(onTap: () {
-                      context.read<NavigationBarBloc>().add(
-                            const NavBarVisibilityEvent(isActive: true),
-                          );
-                    }),
-                    Text(
-                      AppLocalizations.of(context)!.questions,
-                      style: theme.textTheme.header,
-                    ),
-                  ],
-                ),
-              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 12),
+                    Padding(
+                      padding: getHorizontalPadding(context),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          BurgerMenuButton(onTap: () {
+                            context.read<NavigationBarBloc>().add(
+                                  const NavBarVisibilityEvent(isActive: true),
+                                );
+                          }),
+                          Text(
+                            AppLocalizations.of(context)!.questions,
+                            style: theme.textTheme.header,
+                          ),
+                        ],
+                      ),
+                    ),
                     CustomTabBar(
                       tabs: getTabs(widget._categories),
                       tabController: _tabController,
@@ -120,6 +121,7 @@ class _AllQuestionsPageState extends State<AllQuestionsPage>
                   ],
                 ),
               ),
+              if (state is QuestionsLoading && !kIsWeb) const Loader(),
             ],
           ),
         );

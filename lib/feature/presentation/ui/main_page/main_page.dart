@@ -24,6 +24,7 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questi
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_popup.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
@@ -139,7 +140,8 @@ class _MainPageState extends State<MainPage> {
                 top: isLargerThenMobile(context) ? 12 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
+                constraint:
+                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -262,9 +264,9 @@ class _MainPageState extends State<MainPage> {
                 const SizedBox(height: 12),
                 BlocBuilder<FetchNewsBloc, FetchNewsState>(
                   builder: (context, state) {
-                    if (state is NewsLoading) {
-                      const Center(
-                        child: PlatformProgressIndicator(),
+                    if (state is NewsLoading && !kIsWeb) {
+                      return const Center(
+                        child: Loader(),
                       );
                     }
 
@@ -291,7 +293,9 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: isLargerThenTablet(context) ? const BoxConstraints(maxWidth: 640) : null,
+            constraint: isLargerThenTablet(context)
+                ? const BoxConstraints(maxWidth: 640)
+                : null,
             child: SearchBox(
               isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
@@ -310,7 +314,8 @@ class _MainPageState extends State<MainPage> {
       builder: (context) {
         final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {

@@ -3,14 +3,15 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/all_news_list/scrollable_news_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/custom_tab_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
-import 'package:lottie/lottie.dart';
 
 class AllNewsPage extends StatefulWidget {
   final List<String> _categories;
@@ -24,7 +25,8 @@ class AllNewsPage extends StatefulWidget {
   State<AllNewsPage> createState() => _AllNewsPageState();
 }
 
-class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin {
+class _AllNewsPageState extends State<AllNewsPage>
+    with TickerProviderStateMixin {
   late final PageController _pageController;
   late final TabController _tabController;
 
@@ -118,16 +120,7 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 0,
-                // Left and right parameters needs to center lottie animations.
-                left: 0,
-                right: 0,
-                child: Lottie.asset(
-                  'assets/lottie/loader.zip',
-                  width: 100,
-                ),
-              ),
+              if (state is NewsLoading && !kIsWeb) const Loader(),
             ],
           ),
         );
