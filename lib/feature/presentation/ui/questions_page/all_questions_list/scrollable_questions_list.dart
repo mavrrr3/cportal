@@ -29,7 +29,7 @@ class ScrollableQuestionsList extends StatelessWidget {
             return Padding(
               padding: getHorizontalPadding(context),
               child: QuestionsList(
-                articles: _articles,
+                questions: _articles,
                 tabs: _categories,
                 currentIndex: _tabController.index,
               ),

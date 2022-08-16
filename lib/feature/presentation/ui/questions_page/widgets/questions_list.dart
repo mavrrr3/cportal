@@ -8,13 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class QuestionsList extends StatefulWidget {
-  final List<ArticleEntity> articles;
+  final List<ArticleEntity> questions;
   final List<String> tabs;
   final int currentIndex;
 
   const QuestionsList({
     Key? key,
-    required this.articles,
+    required this.questions,
     required this.tabs,
     required this.currentIndex,
   }) : super(key: key);
@@ -56,45 +56,38 @@ class _QuestionsListState extends State<QuestionsList> {
 
   @override
   Widget build(BuildContext context) {
+    final questions = _getQuestionsByCategory();
+
     return ListView.separated(
       controller: scrollController,
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 16),
       shrinkWrap: true,
-      itemCount: widget.articles.length,
-      itemBuilder: (context, index) => _questionBuilderItem(
-        widget.articles,
-        widget.tabs,
-        index,
-      ),
+      itemCount: questions.length,
+      itemBuilder: (context, index) => _questionBuilderItem(questions[index]),
       separatorBuilder: (context, index) => const SizedBox(height: 8),
     );
   }
 
-  Widget _questionBuilderItem(
-    List<ArticleEntity> articles,
-    List<String> tabs,
-    int index,
-  ) {
-    if (articles[index].category == tabs[widget.currentIndex]) {
-      return OnHover(
-        builder: (isHovered) {
-          return Opacity(
-            opacity: isHovered ? 0.6 : 1,
-            child: QuestionPreview(
-              text: articles[index].header,
-              onTap: () {
-                context.goNamed(
-                  NavigationRouteNames.question,
-                  params: {'fid': articles[index].id},
-                );
-              },
-            ),
-          );
-        },
-      );
-    }
-
-    return const SizedBox.shrink();
+  Widget _questionBuilderItem(ArticleEntity question) {
+    return OnHover(
+      builder: (isHovered) {
+        return Opacity(
+          opacity: isHovered ? 0.6 : 1,
+          child: QuestionPreview(
+            text: question.header,
+            onTap: () {
+              context.goNamed(
+                NavigationRouteNames.question,
+                params: {'fid': question.id},
+              );
+            },
+          ),
+        );
+      },
+    );
   }
+
+  List<ArticleEntity> _getQuestionsByCategory() =>
+      widget.questions.where((question) => question.category == widget.tabs[widget.currentIndex]).toList();
 }
