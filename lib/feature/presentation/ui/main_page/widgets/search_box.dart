@@ -50,9 +50,7 @@ class SearchBox extends StatelessWidget {
 
         return SafeArea(
           child: Padding(
-            padding: isLargerThenTablet(context)
-                ? const EdgeInsets.only(left: 32)
-                : getHorizontalPadding(context),
+            padding: isLargerThenTablet(context) ? const EdgeInsets.only(left: 32) : getHorizontalPadding(context),
             child: AnimatedOpacity(
               duration: _animationDuration,
               opacity: _isAnimation ? 1 : 0,
@@ -64,9 +62,7 @@ class SearchBox extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: _animationDuration,
                   curve: curves,
-                  width: isLargerThenTablet(context)
-                      ? 584
-                      : MediaQuery.of(context).size.width,
+                  width: isLargerThenTablet(context) ? 584 : MediaQuery.of(context).size.width,
                   height: _isAnimation ? getHeightSearchBox() : 0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -96,8 +92,7 @@ class SearchBox extends StatelessWidget {
                                                   searchList[index].id,
                                                   context,
                                                 ),
-                                                category:
-                                                    searchList[index].category,
+                                                category: searchList[index].category,
                                                 text: searchList[index].title,
                                               );
                                             },
