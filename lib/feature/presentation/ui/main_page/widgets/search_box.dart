@@ -16,18 +16,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class SearchBox extends StatelessWidget {
-  final bool isAnimation;
-  final Duration animationDuration;
+  final bool _isAnimation;
+  final Duration _animationDuration;
 
   const SearchBox({
     Key? key,
-    required this.isAnimation,
-    required this.animationDuration,
-  }) : super(key: key);
+    required bool isAnimation,
+    required Duration animationDuration,
+  })  : _isAnimation = isAnimation,
+        _animationDuration = animationDuration,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+    const scrollPhysics = BouncingScrollPhysics();
+    const curves = Curves.easeIn;
 
     return BlocBuilder<MainSearchBloc, MainSearchState>(
       builder: (context, state) {
@@ -38,7 +42,7 @@ class SearchBox extends StatelessWidget {
         double getHeightSearchBox() {
           double height = 0;
           if (searchList.isNotEmpty) {
-            height = (searchList.length * 54) + 16;
+            height = (searchList.length * 56) + 16;
           }
 
           return height;
@@ -48,18 +52,18 @@ class SearchBox extends StatelessWidget {
           child: Padding(
             padding: isLargerThenTablet(context) ? const EdgeInsets.only(left: 32) : getHorizontalPadding(context),
             child: AnimatedOpacity(
-              duration: animationDuration,
-              opacity: isAnimation ? 1 : 0,
-              curve: Curves.easeIn,
+              duration: _animationDuration,
+              opacity: _isAnimation ? 1 : 0,
+              curve: curves,
               child: Padding(
                 padding: EdgeInsets.only(
                   top: isLargerThenTablet(context) ? 2 : 3,
                 ),
                 child: AnimatedContainer(
-                  duration: animationDuration,
-                  curve: Curves.easeIn,
+                  duration: _animationDuration,
+                  curve: curves,
                   width: isLargerThenTablet(context) ? 584 : MediaQuery.of(context).size.width,
-                  height: isAnimation ? getHeightSearchBox() : 0,
+                  height: _isAnimation ? getHeightSearchBox() : 0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: theme.cardColor,
@@ -67,7 +71,7 @@ class SearchBox extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
+                      physics: scrollPhysics,
                       child: Column(
                         children: [
                           BlocBuilder<MainSearchBloc, MainSearchState>(
@@ -75,7 +79,7 @@ class SearchBox extends StatelessWidget {
                               return state is! MainSearchLoaded
                                   ? const PlatformProgressIndicator()
                                   : SingleChildScrollView(
-                                      physics: const BouncingScrollPhysics(),
+                                      physics: scrollPhysics,
                                       child: Column(
                                         children: [
                                           ListView.builder(
@@ -149,7 +153,7 @@ class _SearchBoxItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16, right: 8),
