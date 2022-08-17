@@ -3,6 +3,7 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news/cached_news_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/size_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -40,7 +41,7 @@ class NewsCardSimilarItem extends StatelessWidget {
                 height: height,
                 imgUrl: '${AppConfig.imagesUrl}/${item.image}',
               ),
-              const SizedBox(height: 12),
+              SizePadding.height12px,
               SizedBox(
                 width: 220,
                 child: Column(
