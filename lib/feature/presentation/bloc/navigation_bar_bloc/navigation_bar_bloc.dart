@@ -19,10 +19,6 @@ class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
       _changeVisibility,
       transformer: bloc_concurrency.sequential(),
     );
-    on<NavBarLoadingEvent>(
-      _showLoader,
-      transformer: bloc_concurrency.sequential(),
-    );
   }
 
   FutureOr<void> _changeCurrentIndex(
@@ -38,14 +34,6 @@ class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
     Emitter emit,
   ) async {
     emit(NavigationBarState(isActive: event.isActive));
-    debugPrint('Отработал эвент: $event');
-  }
-
-  FutureOr<void> _showLoader(
-    NavBarLoadingEvent event,
-    Emitter emit,
-  ) async {
-    emit(NavigationBarState(isLoading: event.isLoading));
     debugPrint('Отработал эвент: $event');
   }
 }
