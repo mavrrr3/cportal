@@ -114,7 +114,10 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     final isLoading =
-        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading);
+        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+            context.select(
+              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+            );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
