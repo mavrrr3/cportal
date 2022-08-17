@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
 
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_step_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_status_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_state.dart';
@@ -76,7 +74,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         // Прогресс и текущий этап.
                         DeclarationProgress(
                           progress: state.declaration.progress,
-                          currentStep: _getCurrentStep(state.declaration.steps),
+                          currentStep: 'Необходимо ознакомиться',
                         ),
                         const SizedBox(height: 24),
 
@@ -163,10 +161,4 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
       ),
     );
   }
-
-  String _getCurrentStep(List<DeclarationStepEntity> items) => items
-      .firstWhere(
-        (element) => element.status == DeclarationStatusEnum.inProcess,
-      )
-      .title;
 }

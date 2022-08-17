@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
@@ -37,7 +36,6 @@ class _ContactsPageState extends State<ContactsPage> {
   late ScrollController _scrollController;
   late TextEditingController _searchController;
   late FocusNode _searchFocus;
-  final _delayer = Delayer(milliseconds: 500);
 
   @override
   void initState() {

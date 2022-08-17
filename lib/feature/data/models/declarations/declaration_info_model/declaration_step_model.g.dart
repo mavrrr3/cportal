@@ -2,37 +2,39 @@
 
 // ignore_for_file: implicit_dynamic_parameter
 
-part of 'declaration_status_model.dart';
+part of 'declaration_step_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DeclarationStatusModelAdapter
-    extends TypeAdapter<DeclarationStatusModel> {
+class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
   @override
-  final int typeId = 18;
+  final int typeId = 17;
 
   @override
-  DeclarationStatusModel read(BinaryReader reader) {
+  DeclarationStepModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DeclarationStatusModel(
+    return DeclarationStepModel(
       title: fields[0] as String,
-      color: fields[1] as String,
+      date: fields[1] as DateTime,
+      status: fields[2] as DeclarationStatusEnum,
     );
   }
 
   @override
-  void write(BinaryWriter writer, DeclarationStatusModel obj) {
+  void write(BinaryWriter writer, DeclarationStepModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.color);
+      ..write(obj.date)
+      ..writeByte(2)
+      ..write(obj.status);
   }
 
   @override
@@ -41,7 +43,7 @@ class DeclarationStatusModelAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DeclarationStatusModelAdapter &&
+      other is DeclarationStepModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -50,9 +52,16 @@ class DeclarationStatusModelAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-DeclarationStatusModel _$DeclarationStatusModelFromJson(
+DeclarationStepModel _$DeclarationStepModelFromJson(
         Map<String, dynamic> json) =>
-    DeclarationStatusModel(
+    DeclarationStepModel(
       title: json['title'] as String,
-      color: json['color'] as String,
+      date: DateTime.parse(json['date'] as String),
+      status: $enumDecode(_$DeclarationStatusEnumEnumMap, json['status']),
     );
+
+const _$DeclarationStatusEnumEnumMap = {
+  DeclarationStatusEnum.done: 'Стандартный',
+  DeclarationStatusEnum.inProcess: 'Стандартный',
+  DeclarationStatusEnum.declined: 'Стандартный',
+};

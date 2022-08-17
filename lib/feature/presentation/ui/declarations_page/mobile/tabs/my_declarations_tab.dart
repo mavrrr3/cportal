@@ -24,7 +24,7 @@ class MyDeclarationsTab extends StatelessWidget {
         }
         if (state is DeclarationsLoadedState) {
           return CustomScrollView(
-            physics: const BouncingScrollPhysics()  ,
+            physics: const BouncingScrollPhysics(),
             slivers: [
               SliverOverlapInjector(
                 handle:

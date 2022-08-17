@@ -21,7 +21,7 @@ class DeclarationsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
-    DateTime currentDate = DateTime.now();
+    DateTime startDate = DateTime(1111, 1, 1);
 
     return ListView.builder(
       shrinkWrap: true,
@@ -29,8 +29,8 @@ class DeclarationsList extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, i) {
-        if (currentDate != items[i].date) {
-          currentDate = items[i].date;
+        if (startDate.day != items[i].date.day) {
+          startDate = items[i].date;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

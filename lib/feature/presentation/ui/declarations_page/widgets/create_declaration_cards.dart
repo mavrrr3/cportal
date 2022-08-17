@@ -34,14 +34,14 @@ class CreateDeclarationCards extends StatelessWidget {
               color: theme.textLight,
               width: 24,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             Expanded(
               child: Text(
                 text,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.px14.copyWith(
-                  color: theme.text,
+                  leadingDistribution: TextLeadingDistribution.even,
                 ),
               ),
             ),

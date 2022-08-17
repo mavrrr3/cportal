@@ -58,11 +58,11 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
       // ignore: cascade_invocations
       declarationsList.addAll(declarationEntity);
       final List<DeclarationEntity> tasks = [];
-      for (final declaration in declarationsList) {
-        if (declaration.expiresDate != null) {
-          tasks.add(declaration);
-        }
-      }
+      // for (final declaration in declarationsList) {
+      //   if (declaration.expiresDate != null) {
+      //     tasks.add(declaration);
+      //   }
+      // }
       log('Загрузилось ${declarationsList.length} заявлений');
 
       emit(DeclarationsLoadedState(

@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_info_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
 
 abstract class IDeclarationsRemoteDataSource {

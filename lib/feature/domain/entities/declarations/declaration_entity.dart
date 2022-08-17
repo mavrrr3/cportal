@@ -1,21 +1,19 @@
+import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
+
 class DeclarationEntity {
   final String id;
   final String title;
   final String description;
-  final bool isAllert;
+  final DescriptionEnum descriptionEnum;
   final DateTime date;
-  final DateTime? expiresDate;
   final String status;
-  final String statusColor;
 
   const DeclarationEntity({
     required this.id,
     required this.title,
     required this.description,
-    required this.isAllert,
+    required this.descriptionEnum,
     required this.date,
-    required this.expiresDate,
     required this.status,
-    required this.statusColor,
   });
 }

@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_status_entity.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_status_enum.dart';
 
 class DeclarationStepEntity {
   final String title;

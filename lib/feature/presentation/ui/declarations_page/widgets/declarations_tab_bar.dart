@@ -69,24 +69,26 @@ class _DeclarationsTabBarState extends State<DeclarationsTabBar> {
                       BlocBuilder<DeclarationsBloc, DeclarationsState>(
                         builder: (context, state) {
                           if (state is DeclarationsLoadedState) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 4),
-                              child: Container(
-                                width: 16,
-                                height: 17,
-                                decoration: BoxDecoration(
-                                  color: theme.red,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${state.tasks.length}',
-                                    style: theme.textTheme.px10
-                                        .copyWith(color: theme.white),
+                            if (state.tasks.isNotEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 4),
+                                child: Container(
+                                  width: 16,
+                                  height: 17,
+                                  decoration: BoxDecoration(
+                                    color: theme.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '${state.tasks.length}',
+                                      style: theme.textTheme.px10
+                                          .copyWith(color: theme.white),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           }
 
                           return const SizedBox();

@@ -23,17 +23,15 @@ class DeclarationModelAdapter extends TypeAdapter<DeclarationModel> {
       title: fields[1] as String,
       description: fields[2] as String,
       date: fields[4] as DateTime,
-      status: fields[6] as String,
-      statusColor: fields[7] as String,
-      isAllert: fields[3] as bool,
-      expiresDate: fields[5] as DateTime?,
+      status: fields[5] as String,
+      descriptionEnum: fields[3] as DescriptionEnum,
     );
   }
 
   @override
   void write(BinaryWriter writer, DeclarationModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,15 +39,11 @@ class DeclarationModelAdapter extends TypeAdapter<DeclarationModel> {
       ..writeByte(2)
       ..write(obj.description)
       ..writeByte(3)
-      ..write(obj.isAllert)
+      ..write(obj.descriptionEnum)
       ..writeByte(4)
       ..write(obj.date)
       ..writeByte(5)
-      ..write(obj.expiresDate)
-      ..writeByte(6)
-      ..write(obj.status)
-      ..writeByte(7)
-      ..write(obj.statusColor);
+      ..write(obj.status);
   }
 
   @override
@@ -71,12 +65,16 @@ DeclarationModel _$DeclarationModelFromJson(Map<String, dynamic> json) =>
     DeclarationModel(
       id: json['id'] as String,
       title: json['title'] as String,
-      description: json['decription'] as String,
+      description: json['description'] as String,
       date: DateTime.parse(json['date'] as String),
       status: json['status'] as String,
-      statusColor: json['status_color'] as String,
-      isAllert: json['is_allert'] as bool? ?? false,
-      expiresDate: json['expires_date'] == null
-          ? null
-          : DateTime.parse(json['expires_date'] as String),
+      descriptionEnum: $enumDecodeNullable(
+              _$DescriptionEnumEnumMap, json['description_enum']) ??
+          DescriptionEnum.def,
     );
+
+const _$DescriptionEnumEnumMap = {
+  DescriptionEnum.def: 'Стандартный',
+  DescriptionEnum.task: 'Задача',
+  DescriptionEnum.expired: 'Истек срок',
+};
