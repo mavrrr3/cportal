@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +15,8 @@ class CachedNewsImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+
     return ExtendedImage.network(
       fit: BoxFit.cover,
       shape: BoxShape.rectangle,
@@ -26,10 +28,11 @@ class CachedNewsImage extends StatelessWidget {
       clearMemoryCacheIfFailed: false,
       clearMemoryCacheWhenDispose: false,
       cache: true,
+      imageCacheName: imgUrl,
       loadStateChanged: (state) {
         if (state.extendedImageLoadState == LoadState.loading) {
-          return const Center(
-            child: PlatformProgressIndicator(),
+          return Container(
+            color: theme.background,
           );
         }
 

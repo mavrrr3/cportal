@@ -4,34 +4,31 @@ import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/q
 import 'package:flutter/material.dart';
 
 class ScrollableQuestionsList extends StatelessWidget {
-  final List<ArticleEntity> _articles;
-  final TabController _tabController;
-  final List<String> _categories;
+  final List<ArticleEntity> articles;
+  final TabController tabController;
+  final List<String> categories;
 
   const ScrollableQuestionsList({
     Key? key,
-    required List<ArticleEntity> articles,
-    required TabController tabController,
-    required List<String> categories,
-  })  : _articles = articles,
-        _tabController = tabController,
-        _categories = categories,
-        super(key: key);
+    required this.articles,
+    required this.tabController,
+    required this.categories,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: TabBarView(
-        controller: _tabController,
+        controller: tabController,
         children: List.generate(
-          _categories.length,
+          categories.length,
           (index) {
             return Padding(
               padding: getHorizontalPadding(context),
               child: QuestionsList(
-                questions: _articles,
-                tabs: _categories,
-                currentIndex: _tabController.index,
+                questions: articles,
+                tabs: categories,
+                currentIndex: tabController.index,
               ),
             );
           },

@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 class NavigationBarState extends Equatable {
   final int currentIndex;
   final bool isActive;
+
   final List<MenuButtonEntity> menuItems = [
     MenuButtonEntity(
       img: 'assets/icons/navbar/main.svg',
