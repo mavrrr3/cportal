@@ -29,16 +29,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _setupEvents() {
     on<CheckLogin>(_onCheckLogin, transformer: bloc_concurrency.droppable());
-    on<LogInWithUser>(_onLogInWithUser, transformer: bloc_concurrency.droppable());
-    on<LogInWithPinCode>(_onLogInWithPinCode, transformer: bloc_concurrency.droppable());
-    on<LogInWithBiometrics>(_onLogInWithBiometrics, transformer: bloc_concurrency.droppable());
+    on<LogInWithUser>(
+      _onLogInWithUser,
+      transformer: bloc_concurrency.droppable(),
+    );
+    on<LogInWithPinCode>(
+      _onLogInWithPinCode,
+      transformer: bloc_concurrency.droppable(),
+    );
+    on<LogInWithBiometrics>(
+      _onLogInWithBiometrics,
+      transformer: bloc_concurrency.droppable(),
+    );
   }
 
   FutureOr<void> _onCheckLogin(AuthEvent _, Emitter<AuthState> emit) async {
     final hasAuthCredentials = await _hasAuthCredentialsUseCase();
 
     if (hasAuthCredentials) {
-      final enabledBiometricType = await _biometricRepository.getEnabledBiometric();
+      final enabledBiometricType =
+          await _biometricRepository.getEnabledBiometric();
       emit(HasAuthCredentials(enabledBiometricType));
     } else {
       emit(const NotAuthenticated());
@@ -56,7 +66,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     LogInWithPinCode event,
     Emitter<AuthState> emit,
   ) async {
-    final response = await _logInWithPinCode(LoginWitPinCodeParams(pinCode: event.pinCode));
+    final response =
+        await _logInWithPinCode(LoginWitPinCodeParams(pinCode: event.pinCode));
 
     await response.fold<FutureOr<void>>(
       (failure) async {
@@ -87,7 +98,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(WrongPinCode(enabledBiometric));
     await Future.delayed(
       const Duration(seconds: 2),
-      () => emit(TryAgainLater(enabledBiometric)),
+      () {
+        emit(TryAgainLater(enabledBiometric));
+      },
     );
     await Future.delayed(
       const Duration(seconds: 30),

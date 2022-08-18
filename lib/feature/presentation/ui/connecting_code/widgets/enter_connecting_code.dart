@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EnterConnectingCode extends StatelessWidget {
+class EnterConnectingCode extends StatefulWidget {
   final bool isDesktop;
   final TextEditingController codeController;
   final FocusNode codeFocusNode;
@@ -18,6 +18,13 @@ class EnterConnectingCode extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<EnterConnectingCode> createState() => _EnterConnectingCodeState();
+}
+
+class _EnterConnectingCodeState extends State<EnterConnectingCode> {
+  String _wait30SecIfWrongEnteringCode = '30';
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final strings = AppLocalizations.of(context)!;
@@ -27,18 +34,26 @@ class EnterConnectingCode extends StatelessWidget {
       child: BlocConsumer<ConnectingCodeBloc, ConnectingCodeState>(
         listener: (context, state) {
           if (state is ConnectingCodeInitial) {
-            codeController.clear();
+            widget.codeController.clear();
+          } else if (state is TryAgainLater) {
+            state.wait30Seconds.listen((event) {
+              setState(() {
+                _wait30SecIfWrongEnteringCode = event;
+              });
+            });
           }
         },
         builder: (context, state) {
           final isWrongCode = state is WrongConnectingCode;
           final inputTextStyle = theme.textTheme.px16.copyWith(height: 1.5);
           final errorCodeTextStyle = theme.textTheme.px14;
-          final codeAreaColor = isWrongCode ? theme.lightRedPIN : theme.cardColor;
-          final focusedBorder = isDesktop
+          final codeAreaColor =
+              isWrongCode ? theme.lightRedPIN : theme.cardColor;
+          final focusedBorder = widget.isDesktop
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: theme.primary!.withOpacity(0.34)),
+                  borderSide:
+                      BorderSide(color: theme.primary!.withOpacity(0.34)),
                 )
               : null;
 
@@ -67,9 +82,11 @@ class EnterConnectingCode extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: TextField(
-                  controller: codeController,
-                  focusNode: codeFocusNode,
-                  style: isWrongCode ? inputTextStyle.copyWith(color: theme.red) : inputTextStyle,
+                  controller: widget.codeController,
+                  focusNode: widget.codeFocusNode,
+                  style: isWrongCode
+                      ? inputTextStyle.copyWith(color: theme.red)
+                      : inputTextStyle,
                   textCapitalization: TextCapitalization.characters,
                   autocorrect: false,
                   cursorColor: theme.primary,
@@ -92,7 +109,7 @@ class EnterConnectingCode extends StatelessWidget {
                 height: 20,
                 child: state is TryAgainLater
                     ? Text(
-                        strings.tryToRepeatAfter30sec,
+                        '${strings.tryToRepeatAfter} $_wait30SecIfWrongEnteringCode секунд',
                         style: errorCodeTextStyle,
                       )
                     : state is WrongConnectingCode

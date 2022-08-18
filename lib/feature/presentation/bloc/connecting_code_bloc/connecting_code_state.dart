@@ -35,6 +35,8 @@ class WrongConnectingCode extends ConnectingCodeState {
 
 class TryAgainLater extends WrongConnectingCode {
   const TryAgainLater();
+
+  Stream<String> get wait30Seconds => Delayer.tick(ticks: 30);
 }
 
 class ConnectingCodeError extends ConnectingCodeState {
