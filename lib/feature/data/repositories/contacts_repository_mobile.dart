@@ -30,11 +30,15 @@ class ContactsRepositoryMobile implements IContactsRepository {
         return Left(ServerFailure());
       }
     } else {
-      try {
-        final localContacts = await localDataSource.fetchContactsFromCache();
+      if (page == 1) {
+        try {
+          final localContacts = await localDataSource.fetchContactsFromCache();
 
-        return Right(localContacts);
-      } on CacheFailure {
+          return Right(localContacts);
+        } on CacheFailure {
+          return Left(CacheFailure());
+        }
+      } else {
         return Left(CacheFailure());
       }
     }
@@ -47,7 +51,8 @@ class ContactsRepositoryMobile implements IContactsRepository {
   ) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteContacts = await remoteDataSource.fetchContactsBySearch(query, filters);
+        final remoteContacts =
+            await remoteDataSource.fetchContactsBySearch(query, filters);
 
         return Right(remoteContacts);
       } on ServerException {
