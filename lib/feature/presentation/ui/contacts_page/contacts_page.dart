@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:cportal_flutter/common/util/delayer.dart';
+import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
+import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/only_selected_filters_service.dart';
@@ -231,13 +233,16 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   // Пагинация.
-  void _setupScrollController(BuildContext context) {
+  Future<void> _setupScrollController(BuildContext context) async {
+    final isConnected = await sl<INetworkInfo>().isConnected;
     _scrollController.addListener(() {
       if (_searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
-            BlocProvider.of<ContactsBloc>(context)
-                .add(const FetchContactsEvent());
+            if (isConnected) {
+              BlocProvider.of<ContactsBloc>(context)
+                  .add(const FetchContactsEvent());
+            }
           }
         }
       }

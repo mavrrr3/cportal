@@ -43,7 +43,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     Emitter emit,
   ) async {
     List<ProfileEntity> oldContacts = [];
-    if (event.isFirstFetch) {
+  if (event.isFirstFetch) {
       page = 1;
     }
     if (state is ContactsLoadedState && !event.isFirstFetch) {
