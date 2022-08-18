@@ -59,21 +59,7 @@ class ContactsRepositoryMobile implements IContactsRepository {
         return Left(ServerFailure());
       }
     } else {
-      try {
-        final localContacts = await localDataSource.fetchContactsFromCache();
-
-        final List<ProfileEntity> contacts = [];
-
-        for (final element in localContacts.contacts) {
-          if (element.fullName.contains(query)) {
-            contacts.add(element);
-          }
-        }
-
-        return Right(contacts);
-      } on CacheFailure {
-        return Left(CacheFailure());
-      }
+      return const Right([]);
     }
   }
 }
