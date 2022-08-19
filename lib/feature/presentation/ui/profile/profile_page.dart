@@ -65,7 +65,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       title: localizedStrings.newEmployee,
                       prefixIcon: ImageAssets.addPerson,
                       suffix: const SectionItemArrow(),
-                      onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
+                      onTap: () =>
+                          context.goNamed(NavigationRouteNames.onBoardingStart),
                     ),
                   ),
                   const ProfileDivider(),
@@ -76,26 +77,30 @@ class _ProfilePageState extends State<ProfilePage> {
                     suffix: ProfileSwitch(controller: notificationController),
                     onTap: () => notificationController.value
                         ? showDisableNotificationPopup(context)
-                        : notificationController.value = !notificationController.value,
+                        : notificationController.value =
+                            !notificationController.value,
                   ),
                   ProfileSectionItem(
                     title: localizedStrings.fingerPrint,
                     prefixIcon: ImageAssets.smallFingerPrint,
                     suffix: ProfileSwitch(controller: biometricAuthController),
-                    onTap: () => biometricAuthController.value = !biometricAuthController.value,
+                    onTap: () => biometricAuthController.value =
+                        !biometricAuthController.value,
                   ),
                   ProfileSectionItem(
                     title: localizedStrings.changePin,
                     prefixIcon: ImageAssets.lock,
                     suffix: const SectionItemArrow(),
-                    onTap: () => context.goNamed(NavigationRouteNames.changePin),
+                    onTap: () =>
+                        context.goNamed(NavigationRouteNames.changePin),
                   ),
                   if (kIsMobile)
                     ProfileSectionItem(
                       title: localizedStrings.devices,
                       prefixIcon: ImageAssets.addDevice,
                       suffix: const SectionItemArrow(),
-                      onTap: () => context.pushNamed(NavigationRouteNames.devices),
+                      onTap: () =>
+                          context.pushNamed(NavigationRouteNames.devices),
                     ),
                   const Padding(
                     padding: EdgeInsets.fromLTRB(16, 16, 16, 0),

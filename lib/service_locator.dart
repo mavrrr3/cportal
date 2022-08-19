@@ -65,10 +65,14 @@ import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repositor
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/biometric_authenticate_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/get_available_biometrics.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/get_enabled_biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/has_auth_credentials_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_biometrics_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_connecting_code_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_pin_code_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/save_enabled_biometrics_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/generate_connecting_code_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_connecting_data_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_scanned_data_usecase.dart';
@@ -122,7 +126,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetSingleQuestionBloc(getSingleQuestion: sl()));
   sl.registerFactory(() => ConnectingCodeBloc(sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
-  sl.registerFactory(() => BiometricBloc(sl()));
+  sl.registerFactory(() => BiometricBloc(sl(), sl(), sl()));
   sl.registerFactory(() => FetchNewsBloc(
         fetchNews: sl(),
         fetchNewsByCategory: sl(),
@@ -168,6 +172,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SendScannedDataUseCase(sl()));
   sl.registerLazySingleton(() => SendConnectingDataUseCase(sl()));
   sl.registerLazySingleton(() => MainSearchUseCase(sl()));
+  sl.registerLazySingleton(() => GetEnabledBiometricUseCase(sl()));
+  sl.registerLazySingleton(() => BiometricAuthenticateUsecase(sl()));
+  sl.registerLazySingleton(() => GetAvailableBiometrics(sl()));
+  sl.registerLazySingleton(() => SaveEnabledBiometricsUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
