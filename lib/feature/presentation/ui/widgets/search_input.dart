@@ -1,7 +1,5 @@
 // ignore_for_file: unnecessary_lambdas
 
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
@@ -106,7 +104,6 @@ double getSearchContainerWidth(
   BuildContext context,
 ) {
   final double width = MediaQuery.of(context).size.width;
-  log(width.toString());
 
   return isLargerThenTablet(context)
       ? 750

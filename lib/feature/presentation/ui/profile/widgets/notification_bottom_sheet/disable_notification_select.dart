@@ -38,7 +38,9 @@ class DisableNotificationSelect extends StatelessWidget {
             content: Text(
               snackText,
               style: theme.textTheme.px14.copyWith(
-                color: theme.brightness == Brightness.light ? theme.cardColor : theme.background,
+                color: theme.brightness == Brightness.light
+                    ? theme.cardColor
+                    : theme.background,
               ),
             ),
           ),

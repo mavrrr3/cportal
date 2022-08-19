@@ -22,12 +22,12 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePageState extends State<ProfilePage> {
   final notificationController = SwitchController();
-  final biometricAuthController = SwitchController();
+  final fingerPrintAuthController = SwitchController();
 
   CustomTheme? theme;
 
@@ -74,18 +74,25 @@ class _ProfilePageState extends State<ProfilePage> {
                   ProfileSectionItem(
                     title: localizedStrings.notifications,
                     prefixIcon: ImageAssets.bell,
-                    suffix: ProfileSwitch(controller: notificationController),
-                    onTap: () => notificationController.value
-                        ? showDisableNotificationPopup(context)
-                        : notificationController.value =
-                            !notificationController.value,
+                    suffix: ProfileSwitch(
+                      controller: notificationController,
+                      switchType: ProfileSwitchType.notification,
+                    ),
+                    onTap: () {
+                      if (notificationController.value) {
+                        showDisableNotificationPopup(context);
+                      }
+                      notificationController.value = true;
+                    },
                   ),
                   ProfileSectionItem(
                     title: localizedStrings.fingerPrint,
                     prefixIcon: ImageAssets.smallFingerPrint,
-                    suffix: ProfileSwitch(controller: biometricAuthController),
-                    onTap: () => biometricAuthController.value =
-                        !biometricAuthController.value,
+                    suffix: ProfileSwitch(
+                      controller: fingerPrintAuthController,
+                    ),
+                    onTap: () => fingerPrintAuthController.value =
+                        !fingerPrintAuthController.value,
                   ),
                   ProfileSectionItem(
                     title: localizedStrings.changePin,
@@ -141,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() {
     notificationController.dispose();
-    biometricAuthController.dispose();
+    fingerPrintAuthController.dispose();
     super.dispose();
   }
 }
