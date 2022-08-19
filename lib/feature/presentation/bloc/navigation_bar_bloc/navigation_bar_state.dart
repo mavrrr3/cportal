@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/feature/domain/entities/menu_button_entity.dart';
 import 'package:equatable/equatable.dart';
 
@@ -7,23 +8,23 @@ class NavigationBarState extends Equatable {
 
   final List<MenuButtonEntity> menuItems = [
     MenuButtonEntity(
-      img: 'assets/icons/navbar/main.svg',
+      img: ImageAssets.mainPage,
       text: 'Главная',
     ),
     MenuButtonEntity(
-      img: 'assets/icons/navbar/news.svg',
+      img: ImageAssets.newsPage,
       text: 'Новости',
     ),
     MenuButtonEntity(
-      img: 'assets/icons/navbar/questions.svg',
+      img: ImageAssets.questionsPage,
       text: 'Вопросы',
     ),
     MenuButtonEntity(
-      img: 'assets/icons/navbar/declaration.svg',
+      img: ImageAssets.declarationPage,
       text: 'Заявления',
     ),
     MenuButtonEntity(
-      img: 'assets/icons/navbar/contacts.svg',
+      img: ImageAssets.contactsPage,
       text: 'Контакты',
     ),
   ];

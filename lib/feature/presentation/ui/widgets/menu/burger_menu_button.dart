@@ -16,7 +16,7 @@ class BurgerMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return (kIsWeb && ResponsiveWrapper.of(context).isSmallerThan(TABLET))
+    return (kIsWeb && ResponsiveWrapper.of(context).isSmallerThan(DESKTOP))
         ? GestureDetector(
             onTap: onTap,
             child: Padding(

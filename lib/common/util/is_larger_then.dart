@@ -8,3 +8,9 @@ bool isLargerThenTablet(BuildContext context) {
 bool isLargerThenMobile(BuildContext context) {
   return ResponsiveWrapper.of(context).isLargerThan(MOBILE);
 }
+
+bool isTablet(BuildContext context) {
+  final double width = MediaQuery.of(context).size.width;
+
+  return width > 600 && width <= 1024;
+}

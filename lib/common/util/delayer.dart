@@ -18,4 +18,11 @@ class Delayer {
     }
     timer = Timer(Duration(milliseconds: milliseconds), action);
   }
+
+  static Stream<String> tick({required int ticks}) {
+    return Stream.periodic(
+      const Duration(seconds: 1),
+      (x) => (ticks - x - 1).toString(),
+    ).take(ticks);
+  }
 }

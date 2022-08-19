@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_lambdas
 
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
@@ -25,7 +27,8 @@ class SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+    final width = MediaQuery.of(context).size.width;
 
     return OnHover(
       builder: (isHovered) {
@@ -50,7 +53,7 @@ class SearchInput extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: isLargerThenTablet(context) ? 510 : 200,
+                width: isLargerThenTablet(context) ? 610 : width - 160,
                 child: TextField(
                   showCursor: true,
                   controller: controller,
@@ -103,10 +106,13 @@ double getSearchContainerWidth(
   BuildContext context,
 ) {
   final double width = MediaQuery.of(context).size.width;
+  log(width.toString());
 
   return isLargerThenTablet(context)
-      ? 584
+      ? 750
       : kIsWeb
           ? width - 136
-          : width - 84;
+          : isTablet(context)
+              ? width - 116
+              : width - 84;
 }
