@@ -7,18 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class SearchWithFilter extends StatelessWidget {
+class SearchWithFilter extends StatefulWidget {
   final TextEditingController searchController;
   final Function(String) onSearch;
+  final Function onSearchClear;
   final Function() onFilterTap;
 
   const SearchWithFilter({
     Key? key,
     required this.searchController,
     required this.onSearch,
+    required this.onSearchClear,
     required this.onFilterTap,
   }) : super(key: key);
 
+  @override
+  State<SearchWithFilter> createState() => _SearchWithFilterState();
+}
+
+class _SearchWithFilterState extends State<SearchWithFilter> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveConstraints(
@@ -42,17 +49,16 @@ class SearchWithFilter extends StatelessWidget {
               children: [
                 // Поиск.
                 SearchInput(
-                  controller: searchController,
+                  controller: widget.searchController,
                   onChanged: (text) async {
-                    onSearch(text);
+                    widget.onSearch(text);
                   },
-                  //TODO: flutfix Роман сделает как надо в контактах и заявках
-                  onTap: searchController.clear,
+                  onTap: widget.onSearchClear,
                 ),
 
                 // Фильтр.
                 OpenFilterButton(
-                  onTap: onFilterTap,
+                  onTap: widget.onFilterTap,
                 ),
               ],
             ),
