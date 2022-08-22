@@ -1,31 +1,21 @@
 import 'dart:async';
-import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_content.dart';
+import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_sliver_app_bar.dart';
 import 'package:cportal_flutter/service_locator.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/only_selected_filters_service.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
-import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class ContactsPage extends StatefulWidget {
@@ -38,7 +28,6 @@ class ContactsPage extends StatefulWidget {
 class _ContactsPageState extends State<ContactsPage> {
   late ScrollController _scrollController;
   late TextEditingController _searchController;
-  final _delayer = Delayer(milliseconds: 500);
 
   @override
   void initState() {
@@ -51,7 +40,7 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
     _setupScrollController(context);
 
     return GestureDetector(
@@ -61,142 +50,28 @@ class _ContactsPageState extends State<ContactsPage> {
         body: Stack(
           children: [
             SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: kIsWeb ? 12 : 11,
-                  ),
-                  Padding(
-                    padding: getHorizontalPadding(context),
-                    child: SearchWithFilter(
-                      searchController: _searchController,
-                      onSearch: (text) {
-                        _delayer.run(() => _onSearchInput(text));
-                      },
-                      onFilterTap: () async {
-                        if (!ResponsiveWrapper.of(context)
-                            .isLargerThan(MOBILE)) {
-                          await showFilterMobile(
-                            context,
-                            onApply: _onApplyFilter,
-                            onClear: _onClearFilter,
-                            type: FilterType.contacts,
-                          ).whenComplete(() {
-                            _sendFilters(context);
-                          });
-                        } else {
-                          context.read<FilterVisibilityBloc>().add(
-                                const FilterChangeVisibilityEvent(
-                                  isActive: true,
-                                ),
-                              );
-                        }
-                      },
-                    ),
+              child: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                controller: _scrollController,
+                slivers: [
+                  // Поиск с фильтром.
+                  ContactsSliverAppBar(
+                    searchController: _searchController,
+                    onFilterTap: _onFilterTap,
+                    onSearch: _onSearchInput,
+                    onSearchClear: _onSearchClear,
                   ),
 
-                  // Выбранные фильтры.
-                  BlocBuilder<FilterContactsBloc, FilterState>(
-                    builder: (context, state) {
-                      if (state is FilterLoadedState) {
-                        return SelectedFiltersView(
-                          filters: state.contactsFilters,
-                          onRemove: (item, i) async {
-                            context.read<FilterContactsBloc>().add(
-                                  FilterRemoveItemEvent(
-                                    filterIndex: i,
-                                    item: item,
-                                  ),
-                                );
-                            await Future<dynamic>.delayed(
-                              const Duration(milliseconds: 150),
-                            );
-                            _sendFilters(context, isFromRemove: true);
-                          },
-                        );
-                      }
-
-                      // TODO: отработать другие стейты.
-                      return const SizedBox(height: 31);
-                    },
-                  ),
-                  BlocBuilder<ContactsBloc, ContactsState>(
-                    builder: (context, state) {
-                      List<ProfileEntity> contacts = [];
-                      if (state is ContactsLoadingState && state.isFirstFetch) {
-                        return const Expanded(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      } else if (state is ContactsLoadingState) {
-                        contacts = state.oldContacts;
-                      }
-
-                      if (state is ContactsLoadedState) {
-                        contacts = state.contacts;
-                      }
-
-                      return contacts.isNotEmpty
-                          ? Expanded(
-                              child: SingleChildScrollView(
-                                controller: _scrollController,
-                                physics: const BouncingScrollPhysics(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    /// [Не удалять, нужная фича]
-                                    // Избранные.
-                                    // if (state.favorites.isNotEmpty)
-                                    //   Padding(
-                                    //     padding: EdgeInsets.only(
-                                    //       left: getSingleHorizontalPadding(
-                                    //         context,
-                                    //       ),
-                                    //       bottom: 16,
-                                    //     ),
-                                    //     child: Favorites(
-                                    //       items: state.favorites,
-                                    //       onTap: (i) async {
-                                    //         await _goToUserPage(
-                                    //           contacts,
-                                    //           i,
-                                    //         );
-                                    //       },
-                                    //     ),
-                                    //   ),
-
-                                    // Колонка контактов.
-                                    ContactsList(
-                                      items: contacts,
-                                      onTap: (i) async {
-                                        await _goToUserPage(contacts, i);
-                                      },
-                                    ),
-
-                                    const SizedBox(height: 42),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: Center(
-                                child: Text(
-                                  AppLocalizations.of(context)!.emptySearch,
-                                  style: theme.textTheme.px22.copyWith(
-                                    color: theme.text?.withOpacity(0.5),
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            );
-                    },
+                  ContactsContent(
+                    scrollController: _scrollController,
+                    sendFilters: () =>
+                        _sendFilters(context, isFromRemove: true),
                   ),
                 ],
               ),
             ),
+
+            // Подложка фильтра Web.
             BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
               builder: (_, state) {
                 return state.isActive
@@ -211,6 +86,8 @@ class _ContactsPageState extends State<ContactsPage> {
                     : const SizedBox();
               },
             ),
+
+            // Фильтр Web.
             Align(
               alignment: Alignment.centerRight,
               child: FilterWeb(
@@ -249,18 +126,23 @@ class _ContactsPageState extends State<ContactsPage> {
     });
   }
 
-  // Навигация на страницу пользователя.
-  Future<void> _goToUserPage(
-    List<ProfileEntity> contacts,
-    int i,
-  ) async {
-    if (ResponsiveWrapper.of(context).isDesktop) {
-      await _showContactProfile(contacts, i);
+  // Открывает фильтр.
+  Future<void> _onFilterTap() async {
+    if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE)) {
+      await showFilterMobile(
+        context,
+        onApply: _onApplyFilter,
+        onClear: _onClearFilter,
+        type: FilterType.contacts,
+      ).whenComplete(() {
+        _sendFilters(context);
+      });
     } else {
-      GoRouter.of(context).pushNamed(
-        NavigationRouteNames.contactProfile,
-        params: {'fid': contacts[i].id},
-      );
+      context.read<FilterVisibilityBloc>().add(
+            const FilterChangeVisibilityEvent(
+              isActive: true,
+            ),
+          );
     }
   }
 
@@ -289,42 +171,7 @@ class _ContactsPageState extends State<ContactsPage> {
         .add(const FilterChangeVisibilityEvent(isActive: false));
   }
 
-  // Профиль пользователя для Web.
-  Future<void> _showContactProfile(
-    List<ProfileEntity> contacts,
-    int i,
-  ) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-        return StatefulBuilder(
-          builder: (context, setState) {
-            final width = MediaQuery.of(context).size.width;
-
-            return Center(
-              child: Container(
-                width: width * 0.3,
-                decoration: BoxDecoration(
-                  color: theme.cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: ContactProfilePopUp(id: contacts[i].id),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _onSearchInput(
-    String text,
-  ) {
+  void _onSearchInput(String text) {
     final state = context.read<FilterContactsBloc>().state;
 
     BlocProvider.of<ContactsBloc>(
@@ -340,6 +187,26 @@ class _ContactsPageState extends State<ContactsPage> {
     );
   }
 
+  void _onSearchClear() {
+    final state = context.read<FilterContactsBloc>().state;
+
+    setState(() {
+      _searchController.clear();
+    });
+    BlocProvider.of<ContactsBloc>(
+      context,
+      listen: false,
+    ).add(
+      SearchContactsEvent(
+        query: '',
+        filters: (state is FilterLoadedState)
+            ? OnlySelectedFiltersService.count(state.contactsFilters)
+            : [],
+      ),
+    );
+  }
+
+  // Получение контактов по выбранным фильтрам.
   void _sendFilters(BuildContext context, {bool isFromRemove = false}) {
     final state = context.read<FilterContactsBloc>().state;
     if (state is FilterLoadedState) {

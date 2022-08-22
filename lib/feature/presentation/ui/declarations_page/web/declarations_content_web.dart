@@ -85,6 +85,7 @@ class DeclarationsContentWeb extends StatelessWidget {
                     SearchWithFilter(
                       searchController: searchController,
                       onSearch: (text) {},
+                      onSearchClear: () {},
                       onFilterTap: onFilterTap,
                     ),
 
