@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
@@ -14,12 +16,36 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final pinController = TextEditingController();
-  final pinFocusNode = FocusNode();
+class LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
+  late TextEditingController pinController;
+  late FocusNode pinFocusNode;
+
+  late AnimationController inputAnimationController1;
+  late AnimationController inputAnimationController2;
+  late AnimationController inputAnimationController3;
+  late AnimationController inputAnimationController4;
+  late AnimationController inputAnimationController5;
+
+  late AnimationController successAnimationController;
+
+  late AnimationController declinedAnimationController;
+
+  @override
+  void initState() {
+    pinController = TextEditingController();
+    pinFocusNode = FocusNode();
+    _setUpAnimationControllers();
+    pinController.addListener(
+      () {
+        log(pinController.text);
+      },
+    );
+    super.initState();
+  }
 
   bool isShowedBiometricAuth = false;
 
@@ -36,8 +62,14 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: ResponsiveWrapper.of(context).isLargerThan(TABLET)
-          ? LoginDesktopScreen(pinController: pinController, pinFocusNode: pinFocusNode)
-          : LoginMobileScreen(pinController: pinController, pinFocusNode: pinFocusNode),
+          ? LoginDesktopScreen(
+              pinController: pinController,
+              pinFocusNode: pinFocusNode,
+            )
+          : LoginMobileScreen(
+              pinController: pinController,
+              pinFocusNode: pinFocusNode,
+            ),
     );
   }
 
@@ -45,7 +77,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final authBloc = context.read<AuthBloc>();
     final state = authBloc.state;
 
-    if (!isShowedBiometricAuth && state is HasAuthCredentials && state.enabledBiometric != null) {
+    if (!isShowedBiometricAuth &&
+        state is HasAuthCredentials &&
+        state.enabledBiometric != null) {
       isShowedBiometricAuth = true;
 
       authBloc.add(
@@ -60,6 +94,47 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     pinController.dispose();
     pinFocusNode.dispose();
+    inputAnimationController1.dispose();
+    inputAnimationController2.dispose();
+    inputAnimationController3.dispose();
+    inputAnimationController4.dispose();
+    inputAnimationController5.dispose();
+    successAnimationController.dispose();
+    declinedAnimationController.dispose();
     super.dispose();
+  }
+
+  void _setUpAnimationControllers() {
+    inputAnimationController1 = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    inputAnimationController2 = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    inputAnimationController3 = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    inputAnimationController4 = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+
+    inputAnimationController5 = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+
+    successAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    declinedAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
   }
 }

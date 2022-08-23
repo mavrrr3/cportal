@@ -2,8 +2,10 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/mobile_animations/pin_code_success_animation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/mobile_pin_code_field.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_code_desktop_input/pin_code_desktop_input.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_code_field.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/show_connecting_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -99,13 +101,15 @@ class _EnterPinAreaState extends State<EnterPinArea> {
                 codeFocusNode: widget.pinFocusNode,
               )
             else
-              PinCodeField(
-                forceErrorState: state is WrongPinCode,
-                pinCodeController: widget.pinController,
-                pinCodeFocusNode: widget.pinFocusNode,
-                onCompleted: (pinCode) =>
-                    authBloc.add(LogInWithPinCode(pinCode)),
-              ),
+              const MobilePinCodeField(),
+
+            // PinCodeField(
+            //   forceErrorState: state is WrongPinCode,
+            //   pinCodeController: widget.pinController,
+            //   pinCodeFocusNode: widget.pinFocusNode,
+            //   onCompleted: (pinCode) =>
+            //       authBloc.add(LogInWithPinCode(pinCode)),
+            // ),
           ],
         );
       },
