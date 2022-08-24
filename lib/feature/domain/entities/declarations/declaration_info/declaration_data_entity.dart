@@ -1,9 +1,9 @@
 class DeclarationDataEntity {
   final String title;
-  final String description;
+  final String value;
 
   DeclarationDataEntity({
-   required  this.title,
-   required  this.description,
+    required this.title,
+    required this.value,
   });
 }

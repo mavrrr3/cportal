@@ -2,9 +2,9 @@
 
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_data_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_document_model.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_enum.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_status_enum.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_model.dart';
-import 'package:cportal_flutter/feature/data/models/user/declaration_user_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_info_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -18,62 +18,73 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
   final String id;
 
   @HiveField(1)
-  final String title;
-
-  @HiveField(2)
-  final DeclarationEnum type;
-
-  @HiveField(3)
   final DateTime date;
 
+  @HiveField(2)
+  final String title;
+
+  @HiveField(3)
+  final String status;
+
+  @JsonKey(name: 'current_step')
   @HiveField(4)
-  final String priority;
+  final int currentStep;
 
+  @JsonKey(name: 'all_steps')
   @HiveField(5)
-  final double progress;
+  final int allSteps;
 
+  @JsonKey(name: 'description')
   @HiveField(6)
-  final DeclarationUserModel initiator;
+  final String progressDescription;
 
+  @JsonKey(name: 'description_enum', defaultValue: DescriptionEnum.def)
   @HiveField(7)
-  final DeclarationUserModel responsible;
+  final DescriptionEnum descriptionEnum;
 
   @HiveField(8)
-  final List<DeclarationStepModel> steps;
+  final String priority;
 
+  @JsonKey(name: 'parameters', defaultValue: <DeclarationDataModel>[])
   @HiveField(9)
-  final List<DeclarationDocumentModel> documents;
+  final List<DeclarationDataModel> params;
 
+  @JsonKey(defaultValue: <DeclarationStepModel>[])
   @HiveField(10)
-  final List<DeclarationDataModel> data;
+  final List<DeclarationStepModel> actions;
+
+  @JsonKey(defaultValue: <DeclarationDocumentModel>[])
+  @HiveField(11)
+  final List<DeclarationDocumentModel> documents;
 
   DeclarationInfoModel({
     required this.id,
-    required this.title,
-    required this.type,
     required this.date,
+    required this.title,
+    required this.status,
+    required this.currentStep,
+    required this.allSteps,
+    required this.progressDescription,
+    required this.descriptionEnum,
     required this.priority,
-    required this.progress,
-    required this.initiator,
-    required this.responsible,
-    required this.steps,
+    required this.params,
+    required this.actions,
     required this.documents,
-    required this.data,
   }) : super(
           id: id,
-          title: title,
-          type: type,
           date: date,
+          title: title,
+          status: status,
+          currentStep: currentStep,
+          allSteps: allSteps,
+          progressDescription: progressDescription,
+          descriptionEnum: descriptionEnum,
           priority: priority,
-          progress: progress,
-          initiator: initiator,
-          responsible: responsible,
-          steps: steps,
+          params: params,
+          actions: actions,
           documents: documents,
-          data: data,
         );
 
-        factory DeclarationInfoModel.fromJson(Map<String, dynamic> json) =>
+  factory DeclarationInfoModel.fromJson(Map<String, dynamic> json) =>
       _$DeclarationInfoModelFromJson(json);
-
 }

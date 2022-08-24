@@ -21,7 +21,7 @@ class DeclarationDocumentModelAdapter
     };
     return DeclarationDocumentModel(
       title: fields[0] as String,
-      url: fields[1] as String,
+      file: fields[1] as String,
     );
   }
 
@@ -32,7 +32,7 @@ class DeclarationDocumentModelAdapter
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.url);
+      ..write(obj.file);
   }
 
   @override
@@ -54,5 +54,5 @@ DeclarationDocumentModel _$DeclarationDocumentModelFromJson(
         Map<String, dynamic> json) =>
     DeclarationDocumentModel(
       title: json['title'] as String,
-      url: json['url'] as String,
+      file: json['file'] as String,
     );

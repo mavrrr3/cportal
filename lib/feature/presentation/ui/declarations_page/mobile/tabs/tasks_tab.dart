@@ -1,9 +1,11 @@
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksTab extends StatelessWidget {
   final ScrollController scrollController;
@@ -13,33 +15,45 @@ class TasksTab extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+
     // Список задач.
     return BlocBuilder<DeclarationsBloc, DeclarationsState>(
       builder: (context, state) {
         if (state is DeclarationsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
         if (state is DeclarationsLoadedState) {
-          return CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverOverlapInjector(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              ),
-              SliverPadding(
-                padding: getHorizontalPadding(context),
-                sliver: SliverToBoxAdapter(
-                  child: DeclarationsList(
-                    items: state.tasks,
-                    scrollController: scrollController,
+          return state.tasks.isNotEmpty
+              ? CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context,
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: getHorizontalPadding(context),
+                      sliver: SliverToBoxAdapter(
+                        child: DeclarationsList(
+                          items: state.tasks,
+                          scrollController: scrollController,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(top: 128),
+                  child: Text(
+                    strings.emptyTasks,
+                    style:
+                        theme.textTheme.px22.copyWith(color: theme.textLight),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
-            ],
-          );
+                );
         }
 
         return const SizedBox();

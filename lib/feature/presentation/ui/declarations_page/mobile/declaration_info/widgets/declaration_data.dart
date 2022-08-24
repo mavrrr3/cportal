@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_data_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeclarationData extends StatelessWidget {
   final List<DeclarationDataEntity> data;
@@ -8,7 +9,8 @@ class DeclarationData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+    final strings = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +25,7 @@ class DeclarationData extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              data[i].description,
+              data[i].value.isNotEmpty ? data[i].value : strings.empty,
               style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),

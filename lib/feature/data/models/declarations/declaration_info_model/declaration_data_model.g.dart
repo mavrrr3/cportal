@@ -20,7 +20,7 @@ class DeclarationDataModelAdapter extends TypeAdapter<DeclarationDataModel> {
     };
     return DeclarationDataModel(
       title: fields[0] as String,
-      description: fields[1] as String,
+      value: fields[1] as String,
     );
   }
 
@@ -31,7 +31,7 @@ class DeclarationDataModelAdapter extends TypeAdapter<DeclarationDataModel> {
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.description);
+      ..write(obj.value);
   }
 
   @override
@@ -53,5 +53,5 @@ DeclarationDataModel _$DeclarationDataModelFromJson(
         Map<String, dynamic> json) =>
     DeclarationDataModel(
       title: json['title'] as String,
-      description: json['description'] as String,
+      value: json['value'] as String,
     );

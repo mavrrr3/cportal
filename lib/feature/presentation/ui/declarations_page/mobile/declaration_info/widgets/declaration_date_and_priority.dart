@@ -1,8 +1,6 @@
-import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 class DeclarationDateAndPriority extends StatelessWidget {
@@ -16,7 +14,7 @@ class DeclarationDateAndPriority extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     final dateFormatter = DateFormat('d.MM.yyyy\nH:m:s');
 
@@ -37,29 +35,18 @@ class DeclarationDateAndPriority extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(width: 45),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+        const SizedBox(width: 76),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              ImageAssets.highPriority,
-              width: 24,
+            Text(
+              AppLocalizations.of(context)!.priority,
+              style: theme.textTheme.px14,
             ),
-            const SizedBox(width: 2),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.priority,
-                  style: theme.textTheme.px14,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  priority,
-                  style: theme.textTheme.px16
-                      .copyWith(fontWeight: FontWeight.w700),
-                ),
-              ],
+            const SizedBox(height: 12),
+            Text(
+              priority,
+              style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
             ),
           ],
         ),

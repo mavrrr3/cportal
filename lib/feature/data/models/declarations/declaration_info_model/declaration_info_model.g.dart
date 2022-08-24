@@ -20,45 +20,48 @@ class DeclarationInfoModelAdapter extends TypeAdapter<DeclarationInfoModel> {
     };
     return DeclarationInfoModel(
       id: fields[0] as String,
-      title: fields[1] as String,
-      type: fields[2] as DeclarationEnum,
-      date: fields[3] as DateTime,
-      priority: fields[4] as String,
-      progress: fields[5] as double,
-      initiator: fields[6] as DeclarationUserModel,
-      responsible: fields[7] as DeclarationUserModel,
-      steps: (fields[8] as List).cast<DeclarationStepModel>(),
-      documents: (fields[9] as List).cast<DeclarationDocumentModel>(),
-      data: (fields[10] as List).cast<DeclarationDataModel>(),
+      date: fields[1] as DateTime,
+      title: fields[2] as String,
+      status: fields[3] as String,
+      currentStep: fields[4] as int,
+      allSteps: fields[5] as int,
+      progressDescription: fields[6] as String,
+      descriptionEnum: fields[7] as DescriptionEnum,
+      priority: fields[8] as String,
+      params: (fields[9] as List).cast<DeclarationDataModel>(),
+      actions: (fields[10] as List).cast<DeclarationStepModel>(),
+      documents: (fields[11] as List).cast<DeclarationDocumentModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, DeclarationInfoModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.title)
-      ..writeByte(2)
-      ..write(obj.type)
-      ..writeByte(3)
       ..write(obj.date)
+      ..writeByte(2)
+      ..write(obj.title)
+      ..writeByte(3)
+      ..write(obj.status)
       ..writeByte(4)
-      ..write(obj.priority)
+      ..write(obj.currentStep)
       ..writeByte(5)
-      ..write(obj.progress)
+      ..write(obj.allSteps)
       ..writeByte(6)
-      ..write(obj.initiator)
+      ..write(obj.progressDescription)
       ..writeByte(7)
-      ..write(obj.responsible)
+      ..write(obj.descriptionEnum)
       ..writeByte(8)
-      ..write(obj.steps)
+      ..write(obj.priority)
       ..writeByte(9)
-      ..write(obj.documents)
+      ..write(obj.params)
       ..writeByte(10)
-      ..write(obj.data);
+      ..write(obj.actions)
+      ..writeByte(11)
+      ..write(obj.documents);
   }
 
   @override
@@ -80,29 +83,35 @@ DeclarationInfoModel _$DeclarationInfoModelFromJson(
         Map<String, dynamic> json) =>
     DeclarationInfoModel(
       id: json['id'] as String,
-      title: json['title'] as String,
-      type: $enumDecode(_$DeclarationEnumEnumMap, json['type']),
       date: DateTime.parse(json['date'] as String),
+      title: json['title'] as String,
+      status: json['status'] as String,
+      currentStep: json['current_step'] as int,
+      allSteps: json['all_steps'] as int,
+      progressDescription: json['description'] as String,
+      descriptionEnum: $enumDecodeNullable(
+              _$DescriptionEnumEnumMap, json['description_enum']) ??
+          DescriptionEnum.def,
       priority: json['priority'] as String,
-      progress: (json['progress'] as num).toDouble(),
-      initiator: DeclarationUserModel.fromJson(
-          json['initiator'] as Map<String, dynamic>),
-      responsible: DeclarationUserModel.fromJson(
-          json['responsible'] as Map<String, dynamic>),
-      steps: (json['steps'] as List<dynamic>)
-          .map((e) => DeclarationStepModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      documents: (json['documents'] as List<dynamic>)
-          .map((e) =>
-              DeclarationDocumentModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      data: (json['data'] as List<dynamic>)
-          .map((e) => DeclarationDataModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      params: (json['parameters'] as List<dynamic>?)
+              ?.map((e) =>
+                  DeclarationDataModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      actions: (json['actions'] as List<dynamic>?)
+              ?.map((e) =>
+                  DeclarationStepModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      documents: (json['documents'] as List<dynamic>?)
+              ?.map((e) =>
+                  DeclarationDocumentModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
-const _$DeclarationEnumEnumMap = {
-  DeclarationEnum.def: 'Стандартный',
-  DeclarationEnum.task: 'Стандартный',
-  DeclarationEnum.documents: 'Стандартный',
+const _$DescriptionEnumEnumMap = {
+  DescriptionEnum.def: 'Стандартный',
+  DescriptionEnum.task: 'Задача',
+  DescriptionEnum.expired: 'Истек срок',
 };

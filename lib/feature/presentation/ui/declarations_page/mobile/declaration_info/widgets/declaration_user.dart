@@ -10,7 +10,7 @@ class DeclarationUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final  theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

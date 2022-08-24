@@ -68,7 +68,7 @@ class DeclarationCardWithStatus extends StatelessWidget {
                   top: -9,
                   child: StatusBadge(
                     title: item.status,
-                    color: ColorService.declarationBadge(item.status),
+                    color: ColorService.declarationStatus(item.status),
                   ),
                 ),
               ],

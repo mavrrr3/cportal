@@ -24,7 +24,7 @@ class ColorService {
     return Color(int.parse(buffer.toString(), radix: 16));
   }
 
-  static Color declarationBadge(String status) {
+  static Color declarationStatus(String status) {
     switch (status) {
       case 'В работе':
         return const Color(0xffCF5AF8);

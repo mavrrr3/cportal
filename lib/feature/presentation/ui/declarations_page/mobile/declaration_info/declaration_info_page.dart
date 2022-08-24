@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
 
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_state.dart';
@@ -9,13 +10,10 @@ import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_progress.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_steps_history.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_user.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:swipe/swipe.dart';
@@ -38,16 +36,14 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
   void initState() {
     super.initState();
     _isHistoryExpanded = true;
-    BlocProvider.of<SingleDeclarationBloc>(
-      context,
-      listen: false,
-    ).add(GetSingleDeclarationEvent(widget.id));
+    context
+        .read<SingleDeclarationBloc>()
+        .add(GetSingleDeclarationEvent(widget.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    final double width = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Swipe(
       onSwipeRight: () => context.pop(),
@@ -56,6 +52,10 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
         body: BlocBuilder<SingleDeclarationBloc, SingleDeclarationState>(
           builder: (context, state) {
+            if (state is SingleDeclarationLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
             if (state is SingleDeclarationLoadedState) {
               return SafeArea(
                 child: SingleChildScrollView(
@@ -73,14 +73,19 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
                         // Прогресс и текущий этап.
                         DeclarationProgress(
-                          progress: state.declaration.progress,
-                          currentStep: 'Необходимо ознакомиться',
+                          currentStep: state.declaration.currentStep,
+                          allSteps: state.declaration.allSteps,
+                          status: state.declaration.status,
+                          description: state.declaration.progressDescription,
+                          color: ColorService.declarationStatus(
+                            state.declaration.status,
+                          ),
                         ),
                         const SizedBox(height: 24),
 
                         // История этапов.
                         DeclarationStepsHistory(
-                          steps: state.declaration.steps,
+                          steps: state.declaration.actions,
                           isHistoryExpanded: _isHistoryExpanded,
                           onTap: () {
                             setState(() {
@@ -92,24 +97,11 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
                         // Дата и приоритет.
                         DeclarationDateAndPriority(
-                          date: DateTime.now(),
+                          date: state.declaration.date,
                           priority: state.declaration.priority,
                         ),
                         const SizedBox(height: 24),
 
-                        // Инциатор.
-                        DeclarationUser(
-                          title: AppLocalizations.of(context)!.initiator,
-                          user: state.declaration.initiator,
-                        ),
-
-                        // Ответственный.
-                        const SizedBox(height: 16),
-                        DeclarationUser(
-                          title: AppLocalizations.of(context)!.responsible,
-                          user: state.declaration.responsible,
-                        ),
-                        const SizedBox(height: 24),
                         Divider(
                           color: theme.brightness == Brightness.light
                               ? theme.black?.withOpacity(0.08)
@@ -119,28 +111,28 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         const SizedBox(height: 16),
 
                         // Подробная информация о заявлении.
-                        DeclarationData(data: state.declaration.data),
+                        DeclarationData(data: state.declaration.params),
                         const SizedBox(height: 32),
 
-                        state.declaration.progress != 1
-                            ? Button.factory(
-                                context,
-                                type: ButtonEnum.filled,
-                                onTap: () {},
-                                text: AppLocalizations.of(context)!
-                                    .cancelDeclaration,
-                                color: theme.red,
-                                size: Size(width - 32, 48),
-                              )
-                            : Button.factory(
-                                context,
-                                type: ButtonEnum.outlined,
-                                onTap: () {},
-                                text: AppLocalizations.of(context)!
-                                    .archiveDeclaration,
-                                size: Size(width - 32, 48),
-                              ),
-                        const SizedBox(height: 16),
+                        // state.declaration.progress != 1
+                        //     ? Button.factory(
+                        //         context,
+                        //         type: ButtonEnum.filled,
+                        //         onTap: () {},
+                        //         text: AppLocalizations.of(context)!
+                        //             .cancelDeclaration,
+                        //         color: theme.red,
+                        //         size: Size(width - 32, 48),
+                        //       )
+                        //     : Button.factory(
+                        //         context,
+                        //         type: ButtonEnum.outlined,
+                        //         onTap: () {},
+                        //         text: AppLocalizations.of(context)!
+                        //             .archiveDeclaration,
+                        //         size: Size(width - 32, 48),
+                        //       ),
+                        // const SizedBox(height: 16),
                       ],
                     ),
                   ),

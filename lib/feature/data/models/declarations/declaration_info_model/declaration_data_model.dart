@@ -12,14 +12,14 @@ class DeclarationDataModel extends DeclarationDataEntity {
   final String title;
 
   @HiveField(1)
-  final String description;
+  final String value;
 
   DeclarationDataModel({
     required this.title,
-    required this.description,
+    required this.value,
   }) : super(
           title: title,
-          description: description,
+          value: value,
         );
 
   factory DeclarationDataModel.fromJson(Map<String, dynamic> json) =>

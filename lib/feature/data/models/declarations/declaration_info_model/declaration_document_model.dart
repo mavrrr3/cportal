@@ -13,10 +13,10 @@ class DeclarationDocumentModel extends DeclarationDocumentEntity {
   final String title;
 
   @HiveField(1)
-  final String url;
+  final String file;
 
-  DeclarationDocumentModel({required this.title, required this.url})
-      : super(title: title, url: url);
+  DeclarationDocumentModel({required this.title, required this.file})
+      : super(title: title, file: file);
 
   factory DeclarationDocumentModel.fromJson(Map<String, dynamic> json) =>
       _$DeclarationDocumentModelFromJson(json);

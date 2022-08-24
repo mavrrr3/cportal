@@ -1,9 +1,9 @@
 class DeclarationDocumentEntity {
   final String title;
-  final String url;
+  final String file;
 
   DeclarationDocumentEntity({
     required this.title,
-    required this.url,
+    required this.file,
   });
 }

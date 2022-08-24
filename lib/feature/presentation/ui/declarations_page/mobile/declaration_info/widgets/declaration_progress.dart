@@ -2,14 +2,20 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class DeclarationProgress extends StatefulWidget {
-  final double progress;
-  final String? currentStep;
+  final int currentStep;
+  final int allSteps;
+  final String status;
+  final String description;
+  final Color color;
   final int duration;
 
   const DeclarationProgress({
     Key? key,
-    required this.progress,
     required this.currentStep,
+    required this.allSteps,
+    required this.status,
+    required this.description,
+    required this.color,
     this.duration = 650,
   }) : super(key: key);
 
@@ -19,21 +25,37 @@ class DeclarationProgress extends StatefulWidget {
 
 class _DeclarationProgressState extends State<DeclarationProgress> {
   late double progress;
+  late double progressForAnimation;
 
   @override
   void initState() {
     super.initState();
+    progress = widget.currentStep / widget.allSteps;
     progressAnimation();
   }
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    final double width = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+    final width = MediaQuery.of(context).size.width;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              widget.status,
+              style: theme.textTheme.px16Bold,
+            ),
+            Text(
+              '${widget.currentStep}/${widget.allSteps}',
+              style: theme.textTheme.px16,
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
         Stack(
           children: [
             Container(
@@ -48,38 +70,37 @@ class _DeclarationProgressState extends State<DeclarationProgress> {
               height: 24,
               curve: Curves.easeInOut,
               duration: Duration(milliseconds: widget.duration),
-              width: width * progress,
+              width: width * progressForAnimation,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: widget.progress < 1 ? theme.yellow : theme.progressDone,
+                color: widget.color,
               ),
             ),
           ],
         ),
-        if (widget.currentStep != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Text(
-              widget.currentStep!,
-              style: theme.textTheme.px16,
-            ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            widget.description,
+            style: theme.textTheme.px16,
           ),
+        ),
       ],
     );
   }
 
   Future<void> progressAnimation() async {
-    if (widget.progress > 0) {
+    if (progress > 0) {
       setState(() {
-        progress = 0;
+        progressForAnimation = 0;
       });
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
       setState(() {
-        progress = widget.progress / 2;
+        progressForAnimation = progress / 2;
       });
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
       setState(() {
-        progress = widget.progress;
+        progressForAnimation = progress;
       });
     }
   }

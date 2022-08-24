@@ -9,7 +9,7 @@ import 'package:cportal_flutter/feature/data/models/connecting_devices/connectin
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_document_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_info_model.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_status_enum.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_status_enum.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
@@ -217,5 +217,5 @@ void _hiveAdaptersInit() {
     ..registerAdapter(DeclarationStepModelAdapter())
     ..registerAdapter(DescriptionEnumAdapter())
     ..registerAdapter(DeclarationDocumentModelAdapter())
-    ..registerAdapter(DeclarationStatusEnumAdapter());
+    ..registerAdapter(DeclarationStepStatusEnumAdapter());
 }

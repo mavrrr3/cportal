@@ -19,7 +19,7 @@ class DeclarationStepsHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final  theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,21 +30,11 @@ class DeclarationStepsHistory extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    ImageAssets.history,
-                    color: theme.textLight,
-                    width: 24,
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    AppLocalizations.of(context)!.history,
-                    style: theme.textTheme.px16.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
+              Text(
+                AppLocalizations.of(context)!.stepsHistory,
+                style: theme.textTheme.px16.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               SvgPicture.asset(
                 isHistoryExpanded ? ImageAssets.arrowDown : ImageAssets.arrowUp,
