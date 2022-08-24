@@ -9,8 +9,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 
-class SearchInput extends StatelessWidget {
-  final Function(String)? onChanged;
+class SearchInput extends StatefulWidget {
+  final Function(String) onChanged;
   final Function onTap;
   final TextEditingController controller;
   final FocusNode? focusNode;
@@ -18,11 +18,16 @@ class SearchInput extends StatelessWidget {
   const SearchInput({
     Key? key,
     required this.controller,
-    this.onChanged,
+    required this.onChanged,
     this.focusNode,
     required this.onTap,
   }) : super(key: key);
 
+  @override
+  State<SearchInput> createState() => _SearchInputState();
+}
+
+class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
@@ -54,11 +59,14 @@ class SearchInput extends StatelessWidget {
                 width: isLargerThenTablet(context) ? 610 : width - 160,
                 child: TextField(
                   showCursor: true,
-                  controller: controller,
-                  focusNode: focusNode,
+                  controller: widget.controller,
+                  focusNode: widget.focusNode,
                   textInputAction: TextInputAction.search,
                   autocorrect: false,
-                  onChanged: onChanged,
+                  onChanged: (text) {
+                    setState(() {});
+                    widget.onChanged(text);
+                  },
                   style: theme.textTheme.px14.copyWith(
                     color: theme.textLight,
                   ),
@@ -73,9 +81,9 @@ class SearchInput extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              if (controller.text.isNotEmpty)
+              if (widget.controller.text.isNotEmpty)
                 GestureDetector(
-                  onTap: () => onTap(),
+                  onTap: () => widget.onTap(),
                   child: Padding(
                     padding: const EdgeInsets.only(
                       top: 8,

@@ -9,7 +9,6 @@ class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
   final Function(int) onTap;
 
-  /// Рендеринг контактов.
   const ContactsList({
     Key? key,
     required this.items,

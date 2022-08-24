@@ -37,6 +37,7 @@ class DeclarationsContentMobile extends StatelessWidget {
             child: SearchWithFilter(
               searchController: searchController,
               onSearch: (text) {},
+              onSearchClear: () {},
               onFilterTap: onFilterTap,
             ),
           ),
