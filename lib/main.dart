@@ -69,6 +69,7 @@ void main() {
           DeviceOrientation.landscapeRight,
         ],
       );
+      // ignore: deprecated_member_use
       BlocOverrides.runZoned(
         () => runApp(const Main()),
         blocObserver: AppBlocObserver.instance(),
