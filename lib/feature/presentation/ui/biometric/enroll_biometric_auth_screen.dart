@@ -28,7 +28,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return BlocConsumer<BiometricBloc, BiometricState>(
       listener: (context, state) {
@@ -51,7 +51,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      strings.doFingerPrintNotInputPin,
+                      localizedStrings.doFingerPrintNotInputPin,
                       style: theme.textTheme.px14.copyWith(height: 1.71),
                     ),
                   ],
@@ -71,14 +71,16 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                     ),
                     onPressed: () => context.read<BiometricBloc>().add(
                           EnrollBiometricAuth(
-                            strings.logInToContinue,
+                            localizedStrings.logInToContinue,
                             biometricType,
                           ),
                         ),
                     child: Text(
-                      strings.yes,
+                      localizedStrings.yes,
                       style: theme.textTheme.px16Bold.copyWith(
-                        color: theme.brightness == Brightness.light ? theme.white : theme.text,
+                        color: theme.brightness == Brightness.light
+                            ? theme.white
+                            : theme.text,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),
@@ -98,7 +100,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                     ),
                     onPressed: () => _logInWithUser(context),
                     child: Text(
-                      strings.noThanks,
+                      localizedStrings.noThanks,
                       style: theme.textTheme.px16Bold.copyWith(
                         color: theme.primary,
                         leadingDistribution: TextLeadingDistribution.even,

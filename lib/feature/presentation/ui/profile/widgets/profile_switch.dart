@@ -30,8 +30,14 @@ class ProfileSwitch extends StatelessWidget {
           onChanged: (value) {
             if (!value && switchType == ProfileSwitchType.notification) {
               _showDisableNotificationPopup(context);
+              if (value) controller.value = value;
             }
-            if (value) controller.value = value;
+            if (switchType == ProfileSwitchType.fingerPrint) {
+              _turnOnOffFingerPrint(context);
+              controller.value = context
+                  .findAncestorStateOfType<ProfilePageState>()!
+                  .isEnabledFingerPrint;
+            }
           },
         ),
       ),
@@ -40,8 +46,12 @@ class ProfileSwitch extends StatelessWidget {
 
   void _showDisableNotificationPopup(BuildContext context) {
     context
-        .findRootAncestorStateOfType<ProfilePageState>()
-        ?.showDisableNotificationPopup(context);
+        .findAncestorStateOfType<ProfilePageState>()
+        ?.showDisableNotificationPopup();
+  }
+
+  void _turnOnOffFingerPrint(BuildContext context) {
+    context.findAncestorStateOfType<ProfilePageState>()?.turnOnOffFingerPrint();
   }
 }
 
