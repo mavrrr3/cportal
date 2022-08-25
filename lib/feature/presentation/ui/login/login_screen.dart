@@ -86,7 +86,6 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void dispose() {
-    pinController.removeListener(() {});
     pinController.dispose();
     pinFocusNode.dispose();
     successAnimationController.dispose();

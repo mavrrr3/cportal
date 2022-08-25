@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_int_literals
 
-import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_dot.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +22,6 @@ class _MobilePinCodeFieldState extends State<MobilePinCodeField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).extension<CustomTheme>()!;
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
