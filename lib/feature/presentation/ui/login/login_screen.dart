@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
@@ -36,7 +34,7 @@ class LoginScreenState extends State<LoginScreen>
 
     pinController.addListener(
       () {
-        log(pinController.text);
+        setState(() {});
       },
     );
     super.initState();

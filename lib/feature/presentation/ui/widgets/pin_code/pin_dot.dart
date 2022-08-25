@@ -41,11 +41,7 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
       vsync: this,
     );
 
-    widget.controller.addListener(
-      () async {
-        setState(() {});
-      },
-    );
+   
 
     subscriptionBloc = context.read<AuthBloc>().stream.listen((state) {
       if (state is WrongPinCode) {
