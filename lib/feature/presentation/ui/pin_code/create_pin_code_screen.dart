@@ -31,14 +31,15 @@ class _CreatePinCodeScreenState extends State<CreatePinCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final strings = AppLocalizations.of(context)!;
-    final createPinCode = strings.createPinCode;
-    final repeatPinCode = strings.repeatPinCode;
+    final localizedStrings = AppLocalizations.of(context)!;
+    final createPinCode = localizedStrings.createPinCode;
+    final repeatPinCode = localizedStrings.repeatPinCode;
 
     return BlocListener<PinCodeBloc, PinCodeState>(
       listener: (context, state) {
         if (state is PinCodeSuccessfullyChanged) {
-          if (!kIsMobile || context.read<BiometricBloc>().state is BiometricNotSupported) {
+          if (!kIsMobile ||
+              context.read<BiometricBloc>().state is BiometricNotSupported) {
             _logIn(context);
           } else {
             context.read<BiometricBloc>().add(const CheckBiometricSupport());

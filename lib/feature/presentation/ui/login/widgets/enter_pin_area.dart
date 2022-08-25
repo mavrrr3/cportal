@@ -36,14 +36,6 @@ class _EnterPinAreaState extends State<EnterPinArea> {
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is TryAgainLater) {
-          state.wait30Seconds.listen((tick) {
-            setState(() {
-              wait30SecIfWrongEnteringCode = tick;
-            });
-          });
-        }
-
         return Column(
           children: [
             SizedBox(
@@ -72,9 +64,16 @@ class _EnterPinAreaState extends State<EnterPinArea> {
                     child: SizedBox(
                       height: 20,
                       child: state is TryAgainLater
-                          ? Text(
-                              '${strings.tryToRepeatAfter} $wait30SecIfWrongEnteringCode секунд',
-                              style: theme.textTheme.px14,
+                          ? StreamBuilder(
+                              stream: state.wait30Seconds(),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  snapshot.data == null
+                                      ? '${strings.tryToRepeatAfter} 30 секунд'
+                                      : '${strings.tryToRepeatAfter} ${snapshot.data} секунд',
+                                  style: theme.textTheme.px14,
+                                );
+                              },
                             )
                           : state is WrongPinCode
                               ? Text(

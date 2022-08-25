@@ -13,12 +13,12 @@ class BiometricInitialState extends BiometricState {
 }
 
 class BiometricSupported extends BiometricState {
-  final BiometricType biometricType;
+  final BiometricType? biometricType;
 
   const BiometricSupported(this.biometricType);
 
   @override
-  List<Object> get props => [biometricType];
+  List<Object> get props => [biometricType!];
 }
 
 class BiometricNotSupported extends BiometricState {

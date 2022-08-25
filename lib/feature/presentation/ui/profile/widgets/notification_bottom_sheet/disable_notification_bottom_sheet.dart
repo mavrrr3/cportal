@@ -48,7 +48,8 @@ class DisableNotificationBottomSheet extends StatelessWidget {
           ),
           DisableNotificationSelect(
             title: localizedStrings.forever,
-            snackText: '${localizedStrings.notificationsTurnedOff} ${localizedStrings.forever.toLowerCase()}',
+            snackText:
+                '${localizedStrings.notificationsTurnedOff} ${localizedStrings.forever.toLowerCase()}',
             notificationController: notificationController,
           ),
         ],

@@ -15,6 +15,9 @@ import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/device/device_platform.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/finger_print_support_bloc/finger_print_support_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/is_finger_print_enabled_bloc/is_finger_print_enabled_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/turn_off_finger_print_bloc/turn_off_finger_print_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -66,6 +69,7 @@ void main() {
           DeviceOrientation.landscapeRight,
         ],
       );
+      // ignore: deprecated_member_use
       BlocOverrides.runZoned(
         () => runApp(const Main()),
         blocObserver: AppBlocObserver.instance(),
@@ -182,6 +186,15 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<FilterVisibilityBloc>(
       create: (ctx) => sl<FilterVisibilityBloc>(),
+    ),
+    BlocProvider<FingerPrintSupportBloc>(
+      create: (ctx) => sl<FingerPrintSupportBloc>(),
+    ),
+    BlocProvider<IsFingerPrintEnabledBloc>(
+      create: (ctx) => sl<IsFingerPrintEnabledBloc>(),
+    ),
+    BlocProvider<TurnOffFingerPrintBloc>(
+      create: (ctx) => sl<TurnOffFingerPrintBloc>(),
     ),
   ];
 }
