@@ -7,7 +7,7 @@ import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_device_model.dart';
 import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_devices_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
-import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
@@ -183,6 +183,7 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<FilterVisibilityBloc>(
       create: (ctx) => sl<FilterVisibilityBloc>(),
     ),
+     
   ];
 }
 

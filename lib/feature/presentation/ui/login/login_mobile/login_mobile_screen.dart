@@ -7,7 +7,6 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/widgets/enter_pin_area.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/keyboard/custom_keyboard.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/auth_mobile_layout.dart';
@@ -40,7 +39,7 @@ class _LoginMobileScreenState extends State<LoginMobileScreen> {
     final authBloc = context.read<AuthBloc>();
 
     return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
+      builder: (child, state) {
         return AuthMobileLayout(
           appBarSuffix:
               state is HasAuthCredentials && state.enabledBiometric != null
@@ -76,48 +75,20 @@ class _LoginMobileScreenState extends State<LoginMobileScreen> {
               const Spacer(),
               CustomKeyboard(
                 keyboardController: widget.pinController,
-                tapCallBack: (i) async {
-                  setState(() {});
-                  log('---- $i');
-                  final inputAnimationController = getCurrentController(i);
-                  await inputAnimationController.forward();
-                  inputAnimationController.stop();
-                  await inputAnimationController.reverse();
-                  inputAnimationController.reset();
+                onComplete: () async {
+                  await Future<dynamic>.delayed(
+                    const Duration(milliseconds: 450),
+                  );
+
+                  authBloc.add(
+                    LogInWithPinCode(context, widget.pinController.text),
+                  );
                 },
-                onComplete: () => authBloc.add(
-                  LogInWithPinCode(widget.pinController.text),
-                ),
               ),
             ],
           ),
         );
       },
     );
-  }
-
-  AnimationController getCurrentController(int i) {
-    switch (i) {
-      case 2:
-        return context
-            .findRootAncestorStateOfType<LoginScreenState>()!
-            .inputAnimationController2;
-      case 3:
-        return context
-            .findRootAncestorStateOfType<LoginScreenState>()!
-            .inputAnimationController3;
-      case 4:
-        return context
-            .findRootAncestorStateOfType<LoginScreenState>()!
-            .inputAnimationController4;
-      case 5:
-        return context
-            .findRootAncestorStateOfType<LoginScreenState>()!
-            .inputAnimationController5;
-      default:
-        return context
-            .findRootAncestorStateOfType<LoginScreenState>()!
-            .inputAnimationController1;
-    }
   }
 }

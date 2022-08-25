@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 

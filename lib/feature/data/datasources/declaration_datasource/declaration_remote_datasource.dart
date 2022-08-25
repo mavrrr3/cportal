@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/feature/data/datasources/declaration_datasource/declaration_local_datasource.dart';
-import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
 import 'package:dio/dio.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/core/error/failure.dart';

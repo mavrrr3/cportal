@@ -1,13 +1,16 @@
 // ignore_for_file: prefer_int_literals
 
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/mobile_animations/pin_code_fill_animation.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/mobile_animations/pin_code_input_animation.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_dot.dart';
 import 'package:flutter/material.dart';
 
 class MobilePinCodeField extends StatefulWidget {
+  final TextEditingController controller;
   const MobilePinCodeField({
     Key? key,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -15,28 +18,8 @@ class MobilePinCodeField extends StatefulWidget {
 }
 
 class _MobilePinCodeFieldState extends State<MobilePinCodeField> {
-  late AnimationController _inputAnimationController1;
-  late AnimationController _inputAnimationController2;
-  late AnimationController _inputAnimationController3;
-  late AnimationController _inputAnimationController4;
-
-  late AnimationController _successAnimationController;
-  late AnimationController _declinedAnimationController;
-
   @override
   void initState() {
-    _inputAnimationController1 = context
-        .findRootAncestorStateOfType<LoginScreenState>()!
-        .inputAnimationController1;
-    _inputAnimationController2 = context
-        .findRootAncestorStateOfType<LoginScreenState>()!
-        .inputAnimationController2;
-    _inputAnimationController3 = context
-        .findRootAncestorStateOfType<LoginScreenState>()!
-        .inputAnimationController3;
-    _inputAnimationController4 = context
-        .findRootAncestorStateOfType<LoginScreenState>()!
-        .inputAnimationController4;
     super.initState();
   }
 
@@ -47,67 +30,37 @@ class _MobilePinCodeFieldState extends State<MobilePinCodeField> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ScaleTransition(
-          scale: PinCodeInputAnimation(_inputAnimationController1).boxScale,
-          child: AnimatedContainer(
-            width: 16,
-            height: 16,
-            duration: const Duration(milliseconds: 150),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _isActive(1) ? theme.primary : theme.textLight,
-            ),
-          ),
-        ),
+        PinDot(controller: widget.controller, symbolIndex: 1),
         const SizedBox(width: 32),
-        ScaleTransition(
-          scale: PinCodeInputAnimation(_inputAnimationController2).boxScale,
-          child: AnimatedContainer(
-            width: 16,
-            height: 16,
-            duration: const Duration(milliseconds: 150),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _isActive(2) ? theme.primary : theme.textLight,
-            ),
-          ),
-        ),
+        PinDot(controller: widget.controller, symbolIndex: 2),
         const SizedBox(width: 32),
-        ScaleTransition(
-          scale: PinCodeInputAnimation(_inputAnimationController3).boxScale,
-          child: AnimatedContainer(
-            width: 16,
-            height: 16,
-            duration: const Duration(milliseconds: 150),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _isActive(3) ? theme.primary : theme.textLight,
-            ),
-          ),
-        ),
+        PinDot(controller: widget.controller, symbolIndex: 3),
         const SizedBox(width: 32),
-        ScaleTransition(
-          scale: PinCodeInputAnimation(_inputAnimationController4).boxScale,
-          child: AnimatedContainer(
-            width: 16,
-            height: 16,
-            duration: const Duration(milliseconds: 150),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _isActive(4) ? theme.primary : theme.textLight,
-            ),
-          ),
-        ),
+        PinDot(controller: widget.controller, symbolIndex: 4),
       ],
     );
   }
 
-  bool _isActive(int i) {
-    return context
-            .findRootAncestorStateOfType<LoginScreenState>()!
-            .pinController
-            .text
-            .length >=
-        i;
+  Widget _buildDot({
+    required AnimationController scaleController,
+    required AnimationController colorController,
+  }) {
+    return AnimatedBuilder(
+      animation: PinCodeFillAnimation(colorController).boxColor,
+      builder: (context, _) {
+        return ScaleTransition(
+          scale: PinCodeInputAnimation(scaleController).boxScaleIn,
+          child: AnimatedContainer(
+            width: 16,
+            height: 16,
+            duration: const Duration(milliseconds: 150),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: PinCodeFillAnimation(colorController).boxColor.value,
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -24,12 +24,6 @@ class LoginScreenState extends State<LoginScreen>
   late TextEditingController pinController;
   late FocusNode pinFocusNode;
 
-  late AnimationController inputAnimationController1;
-  late AnimationController inputAnimationController2;
-  late AnimationController inputAnimationController3;
-  late AnimationController inputAnimationController4;
-  late AnimationController inputAnimationController5;
-
   late AnimationController successAnimationController;
 
   late AnimationController declinedAnimationController;
@@ -39,6 +33,7 @@ class LoginScreenState extends State<LoginScreen>
     pinController = TextEditingController();
     pinFocusNode = FocusNode();
     _setUpAnimationControllers();
+
     pinController.addListener(
       () {
         log(pinController.text);
@@ -54,8 +49,9 @@ class LoginScreenState extends State<LoginScreen>
     _showBiometricPopup(context);
 
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is Authenticated) {
+          await Future<dynamic>.delayed(const Duration(milliseconds: 900));
           context.goNamed(NavigationRouteNames.mainPage);
         } else if (state is HasAuthCredentials && state is! WrongPinCode) {
           pinController.clear();
@@ -92,49 +88,17 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void dispose() {
+    pinController.removeListener(() {});
     pinController.dispose();
     pinFocusNode.dispose();
-    inputAnimationController1.dispose();
-    inputAnimationController2.dispose();
-    inputAnimationController3.dispose();
-    inputAnimationController4.dispose();
-    inputAnimationController5.dispose();
     successAnimationController.dispose();
     declinedAnimationController.dispose();
     super.dispose();
   }
 
   void _setUpAnimationControllers() {
-    inputAnimationController1 = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
-    inputAnimationController2 = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
-    inputAnimationController3 = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
-    inputAnimationController4 = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
+    successAnimationController = AnimationController(vsync: this);
 
-    inputAnimationController5 = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
-
-    successAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 600),
-      vsync: this,
-    );
-
-    declinedAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 600),
-      vsync: this,
-    );
+    declinedAnimationController = AnimationController(vsync: this);
   }
 }

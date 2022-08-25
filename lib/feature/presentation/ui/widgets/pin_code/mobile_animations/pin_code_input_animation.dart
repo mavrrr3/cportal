@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 class PinCodeInputAnimation {
   final AnimationController controller;
-  final Animation<double> boxScale;
+  final Animation<double> boxScaleIn;
 
   PinCodeInputAnimation(this.controller)
-      : boxScale = Tween(begin: 1.0, end: 1.2).animate(
+      : boxScaleIn = Tween(begin: 1.0, end: 1.2).animate(
           CurvedAnimation(
             parent: controller,
             curve: Curves.easeIn,
+            reverseCurve: Curves.easeIn,
           ),
         );
 }

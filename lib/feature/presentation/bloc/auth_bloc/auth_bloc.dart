@@ -15,7 +15,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogInWithPinCodeUseCase _logInWithPinCode;
   final LogInWithBiometricsUseCase _logInWithBiometrics;
   final HasAuthCredentialsUseCase _hasAuthCredentialsUseCase;
-  // TODO: usecase.
   final IBiometricRepository _biometricRepository;
 
   AuthBloc(
@@ -93,8 +92,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     response.fold((failure) {}, (user) => _onLogIn(emit, user));
   }
 
-  Future<void> _onWrongPinCode(Emitter<AuthState> emit) async {
+  Future<void> _onWrongPinCode(
+    Emitter<AuthState> emit,
+  ) async {
     final enabledBiometric = _getEnabledBiometric(state);
+
     emit(WrongPinCode(enabledBiometric));
     await Future.delayed(
       const Duration(seconds: 2),
