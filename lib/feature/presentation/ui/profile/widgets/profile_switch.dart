@@ -1,11 +1,14 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
+
 import 'package:flutter/material.dart';
 
 class ProfileSwitch extends StatelessWidget {
   final SwitchController controller;
-
+  final ProfileSwitchType? switchType;
   const ProfileSwitch({
     Key? key,
+    this.switchType,
     required this.controller,
   }) : super(key: key);
 
@@ -24,10 +27,31 @@ class ProfileSwitch extends StatelessWidget {
           inactiveTrackColor: theme.text?.withOpacity(0.08),
           inactiveThumbColor: theme.cardColor,
           value: value,
-          onChanged: (value) => controller.value = value,
+          onChanged: (value) {
+            if (!value && switchType == ProfileSwitchType.notification) {
+              _showDisableNotificationPopup(context);
+              if (value) controller.value = value;
+            }
+            if (switchType == ProfileSwitchType.fingerPrint) {
+              _turnOnOffFingerPrint(context);
+              controller.value = context
+                  .findAncestorStateOfType<ProfilePageState>()!
+                  .isEnabledFingerPrint;
+            }
+          },
         ),
       ),
     );
+  }
+
+  void _showDisableNotificationPopup(BuildContext context) {
+    context
+        .findAncestorStateOfType<ProfilePageState>()
+        ?.showDisableNotificationPopup();
+  }
+
+  void _turnOnOffFingerPrint(BuildContext context) {
+    context.findAncestorStateOfType<ProfilePageState>()?.turnOnOffFingerPrint();
   }
 }
 
@@ -43,3 +67,5 @@ class SwitchController extends ValueNotifier<bool> {
     this.isEnabled = false,
   }) : super(isEnabled);
 }
+
+enum ProfileSwitchType { notification, fingerPrint }

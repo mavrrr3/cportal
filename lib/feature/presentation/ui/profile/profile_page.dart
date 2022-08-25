@@ -1,8 +1,13 @@
+// ignore_for_file: avoid_types_on_closure_parameters
+
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/platform_util.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/finger_print_support_bloc/finger_print_support_bloc.dart';
+
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/turn_off_finger_print_bloc/turn_off_finger_print_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/avatar_and_userinfo.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/notification_bottom_sheet/disable_notification_bottom_sheet.dart';
@@ -22,14 +27,24 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePageState extends State<ProfilePage> {
   final notificationController = SwitchController();
-  final biometricAuthController = SwitchController();
-
+  final fingerPrintAuthController = SwitchController();
+  bool isFingerPrintSupport = false;
+  bool isEnabledFingerPrint = false;
   CustomTheme? theme;
+
+  @override
+  void initState() {
+    context.read<FingerPrintSupportBloc>().add(const CheckFingerPrintSupport());
+    context
+        .read<TurnOffFingerPrintBloc>()
+        .add(const IsFingerPrintEnabledEvent());
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -40,6 +55,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final localizedStrings = AppLocalizations.of(context)!;
+    isFingerPrintSupport =
+        context.select((FingerPrintSupportBloc bloc) => bloc.state);
+
+    isEnabledFingerPrint =
+        context.select((TurnOffFingerPrintBloc bloc) => bloc.state.isEnabled);
 
     return LayoutWithAppBar(
       icon: ImageAssets.close,
@@ -65,7 +85,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       title: localizedStrings.newEmployee,
                       prefixIcon: ImageAssets.addPerson,
                       suffix: const SectionItemArrow(),
-                      onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
+                      onTap: () =>
+                          context.goNamed(NavigationRouteNames.onBoardingStart),
                     ),
                   ),
                   const ProfileDivider(),
@@ -73,29 +94,54 @@ class _ProfilePageState extends State<ProfilePage> {
                   ProfileSectionItem(
                     title: localizedStrings.notifications,
                     prefixIcon: ImageAssets.bell,
-                    suffix: ProfileSwitch(controller: notificationController),
-                    onTap: () => notificationController.value
-                        ? showDisableNotificationPopup(context)
-                        : notificationController.value = !notificationController.value,
+                    suffix: ProfileSwitch(
+                      controller: notificationController,
+                      switchType: ProfileSwitchType.notification,
+                    ),
+                    onTap: () {
+                      if (notificationController.value) {
+                        showDisableNotificationPopup();
+                      }
+                      notificationController.value = true;
+                    },
                   ),
-                  ProfileSectionItem(
-                    title: localizedStrings.fingerPrint,
-                    prefixIcon: ImageAssets.smallFingerPrint,
-                    suffix: ProfileSwitch(controller: biometricAuthController),
-                    onTap: () => biometricAuthController.value = !biometricAuthController.value,
-                  ),
+                  if (isFingerPrintSupport) ...[
+                    BlocBuilder<TurnOffFingerPrintBloc, TurnOffFingerState>(
+                      builder: (context, state) {
+                        fingerPrintAuthController.value = state.isEnabled;
+
+                        return ProfileSectionItem(
+                          title: localizedStrings.fingerPrint,
+                          prefixIcon: ImageAssets.smallFingerPrint,
+                          suffix: ProfileSwitch(
+                            controller: fingerPrintAuthController,
+                            switchType: ProfileSwitchType.fingerPrint,
+                          ),
+                          onTap: () {
+                            turnOnOffFingerPrint();
+                            setState(() {
+                              fingerPrintAuthController.value =
+                                  !state.isEnabled;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ],
                   ProfileSectionItem(
                     title: localizedStrings.changePin,
                     prefixIcon: ImageAssets.lock,
                     suffix: const SectionItemArrow(),
-                    onTap: () => context.goNamed(NavigationRouteNames.changePin),
+                    onTap: () =>
+                        context.goNamed(NavigationRouteNames.changePin),
                   ),
                   if (kIsMobile)
                     ProfileSectionItem(
                       title: localizedStrings.devices,
                       prefixIcon: ImageAssets.addDevice,
                       suffix: const SectionItemArrow(),
-                      onTap: () => context.pushNamed(NavigationRouteNames.devices),
+                      onTap: () =>
+                          context.pushNamed(NavigationRouteNames.devices),
                     ),
                   const Padding(
                     padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -113,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void showDisableNotificationPopup(BuildContext context) {
+  void showDisableNotificationPopup() {
     showModalBottomSheet<void>(
       backgroundColor: theme?.cardColor,
       barrierColor: theme?.barrierColor,
@@ -133,10 +179,14 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void turnOnOffFingerPrint() {
+    context.read<TurnOffFingerPrintBloc>().add(const TurnOffFingerPrintEvent());
+  }
+
   @override
   void dispose() {
     notificationController.dispose();
-    biometricAuthController.dispose();
+    fingerPrintAuthController.dispose();
     super.dispose();
   }
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
-import 'package:cportal_flutter/feature/domain/repositories/i_biometric_repository.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/get_enabled_biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/has_auth_credentials_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_biometrics_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_pin_code_usecase.dart';
@@ -15,13 +15,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LogInWithPinCodeUseCase _logInWithPinCode;
   final LogInWithBiometricsUseCase _logInWithBiometrics;
   final HasAuthCredentialsUseCase _hasAuthCredentialsUseCase;
-  final IBiometricRepository _biometricRepository;
+  final GetEnabledBiometricUseCase _getEnabledBiometric;
 
   AuthBloc(
     this._logInWithPinCode,
     this._logInWithBiometrics,
     this._hasAuthCredentialsUseCase,
-    this._biometricRepository,
+    this._getEnabledBiometric,
   ) : super(const AuthInitialState()) {
     _setupEvents();
   }
@@ -46,8 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final hasAuthCredentials = await _hasAuthCredentialsUseCase();
 
     if (hasAuthCredentials) {
-      final enabledBiometricType =
-          await _biometricRepository.getEnabledBiometric();
+      final enabledBiometricType = await _getEnabledBiometric();
       emit(HasAuthCredentials(enabledBiometricType));
     } else {
       emit(const NotAuthenticated());
@@ -92,11 +91,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     response.fold((failure) {}, (user) => _onLogIn(emit, user));
   }
 
-  Future<void> _onWrongPinCode(
-    Emitter<AuthState> emit,
-  ) async {
-    final enabledBiometric = _getEnabledBiometric(state);
-
+  Future<void> _onWrongPinCode(Emitter<AuthState> emit) async {
+    final enabledBiometric = _getEnabledBiometricType(state);
     emit(WrongPinCode(enabledBiometric));
     await Future.delayed(
       const Duration(seconds: 2),
@@ -116,7 +112,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  BiometricType? _getEnabledBiometric(AuthState state) {
+  BiometricType? _getEnabledBiometricType(AuthState state) {
     return state is HasAuthCredentials ? state.enabledBiometric : null;
   }
 }

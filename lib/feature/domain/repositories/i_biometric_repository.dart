@@ -10,4 +10,8 @@ abstract class IBiometricRepository {
   Future<void> saveEnabledBiometric(BiometricType enabledBiometric);
 
   Future<BiometricType?> getEnabledBiometric();
+
+  Future<bool> isFingerPrintEnabled();
+
+  Future<bool> turnOffFingerPrintAuth();
 }

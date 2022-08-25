@@ -75,25 +75,6 @@ class _ProfileDataScreenState extends State<ProfileDataScreen> {
                             description: profile.birthDayToString!,
                           ),
                         const SizedBox(height: 8),
-                        const SizedBox(height: 20),
-                        PhoneBox(phoneNumber: profile.personalPhoneNumber),
-                        const SizedBox(height: 24),
-                        ProfileDataItem(
-                          title: localizedStrings.position,
-                          description: profile.position,
-                        ),
-                        const SizedBox(height: 8),
-                        ProfileDataItem(
-                          title: localizedStrings.department,
-                          description: profile.department,
-                        ),
-                        const SizedBox(height: 8),
-                        if (profile.birthDayToString != null)
-                          ProfileDataItem(
-                            title: localizedStrings.birthDay,
-                            description: profile.birthDayToString!,
-                          ),
-                        const SizedBox(height: 8),
                         ListView.separated(
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.only(bottom: bottomIndent),
@@ -107,7 +88,8 @@ class _ProfileDataScreenState extends State<ProfileDataScreen> {
                               description: contactData.contact,
                             );
                           },
-                          separatorBuilder: (context, index) => const SizedBox(height: 8),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 8),
                         ),
                         // Space under button.
                         const SizedBox(height: 64),
@@ -133,7 +115,9 @@ class _ProfileDataScreenState extends State<ProfileDataScreen> {
                       child: Text(
                         localizedStrings.saveChanges,
                         style: theme.textTheme.px16Bold.copyWith(
-                          color: theme.brightness == Brightness.light ? theme.white : theme.text,
+                          color: theme.brightness == Brightness.light
+                              ? theme.white
+                              : theme.text,
                         ),
                       ),
                     ),

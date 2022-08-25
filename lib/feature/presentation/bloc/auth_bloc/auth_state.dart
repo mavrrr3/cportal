@@ -32,6 +32,9 @@ class HasAuthCredentials extends AuthState {
 
   const HasAuthCredentials(this.enabledBiometric);
 
+  bool get hasFingerPrintSupport =>
+      enabledBiometric == BiometricType.fingerprint;
+
   @override
   List<Object?> get props => [enabledBiometric];
 }
@@ -44,7 +47,9 @@ class TryAgainLater extends WrongPinCode {
   const TryAgainLater(BiometricType? enabledBiometric)
       : super(enabledBiometric);
 
-  Stream<String> get wait30Seconds => Delayer.tick(ticks: 30);
+  Stream<String> wait30Seconds() async* {
+    yield* Delayer.tick(ticks: 30);
+  }
 }
 
 class AuthErrorState extends HasAuthCredentials {

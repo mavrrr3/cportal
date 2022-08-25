@@ -27,7 +27,7 @@ class _EnterConnectingCodeState extends State<EnterConnectingCode> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return SizedBox(
       width: 320,
@@ -109,12 +109,12 @@ class _EnterConnectingCodeState extends State<EnterConnectingCode> {
                 height: 20,
                 child: state is TryAgainLater
                     ? Text(
-                        '${strings.tryToRepeatAfter} $_wait30SecIfWrongEnteringCode секунд',
+                        '${localizedStrings.tryToRepeatAfter} $_wait30SecIfWrongEnteringCode секунд',
                         style: errorCodeTextStyle,
                       )
                     : state is WrongConnectingCode
                         ? Text(
-                            strings.wrongConnectingCode,
+                            localizedStrings.wrongConnectingCode,
                             style: errorCodeTextStyle.copyWith(
                               color: theme.red!.withOpacity(0.6),
                             ),

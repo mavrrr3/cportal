@@ -65,10 +65,16 @@ import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repositor
 import 'package:cportal_flutter/feature/domain/repositories/i_profile_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/biometric_authenticate_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/is_finger_print_enabled_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/get_available_biometrics.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/get_enabled_biometric_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/has_auth_credentials_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_biometrics_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_connecting_code_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/auth/log_in_with_pin_code_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/save_enabled_biometrics_usecase.dart';
+import 'package:cportal_flutter/feature/domain/usecases/biometric/turn_off_finger_print_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/generate_connecting_code_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_connecting_data_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/connecting_qr/send_scanned_data_usecase.dart';
@@ -87,6 +93,9 @@ import 'package:cportal_flutter/feature/domain/usecases/profile/search_profile_u
 import 'package:cportal_flutter/feature/domain/usecases/questions/get_single_question_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/finger_print_support_bloc/finger_print_support_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/is_finger_print_enabled_bloc/is_finger_print_enabled_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/turn_off_finger_print_bloc/turn_off_finger_print_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -122,7 +131,7 @@ Future<void> init() async {
   sl.registerFactory(() => GetSingleQuestionBloc(getSingleQuestion: sl()));
   sl.registerFactory(() => ConnectingCodeBloc(sl()));
   sl.registerFactory(() => PinCodeBloc(sl()));
-  sl.registerFactory(() => BiometricBloc(sl()));
+  sl.registerFactory(() => BiometricBloc(sl(), sl(), sl()));
   sl.registerFactory(() => FetchNewsBloc(
         fetchNews: sl(),
         fetchNewsByCategory: sl(),
@@ -139,13 +148,16 @@ Future<void> init() async {
         searchContacts: sl(),
       ));
   sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
-
   sl.registerFactory(DeclarationsBloc.new);
   sl.registerFactory(() => ConnectingQrBloc(sl(), sl(), sl()));
   sl.registerFactory(() => ConnectingDevicesBloc(sl(), sl()));
-
   sl.registerFactory(() => MainSearchBloc(sl()));
   sl.registerFactory(FilterVisibilityBloc.new);
+  sl.registerFactory(() => FingerPrintSupportBloc(sl()));
+  sl.registerFactory(() => IsFingerPrintEnabledBloc(sl()));
+  sl.registerFactory(
+    () => TurnOffFingerPrintBloc(sl(), sl(), sl(), sl(), sl()),
+  );
 
   // USECASE.
   sl.registerLazySingleton(() => GetSingleProfileUseCase(sl()));
@@ -168,6 +180,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SendScannedDataUseCase(sl()));
   sl.registerLazySingleton(() => SendConnectingDataUseCase(sl()));
   sl.registerLazySingleton(() => MainSearchUseCase(sl()));
+  sl.registerLazySingleton(() => GetEnabledBiometricUseCase(sl()));
+  sl.registerLazySingleton(() => BiometricAuthenticateUsecase(sl()));
+  sl.registerLazySingleton(() => GetAvailableBiometrics(sl()));
+  sl.registerLazySingleton(() => SaveEnabledBiometricsUseCase(sl()));
+  sl.registerLazySingleton(() => IsFingerPrintEnabledUsecase(sl()));
+  sl.registerLazySingleton(() => TurnOffFingerPrintUseCase(sl()));
 
   // REPOSITORY
   // Произвел адаптацию под web
