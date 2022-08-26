@@ -1,7 +1,7 @@
 // ignore_for_file: overridden_fields, annotate_overrides
 
-import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

@@ -19,7 +19,7 @@ class NavigationBarState extends Equatable {
     ),
     MenuButtonEntity(
       img: 'assets/icons/navbar/declaration.svg',
-      text: 'Заявления',
+      text: 'Документы',
     ),
     MenuButtonEntity(
       img: 'assets/icons/navbar/contacts.svg',

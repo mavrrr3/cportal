@@ -1,7 +1,7 @@
 // ignore_for_file: overridden_fields, annotate_overrides
 
-import 'package:cportal_flutter/feature/data/models/declarations/task_status_enum.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_step_entity.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/task_status_enum.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_step_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 

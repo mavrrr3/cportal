@@ -1,7 +1,7 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/formatter_util.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
 import 'package:flutter/material.dart';
 
 class CardDescription extends StatelessWidget {

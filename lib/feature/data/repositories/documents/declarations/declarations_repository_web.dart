@@ -1,15 +1,15 @@
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_declarations_remote_datasource.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_info_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_declaration_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 
-class DeclarationRepositoryWeb extends IDeclarationRepository {
+class DeclarationsRepositoryWeb extends IDeclarationRepository {
   final IDeclarationsRemoteDataSource remoteDataSource;
 
-  DeclarationRepositoryWeb({required this.remoteDataSource});
+  DeclarationsRepositoryWeb({required this.remoteDataSource});
 
   @override
   Future<Either<Failure, List<DeclarationEntity>>> fetchDeclarations(int page) async {

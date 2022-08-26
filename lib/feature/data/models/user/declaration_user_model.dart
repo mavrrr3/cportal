@@ -1,6 +1,6 @@
 // ignore_for_file: overridden_fields
 
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_user_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_user_entity.dart';
 import 'package:hive/hive.dart';
 
 part 'declaration_user_model.g.dart';

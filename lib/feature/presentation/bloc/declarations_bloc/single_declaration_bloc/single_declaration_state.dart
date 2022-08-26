@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_info_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_info_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class SingleDeclarationState extends Equatable {

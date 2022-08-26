@@ -1,7 +1,7 @@
-import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_data_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_document_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_step_entity.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_data_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_document_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_step_entity.dart';
 
 class DeclarationInfoEntity {
   final String id;

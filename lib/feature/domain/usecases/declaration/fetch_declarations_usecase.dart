@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/core/usecases/i_usecase.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_declaration_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:cportal_flutter/core/error/failure.dart';

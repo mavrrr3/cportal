@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_model.dart';
 
 abstract class IDeclarationsLocalDataSource {
   /// Извлекаем [List<DeclarationModel>] из кеша

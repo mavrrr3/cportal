@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
 
 class DeclarationEntity {
   final String id;

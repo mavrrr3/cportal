@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_document_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_document_entity.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

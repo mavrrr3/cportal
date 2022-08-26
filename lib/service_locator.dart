@@ -48,8 +48,7 @@ import 'package:cportal_flutter/feature/data/repositories/connecting_devices_rep
 import 'package:cportal_flutter/feature/data/repositories/connecting_qr_repository.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/contacts_repository_web.dart';
-import 'package:cportal_flutter/feature/data/repositories/declaration/declaration_repository_mobile.dart';
-import 'package:cportal_flutter/feature/data/repositories/declaration/declaration_repository_web.dart';
+import 'package:cportal_flutter/feature/data/repositories/documents/declarations/declarations_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_mobile.dart';
 import 'package:cportal_flutter/feature/data/repositories/filter_repository_web.dart';
 import 'package:cportal_flutter/feature/data/repositories/main_search_repository.dart';
@@ -121,6 +120,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
+
+import 'package:cportal_flutter/feature/data/repositories/documents/declarations/declarations_repository_web.dart';
 
 final sl = GetIt.instance;
 
@@ -265,11 +266,11 @@ Future<void> init() async {
   }
   if (kIsWeb) {
     sl.registerLazySingleton<IDeclarationRepository>(
-      () => DeclarationRepositoryWeb(remoteDataSource: sl()),
+      () => DeclarationsRepositoryWeb(remoteDataSource: sl()),
     );
   } else {
     sl.registerLazySingleton<IDeclarationRepository>(
-      () => DeclarationRepositoryMobile(
+      () => DeclarationsRepositoryMobile(
         remoteDataSource: sl(),
         localDataSource: sl(),
         networkInfo: sl(),

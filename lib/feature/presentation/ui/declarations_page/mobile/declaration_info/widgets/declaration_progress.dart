@@ -91,17 +91,26 @@ class _DeclarationProgressState extends State<DeclarationProgress> {
 
   Future<void> progressAnimation() async {
     if (progress > 0) {
-      setState(() {
-        progressForAnimation = 0;
-      });
+      if (mounted) {
+        setState(() {
+          progressForAnimation = 0;
+        });
+      }
+
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
-      setState(() {
-        progressForAnimation = progress / 2;
-      });
+       if (mounted) {
+        setState(() {
+          progressForAnimation = progress / 2;
+        });
+      }
+      
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
-      setState(() {
-        progressForAnimation = progress;
-      });
+       if (mounted) {
+        setState(() {
+          progressForAnimation = progress;
+        });
+      }
+ 
     }
   }
 }

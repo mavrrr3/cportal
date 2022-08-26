@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/formatter_util.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:flutter/material.dart';
 

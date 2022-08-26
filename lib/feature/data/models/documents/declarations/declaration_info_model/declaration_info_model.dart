@@ -1,13 +1,13 @@
 // ignore_for_file: overridden_fields, override_on_non_overriding_member, annotate_overrides
 
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_data_model.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_document_model.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_model.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/task_status_enum.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_info_entity.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_data_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_document_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_step_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_info_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 
 part 'declaration_info_model.g.dart';
 
@@ -53,7 +53,6 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
   @HiveField(10)
   final List<DeclarationStepModel> actions;
 
-  @JsonKey(defaultValue: <DeclarationDocumentModel>[])
   @HiveField(11)
   final List<DeclarationDocumentModel> documents;
 

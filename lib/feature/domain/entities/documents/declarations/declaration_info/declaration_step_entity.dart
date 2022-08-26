@@ -1,4 +1,6 @@
-import 'package:cportal_flutter/feature/data/models/declarations/task_status_enum.dart';
+
+
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/task_status_enum.dart';
 
 class DeclarationStepEntity {
   final String id;

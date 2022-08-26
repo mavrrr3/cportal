@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_user_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/user_card.dart';
 import 'package:flutter/material.dart';
 

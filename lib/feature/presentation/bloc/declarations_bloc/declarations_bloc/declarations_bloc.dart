@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/declaration/fetch_declarations_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/declaration/search_declaration_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
