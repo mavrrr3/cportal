@@ -1,3 +1,4 @@
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -16,4 +17,5 @@ enum DescriptionEnum {
   @HiveField(2)
   @JsonValue('Истек срок')
   expired,
+
 }

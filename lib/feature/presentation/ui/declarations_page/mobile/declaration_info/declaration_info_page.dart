@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/sing
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_app_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
+import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_documents.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_progress.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_steps_history.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
@@ -83,7 +84,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         ),
                         const SizedBox(height: 24),
 
-                        // История этапов.
+                        // Ход выполнения.
                         DeclarationStepsHistory(
                           steps: state.declaration.actions,
                           isHistoryExpanded: _isHistoryExpanded,
@@ -94,6 +95,13 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                           },
                         ),
                         const SizedBox(height: 16),
+
+                        // Документы.
+                        DeclarationDocuments(
+                          items: state.declaration.documents,
+                          onTap: (i) {},
+                        ),
+                        const SizedBox(height: 24),
 
                         // Дата и приоритет.
                         DeclarationDateAndPriority(

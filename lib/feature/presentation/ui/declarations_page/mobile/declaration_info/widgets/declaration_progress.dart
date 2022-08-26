@@ -63,7 +63,7 @@ class _DeclarationProgressState extends State<DeclarationProgress> {
               width: width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: theme.text?.withOpacity(0.16),
+                color: theme.text?.withOpacity(0.08),
               ),
             ),
             AnimatedContainer(

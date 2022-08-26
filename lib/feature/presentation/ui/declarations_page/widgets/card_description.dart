@@ -55,7 +55,7 @@ class CardDescription extends StatelessWidget {
               style: theme.textTheme.px12.copyWith(color: theme.textLight),
             ),
             Text(
-              FormatterUtil.declarationCardTime(date: item.date),
+              FormatterUtil.hoursAndMinutes(date: item.date),
               style: theme.textTheme.px12.copyWith(color: theme.textLight),
             ),
           ],

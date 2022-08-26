@@ -2,51 +2,50 @@
 
 // ignore_for_file: implicit_dynamic_parameter
 
-part of 'declaration_step_status_enum.dart';
+part of 'task_status_enum.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DeclarationStepStatusEnumAdapter
-    extends TypeAdapter<DeclarationStepStatusEnum> {
+class TaskStatusEnumAdapter extends TypeAdapter<TaskStatusEnum> {
   @override
   final int typeId = 21;
 
   @override
-  DeclarationStepStatusEnum read(BinaryReader reader) {
+  TaskStatusEnum read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return DeclarationStepStatusEnum.inProcess;
+        return TaskStatusEnum.inProccess;
       case 1:
-        return DeclarationStepStatusEnum.expired;
+        return TaskStatusEnum.expired;
       case 2:
-        return DeclarationStepStatusEnum.completed;
+        return TaskStatusEnum.finished;
       case 3:
-        return DeclarationStepStatusEnum.completedWithComment;
+        return TaskStatusEnum.finishedWithComment;
       case 4:
-        return DeclarationStepStatusEnum.declined;
+        return TaskStatusEnum.notAgreed;
       default:
-        return DeclarationStepStatusEnum.inProcess;
+        return TaskStatusEnum.inProccess;
     }
   }
 
   @override
-  void write(BinaryWriter writer, DeclarationStepStatusEnum obj) {
+  void write(BinaryWriter writer, TaskStatusEnum obj) {
     switch (obj) {
-      case DeclarationStepStatusEnum.inProcess:
+      case TaskStatusEnum.inProccess:
         writer.writeByte(0);
         break;
-      case DeclarationStepStatusEnum.expired:
+      case TaskStatusEnum.expired:
         writer.writeByte(1);
         break;
-      case DeclarationStepStatusEnum.completed:
+      case TaskStatusEnum.finished:
         writer.writeByte(2);
         break;
-      case DeclarationStepStatusEnum.completedWithComment:
+      case TaskStatusEnum.finishedWithComment:
         writer.writeByte(3);
         break;
-      case DeclarationStepStatusEnum.declined:
+      case TaskStatusEnum.notAgreed:
         writer.writeByte(4);
         break;
     }
@@ -58,7 +57,7 @@ class DeclarationStepStatusEnumAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DeclarationStepStatusEnumAdapter &&
+      other is TaskStatusEnumAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

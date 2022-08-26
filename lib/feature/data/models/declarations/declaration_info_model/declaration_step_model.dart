@@ -1,7 +1,6 @@
 // ignore_for_file: overridden_fields, annotate_overrides
 
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_status_enum.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/task_status_enum.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_step_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -29,20 +28,23 @@ class DeclarationStepModel extends DeclarationStepEntity {
   @HiveField(4)
   final String responsibleImage;
 
-  @HiveField(5)
-  @JsonKey(defaultValue: DeclarationStepStatusEnum.inProcess)
-  final DeclarationStepStatusEnum status;
-
   @HiveField(6)
   final String description;
 
-  @JsonKey(name: 'description_enum')
+  @JsonKey(
+    name: 'description_enum',
+    defaultValue: TaskStatusEnum.inProccess,
+  )
   @HiveField(7)
-  final DescriptionEnum descrtiptionEnum;
+  final TaskStatusEnum status;
 
-  @JsonKey(name: 'expires_date')
+  @JsonKey(name: 'description_date')
   @HiveField(8)
-  final DateTime expiresDate;
+  final DateTime descriptionDate;
+
+  @JsonKey(name: 'comment')
+  @HiveField(9)
+  final String comment;
 
   DeclarationStepModel({
     required this.id,
@@ -50,20 +52,20 @@ class DeclarationStepModel extends DeclarationStepEntity {
     required this.responsibleName,
     required this.responsiblePosition,
     required this.responsibleImage,
-    required this.status,
     required this.description,
-    required this.descrtiptionEnum,
-    required this.expiresDate,
+    required this.status,
+    required this.descriptionDate,
+    required this.comment,
   }) : super(
           id: id,
           date: date,
           responsibleName: responsibleName,
           responsiblePosition: responsiblePosition,
           responsibleImage: responsibleImage,
-          status: status,
           description: description,
-          descrtiptionEnum: descrtiptionEnum,
-          expiresDate: expiresDate,
+          status: status,
+          descriptionDate: descriptionDate,
+          comment: comment,
         );
 
   factory DeclarationStepModel.fromJson(Map<String, dynamic> json) =>

@@ -37,7 +37,7 @@ class DeclarationsList extends StatelessWidget {
             children: [
               SizedBox(height: i == 0 ? 20 : 24),
               Text(
-                FormatterUtil.declarationsHistoryDate(
+                FormatterUtil.dayWithFullMonth(
                   date: items[i].date,
                 ),
                 style: theme.textTheme.px12.copyWith(color: theme.textLight),

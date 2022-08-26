@@ -2,9 +2,9 @@
 
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_data_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_document_model.dart';
-import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_status_enum.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/declaration_info_model/declaration_step_model.dart';
 import 'package:cportal_flutter/feature/data/models/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/data/models/declarations/task_status_enum.dart';
 import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_info/declaration_info_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';

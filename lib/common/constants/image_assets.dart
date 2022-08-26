@@ -26,9 +26,12 @@ abstract class ImageAssets {
   static const obscureSymbol = '$iconsPath/obscure_symbol.svg';
   static const arrowUp = '$iconsPath/arrow_up.svg';
   static const arrowDown = '$iconsPath/arrow_down.svg';
+  
   static const history = '$iconsPath/history.svg';
-  static const stepDone = '$iconsPath/declaration_step_done.svg';
   static const stepInProgress = '$iconsPath/declaration_step_in_progress.svg';
+  static const stepDone = '$iconsPath/declaration_step_done.svg';
+  static const stepDoneWithComment = '$iconsPath/declaration_step_done_with_comment.svg';
+  static const stepExpired = '$iconsPath/declaration_step_expired.svg';
   static const stepDeclined = '$iconsPath/declaration_step_declined.svg';
   static const highPriority = '$iconsPath/high_priority.svg';
   static const flashLight = '$iconsPath/flash_light.svg';
@@ -46,4 +49,6 @@ abstract class ImageAssets {
   static const onboardingArrowNext = '$iconsPath/onboarding_arrow_next.svg';
   static const onboardingArrowBack = '$iconsPath/onboarding_arrow_back.svg';
   static const elevatedPhone = '$iconsPath/elevated_phone.svg';
+  static const docFile = '$iconsPath/doc_file.svg';
+  static const pdfFile = '$iconsPath/pdf_file.svg';
 }

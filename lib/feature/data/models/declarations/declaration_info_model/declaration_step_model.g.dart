@@ -24,10 +24,10 @@ class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
       responsibleName: fields[2] as String,
       responsiblePosition: fields[3] as String,
       responsibleImage: fields[4] as String,
-      status: fields[5] as DeclarationStepStatusEnum,
       description: fields[6] as String,
-      descrtiptionEnum: fields[7] as DescriptionEnum,
-      expiresDate: fields[8] as DateTime,
+      status: fields[7] as TaskStatusEnum,
+      descriptionDate: fields[8] as DateTime,
+      comment: fields[9] as String,
     );
   }
 
@@ -45,14 +45,14 @@ class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
       ..write(obj.responsiblePosition)
       ..writeByte(4)
       ..write(obj.responsibleImage)
-      ..writeByte(5)
-      ..write(obj.status)
       ..writeByte(6)
       ..write(obj.description)
       ..writeByte(7)
-      ..write(obj.descrtiptionEnum)
+      ..write(obj.status)
       ..writeByte(8)
-      ..write(obj.expiresDate);
+      ..write(obj.descriptionDate)
+      ..writeByte(9)
+      ..write(obj.comment);
   }
 
   @override
@@ -78,25 +78,18 @@ DeclarationStepModel _$DeclarationStepModelFromJson(
       responsibleName: json['responsible_name'] as String,
       responsiblePosition: json['responsible_position'] as String,
       responsibleImage: json['responsible_image'] as String,
-      status: $enumDecodeNullable(
-              _$DeclarationStepStatusEnumEnumMap, json['status']) ??
-          DeclarationStepStatusEnum.inProcess,
       description: json['description'] as String,
-      descrtiptionEnum:
-          $enumDecode(_$DescriptionEnumEnumMap, json['description_enum']),
-      expiresDate: DateTime.parse(json['expires_date'] as String),
+      status: $enumDecodeNullable(
+              _$TaskStatusEnumEnumMap, json['description_enum']) ??
+          TaskStatusEnum.inProccess,
+      descriptionDate: DateTime.parse(json['description_date'] as String),
+      comment: json['comment'] as String,
     );
 
-const _$DeclarationStepStatusEnumEnumMap = {
-  DeclarationStepStatusEnum.inProcess: 'В работе',
-  DeclarationStepStatusEnum.expired: 'Просрочено',
-  DeclarationStepStatusEnum.completed: 'Выполнено',
-  DeclarationStepStatusEnum.completedWithComment: 'Выполнено с комментарием',
-  DeclarationStepStatusEnum.declined: 'Отклонено',
-};
-
-const _$DescriptionEnumEnumMap = {
-  DescriptionEnum.def: 'Стандартный',
-  DescriptionEnum.task: 'Задача',
-  DescriptionEnum.expired: 'Истек срок',
+const _$TaskStatusEnumEnumMap = {
+  TaskStatusEnum.inProccess: 'Ожидание исполнения задачи',
+  TaskStatusEnum.expired: 'Просрочил выполнение задачи',
+  TaskStatusEnum.finished: 'Задача исполнена',
+  TaskStatusEnum.finishedWithComment: 'Задача исполнена с комментарием',
+  TaskStatusEnum.notAgreed: 'Заявление не согласовано',
 };
