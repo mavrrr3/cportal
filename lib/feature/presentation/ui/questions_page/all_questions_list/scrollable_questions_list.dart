@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_list.dart';
 import 'package:flutter/material.dart';

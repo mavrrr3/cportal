@@ -1,9 +1,9 @@
-// ignore_for_file: avoid_types_on_closure_parameters
+// ignore_for_file: avoid_types_on_closure_parameters, prefer_int_literals
 
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
@@ -20,7 +20,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_q
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/news_main_web_tablet.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/questions_main.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
@@ -38,15 +38,15 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({
+class MainPageMobile extends StatefulWidget {
+  const MainPageMobile({
     Key? key,
   }) : super(key: key);
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<MainPageMobile> createState() => _MainPageMobileState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageMobileState extends State<MainPageMobile> {
   late CustomTheme theme;
   late TextEditingController _searchController;
   late ScrollController _questionController;
@@ -54,7 +54,6 @@ class _MainPageState extends State<MainPage> {
   late Duration _animationDuration;
   late bool _isSearchActive;
   final _delayer = Delayer(milliseconds: 500);
-
   @override
   void initState() {
     super.initState();
@@ -108,11 +107,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading =
-        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
-            context.select(
-              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
-            );
+    final isLoading = context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+        context.select(
+          (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+        );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -136,7 +134,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   SliverAppBar _appBar() {
-    final width = MediaQuery.of(context).size.width;
+    final customPadding = CustomPadding(context);
 
     return SliverAppBar(
       toolbarHeight: 60,
@@ -152,19 +150,17 @@ class _MainPageState extends State<MainPage> {
                 top: isLargerThenMobile(context) ? 12 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint:
-                    kIsWeb ? const BoxConstraints(maxWidth: 1046) : null,
+                constraint: !isMobile(context) ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: getHorizontalPadding(context),
-                      child: ResponsiveConstraints(
-                        constraint: BoxConstraints(maxWidth: width - 32),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
+                      padding: customPadding.getHorizontalPadding(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (!isMobile(context)) ...[
                             BurgerMenuButton(onTap: () {
                               context.read<NavigationBarBloc>().add(
                                     const NavBarVisibilityEvent(
@@ -172,67 +168,67 @@ class _MainPageState extends State<MainPage> {
                                     ),
                                   );
                             }),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SearchInput(
-                                  controller: _searchController,
-                                  focusNode: _searchFocus,
-                                  onChanged: (query) {
-                                    _delayer.run(
-                                      () => _onSearchInput(query),
-                                    );
+                          ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SearchInput(
+                                controller: _searchController,
+                                focusNode: _searchFocus,
+                                onChanged: (query) {
+                                  _delayer.run(
+                                    () => _onSearchInput(query),
+                                  );
 
-                                    if (_searchController.text.isEmpty) {
-                                      setState(() {
-                                        _isSearchActive = false;
-                                      });
+                                  if (_searchController.text.isEmpty) {
+                                    setState(() {
+                                      _isSearchActive = false;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      _isSearchActive = true;
+                                    });
+                                  }
+                                },
+                                onTap: () => setState(() {
+                                  _searchController.clear();
+                                  _isSearchActive = false;
+                                }),
+                              ),
+                              const SizedBox(width: 12),
+                              GestureDetector(
+                                onTap: () {
+                                  isLargerThenTablet(context)
+                                      ? showProfile(context)
+                                      : context.pushNamed(
+                                          NavigationRouteNames.profile,
+                                        );
+                                },
+                                child: BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, state) {
+                                    if (state is! Authenticated) {
+                                      return const PlatformProgressIndicator();
                                     } else {
-                                      setState(() {
-                                        _isSearchActive = true;
-                                      });
+                                      final user = state.user;
+
+                                      return OnHover(
+                                        builder: (isHovered) {
+                                          return ProfileImage(
+                                            fullName: user.name,
+                                            imgLink: user.photoUrl,
+                                            color: RandomColorService.color,
+                                            size: isHovered ? 48 : 40,
+                                            borderRadius: 12,
+                                          );
+                                        },
+                                      );
                                     }
                                   },
-                                  onTap: () => setState(() {
-                                    _searchController.clear();
-                                    _isSearchActive = false;
-                                  }),
                                 ),
-                                const SizedBox(width: 12),
-                                GestureDetector(
-                                  onTap: () {
-                                    isLargerThenTablet(context)
-                                        ? showProfile(context)
-                                        : context.pushNamed(
-                                            NavigationRouteNames.profile,
-                                          );
-                                  },
-                                  child: BlocBuilder<AuthBloc, AuthState>(
-                                    builder: (context, state) {
-                                      if (state is! Authenticated) {
-                                        return const PlatformProgressIndicator();
-                                      } else {
-                                        final user = state.user;
-
-                                        return OnHover(
-                                          builder: (isHovered) {
-                                            return ProfileImage(
-                                              fullName: user.name,
-                                              imgLink: user.photoUrl,
-                                              color: RandomColorService.color,
-                                              size: isHovered ? 48 : 40,
-                                              borderRadius: 12,
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -246,6 +242,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   SliverToBoxAdapter _mainPageBody() {
+    final customPadding = CustomPadding(context);
+
     return SliverToBoxAdapter(
       child: Stack(
         children: [
@@ -260,14 +258,14 @@ class _MainPageState extends State<MainPage> {
                 ),
                 const SizedBox(height: 24),
                 Padding(
-                  padding: getHorizontalPadding(context),
+                  padding: customPadding.getHorizontalPadding(),
                   child: TodayWidget(
                     onTap: (i) {},
                   ),
                 ),
                 const SizedBox(height: 24),
                 Padding(
-                  padding: getHorizontalPadding(context),
+                  padding: customPadding.getHorizontalPadding(),
                   child: Text(
                     AppLocalizations.of(context)!.news,
                     style: theme.textTheme.px22,
@@ -280,7 +278,7 @@ class _MainPageState extends State<MainPage> {
                       final articles = state.articles;
 
                       return kIsWeb
-                          ? NewsMainWeb(articles: articles)
+                          ? NewsMainWebTablet(articles: articles)
                           : NewsMainMobile(
                               articles: articles,
                             );
@@ -290,8 +288,11 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
                 const SizedBox(height: 24),
-                QuestionsMain(
-                  questionController: _questionController,
+                Padding(
+                  padding: customPadding.getHorizontalPadding(),
+                  child: QuestionsMain(
+                    questionController: _questionController,
+                  ),
                 ),
                 // Padding to bottom navigation bar.
                 const SizedBox(height: 16),
@@ -299,9 +300,6 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: isLargerThenTablet(context)
-                ? const BoxConstraints(maxWidth: 640)
-                : null,
             child: SearchBox(
               isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
@@ -318,10 +316,9 @@ class _MainPageState extends State<MainPage> {
       useRootNavigator: true,
       barrierDismissible: true,
       builder: (context) {
-        final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+        final theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding =
-            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {

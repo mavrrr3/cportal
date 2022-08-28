@@ -8,10 +8,11 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page_web_tablet.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
@@ -26,8 +27,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 const List<OnboardingEntity> _onboardingContent = [
   OnboardingEntity(
     title: 'Как общаться с коллегами?',
-    description:
-        'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
+    description: 'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
     image: 'assets/img/onboarding/1.svg',
   ),
   OnboardingEntity(
@@ -38,8 +38,7 @@ const List<OnboardingEntity> _onboardingContent = [
   ),
   OnboardingEntity(
     title: 'Любите читать?',
-    description:
-        'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
+    description: 'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
     image: 'assets/img/onboarding/3.svg',
   ),
   OnboardingEntity(
@@ -81,8 +80,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
   // Для онбординга.
   late bool _isOnboarding;
@@ -133,11 +131,11 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final size = MediaQuery.of(context).size;
-
+    final width = MediaQuery.of(context).size.width;
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
-      const MainPage(),
+      if (isMobile(context)) const MainPageMobile() else const MainPageWebTablet(),
       const NewsPage(),
       const QuestionsPage(),
       const DeclarationsPage(),
@@ -165,15 +163,12 @@ class _HomePageState extends State<HomePage>
                             );
                           },
                           currentIndex: widget.webMenuIndex,
-                          onChange: (index) =>
-                              MenuService.changePage(context, index),
+                          onChange: (index) => MenuService.changePage(context, index),
                         ),
 
                       // Текущая страница.
                       Expanded(
-                        child: kIsWeb
-                            ? widget.child
-                            : listPages[state.currentIndex],
+                        child: kIsWeb ? widget.child : listPages[state.currentIndex],
                       ),
                     ],
                   ),
@@ -237,8 +232,7 @@ class _HomePageState extends State<HomePage>
                       currentIndex: _onBoardingIndex,
                       onNext: () {
                         setState(() {
-                          if (_onBoardingIndex + 1 <
-                              _onboardingContent.length) {
+                          if (_onBoardingIndex + 1 < _onboardingContent.length) {
                             _onBoardingIndex += 1;
                             _loadOnboardingPage();
                           } else {
@@ -282,18 +276,12 @@ class _HomePageState extends State<HomePage>
               ),
 
               // Bottom Bar.
-              bottomNavigationBar: kIsWeb
-                  ? null
-                  : isLargerThenTablet(context)
-                      ? null
-                      : const CustomBottomBar(),
+              bottomNavigationBar: isMobile(context) || width < 514 ? const CustomBottomBar() : null,
             ),
             BurgerMenu(
               currentIndex: widget.webMenuIndex,
               onChange: (i) => MenuService.changePage(context, i),
-              onClose: () => context
-                  .read<NavigationBarBloc>()
-                  .add(const NavBarVisibilityEvent(isActive: false)),
+              onClose: () => context.read<NavigationBarBloc>().add(const NavBarVisibilityEvent(isActive: false)),
             ),
           ],
         );

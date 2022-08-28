@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
@@ -24,6 +24,8 @@ class DeclarationsContentMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customPadding = CustomPadding(context);
+
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +35,7 @@ class DeclarationsContentMobile extends StatelessWidget {
           ),
 
           Padding(
-            padding: getHorizontalPadding(context),
+            padding: customPadding.getHorizontalPadding(),
             child: SearchWithFilter(
               searchController: searchController,
               onSearch: (text) {},

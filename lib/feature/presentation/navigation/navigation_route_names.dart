@@ -17,7 +17,7 @@ import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile
 import 'package:cportal_flutter/feature/presentation/ui/devices/connecting_devices_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page_web_tablet.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/news_article_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile_data/profile_data_screen.dart';
@@ -80,18 +80,12 @@ final GoRouter router = GoRouter(
     final isGoingToConnectingQr = state.subloc == connectingQrLocation;
     final isGoingToQrScanner = state.subloc == qrScannerLocation;
     final isGoingToConnectingCodeInfo =
-        state.subloc == connectingInfoLocation ||
-            state.subloc == connectingInfoMobileLocation;
+        state.subloc == connectingInfoLocation || state.subloc == connectingInfoMobileLocation;
 
-    final isAuthenticated =
-        authService.authStatus == AuthenticationStatus.authenticated;
-    final isUnAuthenticated =
-        authService.authStatus == AuthenticationStatus.unauthenticated;
+    final isAuthenticated = authService.authStatus == AuthenticationStatus.authenticated;
+    final isUnAuthenticated = authService.authStatus == AuthenticationStatus.unauthenticated;
 
-    if ((isGoingToConnectingQr ||
-            isGoingToQrScanner ||
-            isGoingToConnectingCodeInfo ||
-            isGoingToConnectingCodeInfo) &&
+    if ((isGoingToConnectingQr || isGoingToQrScanner || isGoingToConnectingCodeInfo || isGoingToConnectingCodeInfo) &&
         !isAuthenticated) {
       return null;
     }
@@ -126,9 +120,7 @@ final GoRouter router = GoRouter(
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -180,7 +172,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const HomePage(
-          child: MainPage(),
+          child: MainPageWebTablet(),
           webMenuIndex: 0,
         ),
       ),
