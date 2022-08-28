@@ -30,7 +30,6 @@ class SearchBox extends StatelessWidget {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     const scrollPhysics = BouncingScrollPhysics();
     const curves = Curves.easeIn;
-    final customPadding = CustomPadding(context);
 
     return BlocBuilder<MainSearchBloc, MainSearchState>(
       builder: (context, state) {

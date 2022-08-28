@@ -16,8 +16,6 @@ class ContactsList extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final customPadding = CustomPadding(context);
-
     return Padding(
       padding: getHorizontalPadding(context),
       child: isLargerThenTablet(context)
