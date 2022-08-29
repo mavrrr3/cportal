@@ -1,9 +1,10 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 
 // Для теста, в будущем заменить на реальные данные.
 
@@ -16,48 +17,81 @@ class TodayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+
+    final title = Text(
+      AppLocalizations.of(context)!.today,
+      style: theme.textTheme.px22,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          AppLocalizations.of(context)!.today,
-          style: theme.textTheme.px22,
-        ),
         const SizedBox(height: 12),
-        if (!ResponsiveWrapper.of(context).isLargerThan(TABLET))
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              _items.length,
-              (index) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    onTap(index);
-                  },
-                  child: _TodayItem(item: _items[index]),
+        if (isMobile(context))
+          Padding(
+            padding: getHorizontalPadding(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                title,
+                ...List.generate(
+                  _items.length,
+                  (index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: GestureDetector(
+                      onTap: () {
+                        onTap(index);
+                      },
+                      child: _TodayItem(item: _items[index]),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           )
         else
-          Wrap(
-            spacing: 51,
-            runSpacing: 16,
-            children: List.generate(
-              _items.length,
-              (index) => OnHover(
-                builder: (isHovered) {
-                  return Opacity(
-                    opacity: isHovered ? 0.6 : 1,
-                    child: _TodayItem(item: _items[index]),
-                  );
-                },
+          Column(
+            children: [
+              if (zeroWidthCondition(context)) ...[
+                const SizedBox(height: 24),
+              ] else ...[
+                const SizedBox(height: 6),
+              ],
+              Container(
+                decoration: BoxDecoration(color: theme.white, borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    width: !zeroWidthCondition(context) ? 366 : double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        title,
+                        const SizedBox(height: 12),
+                        Wrap(
+                          alignment: WrapAlignment.start,
+                          spacing: 51,
+                          runSpacing: 16,
+                          children: List.generate(
+                            _items.length,
+                            (index) => OnHover(
+                              builder: (isHovered) {
+                                return Opacity(
+                                  opacity: isHovered ? 0.6 : 1,
+                                  child: _TodayItem(item: _items[index]),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
       ],
     );
@@ -92,6 +126,7 @@ class _TodayItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
+                  softWrap: true,
                   item.title ?? AppLocalizations.of(context)!.birthDay,
                   style: theme.textTheme.px14.copyWith(
                     leadingDistribution: TextLeadingDistribution.even,
@@ -110,6 +145,7 @@ class _TodayItem extends StatelessWidget {
                   children: [
                     if (item.post != null)
                       Text(
+                        softWrap: true,
                         item.post!,
                         style: theme.textTheme.px12.copyWith(
                           color: theme.textLight,
@@ -129,6 +165,7 @@ class _TodayItem extends StatelessWidget {
                               vertical: 4,
                             ),
                             child: Text(
+                              softWrap: true,
                               item.place!,
                               style: theme.textTheme.px12.copyWith(
                                 color: theme.textLight,

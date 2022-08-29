@@ -3,7 +3,6 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,7 +30,6 @@ class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final width = MediaQuery.of(context).size.width;
 
     return OnHover(
       builder: (isHovered) {
@@ -39,8 +37,7 @@ class _SearchInputState extends State<SearchInput> {
           width: getSearchContainerWidth(context),
           height: 40,
           decoration: BoxDecoration(
-            color:
-                isHovered ? theme.cardColor?.withOpacity(0.6) : theme.cardColor,
+            color: isHovered ? theme.cardColor?.withOpacity(0.6) : theme.cardColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -50,13 +47,14 @@ class _SearchInputState extends State<SearchInput> {
                 padding: const EdgeInsets.all(10),
                 child: SvgPicture.asset(
                   ImageAssets.search,
-                  color:
-                      theme.brightness == Brightness.dark ? theme.white : null,
+                  color: theme.brightness == Brightness.dark ? theme.white : null,
                   width: 20,
                 ),
               ),
               SizedBox(
-                width: isLargerThenTablet(context) ? 610 : width - 160,
+                width: widget.controller.text.isNotEmpty
+                    ? getSearchContainerWidth(context) - 76
+                    : getSearchContainerWidth(context) - 40,
                 child: TextField(
                   showCursor: true,
                   controller: widget.controller,
@@ -92,9 +90,7 @@ class _SearchInputState extends State<SearchInput> {
                     ),
                     child: Icon(
                       Icons.close,
-                      color: theme.brightness == Brightness.dark
-                          ? theme.white
-                          : theme.text?.withOpacity(0.65),
+                      color: theme.brightness == Brightness.dark ? theme.white : theme.text?.withOpacity(0.65),
                     ),
                   ),
                 )
@@ -108,16 +104,26 @@ class _SearchInputState extends State<SearchInput> {
   }
 }
 
-double getSearchContainerWidth(
-  BuildContext context,
-) {
+double getSearchContainerWidth(BuildContext context) {
   final double width = MediaQuery.of(context).size.width;
 
-  return isLargerThenTablet(context)
-      ? 750
-      : kIsWeb
-          ? width - 136
-          : isTablet(context)
-              ? width - 116
-              : width - 84;
+  //
+  // double searchWidth = 0;
+
+  if (isMobile(context) || width < 514) {
+    return width - 84;
+  }
+  if (width < 834) {
+    return width - 184;
+  }
+
+  // if (width < 1000) {
+  //   searchWidth = width - 240;
+  // } else if (isMobile(context)) {
+  //   width - 84;
+  // } else {
+  //   searchWidth = 584;
+  // }
+
+  return 584;
 }

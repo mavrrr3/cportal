@@ -69,6 +69,8 @@ void main() {
           DeviceOrientation.landscapeRight,
         ],
       );
+
+      // TODO change to UPDATE to 9 version BLoC
       // ignore: deprecated_member_use
       BlocOverrides.runZoned(
         () => runApp(const Main()),
@@ -125,10 +127,11 @@ class Main extends StatelessWidget {
             defaultName: DESKTOP,
             breakpoints: [
               const ResponsiveBreakpoint.resize(350, name: MOBILE),
-              const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
-              const ResponsiveBreakpoint.resize(1024, name: TABLET),
-              const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
-              const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+              const ResponsiveBreakpoint.resize(590, name: 'BIGMOBILE'),
+              const ResponsiveBreakpoint.resize(1366, name: TABLET),
+              const ResponsiveBreakpoint.resize(1694, name: DESKTOP),
+              const ResponsiveBreakpoint.resize(2022, name: '2K'),
+              const ResponsiveBreakpoint.resize(2460, name: '4K'),
             ],
           ),
         ),

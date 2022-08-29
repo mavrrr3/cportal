@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/delayer.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +28,7 @@ class _ContactsSliverAppBarState extends State<ContactsSliverAppBar> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final delayer = Delayer(milliseconds: 500);
+    final customPadding = CustomPadding(context);
 
     return SliverAppBar(
       toolbarHeight: 60,
@@ -42,7 +43,7 @@ class _ContactsSliverAppBarState extends State<ContactsSliverAppBar> {
               height: kIsWeb ? 12 : 11,
             ),
             Padding(
-              padding: getHorizontalPadding(context),
+              padding: customPadding.getHorizontalPadding(),
               child: SearchWithFilter(
                 searchController: widget.searchController,
                 onSearch: (text) {
