@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list_mobile.dart';
@@ -9,7 +9,6 @@ class ContactsList extends StatelessWidget {
   final List<ProfileEntity> items;
   final Function(int) onTap;
 
-  /// Рендеринг контактов.
   const ContactsList({
     Key? key,
     required this.items,

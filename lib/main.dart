@@ -11,15 +11,23 @@ import 'package:cportal_flutter/feature/data/models/documents/declarations/decla
 import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_info_model.dart';
 import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_step_model.dart';
 import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/task_status_enum.dart';
-import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/task_card_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_action_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_document_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_info_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_parametr_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
+import 'package:cportal_flutter/feature/data/models/new_employee_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
 import 'package:cportal_flutter/feature/data/models/user/user_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/device/device_platform.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/biometric_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/finger_print_support_bloc/finger_print_support_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/is_finger_print_enabled_bloc/is_finger_print_enabled_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/turn_off_finger_print_bloc/turn_off_finger_print_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -30,8 +38,10 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -48,6 +58,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
+
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_card_model.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -72,6 +84,9 @@ void main() {
           DeviceOrientation.landscapeRight,
         ],
       );
+
+      // TODO change to UPDATE to 9 version BLoC
+      // ignore: deprecated_member_use
       BlocOverrides.runZoned(
         () => runApp(const Main()),
         blocObserver: AppBlocObserver.instance(),
@@ -127,10 +142,11 @@ class Main extends StatelessWidget {
             defaultName: DESKTOP,
             breakpoints: [
               const ResponsiveBreakpoint.resize(350, name: MOBILE),
-              const ResponsiveBreakpoint.autoScale(600, name: MOBILE),
-              const ResponsiveBreakpoint.resize(1024, name: TABLET),
-              const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
-              const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+              const ResponsiveBreakpoint.resize(590, name: 'BIGMOBILE'),
+              const ResponsiveBreakpoint.resize(1366, name: TABLET),
+              const ResponsiveBreakpoint.resize(1694, name: DESKTOP),
+              const ResponsiveBreakpoint.resize(2022, name: '2K'),
+              const ResponsiveBreakpoint.resize(2460, name: '4K'),
             ],
           ),
         ),
@@ -192,11 +208,26 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<FilterVisibilityBloc>(
       create: (ctx) => sl<FilterVisibilityBloc>(),
     ),
+    BlocProvider<TasksBloc>(
+      create: (ctx) => sl<TasksBloc>(),
+    ),
+    BlocProvider<FingerPrintSupportBloc>(
+      create: (ctx) => sl<FingerPrintSupportBloc>(),
+    ),
+    BlocProvider<IsFingerPrintEnabledBloc>(
+      create: (ctx) => sl<IsFingerPrintEnabledBloc>(),
+    ),
+    BlocProvider<TurnOffFingerPrintBloc>(
+      create: (ctx) => sl<TurnOffFingerPrintBloc>(),
+    ),
+    BlocProvider<FetchNewEmployeeBloc>(
+      create: (ctx) => sl<FetchNewEmployeeBloc>(),
+    ),
   ];
 }
 
 void _hiveAdaptersInit() {
-  Hive
+  sl<HiveInterface>()
     ..registerAdapter(UserModelAdapter())
     ..registerAdapter(ContactModelAdapter())
     ..registerAdapter(ProfileModelAdapter())
@@ -209,13 +240,19 @@ void _hiveAdaptersInit() {
     ..registerAdapter(ContactsModelAdapter())
     ..registerAdapter(ResponseModelAdapter())
     ..registerAdapter(FilterResponseModelAdapter())
-    ..registerAdapter(DeclarationModelAdapter())
+    ..registerAdapter(DeclarationCardModelAdapter())
     ..registerAdapter(ConnectingDeviceModelAdapter())
     ..registerAdapter(ConnectingDevicesModelAdapter())
     ..registerAdapter(DevicePlatformAdapter())
     ..registerAdapter(DeclarationInfoModelAdapter())
     ..registerAdapter(DeclarationStepModelAdapter())
     ..registerAdapter(DescriptionEnumAdapter())
+    ..registerAdapter(NewEmployeeModelAdapter())
     ..registerAdapter(DeclarationDocumentModelAdapter())
-    ..registerAdapter(TaskStatusEnumAdapter());
+    ..registerAdapter(TaskStatusEnumAdapter())
+    ..registerAdapter(TaskCardModelAdapter())
+    ..registerAdapter(TaskInfoModelAdapter())
+    ..registerAdapter(TaskDocumentModelAdapter())
+    ..registerAdapter(TaskActionModelAdapter())
+    ..registerAdapter(TaskParametrModelAdapter());
 }

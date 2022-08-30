@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_view_row.dart';
 

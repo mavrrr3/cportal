@@ -31,11 +31,13 @@ class AppConfig {
       int.tryParse(dotenv.env['NUMBER_NEWS_ARTICLES_ON_MAIN']!) ?? 12;
 
   static Future<void> load() async {
-    if (kReleaseMode) {
-      await dotenv.load(fileName: 'assets/.env');
-    } else {
-      await dotenv.load(fileName: 'assets/.env.test');
-    }
+    await dotenv.load(fileName: 'assets/.env');
+
+    // if (kReleaseMode) {
+    //   await dotenv.load(fileName: 'assets/.env');
+    // } else {
+    //   await dotenv.load(fileName: 'assets/.env.test');
+    // }
     log('======================================================');
     log('ENVIRONMENT: $environment');
     log('API ENDPOINT: $apiUri');

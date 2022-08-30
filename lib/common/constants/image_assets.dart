@@ -1,6 +1,5 @@
 abstract class ImageAssets {
   static const splash = 'assets/img/bg_splash.png';
-
   static const iconsPath = 'assets/icons';
   static const backspace = '$iconsPath/backspace.svg';
   static const qrCode = '$iconsPath/qr_code.svg';
@@ -51,4 +50,11 @@ abstract class ImageAssets {
   static const elevatedPhone = '$iconsPath/elevated_phone.svg';
   static const docFile = '$iconsPath/doc_file.svg';
   static const pdfFile = '$iconsPath/pdf_file.svg';
+  static const close = '$iconsPath/close.svg';
+  static const smallFingerPrint = '$iconsPath/small_finger_print.svg';
+  static const mainPage = '$iconsPath/navbar/main.svg';
+  static const newsPage = '$iconsPath/navbar/news.svg';
+  static const questionsPage = '$iconsPath/navbar/questions.svg';
+  static const declarationPage = '$iconsPath/navbar/declaration.svg';
+  static const contactsPage = '$iconsPath/navbar/contacts.svg';
 }

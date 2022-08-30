@@ -2,8 +2,9 @@ import 'package:cportal_flutter/feature/data/models/documents/declarations/descr
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_data_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_document_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_step_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class DeclarationInfoEntity {
+class DeclarationInfoEntity extends Equatable {
   final String id;
   final DateTime date;
   final String title;
@@ -17,7 +18,7 @@ class DeclarationInfoEntity {
   final List<DeclarationStepEntity> actions;
   final List<DeclarationDocumentEntity> documents;
 
-  DeclarationInfoEntity({
+  const DeclarationInfoEntity({
     required this.id,
     required this.date,
     required this.title,
@@ -31,4 +32,19 @@ class DeclarationInfoEntity {
     required this.actions,
     required this.documents,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        date,
+        title,
+        status,
+        currentStep,
+        allSteps,
+        progressDescription,
+        priority,
+        params,
+        actions,
+        documents,
+      ];
 }

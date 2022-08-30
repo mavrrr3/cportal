@@ -1,17 +1,14 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_list.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksTab extends StatelessWidget {
-  final ScrollController scrollController;
   const TasksTab({
     Key? key,
-    required this.scrollController,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -19,12 +16,12 @@ class TasksTab extends StatelessWidget {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     // Список задач.
-    return BlocBuilder<DeclarationsBloc, DeclarationsState>(
+    return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
-        if (state is DeclarationsLoadingState) {
+        if (state is TasksLoadingState) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (state is DeclarationsLoadedState) {
+        if (state is TasksLoadedState) {
           return state.tasks.isNotEmpty
               ? CustomScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -36,11 +33,8 @@ class TasksTab extends StatelessWidget {
                     ),
                     SliverPadding(
                       padding: getHorizontalPadding(context),
-                      sliver: SliverToBoxAdapter(
-                        child: DeclarationsList(
-                          items: state.tasks,
-                          scrollController: scrollController,
-                        ),
+                      sliver: const SliverToBoxAdapter(
+                        child: SizedBox(),
                       ),
                     ),
                   ],

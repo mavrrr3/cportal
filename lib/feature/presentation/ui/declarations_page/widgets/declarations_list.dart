@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/formatter_util.dart';
-import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
 import 'package:flutter/material.dart';
 
@@ -8,13 +8,11 @@ import 'package:cportal_flutter/feature/presentation/navigation/navigation_route
 import 'package:go_router/go_router.dart';
 
 class DeclarationsList extends StatelessWidget {
-  final List<DeclarationEntity> items;
-  final ScrollController scrollController;
+  final List<DeclarationCardEntity> items;
 
   const DeclarationsList({
     Key? key,
     required this.items,
-    required this.scrollController,
   }) : super(key: key);
 
   @override
@@ -25,7 +23,6 @@ class DeclarationsList extends StatelessWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      controller: scrollController,
       physics: const BouncingScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, i) {

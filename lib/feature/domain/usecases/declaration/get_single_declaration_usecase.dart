@@ -5,7 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/usecases/i_usecase.dart';
 
-class GetSingleDeclarationUseCase extends IUseCase<DeclarationInfoEntity, GetSingleDeclarationParams> {
+class GetSingleDeclarationUseCase
+    extends IUseCase<DeclarationInfoEntity, GetSingleDeclarationParams> {
   final IDeclarationRepository repository;
 
   GetSingleDeclarationUseCase(this.repository);

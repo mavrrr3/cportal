@@ -1,10 +1,9 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
-
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -97,9 +96,8 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
                         // Строка с поиском.
                         SearchWithFilter(
                           searchController: widget.searchController,
-                          searchFocus: widget.searchFocus,
                           onSearch: (text) {},
-                          onClear: () {},
+                          onSearchClear: () {},
                           onFilterTap: widget.onFilterTap,
                         ),
 

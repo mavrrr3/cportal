@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
-import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/card_description.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/status_badge.dart';
 
@@ -8,7 +8,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.da
 import 'package:flutter/material.dart';
 
 class DeclarationCardWithStatus extends StatelessWidget {
-  final DeclarationEntity item;
+  final DeclarationCardEntity item;
   final Function() onTap;
   final double? width;
 

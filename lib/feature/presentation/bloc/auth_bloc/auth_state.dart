@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:local_auth/local_auth.dart';
@@ -31,6 +32,9 @@ class HasAuthCredentials extends AuthState {
 
   const HasAuthCredentials(this.enabledBiometric);
 
+  bool get hasFingerPrintSupport =>
+      enabledBiometric == BiometricType.fingerprint;
+
   @override
   List<Object?> get props => [enabledBiometric];
 }
@@ -40,7 +44,12 @@ class WrongPinCode extends HasAuthCredentials {
 }
 
 class TryAgainLater extends WrongPinCode {
-  const TryAgainLater(BiometricType? enabledBiometric) : super(enabledBiometric);
+  const TryAgainLater(BiometricType? enabledBiometric)
+      : super(enabledBiometric);
+
+  Stream<String> wait30Seconds() async* {
+    yield* Delayer.tick(ticks: 30);
+  }
 }
 
 class AuthErrorState extends HasAuthCredentials {

@@ -2,7 +2,7 @@ import 'package:cportal_flutter/core/error/cache_exception.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_declarations_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_declarations_remote_datasource.dart';
-import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_info_entity.dart';
 import 'package:dartz/dartz.dart';
 
@@ -21,13 +21,15 @@ class DeclarationsRepositoryMobile extends IDeclarationRepository {
   });
 
   @override
-  Future<Either<Failure, List<DeclarationEntity>>> fetchDeclarations(
+  Future<Either<Failure, List<DeclarationCardEntity>>> fetchDeclarations(
     int page,
   ) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteDeclarations =
             await remoteDataSource.fetchDeclarations(page);
+
+        await localDataSource.declarationsToCache(remoteDeclarations, page);
 
         return Right(remoteDeclarations);
       } on ServerException {
@@ -64,7 +66,7 @@ class DeclarationsRepositoryMobile extends IDeclarationRepository {
   }
 
   @override
-  Future<Either<Failure, List<DeclarationEntity>>> searchDeclarations(
+  Future<Either<Failure, List<DeclarationCardEntity>>> searchDeclarations(
     String query,
   ) {
     throw UnimplementedError();

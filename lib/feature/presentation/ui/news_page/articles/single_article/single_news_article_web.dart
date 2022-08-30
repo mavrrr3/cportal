@@ -7,6 +7,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_men
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news/news_card_similar_item.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/size_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -60,7 +61,6 @@ class SingleNewsArticleWeb extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             ImageAssets.backArrow,
-                            width: 16,
                             color: theme.primary,
                           ),
                           const SizedBox(width: 6),
@@ -91,19 +91,19 @@ class SingleNewsArticleWeb extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          SizePadding.height24px,
                           Text(
                             article.header,
                             style: theme.textTheme.px22,
                           ),
-                          const SizedBox(height: 12),
+                          SizePadding.height12px,
                           Text(
                             outputFormat.format(
                               article.date,
                             ),
                             style: theme.textTheme.px12,
                           ),
-                          const SizedBox(height: 24),
+                          SizePadding.height24px,
                           NewsTemplate.factory(
                             context,
                             article.content.first,

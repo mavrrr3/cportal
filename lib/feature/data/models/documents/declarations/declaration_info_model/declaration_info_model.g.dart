@@ -103,11 +103,10 @@ DeclarationInfoModel _$DeclarationInfoModelFromJson(
                   DeclarationStepModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      documents: (json['documents'] as List<dynamic>?)
-              ?.map((e) =>
-                  DeclarationDocumentModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      documents: (json['documents'] as List<dynamic>)
+          .map((e) =>
+              DeclarationDocumentModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 const _$DescriptionEnumEnumMap = {

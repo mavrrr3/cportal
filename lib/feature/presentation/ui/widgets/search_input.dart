@@ -3,29 +3,33 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 
-class SearchInput extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
+class SearchInput extends StatefulWidget {
   final Function(String) onChanged;
-  final Function onClear;
+  final Function onTap;
+  final TextEditingController controller;
+  final FocusNode? focusNode;
 
   const SearchInput({
     Key? key,
     required this.controller,
     required this.onChanged,
-    required this.onClear,
-    required this.focusNode,
+    required this.onTap,
+    this.focusNode,
   }) : super(key: key);
 
   @override
+  State<SearchInput> createState() => _SearchInputState();
+}
+
+class _SearchInputState extends State<SearchInput> {
+  @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return OnHover(
       builder: (isHovered) {
@@ -50,14 +54,19 @@ class SearchInput extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: isLargerThenTablet(context) ? 510 : 200,
+                width: widget.controller.text.isNotEmpty
+                    ? getSearchContainerWidth(context) - 76
+                    : getSearchContainerWidth(context) - 40,
                 child: TextField(
                   showCursor: true,
-                  controller: controller,
-                  focusNode: focusNode,
+                  controller: widget.controller,
+                  focusNode: widget.focusNode,
                   textInputAction: TextInputAction.search,
                   autocorrect: false,
-                  onChanged: onChanged,
+                  onChanged: (text) {
+                    setState(() {});
+                    widget.onChanged(text);
+                  },
                   style: theme.textTheme.px14.copyWith(
                     color: theme.textLight,
                   ),
@@ -72,9 +81,9 @@ class SearchInput extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              if (focusNode.hasFocus)
+              if (widget.controller.text.isNotEmpty)
                 GestureDetector(
-                  onTap: () => onClear(),
+                  onTap: () => widget.onTap(),
                   child: Padding(
                     padding: const EdgeInsets.only(
                       top: 8,
@@ -97,14 +106,26 @@ class SearchInput extends StatelessWidget {
   }
 }
 
-double getSearchContainerWidth(
-  BuildContext context,
-) {
+double getSearchContainerWidth(BuildContext context) {
   final double width = MediaQuery.of(context).size.width;
 
-  return isLargerThenTablet(context)
-      ? 584
-      : kIsWeb
-          ? width - 136
-          : width - 84;
+  //
+  // double searchWidth = 0;
+
+  if (isMobile(context) || width < 514) {
+    return width - 84;
+  }
+  if (width < 834) {
+    return width - 184;
+  }
+
+  // if (width < 1000) {
+  //   searchWidth = width - 240;
+  // } else if (isMobile(context)) {
+  //   width - 84;
+  // } else {
+  //   searchWidth = 584;
+  // }
+
+  return 584;
 }

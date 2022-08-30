@@ -50,9 +50,8 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                   // Строка с поиском.
                   SearchWithFilter(
                     searchController: _searchController,
-                    searchFocus: _searchFocus,
                     onSearch: (text) {},
-                    onClear: () {},
+                    onSearchClear: () {},
                     onFilterTap: () {},
                   ),
                   const SizedBox(height: 73),

@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -66,9 +66,9 @@ class _DeclarationsTabBarState extends State<DeclarationsTabBar> {
                               : theme.text,
                         ),
                       ),
-                      BlocBuilder<DeclarationsBloc, DeclarationsState>(
+                      BlocBuilder<TasksBloc, TasksState>(
                         builder: (context, state) {
-                          if (state is DeclarationsLoadedState) {
+                          if (state is TasksLoadedState) {
                             if (state.tasks.isNotEmpty) {
                               return Padding(
                                 padding: const EdgeInsets.only(left: 4),

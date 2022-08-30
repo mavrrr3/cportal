@@ -1,8 +1,7 @@
-// ignore_for_file: unnecessary_cast
-
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/size_padding.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
@@ -12,26 +11,21 @@ class NewsTemplate {
     ParagraphEntity paragraph,
   ) {
     final width = MediaQuery.of(context).size.width;
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+    const padding32verical = EdgeInsets.symmetric(vertical: 32);
+    final image = ExtendedNetworkImageProvider(
+      '${AppConfig.imagesUrl}/${paragraph.image}',
+      cache: true,
+    );
 
     switch (paragraph.template) {
-      case 'Текст':
-        return Text(
-          paragraph.content ?? '',
-          style: theme.textTheme.px14,
-        );
       case 'Изображение с подписью':
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32),
+          padding: padding32verical,
           child: Column(
             children: [
-              Image(
-                image: ExtendedNetworkImageProvider(
-                  '${AppConfig.imagesUrl}/${paragraph.image}',
-                  cache: true,
-                ),
-              ),
-              const SizedBox(height: 12),
+              Image(image: image),
+              SizePadding.height12px,
               Text(
                 paragraph.imageTitle ?? '',
                 style: theme.textTheme.px12,
@@ -41,23 +35,20 @@ class NewsTemplate {
         );
       case 'Изображение без подписи':
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32),
+          padding: padding32verical,
           child: Container(
             width: width * 0.46,
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
                 alignment: FractionalOffset.topCenter,
-                image: ExtendedNetworkImageProvider(
-                  '${AppConfig.imagesUrl}/${paragraph.image}',
-                  cache: true,
-                ),
+                image: image,
               ),
             ),
           ),
         );
       default:
-        return Text(paragraph.content ?? '');
+        return Text(paragraph.content ?? '', style: theme.textTheme.px14);
     }
   }
 }

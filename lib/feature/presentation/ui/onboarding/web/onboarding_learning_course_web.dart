@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 
 class OnBoardingLearningCourseWeb extends StatelessWidget {
@@ -36,10 +36,9 @@ class OnBoardingLearningCourseWeb extends StatelessWidget {
               // TODO: Отработать переход на курс.
             },
             content: [
-              OnboardingEntity(
+              NewEmployeeEntity(
                 title: AppLocalizations.of(context)!.onboarding_title8,
-                description:
-                    AppLocalizations.of(context)!.onboarding_description8,
+                description: AppLocalizations.of(context)!.onboarding_description8,
                 image: 'assets/img/onboarding/8.svg',
               ),
             ],

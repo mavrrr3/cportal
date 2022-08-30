@@ -6,7 +6,7 @@ import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_n
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
-import 'package:cportal_flutter/feature/data/repositories/news_repository_mobile.dart';
+import 'package:cportal_flutter/feature/data/repositories/news_repository/news_repository_mobile.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:test/test.dart';
@@ -56,8 +56,7 @@ void main() {
           image: 'imagesTitle',
         ),
       ],
-      image:
-          'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+      image: 'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
     );
     final NewsModel tNewsModel = NewsModel(
       response: ResponseModel(
@@ -74,8 +73,7 @@ void main() {
       // Arrange.
 
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.fetchNews(any()))
-          .thenAnswer((_) async => tNewsModel);
+      when(() => mockRemoteDataSource.fetchNews(any())).thenAnswer((_) async => tNewsModel);
       // Act..
       await repository.fetchNews(tPage);
       // Assert.
@@ -88,8 +86,7 @@ void main() {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
-        when(() => mockRemoteDataSource.fetchNews(any()))
-            .thenAnswer((_) async => tNewsModel);
+        when(() => mockRemoteDataSource.fetchNews(any())).thenAnswer((_) async => tNewsModel);
         // Act..
         final result = await repository.fetchNews(tPage);
         // Assert.
@@ -104,10 +101,8 @@ void main() {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
-        when(() => mockRemoteDataSource.fetchNews(any()))
-            .thenAnswer((_) async => tNewsModel);
-        when(() => mockLocalDataSource.newsToCache(tNewsModel))
-            .thenAnswer((_) async => Future<void>.value());
+        when(() => mockRemoteDataSource.fetchNews(any())).thenAnswer((_) async => tNewsModel);
+        when(() => mockLocalDataSource.newsToCache(tNewsModel)).thenAnswer((_) async => Future<void>.value());
 
         // Act..
         await repository.fetchNews(tPage);
@@ -121,8 +116,7 @@ void main() {
       () async {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-        when(() => mockRemoteDataSource.fetchNews(any()))
-            .thenThrow(ServerException());
+        when(() => mockRemoteDataSource.fetchNews(any())).thenThrow(ServerException());
         // Act..
         final result = await repository.fetchNews(tPage);
         // Assert.
@@ -140,10 +134,8 @@ void main() {
       () async {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
-        when(() => mockLocalDataSource.newsToCache(tNewsModel))
-            .thenAnswer((_) async => Future<void>.value());
-        when(() => mockLocalDataSource.fetchNewsFromCache())
-            .thenAnswer((_) async => tNewsModel);
+        when(() => mockLocalDataSource.newsToCache(tNewsModel)).thenAnswer((_) async => Future<void>.value());
+        when(() => mockLocalDataSource.fetchNewsFromCache()).thenAnswer((_) async => tNewsModel);
 
         // Act..
         final result = await repository.fetchNews(tPage);
@@ -160,8 +152,7 @@ void main() {
       () async {
         // Arrange.
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
-        when(() => mockLocalDataSource.fetchNewsFromCache())
-            .thenThrow(CacheException());
+        when(() => mockLocalDataSource.fetchNewsFromCache()).thenThrow(CacheException());
         // Act..
         final result = await repository.fetchNews(tPage);
         // Assert.

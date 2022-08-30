@@ -14,6 +14,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart'
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -226,10 +227,9 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                           vertical: 20,
                                         ),
                                         child: RowProfile(
-                                          firstWidget: SvgIcon(
-                                            iconColor,
-                                            path: ImageAssets.addPerson,
-                                            width: 22,
+                                          firstWidget: SvgPicture.asset(
+                                            ImageAssets.addPerson,
+                                            color: iconColor,
                                           ),
                                           text: localizedStrings.newEmployee,
                                           secondWidget: getBlueArrow(),
@@ -248,10 +248,9 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                   child: GestureDetector(
                                     onTap: () => turnOffNotify(isNotificationTurnedOn),
                                     child: RowProfile(
-                                      firstWidget: SvgIcon(
-                                        iconColor,
-                                        path: ImageAssets.bell,
-                                        width: 21,
+                                      firstWidget: SvgPicture.asset(
+                                        ImageAssets.bell,
+                                        color: iconColor,
                                       ),
                                       text: localizedStrings.notifications,
                                       secondWidget: customSwitch(

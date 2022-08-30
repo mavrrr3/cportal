@@ -22,9 +22,9 @@ class _ChangePinCodeScreenState extends State<ChangePinCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final strings = AppLocalizations.of(context)!;
-    final enterNewPinCode = strings.enterNewPinCode;
-    final repeatPinCode = strings.repeatPinCode;
+    final localizedStrings = AppLocalizations.of(context)!;
+    final enterNewPinCode = localizedStrings.enterNewPinCode;
+    final repeatPinCode = localizedStrings.repeatPinCode;
 
     return BlocListener<PinCodeBloc, PinCodeState>(
       listener: (context, state) {

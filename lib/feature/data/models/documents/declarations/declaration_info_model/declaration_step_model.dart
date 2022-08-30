@@ -28,25 +28,25 @@ class DeclarationStepModel extends DeclarationStepEntity {
   @HiveField(4)
   final String responsibleImage;
 
-  @HiveField(6)
+  @HiveField(5)
   final String description;
 
   @JsonKey(
     name: 'description_enum',
     defaultValue: TaskStatusEnum.inProccess,
   )
-  @HiveField(7)
+  @HiveField(6)
   final TaskStatusEnum status;
 
   @JsonKey(name: 'description_date')
-  @HiveField(8)
+  @HiveField(7)
   final DateTime descriptionDate;
 
   @JsonKey(name: 'comment')
-  @HiveField(9)
+  @HiveField(8)
   final String comment;
 
-  DeclarationStepModel({
+  const DeclarationStepModel({
     required this.id,
     required this.date,
     required this.responsibleName,

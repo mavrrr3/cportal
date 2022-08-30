@@ -1,8 +1,7 @@
-
-
 import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/task_status_enum.dart';
+import 'package:equatable/equatable.dart';
 
-class DeclarationStepEntity {
+class DeclarationStepEntity extends Equatable {
   final String id;
   final DateTime date;
   final String responsibleName;
@@ -13,7 +12,7 @@ class DeclarationStepEntity {
   final DateTime descriptionDate;
   final String comment;
 
-  DeclarationStepEntity({
+  const DeclarationStepEntity({
     required this.id,
     required this.date,
     required this.responsibleName,
@@ -24,4 +23,17 @@ class DeclarationStepEntity {
     required this.descriptionDate,
     required this.comment,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        date,
+        responsibleName,
+        responsiblePosition,
+        responsibleImage,
+        description,
+        status,
+        descriptionDate,
+        comment,
+      ];
 }

@@ -24,10 +24,10 @@ class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
       responsibleName: fields[2] as String,
       responsiblePosition: fields[3] as String,
       responsibleImage: fields[4] as String,
-      description: fields[6] as String,
-      status: fields[7] as TaskStatusEnum,
-      descriptionDate: fields[8] as DateTime,
-      comment: fields[9] as String,
+      description: fields[5] as String,
+      status: fields[6] as TaskStatusEnum,
+      descriptionDate: fields[7] as DateTime,
+      comment: fields[8] as String,
     );
   }
 
@@ -45,13 +45,13 @@ class DeclarationStepModelAdapter extends TypeAdapter<DeclarationStepModel> {
       ..write(obj.responsiblePosition)
       ..writeByte(4)
       ..write(obj.responsibleImage)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.description)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.status)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.descriptionDate)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.comment);
   }
 

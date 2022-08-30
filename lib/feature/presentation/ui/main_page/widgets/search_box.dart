@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/main_search_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_event.dart';
@@ -9,8 +9,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bl
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_state.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search_box_item.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/search_box/search_box_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -27,7 +27,9 @@ class SearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
+    const scrollPhysics = BouncingScrollPhysics();
+    const curves = Curves.easeIn;
 
     return BlocBuilder<MainSearchBloc, MainSearchState>(
       builder: (context, state) {
@@ -38,7 +40,7 @@ class SearchBox extends StatelessWidget {
         double getHeightSearchBox() {
           double height = 0;
           if (searchList.isNotEmpty) {
-            height = (searchList.length * 54) + 16;
+            height = (searchList.length * 56) + 16;
           }
 
           return height;
@@ -46,23 +48,20 @@ class SearchBox extends StatelessWidget {
 
         return SafeArea(
           child: Padding(
-            padding: isLargerThenTablet(context)
-                ? const EdgeInsets.only(left: 32)
-                : getHorizontalPadding(context),
+            padding: isLargerThenTablet(context) ? const EdgeInsets.only(left: 32) : getHorizontalPadding(context),
             child: AnimatedOpacity(
               duration: animationDuration,
               opacity: isAnimation ? 1 : 0,
-              curve: Curves.easeIn,
+              curve: curves,
               child: Padding(
                 padding: EdgeInsets.only(
                   top: isLargerThenTablet(context) ? 2 : 3,
                 ),
                 child: AnimatedContainer(
                   duration: animationDuration,
-                  curve: Curves.easeIn,
-                  width: isLargerThenTablet(context)
-                      ? 584
-                      : MediaQuery.of(context).size.width,
+                  curve: curves,
+                  // TODO: сделать корректную ширину и расположение выпадающего списка.
+                  width: isLargerThenTablet(context) ? 584 : MediaQuery.of(context).size.width,
                   height: isAnimation ? getHeightSearchBox() : 0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -71,7 +70,7 @@ class SearchBox extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
+                      physics: scrollPhysics,
                       child: Column(
                         children: [
                           BlocBuilder<MainSearchBloc, MainSearchState>(
@@ -79,21 +78,20 @@ class SearchBox extends StatelessWidget {
                               return state is! MainSearchLoaded
                                   ? const PlatformProgressIndicator()
                                   : SingleChildScrollView(
-                                      physics: const BouncingScrollPhysics(),
+                                      physics: scrollPhysics,
                                       child: Column(
                                         children: [
                                           ListView.builder(
                                             shrinkWrap: true,
                                             itemCount: searchList.length,
                                             itemBuilder: (context, index) {
-                                              return _SearchBoxItem(
+                                              return SearchBoxItem(
                                                 () => goToPage(
                                                   searchList[index].category,
                                                   searchList[index].id,
                                                   context,
                                                 ),
-                                                category:
-                                                    searchList[index].category,
+                                                category: searchList[index].category,
                                                 text: searchList[index].title,
                                               );
                                             },
@@ -128,7 +126,7 @@ void goToPage(String category, String id, BuildContext context) {
     case 'Вопросы':
       context.read<GetSingleQuestionBloc>().add(GetSingleQuestionEventImpl(id));
       return context.pushNamed(
-        NavigationRouteNames.questionArticlePage,
+        NavigationRouteNames.question,
         params: {'fid': id},
       );
     case 'Контакты':
@@ -137,42 +135,5 @@ void goToPage(String category, String id, BuildContext context) {
         params: {'fid': id},
       );
     default:
-  }
-}
-
-class _SearchBoxItem extends StatelessWidget {
-  final String category;
-  final String text;
-  final Function()? onTap;
-
-  const _SearchBoxItem(
-    this.onTap, {
-    Key? key,
-    required this.category,
-    required this.text,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16, right: 8),
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              category,
-              style: theme.textTheme.px12.copyWith(color: theme.textLight),
-            ),
-            const SizedBox(height: 4),
-            SearchBoxRow(text: text),
-          ],
-        ),
-      ),
-    );
   }
 }

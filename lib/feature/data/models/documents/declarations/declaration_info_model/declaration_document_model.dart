@@ -15,7 +15,7 @@ class DeclarationDocumentModel extends DeclarationDocumentEntity {
   @HiveField(1)
   final String file;
 
-  DeclarationDocumentModel({required this.title, required this.file})
+  const DeclarationDocumentModel({required this.title, required this.file})
       : super(title: title, file: file);
 
   factory DeclarationDocumentModel.fromJson(Map<String, dynamic> json) =>

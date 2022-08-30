@@ -8,7 +8,6 @@ import 'package:cportal_flutter/feature/domain/entities/documents/declarations/d
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-
 part 'declaration_info_model.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -56,7 +55,7 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
   @HiveField(11)
   final List<DeclarationDocumentModel> documents;
 
-  DeclarationInfoModel({
+  const DeclarationInfoModel({
     required this.id,
     required this.date,
     required this.title,

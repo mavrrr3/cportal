@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_step_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class Onboarding extends StatefulWidget {
-  final List<OnboardingEntity> content;
+  final List<NewEmployeeEntity> content;
 
   const Onboarding({
     Key? key,
@@ -18,12 +18,11 @@ class Onboarding extends StatefulWidget {
   State<Onboarding> createState() => _OnboardingState();
 }
 
-class _OnboardingState extends State<Onboarding>
-    with SingleTickerProviderStateMixin {
+class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateMixin {
   late int _currentIndex;
   late PageController _pageController;
   late AnimationController _animationController;
-  late List<OnboardingEntity> _onboardingContent;
+  late List<NewEmployeeEntity> _onboardingContent;
   late Duration _pageDuration;
 
   @override
@@ -117,8 +116,7 @@ class _OnboardingState extends State<Onboarding>
                     physics: const NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     itemCount: _onboardingContent.length,
-                    itemBuilder: (context, i) =>
-                        OnBoardingStepPage(content: _onboardingContent[i]),
+                    itemBuilder: (context, i) => OnBoardingStepPage(content: _onboardingContent[i]),
                   ),
                 ),
               ),
@@ -131,7 +129,7 @@ class _OnboardingState extends State<Onboarding>
 
   void _onTapDown(
     TapDownDetails details,
-    List<OnboardingEntity> pages,
+    List<NewEmployeeEntity> pages,
   ) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double dx = details.globalPosition.dx;

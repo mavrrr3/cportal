@@ -1,7 +1,8 @@
 import 'package:cportal_flutter/common/util/color_service.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class DeclarationUserEntity {
+class DeclarationUserEntity extends Equatable {
   final String id;
   final String fullName;
   final String position;
@@ -14,4 +15,13 @@ class DeclarationUserEntity {
     required this.position,
     required this.image,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        fullName,
+        position,
+        image,
+        color,
+      ];
 }

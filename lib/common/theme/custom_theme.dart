@@ -51,12 +51,14 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 28,
         fontWeight: FontWeight.w400,
         color: textColor,
+        height: 1.29,
       ),
 
       // [32 px].
       px32: GoogleFonts.roboto(
         fontSize: 32,
         fontWeight: FontWeight.w400,
+        height: 1.25,
         color: textColor,
       ),
 
@@ -72,6 +74,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
       px22: GoogleFonts.roboto(
         fontSize: 22,
         fontWeight: FontWeight.w400,
+        height: 1.27,
         color: textColor,
       ),
 
@@ -80,6 +83,14 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontSize: 17,
         fontWeight: FontWeight.w400,
         color: textColor,
+        letterSpacing: 0.5,
+      ),
+
+      px17Bold: GoogleFonts.roboto(
+        fontSize: 17,
+        fontWeight: FontWeight.w700,
+        color: textColor,
+        height: 1.24,
         letterSpacing: 0.5,
       ),
 
@@ -239,6 +250,13 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     );
   }
 
+  bool get isLight => brightness == Brightness.light;
+
+  bool get isDark => brightness == Brightness.dark;
+
+  /// Returns a color depending on the selected theme.
+  Color? adaptive({required Color? light, required Color? dark}) => isLight ? light : dark;
+
   @override
   ThemeExtension<CustomTheme> lerp(
     ThemeExtension<CustomTheme>? other,
@@ -275,6 +293,7 @@ class CustomTextTheme {
   final TextStyle px32Medium;
   final TextStyle px22;
   final TextStyle px17;
+  final TextStyle px17Bold;
   final TextStyle px16;
   final TextStyle px16Bold;
   final TextStyle px14;
@@ -290,6 +309,7 @@ class CustomTextTheme {
     required this.px32Medium,
     required this.px22,
     required this.px17,
+    required this.px17Bold,
     required this.px16,
     required this.px16Bold,
     required this.px14,

@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class DeclarationsState extends Equatable {
@@ -11,7 +11,7 @@ abstract class DeclarationsState extends Equatable {
 class DeclarationsEmptyState extends DeclarationsState {}
 
 class DeclarationsLoadingState extends DeclarationsState {
-  final List<DeclarationEntity> oldDeclarations;
+  final List<DeclarationCardEntity> oldDeclarations;
   final bool isFirstFetch;
 
   const DeclarationsLoadingState(
@@ -24,16 +24,14 @@ class DeclarationsLoadingState extends DeclarationsState {
 }
 
 class DeclarationsLoadedState extends DeclarationsState {
-  final List<DeclarationEntity> declarations;
-  final List<DeclarationEntity> tasks;
+  final List<DeclarationCardEntity> declarations;
 
   const DeclarationsLoadedState({
     required this.declarations,
-    required this.tasks,
   });
 
   @override
-  List<Object?> get props => [declarations, tasks];
+  List<Object?> get props => [declarations];
 }
 
 class DeclarationsFetchErrorState extends DeclarationsState {

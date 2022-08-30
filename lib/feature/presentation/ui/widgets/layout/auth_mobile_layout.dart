@@ -48,7 +48,8 @@ class AuthMobileLayout extends StatelessWidget {
             ),
             const SizedBox(height: 25),
             Flexible(child: child),
-            if (MediaQuery.of(context).padding.bottom == 0) const SizedBox(height: 32),
+            if (MediaQuery.of(context).padding.bottom == 0)
+              const SizedBox(height: 32),
           ],
         ),
       ),

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EnterPinArea extends StatelessWidget {
+class EnterPinArea extends StatefulWidget {
   final bool isDesktop;
   final TextEditingController pinController;
   final FocusNode pinFocusNode;
@@ -20,6 +20,13 @@ class EnterPinArea extends StatelessWidget {
     required this.pinController,
     required this.pinFocusNode,
   }) : super(key: key);
+
+  @override
+  State<EnterPinArea> createState() => _EnterPinAreaState();
+}
+
+class _EnterPinAreaState extends State<EnterPinArea> {
+  String wait30SecIfWrongEnteringCode = '30';
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +54,8 @@ class EnterPinArea extends StatelessWidget {
                       height: 24,
                       child: Text(
                         strings.forgetPin,
-                        style: theme.textTheme.px14.copyWith(color: theme.primary),
+                        style:
+                            theme.textTheme.px14.copyWith(color: theme.primary),
                       ),
                     ),
                   ),
@@ -56,9 +64,16 @@ class EnterPinArea extends StatelessWidget {
                     child: SizedBox(
                       height: 20,
                       child: state is TryAgainLater
-                          ? Text(
-                              strings.tryToRepeatAfter30sec,
-                              style: theme.textTheme.px14,
+                          ? StreamBuilder(
+                              stream: state.wait30Seconds(),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  snapshot.data == null
+                                      ? '${strings.tryToRepeatAfter} 30 секунд'
+                                      : '${strings.tryToRepeatAfter} ${snapshot.data} секунд',
+                                  style: theme.textTheme.px14,
+                                );
+                              },
                             )
                           : state is WrongPinCode
                               ? Text(
@@ -74,19 +89,21 @@ class EnterPinArea extends StatelessWidget {
                 ],
               ),
             ),
-            if (isDesktop)
+            if (widget.isDesktop)
               PinCodeDesktopInput(
-                onCompleted: (pinCode) => authBloc.add(LogInWithPinCode(pinCode)),
+                onCompleted: (pinCode) =>
+                    authBloc.add(LogInWithPinCode(pinCode)),
                 forceErrorState: state is WrongPinCode,
-                codeController: pinController,
-                codeFocusNode: pinFocusNode,
+                codeController: widget.pinController,
+                codeFocusNode: widget.pinFocusNode,
               )
             else
               PinCodeField(
                 forceErrorState: state is WrongPinCode,
-                pinCodeController: pinController,
-                pinCodeFocusNode: pinFocusNode,
-                onCompleted: (pinCode) => authBloc.add(LogInWithPinCode(pinCode)),
+                pinCodeController: widget.pinController,
+                pinCodeFocusNode: widget.pinFocusNode,
+                onCompleted: (pinCode) =>
+                    authBloc.add(LogInWithPinCode(pinCode)),
               ),
           ],
         );

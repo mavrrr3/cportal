@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/tabs/my_declarations_tab.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/tabs/tasks_tab.dart';
+import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_tab_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeclarationsContentMobile extends StatefulWidget {
   final TextEditingController searchController;
@@ -38,10 +43,12 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    _setupScrollController();
 
     return SafeArea(
       child: NestedScrollView(
         floatHeaderSlivers: true,
+        controller: _scrollController,
         physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
@@ -61,9 +68,8 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
                         padding: getHorizontalPadding(context),
                         child: SearchWithFilter(
                           searchController: widget.searchController,
-                          searchFocus: widget.searchFocus,
                           onSearch: (text) {},
-                          onClear: () {},
+                          onSearchClear: () {},
                           onFilterTap: widget.onFilterTap,
                         ),
                       ),
@@ -79,12 +85,34 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
         },
         body: TabBarView(
           controller: widget.tabController,
-          children: [
-            MyDeclarationsTab(scrollController: _scrollController),
-            TasksTab(scrollController: _scrollController),
+          children: const [
+            MyDeclarationsTab(),
+            TasksTab(),
           ],
         ),
       ),
     );
+  }
+
+  // Пагинация.
+  void _setupScrollController() {
+    _scrollController.addListener(() {
+      if (widget.searchController.text.isEmpty) {
+        if (_scrollController.position.atEdge) {
+          log(_scrollController.position.atEdge.toString());
+
+          if (_scrollController.position.pixels != 0) {
+            if (widget.tabController.index == 0) {
+              log('request Declarations');
+              context
+                  .read<DeclarationsBloc>()
+                  .add(const FetchDeclarationsEvent());
+            } else {
+              log('request Tasks');
+            }
+          }
+        }
+      }
+    });
   }
 }

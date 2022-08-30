@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/common/util/delayer.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/open_filter_button.dart';
@@ -8,39 +8,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class SearchWithFilter extends StatelessWidget {
+class SearchWithFilter extends StatefulWidget {
   final TextEditingController searchController;
-  final FocusNode searchFocus;
   final Function(String) onSearch;
-  final Function() onClear;
+  final Function onSearchClear;
   final Function() onFilterTap;
 
   const SearchWithFilter({
     Key? key,
     required this.searchController,
-    required this.searchFocus,
     required this.onSearch,
-    required this.onClear,
+    required this.onSearchClear,
     required this.onFilterTap,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final delayer = Delayer(milliseconds: 500);
+  State<SearchWithFilter> createState() => _SearchWithFilterState();
+}
 
+class _SearchWithFilterState extends State<SearchWithFilter> {
+  @override
+  Widget build(BuildContext context) {
     return ResponsiveConstraints(
       constraint: const BoxConstraints(maxWidth: 640),
       child: Row(
         children: [
-          BurgerMenuButton(
-            onTap: () {
-              context.read<NavigationBarBloc>().add(
-                    const NavBarVisibilityEvent(
-                      isActive: true,
-                    ),
-                  );
-            },
-          ),
+          if (!isMobile(context)) ...[
+            BurgerMenuButton(
+              onTap: () {
+                context.read<NavigationBarBloc>().add(
+                      const NavBarVisibilityEvent(
+                        isActive: true,
+                      ),
+                    );
+              },
+            ),
+          ],
 
           // Поиск.
           Expanded(
@@ -49,19 +52,16 @@ class SearchWithFilter extends StatelessWidget {
               children: [
                 // Поиск.
                 SearchInput(
-                  controller: searchController,
-                  focusNode: searchFocus,
-                  onChanged: (query) async {
-                    delayer.run(
-                      () => onSearch(query),
-                    );
+                  controller: widget.searchController,
+                  onChanged: (text) async {
+                    widget.onSearch(text);
                   },
-                  onClear: onClear,
+                  onTap: widget.onSearchClear,
                 ),
 
                 // Фильтр.
                 OpenFilterButton(
-                  onTap: onFilterTap,
+                  onTap: widget.onFilterTap,
                 ),
               ],
             ),

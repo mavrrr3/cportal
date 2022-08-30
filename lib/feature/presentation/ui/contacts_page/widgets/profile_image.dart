@@ -21,7 +21,7 @@ class ProfileImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
-      child: imgLink != ''
+      child: imgLink.isNotEmpty
           ? AvatarBox(
               size: size,
               imgPath: imgLink,

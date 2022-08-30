@@ -24,7 +24,7 @@ class LoginMobileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
     final authBloc = context.read<AuthBloc>();
 
     return BlocBuilder<AuthBloc, AuthState>(
@@ -33,7 +33,9 @@ class LoginMobileScreen extends StatelessWidget {
           appBarSuffix: state is HasAuthCredentials && state.enabledBiometric != null
               ? GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: () => authBloc.add(LogInWithBiometrics(strings.logInToContinue)),
+                  onTap: () => authBloc.add(
+                    LogInWithBiometrics(localizedStrings.logInToContinue),
+                  ),
                   child: state.enabledBiometric == BiometricType.face
                       ? SvgPicture.asset(
                           ImageAssets.faceId,

@@ -14,7 +14,7 @@ class DeclarationDataModel extends DeclarationDataEntity {
   @HiveField(1)
   final String value;
 
-  DeclarationDataModel({
+  const DeclarationDataModel({
     required this.title,
     required this.value,
   }) : super(
