@@ -38,8 +38,7 @@ class NewsRepositoryWeb implements INewsRepository {
     String category,
   ) async {
     try {
-      final remoteNewsByCategory =
-          await remoteDataSource.fetchNewsByCategory(page, category);
+      final remoteNewsByCategory = await remoteDataSource.fetchNewsByCategory(page, category);
 
       return Right(remoteNewsByCategory);
     } on ServerException {
@@ -76,8 +75,7 @@ class NewsRepositoryWeb implements INewsRepository {
     String category,
   ) async {
     try {
-      final remoteQuestionsByCategory =
-          await remoteDataSource.fetchQuestionsByCategory(page, category);
+      final remoteQuestionsByCategory = await remoteDataSource.fetchQuestionsByCategory(page, category);
 
       return Right(remoteQuestionsByCategory);
     } on ServerException {

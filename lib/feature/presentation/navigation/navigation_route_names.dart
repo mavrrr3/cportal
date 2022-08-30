@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/core/service/auth_service.dart';
 import 'package:cportal_flutter/feature/data/repositories/auth_repository.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/change_pin_code_page.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/connecting_qr_page.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/pages/create_pin_code_page.dart';
@@ -262,7 +262,7 @@ final GoRouter router = GoRouter(
       name: NavigationRouteNames.onboarding,
       path: '/onboarding',
       pageBuilder: (context, state) => NoTransitionPage<void>(
-        child: Onboarding(content: state.extra! as List<OnboardingEntity>),
+        child: Onboarding(content: state.extra! as List<NewEmployeeEntity>),
       ),
     ),
     GoRoute(

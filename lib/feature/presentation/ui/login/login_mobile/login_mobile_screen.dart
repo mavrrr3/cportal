@@ -30,7 +30,7 @@ class LoginMobileScreen extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return AuthMobileLayout(
-          appBarSuffix: state is HasAuthCredentials
+          appBarSuffix: state is HasAuthCredentials && state.enabledBiometric != null
               ? GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () => authBloc.add(
