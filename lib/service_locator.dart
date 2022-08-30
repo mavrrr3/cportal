@@ -251,7 +251,9 @@ Future<void> init() async {
   sl.registerLazySingleton<INewEmployeeLocalDataSource>(() => NewEmployeeLocalDataSource(sl()));
 
   // CORE.
-  if (!kIsWeb) sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
+  if (!kIsWeb) {
+    sl.registerLazySingleton<INetworkInfo>(() => NetworkInfo(sl()));
+  }
   sl.registerLazySingleton<DeviceInfoPlugin>(DeviceInfoPlugin.new);
   sl.registerLazySingleton<DeviceInfoService>(() => DeviceInfoService(sl()));
   sl.registerLazySingleton<AuthService>(() => AuthService(sl()));
