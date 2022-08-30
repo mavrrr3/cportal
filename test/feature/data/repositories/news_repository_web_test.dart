@@ -4,7 +4,7 @@ import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_n
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_news_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
-import 'package:cportal_flutter/feature/data/repositories/news_repository_web.dart';
+import 'package:cportal_flutter/feature/data/repositories/news_repository/news_repository_web.dart';
 import 'package:cportal_flutter/feature/domain/entities/news_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:test/test.dart';
@@ -49,8 +49,7 @@ void main() {
           image: 'imagesTitle',
         ),
       ],
-      image:
-          'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
+      image: 'https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg',
     );
     final NewsModel tNewsModel = NewsModel(
       response: ResponseModel(
@@ -65,8 +64,7 @@ void main() {
       'should return NewsEntity when the call to remote data source is successful',
       () async {
         // Arrange.
-        when(() => mockRemoteDataSource.fetchNews(any()))
-            .thenAnswer((_) async => tNewsModel);
+        when(() => mockRemoteDataSource.fetchNews(any())).thenAnswer((_) async => tNewsModel);
         // Act..
         final result = await repository.fetchNews(1);
         // Assert.
@@ -79,8 +77,7 @@ void main() {
       'should return serverfailure when the call to remote data source is successful',
       () async {
         // Arrange.
-        when(() => mockRemoteDataSource.fetchNews(any()))
-            .thenThrow(ServerException());
+        when(() => mockRemoteDataSource.fetchNews(any())).thenThrow(ServerException());
         // Act..
         final result = await repository.fetchNews(1);
         // Assert.

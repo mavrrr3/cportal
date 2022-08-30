@@ -15,6 +15,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
@@ -102,7 +103,8 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
       ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
       ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
       ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
-      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
+      ..read<FilterContactsBloc>().add(FetchFiltersEvent())
+      ..read<FetchNewEmployeeBloc>().add(const FetchNewEmployeeEvent());
   }
 
   @override

@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class OnboardingEntity extends Equatable {
+class NewEmployeeEntity extends Equatable {
   final String title;
   final String description;
   final String image;
   final bool isVector;
 
-  const OnboardingEntity({
+  const NewEmployeeEntity({
     required this.title,
     required this.description,
     required this.image,

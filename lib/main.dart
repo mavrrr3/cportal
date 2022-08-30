@@ -9,6 +9,7 @@ import 'package:cportal_flutter/feature/data/models/connecting_devices/connectin
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
 import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
+import 'package:cportal_flutter/feature/data/models/new_employee_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
 import 'package:cportal_flutter/feature/data/models/profile_model.dart';
 import 'package:cportal_flutter/feature/data/models/user/contact_model.dart';
@@ -28,6 +29,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_question_bloc/get_single_question_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
@@ -199,11 +201,14 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<TurnOffFingerPrintBloc>(
       create: (ctx) => sl<TurnOffFingerPrintBloc>(),
     ),
+    BlocProvider<FetchNewEmployeeBloc>(
+      create: (ctx) => sl<FetchNewEmployeeBloc>(),
+    ),
   ];
 }
 
 void _hiveAdaptersInit() {
-  Hive
+  sl<HiveInterface>()
     ..registerAdapter(ProfileModelAdapter())
     ..registerAdapter(ContactInfoModelAdapter())
     ..registerAdapter(NewsModelAdapter())
@@ -219,5 +224,6 @@ void _hiveAdaptersInit() {
     ..registerAdapter(ContactModelAdapter())
     ..registerAdapter(ConnectingDevicesModelAdapter())
     ..registerAdapter(ConnectingDeviceModelAdapter())
-    ..registerAdapter(DevicePlatformAdapter());
+    ..registerAdapter(DevicePlatformAdapter())
+    ..registerAdapter(NewEmployeeModelAdapter());
 }

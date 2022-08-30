@@ -28,6 +28,8 @@ class NewsRepositoryMobile implements INewsRepository {
       try {
         final remoteNews = await remoteDataSource.fetchNews(page);
 
+        await localDataSource.newsToCache(remoteNews);
+
         return Right(remoteNews);
       } on ServerException {
         return Left(ServerFailure());
@@ -50,8 +52,7 @@ class NewsRepositoryMobile implements INewsRepository {
   ) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteNewsByCategory =
-            await remoteDataSource.fetchNewsByCategory(page, category);
+        final remoteNewsByCategory = await remoteDataSource.fetchNewsByCategory(page, category);
 
         return Right(remoteNewsByCategory);
       } on ServerException {
@@ -59,8 +60,9 @@ class NewsRepositoryMobile implements INewsRepository {
       }
     } else {
       try {
-        final localNewsByCtegory =
-            await localDataSource.fetchNewsByCategoryFromCache(category);
+        final localNewsByCtegory = await localDataSource.fetchNewsByCategoryFromCache(category);
+
+        await localDataSource.newsByCategoryToCache(localNewsByCtegory, category);
 
         return Right(localNewsByCtegory);
       } on CacheException {
@@ -81,6 +83,8 @@ class NewsRepositoryMobile implements INewsRepository {
     if (await networkInfo.isConnected) {
       try {
         final remoteQuestions = await remoteDataSource.fetchQuestions(page);
+
+        await localDataSource.questionsToCache(remoteQuestions);
 
         return Right(remoteQuestions);
       } on ServerException {
@@ -111,8 +115,9 @@ class NewsRepositoryMobile implements INewsRepository {
   ) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteQuestionsByCategory =
-            await remoteDataSource.fetchQuestionsByCategory(page, category);
+        final remoteQuestionsByCategory = await remoteDataSource.fetchQuestionsByCategory(page, category);
+
+        await localDataSource.newsByCategoryToCache(remoteQuestionsByCategory, category);
 
         return Right(remoteQuestionsByCategory);
       } on ServerException {
@@ -120,8 +125,7 @@ class NewsRepositoryMobile implements INewsRepository {
       }
     } else {
       try {
-        final localNewsByCtegory =
-            await localDataSource.fetchNewsByCategoryFromCache(category);
+        final localNewsByCtegory = await localDataSource.fetchNewsByCategoryFromCache(category);
 
         return Right(localNewsByCtegory);
       } on CacheException {
@@ -136,14 +140,15 @@ class NewsRepositoryMobile implements INewsRepository {
       try {
         final remoteSingleNews = await remoteDataSource.getSingleNews(id);
 
+        await localDataSource.singleNewsToCache(remoteSingleNews);
+
         return Right(remoteSingleNews);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        final localSingleNews =
-            await localDataSource.getSingleNewsFromCache(id);
+        final localSingleNews = await localDataSource.getSingleNewsFromCache(id);
 
         return Right(localSingleNews);
       } on CacheException {
@@ -156,19 +161,19 @@ class NewsRepositoryMobile implements INewsRepository {
   Future<Either<Failure, ArticleEntity>> getSingleQuestion(String id) async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteSingleQuastion =
-            await remoteDataSource.getSingleQuestion(id);
+        final remoteSingleQuestion = await remoteDataSource.getSingleQuestion(id);
 
-        return Right(remoteSingleQuastion);
+        await localDataSource.singleQuestionToCache(remoteSingleQuestion);
+
+        return Right(remoteSingleQuestion);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        final localSingleQuastion =
-            await localDataSource.getSingleQuestionFromCache(id);
+        final localSingleQuestion = await localDataSource.getSingleQuestionFromCache(id);
 
-        return Right(localSingleQuastion);
+        return Right(localSingleQuestion);
       } on CacheException {
         return Left(CacheFailure());
       }

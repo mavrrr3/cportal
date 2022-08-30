@@ -1,10 +1,10 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingStepPage extends StatelessWidget {
-  final OnboardingEntity content;
+  final NewEmployeeEntity content;
 
   const OnBoardingStepPage({
     Key? key,

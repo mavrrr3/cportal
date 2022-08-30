@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -15,39 +15,39 @@ class OnBoardingWelcome extends StatelessWidget {
     final localizedStrings = AppLocalizations.of(context)!;
 
     // Контент страниц онбординга.
-    final List<OnboardingEntity> onboardingContent = [
-      OnboardingEntity(
+    final List<NewEmployeeEntity> onboardingContent = [
+      NewEmployeeEntity(
         title: AppLocalizations.of(context)!.onboarding_title1,
         description: AppLocalizations.of(context)!.onboarding_description1,
         image: 'assets/img/onboarding/1.svg',
       ),
-      OnboardingEntity(
+      NewEmployeeEntity(
         title: AppLocalizations.of(context)!.onboarding_title2,
         description: AppLocalizations.of(context)!.onboarding_description2,
         image: 'assets/img/onboarding/2.svg',
       ),
-      OnboardingEntity(
+      NewEmployeeEntity(
         title: AppLocalizations.of(context)!.onboarding_title3,
         description: AppLocalizations.of(context)!.onboarding_description3,
         image: 'assets/img/onboarding/3.svg',
       ),
-      OnboardingEntity(
+      NewEmployeeEntity(
         title: AppLocalizations.of(context)!.onboarding_title4,
         description: AppLocalizations.of(context)!.onboarding_description4,
         image: 'assets/img/onboarding/4.svg',
       ),
-      OnboardingEntity(
+      NewEmployeeEntity(
         title: AppLocalizations.of(context)!.onboarding_title5,
         description: AppLocalizations.of(context)!.onboarding_description5,
         image: 'assets/img/onboarding/5.svg',
       ),
-      OnboardingEntity(
+      NewEmployeeEntity(
         title: AppLocalizations.of(context)!.onboarding_title6,
         description: AppLocalizations.of(context)!.onboarding_description6,
         image: 'assets/img/onboarding/6.png',
         isVector: false,
       ),
-      OnboardingEntity(
+      NewEmployeeEntity(
         title: AppLocalizations.of(context)!.onboarding_title7,
         description: AppLocalizations.of(context)!.onboarding_description7,
         image: 'assets/img/onboarding/7.svg',
