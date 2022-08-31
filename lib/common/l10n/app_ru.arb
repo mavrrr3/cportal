@@ -148,5 +148,11 @@
     "newsPage": "Новости",
     "questionsPage": "Вопросы",
     "declarationPage": "Заявления",
-    "contactsPage": "Контакты"
+    "contactsPage": "Контакты",
+    "expiredPrefix": "на",
+    "days1": "день",
+    "days2": "дня",
+    "days3": "дней",
+    "taskExpired": "задача просрочена",
+    "comment": "Комментарий"
 }

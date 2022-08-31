@@ -28,7 +28,6 @@ class _DeclarationsTabBarState extends State<DeclarationsTabBar> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TabBar(
-              onTap: (i) => setState(() {}),
               overlayColor: MaterialStateProperty.all(
                 Colors.transparent,
               ),

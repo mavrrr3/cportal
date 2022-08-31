@@ -32,6 +32,9 @@ class _DeclarationsPageState extends State<DeclarationsPage>
     _searchController = TextEditingController();
     _searchFocus = FocusNode();
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override

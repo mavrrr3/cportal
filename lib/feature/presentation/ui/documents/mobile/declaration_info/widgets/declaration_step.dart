@@ -77,19 +77,42 @@ class DeclarationStep extends StatelessWidget {
               const SizedBox(width: 6),
               SvgPicture.asset(_getIconPath(item.status), width: 20),
               const SizedBox(width: 14),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _getStepDescription(
-                    theme: theme,
-                    taskStatus: item.status,
-                  ),
-                  _getStepDate(
-                    theme: theme,
-                    strings: strings,
-                    taskStatus: item.status,
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _getStepDescription(
+                      theme: theme,
+                      strings: strings,
+                      taskStatus: item.status,
+                    ),
+                    _getStepDate(
+                      theme: theme,
+                      strings: strings,
+                      taskStatus: item.status,
+                    ),
+                    if (item.comment.isNotEmpty) const SizedBox(height: 6),
+                    if (item.comment.isNotEmpty)
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            strings.comment,
+                            style: theme.textTheme.px12.copyWith(
+                              color: theme.textLight,
+                              leadingDistribution: TextLeadingDistribution.even,
+                            ),
+                          ),
+                          Text(
+                            item.comment,
+                            style: theme.textTheme.px12.copyWith(
+                              leadingDistribution: TextLeadingDistribution.even,
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -100,12 +123,12 @@ class DeclarationStep extends StatelessWidget {
 
   Widget _getStepDescription({
     required CustomTheme theme,
+    required AppLocalizations strings,
     required TaskStatusEnum taskStatus,
   }) {
-    if (taskStatus == TaskStatusEnum.expired ||
-        taskStatus == TaskStatusEnum.notAgreed) {
+    if (taskStatus == TaskStatusEnum.expired) {
       return Text(
-        item.description,
+        '${item.description} ${strings.taskExpired} ${FormatterUtil.expiredDays(strings: strings, date: item.descriptionDate)}',
         style: theme.textTheme.px12.copyWith(
           color: theme.red,
           leadingDistribution: TextLeadingDistribution.even,
@@ -141,7 +164,7 @@ class DeclarationStep extends StatelessWidget {
   }) {
     if (taskStatus == TaskStatusEnum.inProccess) {
       return Text(
-        '${strings.before} ${FormatterUtil.dateWithExpirationDate(date: item.date)}',
+        '${strings.before} ${FormatterUtil.dateWithExpirationDate(date: item.descriptionDate)}',
         style: theme.textTheme.px12.copyWith(
           color: theme.textLight,
           leadingDistribution: TextLeadingDistribution.even,
@@ -151,7 +174,7 @@ class DeclarationStep extends StatelessWidget {
       return const SizedBox();
     } else {
       return Text(
-        FormatterUtil.fullDate(date: item.date),
+        FormatterUtil.fullDate(date: item.descriptionDate),
         style: theme.textTheme.px12.copyWith(
           color: theme.textLight,
           leadingDistribution: TextLeadingDistribution.even,

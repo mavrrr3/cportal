@@ -32,7 +32,7 @@ class TaskCardModel extends TaskCardEntity {
   @HiveField(6)
   final DateTime descriptionDate;
 
-  @JsonKey(name: 'photo]')
+  @JsonKey(name: 'photo')
   @HiveField(7)
   final String? userPhoto;
 

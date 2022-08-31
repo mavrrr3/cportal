@@ -1,9 +1,11 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_card_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/card_description.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/status_badge.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class TaskCard extends StatelessWidget {
@@ -71,16 +73,31 @@ class TaskCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if(item.userPhoto != null)
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: const BoxDecoration(shape: BoxShape.circle),
-                        child: Image.network(item.userPhoto!),
-                      ),
                       if (item.userPhoto != null)
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: ExtendedImage.network(
+                            '${AppConfig.imagesUrl}/${item.userPhoto}',
+                            fit: BoxFit.cover,
+                            shape: BoxShape.circle,
+                            handleLoadingProgress: true,
+                            clearMemoryCacheIfFailed: false,
+                            clearMemoryCacheWhenDispose: false,
+                            cache: true,
+                            loadStateChanged: (state) {
+                              if (state.extendedImageLoadState ==
+                                  LoadState.loading) {
+                                return Container(
+                                  color: theme.cardColor,
+                                );
+                              }
 
-                      const SizedBox(width: 4),
+                              return null;
+                            },
+                          ),
+                        ),
+                      if (item.userPhoto != null) const SizedBox(width: 4),
                       StatusBadge(
                         title: item.status,
                         color: ColorService.declarationStatus(item.status),

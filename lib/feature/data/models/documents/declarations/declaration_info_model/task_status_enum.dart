@@ -10,7 +10,7 @@ enum TaskStatusEnum {
   inProccess,
 
   @HiveField(1)
-  @JsonValue('Просрочил выполнение задачи')
+  @JsonValue('Просрочил исполнение задачи')
   expired,
 
   @HiveField(2)

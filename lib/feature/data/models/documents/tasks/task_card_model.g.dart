@@ -78,7 +78,7 @@ TaskCardModel _$TaskCardModelFromJson(Map<String, dynamic> json) =>
               _$DescriptionEnumEnumMap, json['description_enum']) ??
           DescriptionEnum.def,
       descriptionDate: DateTime.parse(json['description_date'] as String),
-      userPhoto: json['photo]'] as String?,
+      userPhoto: json['photo'] as String?,
     );
 
 const _$DescriptionEnumEnumMap = {

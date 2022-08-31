@@ -87,7 +87,7 @@ TaskActionModel _$TaskActionModelFromJson(Map<String, dynamic> json) =>
 
 const _$TaskStatusEnumEnumMap = {
   TaskStatusEnum.inProccess: 'Ожидание исполнения задачи',
-  TaskStatusEnum.expired: 'Просрочил выполнение задачи',
+  TaskStatusEnum.expired: 'Просрочил исполнение задачи',
   TaskStatusEnum.finished: 'Задача исполнена',
   TaskStatusEnum.finishedWithComment: 'Задача исполнена с комментарием',
   TaskStatusEnum.notAgreed: 'Заявление не согласовано',
