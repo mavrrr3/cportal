@@ -10,7 +10,7 @@ part of 'tasks_response_model.dart';
 
 class TasksResponseModelAdapter extends TypeAdapter<TasksResponseModel> {
   @override
-  final int typeId = 22;
+  final int typeId = 27;
 
   @override
   TasksResponseModel read(BinaryReader reader) {

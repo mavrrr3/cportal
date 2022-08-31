@@ -17,6 +17,7 @@ import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/ta
 import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_document_model.dart';
 import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_info_model.dart';
 import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_parametr_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/tasks_response_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/new_employee_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
@@ -254,6 +255,6 @@ void _hiveAdaptersInit() {
     ..registerAdapter(TaskInfoModelAdapter())
     ..registerAdapter(TaskDocumentModelAdapter())
     ..registerAdapter(TaskActionModelAdapter())
-    // ..registerAdapter(TaskParametrModelAdapter())
-    ..registerAdapter(TaskParametrModelAdapter());
+    ..registerAdapter(TaskParametrModelAdapter())
+    ..registerAdapter(TasksResponseModelAdapter());
 }
