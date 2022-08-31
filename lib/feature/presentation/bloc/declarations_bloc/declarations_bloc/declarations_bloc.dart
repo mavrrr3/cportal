@@ -47,10 +47,7 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
       oldDeclarations,
       isFirstFetch: event.isFirstFetch,
     ));
-    log('$page');
-    final failureOrDeclarations = await fetchDeclarations(
-      FetchDeclarationsParams(page: page),
-    );
+
     void _loadingDeclarations(List<DeclarationCardEntity> declarationEntity) {
       page++;
 
@@ -63,6 +60,10 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
 
       emit(DeclarationsLoadedState(declarations: declarationsList));
     }
+
+    final failureOrDeclarations = await fetchDeclarations(
+      FetchDeclarationsParams(page: page),
+    );
 
     failureOrDeclarations.fold(
       _mapFailureToMessage,

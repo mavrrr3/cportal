@@ -25,7 +25,6 @@ class ContactsRemoteDataSource implements IContactsRemoteDataSource {
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/contacts/1.0/?page=$page';
     try {
-      log('====== ${AppConfig.authKey}');
       final response = await _dio.get<String>(baseUrl);
 
       final contacts = ContactsModel.fromJson(

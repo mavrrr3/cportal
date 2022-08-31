@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_info_entity.dart';
@@ -10,12 +9,11 @@ import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/sing
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SingleDeclarationBloc extends Bloc<SingleDeclarationEvent, SingleDeclarationState> {
-
+class SingleDeclarationBloc
+    extends Bloc<SingleDeclarationEvent, SingleDeclarationState> {
   final GetSingleDeclarationUseCase getSingleDeclaration;
 
-
- SingleDeclarationBloc({
+  SingleDeclarationBloc({
     required this.getSingleDeclaration,
   }) : super(SingleDeclarationEmptyState()) {
     _setupEvents();
@@ -33,14 +31,11 @@ class SingleDeclarationBloc extends Bloc<SingleDeclarationEvent, SingleDeclarati
     GetSingleDeclarationEvent event,
     Emitter emit,
   ) async {
-    emit( SingleDeclarationLoadingState());
+    emit(SingleDeclarationLoadingState());
     final failureOrDeclaration = await getSingleDeclaration(
       GetSingleDeclarationParams(id: event.id),
     );
     void _loadingDeclaration(DeclarationInfoEntity declarationEntity) {
-      
-      log('Загрузилось зявление $declarationEntity');
-
       emit(SingleDeclarationLoadedState(declaration: declarationEntity));
     }
 

@@ -28,8 +28,9 @@ class DeclarationsRepositoryMobile extends IDeclarationRepository {
       try {
         final remoteDeclarations =
             await remoteDataSource.fetchDeclarations(page);
-
-        await localDataSource.declarationsToCache(remoteDeclarations, page);
+        if (remoteDeclarations.isNotEmpty) {
+          await localDataSource.declarationsToCache(remoteDeclarations, page);
+        }
 
         return Right(remoteDeclarations);
       } on ServerException {

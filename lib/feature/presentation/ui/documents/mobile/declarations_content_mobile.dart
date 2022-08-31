@@ -1,12 +1,15 @@
 import 'dart:developer';
 
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/tabs/my_declarations_tab.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/tabs/tasks_tab.dart';
 import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/declarations_tab_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeclarationsContentMobile extends StatefulWidget {
   final TextEditingController searchController;
@@ -96,14 +99,11 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
     _scrollController.addListener(() {
       if (widget.searchController.text.isEmpty) {
         if (_scrollController.position.atEdge) {
-          log(_scrollController.position.atEdge.toString());
-
           if (_scrollController.position.pixels != 0) {
             if (widget.tabController.index == 0) {
-              log('request Declarations');
-              // context
-              //     .read<DeclarationsBloc>()
-              //     .add(const FetchDeclarationsEvent());
+              context
+                  .read<DeclarationsBloc>()
+                  .add(const FetchDeclarationsEvent());
             } else {
               log('request Tasks');
             }

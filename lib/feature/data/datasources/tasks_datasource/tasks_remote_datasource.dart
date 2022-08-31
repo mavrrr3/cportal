@@ -16,7 +16,8 @@ class TasksRemoteDataSource implements ITasksRemoteDataSource {
 
   @override
   Future<TasksResponseModel> fetchTasks(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/task/1.0?$page';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/task/1.0?page=$page';
     try {
       final response = await _dio.fetch<Map<String, dynamic>>(
         Options(method: 'GET', responseType: ResponseType.json).compose(

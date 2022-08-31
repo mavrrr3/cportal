@@ -16,7 +16,7 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
   @override
   Future<List<DeclarationCardModel>> fetchDeclarations(int page) async {
     final String baseUrl =
-        '${AppConfig.apiUri}/cportal/hs/api/declaration/1.0?$page';
+        '${AppConfig.apiUri}/cportal/hs/api/declaration/1.0?page=$page';
     try {
       final response = await _dio.fetch<Map<String, dynamic>>(
         Options(method: 'GET', responseType: ResponseType.json).compose(
@@ -24,6 +24,7 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
           baseUrl,
         ),
       );
+
       final declarations = List<DeclarationCardModel>.from(
         response.data!['response']['items'].map(
           (dynamic x) =>
@@ -41,7 +42,6 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
 
   @override
   Future<DeclarationInfoModel> getSingleDeclaration(String id) async {
-    log('--[getSingleDeclaration]--[id $id]');
     final String baseUrl =
         '${AppConfig.apiUri}/cportal/hs/api/declaration/1.0?id=$id';
 
@@ -56,7 +56,7 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
       final declarationInfo = DeclarationInfoModel.fromJson(
         response.data!['response'] as Map<String, dynamic>,
       );
-      log('Remote DataSource [Single Declaration] ${response.data}');
+      log('Remote DataSource [Single Declaration] was loaded id: $id');
 
       return declarationInfo;
     } on ServerException {
