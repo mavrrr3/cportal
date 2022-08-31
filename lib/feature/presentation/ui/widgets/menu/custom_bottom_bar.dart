@@ -49,8 +49,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                           context.pop();
                         }
                         setState(
-                          () => BlocProvider.of<NavigationBarBloc>(context)
-                              .add(NavBarChangePageEvent(index: index)),
+                          () => BlocProvider.of<NavigationBarBloc>(context).add(NavBarChangePageEvent(index: index)),
                         );
                       },
                     ),
@@ -86,7 +85,7 @@ class _MenuItem extends StatelessWidget {
     final Color nonActiveColor = theme.text!.withOpacity(0.48);
     final Color activeColor = theme.primary!;
 
-    Color _textColor(int index, NavigationBarState state) {
+    Color textColor(int index, NavigationBarState state) {
       return theme.brightness == Brightness.light
           ? state.currentIndex == index
               ? activeColor
@@ -96,7 +95,7 @@ class _MenuItem extends StatelessWidget {
               : Colors.white;
     }
 
-    Color _iconColor(int index, NavigationBarState state) {
+    Color iconColor(int index, NavigationBarState state) {
       return state.currentIndex == index ? activeColor : nonActiveColor;
     }
 
@@ -111,13 +110,13 @@ class _MenuItem extends StatelessWidget {
           SvgPicture.asset(
             item.img,
             width: 24,
-            color: _iconColor(index, state),
+            color: iconColor(index, state),
           ),
           const SizedBox(height: 4),
           Text(
             item.text,
             style: theme.textTheme.bottomBar.copyWith(
-              color: _textColor(index, state),
+              color: textColor(index, state),
               leadingDistribution: TextLeadingDistribution.even,
             ),
           ),

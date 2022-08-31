@@ -60,6 +60,7 @@ class SearchBox extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: animationDuration,
                   curve: curves,
+                  //
                   //TODO: сделать корректную ширину и расположение выпадающего списка
                   width: isLargerThenTablet(context) ? 584 : MediaQuery.of(context).size.width,
                   height: isAnimation ? getHeightSearchBox() : 0,

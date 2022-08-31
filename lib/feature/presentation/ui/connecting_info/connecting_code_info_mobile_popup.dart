@@ -115,7 +115,7 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            primary: theme.primary,
+            backgroundColor: theme.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),

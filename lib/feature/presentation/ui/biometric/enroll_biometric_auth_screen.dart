@@ -64,7 +64,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: const Size(142, 48),
-                      primary: theme.primary,
+                      backgroundColor: theme.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -78,9 +78,7 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                     child: Text(
                       localizedStrings.yes,
                       style: theme.textTheme.px16Bold.copyWith(
-                        color: theme.brightness == Brightness.light
-                            ? theme.white
-                            : theme.text,
+                        color: theme.brightness == Brightness.light ? theme.white : theme.text,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),
@@ -88,8 +86,8 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
+                      foregroundColor: theme.primary,
                       fixedSize: const Size(142, 48),
-                      primary: theme.primary,
                       side: BorderSide(
                         width: 2,
                         color: theme.primary!,

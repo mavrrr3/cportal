@@ -60,7 +60,7 @@ class EndOtherSessionsPopup extends StatelessWidget {
                     onPressed: Navigator.of(context).pop,
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.all(12),
-                      primary: theme.primary,
+                      backgroundColor: theme.primary,
                     ),
                     child: Text(
                       localizedStrings.cancelLowerCase,
@@ -75,7 +75,7 @@ class EndOtherSessionsPopup extends StatelessWidget {
                     },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.all(12),
-                      primary: theme.primary,
+                      backgroundColor: theme.primary,
                     ),
                     child: Text(
                       localizedStrings.exit,

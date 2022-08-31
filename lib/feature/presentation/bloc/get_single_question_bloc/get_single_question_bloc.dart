@@ -8,12 +8,10 @@ import 'package:cportal_flutter/core/error/failure.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-class GetSingleQuestionBloc
-    extends Bloc<GetSingleQuestionEvent, GetSingleQuestionState> {
+class GetSingleQuestionBloc extends Bloc<GetSingleQuestionEvent, GetSingleQuestionState> {
   final GetSingleQuestionUseCase getSingleQuestion;
 
-  GetSingleQuestionBloc({required this.getSingleQuestion})
-      : super(GetSingleQuestionEmptyState()) {
+  GetSingleQuestionBloc({required this.getSingleQuestion}) : super(GetSingleQuestionEmptyState()) {
     _setupEvents();
   }
 
@@ -30,7 +28,7 @@ class GetSingleQuestionBloc
   ) async {
     emit(GetSingleQuestionLoadingState());
 
-    String _mapFailureToMessage(Failure failure) {
+    String mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
         case ServerFailure:
           return 'Ошибка на сервере';
@@ -48,7 +46,7 @@ class GetSingleQuestionBloc
     failureOrSingleQuestion.fold(
       (failure) {
         emit(GetSingleQuestionLoadingError(
-          message: _mapFailureToMessage(failure),
+          message: mapFailureToMessage(failure),
         ));
       },
       (singleQuestion) {
