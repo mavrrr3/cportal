@@ -94,6 +94,7 @@ class DeclarationStep extends StatelessWidget {
                     if (item.comment.isNotEmpty) const SizedBox(height: 6),
                     if (item.comment.isNotEmpty)
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
