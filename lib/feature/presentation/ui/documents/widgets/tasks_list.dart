@@ -1,16 +1,13 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/formatter_util.dart';
-import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declaration_card_with_status.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_card_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/task_card.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:go_router/go_router.dart';
+class TasksList extends StatelessWidget {
+  final List<TaskCardEntity> items;
 
-class DeclarationsList extends StatelessWidget {
-  final List<DeclarationCardEntity> items;
-
-  const DeclarationsList({
+  const TasksList({
     Key? key,
     required this.items,
   }) : super(key: key);
@@ -44,12 +41,9 @@ class DeclarationsList extends StatelessWidget {
                   top: 18,
                   bottom: getBottomPadding(i),
                 ),
-                child: DeclarationCardWithStatus(
+                child: TaskCard(
                   item: items[i],
-                  onTap: () => context.pushNamed(
-                    NavigationRouteNames.declarationInfo,
-                    params: {'fid': items[i].id},
-                  ),
+                  onTap: () {},
                 ),
               ),
             ],
@@ -60,12 +54,9 @@ class DeclarationsList extends StatelessWidget {
               top: 16,
               bottom: getBottomPadding(i),
             ),
-            child: DeclarationCardWithStatus(
+            child: TaskCard(
               item: items[i],
-              onTap: () => context.pushNamed(
-                NavigationRouteNames.declarationInfo,
-                params: {'fid': items[i].id},
-              ),
+              onTap: () {},
             ),
           );
         }

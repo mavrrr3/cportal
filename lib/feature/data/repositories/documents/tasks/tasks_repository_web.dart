@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_tasks_remote_datasource.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/tasks_response_model.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_card_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_info/task_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_tasks_repository.dart';
@@ -12,9 +13,7 @@ class TasksRepositoryWeb extends ITasksRepository {
   TasksRepositoryWeb({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<TaskCardEntity>>> fetchTasks(
-    int page,
-  ) async {
+  Future<Either<Failure, TasksResponseModel>> fetchTasks(int page) async {
     try {
       final remoteTasks = await remoteDataSource.fetchTasks(page);
 
@@ -25,9 +24,7 @@ class TasksRepositoryWeb extends ITasksRepository {
   }
 
   @override
-  Future<Either<Failure, TaskInfoEntity>> getSingleTask(
-    String id,
-  ) async {
+  Future<Either<Failure, TaskInfoEntity>> getSingleTask(String id) async {
     try {
       final remoteTaskInfo = await remoteDataSource.getSingleTask(id);
 

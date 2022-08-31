@@ -11,9 +11,9 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecti
 import 'package:cportal_flutter/feature/presentation/ui/connecting_info/connecting_code_info_web_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/create_declaration/create_declaration_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/declaration_info_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/create_declaration/create_declaration_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/declaration_info_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/connecting_devices_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';

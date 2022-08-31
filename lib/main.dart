@@ -254,5 +254,6 @@ void _hiveAdaptersInit() {
     ..registerAdapter(TaskInfoModelAdapter())
     ..registerAdapter(TaskDocumentModelAdapter())
     ..registerAdapter(TaskActionModelAdapter())
+    // ..registerAdapter(TaskParametrModelAdapter())
     ..registerAdapter(TaskParametrModelAdapter());
 }

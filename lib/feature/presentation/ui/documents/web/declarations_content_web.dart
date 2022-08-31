@@ -8,9 +8,9 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/create_declarations.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/archive_declaration_button.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/in_process_title.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/archive_declaration_button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/create_declarations.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/in_process_title.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/card_with_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';

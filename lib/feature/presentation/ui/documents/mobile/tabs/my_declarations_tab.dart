@@ -3,7 +3,7 @@ import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/declarations_list.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/declarations_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

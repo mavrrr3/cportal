@@ -5,12 +5,12 @@ import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_app_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_data.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_documents.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_progress.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/widgets/declaration_steps_history.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_app_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_data.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_documents.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_progress.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_steps_history.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,25 +85,28 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         const SizedBox(height: 24),
 
                         // Ход выполнения.
-                        DeclarationStepsHistory(
-                          steps: state.declaration.actions,
-                          isHistoryExpanded: _isHistoryExpanded,
-                          onTap: () {
-                            setState(() {
-                              _isHistoryExpanded = !_isHistoryExpanded;
-                            });
-                          },
-                        ),
+                        if (state.declaration.actions.isNotEmpty)
+                          DeclarationStepsHistory(
+                            steps: state.declaration.actions,
+                            isHistoryExpanded: _isHistoryExpanded,
+                            onTap: () {
+                              setState(() {
+                                _isHistoryExpanded = !_isHistoryExpanded;
+                              });
+                            },
+                          ),
                         const SizedBox(height: 16),
 
                         // Документы.
-                        DeclarationDocuments(
-                          items: state.declaration.documents,
-                          onTap: (i) {},
-                        ),
+                        if (state.declaration.documents.isNotEmpty)
+                          DeclarationDocuments(
+                            items: state.declaration.documents,
+                            onTap: (i) {},
+                          ),
                         const SizedBox(height: 24),
 
                         // Дата и приоритет.
+
                         DeclarationDateAndPriority(
                           date: state.declaration.date,
                           priority: state.declaration.priority,
@@ -119,7 +122,8 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         const SizedBox(height: 16),
 
                         // Подробная информация о заявлении.
-                        DeclarationData(data: state.declaration.params),
+                        if (state.declaration.params.isNotEmpty)
+                          DeclarationData(data: state.declaration.params),
                         const SizedBox(height: 32),
 
                         // state.declaration.progress != 1

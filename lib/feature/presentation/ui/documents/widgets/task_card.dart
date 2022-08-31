@@ -1,18 +1,16 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
-import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/card_description.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/widgets/status_badge.dart';
-
+import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_card_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/card_description.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/status_badge.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 
-class DeclarationCardWithStatus extends StatelessWidget {
-  final DeclarationCardEntity item;
+class TaskCard extends StatelessWidget {
+  final TaskCardEntity item;
   final Function() onTap;
   final double? width;
-
-  const DeclarationCardWithStatus({
+  const TaskCard({
     Key? key,
     required this.item,
     required this.onTap,
@@ -54,7 +52,11 @@ class DeclarationCardWithStatus extends StatelessWidget {
                               style: theme.textTheme.px14Bold,
                             ),
                             const SizedBox(height: 6),
-                            CardDescription(item: item),
+                            CardDescription(
+                              description: item.description,
+                              descriptionEnum: item.descriptionEnum,
+                              date: item.date,
+                            ),
                           ],
                         ),
                       ],
@@ -66,9 +68,24 @@ class DeclarationCardWithStatus extends StatelessWidget {
                 Positioned(
                   left: 12,
                   top: -9,
-                  child: StatusBadge(
-                    title: item.status,
-                    color: ColorService.declarationStatus(item.status),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if(item.userPhoto != null)
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: Image.network(item.userPhoto!),
+                      ),
+                      if (item.userPhoto != null)
+
+                      const SizedBox(width: 4),
+                      StatusBadge(
+                        title: item.status,
+                        color: ColorService.declarationStatus(item.status),
+                      ),
+                    ],
                   ),
                 ),
               ],

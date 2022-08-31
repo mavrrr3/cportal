@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_card_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/tasks/tasks_response_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/tasks/fetch_tasks_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/tasks/search_task_usecase.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_event.dart';
@@ -51,17 +52,20 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     final failureOrTasks = await fetchTasks(
       FetchTasksParams(page: page),
     );
-    void _loadingTasks(List<TaskCardEntity> tasks) {
+    void _loadingTasks(TasksResponseEntity tasks) {
       page++;
 
       final tasksList = (state as TasksLoadingState).oldTasks;
 
       // ignore: cascade_invocations
-      tasksList.addAll(tasks);
+      tasksList.addAll(tasks.items);
 
       log('Загрузилось ${tasksList.length} задач');
 
-      emit(TasksLoadedState(tasks: tasksList));
+      emit(TasksLoadedState(
+        tasks: tasksList,
+        total: tasks.total,
+      ));
     }
 
     failureOrTasks.fold(

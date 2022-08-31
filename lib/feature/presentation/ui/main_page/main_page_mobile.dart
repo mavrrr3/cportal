@@ -20,6 +20,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
@@ -108,6 +110,7 @@ class _MainPageMobileState extends State<MainPageMobile> {
       ..read<FilterContactsBloc>().add(FetchFiltersEvent())
       ..read<DeclarationsBloc>()
           .add(const FetchDeclarationsEvent(isFirstFetch: true))
+      ..read<TasksBloc>().add(const FetchTasksEvent(isFirstFetch: true))
       ..read<FilterDeclarationsBloc>().add(FetchFiltersEvent());
   }
 

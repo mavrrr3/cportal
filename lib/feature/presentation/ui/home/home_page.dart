@@ -8,7 +8,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/declarations_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';

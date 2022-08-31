@@ -15,7 +15,7 @@ class DeclarationProgress extends StatefulWidget {
     required this.allSteps,
     required this.status,
     required this.description,
-    required this.color,
+  required this.color,
     this.duration = 650,
   }) : super(key: key);
 
@@ -98,19 +98,24 @@ class _DeclarationProgressState extends State<DeclarationProgress> {
       }
 
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
-       if (mounted) {
+      if (mounted) {
         setState(() {
           progressForAnimation = progress / 2;
         });
       }
-      
+
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
-       if (mounted) {
+      if (mounted) {
         setState(() {
           progressForAnimation = progress;
         });
       }
- 
+    } else {
+      if (mounted) {
+        setState(() {
+          progressForAnimation = 0;
+        });
+      }
     }
   }
 }

@@ -24,9 +24,11 @@ class TasksLoadingState extends TasksState {
 
 class TasksLoadedState extends TasksState {
   final List<TaskCardEntity> tasks;
+  final int total;
 
   const TasksLoadedState({
     required this.tasks,
+    required this.total,
   });
 
   @override

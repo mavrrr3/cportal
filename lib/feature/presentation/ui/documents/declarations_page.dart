@@ -5,8 +5,8 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declarations_content_mobile.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/web/declarations_content_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declarations_content_mobile.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/web/declarations_content_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

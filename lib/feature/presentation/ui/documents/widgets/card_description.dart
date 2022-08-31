@@ -1,22 +1,25 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/formatter_util.dart';
 import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
-import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:flutter/material.dart';
 
 class CardDescription extends StatelessWidget {
-  final DeclarationCardEntity item;
+  final String description;
+  final DescriptionEnum descriptionEnum;
+  final DateTime date;
 
   const CardDescription({
     Key? key,
-    required this.item,
+    required this.description,
+    required this.descriptionEnum,
+    required this.date,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
-    switch (item.descriptionEnum) {
+    switch (descriptionEnum) {
       case DescriptionEnum.task:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,13 +31,13 @@ class CardDescription extends StatelessWidget {
                 height: 8,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: theme.allertMessage,
+                  color: theme.red,
                 ),
               ),
             ),
             const SizedBox(width: 4),
             Text(
-              item.description,
+              description,
               style: theme.textTheme.px12Bold.copyWith(color: theme.textLight),
             ),
           ],
@@ -42,7 +45,7 @@ class CardDescription extends StatelessWidget {
 
       case DescriptionEnum.expired:
         return Text(
-          item.description,
+          description,
           style: theme.textTheme.px12.copyWith(color: theme.allertMessage),
         );
 
@@ -51,11 +54,11 @@ class CardDescription extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              item.description,
+              description,
               style: theme.textTheme.px12.copyWith(color: theme.textLight),
             ),
             Text(
-              FormatterUtil.hoursAndMinutes(date: item.date),
+              FormatterUtil.hoursAndMinutes(date: date),
               style: theme.textTheme.px12.copyWith(color: theme.textLight),
             ),
           ],
