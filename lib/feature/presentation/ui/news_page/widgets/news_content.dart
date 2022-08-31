@@ -55,9 +55,7 @@ class _NewsContentState extends State<NewsContent> {
           if (widget._currentIndex == 0) {
             context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
           } else {
-            context
-                .read<FetchNewsBloc>()
-                .add(FetchNewsEventBy(widget._tabs[widget._currentIndex]));
+            context.read<FetchNewsBloc>().add(FetchNewsEventBy(widget._tabs[widget._currentIndex]));
           }
         }
       }
@@ -68,14 +66,14 @@ class _NewsContentState extends State<NewsContent> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    void _onArticleSelected(String id) {
+    void onArticleSelected(String id) {
       GoRouter.of(context).pushNamed(
         NavigationRouteNames.newsArticlePage,
         params: {'fid': id},
       );
     }
 
-    Widget _builderItem(
+    Widget builderItem(
       List<ArticleEntity> articles,
       List<String> tabs,
       double width,
@@ -87,13 +85,13 @@ class _NewsContentState extends State<NewsContent> {
         return NewsCard(
           width,
           item: article,
-          onTap: () => _onArticleSelected(article.id),
+          onTap: () => onArticleSelected(article.id),
         );
       } else if (article.category == tabs[widget._currentIndex]) {
         return NewsCard(
           width,
           item: article,
-          onTap: () => _onArticleSelected(article.id),
+          onTap: () => onArticleSelected(article.id),
         );
       }
 
@@ -112,7 +110,7 @@ class _NewsContentState extends State<NewsContent> {
               children: List.generate(
                 widget._articles.length,
                 (index) {
-                  return _builderItem(
+                  return builderItem(
                     widget._articles,
                     widget._tabs,
                     312,
@@ -128,7 +126,7 @@ class _NewsContentState extends State<NewsContent> {
               physics: const BouncingScrollPhysics(),
               itemCount: widget._articles.length,
               itemBuilder: (context, index) {
-                return _builderItem(
+                return builderItem(
                   widget._articles,
                   widget._tabs,
                   width,
