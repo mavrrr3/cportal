@@ -330,8 +330,7 @@ class _MainPageMobileState extends State<MainPageMobile> {
       builder: (context) {
         final theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding =
-            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {

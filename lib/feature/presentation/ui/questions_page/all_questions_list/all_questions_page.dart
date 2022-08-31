@@ -26,8 +26,7 @@ class AllQuestionsPage extends StatefulWidget {
   State<AllQuestionsPage> createState() => _AllQuestionsPageState();
 }
 
-class _AllQuestionsPageState extends State<AllQuestionsPage>
-    with TickerProviderStateMixin {
+class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProviderStateMixin {
   late PageController _pageController;
   late final TabController _tabController;
 
@@ -65,8 +64,7 @@ class _AllQuestionsPageState extends State<AllQuestionsPage>
     if (_tabController.index == 0) {
       fetchQuestionsBloc.add(const FetchQaustionsEvent());
     } else {
-      fetchQuestionsBloc
-          .add(FetchQaustionsEventBy(categories[_tabController.index]));
+      fetchQuestionsBloc.add(FetchQaustionsEventBy(categories[_tabController.index]));
     }
   }
 

@@ -37,8 +37,7 @@ class _SearchInputState extends State<SearchInput> {
           width: getSearchContainerWidth(context),
           height: 40,
           decoration: BoxDecoration(
-            color:
-                isHovered ? theme.cardColor?.withOpacity(0.6) : theme.cardColor,
+            color: isHovered ? theme.cardColor?.withOpacity(0.6) : theme.cardColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -48,8 +47,7 @@ class _SearchInputState extends State<SearchInput> {
                 padding: const EdgeInsets.all(10),
                 child: SvgPicture.asset(
                   ImageAssets.search,
-                  color:
-                      theme.brightness == Brightness.dark ? theme.white : null,
+                  color: theme.brightness == Brightness.dark ? theme.white : null,
                   width: 20,
                 ),
               ),
@@ -92,9 +90,7 @@ class _SearchInputState extends State<SearchInput> {
                     ),
                     child: Icon(
                       Icons.close,
-                      color: theme.brightness == Brightness.dark
-                          ? theme.white
-                          : theme.text?.withOpacity(0.65),
+                      color: theme.brightness == Brightness.dark ? theme.white : theme.text?.withOpacity(0.65),
                     ),
                   ),
                 ),

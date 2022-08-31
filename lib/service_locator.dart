@@ -171,11 +171,7 @@ Future<void> init() async {
       FetchQuestionsBloc(fetchQaustions: sl(), fetchQuestionsByCategory: sl()));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterContactsBloc(fetchFilters: sl()));
-  sl.registerFactory(() => ContactsBloc(
-        fetchContacts: sl(),
-        fetchProfile: sl(),
-        searchContacts: sl(),
-      ));
+  sl.registerFactory(() => ContactsBloc(fetchContacts: sl(), fetchProfile: sl(), searchContacts: sl()));
   sl.registerFactory(() => FilterDeclarationsBloc(fetchFilters: sl()));
 
   sl.registerFactory(() => DeclarationsBloc(
@@ -247,11 +243,7 @@ Future<void> init() async {
     );
   } else {
     sl.registerLazySingleton<IProfileRepository>(
-      () => ProfileRepositoryMobile(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ),
+      () => ProfileRepositoryMobile(remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()),
     );
   }
   sl.registerLazySingleton<IPinCodeRepository>(() => PinCodeRepository(sl()));
@@ -268,57 +260,32 @@ Future<void> init() async {
         ));
   } else {
     sl.registerLazySingleton<INewsRepository>(
-      () => NewsRepositoryMobile(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ),
+      () => NewsRepositoryMobile(remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()),
     );
   }
   if (kIsWeb) {
-    sl.registerLazySingleton<IFilterRepository>(
-      () => FilterRepositoryWeb(remoteDataSource: sl()),
-    );
+    sl.registerLazySingleton<IFilterRepository>(() => FilterRepositoryWeb(remoteDataSource: sl()));
   } else {
     sl.registerLazySingleton<IFilterRepository>(
-      () => FilterRepositoryMobile(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ),
+      () => FilterRepositoryMobile(remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()),
     );
   }
   if (kIsWeb) {
-    sl.registerLazySingleton<IContactsRepository>(
-      () => ContactsRepositoryWeb(remoteDataSource: sl()),
-    );
+    sl.registerLazySingleton<IContactsRepository>(() => ContactsRepositoryWeb(remoteDataSource: sl()));
   } else {
     sl.registerLazySingleton<IContactsRepository>(
-      () => ContactsRepositoryMobile(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ),
+      () => ContactsRepositoryMobile(remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()),
     );
   }
-  sl.registerLazySingleton<IConnectingDevicesRepository>(
-    () => ConnectingDevicesRepository(sl(), sl()),
-  );
+  sl.registerLazySingleton<IConnectingDevicesRepository>(() => ConnectingDevicesRepository(sl(), sl()));
   sl.registerLazySingleton<IUserRepository>(() => UserRepository(sl(), sl()));
-  sl.registerLazySingleton<IMainSearchRepository>(
-    () => MainSearchRepository(remoteDataSource: sl()),
-  );
+  sl.registerLazySingleton<IConnectingQrRepository>(() => ConnectingQrRepository(sl()));
+  sl.registerLazySingleton<IMainSearchRepository>(() => MainSearchRepository(remoteDataSource: sl()));
   if (kIsWeb) {
-    sl.registerLazySingleton<INewEmployeeRepository>(
-      () => NewEmployeeRepositoryWeb(remoteDataSource: sl()),
-    );
+    sl.registerLazySingleton<INewEmployeeRepository>(() => NewEmployeeRepositoryWeb(remoteDataSource: sl()));
   } else {
     sl.registerLazySingleton<INewEmployeeRepository>(
-      () => NewEmployeeRepositoryMobile(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ),
+      () => NewEmployeeRepositoryMobile(remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()),
     );
   }
   if (kIsWeb) {
@@ -348,9 +315,7 @@ Future<void> init() async {
     );
   }
 
-  sl.registerLazySingleton<IConnectingQrRepository>(
-    () => ConnectingQrRepository(sl()),
-  );
+
 
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
