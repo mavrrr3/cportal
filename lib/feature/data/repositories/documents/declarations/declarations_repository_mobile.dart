@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/core/error/cache_exception.dart';
 import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_declarations_local_datasource.dart';

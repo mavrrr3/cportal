@@ -35,13 +35,13 @@ class SingleDeclarationBloc
     final failureOrDeclaration = await getSingleDeclaration(
       GetSingleDeclarationParams(id: event.id, isTask: event.isTask),
     );
-    void _loadingDeclaration(DeclarationInfoEntity declarationEntity) {
+    void loadingDeclaration(DeclarationInfoEntity declarationEntity) {
       emit(SingleDeclarationLoadedState(declaration: declarationEntity));
     }
 
     failureOrDeclaration.fold(
       _mapFailureToMessage,
-      _loadingDeclaration,
+      loadingDeclaration,
     );
 
     debugPrint('Отработал эвент: $event');

@@ -52,7 +52,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     final failureOrTasks = await fetchTasks(
       FetchTasksParams(page: page),
     );
-    void _loadingTasks(TasksResponseEntity tasks) {
+    void loadingTasks(TasksResponseEntity tasks) {
       page++;
 
       final tasksList = (state as TasksLoadingState).oldTasks;
@@ -70,7 +70,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     failureOrTasks.fold(
       _mapFailureToMessage,
-      _loadingTasks,
+      loadingTasks,
     );
 
     debugPrint('Отработал эвент: $event');

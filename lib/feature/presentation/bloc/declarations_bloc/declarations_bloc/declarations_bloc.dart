@@ -48,7 +48,7 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
       isFirstFetch: event.isFirstFetch,
     ));
 
-    void _loadingDeclarations(List<DeclarationCardEntity> declarationEntity) {
+    void loadingDeclarations(List<DeclarationCardEntity> declarationEntity) {
       page++;
 
       final declarationsList =
@@ -67,7 +67,7 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
 
     failureOrDeclarations.fold(
       _mapFailureToMessage,
-      _loadingDeclarations,
+      loadingDeclarations,
     );
 
     debugPrint('Отработал эвент: $event');
