@@ -51,8 +51,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     }
 
     emit(ContactsLoadingState(oldContacts, isFirstFetch: event.isFirstFetch));
-
-    void _loadingContacts(ContactsEntity contactsEntity) {
+    final failureOrContacts = await fetchContacts(
+      FetchContactsParams(page: page),
+    );
+    void loadingContacts(ContactsEntity contactsEntity) {
       page++;
 
       final contactsList = (state as ContactsLoadingState).oldContacts;
@@ -67,13 +69,9 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       ));
     }
 
-    final failureOrContacts = await fetchContacts(
-      FetchContactsParams(page: page),
-    );
-
     failureOrContacts.fold(
       _mapFailureToMessage,
-      _loadingContacts,
+      loadingContacts,
     );
 
     debugPrint('Отработал эвент: $event');

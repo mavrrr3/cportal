@@ -69,7 +69,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shadowColor: Colors.transparent,
-                            primary: theme.primary,
+                            backgroundColor: theme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),

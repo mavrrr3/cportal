@@ -18,7 +18,7 @@ class Button {
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: size,
-            primary: color ?? theme.primary,
+            backgroundColor: theme.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),

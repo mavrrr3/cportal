@@ -12,8 +12,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 class GetSingleNewsBloc extends Bloc<GetSingleNewsEvent, GetSingleNewsState> {
   final GetSingleNewsUseCase getSingleNews;
 
-  GetSingleNewsBloc({required this.getSingleNews})
-      : super(GetSingleNewsEmptyState()) {
+  GetSingleNewsBloc({required this.getSingleNews}) : super(GetSingleNewsEmptyState()) {
     _setupEvents();
   }
 
@@ -32,7 +31,7 @@ class GetSingleNewsBloc extends Bloc<GetSingleNewsEvent, GetSingleNewsState> {
 
     emit(GetSingleNewsLoadingState());
 
-    String _mapFailureToMessage(Failure failure) {
+    String mapFailureToMessage(Failure failure) {
       switch (failure.runtimeType) {
         case ServerFailure:
           return 'Ошибка на сервере';
@@ -50,7 +49,7 @@ class GetSingleNewsBloc extends Bloc<GetSingleNewsEvent, GetSingleNewsState> {
     failureOrSingleNews.fold(
       (failure) {
         emit(GetSingleNewsLoadingError(
-          message: _mapFailureToMessage(failure),
+          message: mapFailureToMessage(failure),
         ));
       },
       (singleNews) {
