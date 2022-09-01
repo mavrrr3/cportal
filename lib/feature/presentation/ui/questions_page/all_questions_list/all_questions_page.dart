@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
@@ -93,11 +94,12 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        BurgerMenuButton(onTap: () {
-                          context.read<NavigationBarBloc>().add(
-                                const NavBarVisibilityEvent(isActive: true),
-                              );
-                        }),
+                        if (!isMobile(context))
+                          BurgerMenuButton(onTap: () {
+                            context.read<NavigationBarBloc>().add(
+                                  const NavBarVisibilityEvent(isActive: true),
+                                );
+                          }),
                         Text(
                           AppLocalizations.of(context)!.questions,
                           style: theme.textTheme.header,

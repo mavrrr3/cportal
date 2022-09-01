@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/all_news_list/scrollable_news_list.dart';
@@ -87,11 +88,12 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        BurgerMenuButton(onTap: () {
-                          context.read<NavigationBarBloc>().add(
-                                const NavBarVisibilityEvent(isActive: true),
-                              );
-                        }),
+                        if (!isMobile(context))
+                          BurgerMenuButton(onTap: () {
+                            context.read<NavigationBarBloc>().add(
+                                  const NavBarVisibilityEvent(isActive: true),
+                                );
+                          }),
                         Text(
                           AppLocalizations.of(context)!.news,
                           style: theme.textTheme.header,
