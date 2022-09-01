@@ -36,12 +36,6 @@ class _DeclarationExpandbleContentState
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _arrowController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,5 +66,12 @@ class _DeclarationExpandbleContentState
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _arrowController.dispose();
+    _expandController.dispose();
   }
 }

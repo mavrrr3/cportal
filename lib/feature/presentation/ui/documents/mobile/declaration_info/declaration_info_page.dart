@@ -14,6 +14,7 @@ import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declara
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_progress.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_actions_history.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +50,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Swipe(
       onSwipeRight: () => context.pop(),
@@ -59,7 +60,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
         body: BlocBuilder<SingleDeclarationBloc, SingleDeclarationState>(
           builder: (context, state) {
             if (state is SingleDeclarationLoadingState) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: PlatformProgressIndicator());
             }
 
             if (state is SingleDeclarationLoadedState) {
@@ -94,7 +95,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 24),
                             child: DeclarationExpandbleContent(
-                              title: strings.content,
+                              title: localizedStrings.content,
                               childTopPadding: 8,
                               child: Text(
                                 state.declaration.content!,

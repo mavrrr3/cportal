@@ -10,7 +10,7 @@ class DeclarationData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +25,7 @@ class DeclarationData extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              data[i].value.isNotEmpty ? data[i].value : strings.empty,
+              data[i].value.isNotEmpty ? data[i].value : localizedStrings.empty,
               style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),

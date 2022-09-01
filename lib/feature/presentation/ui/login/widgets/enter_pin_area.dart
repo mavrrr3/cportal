@@ -31,7 +31,7 @@ class _EnterPinAreaState extends State<EnterPinArea> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
     final authBloc = context.read<AuthBloc>();
 
     return BlocBuilder<AuthBloc, AuthState>(
@@ -44,7 +44,7 @@ class _EnterPinAreaState extends State<EnterPinArea> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    strings.inputPinCode,
+                    localizedStrings.inputPinCode,
                     style: theme.textTheme.header,
                   ),
                   const SizedBox(height: 8),
@@ -53,7 +53,7 @@ class _EnterPinAreaState extends State<EnterPinArea> {
                     child: SizedBox(
                       height: 24,
                       child: Text(
-                        strings.forgetPin,
+                        localizedStrings.forgetPin,
                         style:
                             theme.textTheme.px14.copyWith(color: theme.primary),
                       ),
@@ -69,15 +69,15 @@ class _EnterPinAreaState extends State<EnterPinArea> {
                               builder: (context, snapshot) {
                                 return Text(
                                   snapshot.data == null
-                                      ? '${strings.tryToRepeatAfter} 30 секунд'
-                                      : '${strings.tryToRepeatAfter} ${snapshot.data} секунд',
+                                      ? '${localizedStrings.tryToRepeatAfter} 30 секунд'
+                                      : '${localizedStrings.tryToRepeatAfter} ${snapshot.data} секунд',
                                   style: theme.textTheme.px14,
                                 );
                               },
                             )
                           : state is WrongPinCode
                               ? Text(
-                                  strings.errorPinCode,
+                                  localizedStrings.errorPinCode,
                                   style: theme.textTheme.px14.copyWith(
                                     color: theme.red,
                                   ),

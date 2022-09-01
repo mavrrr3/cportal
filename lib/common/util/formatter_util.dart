@@ -40,27 +40,27 @@ class FormatterUtil {
   }
 
   static String expiredDays({
-    required AppLocalizations strings,
+    required AppLocalizations localizedStrings,
     required DateTime date,
   }) {
     final currentDate = DateTime.now();
     final difference = currentDate.difference(date).inDays;
 
-    return '${strings.expiredPrefix} $difference ${getFormattedDaysExtraText(strings, difference)}';
+    return '${localizedStrings.expiredPrefix} $difference ${getFormattedDaysExtraText(localizedStrings, difference)}';
   }
 
   // Адаптирует окончание, в зависимости от того, на сколько просрочена задача.
   static String getFormattedDaysExtraText(
-    AppLocalizations strings,
+    AppLocalizations localizedStrings,
     int query,
   ) {
     final div = query % 10;
     if (div == 1) {
-      return strings.days1;
+      return localizedStrings.days1;
     } else if (div > 1 && div <= 4) {
-      return strings.days2;
+      return localizedStrings.days2;
     } else {
-      return strings.days3;
+      return localizedStrings.days3;
     }
   }
 }

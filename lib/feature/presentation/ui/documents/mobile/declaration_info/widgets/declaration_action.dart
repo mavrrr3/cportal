@@ -19,7 +19,7 @@ class DeclarationAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(6, 6, 12, 12),
@@ -83,12 +83,12 @@ class DeclarationAction extends StatelessWidget {
                   children: [
                     _getStepDescription(
                       theme: theme,
-                      strings: strings,
+                      localizedStrings: localizedStrings,
                       taskStatus: item.status,
                     ),
                     _getStepDate(
                       theme: theme,
-                      strings: strings,
+                      localizedStrings: localizedStrings,
                       taskStatus: item.status,
                     ),
                     if (item.comment.isNotEmpty) const SizedBox(height: 6),
@@ -98,7 +98,7 @@ class DeclarationAction extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            strings.comment,
+                            localizedStrings.comment,
                             style: theme.textTheme.px12.copyWith(
                               color: theme.textLight,
                               leadingDistribution: TextLeadingDistribution.even,
@@ -124,12 +124,12 @@ class DeclarationAction extends StatelessWidget {
 
   Widget _getStepDescription({
     required CustomTheme theme,
-    required AppLocalizations strings,
+    required AppLocalizations localizedStrings,
     required TaskStatusEnum taskStatus,
   }) {
     if (taskStatus == TaskStatusEnum.expired) {
       return Text(
-        '${item.description} ${strings.taskExpired} ${FormatterUtil.expiredDays(strings: strings, date: item.descriptionDate)}',
+        '${item.description} ${localizedStrings.taskExpired} ${FormatterUtil.expiredDays(localizedStrings: localizedStrings, date: item.descriptionDate)}',
         style: theme.textTheme.px12.copyWith(
           color: theme.red,
           leadingDistribution: TextLeadingDistribution.even,
@@ -161,11 +161,11 @@ class DeclarationAction extends StatelessWidget {
   Widget _getStepDate({
     required CustomTheme theme,
     required TaskStatusEnum taskStatus,
-    required AppLocalizations strings,
+    required AppLocalizations localizedStrings,
   }) {
     if (taskStatus == TaskStatusEnum.inProccess) {
       return Text(
-        '${strings.before} ${FormatterUtil.dateWithExpirationDate(date: item.descriptionDate)}',
+        '${localizedStrings.before} ${FormatterUtil.dateWithExpirationDate(date: item.descriptionDate)}',
         style: theme.textTheme.px12.copyWith(
           color: theme.textLight,
           leadingDistribution: TextLeadingDistribution.even,

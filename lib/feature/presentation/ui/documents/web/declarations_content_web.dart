@@ -14,6 +14,7 @@ import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/in_pro
 import 'package:cportal_flutter/feature/presentation/ui/widgets/card_with_icon.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/material.dart';
@@ -40,30 +41,31 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final locolizedStrings = AppLocalizations.of(context)!;
     final List<CardWithIcon> newDeclaration = [
       CardWithIcon(
         svgPath: ImageAssets.calendar,
-        text: AppLocalizations.of(context)!.buisenesTripDeclaration,
+        text: locolizedStrings.buisenesTripDeclaration,
         onTap: () {},
       ),
       CardWithIcon(
         svgPath: ImageAssets.flyVocation,
-        text: AppLocalizations.of(context)!.vocationDeclaration,
+        text: locolizedStrings.vocationDeclaration,
         onTap: () {},
       ),
       CardWithIcon(
         svgPath: ImageAssets.lock,
-        text: AppLocalizations.of(context)!.passDeclaration,
+        text: locolizedStrings.passDeclaration,
         onTap: () {},
       ),
       CardWithIcon(
         svgPath: ImageAssets.payList,
-        text: AppLocalizations.of(context)!.payListDeclaration,
+        text: locolizedStrings.payListDeclaration,
         onTap: () {},
       ),
       CardWithIcon(
         svgPath: ImageAssets.support,
-        text: AppLocalizations.of(context)!.supportDeclaration,
+        text: locolizedStrings.supportDeclaration,
         onTap: () {},
       ),
     ];
@@ -73,7 +75,7 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
         if (state is DeclarationsLoadingState) {
           return const Expanded(
             child: Center(
-              child: CircularProgressIndicator(),
+              child: PlatformProgressIndicator(),
             ),
           );
         }

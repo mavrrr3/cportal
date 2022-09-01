@@ -8,6 +8,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_blo
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/profile_info_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
@@ -55,7 +56,7 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
           return Scaffold(
             backgroundColor: theme.background,
             body: const Center(
-              child: CircularProgressIndicator(),
+              child: PlatformProgressIndicator(),
             ),
           );
         }

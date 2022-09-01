@@ -41,8 +41,6 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
       vsync: this,
     );
 
-   
-
     subscriptionBloc = context.read<AuthBloc>().stream.listen((state) {
       if (state is WrongPinCode) {
         if (widget.controller.text.isNotEmpty) {
@@ -155,7 +153,8 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    subscriptionBloc.cancel();
     super.dispose();
+    subscriptionBloc.cancel();
+    scaleController.dispose();
   }
 }

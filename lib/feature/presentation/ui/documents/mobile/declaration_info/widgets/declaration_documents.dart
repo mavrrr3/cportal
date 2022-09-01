@@ -18,12 +18,12 @@ class DeclarationDocuments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DeclarationHeadline(title: strings.docs),
+        DeclarationHeadline(title: localizedStrings.docs),
         const SizedBox(height: 16),
         ...List.generate(
           items.length,

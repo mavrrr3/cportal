@@ -4,6 +4,7 @@ import 'package:cportal_flutter/feature/domain/entities/documents/declarations/d
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/declarations_list.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,7 +16,7 @@ class MyDeclarationsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     // Список заявлений.
@@ -26,7 +27,7 @@ class MyDeclarationsTab extends StatelessWidget {
         if (state is DeclarationsLoadingState && state.isFirstFetch) {
           return const Expanded(
             child: Center(
-              child: CircularProgressIndicator(),
+              child: PlatformProgressIndicator(),
             ),
           );
         } else if (state is DeclarationsLoadingState) {
@@ -59,7 +60,7 @@ class MyDeclarationsTab extends StatelessWidget {
             : Padding(
                 padding: const EdgeInsets.only(top: 128),
                 child: Text(
-                  strings.emptyDeclarations,
+                  localizedStrings.emptyDeclarations,
                   style: theme.textTheme.px22.copyWith(color: theme.textLight),
                   textAlign: TextAlign.center,
                 ),

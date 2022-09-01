@@ -18,12 +18,12 @@ class DeclarationInitiator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strings = AppLocalizations.of(context)!;
+    final localizedStrings = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DeclarationHeadline(title: strings.initiator),
+        DeclarationHeadline(title: localizedStrings.initiator),
         const SizedBox(height: 8),
         UserCard(
           fullName: fullName,
