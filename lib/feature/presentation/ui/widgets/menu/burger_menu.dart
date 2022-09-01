@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_items_column_web.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BurgerMenu extends StatelessWidget {
   final int currentIndex;
   final Function(int) onChange;
-  final Function() onClose;
   final double menuWidth;
   final int duration;
 
@@ -16,7 +16,6 @@ class BurgerMenu extends StatelessWidget {
     Key? key,
     required this.currentIndex,
     required this.onChange,
-    required this.onClose,
     this.menuWidth = 256,
     this.duration = 300,
   }) : super(key: key);
@@ -36,8 +35,7 @@ class BurgerMenu extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               color: theme.cardColor,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: AnimatedOpacity(
                   curve: Curves.easeInCubic,
                   opacity: state.isActive ? 1 : 0,
@@ -54,7 +52,8 @@ class BurgerMenu extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: onClose,
+              onTap: () =>
+                  context.read<NavigationBarBloc>().add(NavBarVisibilityEvent(index: currentIndex, isActive: false)),
               child: AnimatedOpacity(
                 curve: Curves.easeInCubic,
                 opacity: state.isActive ? 1 : 0,

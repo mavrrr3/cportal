@@ -169,6 +169,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
                                   const NavBarVisibilityEvent(
+                                    index: 0,
                                     isActive: true,
                                   ),
                                 );
