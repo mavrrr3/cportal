@@ -67,13 +67,12 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse> wit
             ),
             Button.factory(
               context,
-              ButtonEnum.blue,
-              AppLocalizations.of(context)!.go_over,
-              () {
+              type: ButtonEnum.filled,
+              text: AppLocalizations.of(context)!.go_over,
+              onTap: () {
                 // TODO: обработать навигацию на прохождение курса.
                 return context.goNamed(NavigationRouteNames.mainPage);
               },
-              const Size(double.infinity, 48),
             ),
           ],
         ),

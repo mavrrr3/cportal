@@ -11,9 +11,9 @@ import 'package:cportal_flutter/feature/presentation/ui/connecting_code/connecti
 import 'package:cportal_flutter/feature/presentation/ui/connecting_info/connecting_code_info_web_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/create_declaration_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/mobile/declaration_info/declaration_info_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/create_declaration/create_declaration_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/declaration_info_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/devices/connecting_devices_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/home/home_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/login/login_screen.dart';
@@ -60,6 +60,7 @@ abstract class NavigationRouteNames {
   static const declarations = 'declarations';
   static const createDeclaration = 'create_declaration';
   static const declarationInfo = 'declaration_info';
+  static const taskInfo = 'task_info';
   static const devices = 'devices';
 }
 
@@ -80,12 +81,18 @@ final GoRouter router = GoRouter(
     final isGoingToConnectingQr = state.subloc == connectingQrLocation;
     final isGoingToQrScanner = state.subloc == qrScannerLocation;
     final isGoingToConnectingCodeInfo =
-        state.subloc == connectingInfoLocation || state.subloc == connectingInfoMobileLocation;
+        state.subloc == connectingInfoLocation ||
+            state.subloc == connectingInfoMobileLocation;
 
-    final isAuthenticated = authService.authStatus == AuthenticationStatus.authenticated;
-    final isUnAuthenticated = authService.authStatus == AuthenticationStatus.unauthenticated;
+    final isAuthenticated =
+        authService.authStatus == AuthenticationStatus.authenticated;
+    final isUnAuthenticated =
+        authService.authStatus == AuthenticationStatus.unauthenticated;
 
-    if ((isGoingToConnectingQr || isGoingToQrScanner || isGoingToConnectingCodeInfo || isGoingToConnectingCodeInfo) &&
+    if ((isGoingToConnectingQr ||
+            isGoingToQrScanner ||
+            isGoingToConnectingCodeInfo ||
+            isGoingToConnectingCodeInfo) &&
         !isAuthenticated) {
       return null;
     }
@@ -120,7 +127,9 @@ final GoRouter router = GoRouter(
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -305,18 +314,56 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: NavigationRouteNames.createDeclaration,
-      path: '/declarations/create:fid',
-      pageBuilder: (context, state) => NoTransitionPage<void>(
-        child: CreateDeclarationPage(
-          id: state.params['fid']!,
+      path: '/declarations/create',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: const CreateDeclarationPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
         ),
       ),
     ),
     GoRoute(
       name: NavigationRouteNames.declarationInfo,
-      path: '/declarations/info',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: DeclarationInfoPage(),
+      path: '/declarations/info/:fid',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: DeclarationInfoPage(
+          id: state.params['fid']!,
+          isTask: false,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
+        ),
+      ),
+    ),
+    GoRoute(
+      name: NavigationRouteNames.taskInfo,
+      path: '/tasks/info/:fid',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: DeclarationInfoPage(
+          id: state.params['fid']!,
+          isTask: true,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
+        ),
       ),
     ),
   ],

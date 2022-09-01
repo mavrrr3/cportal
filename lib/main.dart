@@ -7,7 +7,13 @@ import 'package:cportal_flutter/feature/data/models/article_model.dart';
 import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_device_model.dart';
 import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_devices_model.dart';
 import 'package:cportal_flutter/feature/data/models/contacts_model.dart';
-import 'package:cportal_flutter/feature/data/models/declaration_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_document_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_info_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/declaration_step_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/task_status_enum.dart';
+import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/task_card_model.dart';
+import 'package:cportal_flutter/feature/data/models/documents/tasks/tasks_response_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/new_employee_model.dart';
 import 'package:cportal_flutter/feature/data/models/news_model.dart';
@@ -22,7 +28,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/biometric_bloc/turn_of
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_code_bloc/connecting_code_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connectinng_devices_bloc/connecting_devices_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
@@ -32,6 +38,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -46,7 +53,10 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_blo
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:responsive_framework/responsive_framework.dart';
 
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
+
+import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_card_model.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -177,6 +187,9 @@ List<BlocProvider> listOfBlocs() {
     BlocProvider<DeclarationsBloc>(
       create: (ctx) => sl<DeclarationsBloc>(),
     ),
+    BlocProvider<SingleDeclarationBloc>(
+      create: (ctx) => sl<SingleDeclarationBloc>(),
+    ),
     BlocProvider<ConnectingDevicesBloc>(
       create: (ctx) => sl<ConnectingDevicesBloc>(),
     ),
@@ -191,6 +204,9 @@ List<BlocProvider> listOfBlocs() {
     ),
     BlocProvider<FilterVisibilityBloc>(
       create: (ctx) => sl<FilterVisibilityBloc>(),
+    ),
+    BlocProvider<TasksBloc>(
+      create: (ctx) => sl<TasksBloc>(),
     ),
     BlocProvider<FingerPrintSupportBloc>(
       create: (ctx) => sl<FingerPrintSupportBloc>(),
@@ -209,21 +225,28 @@ List<BlocProvider> listOfBlocs() {
 
 void _hiveAdaptersInit() {
   sl<HiveInterface>()
-    ..registerAdapter(ProfileModelAdapter())
-    ..registerAdapter(ContactInfoModelAdapter())
-    ..registerAdapter(NewsModelAdapter())
-    ..registerAdapter(ArticleModelAdapter())
-    ..registerAdapter(ParagraphModelAdapter())
-    ..registerAdapter(ResponseModelAdapter())
-    ..registerAdapter(FilterModelAdapter())
-    ..registerAdapter(DeclarationModelAdapter())
-    ..registerAdapter(FilterItemModelAdapter())
-    ..registerAdapter(ContactsModelAdapter())
-    ..registerAdapter(FilterResponseModelAdapter())
     ..registerAdapter(UserModelAdapter())
     ..registerAdapter(ContactModelAdapter())
-    ..registerAdapter(ConnectingDevicesModelAdapter())
+    ..registerAdapter(ProfileModelAdapter())
+    ..registerAdapter(ContactInfoModelAdapter())
+    ..registerAdapter(ArticleModelAdapter())
+    ..registerAdapter(ParagraphModelAdapter())
+    ..registerAdapter(NewsModelAdapter())
+    ..registerAdapter(FilterModelAdapter())
+    ..registerAdapter(FilterItemModelAdapter())
+    ..registerAdapter(ContactsModelAdapter())
+    ..registerAdapter(ResponseModelAdapter())
+    ..registerAdapter(FilterResponseModelAdapter())
+    ..registerAdapter(DeclarationCardModelAdapter())
     ..registerAdapter(ConnectingDeviceModelAdapter())
+    ..registerAdapter(ConnectingDevicesModelAdapter())
     ..registerAdapter(DevicePlatformAdapter())
-    ..registerAdapter(NewEmployeeModelAdapter());
+    ..registerAdapter(DeclarationInfoModelAdapter())
+    ..registerAdapter(DeclarationStepModelAdapter())
+    ..registerAdapter(DescriptionEnumAdapter())
+    ..registerAdapter(NewEmployeeModelAdapter())
+    ..registerAdapter(DeclarationDocumentModelAdapter())
+    ..registerAdapter(TaskStatusEnumAdapter())
+    ..registerAdapter(TaskCardModelAdapter())
+    ..registerAdapter(TasksResponseModelAdapter());
 }

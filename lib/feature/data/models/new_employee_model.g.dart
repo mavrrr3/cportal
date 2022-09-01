@@ -10,7 +10,7 @@ part of 'new_employee_model.dart';
 
 class NewEmployeeModelAdapter extends TypeAdapter<NewEmployeeModel> {
   @override
-  final int typeId = 16;
+  final int typeId = 19;
 
   @override
   NewEmployeeModel read(BinaryReader reader) {

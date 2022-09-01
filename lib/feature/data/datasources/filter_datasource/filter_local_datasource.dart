@@ -16,7 +16,7 @@ class FilterLocalDataSource implements IFilterLocalDataSource {
     FilterType type,
   ) async {
     final box = await hive.openBox<FilterResponseModel>('filters_$type');
-
+    
     final filters = box.get('filters_$type');
 
     if (kDebugMode) log('FilterResponseModel из кэша $filters');

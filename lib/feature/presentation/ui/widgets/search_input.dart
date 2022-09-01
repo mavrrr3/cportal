@@ -18,8 +18,8 @@ class SearchInput extends StatefulWidget {
     Key? key,
     required this.controller,
     required this.onChanged,
-    this.focusNode,
     required this.onTap,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -93,9 +93,7 @@ class _SearchInputState extends State<SearchInput> {
                       color: theme.brightness == Brightness.dark ? theme.white : theme.text?.withOpacity(0.65),
                     ),
                   ),
-                )
-              else
-                const SizedBox(),
+                ),
             ],
           ),
         );

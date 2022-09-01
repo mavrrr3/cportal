@@ -22,7 +22,19 @@ class FilterRepositoryWeb implements IFilterRepository {
   }
 
   @override
-  Future<Either<Failure, FilterResponseEntity>> fetchDeclarationsFilters() async {
+  Future<Either<Failure, FilterResponseEntity>>
+      fetchDeclarationsFilters() async {
+    try {
+      final remoteFilters = await remoteDataSource.fetchDeclarationsFilters();
+
+      return Right(remoteFilters);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, FilterResponseEntity>> fetchTasksFilters() async {
     try {
       final remoteFilters = await remoteDataSource.fetchDeclarationsFilters();
 

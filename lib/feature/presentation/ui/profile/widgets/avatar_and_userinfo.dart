@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/random_color_service.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
@@ -24,7 +24,7 @@ class AvatarAndUserInfo extends StatelessWidget {
         ProfileImage(
           fullName: user.name,
           imgLink: user.photoUrl,
-          color: RandomColorService.color,
+          color: ColorService.randomColor,
           size: 102,
           borderRadius: 24,
         ),

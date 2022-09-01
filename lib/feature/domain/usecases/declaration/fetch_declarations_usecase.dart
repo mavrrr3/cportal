@@ -1,18 +1,18 @@
 import 'package:cportal_flutter/core/usecases/i_usecase.dart';
-import 'package:cportal_flutter/feature/domain/entities/declarations/declaration_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_declaration_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:equatable/equatable.dart';
 
 class FetchDeclarationsUseCase
-    extends IUseCase<List<DeclarationEntity>, FetchDeclarationsParams> {
+    extends IUseCase<List<DeclarationCardEntity>, FetchDeclarationsParams> {
   final IDeclarationRepository repository;
 
   FetchDeclarationsUseCase(this.repository);
 
   @override
-  Future<Either<Failure, List<DeclarationEntity>>> call(
+  Future<Either<Failure, List<DeclarationCardEntity>>> call(
     FetchDeclarationsParams params,
   ) async =>
       repository.fetchDeclarations(params.page);

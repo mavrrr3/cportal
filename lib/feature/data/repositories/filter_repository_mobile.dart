@@ -30,7 +30,8 @@ class FilterRepositoryMobile implements IFilterRepository {
       }
     } else {
       try {
-        final localFilters = await localDataSource.fetchFiltersFromCache(FilterType.contacts);
+        final localFilters =
+            await localDataSource.fetchFiltersFromCache(FilterType.contacts);
 
         return Right(localFilters);
       } on CacheFailure {
@@ -40,7 +41,8 @@ class FilterRepositoryMobile implements IFilterRepository {
   }
 
   @override
-  Future<Either<Failure, FilterResponseEntity>> fetchDeclarationsFilters() async {
+  Future<Either<Failure, FilterResponseEntity>>
+      fetchDeclarationsFilters() async {
     if (await networkInfo.isConnected) {
       try {
         final remoteFilters = await remoteDataSource.fetchDeclarationsFilters();
@@ -51,7 +53,30 @@ class FilterRepositoryMobile implements IFilterRepository {
       }
     } else {
       try {
-        final localFilters = await localDataSource.fetchFiltersFromCache(FilterType.declarations);
+        final localFilters = await localDataSource
+            .fetchFiltersFromCache(FilterType.declarations);
+
+        return Right(localFilters);
+      } on CacheFailure {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, FilterResponseEntity>> fetchTasksFilters() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteFilters = await remoteDataSource.fetchDeclarationsFilters();
+
+        return Right(remoteFilters);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localFilters = await localDataSource
+            .fetchFiltersFromCache(FilterType.declarations);
 
         return Right(localFilters);
       } on CacheFailure {

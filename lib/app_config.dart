@@ -32,6 +32,12 @@ class AppConfig {
 
   static Future<void> load() async {
     await dotenv.load(fileName: 'assets/.env');
+
+    // if (kReleaseMode) {
+    //   await dotenv.load(fileName: 'assets/.env');
+    // } else {
+    //   await dotenv.load(fileName: 'assets/.env.test');
+    // }
     log('======================================================');
     log('ENVIRONMENT: $environment');
     log('API ENDPOINT: $apiUri');

@@ -25,12 +25,13 @@ class OpenFilterButton extends StatelessWidget {
             behavior: HitTestBehavior.translucent,
             onTap: onTap,
             child: Container(
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: theme.cardColor,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
+              child: Center(
                 child: SvgPicture.asset(
                   ImageAssets.filter,
                   color: theme.textLight,
