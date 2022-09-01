@@ -15,7 +15,7 @@ class DeclarationProgress extends StatefulWidget {
     required this.allSteps,
     required this.status,
     required this.description,
-  required this.color,
+    required this.color,
     this.duration = 650,
   }) : super(key: key);
 
@@ -31,7 +31,11 @@ class _DeclarationProgressState extends State<DeclarationProgress> {
   void initState() {
     super.initState();
     progress = widget.currentStep / widget.allSteps;
-    progressAnimation();
+    if (progress != 1) {
+      progressAnimation();
+    } else {
+      progressForAnimation = 1;
+    }
   }
 
   @override
