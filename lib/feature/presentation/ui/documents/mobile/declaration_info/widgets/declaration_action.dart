@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class DeclarationStep extends StatelessWidget {
+class DeclarationAction extends StatelessWidget {
   final DeclarationStepEntity item;
-  const DeclarationStep({
+  const DeclarationAction({
     Key? key,
     required this.item,
   }) : super(key: key);

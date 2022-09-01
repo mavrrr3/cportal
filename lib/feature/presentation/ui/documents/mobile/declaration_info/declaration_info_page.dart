@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
 
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
@@ -11,14 +9,18 @@ import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declara
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_documents.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_expandble_content.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_initiator.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_progress.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_steps_history.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_actions_history.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:swipe/swipe.dart';
 
 class DeclarationInfoPage extends StatefulWidget {
@@ -35,12 +37,9 @@ class DeclarationInfoPage extends StatefulWidget {
 }
 
 class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
-  late bool _isHistoryExpanded;
-
   @override
   void initState() {
     super.initState();
-    _isHistoryExpanded = true;
     context.read<SingleDeclarationBloc>().add(GetSingleDeclarationEvent(
           id: widget.id,
           isTask: widget.isTask,
@@ -50,6 +49,7 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final strings = AppLocalizations.of(context)!;
 
     return Swipe(
       onSwipeRight: () => context.pop(),
@@ -89,34 +89,56 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         ),
                         const SizedBox(height: 24),
 
+                        // Содержание.
+                        if (state.declaration.content != null)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: DeclarationExpandbleContent(
+                              title: strings.content,
+                              childTopPadding: 8,
+                              child: Text(
+                                state.declaration.content!,
+                                style: theme.textTheme.px14,
+                              ),
+                            ),
+                          ),
+
                         // Ход выполнения.
                         if (state.declaration.actions.isNotEmpty)
-                          DeclarationStepsHistory(
-                            steps: state.declaration.actions,
-                            isHistoryExpanded: _isHistoryExpanded,
-                            onTap: () {
-                              setState(() {
-                                _isHistoryExpanded = !_isHistoryExpanded;
-                              });
-                            },
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: DeclarationActionsHistory(
+                              actions: state.declaration.actions,
+                            ),
                           ),
-                        const SizedBox(height: 16),
 
                         // Документы.
                         if (state.declaration.documents.isNotEmpty)
-                          DeclarationDocuments(
-                            items: state.declaration.documents,
-                            onTap: (i) {},
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: DeclarationDocuments(
+                              items: state.declaration.documents,
+                              onTap: (i) {},
+                            ),
                           ),
-                        const SizedBox(height: 24),
 
                         // Дата и приоритет.
-
                         DeclarationDateAndPriority(
                           date: state.declaration.date,
                           priority: state.declaration.priority,
                         ),
                         const SizedBox(height: 24),
+
+                        // Инициатор.
+                        if (state.declaration.initiatorName != null)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: DeclarationInitiator(
+                              fullName: state.declaration.initiatorName!,
+                              position: state.declaration.initiatorPosition!,
+                              imgLing: state.declaration.initiatorImage!,
+                            ),
+                          ),
 
                         Divider(
                           color: theme.brightness == Brightness.light
@@ -130,26 +152,6 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                         if (state.declaration.params.isNotEmpty)
                           DeclarationData(data: state.declaration.params),
                         const SizedBox(height: 32),
-
-                        // state.declaration.progress != 1
-                        //     ? Button.factory(
-                        //         context,
-                        //         type: ButtonEnum.filled,
-                        //         onTap: () {},
-                        //         text: AppLocalizations.of(context)!
-                        //             .cancelDeclaration,
-                        //         color: theme.red,
-                        //         size: Size(width - 32, 48),
-                        //       )
-                        //     : Button.factory(
-                        //         context,
-                        //         type: ButtonEnum.outlined,
-                        //         onTap: () {},
-                        //         text: AppLocalizations.of(context)!
-                        //             .archiveDeclaration,
-                        //         size: Size(width - 32, 48),
-                        //       ),
-                        // const SizedBox(height: 16),
                       ],
                     ),
                   ),

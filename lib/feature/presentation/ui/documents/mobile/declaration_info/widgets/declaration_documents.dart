@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_document_entity.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_headline.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,10 +23,7 @@ class DeclarationDocuments extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          strings.docs,
-          style: theme.textTheme.px16Bold,
-        ),
+        DeclarationHeadline(title: strings.docs),
         const SizedBox(height: 16),
         ...List.generate(
           items.length,
