@@ -43,7 +43,7 @@ class NewsCardSimilarItem extends StatelessWidget {
               ),
               SizePadding.height12px,
               SizedBox(
-                width: 312,
+                width: 220,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
