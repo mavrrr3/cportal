@@ -4,7 +4,6 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
@@ -247,7 +246,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
             BurgerMenu(
               currentIndex: widget.webMenuIndex,
               onChange: (i) => MenuService.changePage(context, i),
-              onClose: () => context.read<NavigationBarBloc>().add(const NavBarVisibilityEvent(isActive: false)),
             ),
           ],
         );

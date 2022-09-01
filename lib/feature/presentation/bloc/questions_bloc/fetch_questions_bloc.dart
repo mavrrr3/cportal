@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
 class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
   final FetchQuestionsUseCase fetchQaustions;
@@ -21,122 +22,129 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
     required this.fetchQaustions,
     required this.fetchQuestionsByCategory,
   }) : super(QuestionsEmptyState()) {
-    on<FetchQaustionsEvent>((event, emit) async {
-      var oldArticles = <ArticleEntity>[];
-      if (state is QuestionsLoading) return;
+    on<FetchQaustionsEvent>(
+      (event, emit) async {
+        var oldArticles = <ArticleEntity>[];
+        if (state is QuestionsLoading) return;
 
-      if (state is QuestionsLoaded) {
-        oldArticles = (state as QuestionsLoaded).articles;
-      }
+        if (!kIsWeb) {
+          final tabsFromCache = await fetchQaustions.fetchQuestionCategories();
 
-      emit(QuestionsLoading(
-        oldArticles,
-        questionTabs,
-        isFirstFetch: pageAll == 1,
-      ));
-
-      final failureOrQuestions = await fetchQaustions(FetchQuestionsParams(
-        page: pageAll,
-      ));
-
-      String failureToMessage(Failure failure) {
-        switch (failure.runtimeType) {
-          case ServerFailure:
-            return 'Ошибка на сервере';
-          case CacheFailure:
-            return 'Ошибка обработки кэша';
-          default:
-            return 'Unexpected Error';
+          if (tabsFromCache.isNotEmpty) {
+            for (final tab in tabsFromCache) {
+              if (!questionTabs.contains(tab)) {
+                questionTabs.add(tab);
+              }
+            }
+            log('+++++++++++Questions tabs из КеШа++ $tabsFromCache ++Questions tabs из КеШа+++++++++++++');
+          }
         }
-      }
 
-      if (!kIsWeb) {
-        final tabsFromCache = await fetchQaustions.fetchQuestionCategories();
+        if (state is QuestionsLoaded) {
+          oldArticles = (state as QuestionsLoaded).articles;
+        }
 
-        if (tabsFromCache.isNotEmpty) {
-          for (final tab in tabsFromCache) {
+        emit(QuestionsLoading(
+          oldArticles,
+          questionTabs,
+          isFirstFetch: pageAll == 1,
+        ));
+
+        final failureOrQuestions = await fetchQaustions(FetchQuestionsParams(
+          page: pageAll,
+        ));
+
+        String failureToMessage(Failure failure) {
+          switch (failure.runtimeType) {
+            case ServerFailure:
+              return 'Ошибка на сервере';
+            case CacheFailure:
+              return 'Ошибка обработки кэша';
+            default:
+              return 'Unexpected Error';
+          }
+        }
+
+        void loadedNewsToArticles(NewsEntity questions) {
+          pageAll++;
+          final articles = (state as QuestionsLoading).oldArticles;
+          // ignore: cascade_invocations
+          articles.addAll(questions.response.articles);
+          log('Загрузилось ${articles.length} вопросов');
+          log('Загрузилось ${questions.response.categories!} вопросов');
+
+          // Создание листа со всеми вкладками.
+          for (final tab in questions.response.categories!) {
             if (!questionTabs.contains(tab)) {
               questionTabs.add(tab);
             }
           }
-          log('+++++++++++Questions tabs из КеШа++ $tabsFromCache ++Questions tabs из КеШа+++++++++++++');
-        }
-      }
-      void loadedNewsToArticles(NewsEntity questions) {
-        pageAll++;
-        final articles = (state as QuestionsLoading).oldArticles;
-        // ignore: cascade_invocations
-        articles.addAll(questions.response.articles);
-        log('Загрузилось ${articles.length} вопросов');
-        log('Загрузилось ${questions.response.categories!} вопросов');
+          for (int count = 0; count < questionTabs.length; count++) {
+            if (pageByCategory.length != questionTabs.length) {
+              pageByCategory.addAll(<String, int>{questionTabs[count]: 1});
+            }
+          }
 
-        // Создание листа со всеми вкладками.
-        for (final tab in questions.response.categories!) {
-          if (!questionTabs.contains(tab)) {
-            questionTabs.add(tab);
+          emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
+        }
+
+        failureOrQuestions.fold(failureToMessage, loadedNewsToArticles);
+      },
+      transformer: bloc_concurrency.droppable(),
+    );
+
+    on<FetchQaustionsEventBy>(
+      (event, emit) async {
+        if (state is QuestionsLoading) return;
+
+        var oldArticles = <ArticleEntity>[];
+
+        if (state is QuestionsLoaded) {
+          oldArticles = (state as QuestionsLoaded).articles;
+        }
+
+        emit(QuestionsLoading(
+          oldArticles,
+          questionTabs,
+          isFirstFetch: pageByCategory[event.category] == 1,
+        ));
+        log('+++++ event.category ${event.category} +++++');
+        final failureOrNews = await fetchQuestionsByCategory(
+          FetchQuestionsByCategoryParams(
+            category: event.category,
+            page: pageByCategory[event.category] as int,
+          ),
+        );
+
+        String failureToMessage(Failure failure) {
+          switch (failure.runtimeType) {
+            case ServerFailure:
+              return 'Ошибка на сервере';
+            case CacheFailure:
+              return 'Ошибка обработки кэша';
+            default:
+              return 'Unexpected Error';
           }
         }
-        for (int count = 0; count < questionTabs.length; count++) {
-          if (pageByCategory.length != questionTabs.length) {
-            pageByCategory.addAll(<String, int>{questionTabs[count]: 1});
-          }
+
+        void loadedNewsToArticles(NewsEntity news) {
+          pageByCategory[event.category]++;
+
+          final articles = (state as QuestionsLoading).oldArticles;
+          // ignore: cascade_invocations
+          articles.addAll(news.response.articles);
+
+          log('Загрузилось ${articles.length} статей из категории ${event.category}');
+
+          /// Создание листа со всеми вкладками.
+
+          emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
         }
 
-        emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
-      }
-
-      failureOrQuestions.fold(failureToMessage, loadedNewsToArticles);
-    });
-
-    on<FetchQaustionsEventBy>((event, emit) async {
-      if (state is QuestionsLoading) return;
-
-      var oldArticles = <ArticleEntity>[];
-
-      if (state is QuestionsLoaded) {
-        oldArticles = (state as QuestionsLoaded).articles;
-      }
-
-      emit(QuestionsLoading(
-        oldArticles,
-        questionTabs,
-        isFirstFetch: pageByCategory[event.category] == 1,
-      ));
-      log('+++++ event.category ${event.category} +++++');
-      final failureOrNews = await fetchQuestionsByCategory(
-        FetchQuestionsByCategoryParams(
-          category: event.category,
-          page: pageByCategory[event.category] as int,
-        ),
-      );
-
-      String failureToMessage(Failure failure) {
-        switch (failure.runtimeType) {
-          case ServerFailure:
-            return 'Ошибка на сервере';
-          case CacheFailure:
-            return 'Ошибка обработки кэша';
-          default:
-            return 'Unexpected Error';
-        }
-      }
-
-      void loadedNewsToArticles(NewsEntity news) {
-        pageByCategory[event.category]++;
-
-        final articles = (state as QuestionsLoading).oldArticles;
-        // ignore: cascade_invocations
-        articles.addAll(news.response.articles);
-
-        log('Загрузилось ${articles.length} статей из категории ${event.category}');
-
-        /// Создание листа со всеми вкладками.
-
-        emit(QuestionsLoaded(articles: articles, tabs: questionTabs));
-      }
-
-      failureOrNews.fold(failureToMessage, loadedNewsToArticles);
-    });
+        failureOrNews.fold(failureToMessage, loadedNewsToArticles);
+      },
+      transformer: bloc_concurrency.droppable(),
+    );
   }
 }
 

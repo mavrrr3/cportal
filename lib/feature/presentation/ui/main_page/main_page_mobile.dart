@@ -16,8 +16,6 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
@@ -31,7 +29,6 @@ import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/search
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/today_widget.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_popup.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
@@ -172,15 +169,6 @@ class _MainPageMobileState extends State<MainPageMobile> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          if (!isMobile(context)) ...[
-                            BurgerMenuButton(onTap: () {
-                              context.read<NavigationBarBloc>().add(
-                                    const NavBarVisibilityEvent(
-                                      isActive: true,
-                                    ),
-                                  );
-                            }),
-                          ],
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

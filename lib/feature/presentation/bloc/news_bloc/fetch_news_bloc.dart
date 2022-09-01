@@ -22,7 +22,20 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   }) : super(NewsEmptyState()) {
     on<FetchAllNewsEvent>((event, emit) async {
       var oldArticles = <ArticleEntity>[];
+
       if (state is NewsLoading) return;
+
+      if (!kIsWeb) {
+        final tabsFromCache = await fetchNews.fetchCategories();
+
+        if (tabsFromCache.isNotEmpty) {
+          for (final tab in tabsFromCache) {
+            if (!newsTabs.contains(tab)) {
+              newsTabs.add(tab);
+            }
+          }
+        }
+      }
 
       if (state is NewsLoaded) {
         oldArticles = (state as NewsLoaded).articles;
@@ -49,17 +62,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         }
       }
 
-      if (!kIsWeb) {
-        final tabsFromCache = await fetchNews.fetchCategories();
-
-        if (tabsFromCache.isNotEmpty) {
-          for (final tab in tabsFromCache) {
-            if (!newsTabs.contains(tab)) {
-              newsTabs.add(tab);
-            }
-          }
-        }
-      }
       void loadedNewsToArticles(NewsEntity news) {
         pageAll++;
         final articles = (state as NewsLoading).oldArticles;
@@ -117,18 +119,21 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         }
       }
 
+      var articles = (state as NewsLoading).oldArticles;
+
       void loadedNewsToArticles(NewsEntity news) {
         pageByCategory[event.category]++;
-        final articles = (state as NewsLoading).oldArticles;
-        // ignore: cascade_invocations
-        articles.addAll(news.response.articles);
+        if (state is NewsLoading) {
+          articles = (state as NewsLoading).oldArticles;
 
-        /// Создание листа со всеми вкладками.
-
-        emit(NewsLoaded(articles: articles, tabs: newsTabs));
+          // ignore: cascade_invocations
+          articles.addAll(news.response.articles);
+        }
       }
 
       failureOrNews.fold(failureToMessage, loadedNewsToArticles);
+
+      emit(NewsLoaded(articles: articles, tabs: newsTabs));
     });
   }
 }
@@ -181,8 +186,7 @@ class NewsLoaded extends FetchNewsState {
   });
 
   ArticleEntity? singleArticle(String id) {
-    final List<ArticleEntity> newsListWithId =
-        articles.where((element) => element.id == id).toList();
+    final List<ArticleEntity> newsListWithId = articles.where((element) => element.id == id).toList();
 
     return newsListWithId.isEmpty ? null : newsListWithId.first;
   }

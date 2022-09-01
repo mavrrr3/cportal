@@ -27,12 +27,10 @@ class AllQuestionsPage extends StatefulWidget {
 }
 
 class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProviderStateMixin {
-  late PageController _pageController;
   late final TabController _tabController;
 
   @override
   void initState() {
-    _pageController = PageController();
     _tabController = TabController(
       length: widget.categories.length,
       vsync: this,
@@ -46,7 +44,6 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
 
   @override
   void dispose() {
-    _pageController.dispose();
     _tabController
       ..removeListener(() {
         _fetchQuestionsByTabs(widget.categories);
@@ -94,13 +91,12 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (!isMobile(context)) ...[
+                        if (!isMobile(context) && zeroWidthCondition(context))
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(isActive: true),
+                                  const NavBarVisibilityEvent(index: 2, isActive: true),
                                 );
                           }),
-                        ],
                         Text(
                           AppLocalizations.of(context)!.questions,
                           style: theme.textTheme.header,

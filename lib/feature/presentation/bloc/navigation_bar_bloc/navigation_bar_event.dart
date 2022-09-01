@@ -16,8 +16,9 @@ class NavBarChangePageEvent extends NavigationBarEvent {
 }
 
 class NavBarVisibilityEvent extends NavigationBarEvent {
+  final int index;
   final bool isActive;
-  const NavBarVisibilityEvent({required this.isActive});
+  const NavBarVisibilityEvent({required this.index, required this.isActive});
 
   @override
   List<Object> get props => [isActive];
