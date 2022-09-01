@@ -14,9 +14,13 @@ class DeclarationInfoEntity extends Equatable {
   final String progressDescription;
   final DescriptionEnum descriptionEnum;
   final String priority;
+  final String? content;
+  final String? initiatorName;
+  final String? initiatorPosition;
+  final String? initiatorImage;
+  final List<DeclarationDocumentEntity> documents;
   final List<DeclarationDataEntity> params;
   final List<DeclarationStepEntity> actions;
-  final List<DeclarationDocumentEntity> documents;
 
   const DeclarationInfoEntity({
     required this.id,
@@ -28,9 +32,13 @@ class DeclarationInfoEntity extends Equatable {
     required this.progressDescription,
     required this.descriptionEnum,
     required this.priority,
+    required this.content,
+    required this.initiatorName,
+    required this.initiatorPosition,
+    required this.initiatorImage,
+    required this.documents,
     required this.params,
     required this.actions,
-    required this.documents,
   });
 
   @override
@@ -43,6 +51,10 @@ class DeclarationInfoEntity extends Equatable {
         allSteps,
         progressDescription,
         priority,
+        content,
+        initiatorName,
+        initiatorPosition,
+        initiatorImage,
         params,
         actions,
         documents,

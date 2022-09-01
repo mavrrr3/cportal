@@ -140,7 +140,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/pin_code_bloc/pin_code
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/connecting_qr_bloc/connecting_qr_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -295,8 +295,9 @@ Future<void> init() async {
   } else {
     sl.registerLazySingleton<IDeclarationRepository>(
       () => DeclarationsRepositoryMobile(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
+        declarationsRemoteDataSource: sl(),
+        declarationsLocalDataSource: sl(),
+        tasksRemoteDataSource: sl(),
         networkInfo: sl(),
       ),
     );

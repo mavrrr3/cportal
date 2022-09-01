@@ -28,16 +28,20 @@ class DeclarationInfoModelAdapter extends TypeAdapter<DeclarationInfoModel> {
       progressDescription: fields[6] as String,
       descriptionEnum: fields[7] as DescriptionEnum,
       priority: fields[8] as String,
-      params: (fields[9] as List).cast<DeclarationDataModel>(),
-      actions: (fields[10] as List).cast<DeclarationStepModel>(),
-      documents: (fields[11] as List).cast<DeclarationDocumentModel>(),
+      content: fields[9] as String?,
+      initiatorName: fields[10] as String?,
+      initiatorPosition: fields[11] as String?,
+      initiatorImage: fields[12] as String?,
+      params: (fields[13] as List).cast<DeclarationDataModel>(),
+      actions: (fields[14] as List).cast<DeclarationStepModel>(),
+      documents: (fields[15] as List).cast<DeclarationDocumentModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, DeclarationInfoModel obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -57,10 +61,18 @@ class DeclarationInfoModelAdapter extends TypeAdapter<DeclarationInfoModel> {
       ..writeByte(8)
       ..write(obj.priority)
       ..writeByte(9)
-      ..write(obj.params)
+      ..write(obj.content)
       ..writeByte(10)
-      ..write(obj.actions)
+      ..write(obj.initiatorName)
       ..writeByte(11)
+      ..write(obj.initiatorPosition)
+      ..writeByte(12)
+      ..write(obj.initiatorImage)
+      ..writeByte(13)
+      ..write(obj.params)
+      ..writeByte(14)
+      ..write(obj.actions)
+      ..writeByte(15)
       ..write(obj.documents);
   }
 
@@ -93,6 +105,10 @@ DeclarationInfoModel _$DeclarationInfoModelFromJson(
               _$DescriptionEnumEnumMap, json['description_enum']) ??
           DescriptionEnum.def,
       priority: json['priority'] as String,
+      content: json['content'] as String?,
+      initiatorName: json['initiator_name'] as String?,
+      initiatorPosition: json['initiator_position'] as String?,
+      initiatorImage: json['initiator_image'] as String?,
       params: (json['parameters'] as List<dynamic>?)
               ?.map((e) =>
                   DeclarationDataModel.fromJson(e as Map<String, dynamic>))

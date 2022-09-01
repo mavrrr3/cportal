@@ -25,7 +25,7 @@ class DeclarationsLocalDataSource implements IDeclarationsLocalDataSource {
     final declarations = box.get('declarations_page_$page');
 
     if (kDebugMode) {
-      log('List<DeclarationModel> [page $page] из кэша $declarations');
+      log('[Local Datasource] Declarations [page $page] из кэша $declarations');
     }
 
     await Hive.box<List<DeclarationCardModel>>('declarations').close();
@@ -46,7 +46,7 @@ class DeclarationsLocalDataSource implements IDeclarationsLocalDataSource {
     } else {
       box = await Hive.openBox<List<DeclarationCardModel>>('declarations');
     }
-    log('List<DeclarationModel> [page $page] сохранил в кэш ${declarations.length} заявлений');
+    log('[Local Datasource] Declarations [page $page] сохранил в кэш ${declarations.length} заявлений');
 
     await box.put('declarations_page_$page', declarations);
 

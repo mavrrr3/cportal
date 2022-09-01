@@ -48,7 +48,9 @@ class DeclarationsList extends StatelessWidget {
                   item: items[i],
                   onTap: () => context.pushNamed(
                     NavigationRouteNames.declarationInfo,
-                    params: {'fid': items[i].id},
+                    params: {
+                      'fid': items[i].id,
+                    },
                   ),
                 ),
               ),
@@ -64,7 +66,9 @@ class DeclarationsList extends StatelessWidget {
               item: items[i],
               onTap: () => context.pushNamed(
                 NavigationRouteNames.declarationInfo,
-                params: {'fid': items[i].id},
+                params: {
+                  'fid': items[i].id,
+                },
               ),
             ),
           );

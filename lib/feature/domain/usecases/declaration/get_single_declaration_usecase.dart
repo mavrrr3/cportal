@@ -15,14 +15,18 @@ class GetSingleDeclarationUseCase
   Future<Either<Failure, DeclarationInfoEntity>> call(
     GetSingleDeclarationParams params,
   ) async {
-    return repository.getSingleDeclaration(params.id);
+    return repository.getSingleDeclaration(params.id, params.isTask);
   }
 }
 
 class GetSingleDeclarationParams extends Equatable {
   final String id;
+  final bool isTask;
 
-  const GetSingleDeclarationParams({required this.id});
+  const GetSingleDeclarationParams({
+    required this.id,
+    required this.isTask,
+  });
   @override
   List<Object?> get props => [id];
 }

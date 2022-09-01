@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'tasks_response_model.g.dart';
 
 @JsonSerializable(createToJson: false)
-@HiveType(typeId: 27)
+@HiveType(typeId: 23)
 class TasksResponseModel extends TasksResponseEntity {
   @HiveField(0)
   final int total;

@@ -6,8 +6,8 @@ import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_car
 import 'package:cportal_flutter/feature/domain/entities/documents/tasks/tasks_response_entity.dart';
 import 'package:cportal_flutter/feature/domain/usecases/tasks/fetch_tasks_usecase.dart';
 import 'package:cportal_flutter/feature/domain/usecases/tasks/search_task_usecase.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

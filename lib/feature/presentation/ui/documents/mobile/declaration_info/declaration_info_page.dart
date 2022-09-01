@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
 
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
@@ -21,9 +23,11 @@ import 'package:swipe/swipe.dart';
 
 class DeclarationInfoPage extends StatefulWidget {
   final String id;
+  final bool isTask;
   const DeclarationInfoPage({
     Key? key,
     required this.id,
+    required this.isTask,
   }) : super(key: key);
 
   @override
@@ -37,9 +41,10 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
   void initState() {
     super.initState();
     _isHistoryExpanded = true;
-    context
-        .read<SingleDeclarationBloc>()
-        .add(GetSingleDeclarationEvent(widget.id));
+    context.read<SingleDeclarationBloc>().add(GetSingleDeclarationEvent(
+          id: widget.id,
+          isTask: widget.isTask,
+        ));
   }
 
   @override

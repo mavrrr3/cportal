@@ -1,8 +1,10 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/formatter_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_card_entity.dart';
+import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/task_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TasksList extends StatelessWidget {
   final List<TaskCardEntity> items;
@@ -43,7 +45,12 @@ class TasksList extends StatelessWidget {
                 ),
                 child: TaskCard(
                   item: items[i],
-                  onTap: () {},
+                  onTap: () => context.pushNamed(
+                    NavigationRouteNames.taskInfo,
+                    params: {
+                      'fid': items[i].id,
+                    },
+                  ),
                 ),
               ),
             ],
@@ -56,7 +63,12 @@ class TasksList extends StatelessWidget {
             ),
             child: TaskCard(
               item: items[i],
-              onTap: () {},
+              onTap: () => context.pushNamed(
+                NavigationRouteNames.taskInfo,
+                params: {
+                  'fid': items[i].id,
+                },
+              ),
             ),
           );
         }

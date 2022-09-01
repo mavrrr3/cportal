@@ -9,6 +9,7 @@ abstract class IDeclarationRepository {
   );
   Future<Either<Failure, DeclarationInfoEntity>> getSingleDeclaration(
     String id,
+    bool isTask,
   );
   Future<Either<Failure, List<DeclarationCardEntity>>> searchDeclarations(
     String query,

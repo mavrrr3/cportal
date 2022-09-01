@@ -44,15 +44,30 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
   @HiveField(8)
   final String priority;
 
-  @JsonKey(name: 'parameters', defaultValue: <DeclarationDataModel>[])
   @HiveField(9)
+  final String? content;
+
+  @JsonKey(name: 'initiator_name')
+  @HiveField(10)
+  final String? initiatorName;
+
+  @JsonKey(name: 'initiator_position')
+  @HiveField(11)
+  final String? initiatorPosition;
+
+  @JsonKey(name: 'initiator_image')
+  @HiveField(12)
+  final String? initiatorImage;
+
+  @JsonKey(name: 'parameters', defaultValue: <DeclarationDataModel>[])
+  @HiveField(13)
   final List<DeclarationDataModel> params;
 
   @JsonKey(defaultValue: <DeclarationStepModel>[])
-  @HiveField(10)
+  @HiveField(14)
   final List<DeclarationStepModel> actions;
 
-  @HiveField(11)
+  @HiveField(15)
   final List<DeclarationDocumentModel> documents;
 
   const DeclarationInfoModel({
@@ -65,6 +80,10 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
     required this.progressDescription,
     required this.descriptionEnum,
     required this.priority,
+    required this.content,
+    required this.initiatorName,
+    required this.initiatorPosition,
+    required this.initiatorImage,
     required this.params,
     required this.actions,
     required this.documents,
@@ -78,6 +97,10 @@ class DeclarationInfoModel extends DeclarationInfoEntity {
           progressDescription: progressDescription,
           descriptionEnum: descriptionEnum,
           priority: priority,
+          content: content,
+          initiatorName: initiatorName,
+          initiatorImage: initiatorImage,
+          initiatorPosition: initiatorPosition,
           params: params,
           actions: actions,
           documents: documents,

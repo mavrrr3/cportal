@@ -79,8 +79,7 @@ DeclarationStepModel _$DeclarationStepModelFromJson(
       responsiblePosition: json['responsible_position'] as String,
       responsibleImage: json['responsible_image'] as String,
       description: json['description'] as String,
-      status: $enumDecodeNullable(
-              _$TaskStatusEnumEnumMap, json['description_enum']) ??
+      status: $enumDecodeNullable(_$TaskStatusEnumEnumMap, json['status']) ??
           TaskStatusEnum.inProccess,
       descriptionDate: DateTime.parse(json['description_date'] as String),
       comment: json['comment'] as String,

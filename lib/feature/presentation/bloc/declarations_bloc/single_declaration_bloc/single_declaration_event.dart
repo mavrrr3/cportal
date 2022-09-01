@@ -9,8 +9,9 @@ abstract class SingleDeclarationEvent extends Equatable {
 
 class GetSingleDeclarationEvent extends SingleDeclarationEvent {
   final String id;
+  final bool isTask;
 
-  const GetSingleDeclarationEvent(this.id);
+  const GetSingleDeclarationEvent({required this.id, required this.isTask});
 
   @override
   List<Object> get props => [id];

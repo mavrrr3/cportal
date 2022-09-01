@@ -31,10 +31,7 @@ class DeclarationStepModel extends DeclarationStepEntity {
   @HiveField(5)
   final String description;
 
-  @JsonKey(
-    name: 'description_enum',
-    defaultValue: TaskStatusEnum.inProccess,
-  )
+  @JsonKey(defaultValue: TaskStatusEnum.inProccess)
   @HiveField(6)
   final TaskStatusEnum status;
 

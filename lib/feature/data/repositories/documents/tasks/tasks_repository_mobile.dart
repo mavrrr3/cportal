@@ -3,8 +3,8 @@ import 'package:cportal_flutter/core/error/server_exception.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_local_datasource/i_tasks_local_datasource.dart';
 import 'package:cportal_flutter/feature/data/i_datasource/i_remote_datasource/i_tasks_remote_datasource.dart';
 import 'package:cportal_flutter/feature/data/models/documents/tasks/tasks_response_model.dart';
+import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_info/declaration_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_card_entity.dart';
-import 'package:cportal_flutter/feature/domain/entities/documents/tasks/task_info/task_info_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_tasks_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -26,11 +26,13 @@ class TasksRepositoryMobile extends ITasksRepository {
     if (await networkInfo.isConnected) {
       try {
         final remoteTasks = await remoteDataSource.fetchTasks(page);
-        await localDataSource.tasksToCache(
-          remoteTasks.items,
-          remoteTasks.total,
-          page,
-        );
+        if (remoteTasks.items.isNotEmpty) {
+          await localDataSource.tasksToCache(
+            remoteTasks.items,
+            remoteTasks.total,
+            page,
+          );
+        }
 
         return Right(remoteTasks);
       } on ServerException {
@@ -53,7 +55,7 @@ class TasksRepositoryMobile extends ITasksRepository {
   }
 
   @override
-  Future<Either<Failure, TaskInfoEntity>> getSingleTask(
+  Future<Either<Failure, DeclarationInfoEntity>> getSingleTask(
     String id,
   ) async {
     if (await networkInfo.isConnected) {

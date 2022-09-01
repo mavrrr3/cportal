@@ -32,7 +32,7 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
         ) as Iterable<dynamic>,
       );
 
-      log('Remote DataSource [Declarations count]  ${declarations.length}');
+      log('[Remote DataSource] ${declarations.length} declarations was fetched');
 
       return declarations;
     } on ServerException {
@@ -56,7 +56,7 @@ class DeclarationsRemoteDataSource implements IDeclarationsRemoteDataSource {
       final declarationInfo = DeclarationInfoModel.fromJson(
         response.data!['response'] as Map<String, dynamic>,
       );
-      log('Remote DataSource [Single Declaration] was loaded id: $id');
+      log('[Remote DataSource] Single Declaration was fetched id: $id');
 
       return declarationInfo;
     } on ServerException {

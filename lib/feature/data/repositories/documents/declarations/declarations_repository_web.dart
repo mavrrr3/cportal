@@ -27,6 +27,7 @@ class DeclarationsRepositoryWeb extends IDeclarationRepository {
   @override
   Future<Either<Failure, DeclarationInfoEntity>> getSingleDeclaration(
     String id,
+    bool isTask,
   ) async {
     try {
       final remoteDeclarations =

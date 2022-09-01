@@ -13,10 +13,6 @@ import 'package:cportal_flutter/feature/data/models/documents/declarations/decla
 import 'package:cportal_flutter/feature/data/models/documents/declarations/declaration_info_model/task_status_enum.dart';
 import 'package:cportal_flutter/feature/data/models/documents/declarations/description_enum.dart';
 import 'package:cportal_flutter/feature/data/models/documents/tasks/task_card_model.dart';
-import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_action_model.dart';
-import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_document_model.dart';
-import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_info_model.dart';
-import 'package:cportal_flutter/feature/data/models/documents/tasks/task_info/task_parametr_model.dart';
 import 'package:cportal_flutter/feature/data/models/documents/tasks/tasks_response_model.dart';
 import 'package:cportal_flutter/feature/data/models/filter_model.dart';
 import 'package:cportal_flutter/feature/data/models/new_employee_model.dart';
@@ -42,7 +38,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/na
 import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/service_locator.dart' as di;
 import 'package:cportal_flutter/service_locator.dart';
@@ -252,9 +248,5 @@ void _hiveAdaptersInit() {
     ..registerAdapter(DeclarationDocumentModelAdapter())
     ..registerAdapter(TaskStatusEnumAdapter())
     ..registerAdapter(TaskCardModelAdapter())
-    ..registerAdapter(TaskInfoModelAdapter())
-    ..registerAdapter(TaskDocumentModelAdapter())
-    ..registerAdapter(TaskActionModelAdapter())
-    ..registerAdapter(TaskParametrModelAdapter())
     ..registerAdapter(TasksResponseModelAdapter());
 }

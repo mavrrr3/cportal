@@ -23,7 +23,7 @@ class TasksLocalDataSource implements ITasksLocalDataSource {
     final tasks = box.get('tasks_page_$page');
 
     if (kDebugMode) {
-      log('List<TaskCardModel> [page $page] из кэша $tasks');
+      log('[Local Datasource] Tasks [page $page] из кэша $tasks');
     }
 
     await Hive.box<List<TaskCardModel>>('tasks').close();
@@ -57,7 +57,7 @@ class TasksLocalDataSource implements ITasksLocalDataSource {
     await box.put('tasks_page_$page', tasks);
     await boxTotal.put('tasks_total', totalCount);
 
-    log('List<TaskCardModel> [page $page] сохранил в кэш ${tasks.length} задач\nTasks Total Count сохранил в кэш $totalCount');
+    log('[Local Datasource] Tasks [page $page] сохранил в кэш ${tasks.length} задач\nTasks Total Count сохранил в кэш $totalCount');
 
     await Hive.box<List<TaskCardModel>>('tasks').close();
     await Hive.box<int>('tasks_total').close();

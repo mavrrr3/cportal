@@ -33,7 +33,7 @@ class SingleDeclarationBloc
   ) async {
     emit(SingleDeclarationLoadingState());
     final failureOrDeclaration = await getSingleDeclaration(
-      GetSingleDeclarationParams(id: event.id),
+      GetSingleDeclarationParams(id: event.id, isTask: event.isTask),
     );
     void _loadingDeclaration(DeclarationInfoEntity declarationEntity) {
       emit(SingleDeclarationLoadedState(declaration: declarationEntity));
