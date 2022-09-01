@@ -1,20 +1,25 @@
 // ignore_for_file: avoid_types_on_closure_parameters, prefer_int_literals
 
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/custom_padding.dart';
-import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_contacts_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/horizontal_listview_main.dart';
@@ -99,15 +104,20 @@ class _MainPageMobileState extends State<MainPageMobile> {
       ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
       ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
       ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
-      ..read<FilterContactsBloc>().add(FetchFiltersEvent());
+      ..read<FilterContactsBloc>().add(FetchFiltersEvent())
+      ..read<DeclarationsBloc>()
+          .add(const FetchDeclarationsEvent(isFirstFetch: true))
+      ..read<TasksBloc>().add(const FetchTasksEvent(isFirstFetch: true))
+      ..read<FilterDeclarationsBloc>().add(FetchFiltersEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
-        context.select(
-          (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
-        );
+    final isLoading =
+        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+            context.select(
+              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+            );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -147,7 +157,9 @@ class _MainPageMobileState extends State<MainPageMobile> {
                 top: isLargerThenMobile(context) ? 12 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: !isMobile(context) ? const BoxConstraints(maxWidth: 1046) : null,
+                constraint: !isMobile(context)
+                    ? const BoxConstraints(maxWidth: 1046)
+                    : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -204,7 +216,7 @@ class _MainPageMobileState extends State<MainPageMobile> {
                                           return ProfileImage(
                                             fullName: user.name,
                                             imgLink: user.photoUrl,
-                                            color: RandomColorService.color,
+                                            color: ColorService.randomColor,
                                             size: isHovered ? 48 : 40,
                                             borderRadius: 12,
                                           );

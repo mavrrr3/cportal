@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 
 class OnBoardingWelcomeWeb extends StatelessWidget {
-  final Function onTap;
+  final Function() onTap;
 
   const OnBoardingWelcomeWeb({
     Key? key,
@@ -48,10 +48,9 @@ class OnBoardingWelcomeWeb extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 174, right: 206),
                 child: Button.factory(
                   context,
-                  ButtonEnum.blue,
-                  AppLocalizations.of(context)!.forward,
-                  onTap,
-                  const Size(double.infinity, 48),
+                  type: ButtonEnum.filled,
+                  text: AppLocalizations.of(context)!.forward,
+                  onTap: onTap,
                 ),
               ),
             ],

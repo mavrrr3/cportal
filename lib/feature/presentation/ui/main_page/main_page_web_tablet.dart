@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_types_on_closure_parameters, prefer_int_literals
 
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/custom_padding.dart';
-import 'package:cportal_flutter/common/util/random_color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -109,10 +109,11 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
-        context.select(
-          (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
-        );
+    final isLoading =
+        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+            context.select(
+              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+            );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -161,7 +162,12 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
                         ? const EdgeInsets.only(left: 16)
                         : zeroWidthCondition(context)
                             ? const EdgeInsets.only(left: 40)
-                            : EdgeInsets.only(left: customPadding.webTabletPadding().horizontal / 2),
+                            : EdgeInsets.only(
+                                left: customPadding
+                                        .webTabletPadding()
+                                        .horizontal /
+                                    2,
+                              ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -224,7 +230,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
                                           return ProfileImage(
                                             fullName: user.name,
                                             imgLink: user.photoUrl,
-                                            color: RandomColorService.color,
+                                            color: ColorService.randomColor,
                                             size: isHovered ? 48 : 40,
                                             borderRadius: 12,
                                           );
@@ -316,7 +322,9 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: isLargerThenTablet(context) ? const BoxConstraints(maxWidth: 640) : null,
+            constraint: isLargerThenTablet(context)
+                ? const BoxConstraints(maxWidth: 640)
+                : null,
             child: SearchBox(
               isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
@@ -335,7 +343,8 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
       builder: (context) {
         final theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {

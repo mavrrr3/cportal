@@ -4,6 +4,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_blo
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/profile_image.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/profile_info_section.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +45,7 @@ class _ContactProfilePopUpState extends State<ContactProfilePopUp> {
             width: 491,
             height: 660,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: PlatformProgressIndicator(),
             ),
           );
         }

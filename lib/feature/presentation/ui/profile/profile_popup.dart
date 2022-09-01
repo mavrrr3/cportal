@@ -9,6 +9,7 @@ import 'package:cportal_flutter/feature/presentation/navigation/navigation_route
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/pop_up/change_theme_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/widgets/row_profile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/main_page/widgets/svg_icon.dart';
@@ -42,7 +43,7 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is GetSingleProfileLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: PlatformProgressIndicator());
         }
         if (state is Authenticated) {
           user = state.user;

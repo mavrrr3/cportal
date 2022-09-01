@@ -99,15 +99,15 @@ class OnBoardingWelcome extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Button.factory(
                 context,
-                ButtonEnum.blue,
-                localizedStrings.forward,
-                () {
+                type: ButtonEnum.filled,
+                text: AppLocalizations.of(context)!.forward,
+                onTap: () {
                   GoRouter.of(context).pushNamed(
                     NavigationRouteNames.onboarding,
                     extra: onboardingContent,
                   );
                 },
-                const Size(double.infinity, 48),
+                size: const Size(double.infinity, 48),
               ),
             ),
           ),

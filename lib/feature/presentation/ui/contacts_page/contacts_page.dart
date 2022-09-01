@@ -214,23 +214,14 @@ class _ContactsPageState extends State<ContactsPage> {
           OnlySelectedFiltersService.count(state.contactsFilters);
 
       if (onlySelectedFilters.isNotEmpty) {
-        BlocProvider.of<ContactsBloc>(
-          context,
-          listen: false,
-        ).add(
-          SearchContactsEvent(
-            query: '',
-            filters: onlySelectedFilters,
-          ),
-        );
+        context.read<ContactsBloc>().add(
+              SearchContactsEvent(query: '', filters: onlySelectedFilters),
+            );
       } else {
         if (isFromRemove) {
-          BlocProvider.of<ContactsBloc>(
-            context,
-            listen: false,
-          ).add(
-            const FetchContactsEvent(isFirstFetch: true),
-          );
+          context
+              .read<ContactsBloc>()
+              .add(const FetchContactsEvent(isFirstFetch: true));
         }
       }
     }

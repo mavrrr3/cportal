@@ -28,7 +28,8 @@ class AllNewsPage extends StatefulWidget {
   State<AllNewsPage> createState() => _AllNewsPageState();
 }
 
-class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin {
+class _AllNewsPageState extends State<AllNewsPage>
+    with TickerProviderStateMixin {
   late final TabController tabController;
 
   @override
@@ -84,6 +85,7 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+
                         if (!isMobile(context) && zeroWidthCondition(context))
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(

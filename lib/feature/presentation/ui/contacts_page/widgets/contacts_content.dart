@@ -9,6 +9,7 @@ import 'package:cportal_flutter/feature/presentation/navigation/navigation_route
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contact_profile_pop_up.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_list/contacts_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/selected_filters_view.dart.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -70,7 +71,7 @@ class _ContactsContentState extends State<ContactsContent> {
               if (state is ContactsLoadingState && state.isFirstFetch) {
                 return const Expanded(
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: PlatformProgressIndicator(),
                   ),
                 );
               } else if (state is ContactsLoadingState) {

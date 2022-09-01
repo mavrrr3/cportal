@@ -5,7 +5,7 @@ part 'new_employee_model.g.dart';
 
 // ignore_for_file: overridden_fields
 // ignore_for_file: annotate_overrides
-@HiveType(typeId: 16)
+@HiveType(typeId: 19)
 class NewEmployeeModel extends NewEmployeeEntity {
   @HiveField(0)
   final String title;
@@ -31,7 +31,8 @@ class NewEmployeeModel extends NewEmployeeEntity {
           isVector: isVector,
         );
 
-  factory NewEmployeeModel.fromJson(Map<String, dynamic> json) => NewEmployeeModel(
+  factory NewEmployeeModel.fromJson(Map<String, dynamic> json) =>
+      NewEmployeeModel(
         title: json['title'] as String,
         description: json['description'] as String,
         image: json['image'] as String,

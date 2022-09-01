@@ -32,7 +32,7 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
 
       final remoteFilters = FilterResponseModel.fromJson(response.data!);
 
-      log('FilterRemouteDataSource [contacts]  ==========  $remoteFilters');
+      log('FilterRemouteDataSource [contacts] was fetched');
       await localDatasource.filtersToCache(remoteFilters, FilterType.contacts);
 
       return remoteFilters;
@@ -46,7 +46,7 @@ class FilterRemoteDataSource implements IFilterRemoteDataSource {
     try {
       const FilterResponseModel remoteFilters = _declarationsFilter;
 
-      log('FilterRemouteDataSource [declarations]  ==========  $remoteFilters');
+      log('Filter Remoute DataSource [declarations] was fetched');
       await localDatasource.filtersToCache(
         remoteFilters,
         FilterType.declarations,
