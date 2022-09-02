@@ -27,19 +27,6 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
         var oldArticles = <ArticleEntity>[];
         if (state is QuestionsLoading) return;
 
-        if (!kIsWeb) {
-          final tabsFromCache = await fetchQaustions.fetchQuestionCategories();
-
-          if (tabsFromCache.isNotEmpty) {
-            for (final tab in tabsFromCache) {
-              if (!questionTabs.contains(tab)) {
-                questionTabs.add(tab);
-              }
-            }
-            log('+++++++++++Questions tabs из КеШа++ $tabsFromCache ++Questions tabs из КеШа+++++++++++++');
-          }
-        }
-
         if (state is QuestionsLoaded) {
           oldArticles = (state as QuestionsLoaded).articles;
         }
@@ -53,6 +40,18 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
         final failureOrQuestions = await fetchQaustions(FetchQuestionsParams(
           page: pageAll,
         ));
+
+        if (!kIsWeb) {
+          final tabsFromCache = await fetchQaustions.fetchQuestionCategories();
+
+          if (tabsFromCache.isNotEmpty) {
+            for (final tab in tabsFromCache) {
+              if (!questionTabs.contains(tab)) {
+                questionTabs.add(tab);
+              }
+            }
+          }
+        }
 
         String failureToMessage(Failure failure) {
           switch (failure.runtimeType) {

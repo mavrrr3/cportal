@@ -1,6 +1,8 @@
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     context.read<AuthBloc>().add(const CheckLogin());
+    _fetchContent();
     super.initState();
+  }
+
+  void _fetchContent() {
+    context
+      ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
+      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
   }
 
   @override
