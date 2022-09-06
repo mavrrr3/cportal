@@ -1,3 +1,5 @@
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -26,10 +28,13 @@ class ScrollableNewsList extends StatelessWidget {
         children: List.generate(
           _categories.length,
           (index) {
-            return NewsContent(
-              articles: _articles,
-              tabs: _categories,
-              currentIndex: _tabController.index,
+            return Padding(
+              padding: isMobile(context) ? getHorizontalPadding(context) : EdgeInsets.zero,
+              child: NewsContent(
+                articles: _articles,
+                tabs: _categories,
+                currentIndex: _tabController.index,
+              ),
             );
           },
         ),

@@ -15,18 +15,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AllQuestionsPage extends StatefulWidget {
+class QuestionsPageMobile extends StatefulWidget {
   final List<String> categories;
-  const AllQuestionsPage({
+  const QuestionsPageMobile({
     Key? key,
     required this.categories,
   }) : super(key: key);
 
   @override
-  State<AllQuestionsPage> createState() => _AllQuestionsPageState();
+  State<QuestionsPageMobile> createState() => _QuestionsPageMobileState();
 }
 
-class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProviderStateMixin {
+class _QuestionsPageMobileState extends State<QuestionsPageMobile> with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override

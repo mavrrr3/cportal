@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/widgets/questions_list.dart';
@@ -24,7 +25,7 @@ class ScrollableQuestionsList extends StatelessWidget {
           categories.length,
           (index) {
             return Padding(
-              padding: getHorizontalPadding(context),
+              padding: isMobile(context) ? getHorizontalPadding(context) : EdgeInsets.zero,
               child: QuestionsList(
                 questions: articles,
                 tabs: categories,
