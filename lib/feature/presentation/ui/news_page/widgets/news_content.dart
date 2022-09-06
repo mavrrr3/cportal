@@ -112,15 +112,12 @@ class _NewsContentState extends State<NewsContent> {
 
     // Если true, то отрисовываются все новости.
     if (widget._currentIndex == 0) {
-      return Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: NewsCard(
-          width,
-          item: article,
-          onTap: () => onArticleSelected(article.id),
-        ),
+      return NewsCard(
+        width,
+        item: article,
+        onTap: () => onArticleSelected(article.id),
       );
-    // Если другой индекс, то рендеринг по категориям.
+      // Если другой индекс, то рендеринг по категориям.
     } else if (article.category == tabs[widget._currentIndex]) {
       return NewsCard(
         width,
