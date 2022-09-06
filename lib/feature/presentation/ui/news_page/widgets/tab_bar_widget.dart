@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:flutter/material.dart';
 
 class TabBarWidget extends StatefulWidget {

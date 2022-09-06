@@ -18,7 +18,7 @@ class NewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: isLargerThenMobile(context)
-          ? const EdgeInsets.only(bottom: 20, right: 20)
+          ? const EdgeInsets.only(bottom: 20, right: 16)
           : const EdgeInsets.only(bottom: 20),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,

@@ -25,18 +25,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
 
       if (state is NewsLoading) return;
 
-      if (!kIsWeb) {
-        final tabsFromCache = await fetchNews.fetchCategories();
-
-        if (tabsFromCache.isNotEmpty) {
-          for (final tab in tabsFromCache) {
-            if (!newsTabs.contains(tab)) {
-              newsTabs.add(tab);
-            }
-          }
-        }
-      }
-
       if (state is NewsLoaded) {
         oldArticles = (state as NewsLoaded).articles;
       }
@@ -50,6 +38,18 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
       final failureOrNews = await fetchNews(FetchNewsParams(
         page: pageAll,
       ));
+
+      if (!kIsWeb) {
+        final tabsFromCache = await fetchNews.fetchCategories();
+
+        if (tabsFromCache.isNotEmpty) {
+          for (final tab in tabsFromCache) {
+            if (!newsTabs.contains(tab)) {
+              newsTabs.add(tab);
+            }
+          }
+        }
+      }
 
       String failureToMessage(Failure failure) {
         switch (failure.runtimeType) {

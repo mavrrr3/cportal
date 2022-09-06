@@ -4,7 +4,7 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -105,19 +105,17 @@ class _MainPageMobileState extends State<MainPageMobile> {
       ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
       ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
       ..read<FilterContactsBloc>().add(FetchFiltersEvent())
-      ..read<DeclarationsBloc>()
-          .add(const FetchDeclarationsEvent(isFirstFetch: true))
+      ..read<DeclarationsBloc>().add(const FetchDeclarationsEvent(isFirstFetch: true))
       ..read<TasksBloc>().add(const FetchTasksEvent(isFirstFetch: true))
       ..read<FilterDeclarationsBloc>().add(FetchFiltersEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    final isLoading =
-        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
-            context.select(
-              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
-            );
+    final isLoading = context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+        context.select(
+          (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+        );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -141,7 +139,7 @@ class _MainPageMobileState extends State<MainPageMobile> {
   }
 
   SliverAppBar _appBar() {
-    final customPadding = CustomPadding(context);
+    final customPadding = ResponsiveUtil(context);
 
     return SliverAppBar(
       toolbarHeight: 60,
@@ -157,9 +155,7 @@ class _MainPageMobileState extends State<MainPageMobile> {
                 top: isLargerThenMobile(context) ? 12 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: !isMobile(context)
-                    ? const BoxConstraints(maxWidth: 1046)
-                    : null,
+                constraint: !isMobile(context) ? const BoxConstraints(maxWidth: 1046) : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -242,7 +238,7 @@ class _MainPageMobileState extends State<MainPageMobile> {
   }
 
   SliverToBoxAdapter _mainPageBody() {
-    final customPadding = CustomPadding(context);
+    final customPadding = ResponsiveUtil(context);
 
     return SliverToBoxAdapter(
       child: Stack(

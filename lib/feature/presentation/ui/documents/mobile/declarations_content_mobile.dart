@@ -5,7 +5,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/decl
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/tabs/my_declarations_tab.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/tabs/tasks_tab.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/declarations_tab_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +27,7 @@ class DeclarationsContentMobile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DeclarationsContentMobile> createState() =>
-      _DeclarationsContentMobileState();
+  State<DeclarationsContentMobile> createState() => _DeclarationsContentMobileState();
 }
 
 class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
@@ -101,9 +100,7 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
             if (widget.tabController.index == 0) {
-              context
-                  .read<DeclarationsBloc>()
-                  .add(const FetchDeclarationsEvent());
+              context.read<DeclarationsBloc>().add(const FetchDeclarationsEvent());
             } else {
               log('request Tasks');
             }
