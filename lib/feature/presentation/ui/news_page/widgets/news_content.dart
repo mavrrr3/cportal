@@ -42,61 +42,8 @@ class _NewsContentState extends State<NewsContent> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    _newsController.dispose();
-    super.dispose();
-  }
-
-  void _setupScrollController(BuildContext context) {
-    _scrollController.addListener(() {
-      if (_scrollController.position.atEdge) {
-        if (_scrollController.position.pixels != 0) {
-          if (widget._currentIndex == 0) {
-            context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
-          } else {
-            context.read<FetchNewsBloc>().add(FetchNewsEventBy(widget._tabs[widget._currentIndex]));
-          }
-        }
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
-    void onArticleSelected(String id) {
-      GoRouter.of(context).pushNamed(
-        NavigationRouteNames.newsArticlePage,
-        params: {'fid': id},
-      );
-    }
-
-    Widget builderItem(
-      List<ArticleEntity> articles,
-      List<String> tabs,
-      double width,
-      int index,
-    ) {
-      final article = articles[index];
-
-      if (widget._currentIndex == 0) {
-        return NewsCard(
-          width,
-          item: article,
-          onTap: () => onArticleSelected(article.id),
-        );
-      } else if (article.category == tabs[widget._currentIndex]) {
-        return NewsCard(
-          width,
-          item: article,
-          onTap: () => onArticleSelected(article.id),
-        );
-      }
-
-      return const SizedBox();
-    }
 
     return SingleChildScrollView(
       controller: _scrollController,
@@ -106,7 +53,7 @@ class _NewsContentState extends State<NewsContent> {
         children: [
           const SizedBox(height: 20),
           if (isMobile(context))
-            ListView.builder(
+          ListView.builder(
               controller: _newsController,
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
@@ -120,6 +67,7 @@ class _NewsContentState extends State<NewsContent> {
                 );
               },
             )
+            
           else
             Wrap(
               children: List.generate(
@@ -137,5 +85,62 @@ class _NewsContentState extends State<NewsContent> {
         ],
       ),
     );
+  }
+
+  void _setupScrollController(BuildContext context) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels != 0) {
+          if (widget._currentIndex == 0) {
+            context.read<FetchNewsBloc>().add(const FetchAllNewsEvent());
+          } else {
+            context
+                .read<FetchNewsBloc>()
+                .add(FetchNewsEventBy(widget._tabs[widget._currentIndex]));
+          }
+        }
+      }
+    });
+  }
+
+  Widget builderItem(
+    List<ArticleEntity> articles,
+    List<String> tabs,
+    double width,
+    int index,
+  ) {
+    final article = articles[index];
+
+    // Если true, то отрисовываются все новости.
+    if (widget._currentIndex == 0) {
+      return NewsCard(
+        width,
+        item: article,
+        onTap: () => onArticleSelected(article.id),
+      );
+      // Если другой индекс, то рендеринг по категориям.
+    } else if (article.category == tabs[widget._currentIndex]) {
+      return NewsCard(
+        width,
+        item: article,
+        onTap: () => onArticleSelected(article.id),
+      );
+    }
+
+    return const SizedBox();
+  }
+
+  void onArticleSelected(String id) {
+    GoRouter.of(context).pushNamed(
+      NavigationRouteNames.newsArticlePage,
+      params: {'fid': id},
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _newsController.dispose();
+    super.dispose();
   }
 }

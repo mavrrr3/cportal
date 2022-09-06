@@ -61,7 +61,7 @@ class UserCard extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                               height: 1.143,
                               leadingDistribution: TextLeadingDistribution.even,
-                            ),
+                            ),  
                           ),
                           const SizedBox(height: 4),
                           Text(
