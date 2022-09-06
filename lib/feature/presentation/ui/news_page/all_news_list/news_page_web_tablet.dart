@@ -17,18 +17,18 @@ import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 
-class AllNewsPage extends StatefulWidget {
+class NewsPageWebTablet extends StatefulWidget {
   final List<String> categories;
-  const AllNewsPage({
+  const NewsPageWebTablet({
     Key? key,
     required this.categories,
   }) : super(key: key);
 
   @override
-  State<AllNewsPage> createState() => _AllNewsPageState();
+  State<NewsPageWebTablet> createState() => _NewsPageWebTabletState();
 }
 
-class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin {
+class _NewsPageWebTabletState extends State<NewsPageWebTablet> with TickerProviderStateMixin {
   late final TabController tabController;
 
   @override
@@ -61,6 +61,8 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final double width = MediaQuery.of(context).size.width;
+    final customPadding = ResponsiveUtil(context);
 
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
@@ -76,15 +78,19 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
           child: Stack(
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 12),
                   Padding(
-                    padding: getHorizontalPadding(context),
+                    padding: width < 514
+                        ? const EdgeInsets.only(left: 16)
+                        : zeroWidthCondition(context)
+                            ? const EdgeInsets.only(left: 40)
+                            : customPadding.webTabletPadding(),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (!isMobile(context) && zeroWidthCondition(context))
+                        if (zeroWidthCondition(context) && width > 514)
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
                                   const NavBarVisibilityEvent(index: 1, isActive: true),
@@ -100,19 +106,25 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
                   Expanded(
                     child: widget.categories.length == 1
                         ? const Center(child: PlatformProgressIndicator())
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomTabBar(
-                                tabs: getTabs(),
-                                tabController: tabController,
+                        : Padding(
+                            padding: customPadding.webTabletPadding(),
+                            child: SizedBox(
+                              width: customPadding.widthContent(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomTabBar(
+                                    tabs: getTabs(),
+                                    tabController: tabController,
+                                  ),
+                                  ScrollableNewsList(
+                                    articles: articles,
+                                    tabController: tabController,
+                                    categories: widget.categories,
+                                  ),
+                                ],
                               ),
-                              ScrollableNewsList(
-                                articles: articles,
-                                tabController: tabController,
-                                categories: widget.categories,
-                              ),
-                            ],
+                            ),
                           ),
                   ),
                 ],

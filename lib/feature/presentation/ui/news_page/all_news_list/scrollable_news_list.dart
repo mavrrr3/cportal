@@ -1,4 +1,3 @@
-import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -27,13 +26,10 @@ class ScrollableNewsList extends StatelessWidget {
         children: List.generate(
           _categories.length,
           (index) {
-            return Padding(
-              padding: getHorizontalPadding(context),
-              child: NewsContent(
-                articles: _articles,
-                tabs: _categories,
-                currentIndex: _tabController.index,
-              ),
+            return NewsContent(
+              articles: _articles,
+              tabs: _categories,
+              currentIndex: _tabController.index,
             );
           },
         ),

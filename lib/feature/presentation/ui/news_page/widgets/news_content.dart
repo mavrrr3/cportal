@@ -105,21 +105,7 @@ class _NewsContentState extends State<NewsContent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-          if (isLargerThenMobile(context))
-            Wrap(
-              children: List.generate(
-                widget._articles.length,
-                (index) {
-                  return builderItem(
-                    widget._articles,
-                    widget._tabs,
-                    312,
-                    index,
-                  );
-                },
-              ),
-            )
-          else
+          if (isMobile(context))
             ListView.builder(
               controller: _newsController,
               shrinkWrap: true,
@@ -133,6 +119,20 @@ class _NewsContentState extends State<NewsContent> {
                   index,
                 );
               },
+            )
+          else
+            Wrap(
+              children: List.generate(
+                widget._articles.length,
+                (index) {
+                  return builderItem(
+                    widget._articles,
+                    widget._tabs,
+                    312,
+                    index,
+                  );
+                },
+              ),
             ),
         ],
       ),
