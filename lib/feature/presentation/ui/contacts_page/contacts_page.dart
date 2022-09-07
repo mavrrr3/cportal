@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_content.dart';
@@ -27,14 +26,13 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  late final ScrollController _scrollController;
+  late ScrollController _scrollController;
   late final TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    log('initState');
     _searchController = TextEditingController();
     _setupScrollController(context);
   }
@@ -106,18 +104,20 @@ class _ContactsPageState extends State<ContactsPage> {
   // Пагинация.
   Future<void> _setupScrollController(BuildContext context) async {
     final isConnected = await sl<INetworkInfo>().isConnected;
-    _scrollController.addListener(() {
-      if (_searchController.text.isEmpty) {
-        if (_scrollController.position.atEdge) {
-          if (_scrollController.position.pixels != 0) {
-            if (isConnected) {
-              BlocProvider.of<ContactsBloc>(context)
-                  .add(const FetchContactsEvent());
+    if (mounted) {
+      _scrollController.addListener(() {
+        if (_searchController.text.isEmpty) {
+          if (_scrollController.position.atEdge) {
+            if (_scrollController.position.pixels != 0) {
+              if (isConnected) {
+                BlocProvider.of<ContactsBloc>(context)
+                    .add(const FetchContactsEvent());
+              }
             }
           }
         }
-      }
-    });
+      });
+    }
   }
 
   // Открывает фильтр.
