@@ -59,7 +59,7 @@ class _QuestionsPageWebTabletState extends State<QuestionsPageWebTablet> with Ti
     final fetchQuestionsBloc = context.read<FetchQuestionsBloc>();
 
     if (_tabController.index == 0) {
-      fetchQuestionsBloc.add(const FetchQaustionsEvent());
+      fetchQuestionsBloc.add(const FetchQuestionsEvent());
     } else {
       fetchQuestionsBloc.add(FetchQaustionsEventBy(categories[_tabController.index]));
     }
