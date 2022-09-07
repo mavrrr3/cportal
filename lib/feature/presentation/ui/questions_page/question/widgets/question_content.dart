@@ -25,8 +25,9 @@ class QuestionContent extends StatelessWidget {
     final nextArticle = _getNextQuestion();
 
     return Padding(
-      padding:
-          isLargerThenTablet(context) ? const EdgeInsets.only(left: 25) : const EdgeInsets.symmetric(horizontal: 20),
+      padding: isLargerThenTablet(context)
+          ? const EdgeInsets.only(left: 25)
+          : const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

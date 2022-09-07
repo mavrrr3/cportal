@@ -26,7 +26,8 @@ class AllQuestionsPage extends StatefulWidget {
   State<AllQuestionsPage> createState() => _AllQuestionsPageState();
 }
 
-class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProviderStateMixin {
+class _AllQuestionsPageState extends State<AllQuestionsPage>
+    with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
@@ -59,9 +60,10 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
     final fetchQuestionsBloc = context.read<FetchQuestionsBloc>();
 
     if (_tabController.index == 0) {
-      fetchQuestionsBloc.add(const FetchQaustionsEvent());
+      fetchQuestionsBloc.add(const FetchQuestionsEvent());
     } else {
-      fetchQuestionsBloc.add(FetchQaustionsEventBy(categories[_tabController.index]));
+      fetchQuestionsBloc
+          .add(FetchQaustionsEventBy(categories[_tabController.index]));
     }
   }
 
@@ -94,7 +96,10 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
                         if (!isMobile(context) && zeroWidthCondition(context))
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(index: 2, isActive: true),
+                                  const NavBarVisibilityEvent(
+                                    index: 2,
+                                    isActive: true,
+                                  ),
                                 );
                           }),
                         Text(

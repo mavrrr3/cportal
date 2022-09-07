@@ -36,13 +36,14 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
   @override
   void initState() {
     _scrollController = ScrollController();
+    _setupScrollController();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    _setupScrollController();
 
     return SafeArea(
       child: NestedScrollView(
@@ -67,6 +68,7 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
                         padding: getHorizontalPadding(context),
                         child: SearchWithFilter(
                           searchController: widget.searchController,
+                          currentMenuIndex: 3,
                           onSearch: (text) {},
                           onSearchClear: () {},
                           onFilterTap: widget.onFilterTap,

@@ -12,6 +12,7 @@ class SearchWithFilter extends StatefulWidget {
   final Function(String) onSearch;
   final Function onSearchClear;
   final Function() onFilterTap;
+  final int currentMenuIndex;
 
   const SearchWithFilter({
     Key? key,
@@ -19,6 +20,7 @@ class SearchWithFilter extends StatefulWidget {
     required this.onSearch,
     required this.onSearchClear,
     required this.onFilterTap,
+    required this.currentMenuIndex,
   }) : super(key: key);
 
   @override
@@ -29,16 +31,14 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveConstraints(
-      constraint: const BoxConstraints(maxWidth: 640),
+      constraint: const BoxConstraints(maxWidth: 704),
       child: Row(
         children: [
-
-          // TODO:flutfix Вынести кнопку из виджета поиска на страницы Заявления и контакты, чтобы там передавать индекс бокового меню
           BurgerMenuButton(
             onTap: () {
               context.read<NavigationBarBloc>().add(
-                    const NavBarVisibilityEvent(
-                      index: 0,
+                    NavBarVisibilityEvent(
+                      index: widget.currentMenuIndex,
                       isActive: true,
                     ),
                   );

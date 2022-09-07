@@ -45,9 +45,11 @@ class _QuestionsListState extends State<QuestionsList> {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
           if (widget.currentIndex == 0) {
-            context.read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
+            context.read<FetchQuestionsBloc>().add(const FetchQuestionsEvent());
           } else {
-            context.read<FetchQuestionsBloc>().add(FetchQaustionsEventBy(widget.tabs[widget.currentIndex]));
+            context
+                .read<FetchQuestionsBloc>()
+                .add(FetchQaustionsEventBy(widget.tabs[widget.currentIndex]));
           }
         }
       }
@@ -88,6 +90,9 @@ class _QuestionsListState extends State<QuestionsList> {
     );
   }
 
-  List<ArticleEntity> _getQuestionsByCategory() =>
-      widget.questions.where((question) => question.category == widget.tabs[widget.currentIndex]).toList();
+  List<ArticleEntity> _getQuestionsByCategory() => widget.questions
+      .where(
+        (question) => question.category == widget.tabs[widget.currentIndex],
+      )
+      .toList();
 }

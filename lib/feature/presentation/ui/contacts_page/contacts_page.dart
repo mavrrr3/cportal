@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_content.dart';
@@ -26,22 +27,22 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  late ScrollController _scrollController;
-  late TextEditingController _searchController;
+  late final ScrollController _scrollController;
+  late final TextEditingController _searchController;
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _searchController = TextEditingController();
-
     super.initState();
+    _scrollController = ScrollController();
+    log('initState');
+    _searchController = TextEditingController();
+    _setupScrollController(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    _setupScrollController(context);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -100,13 +101,6 @@ class _ContactsPageState extends State<ContactsPage> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _searchController.dispose();
-    _scrollController.dispose();
   }
 
   // Пагинация.
@@ -190,9 +184,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void _onSearchClear() {
     final state = context.read<FilterContactsBloc>().state;
 
-    setState(() {
-      _searchController.clear();
-    });
+    setState(_searchController.clear);
     BlocProvider.of<ContactsBloc>(
       context,
       listen: false,
@@ -225,5 +217,12 @@ class _ContactsPageState extends State<ContactsPage> {
         }
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 }
