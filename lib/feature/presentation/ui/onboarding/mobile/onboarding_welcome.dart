@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
@@ -16,7 +15,6 @@ class OnBoardingWelcome extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final localizedStrings = AppLocalizations.of(context)!;
-    final List<NewEmployeeEntity> onboardingContent = [];
 
     return Scaffold(
       backgroundColor: theme.cardColor,
