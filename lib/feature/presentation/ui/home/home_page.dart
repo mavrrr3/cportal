@@ -15,7 +15,6 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_men
 import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page_web_tablet.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
@@ -222,21 +221,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                         },
                       );
                     }),
-
-                  // Обучающий курс (Последний этап онбординга).
-                  if (_isLearningCourse)
-                    OnBoardingLearningCourseWeb(
-                      animationController: _animationController,
-                      pageController: _pageController,
-                      onBack: () {
-                        setState(() {
-                          _isOnboarding = true;
-                          _isLearningCourse = false;
-                          _onBoardingIndex = _onboardingContent.length - 1;
-                          _loadOnboardingPage();
-                        });
-                      },
-                    ),
                 ],
               ),
 

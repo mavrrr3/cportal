@@ -1,7 +1,8 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingStepPage extends StatelessWidget {
   final NewEmployeeEntity content;
@@ -38,15 +39,11 @@ class OnBoardingStepPage extends StatelessWidget {
         const SizedBox(height: 64),
         Align(
           alignment: Alignment.center,
-          child: content.isVector
-              ? SvgPicture.asset(
-                  content.image,
-                  fit: BoxFit.cover,
-                )
-              : Image.asset(
-                  content.image,
-                  fit: BoxFit.cover,
-                ),
+          child: ExtendedImage.network(
+            '${AppConfig.imagesUrl}/${content.image}',
+            fit: BoxFit.cover,
+            cache: true,
+          ),
         ),
       ],
     );
