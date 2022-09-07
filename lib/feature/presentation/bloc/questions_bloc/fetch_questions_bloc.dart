@@ -22,7 +22,7 @@ class FetchQuestionsBloc extends Bloc<QuestionsEvent, FetchQuestionsState> {
     required this.fetchQaustions,
     required this.fetchQuestionsByCategory,
   }) : super(QuestionsEmptyState()) {
-    on<FetchQaustionsEvent>(
+    on<FetchQuestionsEvent>(
       (event, emit) async {
         var oldArticles = <ArticleEntity>[];
         if (state is QuestionsLoading) return;
@@ -151,8 +151,8 @@ abstract class QuestionsEvent extends Equatable {
   const QuestionsEvent();
 }
 
-class FetchQaustionsEvent extends QuestionsEvent {
-  const FetchQaustionsEvent();
+class FetchQuestionsEvent extends QuestionsEvent {
+  const FetchQuestionsEvent();
 
   @override
   List<Object?> get props => [];

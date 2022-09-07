@@ -35,25 +35,32 @@ class BurgerMenu extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               color: theme.cardColor,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: AnimatedOpacity(
                   curve: Curves.easeInCubic,
                   opacity: state.isActive ? 1 : 0,
                   duration: Duration(milliseconds: (duration * 1.15).toInt()),
                   child: Material(
                     color: theme.cardColor,
-                    child: MenuItemsColumnWeb(
-                      menuItems: state.menuItems,
-                      currentIndex: currentIndex,
-                      onChange: onChange,
+                    child: SafeArea(
+                      child: MenuItemsColumnWeb(
+                        menuItems: state.menuItems,
+                        currentIndex: currentIndex,
+                        onChange: onChange,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             GestureDetector(
-              onTap: () =>
-                  context.read<NavigationBarBloc>().add(NavBarVisibilityEvent(index: currentIndex, isActive: false)),
+              onTap: () => context.read<NavigationBarBloc>().add(
+                    NavBarVisibilityEvent(
+                      index: currentIndex,
+                      isActive: false,
+                    ),
+                  ),
               child: AnimatedOpacity(
                 curve: Curves.easeInCubic,
                 opacity: state.isActive ? 1 : 0,

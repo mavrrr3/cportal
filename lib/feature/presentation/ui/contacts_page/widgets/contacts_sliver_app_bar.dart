@@ -46,6 +46,7 @@ class _ContactsSliverAppBarState extends State<ContactsSliverAppBar> {
               padding: customPadding.getHorizontalPadding(),
               child: SearchWithFilter(
                 searchController: widget.searchController,
+                currentMenuIndex: 4,
                 onSearch: (text) {
                   delayer.run(() => widget.onSearch(text));
                 },

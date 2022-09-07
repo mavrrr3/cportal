@@ -60,7 +60,10 @@ class TodayWidget extends StatelessWidget {
                 const SizedBox(height: 6),
               ],
               Container(
-                decoration: BoxDecoration(color: theme.white, borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: SizedBox(

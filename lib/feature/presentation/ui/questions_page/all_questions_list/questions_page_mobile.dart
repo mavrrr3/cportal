@@ -59,7 +59,7 @@ class _QuestionsPageMobileState extends State<QuestionsPageMobile> with TickerPr
     final fetchQuestionsBloc = context.read<FetchQuestionsBloc>();
 
     if (_tabController.index == 0) {
-      fetchQuestionsBloc.add(const FetchQaustionsEvent());
+      fetchQuestionsBloc.add(const FetchQuestionsEvent());
     } else {
       fetchQuestionsBloc.add(FetchQaustionsEventBy(categories[_tabController.index]));
     }
@@ -94,7 +94,10 @@ class _QuestionsPageMobileState extends State<QuestionsPageMobile> with TickerPr
                         if (!isMobile(context) && zeroWidthCondition(context))
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(index: 2, isActive: true),
+                                  const NavBarVisibilityEvent(
+                                    index: 2,
+                                    isActive: true,
+                                  ),
                                 );
                           }),
                         Text(

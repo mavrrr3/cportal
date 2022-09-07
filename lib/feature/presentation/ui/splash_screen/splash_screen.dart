@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _fetchContent() {
     context
       ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
-      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent());
+      ..read<FetchQuestionsBloc>().add(const FetchQuestionsEvent());
   }
 
   @override
@@ -35,8 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          final nextScreen =
-              state is HasAuthCredentials ? NavigationRouteNames.login : NavigationRouteNames.connectingCode;
+          final nextScreen = state is HasAuthCredentials
+              ? NavigationRouteNames.login
+              : NavigationRouteNames.connectingCode;
 
           context.goNamed(nextScreen);
         },
