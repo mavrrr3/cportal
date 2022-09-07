@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/open_filter_button.dart';
@@ -34,16 +35,17 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
       constraint: const BoxConstraints(maxWidth: 704),
       child: Row(
         children: [
-          BurgerMenuButton(
-            onTap: () {
-              context.read<NavigationBarBloc>().add(
-                    NavBarVisibilityEvent(
-                      index: widget.currentMenuIndex,
-                      isActive: true,
-                    ),
-                  );
-            },
-          ),
+          if (!isMobile(context) && zeroWidthCondition(context))
+            BurgerMenuButton(
+              onTap: () {
+                context.read<NavigationBarBloc>().add(
+                      NavBarVisibilityEvent(
+                        index: widget.currentMenuIndex,
+                        isActive: true,
+                      ),
+                    );
+              },
+            ),
 
           // Поиск.
           Expanded(
