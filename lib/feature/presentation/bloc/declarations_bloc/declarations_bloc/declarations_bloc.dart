@@ -36,15 +36,25 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
     Emitter emit,
   ) async {
     List<DeclarationCardEntity> oldDeclarations = [];
+    late DateTime lastRenderedDate;
+
     if (event.isFirstFetch) {
       page = 1;
-    }
-    if (state is DeclarationsLoadedState && !event.isFirstFetch) {
-      oldDeclarations = (state as DeclarationsLoadedState).declarations;
+      lastRenderedDate = DateTime(1, 1, 1);
     }
 
+    if (state is DeclarationsLoadedState && !event.isFirstFetch) {
+      oldDeclarations = (state as DeclarationsLoadedState).declarations;
+      if (oldDeclarations.isNotEmpty) {
+        lastRenderedDate = oldDeclarations.last.date;
+      }
+    }
+
+    log('>> $lastRenderedDate');
+
     emit(DeclarationsLoadingState(
-      oldDeclarations,
+      oldDeclarations: oldDeclarations,
+      lastRenderedDate: lastRenderedDate,
       isFirstFetch: event.isFirstFetch,
     ));
 
@@ -53,12 +63,17 @@ class DeclarationsBloc extends Bloc<DeclarationsEvent, DeclarationsState> {
 
       final declarationsList =
           (state as DeclarationsLoadingState).oldDeclarations;
+      final lastRenderedDate =
+          (state as DeclarationsLoadingState).lastRenderedDate;
 
       // ignore: cascade_invocations
       declarationsList.addAll(declarationEntity);
       log('Загрузилось ${declarationsList.length} заявлений');
 
-      emit(DeclarationsLoadedState(declarations: declarationsList));
+      emit(DeclarationsLoadedState(
+        declarations: declarationsList,
+        lastRenderedDate: lastRenderedDate,
+      ));
     }
 
     final failureOrDeclarations = await fetchDeclarations(

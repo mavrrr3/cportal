@@ -32,8 +32,9 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
     return ResponsiveConstraints(
       constraint: const BoxConstraints(maxWidth: 640),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (!isMobile(context)) ...[
+          if (!isMobile(context) && !isDesktop(context)) ...[
             BurgerMenuButton(
               onTap: () {
                 context.read<NavigationBarBloc>().add(

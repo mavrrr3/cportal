@@ -5,11 +5,11 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_item_r
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MenuItemsColumnWeb extends StatelessWidget {
+class MenuItemsColumn extends StatelessWidget {
   final List<MenuButtonEntity> menuItems;
   final int currentIndex;
   final Function(int) onChange;
-  const MenuItemsColumnWeb({
+  const MenuItemsColumn({
     Key? key,
     required this.menuItems,
     required this.currentIndex,

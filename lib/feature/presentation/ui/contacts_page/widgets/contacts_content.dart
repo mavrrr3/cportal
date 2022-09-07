@@ -1,4 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/profile_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
@@ -15,7 +16,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
 
 class ContactsContent extends StatefulWidget {
   final ScrollController scrollController;
@@ -143,7 +143,7 @@ class _ContactsContentState extends State<ContactsContent> {
     List<ProfileEntity> contacts,
     int i,
   ) async {
-    if (ResponsiveWrapper.of(context).isDesktop) {
+    if (isDesktop(context)) {
       await _showContactProfile(context, contacts, i);
     } else {
       GoRouter.of(context).pushNamed(

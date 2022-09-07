@@ -1,12 +1,10 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declarations_content_mobile.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/web/declarations_content_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,29 +43,19 @@ class _DeclarationsPageState extends State<DeclarationsPage>
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: theme.background,
-        body: isLargerThenTablet(context)
-            ? DeclarationsContentWeb(
-                searchController: _searchController,
-                searchFocus: _searchFocus,
-                onFilterTap: () {
-                  context
-                      .read<FilterVisibilityBloc>()
-                      .add(const FilterChangeVisibilityEvent(isActive: true));
-                },
-              )
-            : DeclarationsContentMobile(
-                searchController: _searchController,
-                searchFocus: _searchFocus,
-                tabController: _tabController,
-                onFilterTap: () async {
-                  await showFilterMobile(
-                    context,
-                    onApply: _onApplyFilter,
-                    onClear: _onClearFilter,
-                    type: FilterType.declarations,
-                  );
-                },
-              ),
+        body: DeclarationsContentMobile(
+          searchController: _searchController,
+          searchFocus: _searchFocus,
+          tabController: _tabController,
+          onFilterTap: () async {
+            await showFilterMobile(
+              context,
+              onApply: _onApplyFilter,
+              onClear: _onClearFilter,
+              type: FilterType.declarations,
+            );
+          },
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             context.pushNamed(NavigationRouteNames.createDeclaration);

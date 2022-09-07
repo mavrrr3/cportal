@@ -9,25 +9,27 @@ import 'package:go_router/go_router.dart';
 
 class DeclarationsList extends StatelessWidget {
   final List<DeclarationCardEntity> items;
+  final DateTime currentDate;
 
   const DeclarationsList({
     Key? key,
     required this.items,
+    required this.currentDate,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
-    DateTime startDate = DateTime(1111, 1, 1);
+    DateTime currentRenderedDate = currentDate;
 
     return ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, i) {
-        if (startDate.day != items[i].date.day) {
-          startDate = items[i].date;
+        if (currentRenderedDate.day != items[i].date.day) {
+          currentRenderedDate = items[i].date;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

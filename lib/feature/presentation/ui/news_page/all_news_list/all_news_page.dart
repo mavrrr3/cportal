@@ -89,7 +89,7 @@ class _AllNewsPageState extends State<AllNewsPage>
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (!isMobile(context)) ...[
+                        if (!isMobile(context) && !isDesktop(context)) ...[
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
                                   const NavBarVisibilityEvent(isActive: true),

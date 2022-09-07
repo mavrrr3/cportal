@@ -12,10 +12,12 @@ class DeclarationsEmptyState extends DeclarationsState {}
 
 class DeclarationsLoadingState extends DeclarationsState {
   final List<DeclarationCardEntity> oldDeclarations;
+  final DateTime lastRenderedDate;
   final bool isFirstFetch;
 
-  const DeclarationsLoadingState(
-    this.oldDeclarations, {
+  const DeclarationsLoadingState({
+    required this.oldDeclarations,
+    required this.lastRenderedDate,
     this.isFirstFetch = false,
   });
 
@@ -25,9 +27,11 @@ class DeclarationsLoadingState extends DeclarationsState {
 
 class DeclarationsLoadedState extends DeclarationsState {
   final List<DeclarationCardEntity> declarations;
+  final DateTime lastRenderedDate;
 
   const DeclarationsLoadedState({
     required this.declarations,
+    required this.lastRenderedDate,
   });
 
   @override

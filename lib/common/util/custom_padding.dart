@@ -7,6 +7,8 @@ class CustomPadding {
 
   CustomPadding(this.context);
 
+
+  // Padding основной колонки для Web/Tablet.
   EdgeInsetsGeometry webTabletPadding() {
     final width = MediaQuery.of(context).size.width;
 
@@ -23,6 +25,7 @@ class CustomPadding {
     );
   }
 
+  // Ретернает ширину контента в зависимости от размера девайса.  
   double responsiveMainPage() {
     final width = MediaQuery.of(context).size.width;
 

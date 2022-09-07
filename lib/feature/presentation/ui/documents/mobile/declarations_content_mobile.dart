@@ -43,6 +43,7 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+
     _setupScrollController();
 
     return SafeArea(
@@ -56,12 +57,13 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverAppBar(
                 backgroundColor: theme.background,
-                collapsedHeight: 108,
-                expandedHeight: 108,
+                collapsedHeight: 108.5,
+                expandedHeight: 108.5,
                 floating: true,
                 forceElevated: innerBoxIsScrolled,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 11),
                       Padding(

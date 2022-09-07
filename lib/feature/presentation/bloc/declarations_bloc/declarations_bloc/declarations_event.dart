@@ -24,3 +24,12 @@ class SearchDeclarationsEvent extends DeclarationsEvent {
   @override
   List<Object> get props => [query];
 }
+
+class ChangeLastRenderedDate extends DeclarationsEvent {
+  final DateTime newDate;
+
+  const ChangeLastRenderedDate({required this.newDate});
+
+  @override
+  List<Object> get props => [newDate];
+}

@@ -23,7 +23,7 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return OnHover(
       builder: (isHovered) {
@@ -66,9 +66,9 @@ class UserCard extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             position,
+                            maxLines: 1,
                             style: theme.textTheme.px12.copyWith(
                               color: theme.textLight,
-                              height: 1.3334,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),
                           ),

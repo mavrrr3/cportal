@@ -42,24 +42,20 @@ class DeclarationCardWithStatus extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.px14Bold,
-                            ),
-                            const SizedBox(height: 6),
-                            CardDescription(
-                              description: item.description,
-                              descriptionEnum: item.descriptionEnum,
-                              date: item.date,
-                            ),
-                          ],
+                        Text(
+                          item.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.px14Bold,
+                        ),
+                        const SizedBox(height: 6),
+                        CardDescription(
+                          description: item.description,
+                          descriptionEnum: item.descriptionEnum,
+                          date: item.date,
                         ),
                       ],
                     ),

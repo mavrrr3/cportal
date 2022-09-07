@@ -27,6 +27,12 @@ bool isMobile(BuildContext context) {
   return !isItTablet && kIsMobile;
 }
 
+bool isDesktop(BuildContext context) {
+  final double width = MediaQuery.of(context).size.width;
+
+  return width >= 1080;
+}
+
 // zeroWidthCondition, firstWidthCondition, secondWidthCondition,
 // thirdWidthConditionit is from Figma maket Adaptation bloc
 bool zeroWidthCondition(BuildContext context) {
