@@ -98,6 +98,7 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
                         // Строка с поиском.
                         SearchWithFilter(
                           searchController: widget.searchController,
+                          currentMenuIndex: 3,
                           onSearch: (text) {},
                           onSearchClear: () {},
                           onFilterTap: widget.onFilterTap,

@@ -101,7 +101,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
   void _fetchContent(BuildContext context) {
     context
       ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
-      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
+      ..read<FetchQuestionsBloc>().add(const FetchQuestionsEvent())
       ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
       ..read<FilterContactsBloc>().add(FetchFiltersEvent())
       ..read<FetchNewEmployeeBloc>().add(const FetchNewEmployeeEvent());
@@ -109,10 +109,11 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
-        context.select(
-          (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
-        );
+    final isLoading =
+        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+            context.select(
+              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+            );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -162,7 +163,10 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
                         : zeroWidthCondition(context)
                             ? const EdgeInsets.only(left: 40)
                             : EdgeInsets.only(
-                                left: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
+                                left: customPadding
+                                        .webTabletPaddingWithRightBloc()
+                                        .horizontal /
+                                    2,
                               ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -318,7 +322,9 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
             ),
           ),
           ResponsiveConstraints(
-            constraint: isLargerThenTablet(context) ? const BoxConstraints(maxWidth: 640) : null,
+            constraint: isLargerThenTablet(context)
+                ? const BoxConstraints(maxWidth: 640)
+                : null,
             child: SearchBox(
               isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
@@ -337,7 +343,8 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
       builder: (context) {
         final theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {

@@ -18,9 +18,9 @@ class ContactsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: getHorizontalPadding(context),
-      child: isLargerThenTablet(context)
-          ? ContactsListWeb(items: items, onTap: onTap)
-          : ContactsListMobile(items: items, onTap: onTap),
+      child: isMobile(context)
+          ? ContactsListMobile(items: items, onTap: onTap)
+          : ContactsListWeb(items: items, onTap: onTap),
     );
   }
 }

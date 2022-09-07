@@ -27,21 +27,20 @@ class ContactsPage extends StatefulWidget {
 
 class _ContactsPageState extends State<ContactsPage> {
   late ScrollController _scrollController;
-  late TextEditingController _searchController;
+  late final TextEditingController _searchController;
 
   @override
   void initState() {
+    super.initState();
     _scrollController = ScrollController();
     _searchController = TextEditingController();
-
-    super.initState();
+    _setupScrollController(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    _setupScrollController(context);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -102,28 +101,23 @@ class _ContactsPageState extends State<ContactsPage> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _searchController.dispose();
-    _scrollController.dispose();
-  }
-
   // Пагинация.
   Future<void> _setupScrollController(BuildContext context) async {
     final isConnected = await sl<INetworkInfo>().isConnected;
-    _scrollController.addListener(() {
-      if (_searchController.text.isEmpty) {
-        if (_scrollController.position.atEdge) {
-          if (_scrollController.position.pixels != 0) {
-            if (isConnected) {
-              BlocProvider.of<ContactsBloc>(context)
-                  .add(const FetchContactsEvent());
+    if (mounted) {
+      _scrollController.addListener(() {
+        if (_searchController.text.isEmpty) {
+          if (_scrollController.position.atEdge) {
+            if (_scrollController.position.pixels != 0) {
+              if (isConnected) {
+                BlocProvider.of<ContactsBloc>(context)
+                    .add(const FetchContactsEvent());
+              }
             }
           }
         }
-      }
-    });
+      });
+    }
   }
 
   // Открывает фильтр.
@@ -190,9 +184,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void _onSearchClear() {
     final state = context.read<FilterContactsBloc>().state;
 
-    setState(() {
-      _searchController.clear();
-    });
+    setState(_searchController.clear);
     BlocProvider.of<ContactsBloc>(
       context,
       listen: false,
@@ -225,5 +217,12 @@ class _ContactsPageState extends State<ContactsPage> {
         }
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 }
