@@ -1,8 +1,10 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,46 +15,6 @@ class OnBoardingWelcome extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final localizedStrings = AppLocalizations.of(context)!;
-
-    // Контент страниц онбординга.
-    final List<NewEmployeeEntity> onboardingContent = [
-      NewEmployeeEntity(
-        title: AppLocalizations.of(context)!.onboarding_title1,
-        description: AppLocalizations.of(context)!.onboarding_description1,
-        image: 'assets/img/onboarding/1.svg',
-      ),
-      NewEmployeeEntity(
-        title: AppLocalizations.of(context)!.onboarding_title2,
-        description: AppLocalizations.of(context)!.onboarding_description2,
-        image: 'assets/img/onboarding/2.svg',
-      ),
-      NewEmployeeEntity(
-        title: AppLocalizations.of(context)!.onboarding_title3,
-        description: AppLocalizations.of(context)!.onboarding_description3,
-        image: 'assets/img/onboarding/3.svg',
-      ),
-      NewEmployeeEntity(
-        title: AppLocalizations.of(context)!.onboarding_title4,
-        description: AppLocalizations.of(context)!.onboarding_description4,
-        image: 'assets/img/onboarding/4.svg',
-      ),
-      NewEmployeeEntity(
-        title: AppLocalizations.of(context)!.onboarding_title5,
-        description: AppLocalizations.of(context)!.onboarding_description5,
-        image: 'assets/img/onboarding/5.svg',
-      ),
-      NewEmployeeEntity(
-        title: AppLocalizations.of(context)!.onboarding_title6,
-        description: AppLocalizations.of(context)!.onboarding_description6,
-        image: 'assets/img/onboarding/6.png',
-        isVector: false,
-      ),
-      NewEmployeeEntity(
-        title: AppLocalizations.of(context)!.onboarding_title7,
-        description: AppLocalizations.of(context)!.onboarding_description7,
-        image: 'assets/img/onboarding/7.svg',
-      ),
-    ];
 
     return Scaffold(
       backgroundColor: theme.cardColor,
@@ -94,23 +56,29 @@ class OnBoardingWelcome extends StatelessWidget {
               ],
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Button.factory(
-                context,
-                type: ButtonEnum.filled,
-                text: AppLocalizations.of(context)!.forward,
-                onTap: () {
-                  GoRouter.of(context).pushNamed(
-                    NavigationRouteNames.onboarding,
-                    extra: onboardingContent,
-                  );
-                },
-                size: const Size(double.infinity, 48),
-              ),
-            ),
-          ),
+          BlocBuilder<FetchNewEmployeeBloc, FetchNewEmployeeState>(builder: (context, state) {
+            if (state is NewEmployeeLoaded) {
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Button.factory(
+                    context,
+                    type: ButtonEnum.filled,
+                    text: AppLocalizations.of(context)!.forward,
+                    onTap: () {
+                      GoRouter.of(context).pushNamed(
+                        NavigationRouteNames.onboarding,
+                        extra: state.slides,
+                      );
+                    },
+                    size: const Size(double.infinity, 48),
+                  ),
+                ),
+              );
+            }
+
+            return const Loader();
+          }),
         ],
       ),
     );

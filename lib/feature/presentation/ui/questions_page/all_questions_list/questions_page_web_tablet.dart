@@ -15,19 +15,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AllQuestionsPage extends StatefulWidget {
+class QuestionsPageWebTablet extends StatefulWidget {
   final List<String> categories;
-  const AllQuestionsPage({
+  const QuestionsPageWebTablet({
     Key? key,
     required this.categories,
   }) : super(key: key);
 
   @override
-  State<AllQuestionsPage> createState() => _AllQuestionsPageState();
+  State<QuestionsPageWebTablet> createState() => _QuestionsPageWebTabletState();
 }
 
-class _AllQuestionsPageState extends State<AllQuestionsPage>
-    with TickerProviderStateMixin {
+class _QuestionsPageWebTabletState extends State<QuestionsPageWebTablet> with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
@@ -62,14 +61,15 @@ class _AllQuestionsPageState extends State<AllQuestionsPage>
     if (_tabController.index == 0) {
       fetchQuestionsBloc.add(const FetchQuestionsEvent());
     } else {
-      fetchQuestionsBloc
-          .add(FetchQaustionsEventBy(categories[_tabController.index]));
+      fetchQuestionsBloc.add(FetchQaustionsEventBy(categories[_tabController.index]));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final double width = MediaQuery.of(context).size.width;
+    final customPadding = ResponsiveUtil(context);
 
     return BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
       builder: (context, state) {
@@ -89,17 +89,18 @@ class _AllQuestionsPageState extends State<AllQuestionsPage>
                 children: [
                   SizePadding.height12px,
                   Padding(
-                    padding: getHorizontalPadding(context),
+                    padding: width < 514
+                        ? const EdgeInsets.only(left: 16)
+                        : zeroWidthCondition(context)
+                            ? const EdgeInsets.only(left: 40)
+                            : customPadding.webTabletPadding(),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (!isMobile(context) && zeroWidthCondition(context))
+                        if (zeroWidthCondition(context) && width > 514)
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(
-                                    index: 2,
-                                    isActive: true,
-                                  ),
+                                  const NavBarVisibilityEvent(index: 2, isActive: true),
                                 );
                           }),
                         Text(
@@ -109,14 +110,27 @@ class _AllQuestionsPageState extends State<AllQuestionsPage>
                       ],
                     ),
                   ),
-                  CustomTabBar(
-                    tabs: getTabs(),
-                    tabController: _tabController,
-                  ),
-                  ScrollableQuestionsList(
-                    articles: questions,
-                    tabController: _tabController,
-                    categories: widget.categories,
+                  Expanded(
+                    child: Padding(
+                      padding: customPadding.webTabletPadding(),
+                      child: SizedBox(
+                        width: customPadding.widthContent(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTabBar(
+                              tabs: getTabs(),
+                              tabController: _tabController,
+                            ),
+                            ScrollableQuestionsList(
+                              articles: questions,
+                              tabController: _tabController,
+                              categories: widget.categories,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

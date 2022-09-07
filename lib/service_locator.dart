@@ -167,8 +167,7 @@ Future<void> init() async {
   sl.registerFactory(
     () => FetchNewsBloc(fetchNews: sl(), fetchNewsByCategory: sl()),
   );
-  sl.registerFactory(() =>
-      FetchQuestionsBloc(fetchQaustions: sl(), fetchQuestionsByCategory: sl()));
+  sl.registerFactory(() => FetchQuestionsBloc(fetchQaustions: sl(), fetchQuestionsByCategory: sl()));
   sl.registerFactory(NavigationBarBloc.new);
   sl.registerFactory(() => FilterContactsBloc(fetchFilters: sl()));
   sl.registerFactory(() => ContactsBloc(fetchContacts: sl(), fetchProfile: sl(), searchContacts: sl()));
@@ -316,8 +315,6 @@ Future<void> init() async {
     );
   }
 
-
-
   // DATASOURCE.
   sl.registerLazySingleton<IProfileRemoteDataSource>(
     () => ProfileRemoteDataSource(sl(), sl()),
@@ -366,7 +363,7 @@ Future<void> init() async {
     () => MainSearchRemoteDataSource(sl()),
   );
   sl.registerLazySingleton<INewEmployeeRemoteDataSource>(
-    NewEmployeeRemoteDataSource.new,
+    () => NewEmployeeRemoteDataSource(sl()),
   );
   sl.registerLazySingleton<INewEmployeeLocalDataSource>(
     () => NewEmployeeLocalDataSource(sl()),
