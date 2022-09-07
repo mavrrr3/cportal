@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
     final size = MediaQuery.of(context).size;
-    final width = MediaQuery.of(context).size.width;
+
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
               ),
 
               // Bottom Bar.
-              bottomNavigationBar: isMobile(context) || width < 514 ? const CustomBottomBar() : null,
+              bottomNavigationBar: isMobile(context) || size.width < 514 ? const CustomBottomBar() : null,
             ),
             BurgerMenu(
               currentIndex: widget.webMenuIndex,
