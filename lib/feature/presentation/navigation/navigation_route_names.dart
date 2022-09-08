@@ -294,6 +294,41 @@ final GoRouter router = GoRouter(
           webMenuIndex: 3,
         ),
       ),
+      routes: [
+        GoRoute(
+          name: NavigationRouteNames.createDeclaration,
+          path: 'create',
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const CreateDeclarationPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+              opacity: CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOut,
+              ),
+              child: child,
+            ),
+          ),
+        ),
+        GoRoute(
+          name: NavigationRouteNames.declarationInfo,
+          path: 'info/:fid',
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: DeclarationInfoPage(
+              id: state.params['fid']!,
+              isTask: false,
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
+              opacity: CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOut,
+              ),
+              child: child,
+            ),
+          ),
+        ),
+      ],
     ),
     GoRoute(
       name: NavigationRouteNames.contactProfile,
@@ -301,39 +336,6 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => NoTransitionPage<void>(
         child: ContactProfilePage(
           id: state.params['fid']!,
-        ),
-      ),
-    ),
-    GoRoute(
-      name: NavigationRouteNames.createDeclaration,
-      path: '/declarations/create',
-      pageBuilder: (context, state) => CustomTransitionPage(
-        key: state.pageKey,
-        child: const CreateDeclarationPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
-          opacity: CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeOut,
-          ),
-          child: child,
-        ),
-      ),
-    ),
-    GoRoute(
-      name: NavigationRouteNames.declarationInfo,
-      path: '/declarations/info/:fid',
-      pageBuilder: (context, state) => CustomTransitionPage(
-        key: state.pageKey,
-        child: DeclarationInfoPage(
-          id: state.params['fid']!,
-          isTask: false,
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
-          opacity: CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeOut,
-          ),
-          child: child,
         ),
       ),
     ),
