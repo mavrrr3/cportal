@@ -57,7 +57,7 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    inActiveDotColor = theme.textLight!;
+    inActiveDotColor = theme.text!.withOpacity(0.2);
     activeDotColor = theme.primary!;
     errorColor = theme.red!;
     successColor = theme.successPIN!;
