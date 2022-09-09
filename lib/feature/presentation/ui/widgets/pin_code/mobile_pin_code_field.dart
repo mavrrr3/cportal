@@ -6,7 +6,6 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/pin_code/pin_dot.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,14 +54,14 @@ class MobilePinCodeFieldState extends State<MobilePinCodeField>
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return isLoader
-        ?  SizedBox(
-          height: 16,
-          width: 16,
-          child: CircularProgressIndicator(
-            color: theme.successPIN,
-            strokeWidth: 2,
-          ),
-        )
+        ? SizedBox(
+            height: 16,
+            width: 16,
+            child: CircularProgressIndicator(
+              color: theme.successPIN,
+              strokeWidth: 2,
+            ),
+          )
         : Row(
             mainAxisSize: MainAxisSize.min,
             children: [

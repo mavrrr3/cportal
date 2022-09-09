@@ -1,7 +1,5 @@
 // ignore_for_file: cascade_invocations
 
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -40,31 +38,32 @@ class _LoginMobileScreenState extends State<LoginMobileScreen> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (child, state) {
         return AuthMobileLayout(
-          appBarSuffix: state is HasAuthCredentials && state.enabledBiometric != null
-              ? GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => authBloc.add(
-                    LogInWithBiometrics(localizedStrings.logInToContinue),
-                  ),
-                  child: state.enabledBiometric == BiometricType.face
-                      ? SvgPicture.asset(
-                          ImageAssets.faceId,
-                          color: theme.primary,
-                          width: 32,
-                          height: 32,
-                        )
-                      : SizedBox(
-                          width: 32,
-                          height: 32,
-                          child: SvgPicture.asset(
-                            ImageAssets.fingerPrint,
-                            color: theme.primary,
-                            width: 25,
-                            height: 27,
-                          ),
-                        ),
-                )
-              : null,
+          appBarSuffix:
+              state is HasAuthCredentials && state.enabledBiometric != null
+                  ? GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => authBloc.add(
+                        LogInWithBiometrics(localizedStrings.logInToContinue),
+                      ),
+                      child: state.enabledBiometric == BiometricType.face
+                          ? SvgPicture.asset(
+                              ImageAssets.faceId,
+                              color: theme.primary,
+                              width: 32,
+                              height: 32,
+                            )
+                          : SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: SvgPicture.asset(
+                                ImageAssets.fingerPrint,
+                                color: theme.primary,
+                                width: 25,
+                                height: 27,
+                              ),
+                            ),
+                    )
+                  : null,
           child: Column(
             children: [
               EnterPinArea(
