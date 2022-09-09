@@ -52,7 +52,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   swipe: ^0.0.1
   fluttertoast: ^8.0.9
-  url_launcher: ^6.1.4
+  url_launcher: ^6.1.5
   qr_code_scanner:
     git:
       url: https://github.com/xeinebiu/qr_code_scanner.git
@@ -80,7 +80,7 @@ dependencies:
 
 
 dev_dependencies:
-  dart_code_metrics: ^4.16.0
+  dart_code_metrics: ^4.17.1
   flutter_lints: ^1.0.0
   l: ^3.2.0
   hive_generator: ^1.1.3
