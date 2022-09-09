@@ -19,6 +19,8 @@ final light = CustomTheme(
   textLight: const Color(0xFF282A2D).withOpacity(0.68),
   onBoarding: const Color(0xFF282A2D).withOpacity(0.2),
   barrierColor: const Color(0xFF282A2D).withOpacity(0.2),
+  progressDone: const Color(0xFF33C06F),
+  allertMessage: const Color(0xFFDF292F),
   textTheme: _getTextTheme(textColor: const Color(0xFF282A2D)),
 );
 
@@ -29,7 +31,7 @@ final dark = CustomTheme(
   white: const Color(0xFFFFFFFF),
   black: const Color(0xFF000000),
   primary: const Color(0xFF2A85FF),
-  red: const Color(0xFFFF6A55),
+  red: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
   lightRedPIN: const Color(0xFFFF6A55).withOpacity(0.17),
@@ -40,6 +42,8 @@ final dark = CustomTheme(
   textLight: const Color(0xFFFCFCFC).withOpacity(0.68),
   onBoarding: const Color(0xFF282A2D).withOpacity(0.2),
   barrierColor: const Color(0xFF1A1D1F).withOpacity(0.8),
+  progressDone: const Color(0xFF33C06F),
+  allertMessage: const Color(0xFFFF6A55),
   textTheme: _getTextTheme(textColor: const Color(0xFFFCFCFC)),
 );
 
@@ -137,6 +141,23 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         letterSpacing: 0.25,
       ),
 
+      // [12 px] Bold.
+      px12Bold: GoogleFonts.roboto(
+        fontSize: 12,
+        fontWeight: FontWeight.w700,
+        color: textColor,
+        height: 1.33,
+        letterSpacing: 0.25,
+      ),
+
+      // [10 px].
+      px10: GoogleFonts.roboto(
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        color: textColor,
+        letterSpacing: 0.25,
+      ),
+
       // [9 px] BottomBar.
       bottomBar: GoogleFonts.inter(
         fontSize: 9,
@@ -148,6 +169,8 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
     );
 
 class CustomTheme extends ThemeExtension<CustomTheme> {
+  final CustomTextTheme textTheme;
+
   final Brightness? brightness;
   final Color? background;
   final Color? white;
@@ -164,9 +187,11 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Color? textLight;
   final Color? onBoarding;
   final Color? barrierColor;
-  final CustomTextTheme textTheme;
+  final Color? progressDone;
+  final Color? allertMessage;
 
   CustomTheme({
+    required this.textTheme,
     this.brightness,
     this.background,
     this.white,
@@ -183,7 +208,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.textLight,
     this.onBoarding,
     this.barrierColor,
-    required this.textTheme,
+    this.progressDone,
+    this.allertMessage,
   });
 
   @override
@@ -204,6 +230,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     Color? textLight,
     Color? onBoarding,
     Color? barrierColor,
+    Color? progressDone,
+    Color? allertMessage,
     CustomTextTheme? textTheme,
   }) {
     return CustomTheme(
@@ -222,6 +250,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       textLight: textLight ?? this.textLight,
       onBoarding: onBoarding ?? this.onBoarding,
       barrierColor: barrierColor ?? this.barrierColor,
+      progressDone: progressDone ?? this.progressDone,
+      allertMessage: allertMessage ?? this.allertMessage,
       textTheme: textTheme ?? this.textTheme,
     );
   }
@@ -258,6 +288,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       textLight: Color.lerp(textLight, other.textLight, t),
       onBoarding: Color.lerp(onBoarding, other.onBoarding, t),
       barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
+      progressDone: Color.lerp(progressDone, other.progressDone, t),
+      allertMessage: Color.lerp(allertMessage, other.allertMessage, t),
       textTheme: textTheme,
     );
   }
@@ -275,6 +307,8 @@ class CustomTextTheme {
   final TextStyle px14;
   final TextStyle px14Bold;
   final TextStyle px12;
+  final TextStyle px12Bold;
+  final TextStyle px10;
   final TextStyle bottomBar;
 
   CustomTextTheme({
@@ -289,6 +323,8 @@ class CustomTextTheme {
     required this.px14,
     required this.px14Bold,
     required this.px12,
+    required this.px12Bold,
+    required this.px10,
     required this.bottomBar,
   });
 }

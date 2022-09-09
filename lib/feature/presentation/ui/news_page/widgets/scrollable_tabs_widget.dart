@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -74,9 +74,7 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
           onTap: onTap,
           child: Padding(
             padding: EdgeInsets.only(
-              right: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                  ? 8.0
-                  : 19,
+              right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
             ),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),

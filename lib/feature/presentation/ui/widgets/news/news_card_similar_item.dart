@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news/cached_news_image.dart';
@@ -43,7 +44,7 @@ class NewsCardSimilarItem extends StatelessWidget {
               ),
               SizePadding.height12px,
               SizedBox(
-                width: 220,
+                width: isMobile(context) ? 220 : 312,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,9 +53,7 @@ class NewsCardSimilarItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 4,
                       style: theme.textTheme.px14Bold.copyWith(
-                        color: isHovered
-                            ? theme.text?.withOpacity(0.6)
-                            : theme.text,
+                        color: isHovered ? theme.text?.withOpacity(0.6) : theme.text,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -63,9 +62,7 @@ class NewsCardSimilarItem extends StatelessWidget {
                         Text(
                           outputFormat.format(item.date),
                           style: theme.textTheme.px12.copyWith(
-                            color: isHovered
-                                ? theme.text?.withOpacity(0.6)
-                                : theme.text,
+                            color: isHovered ? theme.text?.withOpacity(0.6) : theme.text,
                           ),
                         ),
                       ],

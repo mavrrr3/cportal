@@ -3,6 +3,8 @@ import 'package:cportal_flutter/feature/domain/entities/menu_button_entity.dart'
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_state.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,7 +88,7 @@ class _MenuItem extends StatelessWidget {
     final Color nonActiveColor = theme.text!.withOpacity(0.48);
     final Color activeColor = theme.primary!;
 
-    Color _textColor(int index, NavigationBarState state) {
+    Color textColor(int index, NavigationBarState state) {
       return theme.brightness == Brightness.light
           ? state.currentIndex == index
               ? activeColor
@@ -96,7 +98,7 @@ class _MenuItem extends StatelessWidget {
               : Colors.white;
     }
 
-    Color _iconColor(int index, NavigationBarState state) {
+    Color iconColor(int index, NavigationBarState state) {
       return state.currentIndex == index ? activeColor : nonActiveColor;
     }
 
@@ -108,16 +110,43 @@ class _MenuItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 8),
-          SvgPicture.asset(
-            item.img,
-            width: 24,
-            color: _iconColor(index, state),
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              SvgPicture.asset(
+                item.img,
+                width: 24,
+                color: iconColor(index, state),
+              ),
+              if (index == 3)
+                BlocBuilder<TasksBloc, TasksState>(
+                  builder: (context, state) {
+                    if (state is TasksLoadedState) {
+                      return state.total > 0
+                          ? Positioned(
+                              right: 1,
+                              child: Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  color: theme.red,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            )
+                          : const SizedBox();
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
+            ],
           ),
           const SizedBox(height: 4),
           Text(
             item.text,
             style: theme.textTheme.bottomBar.copyWith(
-              color: _textColor(index, state),
+              color: textColor(index, state),
               leadingDistribution: TextLeadingDistribution.even,
             ),
           ),

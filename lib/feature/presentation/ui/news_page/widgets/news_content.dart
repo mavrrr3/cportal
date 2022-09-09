@@ -42,10 +42,49 @@ class _NewsContentState extends State<NewsContent> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    _newsController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    return SingleChildScrollView(
+      controller: _scrollController,
+      dragStartBehavior: DragStartBehavior.down,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          if (isMobile(context))
+          ListView.builder(
+              controller: _newsController,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: widget._articles.length,
+              itemBuilder: (context, index) {
+                return builderItem(
+                  widget._articles,
+                  widget._tabs,
+                  width,
+                  index,
+                );
+              },
+            )
+            
+          else
+            Wrap(
+              children: List.generate(
+                widget._articles.length,
+                (index) {
+                  return builderItem(
+                    widget._articles,
+                    widget._tabs,
+                    312,
+                    index,
+                  );
+                },
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   void _setupScrollController(BuildContext context) {
@@ -64,80 +103,44 @@ class _NewsContentState extends State<NewsContent> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+  Widget builderItem(
+    List<ArticleEntity> articles,
+    List<String> tabs,
+    double width,
+    int index,
+  ) {
+    final article = articles[index];
 
-    void _onArticleSelected(String id) {
-      GoRouter.of(context).pushNamed(
-        NavigationRouteNames.newsArticlePage,
-        params: {'fid': id},
+    // Если true, то отрисовываются все новости.
+    if (widget._currentIndex == 0) {
+      return NewsCard(
+        width,
+        item: article,
+        onTap: () => onArticleSelected(article.id),
+      );
+      // Если другой индекс, то рендеринг по категориям.
+    } else if (article.category == tabs[widget._currentIndex]) {
+      return NewsCard(
+        width,
+        item: article,
+        onTap: () => onArticleSelected(article.id),
       );
     }
 
-    Widget _builderItem(
-      List<ArticleEntity> articles,
-      List<String> tabs,
-      double width,
-      int index,
-    ) {
-      final article = articles[index];
+    return const SizedBox();
+  }
 
-      if (widget._currentIndex == 0) {
-        return NewsCard(
-          width,
-          item: article,
-          onTap: () => _onArticleSelected(article.id),
-        );
-      } else if (article.category == tabs[widget._currentIndex]) {
-        return NewsCard(
-          width,
-          item: article,
-          onTap: () => _onArticleSelected(article.id),
-        );
-      }
-
-      return const SizedBox();
-    }
-
-    return SingleChildScrollView(
-      controller: _scrollController,
-      dragStartBehavior: DragStartBehavior.down,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          if (isLargerThenMobile(context))
-            Wrap(
-              children: List.generate(
-                widget._articles.length,
-                (index) {
-                  return _builderItem(
-                    widget._articles,
-                    widget._tabs,
-                    312,
-                    index,
-                  );
-                },
-              ),
-            )
-          else
-            ListView.builder(
-              controller: _newsController,
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget._articles.length,
-              itemBuilder: (context, index) {
-                return _builderItem(
-                  widget._articles,
-                  widget._tabs,
-                  width,
-                  index,
-                );
-              },
-            ),
-        ],
-      ),
+  void onArticleSelected(String id) {
+    GoRouter.of(context).pushNamed(
+      NavigationRouteNames.newsArticlePage,
+      params: {'fid': id},
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _newsController.dispose();
+    super.dispose();
   }
 }

@@ -2,19 +2,19 @@ import 'dart:async';
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/contacts_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/declarations_page/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/declarations_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/custom_bottom_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
-import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/main_page/main_page_web_tablet.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/news_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/questions_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_learning_course_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_step_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/web/onboarding_welcome_web.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
@@ -22,50 +22,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-const List<OnboardingEntity> _onboardingContent = [
-  OnboardingEntity(
-    title: 'Как общаться с коллегами?',
-    description:
-        'Сегодня Вас включат в группу сотрудников Новосталь-М в WhatsApp.',
-    image: 'assets/img/onboarding/1.svg',
-  ),
-  OnboardingEntity(
-    title: 'Обязательно для ознакомления!',
-    description:
-        'Сегодня Вам будет назначен курс «Обучение по информационной безопасности», который Вам будет необходимо пройти в течение 2-х\nнедель с даты приема.',
-    image: 'assets/img/onboarding/2.svg',
-  ),
-  OnboardingEntity(
-    title: 'Любите читать?',
-    description:
-        'В ближайшее время Вы будете подключены к электронной библиотеке Компании.',
-    image: 'assets/img/onboarding/3.svg',
-  ),
-  OnboardingEntity(
-    title: 'Изучайте иностранные языки',
-    description:
-        'В нашей компании проходят курсы по английскому и испанскому языкам. Вы можете присоединиться  к коллегам, изучающих иностранные языки,  для этого Вам нужно обратиться к сотруднику HR. Обучение языкам проходит за счет компании.',
-    image: 'assets/img/onboarding/4.svg',
-  ),
-  OnboardingEntity(
-    title: 'Голодным не останетесь',
-    description: 'Компания предоставляет сотрудникам бесплатные обеды.',
-    image: 'assets/img/onboarding/5.svg',
-  ),
-  OnboardingEntity(
-    title: 'Как получить ДМС?',
-    description:
-        'После прохождения испытательного срока Вам будет оформлен полис ДМС и направлен страховой компанией на почту.',
-    image: 'assets/img/onboarding/6.png',
-    isVector: false,
-  ),
-  OnboardingEntity(
-    title: 'Всегда рады ответить на вопросы',
-    description: 'Дирекция по управлению персоналом',
-    image: 'assets/img/onboarding/7.svg',
-  ),
-];
 
 class HomePage extends StatefulWidget {
   final Widget child;
@@ -81,8 +37,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
   // Для онбординга.
   late bool _isOnboarding;
@@ -92,6 +47,7 @@ class _HomePageState extends State<HomePage>
   late PageController _pageController;
   late AnimationController _animationController;
   late Duration _pageDuration;
+  List<NewEmployeeEntity> _onboardingContent = [];
 
   @override
   void initState() {
@@ -137,7 +93,7 @@ class _HomePageState extends State<HomePage>
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
-      const MainPage(),
+      if (isMobile(context)) const MainPageMobile() else const MainPageWebTablet(),
       const NewsPage(),
       const QuestionsPage(),
       const DeclarationsPage(),
@@ -165,15 +121,12 @@ class _HomePageState extends State<HomePage>
                             );
                           },
                           currentIndex: widget.webMenuIndex,
-                          onChange: (index) =>
-                              MenuService.changePage(context, index),
+                          onChange: (index) => MenuService.changePage(context, index),
                         ),
 
                       // Текущая страница.
                       Expanded(
-                        child: kIsWeb
-                            ? widget.child
-                            : listPages[state.currentIndex],
+                        child: kIsWeb ? widget.child : listPages[state.currentIndex],
                       ),
                     ],
                   ),
@@ -230,70 +183,53 @@ class _HomePageState extends State<HomePage>
 
                   // Контент онбординга и его навигация.
                   if (_isOnboarding)
-                    OnBoardingStepWeb(
-                      animationController: _animationController,
-                      pageController: _pageController,
-                      content: _onboardingContent,
-                      currentIndex: _onBoardingIndex,
-                      onNext: () {
-                        setState(() {
-                          if (_onBoardingIndex + 1 <
-                              _onboardingContent.length) {
-                            _onBoardingIndex += 1;
-                            _loadOnboardingPage();
-                          } else {
-                            setState(() {
-                              _isOnboarding = false;
-                              _isLearningCourse = true;
-                              _animationController
-                                ..stop()
-                                ..reset()
-                                ..duration = const Duration(seconds: 5)
-                                ..forward();
-                            });
-                          }
-                        });
-                      },
-                      onBack: () {
-                        setState(() {
-                          if (_onBoardingIndex - 1 >= 0) {
-                            _onBoardingIndex -= 1;
-                            _loadOnboardingPage();
-                          }
-                        });
-                      },
-                    ),
+                    BlocBuilder<FetchNewEmployeeBloc, FetchNewEmployeeState>(builder: (context, state) {
+                      if (state is NewEmployeeLoaded) {
+                        _onboardingContent = state.slides;
+                      }
 
-                  // Обучающий курс (Последний этап онбординга).
-                  if (_isLearningCourse)
-                    OnBoardingLearningCourseWeb(
-                      animationController: _animationController,
-                      pageController: _pageController,
-                      onBack: () {
-                        setState(() {
-                          _isOnboarding = true;
-                          _isLearningCourse = false;
-                          _onBoardingIndex = _onboardingContent.length - 1;
-                          _loadOnboardingPage();
-                        });
-                      },
-                    ),
+                      return OnBoardingStepWeb(
+                        animationController: _animationController,
+                        pageController: _pageController,
+                        content: _onboardingContent,
+                        currentIndex: _onBoardingIndex,
+                        onNext: () {
+                          setState(() {
+                            if (_onBoardingIndex + 1 < _onboardingContent.length) {
+                              _onBoardingIndex += 1;
+                              _loadOnboardingPage();
+                            } else {
+                              setState(() {
+                                _isOnboarding = false;
+                                _isLearningCourse = true;
+                                _animationController
+                                  ..stop()
+                                  ..reset()
+                                  ..duration = const Duration(seconds: 5)
+                                  ..forward();
+                              });
+                            }
+                          });
+                        },
+                        onBack: () {
+                          setState(() {
+                            if (_onBoardingIndex - 1 >= 0) {
+                              _onBoardingIndex -= 1;
+                              _loadOnboardingPage();
+                            }
+                          });
+                        },
+                      );
+                    }),
                 ],
               ),
 
               // Bottom Bar.
-              bottomNavigationBar: kIsWeb
-                  ? null
-                  : isLargerThenTablet(context)
-                      ? null
-                      : const CustomBottomBar(),
+              bottomNavigationBar: isMobile(context) || size.width < 514 ? const CustomBottomBar() : null,
             ),
             BurgerMenu(
               currentIndex: widget.webMenuIndex,
               onChange: (i) => MenuService.changePage(context, i),
-              onClose: () => context
-                  .read<NavigationBarBloc>()
-                  .add(const NavBarVisibilityEvent(isActive: false)),
             ),
           ],
         );

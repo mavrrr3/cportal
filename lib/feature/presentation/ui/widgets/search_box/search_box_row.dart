@@ -28,12 +28,16 @@ class SearchBoxRow extends StatelessWidget {
         children: [
           SizedBox(
             width: kIsWeb
-                ? 400
+                ? isLargerThenMobile(context)
+                    ? 400
+                    : width - 90
                 : isLargerThenMobile(context)
-                    ? width - 400
+                    ? width - 130
                     : width - 90,
             child: Text(
               text,
+              maxLines: 2,
+              softWrap: true,
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.px16.copyWith(fontWeight: FontWeight.w700),
             ),

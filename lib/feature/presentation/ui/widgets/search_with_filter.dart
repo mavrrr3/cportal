@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/open_filter_button.dart';
@@ -12,6 +13,7 @@ class SearchWithFilter extends StatefulWidget {
   final Function(String) onSearch;
   final Function onSearchClear;
   final Function() onFilterTap;
+  final int currentMenuIndex;
 
   const SearchWithFilter({
     Key? key,
@@ -19,6 +21,7 @@ class SearchWithFilter extends StatefulWidget {
     required this.onSearch,
     required this.onSearchClear,
     required this.onFilterTap,
+    required this.currentMenuIndex,
   }) : super(key: key);
 
   @override
@@ -29,18 +32,20 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveConstraints(
-      constraint: const BoxConstraints(maxWidth: 640),
+      constraint: const BoxConstraints(maxWidth: 704),
       child: Row(
         children: [
-          BurgerMenuButton(
-            onTap: () {
-              context.read<NavigationBarBloc>().add(
-                    const NavBarVisibilityEvent(
-                      isActive: true,
-                    ),
-                  );
-            },
-          ),
+          if (!isMobile(context) && zeroWidthCondition(context))
+            BurgerMenuButton(
+              onTap: () {
+                context.read<NavigationBarBloc>().add(
+                      NavBarVisibilityEvent(
+                        index: widget.currentMenuIndex,
+                        isActive: true,
+                      ),
+                    );
+              },
+            ),
 
           // Поиск.
           Expanded(

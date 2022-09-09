@@ -22,6 +22,7 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
   }) : super(NewsEmptyState()) {
     on<FetchAllNewsEvent>((event, emit) async {
       var oldArticles = <ArticleEntity>[];
+
       if (state is NewsLoading) return;
 
       if (state is NewsLoaded) {
@@ -38,17 +39,6 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         page: pageAll,
       ));
 
-      String failureToMessage(Failure failure) {
-        switch (failure.runtimeType) {
-          case ServerFailure:
-            return 'Ошибка на сервере';
-          case CacheFailure:
-            return 'Ошибка обработки кэша';
-          default:
-            return 'Unexpected Error';
-        }
-      }
-
       if (!kIsWeb) {
         final tabsFromCache = await fetchNews.fetchCategories();
 
@@ -60,6 +50,18 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
           }
         }
       }
+
+      String failureToMessage(Failure failure) {
+        switch (failure.runtimeType) {
+          case ServerFailure:
+            return 'Ошибка на сервере';
+          case CacheFailure:
+            return 'Ошибка обработки кэша';
+          default:
+            return 'Unexpected Error';
+        }
+      }
+
       void loadedNewsToArticles(NewsEntity news) {
         pageAll++;
         final articles = (state as NewsLoading).oldArticles;
@@ -117,18 +119,21 @@ class FetchNewsBloc extends Bloc<FetchNewsEvent, FetchNewsState> {
         }
       }
 
+      var articles = (state as NewsLoading).oldArticles;
+
       void loadedNewsToArticles(NewsEntity news) {
         pageByCategory[event.category]++;
-        final articles = (state as NewsLoading).oldArticles;
-        // ignore: cascade_invocations
-        articles.addAll(news.response.articles);
+        if (state is NewsLoading) {
+          articles = (state as NewsLoading).oldArticles;
 
-        /// Создание листа со всеми вкладками.
-
-        emit(NewsLoaded(articles: articles, tabs: newsTabs));
+          // ignore: cascade_invocations
+          articles.addAll(news.response.articles);
+        }
       }
 
       failureOrNews.fold(failureToMessage, loadedNewsToArticles);
+
+      emit(NewsLoaded(articles: articles, tabs: newsTabs));
     });
   }
 }
@@ -181,8 +186,7 @@ class NewsLoaded extends FetchNewsState {
   });
 
   ArticleEntity? singleArticle(String id) {
-    final List<ArticleEntity> newsListWithId =
-        articles.where((element) => element.id == id).toList();
+    final List<ArticleEntity> newsListWithId = articles.where((element) => element.id == id).toList();
 
     return newsListWithId.isEmpty ? null : newsListWithId.first;
   }

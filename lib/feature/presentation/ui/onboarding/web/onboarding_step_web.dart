@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding_pop_up.dart';
 
 class OnBoardingStepWeb extends StatelessWidget {
   final AnimationController animationController;
   final PageController pageController;
-  final List<OnboardingEntity> content;
+  final List<NewEmployeeEntity> content;
   final int currentIndex;
   final Function() onNext;
   final Function() onBack;

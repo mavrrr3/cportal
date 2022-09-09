@@ -1,15 +1,19 @@
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/all_news_list/scrollable_news_list.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/custom_tab_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu_button.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cportal_flutter/common/util/padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 
@@ -24,41 +28,33 @@ class AllNewsPage extends StatefulWidget {
   State<AllNewsPage> createState() => _AllNewsPageState();
 }
 
-class _AllNewsPageState extends State<AllNewsPage>
-    with TickerProviderStateMixin {
+class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin {
   late final TabController tabController;
-  late final PageController _pageController;
 
   @override
   void initState() {
-    _pageController = PageController();
     tabController = TabController(
       length: widget.categories.length,
       vsync: this,
     );
-
-    tabController.addListener(() {
-      _fetchNewsByTabs(widget.categories);
-    });
+    log(widget.categories.toString());
+    tabController.addListener(_fetchNewsByTabs);
     super.initState();
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
     tabController.dispose();
     super.dispose();
   }
 
-  void _fetchNewsByTabs(
-    List<String> categories,
-  ) {
+  void _fetchNewsByTabs() {
     final fetchNewsBloc = context.read<FetchNewsBloc>();
 
     if (tabController.index == 0) {
       fetchNewsBloc.add(const FetchAllNewsEvent());
     } else {
-      fetchNewsBloc.add(FetchNewsEventBy(categories[tabController.index]));
+      fetchNewsBloc.add(FetchNewsEventBy(widget.categories[tabController.index]));
     }
   }
 
@@ -88,11 +84,12 @@ class _AllNewsPageState extends State<AllNewsPage>
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        BurgerMenuButton(onTap: () {
-                          context.read<NavigationBarBloc>().add(
-                                const NavBarVisibilityEvent(isActive: true),
-                              );
-                        }),
+                        if (!isMobile(context) && zeroWidthCondition(context))
+                          BurgerMenuButton(onTap: () {
+                            context.read<NavigationBarBloc>().add(
+                                  const NavBarVisibilityEvent(index: 1, isActive: true),
+                                );
+                          }),
                         Text(
                           AppLocalizations.of(context)!.news,
                           style: theme.textTheme.header,
@@ -101,20 +98,22 @@ class _AllNewsPageState extends State<AllNewsPage>
                     ),
                   ),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTabBar(
-                          tabs: getTabs(widget.categories),
-                          tabController: tabController,
-                        ),
-                        ScrollableNewsList(
-                          articles: articles,
-                          tabController: tabController,
-                          categories: widget.categories,
-                        ),
-                      ],
-                    ),
+                    child: widget.categories.length == 1
+                        ? const Center(child: PlatformProgressIndicator())
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomTabBar(
+                                tabs: getTabs(),
+                                tabController: tabController,
+                              ),
+                              ScrollableNewsList(
+                                articles: articles,
+                                tabController: tabController,
+                                categories: widget.categories,
+                              ),
+                            ],
+                          ),
                   ),
                 ],
               ),
@@ -126,7 +125,7 @@ class _AllNewsPageState extends State<AllNewsPage>
     );
   }
 
-  List<Tab> getTabs(List<String> tabs) {
-    return tabs.map((tabTitle) => Tab(text: tabTitle)).toList();
+  List<Tab> getTabs() {
+    return widget.categories.map((tabTitle) => Tab(text: tabTitle)).toList();
   }
 }

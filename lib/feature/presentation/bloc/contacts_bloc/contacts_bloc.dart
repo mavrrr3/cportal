@@ -43,7 +43,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     Emitter emit,
   ) async {
     List<ProfileEntity> oldContacts = [];
-  if (event.isFirstFetch) {
+    if (event.isFirstFetch) {
       page = 1;
     }
     if (state is ContactsLoadedState && !event.isFirstFetch) {
@@ -54,7 +54,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     final failureOrContacts = await fetchContacts(
       FetchContactsParams(page: page),
     );
-    void _loadingContacts(ContactsEntity contactsEntity) {
+    void loadingContacts(ContactsEntity contactsEntity) {
       page++;
 
       final contactsList = (state as ContactsLoadingState).oldContacts;
@@ -71,7 +71,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
 
     failureOrContacts.fold(
       _mapFailureToMessage,
-      _loadingContacts,
+      loadingContacts,
     );
 
     debugPrint('Отработал эвент: $event');

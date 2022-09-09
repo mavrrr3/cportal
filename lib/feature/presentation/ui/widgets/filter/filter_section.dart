@@ -69,21 +69,27 @@ class _FilterSectionState extends State<FilterSection> {
                                 hintText: widget.item.headline,
                                 hintStyle: theme.textTheme.px14.copyWith(
                                   color: theme.textLight,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
                                 ),
                                 border: InputBorder.none,
                                 contentPadding:
-                                    const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                                    const EdgeInsets.fromLTRB(8, 0, 12, 8),
                               ),
                               style: theme.textTheme.px14.copyWith(
                                 color: theme.textLight,
+                                leadingDistribution:
+                                    TextLeadingDistribution.even,
                               ),
                             )
                           : Padding(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.fromLTRB(8, 11, 8, 9),
                               child: Text(
                                 widget.item.headline,
                                 style: theme.textTheme.px14.copyWith(
                                   color: theme.textLight,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
                                 ),
                               ),
                             ),

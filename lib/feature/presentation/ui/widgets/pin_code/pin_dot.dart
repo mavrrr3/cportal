@@ -121,6 +121,7 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     subscriptionBloc.cancel();
+    scaleController.dispose();
     super.dispose();
   }
 }

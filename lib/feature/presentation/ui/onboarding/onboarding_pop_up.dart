@@ -1,7 +1,9 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/domain/entities/onboarding_entity.dart';
+import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/widgets/animated_bar.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +70,7 @@ class _OnBoardingPopUpState extends State<OnBoardingPopUp> {
 }
 
 class OnBoardingContentWeb extends StatefulWidget {
-  final List<OnboardingEntity> content;
+  final List<NewEmployeeEntity> content;
   final int currentIndex;
   final PageController pageController;
   final AnimationController animationController;
@@ -139,16 +141,11 @@ class _OnBoardingContentWebState extends State<OnBoardingContentWeb> {
                 const SizedBox(height: 110),
                 Align(
                   alignment: Alignment.center,
-                  child: widget.content[i].isVector
-                      ? SvgPicture.asset(
-                          widget.content[i].image,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          widget.content[i].image,
-                          width: 406,
-                          fit: BoxFit.cover,
-                        ),
+                  child: ExtendedImage.network(
+                    '${AppConfig.imagesUrl}/${widget.content[i].image}',
+                    fit: BoxFit.cover,
+                    cache: true,
+                  ),
                 ),
                 if (widget.isButton) const SizedBox(height: 32),
                 if (widget.isButton)
@@ -156,12 +153,12 @@ class _OnBoardingContentWebState extends State<OnBoardingContentWeb> {
                     alignment: Alignment.center,
                     child: Button.factory(
                       context,
-                      ButtonEnum.blue,
-                      AppLocalizations.of(context)!.go_over,
-                      () {
+                      type: ButtonEnum.filled,
+                      text: AppLocalizations.of(context)!.go_over,
+                      onTap: () {
                         widget.onTap;
                       },
-                      const Size(
+                      size: const Size(
                         328,
                         48,
                       ),

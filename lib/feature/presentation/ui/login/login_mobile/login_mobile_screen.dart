@@ -40,7 +40,7 @@ class _LoginMobileScreenState extends State<LoginMobileScreen> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (child, state) {
         return AuthMobileLayout(
-          appBarSuffix: state is HasAuthCredentials
+          appBarSuffix: state is HasAuthCredentials && state.enabledBiometric != null
               ? GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () => authBloc.add(

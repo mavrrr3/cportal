@@ -1,10 +1,11 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/get_single_news_bloc/get_single_news_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/single_article/single_news_article_mobile.dart';
-import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/single_article/single_news_article_web.dart';
+import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/single_article/single_news_article_web_tablet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,12 +42,12 @@ class NewsArticlePage extends StatelessWidget {
                         context.pop();
                       }
                     },
-                    child: kIsWeb
-                        ? SingleNewsArticleWeb(
+                    child: isMobile(context)
+                        ? SingleNewsArticleMobile(
                             article: singleArticle!,
                             articles: state.articles,
                           )
-                        : SingleNewsArticleMobile(
+                        : SingleNewsArticleWebTablet(
                             article: singleArticle!,
                             articles: state.articles,
                           ),
@@ -66,11 +67,11 @@ class NewsArticlePage extends StatelessWidget {
                         context.pop();
                       }
                     },
-                    child: kIsWeb
-                        ? SingleNewsArticleWeb(
+                    child: isMobile(context)
+                        ? SingleNewsArticleMobile(
                             article: state.singleNews,
                           )
-                        : SingleNewsArticleMobile(
+                        : SingleNewsArticleWebTablet(
                             article: state.singleNews,
                           ),
                   );
