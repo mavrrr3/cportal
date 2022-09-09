@@ -47,7 +47,7 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
       child: Stack(
         children: [
           Row(
-            // mainAxisAlignment: MainAxisAlignment.end,
+            // MainAxisAlignment: MainAxisAlignment.end,.
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (!zeroWidthCondition(context)) ...[
