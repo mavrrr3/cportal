@@ -1,6 +1,5 @@
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -23,10 +22,9 @@ class LogInWithUser extends AuthEvent {
 }
 
 class LogInWithPinCode extends AuthEvent {
-  final BuildContext context;
   final String pinCode;
 
-  const LogInWithPinCode(this.context, this.pinCode);
+  const LogInWithPinCode(this.pinCode);
 
   @override
   List<Object> get props => [pinCode];

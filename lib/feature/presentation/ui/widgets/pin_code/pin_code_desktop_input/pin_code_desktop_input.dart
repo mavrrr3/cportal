@@ -43,7 +43,8 @@ class PinCodeDesktopInput extends StatelessWidget {
       focusNode: codeFocusNode,
       defaultPinTheme: defaultPinTheme,
       errorPinTheme: defaultPinTheme.copyWith(
-        decoration: defaultPinTheme.decoration!.copyWith(color: theme.lightRedPIN),
+        decoration:
+            defaultPinTheme.decoration!.copyWith(color: theme.lightRedPin),
         textStyle: defaultPinTheme.textStyle!.copyWith(color: theme.red),
       ),
       focusedPinTheme: defaultPinTheme.copyWith(

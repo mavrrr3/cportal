@@ -11,8 +11,8 @@ final light = CustomTheme(
   red: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
-  lightRedPIN: const Color(0xFFEEDCDD),
-  successPIN: const Color(0xFF12B76A),
+  lightRedPin: const Color(0xFFEEDCDD),
+  successPin: const Color(0xFF12B76A),
   divider: const Color(0x32394414).withOpacity(0.08),
   cardColor: const Color(0xFFFFFFFF),
   text: const Color(0xFF282A2D),
@@ -34,8 +34,8 @@ final dark = CustomTheme(
   red: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
-  lightRedPIN: const Color(0xFFFF6A55).withOpacity(0.17),
-  successPIN: const Color(0xFF12B76A),
+  lightRedPin: const Color(0xFFFF6A55).withOpacity(0.17),
+  successPin: const Color(0xFF12B76A),
   cardColor: const Color(0xFF33383F),
   divider: const Color(0x32394414).withOpacity(0.08),
   text: const Color(0xFFFCFCFC),
@@ -179,8 +179,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Color? red;
   final Color? green;
   final Color? yellow;
-  final Color? lightRedPIN;
-  final Color? successPIN;
+  final Color? lightRedPin;
+  final Color? successPin;
   final Color? cardColor;
   final Color? divider;
   final Color? text;
@@ -200,8 +200,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.red,
     this.green,
     this.yellow,
-    this.lightRedPIN,
-    this.successPIN,
+    this.lightRedPin,
+    this.successPin,
     this.cardColor,
     this.divider,
     this.text,
@@ -222,8 +222,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     Color? red,
     Color? green,
     Color? yellow,
-    Color? lightRedPIN,
-    Color? successPIN,
+    Color? lightRedPin,
+    Color? successPin,
     Color? cardColor,
     Color? divider,
     Color? text,
@@ -242,8 +242,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       red: red ?? this.red,
       green: green ?? this.green,
       yellow: yellow ?? this.yellow,
-      lightRedPIN: lightRedPIN ?? this.lightRedPIN,
-      successPIN: successPIN ?? this.successPIN,
+      lightRedPin: lightRedPin ?? lightRedPin,
+      successPin: successPin ?? successPin,
       cardColor: cardColor ?? this.cardColor,
       divider: divider ?? this.divider,
       text: text ?? this.text,
@@ -280,8 +280,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       red: Color.lerp(red, other.red, t),
       green: Color.lerp(green, other.green, t),
       yellow: Color.lerp(yellow, other.yellow, t),
-      lightRedPIN: Color.lerp(lightRedPIN, other.lightRedPIN, t),
-      successPIN: Color.lerp(successPIN, other.successPIN, t),
+      lightRedPin: Color.lerp(lightRedPin, other.lightRedPin, t),
+      successPin: Color.lerp(successPin, other.successPin, t),
       cardColor: Color.lerp(cardColor, other.cardColor, t),
       divider: Color.lerp(divider, other.divider, t),
       text: Color.lerp(text, other.text, t),

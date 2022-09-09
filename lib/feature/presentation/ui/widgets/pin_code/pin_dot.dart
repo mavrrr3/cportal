@@ -60,7 +60,7 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
     inActiveDotColor = theme.text!.withOpacity(0.2);
     activeDotColor = theme.primary!;
     errorColor = theme.red!;
-    successColor = theme.successPIN!;
+    successColor = theme.successPin!;
   }
 
   Future<void> _wrongPinCode() async {

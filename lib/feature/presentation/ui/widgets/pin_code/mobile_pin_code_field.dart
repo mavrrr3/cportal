@@ -60,7 +60,7 @@ class MobilePinCodeFieldState extends State<MobilePinCodeField>
             height: 16,
             width: 16,
             child: CircularProgressIndicator(
-              color: theme.successPIN,
+              color: theme.successPin,
               strokeWidth: 2,
             ),
           )

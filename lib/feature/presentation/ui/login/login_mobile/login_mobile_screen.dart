@@ -36,7 +36,7 @@ class _LoginMobileScreenState extends State<LoginMobileScreen> {
     final authBloc = context.read<AuthBloc>();
 
     return BlocBuilder<AuthBloc, AuthState>(
-      builder: (child, state) {
+      builder: (context, state) {
         return AuthMobileLayout(
           appBarSuffix:
               state is HasAuthCredentials && state.enabledBiometric != null
@@ -79,7 +79,7 @@ class _LoginMobileScreenState extends State<LoginMobileScreen> {
                   );
 
                   authBloc.add(
-                    LogInWithPinCode(context, widget.pinController.text),
+                    LogInWithPinCode(widget.pinController.text),
                   );
                 },
               ),
