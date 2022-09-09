@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -12,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:local_auth/local_auth.dart';
 
-class LoginMobileScreen extends StatelessWidget {
+class LoginMobileScreen extends StatefulWidget {
   final TextEditingController pinController;
   final FocusNode pinFocusNode;
 
@@ -21,6 +23,12 @@ class LoginMobileScreen extends StatelessWidget {
     required this.pinController,
     required this.pinFocusNode,
   }) : super(key: key);
+
+  @override
+  State<LoginMobileScreen> createState() => _LoginMobileScreenState();
+}
+
+class _LoginMobileScreenState extends State<LoginMobileScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
@@ -30,39 +38,51 @@ class LoginMobileScreen extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return AuthMobileLayout(
-          appBarSuffix: state is HasAuthCredentials && state.enabledBiometric != null
-              ? GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => authBloc.add(
-                    LogInWithBiometrics(localizedStrings.logInToContinue),
-                  ),
-                  child: state.enabledBiometric == BiometricType.face
-                      ? SvgPicture.asset(
-                          ImageAssets.faceId,
-                          color: theme.primary,
-                          width: 32,
-                          height: 32,
-                        )
-                      : SizedBox(
-                          width: 32,
-                          height: 32,
-                          child: SvgPicture.asset(
-                            ImageAssets.fingerPrint,
-                            color: theme.primary,
-                            width: 25,
-                            height: 27,
-                          ),
-                        ),
-                )
-              : null,
+          appBarSuffix:
+              state is HasAuthCredentials && state.enabledBiometric != null
+                  ? GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => authBloc.add(
+                        LogInWithBiometrics(localizedStrings.logInToContinue),
+                      ),
+                      child: state.enabledBiometric == BiometricType.face
+                          ? SvgPicture.asset(
+                              ImageAssets.faceId,
+                              color: theme.primary,
+                              width: 32,
+                              height: 32,
+                            )
+                          : SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: SvgPicture.asset(
+                                ImageAssets.fingerPrint,
+                                color: theme.primary,
+                                width: 25,
+                                height: 27,
+                              ),
+                            ),
+                    )
+                  : null,
           child: Column(
             children: [
               EnterPinArea(
-                pinController: pinController,
-                pinFocusNode: pinFocusNode,
+                pinController: widget.pinController,
+                pinFocusNode: widget.pinFocusNode,
               ),
               const Spacer(),
-              CustomKeyboard(keyboardController: pinController),
+              CustomKeyboard(
+                keyboardController: widget.pinController,
+                onComplete: () async {
+                  await Future<dynamic>.delayed(
+                    const Duration(milliseconds: 450),
+                  );
+
+                  authBloc.add(
+                    LogInWithPinCode(widget.pinController.text),
+                  );
+                },
+              ),
             ],
           ),
         );

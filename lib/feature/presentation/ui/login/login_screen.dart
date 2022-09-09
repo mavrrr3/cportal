@@ -14,12 +14,31 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final pinController = TextEditingController();
-  final pinFocusNode = FocusNode();
+class LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
+  late TextEditingController pinController;
+  late FocusNode pinFocusNode;
+
+  late AnimationController successAnimationController;
+
+  late AnimationController declinedAnimationController;
+
+  @override
+  void initState() {
+    pinController = TextEditingController();
+    pinFocusNode = FocusNode();
+    _setUpAnimationControllers();
+
+    pinController.addListener(
+      () {
+        setState(() {});
+      },
+    );
+    super.initState();
+  }
 
   bool isShowedBiometricAuth = false;
 
@@ -28,16 +47,23 @@ class _LoginScreenState extends State<LoginScreen> {
     _showBiometricPopup(context);
 
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is Authenticated) {
+          await Future<dynamic>.delayed(const Duration(milliseconds: 1550));
           context.goNamed(NavigationRouteNames.mainPage);
         } else if (state is HasAuthCredentials && state is! WrongPinCode) {
           pinController.clear();
         }
       },
       child: ResponsiveWrapper.of(context).isLargerThan(TABLET)
-          ? LoginDesktopScreen(pinController: pinController, pinFocusNode: pinFocusNode)
-          : LoginMobileScreen(pinController: pinController, pinFocusNode: pinFocusNode),
+          ? LoginDesktopScreen(
+              pinController: pinController,
+              pinFocusNode: pinFocusNode,
+            )
+          : LoginMobileScreen(
+              pinController: pinController,
+              pinFocusNode: pinFocusNode,
+            ),
     );
   }
 
@@ -45,7 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final authBloc = context.read<AuthBloc>();
     final state = authBloc.state;
 
-    if (!isShowedBiometricAuth && state is HasAuthCredentials && state.enabledBiometric != null) {
+    if (!isShowedBiometricAuth &&
+        state is HasAuthCredentials &&
+        state.enabledBiometric != null) {
       isShowedBiometricAuth = true;
 
       authBloc.add(
@@ -60,6 +88,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     pinController.dispose();
     pinFocusNode.dispose();
+    successAnimationController.dispose();
+    declinedAnimationController.dispose();
     super.dispose();
+  }
+
+  void _setUpAnimationControllers() {
+    successAnimationController = AnimationController(vsync: this);
+
+    declinedAnimationController = AnimationController(vsync: this);
   }
 }

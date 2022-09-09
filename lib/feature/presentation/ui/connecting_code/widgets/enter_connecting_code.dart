@@ -48,7 +48,7 @@ class _EnterConnectingCodeState extends State<EnterConnectingCode> {
           final inputTextStyle = theme.textTheme.px16.copyWith(height: 1.5);
           final errorCodeTextStyle = theme.textTheme.px14;
           final codeAreaColor =
-              isWrongCode ? theme.lightRedPIN : theme.cardColor;
+              isWrongCode ? theme.lightRedPin : theme.cardColor;
           final focusedBorder = widget.isDesktop
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
