@@ -52,7 +52,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   swipe: ^0.0.1
   fluttertoast: ^8.0.9
-  url_launcher: ^6.1.4
+  url_launcher: ^6.1.5
   qr_code_scanner:
     git:
       url: https://github.com/xeinebiu/qr_code_scanner.git
@@ -61,7 +61,7 @@ dependencies:
   expandable: ^5.0.1
 
   # Lottie is animations library
-  lottie: ^1.4.1
+  lottie: ^1.4.2
   loading_indicator: ^3.1.0
 
   # Image Cache package
