@@ -41,8 +41,6 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
       vsync: this,
     );
 
-   
-
     subscriptionBloc = context.read<AuthBloc>().stream.listen((state) {
       if (state is WrongPinCode) {
         if (widget.controller.text.isNotEmpty) {
@@ -62,7 +60,7 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
     inActiveDotColor = theme.textLight!;
     activeDotColor = theme.primary!;
     errorColor = theme.red!;
-    successColor = theme.green!;
+    successColor = theme.successPIN!;
   }
 
   Future<void> _wrongPinCode() async {
@@ -84,10 +82,6 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
     });
     await scaleController.forward();
     await scaleController.reverse();
-    setState(() {
-      isSuccess = false;
-      widget.controller.clear();
-    });
   }
 
   Color _defineColor() {
@@ -101,36 +95,6 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
           : inActiveDotColor;
     }
   }
-
-  // Animation<double> _defineScale() {
-  //   if (isSuccess) {
-  //     return
-  //   } else if (isError) {
-  //     return Tween(begin: 1.0, end: 1.2).animate(
-  //       CurvedAnimation(
-  //         parent: scaleController,
-  //         curve: Curves.easeIn,
-  //         reverseCurve: Curves.easeIn,
-  //       ),
-  //     );
-  //   } else {
-  //     return widget.controller.text.length >= widget.symbolIndex
-  //         ? Tween(begin: 1.0, end: 1.2).animate(
-  //             CurvedAnimation(
-  //               parent: scaleController,
-  //               curve: Curves.easeIn,
-  //               reverseCurve: Curves.easeIn,
-  //             ),
-  //           )
-  //         : Tween(begin: 1.0, end: 1.0).animate(
-  //             CurvedAnimation(
-  //               parent: scaleController,
-  //               curve: Curves.easeIn,
-  //               reverseCurve: Curves.easeIn,
-  //             ),
-  //           );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

@@ -49,7 +49,7 @@ class LoginScreenState extends State<LoginScreen>
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is Authenticated) {
-          await Future<dynamic>.delayed(const Duration(milliseconds: 900));
+          await Future<dynamic>.delayed(const Duration(milliseconds: 1550));
           context.goNamed(NavigationRouteNames.mainPage);
         } else if (state is HasAuthCredentials && state is! WrongPinCode) {
           pinController.clear();

@@ -100,13 +100,7 @@ class _EnterPinAreaState extends State<EnterPinArea> {
             else
               MobilePinCodeField(controller: widget.pinController),
 
-            // PinCodeField(
-            //   forceErrorState: state is WrongPinCode,
-            //   pinCodeController: widget.pinController,
-            //   pinCodeFocusNode: widget.pinFocusNode,
-            //   onCompleted: (pinCode) =>
-            //       authBloc.add(LogInWithPinCode(pinCode)),
-            // ),
+            
           ],
         );
       },

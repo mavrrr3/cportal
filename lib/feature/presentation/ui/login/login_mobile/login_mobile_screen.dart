@@ -33,7 +33,6 @@ class LoginMobileScreen extends StatefulWidget {
 class _LoginMobileScreenState extends State<LoginMobileScreen> {
   @override
   Widget build(BuildContext context) {
-    log(widget.pinController.text);
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final localizedStrings = AppLocalizations.of(context)!;
     final authBloc = context.read<AuthBloc>();

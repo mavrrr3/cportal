@@ -12,6 +12,7 @@ final light = CustomTheme(
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
   lightRedPIN: const Color(0xFFEEDCDD),
+  successPIN: const Color(0xFF12B76A),
   divider: const Color(0x32394414).withOpacity(0.08),
   cardColor: const Color(0xFFFFFFFF),
   text: const Color(0xFF282A2D),
@@ -32,6 +33,7 @@ final dark = CustomTheme(
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
   lightRedPIN: const Color(0xFFFF6A55).withOpacity(0.17),
+  successPIN: const Color(0xFF12B76A),
   cardColor: const Color(0xFF33383F),
   divider: const Color(0x32394414).withOpacity(0.08),
   text: const Color(0xFFFCFCFC),
@@ -155,6 +157,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Color? green;
   final Color? yellow;
   final Color? lightRedPIN;
+  final Color? successPIN;
   final Color? cardColor;
   final Color? divider;
   final Color? text;
@@ -173,6 +176,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.green,
     this.yellow,
     this.lightRedPIN,
+    this.successPIN,
     this.cardColor,
     this.divider,
     this.text,
@@ -193,6 +197,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     Color? green,
     Color? yellow,
     Color? lightRedPIN,
+    Color? successPIN,
     Color? cardColor,
     Color? divider,
     Color? text,
@@ -210,6 +215,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       green: green ?? this.green,
       yellow: yellow ?? this.yellow,
       lightRedPIN: lightRedPIN ?? this.lightRedPIN,
+      successPIN: successPIN ?? this.successPIN,
       cardColor: cardColor ?? this.cardColor,
       divider: divider ?? this.divider,
       text: text ?? this.text,
@@ -225,7 +231,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   bool get isDark => brightness == Brightness.dark;
 
   /// Returns a color depending on the selected theme.
-  Color? adaptive({required Color? light, required Color? dark}) => isLight ? light : dark;
+  Color? adaptive({required Color? light, required Color? dark}) =>
+      isLight ? light : dark;
 
   @override
   ThemeExtension<CustomTheme> lerp(
@@ -244,6 +251,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       green: Color.lerp(green, other.green, t),
       yellow: Color.lerp(yellow, other.yellow, t),
       lightRedPIN: Color.lerp(lightRedPIN, other.lightRedPIN, t),
+      successPIN: Color.lerp(successPIN, other.successPIN, t),
       cardColor: Color.lerp(cardColor, other.cardColor, t),
       divider: Color.lerp(divider, other.divider, t),
       text: Color.lerp(text, other.text, t),
