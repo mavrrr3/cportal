@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomTabBar extends StatelessWidget {
+  final bool isScrollable;
   final List<Tab> _tabs;
   final TabController _tabController;
 
@@ -12,6 +13,7 @@ class CustomTabBar extends StatelessWidget {
     Key? key,
     required List<Tab> tabs,
     required TabController tabController,
+    this.isScrollable = false,
   })  : _tabController = tabController,
         _tabs = tabs,
         super(key: key);
@@ -19,7 +21,8 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final roundedIndicator = RoundedTabIndicator(color: theme.primary!, isMobile: isMobile(context));
+    final roundedIndicator =
+        RoundedTabIndicator(color: theme.primary!, isMobile: isMobile(context));
     final labelStyle = theme.textTheme.px16Bold;
 
     return Column(
@@ -28,10 +31,11 @@ class CustomTabBar extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: isMobile(context) ? 8 : 0),
+            padding:
+                EdgeInsets.symmetric(horizontal: isMobile(context) ? 8 : 0),
             child: TabBar(
               labelPadding: const EdgeInsets.only(right: 8, left: 0),
-              isScrollable: true,
+              isScrollable: isScrollable,
               indicatorWeight: 2.5,
               indicatorColor: theme.primary,
               indicatorSize: TabBarIndicatorSize.label,

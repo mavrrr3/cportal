@@ -1,5 +1,4 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
@@ -85,7 +84,8 @@ class TasksTab extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 128),
                   child: Text(
                     localizedStrings.emptyTasks,
-                    style: theme.textTheme.px22.copyWith(color: theme.textLight),
+                    style:
+                        theme.textTheme.px22.copyWith(color: theme.textLight),
                     textAlign: TextAlign.center,
                   ),
                 );

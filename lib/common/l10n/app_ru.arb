@@ -154,6 +154,19 @@
     "days2": "дня",
     "days3": "дней",
     "taskExpired": "задача просрочена",
-    "comment": "Комментарий", 
-    "content": "Содержание"
+    "comment": "Комментарий",
+    "content": "Содержание",
+    "introductionNeeds": "Требуется ознакомление",
+    "executionNeeds": "Требуется исполнение",
+    "agreementNeeds": "Требуется согласование",
+    "introduced": "Ознакомился",
+    "done": "Готово",
+    "agreed": "Согласовано",
+    "notAgreed": "Не согласовано",
+    "resumeDeclaration": "Вернуть в работу",
+    "documentsRequired": "Необходимо загрузить документы",
+    "checkAgreementResult1": "Нужно ознакомиться с ",
+    "checkAgreementResult2": "результатом согласования ",
+    "successfulFinishTask": "Вы успешно выполнили задачу",
+    "uHaveOtherTasks": "У Вас еще остались незавершенные задачи, чтобы закрыть этот раздел нажмите \"Продолжить\""
 }

@@ -62,7 +62,6 @@ class DeclarationsGrid extends StatelessWidget {
     List<DeclarationCardEntity> cardsForCurrentDate,
   ) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    // log('--------\ncurrent date = $currentDate\ncards = ${cardsForCurrentDate.length}\n');
 
     return cardsForCurrentDate.isNotEmpty
         ? Padding(

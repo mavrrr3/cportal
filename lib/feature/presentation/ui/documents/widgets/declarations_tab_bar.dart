@@ -23,6 +23,7 @@ class _DeclarationsTabBarState extends State<DeclarationsTabBar> {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return CustomTabBar(
+      isScrollable: false,
       tabs: [
         Tab(
           child: Text(

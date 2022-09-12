@@ -27,7 +27,8 @@ class DeclarationsContentMobile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DeclarationsContentMobile> createState() => _DeclarationsContentMobileState();
+  State<DeclarationsContentMobile> createState() =>
+      _DeclarationsContentMobileState();
 }
 
 class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
@@ -44,6 +45,7 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final responsiveUtil = ResponsiveUtil(context);
 
     return SafeArea(
       child: NestedScrollView(
@@ -66,7 +68,7 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
                     children: [
                       const SizedBox(height: 11),
                       Padding(
-                        padding: getHorizontalPadding(context),
+                        padding: responsiveUtil.getHorizontalPadding(),
                         child: SearchWithFilter(
                           searchController: widget.searchController,
                           currentMenuIndex: 3,
@@ -77,7 +79,10 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
                       ),
                       const SizedBox(height: 8),
                       // Заголовки вкладок.
-                      DeclarationsTabBar(tabController: widget.tabController),
+
+                      DeclarationsTabBar(
+                        tabController: widget.tabController,
+                      ),
                     ],
                   ),
                 ),
@@ -103,7 +108,9 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
             if (widget.tabController.index == 0) {
-              context.read<DeclarationsBloc>().add(const FetchDeclarationsEvent());
+              context
+                  .read<DeclarationsBloc>()
+                  .add(const FetchDeclarationsEvent());
             } else {
               log('request Tasks');
             }
