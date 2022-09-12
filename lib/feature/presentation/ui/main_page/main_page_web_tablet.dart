@@ -4,7 +4,7 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/common/util/delayer.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/auth_bloc/auth_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_bloc.dart';
@@ -105,7 +105,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
   void _fetchContent(BuildContext context) {
     context
       ..read<FetchNewsBloc>().add(const FetchAllNewsEvent())
-      ..read<FetchQuestionsBloc>().add(const FetchQaustionsEvent())
+      ..read<FetchQuestionsBloc>().add(const FetchQuestionsEvent())
       ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
       ..read<FilterContactsBloc>().add(FetchFiltersEvent())
        ..read<DeclarationsBloc>()
@@ -145,7 +145,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
 
   SliverAppBar _appBar() {
     final double width = MediaQuery.of(context).size.width;
-    final customPadding = CustomPadding(context);
+    final customPadding = ResponsiveUtil(context);
 
     return SliverAppBar(
       toolbarHeight: 60,
@@ -157,9 +157,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                top: 12,
-              ),
+              padding: const EdgeInsets.only(top: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -171,7 +169,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
                             ? const EdgeInsets.only(left: 40)
                             : EdgeInsets.only(
                                 left: customPadding
-                                        .webTabletPadding()
+                                        .webTabletPaddingWithRightBloc()
                                         .horizontal /
                                     2,
                               ),
@@ -182,6 +180,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
                                   const NavBarVisibilityEvent(
+                                    index: 0,
                                     isActive: true,
                                   ),
                                 );
@@ -262,7 +261,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
   }
 
   SliverToBoxAdapter _mainPageBody() {
-    final customPadding = CustomPadding(context);
+    final customPadding = ResponsiveUtil(context);
 
     return SliverToBoxAdapter(
       child: Stack(
@@ -273,9 +272,9 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: customPadding.webTabletPadding(),
+                  padding: customPadding.webTabletPaddingWithRightBloc(),
                   child: SizedBox(
-                    width: customPadding.responsiveMainPage(),
+                    width: customPadding.widthContentWithRightBloc(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

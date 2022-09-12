@@ -3,6 +3,7 @@ import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 
 import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_state.dart';
@@ -21,6 +22,7 @@ class TasksTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizedStrings = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final responsiveUtil = ResponsiveUtil(context);
 
     // Список задач.
     return BlocBuilder<TasksBloc, TasksState>(
@@ -39,7 +41,7 @@ class TasksTab extends StatelessWidget {
                       ),
                     ),
                     SliverPadding(
-                      padding: getHorizontalPadding(context),
+                      padding: responsiveUtil.getHorizontalPadding(),
                       sliver: SliverToBoxAdapter(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,8 +85,7 @@ class TasksTab extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 128),
                   child: Text(
                     localizedStrings.emptyTasks,
-                    style:
-                        theme.textTheme.px22.copyWith(color: theme.textLight),
+                    style: theme.textTheme.px22.copyWith(color: theme.textLight),
                     textAlign: TextAlign.center,
                   ),
                 );

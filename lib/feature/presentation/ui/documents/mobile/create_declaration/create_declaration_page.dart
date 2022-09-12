@@ -50,6 +50,7 @@ class _CreateDeclarationPageState extends State<CreateDeclarationPage> {
                   // Строка с поиском.
                   SearchWithFilter(
                     searchController: _searchController,
+                    currentMenuIndex: 3,
                     onSearch: (text) {},
                     onSearchClear: () {},
                     onFilterTap: () {},

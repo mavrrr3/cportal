@@ -3,7 +3,7 @@ import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/filter_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
@@ -98,6 +98,7 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
                         // Строка с поиском.
                         SearchWithFilter(
                           searchController: widget.searchController,
+                          currentMenuIndex: 3,
                           onSearch: (text) {},
                           onSearchClear: () {},
                           onFilterTap: widget.onFilterTap,
@@ -179,9 +180,7 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
                 builder: (_, state) {
                   return state.isActive
                       ? GestureDetector(
-                          onTap: () => context
-                              .read<FilterVisibilityBloc>()
-                              .add(const FilterChangeVisibilityEvent(
+                          onTap: () => context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(
                                 isActive: false,
                               )),
                           child: Container(
@@ -213,15 +212,11 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
   }
 
   void _onApplyFilter() {
-    context
-        .read<FilterVisibilityBloc>()
-        .add(const FilterChangeVisibilityEvent(isActive: false));
+    context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(isActive: false));
   }
 
   void _onClearFilter() {
     context.read<FilterDeclarationsBloc>().add(FilterRemoveAllEvent());
-    context
-        .read<FilterVisibilityBloc>()
-        .add(const FilterChangeVisibilityEvent(isActive: false));
+    context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(isActive: false));
   }
 }

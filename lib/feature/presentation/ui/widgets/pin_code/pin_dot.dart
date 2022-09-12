@@ -57,10 +57,10 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    inActiveDotColor = theme.textLight!;
+    inActiveDotColor = theme.text!.withOpacity(0.2);
     activeDotColor = theme.primary!;
     errorColor = theme.red!;
-    successColor = theme.green!;
+    successColor = theme.successPin!;
   }
 
   Future<void> _wrongPinCode() async {
@@ -69,6 +69,7 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
     });
     await scaleController.forward();
     await scaleController.reverse();
+    await Future<dynamic>.delayed(const Duration(milliseconds: 300));
     setState(() {
       isError = false;
       widget.controller.clear();
@@ -81,10 +82,6 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
     });
     await scaleController.forward();
     await scaleController.reverse();
-    setState(() {
-      isSuccess = false;
-      widget.controller.clear();
-    });
   }
 
   Color _defineColor() {
@@ -98,36 +95,6 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
           : inActiveDotColor;
     }
   }
-
-  // Animation<double> _defineScale() {
-  //   if (isSuccess) {
-  //     return
-  //   } else if (isError) {
-  //     return Tween(begin: 1.0, end: 1.2).animate(
-  //       CurvedAnimation(
-  //         parent: scaleController,
-  //         curve: Curves.easeIn,
-  //         reverseCurve: Curves.easeIn,
-  //       ),
-  //     );
-  //   } else {
-  //     return widget.controller.text.length >= widget.symbolIndex
-  //         ? Tween(begin: 1.0, end: 1.2).animate(
-  //             CurvedAnimation(
-  //               parent: scaleController,
-  //               curve: Curves.easeIn,
-  //               reverseCurve: Curves.easeIn,
-  //             ),
-  //           )
-  //         : Tween(begin: 1.0, end: 1.0).animate(
-  //             CurvedAnimation(
-  //               parent: scaleController,
-  //               curve: Curves.easeIn,
-  //               reverseCurve: Curves.easeIn,
-  //             ),
-  //           );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -153,8 +120,8 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
     subscriptionBloc.cancel();
     scaleController.dispose();
+    super.dispose();
   }
 }

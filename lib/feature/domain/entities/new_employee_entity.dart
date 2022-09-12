@@ -4,20 +4,27 @@ class NewEmployeeEntity extends Equatable {
   final String title;
   final String description;
   final String image;
-  final bool isVector;
 
   const NewEmployeeEntity({
     required this.title,
     required this.description,
     required this.image,
-    this.isVector = true,
   });
 
   @override
-  List<Object?> get props => [
-        title,
-        description,
-        image,
-        isVector,
-      ];
+  List<Object?> get props => [title, description, image];
+}
+
+class NewEmployeeResponseEntity extends Equatable {
+  final int count;
+
+  final List<NewEmployeeEntity> slides;
+
+  const NewEmployeeResponseEntity({
+    required this.count,
+    required this.slides,
+  });
+
+  @override
+  List<Object?> get props => [count, slides];
 }

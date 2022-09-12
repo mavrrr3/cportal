@@ -13,6 +13,7 @@ class SearchWithFilter extends StatefulWidget {
   final Function(String) onSearch;
   final Function onSearchClear;
   final Function() onFilterTap;
+  final int currentMenuIndex;
 
   const SearchWithFilter({
     Key? key,
@@ -20,6 +21,7 @@ class SearchWithFilter extends StatefulWidget {
     required this.onSearch,
     required this.onSearchClear,
     required this.onFilterTap,
+    required this.currentMenuIndex,
   }) : super(key: key);
 
   @override
@@ -30,21 +32,21 @@ class _SearchWithFilterState extends State<SearchWithFilter> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveConstraints(
-      constraint: const BoxConstraints(maxWidth: 640),
+      constraint: const BoxConstraints(maxWidth: 704),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (!isMobile(context) && !isDesktop(context)) ...[
+          if (!isMobile(context) && zeroWidthCondition(context))
             BurgerMenuButton(
               onTap: () {
                 context.read<NavigationBarBloc>().add(
-                      const NavBarVisibilityEvent(
+                      NavBarVisibilityEvent(
+                        index: widget.currentMenuIndex,
                         isActive: true,
                       ),
                     );
               },
             ),
-          ],
 
           // Поиск.
           Expanded(

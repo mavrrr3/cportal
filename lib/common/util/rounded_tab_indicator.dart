@@ -5,6 +5,7 @@ class RoundedTabIndicator extends Decoration {
 
   RoundedTabIndicator({
     required Color color,
+    required bool isMobile,
     double radius = 4.0,
     double height = 2.5,
     double bottomMargin = 0.0,
@@ -13,6 +14,7 @@ class RoundedTabIndicator extends Decoration {
           height,
           radius,
           bottomMargin,
+          isMobile,
         );
 
   @override
@@ -25,6 +27,7 @@ class _RoundedPainter extends BoxPainter {
   final double radius;
   final double height;
   final double bottomMargin;
+  final bool isMobile;
   final Paint _paint;
 
   _RoundedPainter(
@@ -32,13 +35,15 @@ class _RoundedPainter extends BoxPainter {
     this.height,
     this.radius,
     this.bottomMargin,
+    this.isMobile,
   ) : _paint = Paint()
           ..color = color
           ..isAntiAlias = true;
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuratiom) {
-    final centerX = configuratiom.size!.width / 2 + offset.dx;
+    final double padding = configuratiom.size!.width / 2 + offset.dx;
+    final centerX = isMobile ? padding : padding - 4;
     final bottom = configuratiom.size!.height - bottomMargin;
     final width = configuratiom.size!.width / 2;
     canvas.drawRRect(

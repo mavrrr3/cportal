@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/documents/declarations/declaration_card_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_state.dart';
@@ -24,6 +24,7 @@ class MyDeclarationsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizedStrings = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final responsiveUtil = ResponsiveUtil(context);
 
     // Список заявлений.
     return BlocBuilder<DeclarationsBloc, DeclarationsState>(
@@ -58,7 +59,7 @@ class MyDeclarationsTab extends StatelessWidget {
                     ),
                   ),
                   SliverPadding(
-                    padding: getHorizontalPadding(context),
+                    padding: responsiveUtil.getHorizontalPadding(),
                     sliver: SliverToBoxAdapter(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

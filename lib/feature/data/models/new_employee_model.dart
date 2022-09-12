@@ -16,26 +16,44 @@ class NewEmployeeModel extends NewEmployeeEntity {
   @HiveField(2)
   final String image;
 
-  @HiveField(3)
-  final bool isVector;
-
   const NewEmployeeModel({
     required this.title,
     required this.description,
     required this.image,
-    required this.isVector,
   }) : super(
           title: title,
           description: description,
           image: image,
-          isVector: isVector,
         );
 
-  factory NewEmployeeModel.fromJson(Map<String, dynamic> json) =>
-      NewEmployeeModel(
+  factory NewEmployeeModel.fromJson(Map<String, dynamic> json) => NewEmployeeModel(
         title: json['title'] as String,
         description: json['description'] as String,
         image: json['image'] as String,
-        isVector: json['isVector'] != null ? json['isVector'] as bool : false,
       );
+}
+
+@HiveType(typeId: 20)
+class NewEmployeeResponseModel extends NewEmployeeResponseEntity {
+  @HiveField(0)
+  final int count;
+  @HiveField(1)
+  final List<NewEmployeeModel> slides;
+
+  const NewEmployeeResponseModel({required this.count, required this.slides})
+      : super(
+          count: count,
+          slides: slides,
+        );
+
+  factory NewEmployeeResponseModel.fromJson(Map<String, dynamic> json) {
+    return NewEmployeeResponseModel(
+      count: json['response']['count'] as int,
+      slides: json['response']['items'] != null
+          ? List<NewEmployeeModel>.from(json['response']['items'].map(
+              (dynamic x) => NewEmployeeModel.fromJson(x as Map<String, dynamic>),
+            ) as Iterable<dynamic>)
+          : [],
+    );
+  }
 }

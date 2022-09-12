@@ -1,4 +1,4 @@
-import 'package:cportal_flutter/core/error/failure.dart';
+  import 'package:cportal_flutter/core/error/failure.dart';
 import 'package:cportal_flutter/core/usecases/i_usecase.dart';
 import 'package:cportal_flutter/feature/domain/entities/user/user_entity.dart';
 import 'package:cportal_flutter/feature/domain/repositories/i_pin_code_repository.dart';

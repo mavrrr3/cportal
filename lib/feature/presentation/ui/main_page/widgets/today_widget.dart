@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/avatar_box.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +60,10 @@ class TodayWidget extends StatelessWidget {
                 const SizedBox(height: 6),
               ],
               Container(
-                decoration: BoxDecoration(color: theme.white, borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: SizedBox(

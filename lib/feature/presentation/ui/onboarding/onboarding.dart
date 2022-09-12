@@ -1,3 +1,4 @@
+import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/domain/entities/new_employee_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
@@ -33,7 +34,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
     _onboardingContent = widget.content;
 
     // Время показа текущей страницы.
-    _pageDuration = const Duration(seconds: 5);
+    _pageDuration = Duration(seconds: AppConfig.timeToShowOneSlide);
 
     _loadPage(animateToPage: false);
     _animationController.addStatusListener((status) {
@@ -46,7 +47,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
             _currentIndex += 1;
             _loadPage();
           } else {
-            GoRouter.of(context).goNamed(NavigationRouteNames.onboardingEnd);
+            context.goNamed(NavigationRouteNames.profile);
           }
         });
       }
@@ -58,7 +59,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Scaffold(
       backgroundColor: theme.cardColor,
@@ -148,7 +149,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
           _currentIndex += 1;
           _loadPage();
         } else {
-          GoRouter.of(context).goNamed(NavigationRouteNames.onboardingEnd);
+          context.goNamed(NavigationRouteNames.profile);
         }
       });
     } else {

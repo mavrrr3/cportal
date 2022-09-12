@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/card_with_icon.dart';
 import 'package:flutter/material.dart';

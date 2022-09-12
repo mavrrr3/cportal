@@ -1,5 +1,5 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/custom_padding.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/navigation_bar_bloc/navigation_bar_bloc.dart';
@@ -15,24 +15,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AllQuestionsPage extends StatefulWidget {
+class QuestionsPageWebTablet extends StatefulWidget {
   final List<String> categories;
-  const AllQuestionsPage({
+  const QuestionsPageWebTablet({
     Key? key,
     required this.categories,
   }) : super(key: key);
 
   @override
-  State<AllQuestionsPage> createState() => _AllQuestionsPageState();
+  State<QuestionsPageWebTablet> createState() => _QuestionsPageWebTabletState();
 }
 
-class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProviderStateMixin {
-  late PageController _pageController;
+class _QuestionsPageWebTabletState extends State<QuestionsPageWebTablet> with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
   void initState() {
-    _pageController = PageController();
     _tabController = TabController(
       length: widget.categories.length,
       vsync: this,
@@ -46,7 +44,6 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
 
   @override
   void dispose() {
-    _pageController.dispose();
     _tabController
       ..removeListener(() {
         _fetchQuestionsByTabs(widget.categories);
@@ -62,7 +59,7 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
     final fetchQuestionsBloc = context.read<FetchQuestionsBloc>();
 
     if (_tabController.index == 0) {
-      fetchQuestionsBloc.add(const FetchQaustionsEvent());
+      fetchQuestionsBloc.add(const FetchQuestionsEvent());
     } else {
       fetchQuestionsBloc.add(FetchQaustionsEventBy(categories[_tabController.index]));
     }
@@ -71,6 +68,8 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final double width = MediaQuery.of(context).size.width;
+    final customPadding = ResponsiveUtil(context);
 
     return BlocBuilder<FetchQuestionsBloc, FetchQuestionsState>(
       builder: (context, state) {
@@ -90,17 +89,20 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
                 children: [
                   SizePadding.height12px,
                   Padding(
-                    padding: getHorizontalPadding(context),
+                    padding: width < 514
+                        ? const EdgeInsets.only(left: 16)
+                        : zeroWidthCondition(context)
+                            ? const EdgeInsets.only(left: 40)
+                            : customPadding.webTabletPadding(),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (!isMobile(context) && !isDesktop(context)) ...[
+                        if (zeroWidthCondition(context) && width > 514)
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(isActive: true),
+                                  const NavBarVisibilityEvent(index: 2, isActive: true),
                                 );
                           }),
-                        ],
                         Text(
                           AppLocalizations.of(context)!.questions,
                           style: theme.textTheme.header,
@@ -108,14 +110,27 @@ class _AllQuestionsPageState extends State<AllQuestionsPage> with TickerProvider
                       ],
                     ),
                   ),
-                  CustomTabBar(
-                    tabs: getTabs(),
-                    tabController: _tabController,
-                  ),
-                  ScrollableQuestionsList(
-                    articles: questions,
-                    tabController: _tabController,
-                    categories: widget.categories,
+                  Expanded(
+                    child: Padding(
+                      padding: customPadding.webTabletPadding(),
+                      child: SizedBox(
+                        width: customPadding.widthContent(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTabBar(
+                              tabs: getTabs(),
+                              tabController: _tabController,
+                            ),
+                            ScrollableQuestionsList(
+                              articles: questions,
+                              tabController: _tabController,
+                              categories: widget.categories,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
