@@ -9,7 +9,7 @@ class AuthKeyInterceptor extends Interceptor {
 
   @override
   Future<void> onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+      RequestOptions options, RequestInterceptorHandler handler,) async {
     options.headers.addAll(<String, dynamic>{'Authorization': authKey});
     super.onRequest(options, handler);
   }
