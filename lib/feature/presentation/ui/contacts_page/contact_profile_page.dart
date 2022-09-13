@@ -50,33 +50,27 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
-      builder: (context, state) {
-        if (state is GetSingleProfileLoadingState) {
-          return Scaffold(
-            backgroundColor: theme.background,
-            body: const Center(
-              child: PlatformProgressIndicator(),
-            ),
-          );
+    return Swipe(
+      onSwipeRight: () {
+        if (kIsWeb) {
+          _previousContentInit(context);
         }
+        _onBack(context);
+      },
+      child: Scaffold(
+        backgroundColor: theme.background,
+        body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
+          builder: (context, state) {
+            if (state is GetSingleProfileLoadingState) {
+              return const Center(
+                child: PlatformProgressIndicator(),
+              );
+            }
 
-        if (state is GetSingleProfileLoadedState) {
-          final ProfileEntity user = state.profile;
+            if (state is GetSingleProfileLoadedState) {
+              final ProfileEntity user = state.profile;
 
-          return Swipe(
-            onSwipeRight: () {
-              if (kIsWeb) {
-                _previousContentInit(context);
-              }
-              _onBack(context);
-            },
-            child: Scaffold(
-              backgroundColor: theme.background,
-              bottomNavigationBar: !kIsWeb
-                  ? const CustomBottomBar(isNestedNavigation: true)
-                  : null,
-              body: Stack(
+              return Stack(
                 children: [
                   // Content.
                   SingleChildScrollView(
@@ -234,18 +228,20 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          );
-        }
+              );
+            }
 
-        if (state is ContactsEmptyState) {
-          _previousContentInit(context);
-        }
+            if (state is ContactsEmptyState) {
+              _previousContentInit(context);
+            }
 
-        // TODO: Отработать другие стейты.
-        return const SizedBox();
-      },
+            // TODO: Отработать другие стейты.
+            return const SizedBox();
+          },
+        ),
+        bottomNavigationBar:
+            !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
+      ),
     );
   }
 
