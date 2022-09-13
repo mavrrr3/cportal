@@ -27,7 +27,7 @@ class QuestionLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isMobile(context)
-        ? QuestionMobileLayoutWithAppBar(
+        ? LayoutWithAppBar(
             title: '',
             onTapBackButton: () => context.goNamed(NavigationRouteNames.questions),
             child: SingleChildScrollView(
@@ -50,7 +50,6 @@ class QuestionWebTabletLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final double width = MediaQuery.of(context).size.width;
     final customPadding = ResponsiveUtil(context);
 
     return Scaffold(

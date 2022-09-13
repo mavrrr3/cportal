@@ -57,7 +57,7 @@ class ProfilePageState extends State<ProfilePage> {
 
     isEnabledFingerPrint = context.select((TurnOffFingerPrintBloc bloc) => bloc.state.isEnabled);
 
-    return QuestionMobileLayoutWithAppBar(
+    return LayoutWithAppBar(
       icon: ImageAssets.close,
       title: localizedStrings.profile,
       child: BlocBuilder<AuthBloc, AuthState>(

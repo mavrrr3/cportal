@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class QuestionMobileLayoutWithAppBar extends StatelessWidget {
+class LayoutWithAppBar extends StatelessWidget {
   final String title;
   final Widget child;
   final String? icon;
   final VoidCallback? onTapBackButton;
 
-  const QuestionMobileLayoutWithAppBar({
+  const LayoutWithAppBar({
     Key? key,
     required this.title,
     required this.child,
