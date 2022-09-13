@@ -46,7 +46,7 @@ class MobilePinCodeFieldState extends State<MobilePinCodeField>
     await controller.forward();
     await Future<dynamic>.delayed(const Duration(milliseconds: 15));
 
-    setState(() {
+    setState(() { 
       isLoader = true;
     });
   }
