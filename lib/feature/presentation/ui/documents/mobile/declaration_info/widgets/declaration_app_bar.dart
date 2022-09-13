@@ -13,21 +13,29 @@ class DeclarationAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final  theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 38),
       child: Row(
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: () => context.pop(),
-            child: SvgPicture.asset(
-              ImageAssets.backArrow,
-              width: 16,
-              color: theme.text,
+            child: Stack(
+              children: [
+                SvgPicture.asset(
+                  ImageAssets.backArrow,
+                  width: 24,
+                  color: theme.text,
+                ),
+                const SizedBox(
+                  width: 36,
+                  height: 16,
+                ),
+              ],
             ),
           ),
-          const SizedBox(width: 20),
           Text(
             title,
             style: theme.textTheme.px22,
