@@ -20,6 +20,7 @@ class KeyboardNumber extends StatelessWidget {
       height: 60,
       alignment: Alignment.center,
       child: MaterialButton(
+        shape: const CircleBorder(),
         padding: const EdgeInsets.all(8),
         onPressed: () => onPressed(number),
         height: 60,
