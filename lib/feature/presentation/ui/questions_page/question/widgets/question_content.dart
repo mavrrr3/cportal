@@ -1,5 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
+import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/navigation/navigation_route_names.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
@@ -23,13 +24,19 @@ class QuestionContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final nextArticle = _getNextQuestion();
+    final customPadding = ResponsiveUtil(context);
+    final width = MediaQuery.of(context).size.width;
 
     return Padding(
-      padding: isLargerThenTablet(context)
-          ? const EdgeInsets.only(left: 25)
-          : const EdgeInsets.symmetric(horizontal: 20),
+      padding: width < 514
+          ? const EdgeInsets.only(left: 16)
+          : zeroWidthCondition(context)
+              ? const EdgeInsets.only(left: 96)
+              : EdgeInsets.only(
+                  left: customPadding.webTabletPadding().horizontal / 2,
+                ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             question.header,

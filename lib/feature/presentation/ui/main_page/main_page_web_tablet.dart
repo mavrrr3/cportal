@@ -31,6 +31,7 @@ import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/on_hover.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/search_input.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/web_copy_right.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,11 +110,10 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading =
-        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
-            context.select(
-              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
-            );
+    final isLoading = context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+        context.select(
+          (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+        );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -161,10 +161,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
                         : zeroWidthCondition(context)
                             ? const EdgeInsets.only(left: 40)
                             : EdgeInsets.only(
-                                left: customPadding
-                                        .webTabletPaddingWithRightBloc()
-                                        .horizontal /
-                                    2,
+                                left: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
                               ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -261,68 +258,71 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
         children: [
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
               children: [
-                Padding(
-                  padding: customPadding.webTabletPaddingWithRightBloc(),
-                  child: SizedBox(
-                    width: customPadding.widthContentWithRightBloc(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        HorizontalListViewMain(
-                          color: theme.cardColor!,
-                        ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: customPadding.webTabletPaddingWithRightBloc(),
+                      child: SizedBox(
+                        width: customPadding.widthContentWithRightBloc(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16),
+                            HorizontalListViewMain(
+                              color: theme.cardColor!,
+                            ),
 
-                        if (zeroWidthCondition(context)) ...[
-                          TodayWidget(
-                            onTap: (i) {},
-                          ),
-                        ],
-                        const SizedBox(height: 24),
-                        Text(
-                          AppLocalizations.of(context)!.news,
-                          style: theme.textTheme.px22,
-                        ),
-                        const SizedBox(height: 12),
-                        BlocBuilder<FetchNewsBloc, FetchNewsState>(
-                          builder: (context, state) {
-                            if (state is NewsLoaded) {
-                              final articles = state.articles;
+                            if (zeroWidthCondition(context)) ...[
+                              TodayWidget(
+                                onTap: (i) {},
+                              ),
+                            ],
+                            const SizedBox(height: 24),
+                            Text(
+                              AppLocalizations.of(context)!.news,
+                              style: theme.textTheme.px22,
+                            ),
+                            const SizedBox(height: 12),
+                            BlocBuilder<FetchNewsBloc, FetchNewsState>(
+                              builder: (context, state) {
+                                if (state is NewsLoaded) {
+                                  final articles = state.articles;
 
-                              return NewsMainWebTablet(articles: articles);
-                            }
+                                  return NewsMainWebTablet(articles: articles);
+                                }
 
-                            return const SizedBox();
-                          },
+                                return const SizedBox();
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            QuestionsMain(
+                              questionController: _questionController,
+                            ),
+                            // Padding to bottom navigation bar.
+                            const SizedBox(height: 16),
+                          ],
                         ),
-                        const SizedBox(height: 24),
-                        QuestionsMain(
-                          questionController: _questionController,
-                        ),
-                        // Padding to bottom navigation bar.
-                        const SizedBox(height: 16),
-                      ],
+                      ),
                     ),
-                  ),
+                    if (!zeroWidthCondition(context)) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 32),
+                        child: TodayWidget(
+                          onTap: (i) {},
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
-                if (!zeroWidthCondition(context)) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 32),
-                    child: TodayWidget(
-                      onTap: (i) {},
-                    ),
-                  ),
-                ],
+                const WebCopyRight(),
               ],
             ),
           ),
           ResponsiveConstraints(
-            constraint: isLargerThenTablet(context)
-                ? const BoxConstraints(maxWidth: 640)
-                : null,
+            constraint: isLargerThenTablet(context) ? const BoxConstraints(maxWidth: 640) : null,
             child: SearchBox(
               isAnimation: _isSearchActive,
               animationDuration: _animationDuration,
@@ -341,8 +341,7 @@ class _MainPageWebTabletState extends State<MainPageWebTablet> {
       builder: (context) {
         final theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding =
-            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {

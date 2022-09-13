@@ -5,9 +5,9 @@ import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_q
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/question/widgets/question_content.dart';
 
 import 'package:cportal_flutter/feature/presentation/ui/questions_page/question/widgets/question_layout.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/burger_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
@@ -35,7 +35,7 @@ class QuestionScreen extends StatelessWidget {
           articles = state.articles;
         }
 
-      return Stack(
+        return Stack(
           children: [
             QuestionLayout(
               child: question != null
@@ -49,11 +49,11 @@ class QuestionScreen extends StatelessWidget {
                           return QuestionContent(question: state.singleQuestion);
                         }
 
-                        return const PlatformProgressIndicator();
+                        return const Loader();
                       },
                     ),
             ),
-             BurgerMenu(
+            BurgerMenu(
               currentIndex: 2,
               onChange: (i) => MenuService.changePage(context, i),
             ),

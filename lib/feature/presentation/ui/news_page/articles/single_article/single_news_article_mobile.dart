@@ -5,7 +5,6 @@ import 'package:cportal_flutter/feature/presentation/ui/news_page/articles/widge
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/desktop_menu.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/menu/menu_service.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class SingleNewsArticleMobile extends StatelessWidget {
   final ArticleEntity article;
@@ -19,8 +18,6 @@ class SingleNewsArticleMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat outputFormat = DateFormat('d MMMM y, H:m', 'ru');
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -41,7 +38,6 @@ class SingleNewsArticleMobile extends StatelessWidget {
                 /// Колонка с контентом статьи.
                 SingleArticleNewsBody(
                   article: article,
-                  outputFormat: outputFormat,
                   articles: articles,
                 ),
               ],

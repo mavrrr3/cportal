@@ -47,7 +47,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
             _currentIndex += 1;
             _loadPage();
           } else {
-            context.goNamed(NavigationRouteNames.profile);
+            context.goNamed(NavigationRouteNames.mainPage);
           }
         });
       }
@@ -149,7 +149,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
           _currentIndex += 1;
           _loadPage();
         } else {
-          context.goNamed(NavigationRouteNames.profile);
+          context.goNamed(NavigationRouteNames.mainPage);
         }
       });
     } else {
