@@ -46,7 +46,8 @@ class QuestionScreen extends StatelessWidget {
                   : BlocBuilder<GetSingleQuestionBloc, GetSingleQuestionState>(
                       builder: (context, state) {
                         if (state is GetSingleQuestionLoadedState) {
-                          return QuestionContent(question: state.singleQuestion);
+                          return QuestionContent(
+                              question: state.singleQuestion);
                         }
 
                         return const Loader();

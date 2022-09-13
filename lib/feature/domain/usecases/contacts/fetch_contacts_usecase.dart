@@ -5,17 +5,16 @@ import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repositor
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class FetchContactsUseCase extends IUseCase<ContactsEntity, FetchContactsParams> {
+class FetchContactsUseCase
+    extends IUseCase<ContactsEntity, FetchContactsParams> {
   final IContactsRepository contactsRepository;
 
   FetchContactsUseCase(this.contactsRepository);
 
- @override
+  @override
   Future<Either<Failure, ContactsEntity>> call(FetchContactsParams params) =>
       contactsRepository.fetchContacts(params.page);
-  
 }
-
 
 class FetchContactsParams extends Equatable {
   final int page;

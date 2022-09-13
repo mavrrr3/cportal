@@ -27,7 +27,7 @@ class FilterActionButtons extends StatelessWidget {
             width: width,
             onTap: onApply,
           ),
-    
+
           // Очистить.
           FilterActionButton(
             text: AppLocalizations.of(context)!.clear_all,

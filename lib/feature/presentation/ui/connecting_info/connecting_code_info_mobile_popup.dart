@@ -11,10 +11,12 @@ class ConnectingCodeInfoMobilePopup extends StatefulWidget {
   const ConnectingCodeInfoMobilePopup({Key? key}) : super(key: key);
 
   @override
-  State<ConnectingCodeInfoMobilePopup> createState() => _ConnectingCodeInfoMobilePopupState();
+  State<ConnectingCodeInfoMobilePopup> createState() =>
+      _ConnectingCodeInfoMobilePopupState();
 }
 
-class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobilePopup>
+class _ConnectingCodeInfoMobilePopupState
+    extends State<ConnectingCodeInfoMobilePopup>
     with SingleTickerProviderStateMixin {
   final _iconAnimation = Tween<double>(begin: 0, end: 0.5);
   final _expansionAnimation = Tween<double>(begin: 0, end: 1);
@@ -68,7 +70,8 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
                   radius: 0,
                   onTap: _handleTap,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -125,7 +128,9 @@ class _ConnectingCodeInfoMobilePopupState extends State<ConnectingCodeInfoMobile
             child: Text(
               localizedStrings.close,
               style: theme.textTheme.px16Bold.copyWith(
-                color: theme.brightness == Brightness.light ? theme.white : theme.text,
+                color: theme.brightness == Brightness.light
+                    ? theme.white
+                    : theme.text,
               ),
             ),
           ),

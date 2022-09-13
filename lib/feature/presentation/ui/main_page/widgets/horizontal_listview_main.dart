@@ -29,7 +29,9 @@ class HorizontalListViewMain extends StatelessWidget {
                 return Padding(
                   padding: EdgeInsets.only(
                     left: i == 0 ? getSingleHorizontalPadding(context) : 0,
-                    right: i == gridViewMap.length - 1 ? getSingleHorizontalPadding(context) : 8,
+                    right: i == gridViewMap.length - 1
+                        ? getSingleHorizontalPadding(context)
+                        : 8,
                   ),
                   child: Row(
                     children: [
@@ -38,7 +40,8 @@ class HorizontalListViewMain extends StatelessWidget {
                         width: 148,
                         text: gridViewMap[i]['text'] as String,
                         color: color,
-                        onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
+                        onTap: () => context
+                            .goNamed(NavigationRouteNames.onBoardingStart),
                       ),
                     ],
                   ),
@@ -56,7 +59,8 @@ class HorizontalListViewMain extends StatelessWidget {
                 svgPath: gridViewMap[i]['icon'] as String,
                 text: gridViewMap[i]['text'] as String,
                 color: color,
-                onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
+                onTap: () =>
+                    context.goNamed(NavigationRouteNames.onBoardingStart),
               ),
             ),
           );

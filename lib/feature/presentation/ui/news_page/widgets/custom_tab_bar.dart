@@ -19,7 +19,8 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final roundedIndicator = RoundedTabIndicator(color: theme.primary!, isMobile: isMobile(context));
+    final roundedIndicator =
+        RoundedTabIndicator(color: theme.primary!, isMobile: isMobile(context));
     final labelStyle = theme.textTheme.px16Bold;
 
     return Column(
@@ -28,7 +29,8 @@ class CustomTabBar extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: isMobile(context) ? 8 : 0),
+            padding:
+                EdgeInsets.symmetric(horizontal: isMobile(context) ? 8 : 0),
             child: TabBar(
               labelPadding: const EdgeInsets.only(right: 8, left: 0),
               isScrollable: true,

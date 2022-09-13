@@ -51,7 +51,9 @@ class NewsCardItem extends StatelessWidget {
                       maxLines: 3,
                       style: theme.textTheme.px17.copyWith(
                         fontWeight: FontWeight.w800,
-                        color: isHovered ? theme.text?.withOpacity(0.6) : theme.text,
+                        color: isHovered
+                            ? theme.text?.withOpacity(0.6)
+                            : theme.text,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -60,7 +62,9 @@ class NewsCardItem extends StatelessWidget {
                         Text(
                           FormatterUtil.fullDateWithoutSeconds(date: item.date),
                           style: theme.textTheme.px12.copyWith(
-                            color: isHovered ? theme.text?.withOpacity(0.6) : theme.text,
+                            color: isHovered
+                                ? theme.text?.withOpacity(0.6)
+                                : theme.text,
                           ),
                         ),
                       ],

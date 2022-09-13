@@ -78,7 +78,9 @@ class EnrollBiometricAuthScreen extends StatelessWidget {
                     child: Text(
                       localizedStrings.yes,
                       style: theme.textTheme.px16Bold.copyWith(
-                        color: theme.brightness == Brightness.light ? theme.white : theme.text,
+                        color: theme.brightness == Brightness.light
+                            ? theme.white
+                            : theme.text,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),

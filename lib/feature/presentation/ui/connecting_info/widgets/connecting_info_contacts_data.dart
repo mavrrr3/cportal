@@ -43,7 +43,8 @@ class ConnectingInfoContactsData extends StatelessWidget {
         separator ?? const SizedBox(height: 16),
         Text(
           localizedStrings.callBeforeCame,
-          style: theme.textTheme.px14.copyWith(color: theme.text?.withOpacity(0.6)),
+          style: theme.textTheme.px14
+              .copyWith(color: theme.text?.withOpacity(0.6)),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 8),
@@ -51,7 +52,8 @@ class ConnectingInfoContactsData extends StatelessWidget {
         ),
         Text(
           '${localizedStrings.callAfter} 6 ${localizedStrings.hours}',
-          style: theme.textTheme.px14.copyWith(color: theme.red?.withOpacity(0.6)),
+          style:
+              theme.textTheme.px14.copyWith(color: theme.red?.withOpacity(0.6)),
         ),
       ],
     );

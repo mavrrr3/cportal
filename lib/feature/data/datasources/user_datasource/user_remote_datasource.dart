@@ -10,7 +10,8 @@ class UserRemoteDataSource implements IUserRemoteDataSource {
 
   @override
   Future<UserModel> getUser() async {
-    final result = await _dio.get<Map<String, dynamic>>('/cportal/hs/api/secure/1.0');
+    final result =
+        await _dio.get<Map<String, dynamic>>('/cportal/hs/api/secure/1.0');
 
     return ResponseUserModel.fromJson(result.data!).response;
   }

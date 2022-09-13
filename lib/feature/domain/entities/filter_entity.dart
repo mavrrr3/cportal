@@ -31,7 +31,8 @@ class FilterEntity extends Equatable {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'headline': headline,
-        'items': List<dynamic>.from(items.map<dynamic>((x) => (x as FilterItemModel).name)),
+        'items': List<dynamic>.from(
+            items.map<dynamic>((x) => (x as FilterItemModel).name)),
       };
 }
 

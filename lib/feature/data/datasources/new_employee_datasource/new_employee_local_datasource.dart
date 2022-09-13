@@ -11,12 +11,14 @@ class NewEmployeeLocalDataSource implements INewEmployeeLocalDataSource {
   NewEmployeeLocalDataSource(this.hive);
 
   @override
-  Future<List<NewEmployeeModel>> fetchNewEmployeeOnboardingSlidesFromCache() async {
+  Future<List<NewEmployeeModel>>
+      fetchNewEmployeeOnboardingSlidesFromCache() async {
     final box = await getOpenBox<List<NewEmployeeModel>>('newEmployee');
 
     final slides = box.get('newEmployee');
 
-    if (kDebugMode) log('NewEmployeeModel список из кэша ${slides!.length} элементов');
+    if (kDebugMode)
+      log('NewEmployeeModel список из кэша ${slides!.length} элементов');
 
     await Hive.box<List<NewEmployeeModel>>('newEmployee').close();
 

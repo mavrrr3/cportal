@@ -11,6 +11,7 @@ class SendConnectingDataUseCase extends IUseCase<void, ConnectingParams> {
 
   @override
   Future<Either<Failure, void>> call(ConnectingParams params) async {
-    return _connectingQrRepository.sendConnectingData(connectingCode: params.connectingCode);
+    return _connectingQrRepository.sendConnectingData(
+        connectingCode: params.connectingCode);
   }
 }

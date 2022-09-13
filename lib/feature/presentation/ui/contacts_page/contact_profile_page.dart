@@ -73,7 +73,9 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
             },
             child: Scaffold(
               backgroundColor: theme.background,
-              bottomNavigationBar: !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
+              bottomNavigationBar: !kIsWeb
+                  ? const CustomBottomBar(isNestedNavigation: true)
+                  : null,
               body: Stack(
                 children: [
                   // Content.
@@ -134,7 +136,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
 
                             // Department.
                             ProfileInfoSection(
-                              headline: AppLocalizations.of(context)!.department,
+                              headline:
+                                  AppLocalizations.of(context)!.department,
                               text: user.department,
                               bottomPadding: 19,
                             ),
@@ -142,7 +145,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             // Birthday.
                             if (user.birthDayToString != null)
                               ProfileInfoSection(
-                                headline: AppLocalizations.of(context)!.birth_date,
+                                headline:
+                                    AppLocalizations.of(context)!.birth_date,
                                 text: user.birthDayToString!,
                                 bottomPadding: 19,
                               ),
@@ -173,7 +177,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                           _ActionButton(
                             img: ImageAssets.phone,
                             onTap: () async {
-                              final phoneWithOutMask = FormatterUtil.pfoneWithoutMask(
+                              final phoneWithOutMask =
+                                  FormatterUtil.pfoneWithoutMask(
                                 phone: state.getPhone,
                               );
                               log(phoneWithOutMask.toString());
@@ -197,7 +202,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                           _ActionButton(
                             img: ImageAssets.message,
                             onTap: () async {
-                              final phoneWithOutMask = FormatterUtil.pfoneWithoutMask(
+                              final phoneWithOutMask =
+                                  FormatterUtil.pfoneWithoutMask(
                                 phone: state.getPhone,
                               );
                               final Uri smsLauncher = Uri(
@@ -244,7 +250,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
   }
 
   void _previousContentInit(BuildContext context) {
-    return BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent());
+    return BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(const FetchContactsEvent());
   }
 
   void _onBack(BuildContext context) => context.pop();

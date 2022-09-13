@@ -13,7 +13,8 @@ class TokenInterceptor extends Interceptor {
   );
 
   @override
-  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     final box = await _hive.openBox<UserModel>('user');
     final token = box.get('user')?.token;
 

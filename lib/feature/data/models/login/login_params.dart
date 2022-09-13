@@ -17,5 +17,6 @@ class LogInParams extends Equatable {
   });
 
   @override
-  List<Object?> get props => [connectingCode, device, deviceDescription, platform, location];
+  List<Object?> get props =>
+      [connectingCode, device, deviceDescription, platform, location];
 }

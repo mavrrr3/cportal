@@ -29,7 +29,9 @@ class ScrollableNewsList extends StatelessWidget {
           _categories.length,
           (index) {
             return Padding(
-              padding: isMobile(context) ? getHorizontalPadding(context) : EdgeInsets.zero,
+              padding: isMobile(context)
+                  ? getHorizontalPadding(context)
+                  : EdgeInsets.zero,
               child: NewsContent(
                 articles: _articles,
                 tabs: _categories,

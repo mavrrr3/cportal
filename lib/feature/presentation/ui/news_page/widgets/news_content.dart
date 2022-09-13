@@ -53,7 +53,7 @@ class _NewsContentState extends State<NewsContent> {
         children: [
           const SizedBox(height: 20),
           if (isMobile(context))
-          ListView.builder(
+            ListView.builder(
               controller: _newsController,
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
@@ -67,7 +67,6 @@ class _NewsContentState extends State<NewsContent> {
                 );
               },
             )
-            
           else
             Wrap(
               children: List.generate(

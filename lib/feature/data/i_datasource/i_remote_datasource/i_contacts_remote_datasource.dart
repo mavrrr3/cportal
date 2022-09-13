@@ -11,5 +11,6 @@ abstract class IContactsRemoteDataSource {
   /// Обращается к эндпойнту .....
   ///
   /// Пробрасываем ошибки через [ServerException]
-  Future<List<ProfileModel>> fetchContactsBySearch(String query, List<FilterEntity> filters);
+  Future<List<ProfileModel>> fetchContactsBySearch(
+      String query, List<FilterEntity> filters);
 }

@@ -26,7 +26,8 @@ class NewEmployeeModel extends NewEmployeeEntity {
           image: image,
         );
 
-  factory NewEmployeeModel.fromJson(Map<String, dynamic> json) => NewEmployeeModel(
+  factory NewEmployeeModel.fromJson(Map<String, dynamic> json) =>
+      NewEmployeeModel(
         title: json['title'] as String,
         description: json['description'] as String,
         image: json['image'] as String,
@@ -51,7 +52,8 @@ class NewEmployeeResponseModel extends NewEmployeeResponseEntity {
       count: json['response']['count'] as int,
       slides: json['response']['items'] != null
           ? List<NewEmployeeModel>.from(json['response']['items'].map(
-              (dynamic x) => NewEmployeeModel.fromJson(x as Map<String, dynamic>),
+              (dynamic x) =>
+                  NewEmployeeModel.fromJson(x as Map<String, dynamic>),
             ) as Iterable<dynamic>)
           : [],
     );

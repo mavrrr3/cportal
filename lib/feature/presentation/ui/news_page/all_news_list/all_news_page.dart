@@ -28,7 +28,8 @@ class AllNewsPage extends StatefulWidget {
   State<AllNewsPage> createState() => _AllNewsPageState();
 }
 
-class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin {
+class _AllNewsPageState extends State<AllNewsPage>
+    with TickerProviderStateMixin {
   late final TabController tabController;
 
   @override
@@ -54,7 +55,8 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
     if (tabController.index == 0) {
       fetchNewsBloc.add(const FetchAllNewsEvent());
     } else {
-      fetchNewsBloc.add(FetchNewsEventBy(widget.categories[tabController.index]));
+      fetchNewsBloc
+          .add(FetchNewsEventBy(widget.categories[tabController.index]));
     }
   }
 
@@ -87,7 +89,8 @@ class _AllNewsPageState extends State<AllNewsPage> with TickerProviderStateMixin
                         if (!isMobile(context) && zeroWidthCondition(context))
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(index: 1, isActive: true),
+                                  const NavBarVisibilityEvent(
+                                      index: 1, isActive: true),
                                 );
                           }),
                         Text(

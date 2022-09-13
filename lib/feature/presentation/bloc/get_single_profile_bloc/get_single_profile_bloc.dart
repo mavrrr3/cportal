@@ -8,10 +8,12 @@ import 'package:cportal_flutter/feature/domain/usecases/profile/get_single_profi
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-class GetSingleProfileBloc extends Bloc<GetSingleProfileEvent, GetSingleProfileState> {
+class GetSingleProfileBloc
+    extends Bloc<GetSingleProfileEvent, GetSingleProfileState> {
   final GetSingleProfileUseCase getSingleProfile;
 
-  GetSingleProfileBloc({required this.getSingleProfile}) : super(GetSingleProfileEmptyState()) {
+  GetSingleProfileBloc({required this.getSingleProfile})
+      : super(GetSingleProfileEmptyState()) {
     _setupEvents();
   }
 

@@ -12,10 +12,12 @@ class OnBoardingLearningCourse extends StatefulWidget {
   const OnBoardingLearningCourse({Key? key}) : super(key: key);
 
   @override
-  State<OnBoardingLearningCourse> createState() => _OnBoardingLearningCourseState();
+  State<OnBoardingLearningCourse> createState() =>
+      _OnBoardingLearningCourseState();
 }
 
-class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse> with SingleTickerProviderStateMixin {
+class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
@@ -24,7 +26,8 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse> wit
     _animationController.duration = const Duration(seconds: 10);
 
     _animationController.forward().then(
-          (value) => GoRouter.of(context).goNamed(NavigationRouteNames.mainPage),
+          (value) =>
+              GoRouter.of(context).goNamed(NavigationRouteNames.mainPage),
         );
     super.initState();
   }
@@ -58,7 +61,8 @@ class _OnBoardingLearningCourseState extends State<OnBoardingLearningCourse> wit
                   OnBoardingStepPage(
                     content: NewEmployeeEntity(
                       title: AppLocalizations.of(context)!.onboarding_title8,
-                      description: AppLocalizations.of(context)!.onboarding_description8,
+                      description:
+                          AppLocalizations.of(context)!.onboarding_description8,
                       image: 'assets/img/onboarding/8.svg',
                     ),
                   ),

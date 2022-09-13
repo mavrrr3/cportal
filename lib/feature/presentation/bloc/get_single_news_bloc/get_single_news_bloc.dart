@@ -12,7 +12,8 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 class GetSingleNewsBloc extends Bloc<GetSingleNewsEvent, GetSingleNewsState> {
   final GetSingleNewsUseCase getSingleNews;
 
-  GetSingleNewsBloc({required this.getSingleNews}) : super(GetSingleNewsEmptyState()) {
+  GetSingleNewsBloc({required this.getSingleNews})
+      : super(GetSingleNewsEmptyState()) {
     _setupEvents();
   }
 

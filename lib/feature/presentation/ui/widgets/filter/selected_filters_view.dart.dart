@@ -30,7 +30,8 @@ class SelectedFiltersView extends StatelessWidget {
             itemCount: filters.length,
             itemBuilder: (context, index) {
               // Выбран ли хоть один пункт в текущем разделе фильтра.
-              final bool isActive = filters[index].items.any((element) => element.isActive);
+              final bool isActive =
+                  filters[index].items.any((element) => element.isActive);
 
               // Если isActive - создаем список только с выбранными пунктами в текущем разделе.
               final List<FilterItemEntity> selectedItems = [];

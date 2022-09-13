@@ -24,7 +24,8 @@ class NewsPageMobile extends StatefulWidget {
   State<NewsPageMobile> createState() => _NewsPageMobileState();
 }
 
-class _NewsPageMobileState extends State<NewsPageMobile> with TickerProviderStateMixin {
+class _NewsPageMobileState extends State<NewsPageMobile>
+    with TickerProviderStateMixin {
   late final TabController tabController;
 
   @override
@@ -50,7 +51,8 @@ class _NewsPageMobileState extends State<NewsPageMobile> with TickerProviderStat
     if (tabController.index == 0) {
       fetchNewsBloc.add(const FetchAllNewsEvent());
     } else {
-      fetchNewsBloc.add(FetchNewsEventBy(widget.categories[tabController.index]));
+      fetchNewsBloc
+          .add(FetchNewsEventBy(widget.categories[tabController.index]));
     }
   }
 

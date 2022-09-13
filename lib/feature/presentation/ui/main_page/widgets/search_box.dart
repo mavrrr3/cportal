@@ -48,7 +48,9 @@ class SearchBox extends StatelessWidget {
 
         return SafeArea(
           child: Padding(
-            padding: isLargerThenTablet(context) ? const EdgeInsets.only(left: 32) : getHorizontalPadding(context),
+            padding: isLargerThenTablet(context)
+                ? const EdgeInsets.only(left: 32)
+                : getHorizontalPadding(context),
             child: AnimatedOpacity(
               duration: animationDuration,
               opacity: isAnimation ? 1 : 0,
@@ -62,7 +64,9 @@ class SearchBox extends StatelessWidget {
                   curve: curves,
                   //
                   //TODO: сделать корректную ширину и расположение выпадающего списка
-                  width: isLargerThenTablet(context) ? 584 : MediaQuery.of(context).size.width,
+                  width: isLargerThenTablet(context)
+                      ? 584
+                      : MediaQuery.of(context).size.width,
                   height: isAnimation ? getHeightSearchBox() : 0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -92,7 +96,8 @@ class SearchBox extends StatelessWidget {
                                                   searchList[index].id,
                                                   context,
                                                 ),
-                                                category: searchList[index].category,
+                                                category:
+                                                    searchList[index].category,
                                                 text: searchList[index].title,
                                               );
                                             },

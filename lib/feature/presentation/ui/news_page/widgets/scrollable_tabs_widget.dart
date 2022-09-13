@@ -74,7 +74,9 @@ class _ScrollableTabsWidgetState extends State<ScrollableTabsWidget> {
           onTap: onTap,
           child: Padding(
             padding: EdgeInsets.only(
-              right: !ResponsiveWrapper.of(context).isLargerThan(TABLET) ? 8.0 : 19,
+              right: !ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                  ? 8.0
+                  : 19,
             ),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),

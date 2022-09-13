@@ -120,9 +120,8 @@ class CustomKeyboard extends StatelessWidget {
     if (state is WrongPinCode || state is TryAgainLater) {
       keyboardController.clear();
     } else {
-      if(keyboardController.text.length < 4){
-
-      keyboardController.text += number.toString();
+      if (keyboardController.text.length < 4) {
+        keyboardController.text += number.toString();
       }
 
       if (onComplete != null) {

@@ -28,7 +28,8 @@ class NewsPageWebTablet extends StatefulWidget {
   State<NewsPageWebTablet> createState() => _NewsPageWebTabletState();
 }
 
-class _NewsPageWebTabletState extends State<NewsPageWebTablet> with TickerProviderStateMixin {
+class _NewsPageWebTabletState extends State<NewsPageWebTablet>
+    with TickerProviderStateMixin {
   late final TabController tabController;
 
   @override
@@ -54,7 +55,8 @@ class _NewsPageWebTabletState extends State<NewsPageWebTablet> with TickerProvid
     if (tabController.index == 0) {
       fetchNewsBloc.add(const FetchAllNewsEvent());
     } else {
-      fetchNewsBloc.add(FetchNewsEventBy(widget.categories[tabController.index]));
+      fetchNewsBloc
+          .add(FetchNewsEventBy(widget.categories[tabController.index]));
     }
   }
 
@@ -93,7 +95,8 @@ class _NewsPageWebTabletState extends State<NewsPageWebTablet> with TickerProvid
                         if (zeroWidthCondition(context) && width > 514)
                           BurgerMenuButton(onTap: () {
                             context.read<NavigationBarBloc>().add(
-                                  const NavBarVisibilityEvent(index: 1, isActive: true),
+                                  const NavBarVisibilityEvent(
+                                      index: 1, isActive: true),
                                 );
                           }),
                         Text(

@@ -4,7 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cportal_flutter/core/error/failure.dart';
 
-class FetchNewEmployeeBloc extends Bloc<FetchNewEmployeeEvent, FetchNewEmployeeState> {
+class FetchNewEmployeeBloc
+    extends Bloc<FetchNewEmployeeEvent, FetchNewEmployeeState> {
   final INewEmployeeRepository repository;
 
   FetchNewEmployeeBloc({
@@ -13,9 +14,11 @@ class FetchNewEmployeeBloc extends Bloc<FetchNewEmployeeEvent, FetchNewEmployeeS
     on<FetchNewEmployeeEvent>((event, emit) async {
       emit(const NewEmployeeLoading());
 
-      final failureOrNewEmployeeSlides = await repository.fetchNewEmployeeOnboardingSlides();
+      final failureOrNewEmployeeSlides =
+          await repository.fetchNewEmployeeOnboardingSlides();
 
-      failureOrNewEmployeeSlides.fold(failureToMessage, (slides) => emit(NewEmployeeLoaded(slides: slides)));
+      failureOrNewEmployeeSlides.fold(failureToMessage,
+          (slides) => emit(NewEmployeeLoaded(slides: slides)));
     });
   }
 }
