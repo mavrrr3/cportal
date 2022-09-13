@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/create_declaration/widgets/declaration_textfield.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_expandble_content.dart';
@@ -17,17 +15,12 @@ class DeclarationExecution extends StatefulWidget {
 
 class _DeclarationExecutionState extends State<DeclarationExecution> {
   late final TextEditingController commentController;
-  late final FocusNode commentFocus;
   late bool isDoneButtonActive;
   @override
   void initState() {
     super.initState();
     isDoneButtonActive = false;
     commentController = TextEditingController();
-    commentFocus = FocusNode();
-    commentFocus.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -70,7 +63,6 @@ class _DeclarationExecutionState extends State<DeclarationExecution> {
         // Комментарий.
         DeclarationTextField(
           controller: commentController,
-          focusNode: commentFocus,
           title: localizedStrings.comment,
         ),
         const SizedBox(height: 32),
@@ -87,7 +79,6 @@ class _DeclarationExecutionState extends State<DeclarationExecution> {
   @override
   void dispose() {
     commentController.dispose();
-    commentFocus.dispose();
     super.dispose();
   }
 }
