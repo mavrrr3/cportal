@@ -40,9 +40,7 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     context.read<FingerPrintSupportBloc>().add(const CheckFingerPrintSupport());
-    context
-        .read<TurnOffFingerPrintBloc>()
-        .add(const IsFingerPrintEnabledEvent());
+    context.read<TurnOffFingerPrintBloc>().add(const IsFingerPrintEnabledEvent());
     super.initState();
   }
 
@@ -55,13 +53,11 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final localizedStrings = AppLocalizations.of(context)!;
-    isFingerPrintSupport =
-        context.select((FingerPrintSupportBloc bloc) => bloc.state);
+    isFingerPrintSupport = context.select((FingerPrintSupportBloc bloc) => bloc.state);
 
-    isEnabledFingerPrint =
-        context.select((TurnOffFingerPrintBloc bloc) => bloc.state.isEnabled);
+    isEnabledFingerPrint = context.select((TurnOffFingerPrintBloc bloc) => bloc.state.isEnabled);
 
-    return LayoutWithAppBar(
+    return QuestionMobileLayoutWithAppBar(
       icon: ImageAssets.close,
       title: localizedStrings.profile,
       child: BlocBuilder<AuthBloc, AuthState>(
@@ -85,8 +81,7 @@ class ProfilePageState extends State<ProfilePage> {
                       title: localizedStrings.newEmployee,
                       prefixIcon: ImageAssets.addPerson,
                       suffix: const SectionItemArrow(),
-                      onTap: () =>
-                          context.goNamed(NavigationRouteNames.onBoardingStart),
+                      onTap: () => context.goNamed(NavigationRouteNames.onBoardingStart),
                     ),
                   ),
                   const ProfileDivider(),
@@ -120,8 +115,7 @@ class ProfilePageState extends State<ProfilePage> {
                           onTap: () {
                             turnOnOffFingerPrint();
                             setState(() {
-                              fingerPrintAuthController.value =
-                                  !state.isEnabled;
+                              fingerPrintAuthController.value = !state.isEnabled;
                             });
                           },
                         );
@@ -132,16 +126,14 @@ class ProfilePageState extends State<ProfilePage> {
                     title: localizedStrings.changePin,
                     prefixIcon: ImageAssets.lock,
                     suffix: const SectionItemArrow(),
-                    onTap: () =>
-                        context.goNamed(NavigationRouteNames.changePin),
+                    onTap: () => context.goNamed(NavigationRouteNames.changePin),
                   ),
                   if (kIsMobile)
                     ProfileSectionItem(
                       title: localizedStrings.devices,
                       prefixIcon: ImageAssets.addDevice,
                       suffix: const SectionItemArrow(),
-                      onTap: () =>
-                          context.pushNamed(NavigationRouteNames.devices),
+                      onTap: () => context.pushNamed(NavigationRouteNames.devices),
                     ),
                   const Padding(
                     padding: EdgeInsets.fromLTRB(16, 16, 16, 0),

@@ -39,7 +39,7 @@ class _ProfileDataScreenState extends State<ProfileDataScreen> {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     final bottomIndent = bottomPadding == 0 ? 16.0 : bottomPadding;
 
-    return LayoutWithAppBar(
+    return QuestionMobileLayoutWithAppBar(
       title: localizedStrings.yourData,
       child: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
         builder: (context, state) {

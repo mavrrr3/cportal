@@ -206,7 +206,10 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: NavigationRouteNames.newsArticlePage,
           path: ':fid',
-          builder: (context, state) => NewsArticlePage(id: state.params['fid']!),
+          pageBuilder: (context, state) => NoTransitionPage<void>(
+            key: state.pageKey,
+            child: NewsArticlePage(id: state.params['fid']!),
+          ),
         ),
       ],
     ),
@@ -224,7 +227,10 @@ final GoRouter router = GoRouter(
         GoRoute(
           name: NavigationRouteNames.question,
           path: ':fid',
-          builder: (context, state) => QuestionScreen(id: state.params['fid']!),
+          pageBuilder: (context, state) => NoTransitionPage<void>(
+            key: state.pageKey,
+            child: QuestionScreen(id: state.params['fid']!),
+          ),
         ),
       ],
     ),

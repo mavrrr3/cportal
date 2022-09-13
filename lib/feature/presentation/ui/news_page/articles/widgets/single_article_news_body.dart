@@ -1,26 +1,25 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/formatter_util.dart';
 import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
 import 'package:cportal_flutter/feature/presentation/ui/news_page/widgets/news_template.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/news_main_mobile.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class SingleArticleNewsBody extends StatelessWidget {
   final ArticleEntity article;
-  final DateFormat outputFormat;
+
   final List<ArticleEntity>? articles;
 
   const SingleArticleNewsBody({
     Key? key,
     required this.article,
-    required this.outputFormat,
     required this.articles,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
+    final theme = Theme.of(context).extension<CustomTheme>()!;
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -39,7 +38,7 @@ class SingleArticleNewsBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    outputFormat.format(article.date),
+                    FormatterUtil.fullDateWithoutSeconds(date: article.date),
                     style: theme.textTheme.px12,
                   ),
                   const SizedBox(height: 20),

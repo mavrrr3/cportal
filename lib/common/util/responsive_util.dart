@@ -71,11 +71,11 @@ class ResponsiveUtil {
         : zeroWidthCondition(context)
             ? width - 192
             : firstWidthCondition(context)
-                ? 1296
+                ? 968
                 : secondWidthCondition(context)
-                    ? 1296
+                    ? 968
                     : thirdWidthCondition(context)
-                        ? 1356
+                        ? 968
                         : width - webTabletPadding().horizontal;
   }
 

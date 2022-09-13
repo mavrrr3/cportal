@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/formatter_util.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
@@ -18,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SingleNewsArticleWebTablet extends StatefulWidget {
@@ -39,7 +39,7 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final outputFormat = DateFormat('d MMMM y, H:m', 'ru');
+
     final double width = MediaQuery.of(context).size.width;
     final customPadding = ResponsiveUtil(context);
 
@@ -47,7 +47,6 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
       child: Stack(
         children: [
           Row(
-            // mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (!zeroWidthCondition(context)) ...[
@@ -113,7 +112,10 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: customPadding.webTabletPaddingWithRightBloc(),
+                          padding: EdgeInsets.only(
+                            left: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
+                            right: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
+                          ),
                           child: SizedBox(
                             width: customPadding.widthContentWithRightBloc(),
                             child: Column(
@@ -137,7 +139,7 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                                 ),
                                 SizePadding.height12px,
                                 Text(
-                                  outputFormat.format(widget.article.date),
+                                  FormatterUtil.fullDateWithoutSeconds(date: widget.article.date),
                                   style: theme.textTheme.px12,
                                 ),
                                 SizePadding.height24px,

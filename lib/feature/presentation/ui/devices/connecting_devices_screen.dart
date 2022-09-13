@@ -34,7 +34,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
     final localizedStrings = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return LayoutWithAppBar(
+    return QuestionMobileLayoutWithAppBar(
       title: localizedStrings.devices,
       child: BlocBuilder<ConnectingDevicesBloc, ConnectingDevicesState>(
         builder: (context, state) {
