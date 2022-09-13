@@ -26,10 +26,10 @@ class _PinDotState extends State<PinDot> with SingleTickerProviderStateMixin {
   late AnimationController scaleController;
   late bool isError;
   late bool isSuccess;
-  late final Color inActiveDotColor;
-  late final Color activeDotColor;
-  late final Color errorColor;
-  late final Color successColor;
+  late Color inActiveDotColor;
+  late Color activeDotColor;
+  late Color errorColor;
+  late Color successColor;
 
   @override
   void initState() {
