@@ -14,7 +14,8 @@ import 'package:go_router/go_router.dart';
 
 class QuestionsMain extends StatelessWidget {
   final ScrollController questionController;
-  const QuestionsMain({Key? key, required this.questionController}) : super(key: key);
+  const QuestionsMain({Key? key, required this.questionController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

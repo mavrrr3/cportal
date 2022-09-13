@@ -51,7 +51,9 @@ class ArticleModel extends ArticleEntity {
                   ParagraphModel.fromJson(x as Map<String, dynamic>))
               as Iterable<dynamic>,
         ),
-        image: json['image'] == null ? 'https://toto-school.ru/800/600/https/www.caruanacini.com/images/patterns/1995/cromato.jpg' : json['image'] as String,
+        image: json['image'] == null
+            ? 'https://toto-school.ru/800/600/https/www.caruanacini.com/images/patterns/1995/cromato.jpg'
+            : json['image'] as String,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{

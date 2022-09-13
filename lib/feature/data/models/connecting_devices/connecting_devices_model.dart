@@ -17,5 +17,6 @@ class ConnectingDevicesModel {
     required this.items,
   });
 
-  factory ConnectingDevicesModel.fromJson(Map<String, dynamic> json) => _$ConnectingDevicesModelFromJson(json);
+  factory ConnectingDevicesModel.fromJson(Map<String, dynamic> json) =>
+      _$ConnectingDevicesModelFromJson(json);
 }

@@ -40,5 +40,6 @@ class ConnectingDeviceModel extends ConnectingDeviceEntity {
           location: location,
         );
 
-  factory ConnectingDeviceModel.fromJson(Map<String, dynamic> json) => _$ConnectingDeviceModelFromJson(json);
+  factory ConnectingDeviceModel.fromJson(Map<String, dynamic> json) =>
+      _$ConnectingDeviceModelFromJson(json);
 }

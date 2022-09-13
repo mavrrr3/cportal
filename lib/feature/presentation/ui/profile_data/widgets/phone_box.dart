@@ -17,7 +17,9 @@ class PhoneBox extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.light ? theme.black?.withOpacity(0.04) : theme.text?.withOpacity(0.08),
+        color: theme.brightness == Brightness.light
+            ? theme.black?.withOpacity(0.04)
+            : theme.text?.withOpacity(0.08),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
       ),
       child: Padding(

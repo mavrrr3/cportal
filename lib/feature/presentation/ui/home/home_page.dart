@@ -37,7 +37,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin, WidgetsBindingObserver {
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   Timer? timer;
   // Для онбординга.
   late bool _isOnboarding;
@@ -93,7 +94,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
     // Список страниц для навигации должен
     // строго соответствовать количеству элемнтов навбара
     final List<Widget> listPages = <Widget>[
-      if (isMobile(context)) const MainPageMobile() else const MainPageWebTablet(),
+      if (isMobile(context))
+        const MainPageMobile()
+      else
+        const MainPageWebTablet(),
       const NewsPage(),
       const QuestionsPage(),
       const DeclarationsPage(),
@@ -121,12 +125,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                             );
                           },
                           currentIndex: widget.webMenuIndex,
-                          onChange: (index) => MenuService.changePage(context, index),
+                          onChange: (index) =>
+                              MenuService.changePage(context, index),
                         ),
 
                       // Текущая страница.
                       Expanded(
-                        child: kIsWeb ? widget.child : listPages[state.currentIndex],
+                        child: kIsWeb
+                            ? widget.child
+                            : listPages[state.currentIndex],
                       ),
                     ],
                   ),
@@ -183,7 +190,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
 
                   // Контент онбординга и его навигация.
                   if (_isOnboarding)
-                    BlocBuilder<FetchNewEmployeeBloc, FetchNewEmployeeState>(builder: (context, state) {
+                    BlocBuilder<FetchNewEmployeeBloc, FetchNewEmployeeState>(
+                        builder: (context, state) {
                       if (state is NewEmployeeLoaded) {
                         _onboardingContent = state.slides;
                       }
@@ -195,7 +203,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
                         currentIndex: _onBoardingIndex,
                         onNext: () {
                           setState(() {
-                            if (_onBoardingIndex + 1 < _onboardingContent.length) {
+                            if (_onBoardingIndex + 1 <
+                                _onboardingContent.length) {
                               _onBoardingIndex += 1;
                               _loadOnboardingPage();
                             } else {
@@ -225,7 +234,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin, Widg
               ),
 
               // Bottom Bar.
-              bottomNavigationBar: isMobile(context) || size.width < 514 ? const CustomBottomBar() : null,
+              bottomNavigationBar: isMobile(context) || size.width < 514
+                  ? const CustomBottomBar()
+                  : null,
             ),
             BurgerMenu(
               currentIndex: widget.webMenuIndex,

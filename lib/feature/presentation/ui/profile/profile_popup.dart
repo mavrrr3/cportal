@@ -187,12 +187,15 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                         vertical: 4,
                                       ),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             localizedStrings.yourPhoneNumber,
-                                            style: theme.textTheme.px12.copyWith(
+                                            style:
+                                                theme.textTheme.px12.copyWith(
                                               color: theme.textLight,
                                             ),
                                           ),
@@ -247,7 +250,8 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                                 return Opacity(
                                   opacity: isHovered ? 0.64 : 1,
                                   child: GestureDetector(
-                                    onTap: () => turnOffNotify(isNotificationTurnedOn),
+                                    onTap: () =>
+                                        turnOffNotify(isNotificationTurnedOn),
                                     child: RowProfile(
                                       firstWidget: SvgPicture.asset(
                                         ImageAssets.bell,
@@ -360,17 +364,20 @@ class _ProfilePopUpState extends State<ProfilePopUp> {
                 ),
                 const SizedBox(height: 24),
                 RowTurnOffNotify(
-                  notifyText: 'Оповещения выключены на ${localizedStrings.forFourHour}',
+                  notifyText:
+                      'Оповещения выключены на ${localizedStrings.forFourHour}',
                   rowText: localizedStrings.forFourHour,
                 ),
                 const SizedBox(height: 24),
                 RowTurnOffNotify(
-                  notifyText: 'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
+                  notifyText:
+                      'Оповещения выключены на ${localizedStrings.forTwentyFourHour}',
                   rowText: localizedStrings.forTwentyFourHour,
                 ),
                 const SizedBox(height: 24),
                 RowTurnOffNotify(
-                  notifyText: 'Оповещения выключены на ${localizedStrings.forever.toLowerCase()}',
+                  notifyText:
+                      'Оповещения выключены на ${localizedStrings.forever.toLowerCase()}',
                   rowText: localizedStrings.forever,
                 ),
               ],

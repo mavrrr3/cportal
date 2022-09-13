@@ -16,15 +16,18 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   }
 
   void _setupEvents() {
-    on<CreatePinCode>(_onCreatePinCode, transformer: bloc_concurrency.sequential());
-    on<RepeatPinCode>(_onRepeatPinCode, transformer: bloc_concurrency.sequential());
+    on<CreatePinCode>(_onCreatePinCode,
+        transformer: bloc_concurrency.sequential());
+    on<RepeatPinCode>(_onRepeatPinCode,
+        transformer: bloc_concurrency.sequential());
   }
 
   FutureOr<void> _onCreatePinCode(
     CreatePinCode event,
     Emitter<PinCodeState> emit,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 500), () => emit(PinCodeEditing(event.pinCode)));
+    await Future.delayed(const Duration(milliseconds: 500),
+        () => emit(PinCodeEditing(event.pinCode)));
   }
 
   FutureOr<void> _onRepeatPinCode(
@@ -37,7 +40,8 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
 
     if (currentState.pinCode != event.pinCode) {
       emit(PinCodeNotMatch());
-      await Future.delayed(const Duration(seconds: 1), () => emit(PinCodeInitialState()));
+      await Future.delayed(
+          const Duration(seconds: 1), () => emit(PinCodeInitialState()));
     } else {
       await _pinCodeRepository.savePin(pinCode: event.pinCode);
       emit(PinCodeSuccessfullyChanged());

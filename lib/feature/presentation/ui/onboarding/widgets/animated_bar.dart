@@ -17,8 +17,7 @@ class AnimatedBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-                                  final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-
+    final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
     return Flexible(
       child: Padding(

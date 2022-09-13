@@ -30,20 +30,25 @@ class ConnectingQrBloc extends Bloc<ConnectingQrEvent, ConnectingQrState> {
   }
 
   void _setupEvents() {
-    on<CheckLoginCredentials>(_onCheckLoginCredentials, transformer: bloc_concurrency.droppable());
-    on<ReceivedUser>(_onReceivedUser, transformer: bloc_concurrency.sequential());
+    on<CheckLoginCredentials>(_onCheckLoginCredentials,
+        transformer: bloc_concurrency.droppable());
+    on<ReceivedUser>(_onReceivedUser,
+        transformer: bloc_concurrency.sequential());
   }
 
-  FutureOr<void> _onCheckLoginCredentials(ConnectingQrEvent _, Emitter<ConnectingQrState> __) async {
+  FutureOr<void> _onCheckLoginCredentials(
+      ConnectingQrEvent _, Emitter<ConnectingQrState> __) async {
     await Future.delayed(const Duration(seconds: 2), _tryGetUser);
   }
 
-  FutureOr<void> _onReceivedUser(ReceivedUser event, Emitter<ConnectingQrState> emit) {
+  FutureOr<void> _onReceivedUser(
+      ReceivedUser event, Emitter<ConnectingQrState> emit) {
     emit(ConnectingQrSuccessAuth(user: event.user, qrData: state.qrData));
   }
 
   Future<void> _tryGetUser() async {
-    final response = await _logInWithConnectingCode(LoginWithConnectingCodeParams(connectingCode: state.qrData));
+    final response = await _logInWithConnectingCode(
+        LoginWithConnectingCodeParams(connectingCode: state.qrData));
     if (!isClosed) {
       response.fold(
         (failure) => add(CheckLoginCredentials()),

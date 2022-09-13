@@ -13,7 +13,8 @@ class WebCopyRight extends StatelessWidget {
       children: [
         if (kIsWeb) ...[
           Padding(
-            padding: const EdgeInsets.only(left: 32, right: 32, top: 20, bottom: 60),
+            padding:
+                const EdgeInsets.only(left: 32, right: 32, top: 20, bottom: 60),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

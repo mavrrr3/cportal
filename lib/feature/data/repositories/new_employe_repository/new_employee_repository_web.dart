@@ -12,9 +12,11 @@ class NewEmployeeRepositoryWeb implements INewEmployeeRepository {
     required this.remoteDataSource,
   });
   @override
-  Future<Either<Failure, List<NewEmployeeModel>>> fetchNewEmployeeOnboardingSlides() async {
+  Future<Either<Failure, List<NewEmployeeModel>>>
+      fetchNewEmployeeOnboardingSlides() async {
     try {
-      final remoteListSlides = await remoteDataSource.fetchNewEmployeeOnboardingSlides();
+      final remoteListSlides =
+          await remoteDataSource.fetchNewEmployeeOnboardingSlides();
 
       return Right(remoteListSlides);
     } on ServerException {

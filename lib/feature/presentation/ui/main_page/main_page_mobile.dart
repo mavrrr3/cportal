@@ -106,7 +106,8 @@ class _MainPageMobileState extends State<MainPageMobile> {
       ..read<FetchQuestionsBloc>().add(const FetchQuestionsEvent())
       ..read<ContactsBloc>().add(const FetchContactsEvent(isFirstFetch: true))
       ..read<FilterContactsBloc>().add(FetchFiltersEvent())
-      ..read<DeclarationsBloc>().add(const FetchDeclarationsEvent(isFirstFetch: true))
+      ..read<DeclarationsBloc>()
+          .add(const FetchDeclarationsEvent(isFirstFetch: true))
       ..read<TasksBloc>().add(const FetchTasksEvent(isFirstFetch: true))
       ..read<FilterDeclarationsBloc>().add(FetchFiltersEvent())
       ..read<FetchNewEmployeeBloc>().add(const FetchNewEmployeeEvent());
@@ -114,10 +115,11 @@ class _MainPageMobileState extends State<MainPageMobile> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
-        context.select(
-          (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
-        );
+    final isLoading =
+        context.select((FetchNewsBloc bloc) => bloc.state is NewsLoading) ||
+            context.select(
+              (FetchQuestionsBloc bloc) => bloc.state is QuestionsLoading,
+            );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -157,7 +159,9 @@ class _MainPageMobileState extends State<MainPageMobile> {
                 top: isLargerThenMobile(context) ? 12 : 13,
               ),
               child: ResponsiveConstraints(
-                constraint: !isMobile(context) ? const BoxConstraints(maxWidth: 1046) : null,
+                constraint: !isMobile(context)
+                    ? const BoxConstraints(maxWidth: 1046)
+                    : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -316,7 +320,8 @@ class _MainPageMobileState extends State<MainPageMobile> {
       builder: (context) {
         final theme = Theme.of(context).extension<CustomTheme>()!;
         final double width = MediaQuery.of(context).size.width;
-        final double horizontalPadding = isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
+        final double horizontalPadding =
+            isLargerThenMobile(context) ? width * 0.25 : width * 0.15;
 
         return StatefulBuilder(
           builder: (context, setState) {

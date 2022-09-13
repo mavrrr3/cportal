@@ -88,7 +88,8 @@ class _ProfileDataScreenState extends State<ProfileDataScreen> {
                               description: contactData.contact,
                             );
                           },
-                          separatorBuilder: (context, index) => const SizedBox(height: 8),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 8),
                         ),
                         // Space under button.
                         const SizedBox(height: 64),
@@ -114,7 +115,9 @@ class _ProfileDataScreenState extends State<ProfileDataScreen> {
                       child: Text(
                         localizedStrings.saveChanges,
                         style: theme.textTheme.px16Bold.copyWith(
-                          color: theme.brightness == Brightness.light ? theme.white : theme.text,
+                          color: theme.brightness == Brightness.light
+                              ? theme.white
+                              : theme.text,
                         ),
                       ),
                     ),

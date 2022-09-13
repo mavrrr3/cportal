@@ -19,10 +19,12 @@ class NewEmployeeRepositoryMobile implements INewEmployeeRepository {
     required this.networkInfo,
   });
   @override
-  Future<Either<Failure, List<NewEmployeeModel>>> fetchNewEmployeeOnboardingSlides() async {
+  Future<Either<Failure, List<NewEmployeeModel>>>
+      fetchNewEmployeeOnboardingSlides() async {
     if (await networkInfo.isConnected) {
       try {
-        final remoteListSlides = await remoteDataSource.fetchNewEmployeeOnboardingSlides();
+        final remoteListSlides =
+            await remoteDataSource.fetchNewEmployeeOnboardingSlides();
 
         await localDataSource.newEmployeeSlidesToCache(remoteListSlides);
 
@@ -32,7 +34,8 @@ class NewEmployeeRepositoryMobile implements INewEmployeeRepository {
       }
     } else {
       try {
-        final localListSlides = await localDataSource.fetchNewEmployeeOnboardingSlidesFromCache();
+        final localListSlides =
+            await localDataSource.fetchNewEmployeeOnboardingSlidesFromCache();
 
         return Right(localListSlides);
       } on CacheException {

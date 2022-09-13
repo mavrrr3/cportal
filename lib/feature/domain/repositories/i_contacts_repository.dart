@@ -6,5 +6,6 @@ import 'package:dartz/dartz.dart';
 
 abstract class IContactsRepository {
   Future<Either<Failure, ContactsEntity>> fetchContacts(int page);
-  Future<Either<Failure, List<ProfileEntity>>> searchContacts(String query, List<FilterEntity> filters);
+  Future<Either<Failure, List<ProfileEntity>>> searchContacts(
+      String query, List<FilterEntity> filters);
 }

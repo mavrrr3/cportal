@@ -27,7 +27,8 @@ class DeclarationsContentMobile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DeclarationsContentMobile> createState() => _DeclarationsContentMobileState();
+  State<DeclarationsContentMobile> createState() =>
+      _DeclarationsContentMobileState();
 }
 
 class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
@@ -102,7 +103,9 @@ class _DeclarationsContentMobileState extends State<DeclarationsContentMobile> {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
             if (widget.tabController.index == 0) {
-              context.read<DeclarationsBloc>().add(const FetchDeclarationsEvent());
+              context
+                  .read<DeclarationsBloc>()
+                  .add(const FetchDeclarationsEvent());
             } else {
               log('request Tasks');
             }

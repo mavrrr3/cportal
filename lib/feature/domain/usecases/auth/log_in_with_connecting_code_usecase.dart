@@ -5,14 +5,17 @@ import 'package:cportal_flutter/feature/domain/repositories/i_auth_repository.da
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class LogInWithConnectingCodeUseCase extends IUseCase<UserEntity, LoginWithConnectingCodeParams> {
+class LogInWithConnectingCodeUseCase
+    extends IUseCase<UserEntity, LoginWithConnectingCodeParams> {
   final IAuthRepository _authRepository;
 
   LogInWithConnectingCodeUseCase(this._authRepository);
 
   @override
-  Future<Either<Failure, UserEntity>> call(LoginWithConnectingCodeParams params) {
-    return _authRepository.logInWithConnectingCode(connectingCode: params.connectingCode);
+  Future<Either<Failure, UserEntity>> call(
+      LoginWithConnectingCodeParams params) {
+    return _authRepository.logInWithConnectingCode(
+        connectingCode: params.connectingCode);
   }
 }
 

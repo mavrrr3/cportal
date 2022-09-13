@@ -9,5 +9,6 @@ class ResponseUserModel {
 
   ResponseUserModel(this.response);
 
-  factory ResponseUserModel.fromJson(Map<String, dynamic> json) => _$ResponseUserModelFromJson(json);
+  factory ResponseUserModel.fromJson(Map<String, dynamic> json) =>
+      _$ResponseUserModelFromJson(json);
 }

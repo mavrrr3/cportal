@@ -22,7 +22,8 @@ class DeviceIcon extends StatelessWidget {
       case DevicePlatform.ios:
         return SvgPicture.asset(
           ImageAssets.apple,
-          color: theme.brightness == Brightness.light ? theme.black : theme.text,
+          color:
+              theme.brightness == Brightness.light ? theme.black : theme.text,
         );
       default:
         return SvgPicture.asset(

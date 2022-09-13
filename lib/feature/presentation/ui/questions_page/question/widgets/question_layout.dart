@@ -29,7 +29,8 @@ class QuestionLayout extends StatelessWidget {
     return isMobile(context)
         ? LayoutWithAppBar(
             title: '',
-            onTapBackButton: () => context.goNamed(NavigationRouteNames.questions),
+            onTapBackButton: () =>
+                context.goNamed(NavigationRouteNames.questions),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: child,
@@ -71,7 +72,8 @@ class QuestionWebTabletLayout extends StatelessWidget {
               child: CustomScrollView(
                 physics: const BouncingScrollPhysics(),
                 slivers: [
-                  const SliverPersistentHeader(delegate: QuestionDesktopDelegate(), pinned: true),
+                  const SliverPersistentHeader(
+                      delegate: QuestionDesktopDelegate(), pinned: true),
                   SliverToBoxAdapter(child: child),
                 ],
               ),
@@ -87,7 +89,8 @@ class QuestionDesktopDelegate extends SliverPersistentHeaderDelegate {
   const QuestionDesktopDelegate();
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
     final width = MediaQuery.of(context).size.width;
     final customPadding = ResponsiveUtil(context);
@@ -110,7 +113,9 @@ class QuestionDesktopDelegate extends SliverPersistentHeaderDelegate {
           children: [
             if (zeroWidthCondition(context) && width > 514) ...[
               BurgerMenuButton(onTap: () {
-                context.read<NavigationBarBloc>().add(const NavBarVisibilityEvent(
+                context
+                    .read<NavigationBarBloc>()
+                    .add(const NavBarVisibilityEvent(
                       index: 1,
                       isActive: true,
                     ));

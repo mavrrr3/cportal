@@ -5,9 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SplashWidget extends StatelessWidget {
   final bool isDesktop;
 
-  const SplashWidget.mobile({Key? key, this.isDesktop = false}) : super(key: key);
+  const SplashWidget.mobile({Key? key, this.isDesktop = false})
+      : super(key: key);
 
-  const SplashWidget.desktop({Key? key, this.isDesktop = true}) : super(key: key);
+  const SplashWidget.desktop({Key? key, this.isDesktop = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

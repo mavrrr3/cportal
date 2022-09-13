@@ -27,9 +27,11 @@ class ConnectingQrRepository implements IConnectingQrRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendConnectingData({required String connectingCode}) async {
+  Future<Either<Failure, void>> sendConnectingData(
+      {required String connectingCode}) async {
     try {
-      final result = await _connectingQrRemoteDataSource.sendConnectingData(connectingCode: connectingCode);
+      final result = await _connectingQrRemoteDataSource.sendConnectingData(
+          connectingCode: connectingCode);
 
       return Right(result);
     } on Exception catch (_) {
@@ -38,9 +40,11 @@ class ConnectingQrRepository implements IConnectingQrRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendScannedData({required String connectingCode}) async {
+  Future<Either<Failure, void>> sendScannedData(
+      {required String connectingCode}) async {
     try {
-      final result = await _connectingQrRemoteDataSource.sendScannedData(connectingCode: connectingCode);
+      final result = await _connectingQrRemoteDataSource.sendScannedData(
+          connectingCode: connectingCode);
 
       return Right(result);
     } on Exception catch (_) {

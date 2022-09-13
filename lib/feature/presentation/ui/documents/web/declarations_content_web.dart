@@ -180,7 +180,9 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
                 builder: (_, state) {
                   return state.isActive
                       ? GestureDetector(
-                          onTap: () => context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(
+                          onTap: () => context
+                              .read<FilterVisibilityBloc>()
+                              .add(const FilterChangeVisibilityEvent(
                                 isActive: false,
                               )),
                           child: Container(
@@ -212,11 +214,15 @@ class _DeclarationsContentWebState extends State<DeclarationsContentWeb> {
   }
 
   void _onApplyFilter() {
-    context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(isActive: false));
+    context
+        .read<FilterVisibilityBloc>()
+        .add(const FilterChangeVisibilityEvent(isActive: false));
   }
 
   void _onClearFilter() {
     context.read<FilterDeclarationsBloc>().add(FilterRemoveAllEvent());
-    context.read<FilterVisibilityBloc>().add(const FilterChangeVisibilityEvent(isActive: false));
+    context
+        .read<FilterVisibilityBloc>()
+        .add(const FilterChangeVisibilityEvent(isActive: false));
   }
 }

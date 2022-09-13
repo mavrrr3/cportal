@@ -22,5 +22,6 @@ class ContactModel extends ContactEntity {
           contact: contact,
         );
 
-  factory ContactModel.fromJson(Map<String, dynamic> json) => _$ContactModelFromJson(json);
+  factory ContactModel.fromJson(Map<String, dynamic> json) =>
+      _$ContactModelFromJson(json);
 }

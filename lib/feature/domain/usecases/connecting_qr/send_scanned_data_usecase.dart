@@ -11,6 +11,7 @@ class SendScannedDataUseCase extends IUseCase<void, ConnectingParams> {
 
   @override
   Future<Either<Failure, void>> call(ConnectingParams params) async {
-    return _connectingQrRepository.sendScannedData(connectingCode: params.connectingCode);
+    return _connectingQrRepository.sendScannedData(
+        connectingCode: params.connectingCode);
   }
 }

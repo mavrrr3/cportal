@@ -16,10 +16,14 @@ class NewsPage extends StatelessWidget {
     return BlocBuilder<FetchNewsBloc, FetchNewsState>(
       builder: (context, state) {
         if (state is NewsLoading) {
-          return isMobile(context) ? NewsPageMobile(categories: state.tabs) : NewsPageWebTablet(categories: state.tabs);
+          return isMobile(context)
+              ? NewsPageMobile(categories: state.tabs)
+              : NewsPageWebTablet(categories: state.tabs);
         }
         if (state is NewsLoaded) {
-          return isMobile(context) ? NewsPageMobile(categories: state.tabs) : NewsPageWebTablet(categories: state.tabs);
+          return isMobile(context)
+              ? NewsPageMobile(categories: state.tabs)
+              : NewsPageWebTablet(categories: state.tabs);
         }
 
         return const Loader();
