@@ -53,124 +53,129 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
 
     return Swipe(
       onSwipeRight: () => context.pop(),
-      child: Scaffold(
-        backgroundColor: theme.background,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          backgroundColor: theme.background,
+          body: BlocBuilder<SingleDeclarationBloc, SingleDeclarationState>(
+            builder: (context, state) {
+              if (state is SingleDeclarationLoadingState) {
+                return const Center(child: PlatformProgressIndicator());
+              }
 
-        body: BlocBuilder<SingleDeclarationBloc, SingleDeclarationState>(
-          builder: (context, state) {
-            if (state is SingleDeclarationLoadingState) {
-              return const Center(child: PlatformProgressIndicator());
-            }
-
-            if (state is SingleDeclarationLoadedState) {
-              return SafeArea(
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 18,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // AppBar.
-                            DeclarationAppBar(title: state.declaration.title),
-
-                            // Прогресс и текущий этап.
-                            DeclarationProgress(
-                              currentStep: state.declaration.currentStep,
-                              allSteps: state.declaration.allSteps,
-                              status: state.declaration.status,
-                              description:
-                                  state.declaration.progressDescription,
-                              color: ColorService.declarationStatus(
-                                state.declaration.status,
+              if (state is SingleDeclarationLoadedState) {
+                return SafeArea(
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 18,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // AppBar.
+                              DeclarationAppBar(
+                                title: state.declaration.title,
                               ),
-                            ),
-                            const SizedBox(height: 24),
 
-                            // Содержание.
-                            if (state.declaration.content != null)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 24),
-                                child: DeclarationExpandbleContent(
-                                  title: localizedStrings.content,
-                                  childTopPadding: 8,
-                                  child: Text(
-                                    state.declaration.content!,
-                                    style: theme.textTheme.px14,
+                              // Прогресс и текущий этап.
+                              DeclarationProgress(
+                                currentStep: state.declaration.currentStep,
+                                allSteps: state.declaration.allSteps,
+                                status: state.declaration.status,
+                                description:
+                                    state.declaration.progressDescription,
+                                color: ColorService.declarationStatus(
+                                  state.declaration.status,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+
+                              // Содержание.
+                              if (state.declaration.content != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 24),
+                                  child: DeclarationExpandbleContent(
+                                    title: localizedStrings.content,
+                                    childTopPadding: 8,
+                                    child: Text(
+                                      state.declaration.content!,
+                                      style: theme.textTheme.px14,
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                            // Ход выполнения.
-                            if (state.declaration.actions.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 16),
-                                child: DeclarationActionsHistory(
-                                  actions: state.declaration.actions,
+                              // Ход выполнения.
+                              if (state.declaration.actions.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: DeclarationActionsHistory(
+                                    actions: state.declaration.actions,
+                                  ),
                                 ),
-                              ),
 
-                            // Документы.
-                            if (state.declaration.documents.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 24),
-                                child: DeclarationDocuments(
-                                  items: state.declaration.documents,
-                                  onTap: (i) {},
+                              // Документы.
+                              if (state.declaration.documents.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 24),
+                                  child: DeclarationDocuments(
+                                    items: state.declaration.documents,
+                                    onTap: (i) {},
+                                  ),
                                 ),
+
+                              // Дата и приоритет.
+                              DeclarationDateAndPriority(
+                                date: state.declaration.date,
+                                priority: state.declaration.priority,
                               ),
+                              const SizedBox(height: 24),
 
-                            // Дата и приоритет.
-                            DeclarationDateAndPriority(
-                              date: state.declaration.date,
-                              priority: state.declaration.priority,
-                            ),
-                            const SizedBox(height: 24),
-
-                            // Инициатор.
-                            if (state.declaration.initiatorName != null)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 24),
-                                child: DeclarationInitiator(
-                                  fullName: state.declaration.initiatorName!,
-                                  position:
-                                      state.declaration.initiatorPosition!,
-                                  imgLing: state.declaration.initiatorImage!,
+                              // Инициатор.
+                              if (state.declaration.initiatorName != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 24),
+                                  child: DeclarationInitiator(
+                                    fullName: state.declaration.initiatorName!,
+                                    position:
+                                        state.declaration.initiatorPosition!,
+                                    imgLing: state.declaration.initiatorImage!,
+                                  ),
                                 ),
+
+                              Divider(
+                                color: theme.brightness == Brightness.light
+                                    ? theme.black?.withOpacity(0.08)
+                                    : theme.textLight?.withOpacity(0.08),
+                                height: 1,
                               ),
+                              const SizedBox(height: 16),
 
-                            Divider(
-                              color: theme.brightness == Brightness.light
-                                  ? theme.black?.withOpacity(0.08)
-                                  : theme.textLight?.withOpacity(0.08),
-                              height: 1,
-                            ),
-                            const SizedBox(height: 16),
-
-                            // Подробная информация о заявлении.
-                            if (state.declaration.params.isNotEmpty)
-                              DeclarationData(data: state.declaration.params),
-                            const SizedBox(height: 32),
-                          ],
+                              // Подробная информация о заявлении.
+                              if (state.declaration.params.isNotEmpty)
+                                DeclarationData(data: state.declaration.params),
+                              const SizedBox(height: 32),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const DeclarationBottomSheet(),
-                  ],
-                ),
-              );
-            }
+                      const DeclarationBottomSheet(),
+                    ],
+                  ),
+                );
+              }
 
-            return const SizedBox();
-          },
+              return const SizedBox();
+            },
+          ),
+          // Отозвать заявление.
         ),
-        // Отозвать заявление.
       ),
     );
   }

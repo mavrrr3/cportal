@@ -1,6 +1,6 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_introduction.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_execution.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,30 +41,10 @@ class _DeclarationBottomSheetState extends State<DeclarationBottomSheet> {
         controller: _draggableScrollableController,
         expand: false,
         initialChildSize: 0.09,
-        maxChildSize: 0.94,
+        maxChildSize: 0.985,
         minChildSize: 0.09,
         builder: (context, scrollController) => Container(
-          decoration: BoxDecoration(
-            color: theme.cardColor,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(12),
-            ),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 4,
-                color: theme.brightness == Brightness.light
-                    ? theme.black!.withOpacity(0.04)
-                    : theme.black!.withOpacity(0.08),
-              ),
-              BoxShadow(
-                offset: const Offset(0, -4),
-                blurRadius: 8,
-                color: theme.brightness == Brightness.light
-                    ? theme.black!.withOpacity(0.06)
-                    : theme.black!.withOpacity(0.12),
-              ),
-            ],
-          ),
+          decoration: _getSheetDecoration(theme),
           child: SingleChildScrollView(
             controller: scrollController,
             child: Column(
@@ -82,6 +62,8 @@ class _DeclarationBottomSheetState extends State<DeclarationBottomSheet> {
                     ),
                   ),
                 ),
+
+                // Виджет, отображающий текущую позицию в карусели.
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
@@ -92,13 +74,15 @@ class _DeclarationBottomSheetState extends State<DeclarationBottomSheet> {
                         4,
                         (i) => Padding(
                           padding: EdgeInsets.only(right: i != 4 - 1 ? 8 : 0),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 25),
+                            curve: Curves.easeInOut,
                             width: 8,
                             height: 8,
                             decoration: BoxDecoration(
                               color: _currentIndex != i
                                   ? theme.text?.withOpacity(0.17)
-                                  : theme.red,
+                                  : theme.documentRed,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -107,27 +91,20 @@ class _DeclarationBottomSheetState extends State<DeclarationBottomSheet> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height - 190,
-                    child: PageView.builder(
-                      itemCount: 4,
-                      onPageChanged: (value) {
-                        setState(() {
-                          _currentIndex = value;
-                        });
-                      },
-                      itemBuilder: (context, i) => DeclarationIntroduction(
-                        onTapResults: () {
-                          _draggableScrollableController.animateTo(
-                            0,
-                            duration: const Duration(milliseconds: 350),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        onDone: () {},
-                      ),
+
+                // Контент карусели [Задачи].
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 190,
+                  child: PageView.builder(
+                    itemCount: 4,
+                    onPageChanged: (value) {
+                      setState(() {
+                        _currentIndex = value;
+                      });
+                    },
+                    itemBuilder: (context, i) => const Padding(
+                      padding: EdgeInsets.fromLTRB(16, 12, 16, 16),
+                      child: DeclarationExecution(),
                     ),
                   ),
                 ),
@@ -139,9 +116,45 @@ class _DeclarationBottomSheetState extends State<DeclarationBottomSheet> {
     );
   }
 
+  BoxDecoration _getSheetDecoration(CustomTheme theme) {
+    return BoxDecoration(
+      color: theme.cardColor,
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(12),
+      ),
+      boxShadow: [
+        BoxShadow(
+          blurRadius: 4,
+          color: theme.brightness == Brightness.light
+              ? theme.black!.withOpacity(0.04)
+              : theme.black!.withOpacity(0.08),
+        ),
+        BoxShadow(
+          offset: const Offset(0, -4),
+          blurRadius: 8,
+          color: theme.brightness == Brightness.light
+              ? theme.black!.withOpacity(0.06)
+              : theme.black!.withOpacity(0.12),
+        ),
+      ],
+    );
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
   }
 }
+
+// Ознакомление
+// DeclarationIntroduction(
+//                         onTapResults: () {
+//                           _draggableScrollableController.animateTo(
+//                             0,
+//                             duration: const Duration(milliseconds: 350),
+//                             curve: Curves.easeInOut,
+//                           );
+//                         },
+//                         onDone: () {},
+//                       ),

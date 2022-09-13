@@ -1,9 +1,10 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class Button {
   // ignore: long-parameter-list
-  static ButtonStyleButton factory(
+  static Widget factory(
     BuildContext context, {
     required ButtonEnum type,
     required String text,
@@ -59,6 +60,27 @@ class Button {
             color: color ?? theme.primary,
           ),
         );
+      case ButtonEnum.dottedLine:
+        return DottedBorder(
+          color: color ?? theme.primary!,
+          strokeWidth: 2,
+          dashPattern: const [4, 4],
+          radius: const Radius.circular(12),
+          borderType: BorderType.RRect,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: size,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: onTap,
+            child: _TextForButton(
+              text,
+              color: color ?? theme.primary,
+            ),
+          ),
+        );
     }
   }
 }
@@ -67,6 +89,7 @@ enum ButtonEnum {
   filled,
   outlined,
   text,
+  dottedLine,
 }
 
 class _TextForButton extends StatelessWidget {

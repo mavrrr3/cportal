@@ -9,6 +9,7 @@ final light = CustomTheme(
   black: const Color(0xFF000000),
   primary: const Color(0xFF5284DA),
   red: const Color(0xFFDF292F),
+  documentRed: const Color(0xFFDF292F),
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
   lightRedPin: const Color(0xFFEEDCDD),
@@ -32,6 +33,7 @@ final dark = CustomTheme(
   black: const Color(0xFF000000),
   primary: const Color(0xFF2A85FF),
   red: const Color(0xFFDF292F),
+  documentRed: const Color(0xFFFF6A55),
   green: const Color(0xFF559935),
   yellow: const Color(0xFFFFBC3B),
   lightRedPin: const Color(0xFFFF6A55).withOpacity(0.17),
@@ -86,7 +88,7 @@ CustomTextTheme _getTextTheme({required Color textColor}) => CustomTextTheme(
         fontWeight: FontWeight.w400,
         color: textColor,
         letterSpacing: 0.5,
-      ),
+      ).copyWith(leadingDistribution: TextLeadingDistribution.even),
 
       px17Bold: GoogleFonts.roboto(
         fontSize: 17,
@@ -189,6 +191,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
   final Color? barrierColor;
   final Color? progressDone;
   final Color? allertMessage;
+  final Color? documentRed;
 
   CustomTheme({
     required this.textTheme,
@@ -210,6 +213,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     this.barrierColor,
     this.progressDone,
     this.allertMessage,
+    this.documentRed,
   });
 
   @override
@@ -232,6 +236,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     Color? barrierColor,
     Color? progressDone,
     Color? allertMessage,
+    Color? documentRed,
     CustomTextTheme? textTheme,
   }) {
     return CustomTheme(
@@ -252,6 +257,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       barrierColor: barrierColor ?? this.barrierColor,
       progressDone: progressDone ?? this.progressDone,
       allertMessage: allertMessage ?? this.allertMessage,
+      documentRed: documentRed ?? this.documentRed,
       textTheme: textTheme ?? this.textTheme,
     );
   }
@@ -290,6 +296,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
       progressDone: Color.lerp(progressDone, other.progressDone, t),
       allertMessage: Color.lerp(allertMessage, other.allertMessage, t),
+      documentRed: Color.lerp(documentRed, other.documentRed, t),
       textTheme: textTheme,
     );
   }

@@ -75,7 +75,10 @@ class DeclarationAction extends StatelessWidget {
                 : CrossAxisAlignment.center,
             children: [
               const SizedBox(width: 6),
-              SvgPicture.asset(_getIconPath(item.status), width: 20),
+              _getIcon(
+                theme,
+                item.status,
+              ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -131,7 +134,7 @@ class DeclarationAction extends StatelessWidget {
       return Text(
         '${item.description} ${localizedStrings.taskExpired} ${FormatterUtil.expiredDays(localizedStrings: localizedStrings, date: item.descriptionDate)}',
         style: theme.textTheme.px12.copyWith(
-          color: theme.red,
+          color: theme.documentRed,
           leadingDistribution: TextLeadingDistribution.even,
         ),
       );
@@ -143,18 +146,28 @@ class DeclarationAction extends StatelessWidget {
     );
   }
 
-  String _getIconPath(TaskStatusEnum taskStatus) {
+  Widget _getIcon(CustomTheme theme, TaskStatusEnum taskStatus) {
     switch (taskStatus) {
       case TaskStatusEnum.expired:
-        return ImageAssets.stepExpired;
+        return SvgPicture.asset(
+          ImageAssets.stepExpired,
+          width: 20,
+          color: theme.documentRed,
+        );
       case TaskStatusEnum.finished:
-        return ImageAssets.stepDone;
+        return SvgPicture.asset(ImageAssets.stepDone, width: 20);
       case TaskStatusEnum.finishedWithComment:
-        return ImageAssets.stepDoneWithComment;
+        return SvgPicture.asset(ImageAssets.stepDone, width: 20);
+
       case TaskStatusEnum.notAgreed:
-        return ImageAssets.stepDeclined;
+        return SvgPicture.asset(
+          ImageAssets.stepDeclined,
+          width: 20,
+          color: theme.documentRed,
+        );
+
       default:
-        return ImageAssets.stepInProgress;
+        return SvgPicture.asset(ImageAssets.stepInProgress, width: 20);
     }
   }
 
