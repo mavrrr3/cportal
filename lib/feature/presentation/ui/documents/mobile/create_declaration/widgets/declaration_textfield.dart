@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class DeclarationTextField extends StatefulWidget {
   final TextEditingController controller;
   final String title;
+  final FocusNode? focusNode;
   const DeclarationTextField({
     Key? key,
     required this.controller,
     required this.title,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -21,9 +23,11 @@ class _DeclarationTextFieldState extends State<DeclarationTextField> {
   void initState() {
     super.initState();
     focusNode = FocusNode();
-    focusNode.addListener(() {
-      setState(() {});
-    });
+    if (widget.focusNode == null) {
+      focusNode.addListener(() {
+        setState(() {});
+      });
+    }
   }
 
   @override
@@ -49,7 +53,7 @@ class _DeclarationTextFieldState extends State<DeclarationTextField> {
             height: 48,
             child: TextFormField(
               autocorrect: false,
-              focusNode: focusNode,
+              focusNode: widget.focusNode ?? focusNode,
               controller: widget.controller,
               style: theme.textTheme.px16.copyWith(
                 leadingDistribution: TextLeadingDistribution.even,

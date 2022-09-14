@@ -20,6 +20,7 @@ class DeclarationIntroduction extends StatelessWidget {
     final localizedStrings = AppLocalizations.of(context)!;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         DeclarationHeadline(
           title: localizedStrings.introductionNeeds,

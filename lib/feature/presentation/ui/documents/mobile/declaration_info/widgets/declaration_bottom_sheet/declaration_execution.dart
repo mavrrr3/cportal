@@ -29,11 +29,14 @@ class _DeclarationExecutionState extends State<DeclarationExecution> {
     final localizedStrings = AppLocalizations.of(context)!;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Заголовок и описание.
         DeclarationExpandbleContent(
           title: localizedStrings.executionNeeds,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Идейные соображения высшего порядка, а также граница обучения кадров играет определяющее значение для направлений прогрессивного развития. Предварительные выводы неутешительны: семантический разбор внешних противодействий требует от нас анализа экономической целесообразности принимаемых решений. Как принято считать, явные признаки победы институционализации.',
