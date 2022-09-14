@@ -19,8 +19,7 @@ class ConnectingDevicesScreen extends StatefulWidget {
   const ConnectingDevicesScreen({Key? key}) : super(key: key);
 
   @override
-  State<ConnectingDevicesScreen> createState() =>
-      _ConnectingDevicesScreenState();
+  State<ConnectingDevicesScreen> createState() => _ConnectingDevicesScreenState();
 }
 
 class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
@@ -39,8 +38,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
       title: localizedStrings.devices,
       child: BlocBuilder<ConnectingDevicesBloc, ConnectingDevicesState>(
         builder: (context, state) {
-          if (state is ConnectingDevicesLoaded &&
-              state.connectingDevices.isNotEmpty) {
+          if (state is ConnectingDevicesLoaded && state.connectingDevices.isNotEmpty) {
             final mainDevice = state.connectingDevices.first;
 
             return CustomScrollView(
@@ -53,9 +51,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                       const SizedBox(height: 20),
                       Center(
                         child: SvgPicture.asset(
-                          theme.brightness == Brightness.light
-                              ? ImageAssets.monitorLight
-                              : ImageAssets.monitorDark,
+                          theme.brightness == Brightness.light ? ImageAssets.monitorLight : ImageAssets.monitorDark,
                         ),
                       ),
                       Center(
@@ -82,9 +78,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                             NavigationRouteNames.qrScanner,
                             // ignore: avoid_types_on_closure_parameters
                             extra: (String scannedData) {
-                              context
-                                  .read<ConnectingDevicesBloc>()
-                                  .add(SendScannedData(scannedData));
+                              context.read<ConnectingDevicesBloc>().add(SendScannedData(scannedData));
                               context.pop();
                             },
                           ),
@@ -93,8 +87,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Text(
                                 localizedStrings.connectDevice,
-                                style: theme.textTheme.px16Bold
-                                    .copyWith(color: theme.white),
+                                style: theme.textTheme.px16Bold.copyWith(color: theme.white),
                               ),
                             ),
                           ),
@@ -110,8 +103,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                         child: Center(
                           child: Text(
                             localizedStrings.endOtherSessions,
-                            style: theme.textTheme.px16Bold
-                                .copyWith(color: theme.red),
+                            style: theme.textTheme.px16Bold.copyWith(color: theme.red),
                           ),
                         ),
                       ),
@@ -143,8 +135,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                     (context, index) {
                       final deviceInfo = state.connectingDevices[index + 1];
                       // Last element.
-                      final isLast =
-                          index == state.connectingDevices.length - 2;
+                      final isLast = index == state.connectingDevices.length - 2;
 
                       return Column(
                         children: [
@@ -154,8 +145,7 @@ class _ConnectingDevicesScreenState extends State<ConnectingDevicesScreen> {
                               deviceName: deviceInfo.device,
                               osVersion: deviceInfo.deviceDescription,
                               location: deviceInfo.location,
-                              connectingStatus: DateTimeUtil.getFormattedDate(
-                                  deviceInfo.lastConnection),
+                              connectingStatus: DateTimeUtil.getFormattedDate(deviceInfo.lastConnection),
                               icon: DeviceIcon(platform: deviceInfo.platform),
                             ),
                           ),

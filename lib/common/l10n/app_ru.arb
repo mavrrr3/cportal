@@ -154,6 +154,10 @@
     "days2": "дня",
     "days3": "дней",
     "taskExpired": "задача просрочена",
-    "comment": "Комментарий", 
-    "content": "Содержание"
+    "comment": "Комментарий",
+    "content": "Содержание",
+    "salary": "Зарплата",
+    "salarySheet": "Расчетный лист",
+    "taxDeductions": "Вычеты",
+    "withoutNdfl": "без учёта НДФЛ"
 }

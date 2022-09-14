@@ -32,12 +32,10 @@ class SingleNewsArticleWebTablet extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SingleNewsArticleWebTablet> createState() =>
-      _SingleNewsArticleWebTabletState();
+  State<SingleNewsArticleWebTablet> createState() => _SingleNewsArticleWebTabletState();
 }
 
-class _SingleNewsArticleWebTabletState
-    extends State<SingleNewsArticleWebTablet> {
+class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
@@ -70,10 +68,7 @@ class _SingleNewsArticleWebTabletState
                           : zeroWidthCondition(context)
                               ? const EdgeInsets.only(left: 40, top: 20)
                               : EdgeInsets.only(
-                                  left: customPadding
-                                          .webTabletPaddingWithRightBloc()
-                                          .horizontal /
-                                      2,
+                                  left: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
                                   top: 20,
                                 ),
                       child: Column(
@@ -86,12 +81,9 @@ class _SingleNewsArticleWebTabletState
                             },
                             child: Row(
                               children: [
-                                if (zeroWidthCondition(context) &&
-                                    width > 514) ...[
+                                if (zeroWidthCondition(context) && width > 514) ...[
                                   BurgerMenuButton(onTap: () {
-                                    context
-                                        .read<NavigationBarBloc>()
-                                        .add(const NavBarVisibilityEvent(
+                                    context.read<NavigationBarBloc>().add(const NavBarVisibilityEvent(
                                           index: 1,
                                           isActive: true,
                                         ));
@@ -121,14 +113,8 @@ class _SingleNewsArticleWebTabletState
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
-                            left: customPadding
-                                    .webTabletPaddingWithRightBloc()
-                                    .horizontal /
-                                2,
-                            right: customPadding
-                                    .webTabletPaddingWithRightBloc()
-                                    .horizontal /
-                                2,
+                            left: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
+                            right: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
                           ),
                           child: SizedBox(
                             width: customPadding.widthContentWithRightBloc(),
@@ -153,8 +139,7 @@ class _SingleNewsArticleWebTabletState
                                 ),
                                 SizePadding.height12px,
                                 Text(
-                                  FormatterUtil.fullDateWithoutSeconds(
-                                      date: widget.article.date),
+                                  FormatterUtil.fullDateWithoutSeconds(date: widget.article.date),
                                   style: theme.textTheme.px12,
                                 ),
                                 SizePadding.height24px,
@@ -163,8 +148,7 @@ class _SingleNewsArticleWebTabletState
                                   widget.article.content.first,
                                 ),
                                 const SizedBox(height: 40),
-                                if (widget.articles != null &&
-                                    zeroWidthCondition(context))
+                                if (widget.articles != null && zeroWidthCondition(context))
                                   Wrap(
                                     runSpacing: 16,
                                     spacing: 16,
@@ -172,10 +156,8 @@ class _SingleNewsArticleWebTabletState
                                       AppConfig.numberRecomendedArticlesWeb,
                                       (i) {
                                         return GestureDetector(
-                                          onTap: () =>
-                                              GoRouter.of(context).pushNamed(
-                                            NavigationRouteNames
-                                                .newsArticlePage,
+                                          onTap: () => GoRouter.of(context).pushNamed(
+                                            NavigationRouteNames.newsArticlePage,
                                             params: {
                                               'fid': articlesToRecomendations(
                                                 widget.article.id,
@@ -218,8 +200,7 @@ class _SingleNewsArticleWebTabletState
                                       },
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 20, right: 32),
+                                      padding: const EdgeInsets.only(bottom: 20, right: 32),
                                       child: NewsCardSimilarItem(
                                         width: 312,
                                         height: 152,

@@ -62,6 +62,7 @@ abstract class NavigationRouteNames {
   static const declarationInfo = 'declaration_info';
   static const taskInfo = 'task_info';
   static const devices = 'devices';
+  static const salary = 'salary';
 }
 
 final GoRouter router = GoRouter(
@@ -250,6 +251,13 @@ final GoRouter router = GoRouter(
         child: ProfilePage(),
       ),
       routes: [
+        // GoRoute(
+        //   name: NavigationRouteNames.salary,
+        //   path: 'salary',
+        //   pageBuilder: (context, state) => const MaterialPage(
+        //     child: SalaryScreen(),
+        //   ),
+        // ),
         GoRoute(
           name: NavigationRouteNames.devices,
           path: 'devices',
