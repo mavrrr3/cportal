@@ -3,7 +3,8 @@ import 'package:cportal_flutter/feature/data/models/connecting_devices/connectin
 import 'package:cportal_flutter/feature/data/models/connecting_devices/connecting_devices_response.dart';
 import 'package:dio/dio.dart';
 
-class ConnectingDevicesRemoteDataSource extends IConnectingDevicesRemoteDataSource {
+class ConnectingDevicesRemoteDataSource
+    extends IConnectingDevicesRemoteDataSource {
   final Dio _dio;
 
   ConnectingDevicesRemoteDataSource(this._dio);

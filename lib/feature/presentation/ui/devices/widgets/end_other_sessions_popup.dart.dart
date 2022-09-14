@@ -70,7 +70,9 @@ class EndOtherSessionsPopup extends StatelessWidget {
                   const SizedBox(width: 8),
                   TextButton(
                     onPressed: () {
-                      context.read<ConnectingDevicesBloc>().add(EndOtherSessions());
+                      context
+                          .read<ConnectingDevicesBloc>()
+                          .add(EndOtherSessions());
                       Navigator.of(context).pop();
                     },
                     style: TextButton.styleFrom(

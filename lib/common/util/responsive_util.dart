@@ -87,7 +87,9 @@ class ResponsiveUtil {
         ? widthContentWithRightBloc()
         : zeroWidthCondition(context)
             ? widthContentWithRightBloc() + 64
-            : widthContentWithRightBloc() + webTabletPaddingWithRightBloc().horizontal / 2 + 398;
+            : widthContentWithRightBloc() +
+                webTabletPaddingWithRightBloc().horizontal / 2 +
+                398;
   }
 
   EdgeInsetsGeometry getHorizontalPadding() {

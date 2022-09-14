@@ -3,7 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 class FormatterUtil {
-  static int pfoneWithoutMask({required String phone}) => int.parse(phone.replaceAll(
+  static int pfoneWithoutMask({required String phone}) =>
+      int.parse(phone.replaceAll(
         RegExp('[^0-9]'),
         '',
       ));

@@ -92,15 +92,13 @@ class _EnterPinAreaState extends State<EnterPinArea> {
             if (widget.isDesktop)
               PinCodeDesktopInput(
                 onCompleted: (pinCode) =>
-                    authBloc.add(LogInWithPinCode( pinCode)),
+                    authBloc.add(LogInWithPinCode(pinCode)),
                 forceErrorState: state is WrongPinCode,
                 codeController: widget.pinController,
                 codeFocusNode: widget.pinFocusNode,
               )
             else
               MobilePinCodeField(controller: widget.pinController),
-
-            
           ],
         );
       },

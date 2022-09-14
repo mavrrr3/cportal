@@ -46,7 +46,9 @@ class PinCodeArea extends StatelessWidget {
                   SizedBox(
                     height: 24,
                     child: Text(
-                      state is PinCodeInitialState ? AppLocalizations.of(context)!.itWillBeNeedToEnter : '',
+                      state is PinCodeInitialState
+                          ? AppLocalizations.of(context)!.itWillBeNeedToEnter
+                          : '',
                       style: theme.textTheme.px14.copyWith(
                         color: theme.text,
                         height: 1.71,
@@ -59,7 +61,9 @@ class PinCodeArea extends StatelessWidget {
                     child: SizedBox(
                       height: 20,
                       child: Text(
-                        state is PinCodeNotMatch ? AppLocalizations.of(context)!.pinNotCorrect : '',
+                        state is PinCodeNotMatch
+                            ? AppLocalizations.of(context)!.pinNotCorrect
+                            : '',
                         style: theme.textTheme.px14.copyWith(
                           color: theme.red,
                         ),
@@ -76,7 +80,9 @@ class PinCodeArea extends StatelessWidget {
                 codeController: pinController,
                 codeFocusNode: pinFocusNode,
                 onCompleted: (value) {
-                  pinCodeBloc.add(state is PinCodeEditing ? RepeatPinCode(value) : CreatePinCode(value));
+                  pinCodeBloc.add(state is PinCodeEditing
+                      ? RepeatPinCode(value)
+                      : CreatePinCode(value));
                 },
               )
             else
@@ -85,7 +91,9 @@ class PinCodeArea extends StatelessWidget {
                 pinCodeController: pinController,
                 pinCodeFocusNode: pinFocusNode,
                 onCompleted: (value) {
-                  pinCodeBloc.add(state is PinCodeEditing ? RepeatPinCode(value) : CreatePinCode(value));
+                  pinCodeBloc.add(state is PinCodeEditing
+                      ? RepeatPinCode(value)
+                      : CreatePinCode(value));
                 },
               ),
           ],

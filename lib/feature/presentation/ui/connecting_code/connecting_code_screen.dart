@@ -23,7 +23,9 @@ class _ConnectingCodeScreenState extends State<ConnectingCodeScreen> {
   void initState() {
     codeController.addListener(() {
       if (codeController.text.length == 6) {
-        context.read<ConnectingCodeBloc>().add(LogInWithConnectingCode(codeController.text));
+        context
+            .read<ConnectingCodeBloc>()
+            .add(LogInWithConnectingCode(codeController.text));
       }
     });
 
@@ -38,7 +40,9 @@ class _ConnectingCodeScreenState extends State<ConnectingCodeScreen> {
           context.goNamed(NavigationRouteNames.createPin);
         } else if (state is ConnectingCodeQrReadSuccess) {
           codeController.text = state.connectingCode;
-          context.read<ConnectingCodeBloc>().add(LogInWithConnectingCode(state.connectingCode));
+          context
+              .read<ConnectingCodeBloc>()
+              .add(LogInWithConnectingCode(state.connectingCode));
         }
       },
       child: ResponsiveWrapper.of(context).isLargerThan(TABLET)

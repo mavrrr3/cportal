@@ -9,16 +9,15 @@ class DeclarationTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.title,
-    
     this.maskType = MaskType.text,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
-    
+
     return Container(
-    width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         color: theme.textLight,

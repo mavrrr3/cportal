@@ -18,7 +18,8 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
       'platform': loginParams.platform.name,
       'location': Uri.encodeComponent(loginParams.location ?? ''),
     };
-    final result = await _makeRequest(queryParameters: queryParameters, method: 'GET');
+    final result =
+        await _makeRequest(queryParameters: queryParameters, method: 'GET');
 
     return ResponseUserModel.fromJson(result.data!).response;
   }

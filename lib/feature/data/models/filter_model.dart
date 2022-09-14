@@ -29,7 +29,9 @@ class FilterModel extends FilterEntity {
         headline: json['headline'] as String,
         isActive: false,
         items: List<FilterItemModel>.from(
-          json['items'].map((dynamic x) => FilterItemModel.fromJson(x as String)) as Iterable<dynamic>,
+          json['items']
+                  .map((dynamic x) => FilterItemModel.fromJson(x as String))
+              as Iterable<dynamic>,
         ),
       );
 }
@@ -66,9 +68,12 @@ class FilterResponseModel extends FilterResponseEntity {
           filters: filters,
         );
 
-  factory FilterResponseModel.fromJson(Map<String, dynamic> json) => FilterResponseModel(
+  factory FilterResponseModel.fromJson(Map<String, dynamic> json) =>
+      FilterResponseModel(
         filters: List<FilterModel>.from(
-          json['response'].map((dynamic x) => FilterModel.fromJson(x as Map<String, dynamic>)) as Iterable<dynamic>,
+          json['response'].map((dynamic x) =>
+                  FilterModel.fromJson(x as Map<String, dynamic>))
+              as Iterable<dynamic>,
         ),
       );
 }

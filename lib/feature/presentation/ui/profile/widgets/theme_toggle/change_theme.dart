@@ -130,7 +130,9 @@ class _ChangeThemeState extends State<ChangeTheme> {
                       return Text(
                         _getThemeButtonTitle(themeMode),
                         style: theme.textTheme.px12.copyWith(
-                          color: theme.brightness == Brightness.light ? theme.cardColor : theme.text,
+                          color: theme.brightness == Brightness.light
+                              ? theme.cardColor
+                              : theme.text,
                         ),
                       );
                     },

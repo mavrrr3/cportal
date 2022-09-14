@@ -46,7 +46,8 @@ class TasksTab extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 128),
                   child: Text(
                     localizedStrings.emptyTasks,
-                    style: theme.textTheme.px22.copyWith(color: theme.textLight),
+                    style:
+                        theme.textTheme.px22.copyWith(color: theme.textLight),
                     textAlign: TextAlign.center,
                   ),
                 );

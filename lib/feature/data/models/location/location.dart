@@ -9,7 +9,8 @@ class Location {
 
   Location(this.country, this.city);
 
-  factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      _$LocationFromJson(json);
 
   String get fullLocation => '$city, $country';
 }

@@ -1,8 +1,13 @@
+// ignore_for_file: avoid_types_on_closure_parameters
+
 import 'dart:async';
+import 'dart:developer';
 import 'package:cportal_flutter/core/platform/i_network_info.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/contacts_bloc/contacts_state.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filter_visibility_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_content.dart';
 import 'package:cportal_flutter/feature/presentation/ui/contacts_page/widgets/contacts_sliver_app_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/loader.dart';
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/only_selected_filters_service.dart';
@@ -14,6 +19,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_eve
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_state.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_mobile.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/filter/filter_web.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -41,6 +47,9 @@ class _ContactsPageState extends State<ContactsPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final isLoading = context
+        .select((ContactsBloc bloc) => bloc.state is ContactsLoadingState);
+    log(isLoading.toString());
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -69,6 +78,9 @@ class _ContactsPageState extends State<ContactsPage> {
                 ],
               ),
             ),
+            if (isLoading && !kIsWeb) ...[
+              const Loader(),
+            ],
 
             // Подложка фильтра Web.
             BlocBuilder<FilterVisibilityBloc, FilterVisibilityState>(
@@ -153,16 +165,21 @@ class _ContactsPageState extends State<ContactsPage> {
 
   // Кнопка [Очистить] фильтр.
   void _onClearFilter() {
-    context.read<FilterContactsBloc>().add(FilterRemoveAllEvent());
-    BlocProvider.of<ContactsBloc>(
-      context,
-      listen: false,
-    ).add(
-      const FetchContactsEvent(isFirstFetch: true),
-    );
-    context
-        .read<FilterVisibilityBloc>()
-        .add(const FilterChangeVisibilityEvent(isActive: false));
+    final state = context.read<FilterContactsBloc>().state;
+    if (state is FilterLoadedState) {
+      if (state.contactsFilters.isNotEmpty) {
+        context.read<FilterContactsBloc>().add(FilterRemoveAllEvent());
+        BlocProvider.of<ContactsBloc>(
+          context,
+          listen: false,
+        ).add(
+          const FetchContactsEvent(isFirstFetch: true),
+        );
+        context
+            .read<FilterVisibilityBloc>()
+            .add(const FilterChangeVisibilityEvent(isActive: false));
+      }
+    }
   }
 
   void _onSearchInput(String text) {

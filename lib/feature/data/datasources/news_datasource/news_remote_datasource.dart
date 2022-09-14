@@ -14,7 +14,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchNews(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page';
 
     try {
       final response = await _dio.fetch<Map<String, dynamic>>(
@@ -32,7 +33,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchNewsByCategory(int page, String category) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/news/1.0/?page=$page&category=$category';
 
     try {
       final response = await _dio.fetch<Map<String, dynamic>>(
@@ -50,7 +52,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchQuestions(int page) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page';
 
     try {
       final response = await _dio.fetch<Map<String, dynamic>>(
@@ -70,7 +73,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
 
   @override
   Future<NewsModel> fetchQuestionsByCategory(int page, String category) async {
-    final String baseUrl = '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page&category=$category';
+    final String baseUrl =
+        '${AppConfig.apiUri}/cportal/hs/api/faq/1.0/?page=$page&category=$category';
     log('page=$page category=$category baseUrl $baseUrl');
 
     try {
@@ -99,7 +103,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         ),
       );
 
-      return ArticleModel.fromJson(response.data!['response'] as Map<String, dynamic>);
+      return ArticleModel.fromJson(
+          response.data!['response'] as Map<String, dynamic>);
     } on ServerException {
       throw ServerFailure();
     }
@@ -117,7 +122,8 @@ class NewsRemoteDataSource implements INewsRemoteDataSource {
         ),
       );
 
-      return ArticleModel.fromJson(response.data!['response'] as Map<String, dynamic>);
+      return ArticleModel.fromJson(
+          response.data!['response'] as Map<String, dynamic>);
     } on ServerException {
       throw ServerFailure();
     }

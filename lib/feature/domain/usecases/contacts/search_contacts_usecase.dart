@@ -6,7 +6,8 @@ import 'package:cportal_flutter/feature/domain/repositories/i_contacts_repositor
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class SearchContactsUseCase extends IUseCase<List<ProfileEntity>, SearchContactsParams> {
+class SearchContactsUseCase
+    extends IUseCase<List<ProfileEntity>, SearchContactsParams> {
   final IContactsRepository contactsRepository;
 
   SearchContactsUseCase(this.contactsRepository);

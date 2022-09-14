@@ -16,7 +16,9 @@ class NewEmployeeLocalDataSource implements INewEmployeeLocalDataSource {
 
     final slides = box.get('newEmployee');
 
-    if (kDebugMode) log('NewEmployeeModel список из кэша ${slides!.length} элементов');
+    if (kDebugMode) {
+      log('NewEmployeeModel список из кэша ${slides!.length} элементов');
+    }
 
     await Hive.box<List<NewEmployeeModel>>('newEmployee').close();
 
