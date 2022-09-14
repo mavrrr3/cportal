@@ -81,18 +81,12 @@ final GoRouter router = GoRouter(
     final isGoingToConnectingQr = state.subloc == connectingQrLocation;
     final isGoingToQrScanner = state.subloc == qrScannerLocation;
     final isGoingToConnectingCodeInfo =
-        state.subloc == connectingInfoLocation ||
-            state.subloc == connectingInfoMobileLocation;
+        state.subloc == connectingInfoLocation || state.subloc == connectingInfoMobileLocation;
 
-    final isAuthenticated =
-        authService.authStatus == AuthenticationStatus.authenticated;
-    final isUnAuthenticated =
-        authService.authStatus == AuthenticationStatus.unauthenticated;
+    final isAuthenticated = authService.authStatus == AuthenticationStatus.authenticated;
+    final isUnAuthenticated = authService.authStatus == AuthenticationStatus.unauthenticated;
 
-    if ((isGoingToConnectingQr ||
-            isGoingToQrScanner ||
-            isGoingToConnectingCodeInfo ||
-            isGoingToConnectingCodeInfo) &&
+    if ((isGoingToConnectingQr || isGoingToQrScanner || isGoingToConnectingCodeInfo || isGoingToConnectingCodeInfo) &&
         !isAuthenticated) {
       return null;
     }
@@ -127,9 +121,7 @@ final GoRouter router = GoRouter(
             barrierDismissible: true,
             opaque: false,
             child: const ConnectingCodeInfoWebPopup(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -185,6 +177,15 @@ final GoRouter router = GoRouter(
           webMenuIndex: 0,
         ),
       ),
+      routes: [
+        GoRoute(
+          name: NavigationRouteNames.onBoardingStart,
+          path: 'onboarding_start',
+          pageBuilder: (context, state) => const NoTransitionPage<void>(
+            child: OnBoardingWelcome(),
+          ),
+        ),
+      ],
     ),
     GoRoute(
       name: NavigationRouteNames.enrollFaceId,
@@ -267,13 +268,6 @@ final GoRouter router = GoRouter(
       ],
     ),
     GoRoute(
-      name: NavigationRouteNames.onBoardingStart,
-      path: '/onboarding_start',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-        child: OnBoardingWelcome(),
-      ),
-    ),
-    GoRoute(
       name: NavigationRouteNames.onboarding,
       path: '/onboarding',
       pageBuilder: (context, state) => NoTransitionPage<void>(
@@ -315,9 +309,7 @@ final GoRouter router = GoRouter(
           pageBuilder: (context, state) => CustomTransitionPage(
             key: state.pageKey,
             child: const CreateDeclarationPage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -335,9 +327,7 @@ final GoRouter router = GoRouter(
               id: state.params['fid']!,
               isTask: false,
             ),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
               opacity: CurvedAnimation(
                 parent: animation,
                 curve: Curves.easeOut,
@@ -366,8 +356,7 @@ final GoRouter router = GoRouter(
           id: state.params['fid']!,
           isTask: true,
         ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
+        transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
           opacity: CurvedAnimation(
             parent: animation,
             curve: Curves.easeOut,
