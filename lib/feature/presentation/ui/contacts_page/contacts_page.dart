@@ -72,8 +72,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
                   ContactsContent(
                     scrollController: _scrollController,
-                    sendFilters: () =>
-                        _sendFilters(context, isFromRemove: true),
+                    sendFilters: () => _sendFilters(context),
                   ),
                 ],
               ),
@@ -216,7 +215,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   // Получение контактов по выбранным фильтрам.
-  void _sendFilters(BuildContext context, {bool isFromRemove = false}) {
+  void _sendFilters(BuildContext context) {
     final state = context.read<FilterContactsBloc>().state;
     if (state is FilterLoadedState) {
       final onlySelectedFilters =
@@ -227,11 +226,9 @@ class _ContactsPageState extends State<ContactsPage> {
               SearchContactsEvent(query: '', filters: onlySelectedFilters),
             );
       } else {
-        if (isFromRemove) {
-          context
-              .read<ContactsBloc>()
-              .add(const FetchContactsEvent(isFirstFetch: true));
-        }
+        context
+            .read<ContactsBloc>()
+            .add(const FetchContactsEvent(isFirstFetch: true));
       }
     }
   }
