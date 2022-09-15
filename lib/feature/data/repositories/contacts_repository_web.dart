@@ -32,7 +32,8 @@ class ContactsRepositoryWeb implements IContactsRepository {
     List<FilterEntity> filters,
   ) async {
     try {
-      final remoteContacts = await remoteDataSource.fetchContactsBySearch(query, filters);
+      final remoteContacts =
+          await remoteDataSource.fetchContactsBySearch(query, filters);
 
       return Right(remoteContacts);
     } on ServerException {

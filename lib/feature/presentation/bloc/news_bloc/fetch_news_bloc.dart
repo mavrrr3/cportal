@@ -186,7 +186,8 @@ class NewsLoaded extends FetchNewsState {
   });
 
   ArticleEntity? singleArticle(String id) {
-    final List<ArticleEntity> newsListWithId = articles.where((element) => element.id == id).toList();
+    final List<ArticleEntity> newsListWithId =
+        articles.where((element) => element.id == id).toList();
 
     return newsListWithId.isEmpty ? null : newsListWithId.first;
   }

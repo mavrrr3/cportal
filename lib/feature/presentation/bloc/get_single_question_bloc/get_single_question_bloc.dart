@@ -8,10 +8,12 @@ import 'package:cportal_flutter/core/error/failure.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 
-class GetSingleQuestionBloc extends Bloc<GetSingleQuestionEvent, GetSingleQuestionState> {
+class GetSingleQuestionBloc
+    extends Bloc<GetSingleQuestionEvent, GetSingleQuestionState> {
   final GetSingleQuestionUseCase getSingleQuestion;
 
-  GetSingleQuestionBloc({required this.getSingleQuestion}) : super(GetSingleQuestionEmptyState()) {
+  GetSingleQuestionBloc({required this.getSingleQuestion})
+      : super(GetSingleQuestionEmptyState()) {
     _setupEvents();
   }
 

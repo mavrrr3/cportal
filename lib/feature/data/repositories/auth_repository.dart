@@ -31,7 +31,8 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> logInWithConnectingCode({required String connectingCode}) async {
+  Future<Either<Failure, UserEntity>> logInWithConnectingCode(
+      {required String connectingCode}) async {
     try {
       final deviceInfo = await _deviceInfoService.getDeviceInfo();
       final location = await _locationRemoteDataSource.getLocation();

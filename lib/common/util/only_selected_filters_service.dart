@@ -11,7 +11,8 @@ class OnlySelectedFiltersService {
         }
       }
       if (selectedItems.isNotEmpty) {
-        onlySelected.add(FilterEntity(headline: filter.headline, items: selectedItems));
+        onlySelected
+            .add(FilterEntity(headline: filter.headline, items: selectedItems));
       }
     }
 

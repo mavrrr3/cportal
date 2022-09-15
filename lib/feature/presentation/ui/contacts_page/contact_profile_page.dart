@@ -50,31 +50,27 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
   Widget build(BuildContext context) {
     final CustomTheme theme = Theme.of(context).extension<CustomTheme>()!;
 
-    return BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
-      builder: (context, state) {
-        if (state is GetSingleProfileLoadingState) {
-          return Scaffold(
-            backgroundColor: theme.background,
-            body: const Center(
-              child: PlatformProgressIndicator(),
-            ),
-          );
+    return Swipe(
+      onSwipeRight: () {
+        if (kIsWeb) {
+          _previousContentInit(context);
         }
+        _onBack(context);
+      },
+      child: Scaffold(
+        backgroundColor: theme.background,
+        body: BlocBuilder<GetSingleProfileBloc, GetSingleProfileState>(
+          builder: (context, state) {
+            if (state is GetSingleProfileLoadingState) {
+              return const Center(
+                child: PlatformProgressIndicator(),
+              );
+            }
 
-        if (state is GetSingleProfileLoadedState) {
-          final ProfileEntity user = state.profile;
+            if (state is GetSingleProfileLoadedState) {
+              final ProfileEntity user = state.profile;
 
-          return Swipe(
-            onSwipeRight: () {
-              if (kIsWeb) {
-                _previousContentInit(context);
-              }
-              _onBack(context);
-            },
-            child: Scaffold(
-              backgroundColor: theme.background,
-              bottomNavigationBar: !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
-              body: Stack(
+              return Stack(
                 children: [
                   // Content.
                   SingleChildScrollView(
@@ -134,7 +130,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
 
                             // Department.
                             ProfileInfoSection(
-                              headline: AppLocalizations.of(context)!.department,
+                              headline:
+                                  AppLocalizations.of(context)!.department,
                               text: user.department,
                               bottomPadding: 19,
                             ),
@@ -142,7 +139,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                             // Birthday.
                             if (user.birthDayToString != null)
                               ProfileInfoSection(
-                                headline: AppLocalizations.of(context)!.birth_date,
+                                headline:
+                                    AppLocalizations.of(context)!.birth_date,
                                 text: user.birthDayToString!,
                                 bottomPadding: 19,
                               ),
@@ -173,7 +171,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                           _ActionButton(
                             img: ImageAssets.phone,
                             onTap: () async {
-                              final phoneWithOutMask = FormatterUtil.pfoneWithoutMask(
+                              final phoneWithOutMask =
+                                  FormatterUtil.pfoneWithoutMask(
                                 phone: state.getPhone,
                               );
                               log(phoneWithOutMask.toString());
@@ -197,7 +196,8 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                           _ActionButton(
                             img: ImageAssets.message,
                             onTap: () async {
-                              final phoneWithOutMask = FormatterUtil.pfoneWithoutMask(
+                              final phoneWithOutMask =
+                                  FormatterUtil.pfoneWithoutMask(
                                 phone: state.getPhone,
                               );
                               final Uri smsLauncher = Uri(
@@ -228,23 +228,26 @@ class _ContactProfilePageState extends State<ContactProfilePage> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          );
-        }
+              );
+            }
 
-        if (state is ContactsEmptyState) {
-          _previousContentInit(context);
-        }
+            if (state is ContactsEmptyState) {
+              _previousContentInit(context);
+            }
 
-        // TODO: Отработать другие стейты.
-        return const SizedBox();
-      },
+            // TODO: Отработать другие стейты.
+            return const SizedBox();
+          },
+        ),
+        bottomNavigationBar:
+            !kIsWeb ? const CustomBottomBar(isNestedNavigation: true) : null,
+      ),
     );
   }
 
   void _previousContentInit(BuildContext context) {
-    return BlocProvider.of<ContactsBloc>(context, listen: false).add(const FetchContactsEvent());
+    return BlocProvider.of<ContactsBloc>(context, listen: false)
+        .add(const FetchContactsEvent());
   }
 
   void _onBack(BuildContext context) => context.pop();

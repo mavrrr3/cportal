@@ -9,5 +9,6 @@ class ConnectingDevicesResponse {
 
   ConnectingDevicesResponse(this.response);
 
-  factory ConnectingDevicesResponse.fromJson(Map<String, dynamic> json) => _$ConnectingDevicesResponseFromJson(json);
+  factory ConnectingDevicesResponse.fromJson(Map<String, dynamic> json) =>
+      _$ConnectingDevicesResponseFromJson(json);
 }

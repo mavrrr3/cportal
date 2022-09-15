@@ -38,7 +38,8 @@ class OnBoardingLearningCourseWeb extends StatelessWidget {
             content: [
               NewEmployeeEntity(
                 title: AppLocalizations.of(context)!.onboarding_title8,
-                description: AppLocalizations.of(context)!.onboarding_description8,
+                description:
+                    AppLocalizations.of(context)!.onboarding_description8,
                 image: 'assets/img/onboarding/8.svg',
               ),
             ],

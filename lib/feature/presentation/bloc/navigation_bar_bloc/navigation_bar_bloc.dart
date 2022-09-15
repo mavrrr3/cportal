@@ -33,7 +33,8 @@ class NavigationBarBloc extends Bloc<NavigationBarEvent, NavigationBarState> {
     NavBarVisibilityEvent event,
     Emitter emit,
   ) async {
-    emit(NavigationBarState(currentIndex: event.index, isActive: event.isActive));
+    emit(NavigationBarState(
+        currentIndex: event.index, isActive: event.isActive));
     debugPrint('Отработал эвент: $event');
   }
 }

@@ -6,15 +6,18 @@ import 'package:cportal_flutter/feature/domain/repositories/i_user_repository.da
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class LogInWithBiometricsUseCase extends IUseCase<UserEntity?, LoginWithBiometricsParams> {
+class LogInWithBiometricsUseCase
+    extends IUseCase<UserEntity?, LoginWithBiometricsParams> {
   final IBiometricRepository _biometricRepository;
   final IUserRepository _userRepository;
 
   LogInWithBiometricsUseCase(this._biometricRepository, this._userRepository);
 
   @override
-  Future<Either<Failure, UserEntity?>> call(LoginWithBiometricsParams params) async {
-    final isAuthenticated = await _biometricRepository.authenticate(localizedReason: params.localizedReason);
+  Future<Either<Failure, UserEntity?>> call(
+      LoginWithBiometricsParams params) async {
+    final isAuthenticated = await _biometricRepository.authenticate(
+        localizedReason: params.localizedReason);
 
     if (isAuthenticated) {
       return _userRepository.getUser();

@@ -19,7 +19,9 @@ class PhoneButton extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: theme.brightness == Brightness.light ? theme.background : theme.background?.withOpacity(0.34),
+          color: theme.brightness == Brightness.light
+              ? theme.background
+              : theme.background?.withOpacity(0.34),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(

@@ -23,10 +23,13 @@ class ProfileEntity extends Equatable {
     required this.contactInfo,
   });
 
-  String? get birthDayToString => birthday != null ? DateFormat('d.MM.y').format(birthday!) : null;
+  String? get birthDayToString =>
+      birthday != null ? DateFormat('d.MM.y').format(birthday!) : null;
 
-  String get personalPhoneNumber =>
-      contactInfo.where((element) => element.type == 'Личный номер телефона').first.contact;
+  String get personalPhoneNumber => contactInfo
+      .where((element) => element.type == 'Личный номер телефона')
+      .first
+      .contact;
 
   @override
   List<Object?> get props => [

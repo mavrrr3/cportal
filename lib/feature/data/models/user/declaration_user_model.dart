@@ -35,7 +35,8 @@ class DeclarationUserModel extends DeclarationUserEntity {
           image: image,
         );
 
-  factory DeclarationUserModel.fromJson(Map<String, dynamic> json) => DeclarationUserModel(
+  factory DeclarationUserModel.fromJson(Map<String, dynamic> json) =>
+      DeclarationUserModel(
         fullName: json['name'] as String,
         id: json['id'] as String,
         position: json['position'] as String,

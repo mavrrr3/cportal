@@ -71,11 +71,11 @@ class ResponsiveUtil {
         : zeroWidthCondition(context)
             ? width - 192
             : firstWidthCondition(context)
-                ? 1296
+                ? 968
                 : secondWidthCondition(context)
-                    ? 1296
+                    ? 968
                     : thirdWidthCondition(context)
-                        ? 1356
+                        ? 968
                         : width - webTabletPadding().horizontal;
   }
 
@@ -87,7 +87,9 @@ class ResponsiveUtil {
         ? widthContentWithRightBloc()
         : zeroWidthCondition(context)
             ? widthContentWithRightBloc() + 64
-            : widthContentWithRightBloc() + webTabletPaddingWithRightBloc().horizontal / 2 + 398;
+            : widthContentWithRightBloc() +
+                webTabletPaddingWithRightBloc().horizontal / 2 +
+                398;
   }
 
   EdgeInsetsGeometry getHorizontalPadding() {

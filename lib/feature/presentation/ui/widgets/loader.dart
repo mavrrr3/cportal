@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class Loader extends StatelessWidget {
-  const Loader({Key? key}) : super(key: key);
+  final double bottomPosition;
+  const Loader({
+    Key? key,
+    this.bottomPosition = -54,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: -54,
+      bottom: bottomPosition,
       left: 0,
       right: 0,
       child: Lottie.asset(

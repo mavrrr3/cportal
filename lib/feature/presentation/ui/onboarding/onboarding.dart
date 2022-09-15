@@ -19,7 +19,8 @@ class Onboarding extends StatefulWidget {
   State<Onboarding> createState() => _OnboardingState();
 }
 
-class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateMixin {
+class _OnboardingState extends State<Onboarding>
+    with SingleTickerProviderStateMixin {
   late int _currentIndex;
   late PageController _pageController;
   late AnimationController _animationController;
@@ -47,7 +48,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
             _currentIndex += 1;
             _loadPage();
           } else {
-            context.goNamed(NavigationRouteNames.profile);
+            context.goNamed(NavigationRouteNames.mainPage);
           }
         });
       }
@@ -117,7 +118,8 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
                     physics: const NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     itemCount: _onboardingContent.length,
-                    itemBuilder: (context, i) => OnBoardingStepPage(content: _onboardingContent[i]),
+                    itemBuilder: (context, i) =>
+                        OnBoardingStepPage(content: _onboardingContent[i]),
                   ),
                 ),
               ),
@@ -149,7 +151,7 @@ class _OnboardingState extends State<Onboarding> with SingleTickerProviderStateM
           _currentIndex += 1;
           _loadPage();
         } else {
-          context.goNamed(NavigationRouteNames.profile);
+          context.goNamed(NavigationRouteNames.mainPage);
         }
       });
     } else {

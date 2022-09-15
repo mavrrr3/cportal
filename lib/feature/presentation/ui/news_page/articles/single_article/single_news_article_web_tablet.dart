@@ -1,6 +1,7 @@
 import 'package:cportal_flutter/app_config.dart';
 import 'package:cportal_flutter/common/constants/image_assets.dart';
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/formatter_util.dart';
 import 'package:cportal_flutter/common/util/is_larger_then.dart';
 import 'package:cportal_flutter/common/util/responsive_util.dart';
 import 'package:cportal_flutter/feature/domain/entities/article_entity.dart';
@@ -18,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SingleNewsArticleWebTablet extends StatefulWidget {
@@ -32,14 +32,16 @@ class SingleNewsArticleWebTablet extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SingleNewsArticleWebTablet> createState() => _SingleNewsArticleWebTabletState();
+  State<SingleNewsArticleWebTablet> createState() =>
+      _SingleNewsArticleWebTabletState();
 }
 
-class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet> {
+class _SingleNewsArticleWebTabletState
+    extends State<SingleNewsArticleWebTablet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
-    final outputFormat = DateFormat('d MMMM y, H:m', 'ru');
+
     final double width = MediaQuery.of(context).size.width;
     final customPadding = ResponsiveUtil(context);
 
@@ -47,7 +49,6 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
       child: Stack(
         children: [
           Row(
-            // MainAxisAlignment: MainAxisAlignment.end,.
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (!zeroWidthCondition(context)) ...[
@@ -69,7 +70,10 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                           : zeroWidthCondition(context)
                               ? const EdgeInsets.only(left: 40, top: 20)
                               : EdgeInsets.only(
-                                  left: customPadding.webTabletPaddingWithRightBloc().horizontal / 2,
+                                  left: customPadding
+                                          .webTabletPaddingWithRightBloc()
+                                          .horizontal /
+                                      2,
                                   top: 20,
                                 ),
                       child: Column(
@@ -82,9 +86,12 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                             },
                             child: Row(
                               children: [
-                                if (zeroWidthCondition(context) && width > 514) ...[
+                                if (zeroWidthCondition(context) &&
+                                    width > 514) ...[
                                   BurgerMenuButton(onTap: () {
-                                    context.read<NavigationBarBloc>().add(const NavBarVisibilityEvent(
+                                    context
+                                        .read<NavigationBarBloc>()
+                                        .add(const NavBarVisibilityEvent(
                                           index: 1,
                                           isActive: true,
                                         ));
@@ -113,7 +120,16 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: customPadding.webTabletPaddingWithRightBloc(),
+                          padding: EdgeInsets.only(
+                            left: customPadding
+                                    .webTabletPaddingWithRightBloc()
+                                    .horizontal /
+                                2,
+                            right: customPadding
+                                    .webTabletPaddingWithRightBloc()
+                                    .horizontal /
+                                2,
+                          ),
                           child: SizedBox(
                             width: customPadding.widthContentWithRightBloc(),
                             child: Column(
@@ -137,7 +153,8 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                                 ),
                                 SizePadding.height12px,
                                 Text(
-                                  outputFormat.format(widget.article.date),
+                                  FormatterUtil.fullDateWithoutSeconds(
+                                      date: widget.article.date),
                                   style: theme.textTheme.px12,
                                 ),
                                 SizePadding.height24px,
@@ -146,7 +163,8 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                                   widget.article.content.first,
                                 ),
                                 const SizedBox(height: 40),
-                                if (widget.articles != null && zeroWidthCondition(context))
+                                if (widget.articles != null &&
+                                    zeroWidthCondition(context))
                                   Wrap(
                                     runSpacing: 16,
                                     spacing: 16,
@@ -154,8 +172,10 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                                       AppConfig.numberRecomendedArticlesWeb,
                                       (i) {
                                         return GestureDetector(
-                                          onTap: () => GoRouter.of(context).pushNamed(
-                                            NavigationRouteNames.newsArticlePage,
+                                          onTap: () =>
+                                              GoRouter.of(context).pushNamed(
+                                            NavigationRouteNames
+                                                .newsArticlePage,
                                             params: {
                                               'fid': articlesToRecomendations(
                                                 widget.article.id,
@@ -198,7 +218,8 @@ class _SingleNewsArticleWebTabletState extends State<SingleNewsArticleWebTablet>
                                       },
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 20, right: 32),
+                                      padding: const EdgeInsets.only(
+                                          bottom: 20, right: 32),
                                       child: NewsCardSimilarItem(
                                         width: 312,
                                         height: 152,

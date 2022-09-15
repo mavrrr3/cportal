@@ -26,7 +26,8 @@ class QuestionsPageMobile extends StatefulWidget {
   State<QuestionsPageMobile> createState() => _QuestionsPageMobileState();
 }
 
-class _QuestionsPageMobileState extends State<QuestionsPageMobile> with TickerProviderStateMixin {
+class _QuestionsPageMobileState extends State<QuestionsPageMobile>
+    with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
@@ -61,7 +62,8 @@ class _QuestionsPageMobileState extends State<QuestionsPageMobile> with TickerPr
     if (_tabController.index == 0) {
       fetchQuestionsBloc.add(const FetchQuestionsEvent());
     } else {
-      fetchQuestionsBloc.add(FetchQaustionsEventBy(categories[_tabController.index]));
+      fetchQuestionsBloc
+          .add(FetchQaustionsEventBy(categories[_tabController.index]));
     }
   }
 

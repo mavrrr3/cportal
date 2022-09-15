@@ -16,6 +16,7 @@ import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/bloc/filte
 import 'package:cportal_flutter/feature/presentation/bloc/filter_bloc/filter_event.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/main_search_bloc/main_search_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/new_employee_bloc/fetch_new_employee_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/news_bloc/fetch_news_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/questions_bloc/fetch_questions_bloc.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/tasks_bloc/tasks_bloc.dart';
@@ -108,7 +109,8 @@ class _MainPageMobileState extends State<MainPageMobile> {
       ..read<DeclarationsBloc>()
           .add(const FetchDeclarationsEvent(isFirstFetch: true))
       ..read<TasksBloc>().add(const FetchTasksEvent(isFirstFetch: true))
-      ..read<FilterDeclarationsBloc>().add(FetchFiltersEvent());
+      ..read<FilterDeclarationsBloc>().add(FetchFiltersEvent())
+      ..read<FetchNewEmployeeBloc>().add(const FetchNewEmployeeEvent());
   }
 
   @override

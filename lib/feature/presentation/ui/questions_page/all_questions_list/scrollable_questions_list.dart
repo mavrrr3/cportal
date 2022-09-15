@@ -25,7 +25,9 @@ class ScrollableQuestionsList extends StatelessWidget {
           categories.length,
           (index) {
             return Padding(
-              padding: isMobile(context) ? getHorizontalPadding(context) : EdgeInsets.zero,
+              padding: isMobile(context)
+                  ? getHorizontalPadding(context)
+                  : EdgeInsets.zero,
               child: QuestionsList(
                 questions: articles,
                 tabs: categories,

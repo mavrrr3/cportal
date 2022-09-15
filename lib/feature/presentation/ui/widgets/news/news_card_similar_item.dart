@@ -51,9 +51,11 @@ class NewsCardSimilarItem extends StatelessWidget {
                     Text(
                       item.header,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
+                      maxLines: 3,
                       style: theme.textTheme.px14Bold.copyWith(
-                        color: isHovered ? theme.text?.withOpacity(0.6) : theme.text,
+                        color: isHovered
+                            ? theme.text?.withOpacity(0.6)
+                            : theme.text,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -62,7 +64,9 @@ class NewsCardSimilarItem extends StatelessWidget {
                         Text(
                           outputFormat.format(item.date),
                           style: theme.textTheme.px12.copyWith(
-                            color: isHovered ? theme.text?.withOpacity(0.6) : theme.text,
+                            color: isHovered
+                                ? theme.text?.withOpacity(0.6)
+                                : theme.text,
                           ),
                         ),
                       ],

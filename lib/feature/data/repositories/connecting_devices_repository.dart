@@ -17,12 +17,14 @@ class ConnectingDevicesRepository extends IConnectingDevicesRepository {
   @override
   Future<Either<Failure, ConnectingDevicesModel>> getConnectingDevices() async {
     try {
-      final connectingDevices = await _devicesRemoteDataSource.getConnectingDevices();
+      final connectingDevices =
+          await _devicesRemoteDataSource.getConnectingDevices();
       await _devicesLocalDataSource.saveConnectingDevices(connectingDevices);
 
       return Right(connectingDevices);
     } on Exception catch (_) {
-      final connectingDevices = await _devicesLocalDataSource.getConnectingDevices();
+      final connectingDevices =
+          await _devicesLocalDataSource.getConnectingDevices();
 
       if (connectingDevices == null) {
         return Left(CacheFailure());

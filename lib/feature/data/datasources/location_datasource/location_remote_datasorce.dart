@@ -10,7 +10,8 @@ class LocationRemoteDataSource implements ILocationRemoteDataSource {
   @override
   Future<Location?> getLocation() async {
     try {
-      final response = await _dio.get<Map<String, dynamic>>('http://ip-api.com/json');
+      final response =
+          await _dio.get<Map<String, dynamic>>('http://ip-api.com/json');
 
       return Location.fromJson(response.data!);
     } on Exception catch (_) {

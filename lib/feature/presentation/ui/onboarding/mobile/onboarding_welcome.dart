@@ -56,7 +56,8 @@ class OnBoardingWelcome extends StatelessWidget {
               ],
             ),
           ),
-          BlocBuilder<FetchNewEmployeeBloc, FetchNewEmployeeState>(builder: (context, state) {
+          BlocBuilder<FetchNewEmployeeBloc, FetchNewEmployeeState>(
+              builder: (context, state) {
             if (state is NewEmployeeLoaded) {
               return SafeArea(
                 child: Padding(
