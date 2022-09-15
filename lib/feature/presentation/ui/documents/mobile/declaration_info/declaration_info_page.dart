@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
 
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
@@ -16,6 +18,7 @@ import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declara
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_actions_history.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:go_router/go_router.dart';
@@ -37,9 +40,11 @@ class DeclarationInfoPage extends StatefulWidget {
 }
 
 class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
+  late bool isTaskSheetVisible;
   @override
   void initState() {
     super.initState();
+    isTaskSheetVisible = true;
     context.read<SingleDeclarationBloc>().add(GetSingleDeclarationEvent(
           id: widget.id,
           isTask: widget.isTask,
@@ -70,108 +75,137 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 18,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // AppBar.
-                                DeclarationAppBar(
-                                  title: state.declaration.title,
-                                ),
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (notify) {
+                            // Если true, шторка скрывается.
+                            if (notify is UserScrollNotification &&
+                                notify.metrics.axis == Axis.vertical) {
+                              if (notify.direction == ScrollDirection.forward) {
+                                setState(() {
+                                  isTaskSheetVisible = true;
+                                });
+                              }
 
-                                // Прогресс и текущий этап.
-                                DeclarationProgress(
-                                  currentStep: state.declaration.currentStep,
-                                  allSteps: state.declaration.allSteps,
-                                  status: state.declaration.status,
-                                  description:
-                                      state.declaration.progressDescription,
-                                  color: ColorService.declarationStatus(
-                                    state.declaration.status,
+                              if (notify.direction == ScrollDirection.reverse) {
+                                setState(() {
+                                  isTaskSheetVisible = false;
+                                });
+                              }
+                            }
+
+                            return false;
+                          },
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 18,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // AppBar.
+                                  DeclarationAppBar(
+                                    title: state.declaration.title,
                                   ),
-                                ),
-                                const SizedBox(height: 24),
 
-                                // Содержание.
-                                if (state.declaration.content != null)
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 24),
-                                    child: DeclarationExpandbleContent(
-                                      title: localizedStrings.content,
-                                      childTopPadding: 8,
-                                      child: Text(
-                                        state.declaration.content!,
-                                        style: theme.textTheme.px14,
+                                  // Прогресс и текущий этап.
+                                  DeclarationProgress(
+                                    currentStep: state.declaration.currentStep,
+                                    allSteps: state.declaration.allSteps,
+                                    status: state.declaration.status,
+                                    description:
+                                        state.declaration.progressDescription,
+                                    color: ColorService.declarationStatus(
+                                      state.declaration.status,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 24),
+
+                                  // Содержание.
+                                  if (state.declaration.content != null)
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 24),
+                                      child: DeclarationExpandbleContent(
+                                        title: localizedStrings.content,
+                                        childTopPadding: 8,
+                                        child: Text(
+                                          state.declaration.content!,
+                                          style: theme.textTheme.px14,
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                // Ход выполнения.
-                                if (state.declaration.actions.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 16),
-                                    child: DeclarationActionsHistory(
-                                      actions: state.declaration.actions,
+                                  // Ход выполнения.
+                                  if (state.declaration.actions.isNotEmpty)
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 16),
+                                      child: DeclarationActionsHistory(
+                                        actions: state.declaration.actions,
+                                      ),
                                     ),
-                                  ),
 
-                                // Документы.
-                                if (state.declaration.documents.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 24),
-                                    child: DeclarationDocuments(
-                                      items: state.declaration.documents,
-                                      onTap: (i) {},
+                                  // Документы.
+                                  if (state.declaration.documents.isNotEmpty)
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 24),
+                                      child: DeclarationDocuments(
+                                        items: state.declaration.documents,
+                                        onTap: (i) {},
+                                      ),
                                     ),
+
+                                  // Дата и приоритет.
+                                  DeclarationDateAndPriority(
+                                    date: state.declaration.date,
+                                    priority: state.declaration.priority,
                                   ),
+                                  const SizedBox(height: 24),
 
-                                // Дата и приоритет.
-                                DeclarationDateAndPriority(
-                                  date: state.declaration.date,
-                                  priority: state.declaration.priority,
-                                ),
-                                const SizedBox(height: 24),
-
-                                // Инициатор.
-                                if (state.declaration.initiatorName != null)
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 24),
-                                    child: DeclarationInitiator(
-                                      fullName:
-                                          state.declaration.initiatorName!,
-                                      position:
-                                          state.declaration.initiatorPosition!,
-                                      imgLing:
-                                          state.declaration.initiatorImage!,
+                                  // Инициатор.
+                                  if (state.declaration.initiatorName != null)
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 24),
+                                      child: DeclarationInitiator(
+                                        fullName:
+                                            state.declaration.initiatorName!,
+                                        position: state
+                                            .declaration.initiatorPosition!,
+                                        imgLing:
+                                            state.declaration.initiatorImage!,
+                                      ),
                                     ),
-                                  ),
 
-                                Divider(
-                                  color: theme.brightness == Brightness.light
-                                      ? theme.black?.withOpacity(0.08)
-                                      : theme.textLight?.withOpacity(0.08),
-                                  height: 1,
-                                ),
-                                const SizedBox(height: 16),
-
-                                // Подробная информация о заявлении.
-                                if (state.declaration.params.isNotEmpty)
-                                  DeclarationData(
-                                    data: state.declaration.params,
+                                  Divider(
+                                    color: theme.brightness == Brightness.light
+                                        ? theme.black?.withOpacity(0.08)
+                                        : theme.textLight?.withOpacity(0.08),
+                                    height: 1,
                                   ),
-                                const SizedBox(height: 32),
-                              ],
+                                  const SizedBox(height: 16),
+
+                                  // Подробная информация о заявлении.
+                                  if (state.declaration.params.isNotEmpty)
+                                    DeclarationData(
+                                      data: state.declaration.params,
+                                    ),
+                                  const SizedBox(height: 32),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      const DeclarationTasksAnimatedSheet(),
+                      AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: isTaskSheetVisible ? 1 : 0,
+                        child: const DeclarationTasksAnimatedSheet(),
+                      ),
                     ],
                   ),
                 );
