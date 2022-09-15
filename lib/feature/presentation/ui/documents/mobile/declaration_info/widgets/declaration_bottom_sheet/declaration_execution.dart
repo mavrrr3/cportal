@@ -1,13 +1,16 @@
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/create_declaration/widgets/declaration_textfield.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/picked_docs.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_expandble_content.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_upload_docs_button.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeclarationExecution extends StatefulWidget {
-  const DeclarationExecution({super.key});
+  final Function() fileActionCallBack;
+  const DeclarationExecution({super.key, required this.fileActionCallBack});
 
   @override
   State<DeclarationExecution> createState() => _DeclarationExecutionState();
@@ -15,12 +18,13 @@ class DeclarationExecution extends StatefulWidget {
 
 class _DeclarationExecutionState extends State<DeclarationExecution> {
   late final TextEditingController commentController;
-  late bool isDoneButtonActive;
+  late List<PlatformFile> pickedFiles;
+
   @override
   void initState() {
     super.initState();
-    isDoneButtonActive = false;
     commentController = TextEditingController();
+    pickedFiles = [];
   }
 
   @override
@@ -48,17 +52,32 @@ class _DeclarationExecutionState extends State<DeclarationExecution> {
         ),
         const SizedBox(height: 24),
 
+        if (pickedFiles.isNotEmpty)
+          PickedDocs(
+            items: pickedFiles,
+            onRemove: (i) {
+              setState(() {
+                pickedFiles.removeAt(i);
+              });
+              widget.fileActionCallBack();
+            },
+          ),
+
         // Кнопка "Загрузить".
         Button.factory(
           context,
           type: ButtonEnum.dottedLine,
           text: localizedStrings.upload,
           onTap: () async {
-            // final result = await FilePicker.platform.pickFiles(
-            //   allowMultiple: true,
-            //   allowedExtensions: ['pdf', 'docx'],
-            // );
-            // log(result.toString());
+            final result = await FilePicker.platform.pickFiles(
+              allowMultiple: true,
+            );
+            if (result != null) {
+              setState(() {
+                pickedFiles.addAll(result.files);
+              });
+              widget.fileActionCallBack();
+            }
           },
         ),
         const SizedBox(height: 32),
@@ -72,7 +91,7 @@ class _DeclarationExecutionState extends State<DeclarationExecution> {
 
         // Кнопка "Готово".
         DeclarationUploadDocsButton(
-          isActive: isDoneButtonActive,
+          isActive: pickedFiles.isNotEmpty,
           onTap: () {},
         ),
       ],

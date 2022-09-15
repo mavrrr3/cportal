@@ -63,5 +63,14 @@
 		<string>tel</string>
 		<string>mailto</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+    	<string>fetch</string>
+    	<string>remote-notification</string>
+	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>In the application, employees of companies have to perform tasks and sometimes they may be required to upload some image/file</string>
 </dict>
 </plist>

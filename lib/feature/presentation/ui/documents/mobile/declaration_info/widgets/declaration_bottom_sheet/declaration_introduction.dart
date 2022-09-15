@@ -52,10 +52,6 @@ class DeclarationIntroduction extends StatelessWidget {
           type: ButtonEnum.filled,
           text: localizedStrings.introduced,
           onTap: () {},
-          size: const Size(
-            328,
-            48,
-          ),
         ),
       ],
     );

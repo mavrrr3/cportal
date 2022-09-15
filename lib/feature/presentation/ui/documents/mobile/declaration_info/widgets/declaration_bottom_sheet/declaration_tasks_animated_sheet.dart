@@ -1,6 +1,9 @@
 // ignore_for_file: avoid_types_on_closure_parameters
 
+import 'dart:developer';
+
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/keep_alive_page.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_agreement.dart';
 
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_execution.dart';
@@ -50,7 +53,11 @@ class _DeclarationTasksAnimatedSheetState
         description: 'Требуется согласование',
         onAgreed: () {},
       ),
-      const DeclarationExecution(),
+      DeclarationExecution(
+        fileActionCallBack: () async {
+          await _changeHeight();
+        },
+      ),
       DeclarationIntroduction(onTapResults: () {}, onDone: () {}),
       DeclarationAgreement(
         description: 'Требуется согласование',
@@ -76,6 +83,8 @@ class _DeclarationTasksAnimatedSheetState
     return GestureDetector(
       // Отвечают за раскрытие шторки.
       onTap: () async {
+        FocusManager.instance.primaryFocus?.unfocus();
+
         if (_sheetCurrentHeight == _sheetMinHeight) {
           await _changeHeight();
         }
@@ -91,7 +100,7 @@ class _DeclarationTasksAnimatedSheetState
       child: AnimatedContainer(
         height: _sheetCurrentHeight,
         width: MediaQuery.of(context).size.width,
-        duration: const Duration(milliseconds: 350),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         decoration: _getSheetDecoration(theme),
         child: NotificationListener<ScrollNotification>(
@@ -163,17 +172,13 @@ class _DeclarationTasksAnimatedSheetState
                 ExpandablePageView(
                   key: _key,
                   controller: _pageController,
+                  animationDuration: const Duration(milliseconds: 150),
                   physics: isDefaultHeight
                       ? const NeverScrollableScrollPhysics()
                       : const PageScrollPhysics(),
                   onPageChanged: (value) async {
                     setState(() {
                       _currentIndex = value;
-                      _pageController.animateToPage(
-                        _currentIndex,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
                     });
                     await _changeHeight();
                   },
@@ -181,7 +186,7 @@ class _DeclarationTasksAnimatedSheetState
                     _tasks.length,
                     (i) => Padding(
                       padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                      child: _tasks[i],
+                      child: KeepAlivePage(child: _tasks[i]),
                     ),
                   ),
                 ),

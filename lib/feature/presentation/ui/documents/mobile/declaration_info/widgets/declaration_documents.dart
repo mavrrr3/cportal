@@ -33,7 +33,7 @@ class DeclarationDocuments extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset(
-                  _getIconByFileType(items[i].file),
+                  getIconByFileType(items[i].file),
                   width: 24,
                   color: theme.textLight,
                 ),
@@ -50,14 +50,14 @@ class DeclarationDocuments extends StatelessWidget {
       ],
     );
   }
+}
 
-  String _getIconByFileType(String path) {
-    final splitted = path.split('.');
-    switch (splitted[1]) {
-      case 'pdf':
-        return ImageAssets.pdfFile;
-      default:
-        return ImageAssets.docFile;
-    }
+String getIconByFileType(String path) {
+  final splitted = path.split('.');
+  switch (splitted[1]) {
+    case 'docx':
+      return ImageAssets.docFile;
+    default:
+      return ImageAssets.pdfFile;
   }
 }
