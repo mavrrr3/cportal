@@ -1,114 +1,55 @@
-import 'dart:developer';
-
 import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/declarations_bloc/declarations_event.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/tabs/my_declarations_tab.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/tabs/tasks_tab.dart';
-import 'package:cportal_flutter/common/util/responsive_util.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/get_single_profile_bloc/get_single_profile_event.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/widgets/declarations_tab_bar.dart';
-import 'package:cportal_flutter/feature/presentation/ui/widgets/search_with_filter.dart';
+import 'package:cportal_flutter/feature/presentation/ui/widgets/layout/layout_with_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SalaryScreen extends StatefulWidget {
-  final TextEditingController searchController;
-  final FocusNode searchFocus;
-
-  final TabController tabController;
-  final Function() onFilterTap;
-
-  const SalaryScreen({
-    Key? key,
-    required this.searchController,
-    required this.searchFocus,
-    required this.tabController,
-    required this.onFilterTap,
-  }) : super(key: key);
+  const SalaryScreen({Key? key}) : super(key: key);
 
   @override
   State<SalaryScreen> createState() => _SalaryScreenState();
 }
 
-class _SalaryScreenState extends State<SalaryScreen> {
-  late ScrollController _scrollController;
+class _SalaryScreenState extends State<SalaryScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _setupScrollController();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
 
     super.initState();
+    context.read<GetSingleProfileBloc>().add(
+          const GetSingleProfileEventImpl(
+            '1',
+            isMyProfile: true,
+          ),
+        );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizedStrings = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final bottomIndent = bottomPadding == 0 ? 16.0 : bottomPadding;
 
-    return SafeArea(
-      child: NestedScrollView(
-        floatHeaderSlivers: true,
-        controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverAppBar(
-                backgroundColor: theme.background,
-                collapsedHeight: 108,
-                expandedHeight: 108,
-                floating: true,
-                forceElevated: innerBoxIsScrolled,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Column(
-                    children: [
-                      const SizedBox(height: 11),
-                      Padding(
-                        padding: getHorizontalPadding(context),
-                        child: SearchWithFilter(
-                          searchController: widget.searchController,
-                          currentMenuIndex: 3,
-                          onSearch: (text) {},
-                          onSearchClear: () {},
-                          onFilterTap: widget.onFilterTap,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Заголовки вкладок.
-                      DeclarationsTabBar(tabController: widget.tabController),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ];
-        },
-        body: TabBarView(
-          controller: widget.tabController,
-          children: const [
-            MyDeclarationsTab(),
-            TasksTab(),
-          ],
-        ),
-      ),
+    return LayoutWithAppBar(
+      title: localizedStrings.salary,
+      child: DeclarationsTabBar(tabController: _tabController),
     );
-  }
-
-  // Пагинация.
-  void _setupScrollController() {
-    _scrollController.addListener(() {
-      if (widget.searchController.text.isEmpty) {
-        if (_scrollController.position.atEdge) {
-          if (_scrollController.position.pixels != 0) {
-            if (widget.tabController.index == 0) {
-              context.read<DeclarationsBloc>().add(const FetchDeclarationsEvent());
-            } else {
-              log('request Tasks');
-            }
-          }
-        }
-      }
-    });
   }
 }

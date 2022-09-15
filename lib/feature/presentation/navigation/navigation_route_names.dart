@@ -27,6 +27,7 @@ import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboar
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/mobile/onboarding_welcome.dart';
 import 'package:cportal_flutter/feature/presentation/ui/onboarding/onboarding.dart';
 import 'package:cportal_flutter/feature/presentation/ui/profile/profile_page.dart';
+import 'package:cportal_flutter/feature/presentation/ui/salary/salary_screen.dart';
 import 'package:cportal_flutter/feature/presentation/ui/splash_screen/splash_screen.dart';
 import 'package:cportal_flutter/service_locator.dart';
 import 'package:flutter/foundation.dart';
@@ -67,7 +68,7 @@ abstract class NavigationRouteNames {
 
 final GoRouter router = GoRouter(
   urlPathStrategy: UrlPathStrategy.path,
-  initialLocation: '/splash_screen',
+  initialLocation: '/profile/salary',
   refreshListenable: sl<AuthService>(),
   redirect: (state) {
     final authService = sl<AuthService>();
@@ -251,13 +252,13 @@ final GoRouter router = GoRouter(
         child: ProfilePage(),
       ),
       routes: [
-        // GoRoute(
-        //   name: NavigationRouteNames.salary,
-        //   path: 'salary',
-        //   pageBuilder: (context, state) => const MaterialPage(
-        //     child: SalaryScreen(),
-        //   ),
-        // ),
+        GoRoute(
+          name: NavigationRouteNames.salary,
+          path: 'salary',
+          pageBuilder: (context, state) => const MaterialPage(
+            child: SalaryScreen(),
+          ),
+        ),
         GoRoute(
           name: NavigationRouteNames.devices,
           path: 'devices',
