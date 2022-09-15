@@ -1,13 +1,8 @@
-// ignore_for_file: avoid_types_on_closure_parameters
-
-import 'dart:developer';
-
-import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/keep_alive_page.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_agreement.dart';
-
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_execution.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_introduction.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_agreement.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_execution.dart';
+import 'package:cportal_flutter/common/util/keep_alive_page.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -27,26 +22,19 @@ class _DeclarationTasksAnimatedSheetState
   late final ScrollController _scrollController;
   late final List<Widget> _tasks;
   late final GlobalKey _key;
-  late final double _sheetMinHeight;
-  late double _sheetCurrentHeight;
+  late final double _minHeight;
+  late double _currentHeight;
   @override
   void initState() {
     super.initState();
     _currentIndex = 0;
     _pageController = PageController(initialPage: _currentIndex);
     _scrollController = ScrollController();
+    // Чтобы отслеживать высоту колонки в каждой задаче.
+    _key = GlobalKey();
 
-    // _scrollController.addListener(() async {
-    //   await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    //   final double maxSize = (_key.currentContext!.size!.height + 60) /
-    //       MediaQuery.of(context).size.height;
-    //   setState(() {
-    //     _sheetCurrentHeight = maxSize;
-    //   });
-    // });
-
-    _sheetMinHeight = 68;
-    _sheetCurrentHeight = _sheetMinHeight;
+    _minHeight = 68;
+    _currentHeight = _minHeight;
 
     _tasks = [
       DeclarationAgreement(
@@ -55,7 +43,7 @@ class _DeclarationTasksAnimatedSheetState
       ),
       DeclarationExecution(
         fileActionCallBack: () async {
-          await _changeHeight();
+          await _updateHeight();
         },
       ),
       DeclarationIntroduction(onTapResults: () {}, onDone: () {}),
@@ -64,42 +52,34 @@ class _DeclarationTasksAnimatedSheetState
         onAgreed: () {},
       ),
     ];
-
-    // Key создаются, чтобы отслеживать высоту колонки в каждой задаче.
-    _key = GlobalKey();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<CustomTheme>()!;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       // Отвечают за раскрытие шторки.
       onTap: () async {
         FocusManager.instance.primaryFocus?.unfocus();
 
-        if (_sheetCurrentHeight == _sheetMinHeight) {
-          await _changeHeight();
+        if (_currentHeight == _minHeight) {
+          await _updateHeight();
         }
       },
       onVerticalDragUpdate: (details) async {
         const int sensitivity = 15;
         if (details.delta.dy < -sensitivity) {
-          if (_sheetCurrentHeight == _sheetMinHeight) {
-            await _changeHeight();
+          if (_currentHeight == _minHeight) {
+            await _updateHeight();
           }
         }
       },
+      //
       child: AnimatedContainer(
-        height: _sheetCurrentHeight,
-        width: MediaQuery.of(context).size.width,
+        height: _currentHeight,
+        width: width,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         decoration: _getSheetDecoration(theme),
@@ -180,7 +160,7 @@ class _DeclarationTasksAnimatedSheetState
                     setState(() {
                       _currentIndex = value;
                     });
-                    await _changeHeight();
+                    await _updateHeight();
                   },
                   children: List.generate(
                     _tasks.length,
@@ -198,7 +178,7 @@ class _DeclarationTasksAnimatedSheetState
     );
   }
 
-  Future<void> _changeHeight() async {
+  Future<void> _updateHeight() async {
     if (_key.currentContext != null) {
       if (_key.currentContext!.size != null) {
         await Future<dynamic>.delayed(
@@ -206,7 +186,7 @@ class _DeclarationTasksAnimatedSheetState
         );
 
         setState(() {
-          _sheetCurrentHeight = _key.currentContext!.size!.height + 24;
+          _currentHeight = _key.currentContext!.size!.height + 24;
         });
       }
     }
@@ -214,33 +194,40 @@ class _DeclarationTasksAnimatedSheetState
 
   Future<void> _setDefaultHeight() async {
     setState(() {
-      _sheetCurrentHeight = _sheetMinHeight;
+      _currentHeight = _minHeight;
     });
   }
 
-  bool get isDefaultHeight => _sheetCurrentHeight == _sheetMinHeight;
-}
+  bool get isDefaultHeight => _currentHeight == _minHeight;
 
-BoxDecoration _getSheetDecoration(CustomTheme theme) {
-  return BoxDecoration(
-    color: theme.cardColor,
-    borderRadius: const BorderRadius.vertical(
-      top: Radius.circular(12),
-    ),
-    boxShadow: [
-      BoxShadow(
-        blurRadius: 4,
-        color: theme.brightness == Brightness.light
-            ? theme.black!.withOpacity(0.04)
-            : theme.black!.withOpacity(0.08),
+  BoxDecoration _getSheetDecoration(CustomTheme theme) {
+    return BoxDecoration(
+      color: theme.cardColor,
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(12),
       ),
-      BoxShadow(
-        offset: const Offset(0, -4),
-        blurRadius: 8,
-        color: theme.brightness == Brightness.light
-            ? theme.black!.withOpacity(0.06)
-            : theme.black!.withOpacity(0.12),
-      ),
-    ],
-  );
+      boxShadow: [
+        BoxShadow(
+          blurRadius: 4,
+          color: theme.brightness == Brightness.light
+              ? theme.black!.withOpacity(0.04)
+              : theme.black!.withOpacity(0.08),
+        ),
+        BoxShadow(
+          offset: const Offset(0, -4),
+          blurRadius: 8,
+          color: theme.brightness == Brightness.light
+              ? theme.black!.withOpacity(0.06)
+              : theme.black!.withOpacity(0.12),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
 }

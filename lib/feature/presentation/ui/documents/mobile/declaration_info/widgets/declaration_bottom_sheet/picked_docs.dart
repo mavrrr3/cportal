@@ -67,8 +67,4 @@ class PickedDocs extends StatelessWidget {
       ),
     );
   }
-
-  String _getFileName(String name) {
-    return name.length < 30 ? name : '${name.substring(0, 25)}...';
-  }
 }

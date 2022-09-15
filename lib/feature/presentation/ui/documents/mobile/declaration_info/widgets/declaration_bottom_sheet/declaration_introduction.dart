@@ -1,6 +1,6 @@
-import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_headline.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/button.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 

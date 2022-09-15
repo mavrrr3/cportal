@@ -64,7 +64,7 @@ class TasksTab extends StatelessWidget {
                                       await Future<dynamic>.delayed(
                                         const Duration(milliseconds: 150),
                                       );
-                                      // widget.sendFilters();
+                                      // Widget.sendFilters();.
                                     },
                                   );
                                 }

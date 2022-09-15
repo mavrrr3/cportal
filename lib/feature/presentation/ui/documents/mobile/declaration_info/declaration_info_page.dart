@@ -1,29 +1,24 @@
 // ignore_for_file: prefer_if_elements_to_conditional_expressions
-
-import 'dart:developer';
-
-import 'package:cportal_flutter/common/theme/custom_theme.dart';
-import 'package:cportal_flutter/common/util/color_service.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_event.dart';
-import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_state.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_app_bar.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_bottom_sheet/declaration_tasks_animated_sheet.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_date_and_priority.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_documents.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_expandble_content.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_actions_history.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_state.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_event.dart';
+import 'package:cportal_flutter/feature/presentation/bloc/declarations_bloc/single_declaration_bloc/single_declaration_bloc.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_documents.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_initiator.dart';
 import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_progress.dart';
-import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_actions_history.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_app_bar.dart';
+import 'package:cportal_flutter/feature/presentation/ui/documents/mobile/declaration_info/widgets/declaration_data.dart';
 import 'package:cportal_flutter/feature/presentation/ui/widgets/platform_progress_indicator.dart';
+import 'package:cportal_flutter/common/theme/custom_theme.dart';
+import 'package:cportal_flutter/common/util/color_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:swipe/swipe.dart';
 
 class DeclarationInfoPage extends StatefulWidget {
@@ -77,15 +72,16 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                       Expanded(
                         child: NotificationListener<ScrollNotification>(
                           onNotification: (notify) {
-                            // Если true, шторка скрывается.
                             if (notify is UserScrollNotification &&
                                 notify.metrics.axis == Axis.vertical) {
+                              // Если user скролит к началу списка,
+                              // то шторка с задачами видна
                               if (notify.direction == ScrollDirection.forward) {
                                 setState(() {
                                   isTaskSheetVisible = true;
                                 });
                               }
-
+                              // Иначе - нет.
                               if (notify.direction == ScrollDirection.reverse) {
                                 setState(() {
                                   isTaskSheetVisible = false;
@@ -201,6 +197,8 @@ class _DeclarationInfoPageState extends State<DeclarationInfoPage> {
                           ),
                         ),
                       ),
+
+                      // Анимированная шторка, отображает невыполненные задачи.
                       AnimatedOpacity(
                         duration: const Duration(milliseconds: 300),
                         opacity: isTaskSheetVisible ? 1 : 0,
