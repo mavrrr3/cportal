@@ -61,7 +61,7 @@ dependencies:
   expandable: ^5.0.1
 
   # Lottie is animations library
-  lottie: ^1.4.1
+  lottie: ^2.1.0
   loading_indicator: ^3.1.0
 
   # Image Cache package
