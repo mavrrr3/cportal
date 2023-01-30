@@ -65,7 +65,7 @@ dependencies:
   loading_indicator: ^3.1.0
 
   # Image Cache package
-  extended_image: ^6.2.1
+  extended_image: ^7.0.0
   
 
   responsive_framework: ^0.2.0
